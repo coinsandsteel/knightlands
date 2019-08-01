@@ -1,0 +1,27 @@
+.stage-icon(@stage) {
+    background-image: url("./../../assets/ui/icon_star.png");
+    background-size: cover;
+    width: 4rem;
+    height: 4rem;
+    display: inline-block;
+
+    &.disabled {
+        opacity: 0.3;
+    }
+}
+
+.stage0 {
+    .stage-icon("stage0");
+}
+
+.stage1 {
+    .stage-icon("stage1");
+}
+
+.stage2 {
+    .stage-icon("stage2");
+}
+
+.stage3 {
+    .stage-icon("stage3");
+}

@@ -1,0 +1,17 @@
+<template>
+  <div class="flex flex-item-center">
+    <div v-bind:class="iconClass" class="value-icon"></div>
+    <div class="font-size-20" :class="valueClass">{{value}}</div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ["iconClass", "valueClass", "value"]
+};
+</script>
+
+
+<style lang="less" scoped>
+</style>
+
