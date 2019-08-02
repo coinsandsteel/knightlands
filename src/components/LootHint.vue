@@ -13,7 +13,7 @@
             <div class="text-align-left">
               <span>{{type}}</span>
             </div>
-            <div class="text-align-left font-size-20">
+            <div v-if="isEquipment" class="text-align-left font-size-20">
               <span>Lvl: {{item.level}}</span>
             </div>
             <progress-bar
@@ -24,6 +24,7 @@
               barType="yellow"
               :maxValue="nextExp"
               plusButton="green"
+              v-if="isEquipment"
             ></progress-bar>
           </div>
         </div>
@@ -49,9 +50,13 @@
     </template>
     <template v-slot:footer>
       <div class="flex">
-        <custom-button v-if="equip" class="common-btn center" @click="$close('equip')">Equip</custom-button>
         <custom-button
-          v-if="unequip"
+          v-if="equip && isEquipment"
+          class="common-btn center"
+          @click="$close('equip')"
+        >Equip</custom-button>
+        <custom-button
+          v-if="unequip && isEquipment"
           type="grey"
           class="common-btn center"
           @click="$close('unequip')"
@@ -87,6 +92,9 @@ export default {
     Loot: () => import("./Loot.vue")
   },
   computed: {
+    isEquipment() {
+      return this.template.type == ItemType.Equipment;
+    },
     template() {
       return this.$game.itemsDB.getTemplate(this.item.template);
     },

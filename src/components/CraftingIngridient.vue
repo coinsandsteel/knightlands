@@ -19,7 +19,9 @@ export default {
       };
     },
     currentCount() {
-      return this.$game.inventory.getItemCount(this.ingridient.itemId);
+      return this.$game.inventory.getItemsCountByTemplate(
+        this.ingridient.itemId
+      );
     },
     requiredCount() {
       return this.ingridient.quantity;

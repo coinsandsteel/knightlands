@@ -10,7 +10,8 @@
         :timer="healthTimer"
         plusButton="grey"
         v-model="health"
-        class="flex-full"
+        class="flex-full pointer"
+        @refill="refillTimer(characterStats.Health)"
       ></progress-bar>
 
       <progress-bar
@@ -37,7 +38,8 @@
         :timer="energyTimer"
         barType="blue"
         plusButton="grey"
-        class="flex-full"
+        class="flex-full pointer"
+        @refill="refillTimer(characterStats.Energy)"
       ></progress-bar>
 
       <progress-bar
@@ -50,7 +52,8 @@
         :timer="staminaTimer"
         plusButton="grey"
         barType="yellow"
-        class="flex-full"
+        class="flex-full pointer"
+        @refill="refillTimer(characterStats.Stamina)"
       ></progress-bar>
     </div>
 
@@ -71,10 +74,15 @@
 <script>
 import ProgressBar from "./ProgressBar.vue";
 import CharacterStats from "@/../knightlands-shared/character_stat.js";
+import TimerRefill from "@/views/TimerRefill.vue";
+import { create as CreateDialog } from "vue-modal-dialogs";
+
+const TimerRefillModal = CreateDialog(TimerRefill, ...TimerRefill.props);
 
 export default {
   data() {
     return {
+      characterStats: CharacterStats,
       maxStats: this.$game.character.maxStats,
       timers: this.$game.character.timers,
       energyTimer: this.$game.character.timers[CharacterStats.Energy],
@@ -83,7 +91,8 @@ export default {
     };
   },
   components: {
-    ProgressBar
+    ProgressBar,
+    TimerRefill
   },
   computed: {
     maxHealth() {
@@ -120,6 +129,10 @@ export default {
     },
     now() {
       return Math.floor(new Date().getTime() / 1000);
+    },
+    async refillTimer(stat) {
+      console.log("refil");
+      let result = await TimerRefillModal(stat);
     }
   }
 };

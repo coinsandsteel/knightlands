@@ -1,6 +1,6 @@
 <template>
   <div v-bar>
-    <div class="summon-list">
+    <div class="summon-list" v-if>
       <raids-summon-list-element v-for="(raid, raidId) in raids" :key="raidId" :raid="raidId" />
     </div>
   </div>
@@ -17,6 +17,10 @@ export default {
   components: { RaidsSummonListElement },
   created() {
     this.title = "Raid Summons";
+  },
+  async mounted() {
+    let summonList = await this.$game.fetchRaidSummonList();
+    console.log("Fetch summon raid list", summonList);
   },
   data() {
     return {

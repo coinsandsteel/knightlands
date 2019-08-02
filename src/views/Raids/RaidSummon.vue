@@ -96,6 +96,14 @@ export default {
           { type: "red", title: "Cancel", response: false }
         ]
       );
+
+      if (result === true) {
+        let iapNonce = await this.$game.summonRaid(
+          this.raid,
+          this.selectedStage
+        );
+        console.log("IAP nonce", iapNonce);
+      }
     }
   }
 };

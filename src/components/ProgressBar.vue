@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-bar" :style="progressStyle()">
+  <div class="progress-bar" :style="progressStyle()" @click="$emit('refill')">
     <div class="icon">
       <div :class="iconClass"></div>
     </div>

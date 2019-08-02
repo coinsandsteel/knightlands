@@ -1,7 +1,7 @@
 <template>
   <div
     class="btn"
-    :class="[type, {disabled:disabled}, {lockPressed: lockPressed}]"
+    :class="[type, {disabled:disabled}, {lockPressed: lockPressed}, {selected: selected}]"
     :style="sizeStyle"
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
@@ -31,7 +31,8 @@ export default {
     lockPressed: {
       type: Boolean,
       default: false
-    }
+    },
+    selected: Boolean
   },
   computed: {
     sizeStyle() {
@@ -55,6 +56,14 @@ export default {
 
 .pressed(@name) {
   border-image: url("../assets/ui/@{name}_active.png") repeat;
+  border-image-slice: 50 100 52 80 fill;
+  border-image-width: 32px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.selected(@name) {
+  border-image: url("../assets/ui/@{name}_selected.png") repeat;
   border-image-slice: 50 100 52 80 fill;
   border-image-width: 32px;
   border-style: solid;
@@ -130,10 +139,22 @@ export default {
 
 .yellow {
   .btn-bg("button_yellow");
+
+  &.lockPressed {
+    .pressed("button_yellow");
+  }
 }
 
 .grey {
   .btn-bg("button_pale");
+
+  &.lockPressed {
+    .pressed("button_pale");
+  }
+
+  &.selected {
+    .selected("button_pale");
+  }
 }
 </style>
 

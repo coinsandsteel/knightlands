@@ -14,10 +14,10 @@ class Crafting {
 
         let enoughResources = true;
         let i = 0;
-        const length = recipe.ingridiends.length;
+        const length = recipe.ingridients.length;
         for (; i < length; ++i) {
-            let ingridient = recipe.ingridiends[i];
-            if (!this._inventory.hasItem(ingridient.itemId, ingridient.quantity)) {
+            let ingridient = recipe.ingridients[i];
+            if (!this._inventory.hasItemTemplate(ingridient.itemId, ingridient.quantity)) {
                 enoughResources = false;
                 break;
             }
@@ -34,9 +34,9 @@ class Crafting {
 
         let ingridients = [];
         let i = 0;
-        const length = recipe.ingridiends.length;
+        const length = recipe.ingridients.length;
         for (; i < length; ++i) {
-            let ingridient = recipe.ingridiends[i];
+            let ingridient = recipe.ingridients[i];
             ingridients.push({
                 itemId: ingridient.itemId,
                 quantity: ingridient.quantity

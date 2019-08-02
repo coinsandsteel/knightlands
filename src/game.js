@@ -483,6 +483,25 @@ class Game {
             stage
         });
     }
+
+    async refillTimer(stat, refillType, items) {
+        await this._wrapOperation(Operations.RefillTimer, {
+            stat,
+            refillType,
+            items
+        });
+    }
+
+    async fetchRaidSummonList() {
+        return await this._request(Operations.FetchRaidSummonList);
+    }
+
+    async summonRaid(raid, stage) {
+        return await this._request(Operations.SummonRaid, {
+            raid,
+            stage
+        });
+    }
 }
 
 export default Game;

@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     rarity() {
-      if (!this.item) {
+      if (!this.itemData) {
         return "";
       }
 
