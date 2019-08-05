@@ -9,8 +9,13 @@ import VueAgile from "vue-agile";
 import * as ModalDialogs from "vue-modal-dialogs";
 import VueCollapse from "vue2-collapse";
 import PrettyCheckbox from "pretty-checkbox-vue";
-import Game from "./game";
+import {
+  VueSpinners
+} from "@saeris/vue-spinners";
+import Notifications from "vue-notification";
 
+Vue.use(Notifications);
+Vue.use(VueSpinners);
 Vue.use(PrettyCheckbox);
 Vue.use(VueCollapse);
 Vue.use(ModalDialogs);
@@ -18,6 +23,7 @@ Vue.use(VueAgile);
 Vue.use(Vuebar);
 Vue.use(DrawerLayout);
 Vue.use(LoadScript);
+
 Vue.config.productionTip = false;
 
 window.onload = async () => {

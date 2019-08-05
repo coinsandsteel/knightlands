@@ -14,6 +14,7 @@
 import AppSection from "@/AppSection";
 
 export default {
+  name: "home",
   mixins: [AppSection],
   created() {
     this.title = "Home";

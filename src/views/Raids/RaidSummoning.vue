@@ -1,22 +1,14 @@
 <template>
-  <keep-alive>
+  <keep-alive exclude="raid-summon">
     <router-view :parent="this"></router-view>
   </keep-alive>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
+import RaidsSummonListElement from "./RaidsSummonListElement.vue";
 
 export default {
-  name: "raids"
+  name: "raid-summoning"
 };
 </script>
-
-
-<style lang="less">
-@import "./common.less";
-</style>
-
-
-<style lang="less" scoped>
-</style>

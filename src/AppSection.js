@@ -6,6 +6,9 @@ export default {
             footers: []
         }
     },
+    mounted() {
+        this._notifyApp();
+    },
     activated() {
         this._notifyApp();
 
@@ -18,12 +21,12 @@ export default {
     deactivated() {
         this.removeFooter();
     },
-    beforeDestrpy() {
+    beforeDestroy() {
         this.removeFooter();
     },
     methods: {
         _notifyApp() {
-            this.$parent.$emit("section", this);
+            this.$app.$emit("section", this);
         },
         addFooter(component, props) {
             this.$app.$emit("footer", component, props);

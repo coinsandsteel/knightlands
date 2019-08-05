@@ -12,8 +12,20 @@ class Inventory {
         });
     }
 
+    static get Changed() {
+        return "changed";
+    }
+
     get items() {
         return this._vm.items;
+    }
+
+    on(event, callback) {
+        this._vm.$on(event, callback);
+    }
+
+    off(event, callback) {
+        this._vm.$off(event, callback);
     }
 
     load(inventoryArray) {
@@ -55,8 +67,13 @@ class Inventory {
     }
 
     mergeData(inventoryChanges) {
-        for (let itemId in inventoryChanges) {
-            let changedItem = inventoryChanges[itemId];
+        let {
+            changes,
+            delta
+        } = inventoryChanges;
+
+        for (let itemId in changes) {
+            let changedItem = changes[itemId];
             if (!changedItem) {
                 // item was removed
                 this._vm.$delete(this._vm.items, itemId);
@@ -77,6 +94,8 @@ class Inventory {
                 this._indexItemByTemplate(item);
             }
         }
+
+        this._vm.$emit(Inventory.Changed, inventoryChanges);
     }
 
     getItemCount(itemId) {

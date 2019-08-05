@@ -11,7 +11,7 @@
         </div>
       </div>
       <keep-alive>
-        <router-view :parent="this" class="content" v-if="!loading" />
+        <router-view class="content" v-if="!loading" />
       </keep-alive>
       <div class="footer flex-item-center">
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
@@ -33,6 +33,8 @@
       </div>
     </div>
 
+    <RaidStatusNotification />
+
     <dialogs-wrapper></dialogs-wrapper>
   </div>
 </template>
@@ -43,12 +45,13 @@ import { disableBodyScroll } from "body-scroll-lock";
 import Game from "./game";
 import { Promise } from "q";
 import Vue from "vue";
-import TronWeb from "tronweb";
+import BlockchainFactory from "./blockchain/blockchainFactory";
+import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
 
 const LoginRoute = "/login";
 
 export default {
-  components: { StatusBar },
+  components: { StatusBar, RaidStatusNotification },
   data() {
     return {
       showBackMenu: false,
@@ -122,26 +125,10 @@ export default {
       this.showBackButton();
     });
 
-    await new Promise(resolve => {
-      let tries = 0;
-      // is it possible that injection can be delayed?
-      let interval = setInterval(() => {
-        if (!window.tronWeb && tries++ > 10) {
-          const tronWeb = new TronWeb(
-            "https://api.trongrid.io",
-            "https://api.trongrid.io",
-            "https://api.trongrid.io"
-          );
-          window.tronWeb = tronWeb;
-        }
+    this._blockchainClient = BlockchainFactory(this.$store.state.blockchain);
 
-        if (!!window.tronWeb) {
-          clearInterval(interval);
-          Vue.prototype.$game.tronWeb = window.tronWeb;
-          resolve();
-        }
-      }, 100);
-    });
+    await this._blockchainClient.init();
+    Vue.prototype.$game.blockchain = this._blockchainClient;
 
     // redirect to login page if no wallet installed
     // if (!this.$game.hasWallet) {

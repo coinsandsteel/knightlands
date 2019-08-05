@@ -6,6 +6,7 @@ import ItemDatabase from "./item_database";
 import Inventory from "./inventory";
 import CraftingRecipes from "./crafting_recipes.json";
 import Crafting from "./crafting";
+import Events from "./../knightlands-shared/events";
 
 import {
     player as PlayerExpTable
@@ -38,7 +39,6 @@ class Game {
 
         this._inventory = new Inventory();
         this._crafting = new Crafting(CraftingRecipes, this._inventory);
-        this._tronWeb = null;
 
         var options = {
             hostname: process.env.NODE_ENV == "production" ? "206.189.156.134" : "192.168.16.105",
@@ -62,6 +62,9 @@ class Game {
         this._socket.on("disconnect", this._handleDisconnect.bind(this));
         this._socket.on("authStateChange", this._handleAuthentication.bind(this));
 
+        this._socket.on(Events.InventoryUpdate, this._handleInventoryUpdate.bind(this));
+        this._socket.on(Events.RaidSummonStatus, this._handleRaidStatus.bind(this));
+
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
 
@@ -70,9 +73,9 @@ class Game {
         Vue.prototype.$character = this._character;
 
         // track wallet state
-        setInterval(() => {
-            if (this._tronWeb && this._tronWeb.ready) {}
-        }, 100);
+        // setInterval(() => {
+        //     
+        // }, 100);
     }
 
     get isAdmin() {
@@ -80,7 +83,7 @@ class Game {
     }
 
     get hasWallet() {
-        return !!this._tronWeb;
+        return !!this._blockchainClient;
     }
 
     get itemsDB() {
@@ -127,20 +130,20 @@ class Game {
         return this._character;
     }
 
-    set tronWeb(value) {
-        this._tronWeb = value;
+    set blockchain(value) {
+        this._blockchainClient = value;
 
-        if (this._tronWeb.ready) {
+        if (this._blockchainClient.isReady()) {
             this._vm.walletReady = true;
-            this._vm.account = this._tronWeb.defaultAddress.base58;
+            this._vm.account = this._blockchainClient.getAddress();
         }
 
         setInterval(() => {
-            if (this._tronWeb.ready) {
+            if (this._blockchainClient.isReady()) {
                 this._vm.walletReady = true;
                 if (!this._vm.account) {
-                    this._vm.account = this._tronWeb.defaultAddress.base58;
-                } else if (this._vm.account !== this._tronWeb.defaultAddress.base58) {
+                    this._vm.account = this._blockchainClient.getAddress();
+                } else if (this._vm.account !== this._blockchainClient.getAddress()) {
                     this.logout();
                 }
             } else {
@@ -153,12 +156,17 @@ class Game {
         this._vm.$on(event, callback);
     }
 
+    off(event, callback) {
+        this._vm.$off(event, callback);
+    }
+
     connect() {
         this._socket.connect();
     }
 
     async signIn() {
         const publicAddress = this.account;
+
         try {
             // get nonce first
             let nonce = await this._request(Operations.Auth, {
@@ -166,7 +174,7 @@ class Game {
             });
 
             // sign message
-            let message = await this._tronWeb.trx.sign(this._tronWeb.toHex(nonce));
+            let message = await this._blockchainClient.sign(nonce);
 
             // send signed message
             await this._request(Operations.Auth, {
@@ -179,10 +187,21 @@ class Game {
 
             if (exc.includes("not unlocked")) {
                 //reset walletReady
-                this._tronWeb.ready = false;
                 this._vm.walletReady = false;
             }
         }
+    }
+
+    async purchaseIAP(iap, paymentId, price, signature) {
+        let tx = await this._blockchainClient.purchaseIAP(iap, paymentId, price, signature);
+        await this.sendPayment(paymentId, tx);
+    }
+
+    async sendPayment(paymentId, signedTransaction) {
+        return await this._request(Operations.SendPayment, {
+            paymentId,
+            signedTransaction
+        });
     }
 
     _handleAuthentication(data) {
@@ -221,6 +240,29 @@ class Game {
     logout() {
         this._socket.deauthenticate();
         this._socket.disconnect();
+    }
+
+    // EVENTS
+    _handleInventoryUpdate(data) {
+        this._inventory.mergeData(data);
+    }
+
+    _handleRaidStatus(data) {
+        console.log("raid status changed", data);
+
+        const { iap, reason, context } = data;
+
+        Vue.notify({
+            group: "raid",
+            data: {
+                iap,
+                context,
+                success: reason ? false : true,
+            },
+            duration: -1
+        });
+
+        this._vm.$emit(Events.RaidSummonStatus);
     }
 
     _mergeData(data) {
@@ -262,10 +304,6 @@ class Game {
                     this.getZoneCompletedRecords(zone, stage)[stage] = stages[stage];
                 }
             }
-        }
-
-        if (changes.inventory) {
-            this._inventory.mergeData(changes.inventory.changes);
         }
 
         if (changes.hasOwnProperty("softCurrency")) {
@@ -492,8 +530,10 @@ class Game {
         });
     }
 
-    async fetchRaidSummonList() {
-        return await this._request(Operations.FetchRaidSummonList);
+    async fetchRaidSummonStatus(raid, stage) {
+        return await this._request(Operations.FetchRaidSummonStatus, {
+            raid, stage
+        });
     }
 
     async summonRaid(raid, stage) {
@@ -501,6 +541,10 @@ class Game {
             raid,
             stage
         });
+    }
+
+    async getCurrencyConversionRate() {
+        return await this._request(Operations.GetCurrencyConversionRate);
     }
 }
 

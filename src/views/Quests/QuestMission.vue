@@ -85,6 +85,7 @@ import Stat from "@/../knightlands-shared/character_stat.js";
 import IconWithValue from "@/components/IconWithValue.vue";
 import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
+import Inventory from "@/inventory";
 
 export default {
   props: ["zone", "questIndex", "maxQuestIndex", "stage"],
@@ -96,6 +97,15 @@ export default {
       lockUI: false,
       lootHash: {}
     };
+  },
+  mounted() {
+    this.$game.inventory.on(
+      Inventory.Changed,
+      this.handleInventoryDelta.bind(this)
+    );
+  },
+  destroyed() {
+    this.$game.inventory.off(Inventory.Changed);
   },
   deactivated() {
     this.rewards = [];
@@ -142,21 +152,22 @@ export default {
         max
       );
 
-      if (lootDrops) {
-        for (let itemId in lootDrops.changes) {
-          // if already was dropped before - just inc loot counter
-          if (this.lootHash[itemId]) {
-            this.lootHash[itemId].count += lootDrops.delta[itemId];
-          } else {
-            // or add to loot array and hash for tracking
-            let copy = { ...lootDrops.changes[itemId] };
-            copy.count = lootDrops.delta[itemId];
-            this.$set(this.lootHash, itemId, copy);
-            this.rewards.push(this.lootHash[itemId]);
-          }
+      this.lockUI = false;
+    },
+    handleInventoryDelta(lootDrops) {
+      console.log(lootDrops);
+      for (let itemId in lootDrops.changes) {
+        // if already was dropped before - just inc loot counter
+        if (this.lootHash[itemId]) {
+          this.lootHash[itemId].count += lootDrops.delta[itemId];
+        } else {
+          // or add to loot array and hash for tracking
+          let copy = { ...lootDrops.changes[itemId] };
+          copy.count = lootDrops.delta[itemId];
+          this.$set(this.lootHash, itemId, copy);
+          this.rewards.push(this.lootHash[itemId]);
         }
       }
-      this.lockUI = false;
     }
   }
 };

@@ -25,7 +25,7 @@ import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
 
 export default {
-  props: ["raid"],
+  props: ["raid", "pendingList"],
   components: { CustomButton },
   data() {
     return {
