@@ -1,4 +1,3 @@
-import Vue from "vue";
 import Router from "vue-router";
 import Character from "./views/Character/Character.vue";
 import Quest from "./views/Quests/Quest.vue";
@@ -12,11 +11,24 @@ import RaidSummon from "./views/Raids/RaidSummon.vue";
 import RaidsSummonList from "./views/Raids/RaidsSummonList.vue";
 import CurrentRaids from "./views/Raids/CurrentRaids.vue";
 import RaidSummoning from "./views/Raids/RaidSummoning.vue";
-
-Vue.use(Router);
+import PrelaunchInventory from "./views/AccountLinking/PrelaunchInventory.vue";
+import LinkTelegram from "./views/AccountLinking/LinkTelegram.vue";
 
 const router = new Router({
   routes: [{
+    path: "/link/:token/:user",
+    name: "link-tg",
+    component: LinkTelegram,
+    props: true,
+    meta: {
+      noBackButton: true
+    }
+  },
+  {
+    path: "/inventory",
+    name: "inventory",
+    component: PrelaunchInventory
+  }, {
     path: "/home",
     name: "home",
     component: Home,

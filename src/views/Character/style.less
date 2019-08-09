@@ -13,26 +13,6 @@
     cursor: pointer;
 }
 
-@inventoryPadding: 1rem;
-@inventoryMargin: 0.5rem;
-
-.inventory-container {
-    margin: @inventoryMargin;
-    padding: @inventoryPadding;
-}
-
-.inventory-items {
-    width: @lootCellSize * 7+@inventoryMargin*7;
-
-    @media only screen and (max-width: 450px) and (min-width: 400px) {
-        width: @lootCellSize * 8+@inventoryMargin*8;
-    }
-
-    @media only screen and (max-width: 480px) and (min-width: 451px) {
-        width: @lootCellSize * 9+@inventoryMargin*9;
-    }
-}
-
 .equipment-container {
     width: 100%;
     background-color: #2f2234;

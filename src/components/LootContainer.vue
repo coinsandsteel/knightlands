@@ -1,13 +1,17 @@
 <template>
-  <div class="flex loot-container">
-    <loot
-      v-for="(item, index) in items"
-      :item="item"
-      :key="index"
-      :inventory="inventory"
-      :hint="hint"
-      @hint="handleHint"
-    ></loot>
+  <div>
+    <div class="flex flex-center panel inventory-container">
+      <div class="flex flex-full loot-container inventory-items">
+        <loot
+          v-for="(item, index) in items"
+          :item="item"
+          :key="index"
+          :inventory="inventory"
+          :hint="hint"
+          @hint="handleHint"
+        ></loot>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,6 +54,36 @@ export default {
 
 .loot-container {
   justify-content: flex-start;
+}
+
+@inventoryPadding: 1rem;
+@inventoryMargin: 0.5rem;
+@marginBetweenItems: 0.3rem;
+
+.inventory-container {
+  margin: @inventoryMargin;
+  padding: @inventoryPadding;
+}
+
+.width(@cells) {
+  width: @lootCellSize * @cells + @inventoryMargin* @cells + @marginBetweenItems *
+    @cells;
+}
+
+.inventory-items {
+  .width(7);
+
+  @media only screen and (max-width: 450px) and (min-width: 400px) {
+    .width(8);
+  }
+
+  @media only screen and (max-width: 480px) and (min-width: 451px) {
+    .width(9);
+  }
+
+  & > * {
+    margin: @marginBetweenItems;
+  }
 }
 </style>
 

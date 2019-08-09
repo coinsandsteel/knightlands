@@ -51,12 +51,12 @@
     <template v-slot:footer>
       <div class="flex">
         <custom-button
-          v-if="equip && isEquipment"
+          v-if="actions.equip && equip && isEquipment"
           class="common-btn center"
           @click="$close('equip')"
         >Equip</custom-button>
         <custom-button
-          v-if="unequip && isEquipment"
+          v-if="actions.equip && unequip && isEquipment"
           type="grey"
           class="common-btn center"
           @click="$close('unequip')"
@@ -83,6 +83,12 @@ export default {
     },
     unequip: {
       type: Boolean
+    },
+    actions: {
+      type: Object,
+      default: () => ({
+        equip: true
+      })
     }
   },
   components: {

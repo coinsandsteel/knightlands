@@ -7,7 +7,7 @@ import Inventory from "./inventory";
 import CraftingRecipes from "./crafting_recipes.json";
 import Crafting from "./crafting";
 import Events from "./../knightlands-shared/events";
-
+import Config from "./config";
 import {
     player as PlayerExpTable
 } from "./expTables.json";
@@ -41,10 +41,10 @@ class Game {
         this._crafting = new Crafting(CraftingRecipes, this._inventory);
 
         var options = {
-            hostname: process.env.NODE_ENV == "production" ? "206.189.156.134" : "192.168.16.105",
+            hostname: Config.gameServerEndpoint,
             secure: false,
             autoConnect: false,
-            port: 9000,
+            port: Config.gameServerPort,
             rejectUnauthorized: false, // Only necessary during debug if using a self-signed certificate
             connectTimeout: 5000,
             ackTimeout: 5000,
@@ -71,11 +71,6 @@ class Game {
         // pass socket to make character model listen to certain events
         this._character = new CharacterModel(this._socket);
         Vue.prototype.$character = this._character;
-
-        // track wallet state
-        // setInterval(() => {
-        //     
-        // }, 100);
     }
 
     get isAdmin() {
@@ -162,6 +157,10 @@ class Game {
 
     connect() {
         this._socket.connect();
+    }
+
+    async signMessage(message) {
+        return await this._blockchainClient.sign(message);
     }
 
     async signIn() {
@@ -528,6 +527,10 @@ class Game {
             refillType,
             items
         });
+    }
+
+    async fetchCurrentRaids() {
+        return await this._request(Operations.FetchRaidsList);
     }
 
     async fetchRaidSummonStatus(raid, stage) {

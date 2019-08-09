@@ -124,7 +124,9 @@ export default {
   },
   methods: {
     enemyImage() {
-      return `background-image: url("/images/enemies/${this.view.img}.png");`;
+      return `background-image: url("${UiConstants.enemyImage(
+        this.view.img
+      )}");`;
     }
   }
 };

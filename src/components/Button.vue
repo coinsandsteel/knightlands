@@ -5,7 +5,9 @@
     :style="sizeStyle"
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
-    <slot>{{caption}}</slot>
+    <div class="btn-content">
+      <slot>{{caption}}</slot>
+    </div>
   </div>
 </template>
 
@@ -56,24 +58,32 @@ export default {
 
 .pressed(@name) {
   border-image: url("../assets/ui/@{name}_active.png") repeat;
-  border-image-slice: 50 100 52 80 fill;
+  border-image-slice: 62 52 52 42 fill;
   border-image-width: 32px;
   border-style: solid;
   border-width: 1px;
+
+  & > .btn-content {
+    transform: translateY(0.1rem);
+  }
 }
 
 .selected(@name) {
   border-image: url("../assets/ui/@{name}_selected.png") repeat;
-  border-image-slice: 50 100 52 80 fill;
+  border-image-slice: 62 52 52 42 fill;
   border-image-width: 32px;
   border-style: solid;
   border-width: 1px;
+
+  & > .btn-content {
+    transform: translateY(0.1rem);
+  }
 }
 
 .btn-bg(@name) {
   border-image: url("../assets/ui/@{name}.png") repeat;
   /* top | right | bottom | left */
-  border-image-slice: 50 100 52 80 fill;
+  border-image-slice: 62 52 52 42 fill;
   border-image-width: 32px;
   border-style: solid;
   border-width: 1px;
@@ -155,6 +165,10 @@ export default {
   &.selected {
     .selected("button_pale");
   }
+}
+
+.btn-content {
+  transform: translateY(-0.2rem);
 }
 </style>
 

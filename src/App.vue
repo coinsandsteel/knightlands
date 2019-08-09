@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div v-if="loading" class="flex flex-center loading">
-      <span>Loading</span>
+      <span class="font-size-30">Loading</span>
     </div>
     <div class="content-wrap flex flex-column flex-no-wrap">
-      <status-bar v-if="ready"></status-bar>
+      <status-bar v-if="$game.authenticated"></status-bar>
       <div class="flex">
         <div class="section-name font-size-25">
           <div>{{currentSection.title}}</div>
@@ -24,7 +24,7 @@
           ></component>
         </div>
       </div>
-      <div class="root-menu flex">
+      <div class="root-menu flex" v-if="$game.authenticated">
         <div id="nav">
           <router-link to="/home"></router-link>
           <router-link to="/character"></router-link>
@@ -80,7 +80,6 @@ export default {
   async created() {
     Vue.prototype.$app = this;
     Vue.prototype.$game = new Game(this.$store);
-
     // check if the page requires authentication
     this.$router.beforeEach(async (to, from, next) => {
       if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -91,7 +90,6 @@ export default {
           return;
         }
       }
-
       next();
     });
 
@@ -100,15 +98,20 @@ export default {
 
     // if disconnection due to corrupted sign up or other server side issue - open login
     this.$game.on(this.$game.Disconnected, () => {
-      if (!this.$game.authenticated) {
-        this.redirectToLogin();
+      if (this.$route.matched.some(record => record.meta.requiresAuth)) {
+        if (!this.$game.authenticated) {
+          this.redirectToLogin();
+        }
       }
     });
 
     this.$game.on(this.$game.Ready, () => {
-      if (!this.$game.authenticated) {
-        this.redirectToLogin();
+      if (this.$route.matched.some(record => record.meta.requiresAuth)) {
+        if (!this.$game.authenticated) {
+          this.redirectToLogin();
+        }
       }
+      this.loading = false;
     });
 
     // fetch initial data
@@ -144,7 +147,12 @@ export default {
       interval = setInterval(() => {
         if (tries++ > 5) {
           // redirect to login page
-          this.redirectToLogin();
+          if (this.$route.matched.some(record => record.meta.requiresAuth)) {
+            if (!this.$game.authenticated) {
+              this.redirectToLogin();
+            }
+          }
+          this.loading = false;
           clearInterval(interval);
           return;
         }
@@ -367,6 +375,9 @@ html {
   }
 
   background: @backgroundOutsideColor;
+  background-image: url("./assets/ui/pattern.jpg");
+  background-repeat: repeat;
+  background-size: 20%;
 }
 
 *,

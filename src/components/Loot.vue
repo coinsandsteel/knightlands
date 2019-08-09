@@ -5,8 +5,8 @@
     :class="[rarity, {interactible: interactible}]"
   >
     <div class="inner-border">
-      <img class="icon" :src="icon()" slot="reference" />
       <div :class="{'loot-equipped':(inventory && equipped)}"></div>
+      <img class="icon" :src="icon()" slot="reference" />
     </div>
     <span
       v-if="itemData && !equipment && count > 0"
@@ -161,7 +161,7 @@ export default {
 }
 
 .loot-equipped {
-  background-image: url("../assets/ui/item_slot_active.png");
+  background-image: url("../assets/ui/button_highlighted.png");
   background-repeat: no-repeat;
   background-size: contain;
   position: absolute;

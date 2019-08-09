@@ -76,7 +76,7 @@ import LootHint from "@/components/LootHint.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import ZoneViews from "@/zone_views.js";
 
-const Hint = CreateDialog(LootHint, "item", "equip", "unequip");
+const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
 
 import ProgressBar from "@/components/ProgressBar.vue";
 import LootContainer from "@/components/LootContainer.vue";

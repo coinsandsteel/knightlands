@@ -1,18 +1,25 @@
 <template>
-  <div>Current Raids</div>
+  <div v-bar>
+    <div class="flex flex-column flex-item-center current-raids-list">
+      <current-raid-element v-for="raidData in raids" :key="raidData.id" :raidData="raidData"></current-raid-element>
+    </div>
+  </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.js";
 import CustomButton from "@/components/Button.vue";
+import CurrentRaidElement from "./CurrentRaidElement.vue";
 
 export default {
   name: "current-raids",
   mixins: [AppSection],
-  data() {
-    return {
-      raids: []
-    };
+  components: { CurrentRaidElement },
+  data: () => ({
+    raids: []
+  }),
+  mounted() {
+    this.fetchRaids();
   },
   created() {
     this.title = "Raids";
@@ -22,6 +29,11 @@ export default {
     this.toggleFooter();
   },
   methods: {
+    async fetchRaids() {
+      let raids = await this.$game.fetchCurrentRaids();
+      console.log(raids);
+      this.raids = raids;
+    },
     summonRaid() {
       this.$router.push("/home/raids/summon");
     },
@@ -35,3 +47,14 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.current-raids-list {
+  > * {
+    margin: 1rem 2rem 1rem 2rem;
+  }
+
+  min-height: 0;
+}
+</style>
+

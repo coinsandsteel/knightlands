@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
 import store from "./store";
+import Router from "vue-router";
 import LoadScript from "vue-plugin-load-script";
 import DrawerLayout from "vue-drawer-layout";
 import Vuebar from "vuebar";
@@ -13,7 +13,10 @@ import {
   VueSpinners
 } from "@saeris/vue-spinners";
 import Notifications from "vue-notification";
+import VueResource from "vue-resource";
 
+Vue.use(VueResource);
+Vue.use(Router);
 Vue.use(Notifications);
 Vue.use(VueSpinners);
 Vue.use(PrettyCheckbox);
@@ -25,6 +28,8 @@ Vue.use(DrawerLayout);
 Vue.use(LoadScript);
 
 Vue.config.productionTip = false;
+
+import router from "./router";
 
 window.onload = async () => {
   new Vue({

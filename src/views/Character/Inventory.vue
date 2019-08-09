@@ -48,16 +48,7 @@
     </div>
     <div class="flex full-flex dummy-height">
       <div v-bar class="width-100">
-        <div>
-          <div class="flex flex-center panel inventory-container">
-            <loot-container
-              class="inventory-items flex-full"
-              :items="filteredItems"
-              :inventory="true"
-              @hint="showHint"
-            ></loot-container>
-          </div>
-        </div>
+        <loot-container class="flex-full" :items="filteredItems" :inventory="true" @hint="showHint"></loot-container>
       </div>
     </div>
   </div>
@@ -79,7 +70,7 @@ import ItemType from "@/../knightlands-shared/item_type";
 import EquipmentType from "@/../knightlands-shared/equipment_type";
 import CharacterStats from "@/../knightlands-shared/character_stat.js";
 
-const Hint = CreateDialog(LootHint, "item", "equip", "unequip");
+const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
 const ItemFilter = CreateDialog(ItemFilterComponent);
 
 export default {
@@ -205,16 +196,6 @@ export default {
   }
 };
 </script>
-
-<style lang="less">
-@import (reference) "./style.less";
-
-.inventory-container {
-  & > .loot-slot {
-    margin: @inventoryMargin / 2;
-  }
-}
-</style>
 
 
 <style lang="less" scoped>
