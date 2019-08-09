@@ -42,7 +42,7 @@ class Game {
 
         var options = {
             hostname: Config.gameServerEndpoint,
-            secure: false,
+            secure: process.env.ENV == "prod",
             autoConnect: false,
             port: Config.gameServerPort,
             rejectUnauthorized: false, // Only necessary during debug if using a self-signed certificate
