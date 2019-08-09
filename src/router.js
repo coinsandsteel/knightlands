@@ -25,7 +25,8 @@ const router = new Router({
     }
   },
   {
-    path: "/inventory",
+    path: "/",
+    alias: "/inventory",
     name: "inventory",
     component: PrelaunchInventory
   }, {
@@ -111,7 +112,7 @@ const router = new Router({
   },
   {
     alias: "/login",
-    path: "/",
+    path: "/login",
     name: "login",
     component: Login
   },
