@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     redirectToNextPage() {
-      this.$router.replace({ path: "/character" });
+      this.$router.replace({ name: "character" });
     },
     signIn() {
       this.$game.signIn();

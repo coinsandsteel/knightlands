@@ -111,7 +111,6 @@ const router = new Router({
     }
   },
   {
-    alias: "/login",
     path: "/login",
     name: "login",
     component: Login

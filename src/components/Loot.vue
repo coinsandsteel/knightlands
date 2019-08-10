@@ -66,14 +66,18 @@ export default {
       itemData: this.item
     };
   },
-  created() {
-    if (typeof this.item === "number") {
-      // template
-      this.itemData = {
-        template: this.item,
-        equipped: false,
-        count: 0
-      };
+  watch: {
+    item() {
+      if (typeof this.item === "number") {
+        // template
+        this.itemData = {
+          template: this.item,
+          equipped: false,
+          count: 0
+        };
+      } else {
+        this.itemData = this.item;
+      }
     }
   },
   computed: {

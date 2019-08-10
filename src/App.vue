@@ -48,8 +48,6 @@ import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
 
-const LoginRoute = "/login";
-
 export default {
   components: { StatusBar, RaidStatusNotification },
   data() {
@@ -85,7 +83,7 @@ export default {
       if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!this.$game.authenticated) {
           next({
-            path: LoginRoute
+            name: "login"
           });
           return;
         }
@@ -120,7 +118,7 @@ export default {
       this.loading = false;
       this.ready = true;
       if (this.$route.name == "login") {
-        this.$router.replace({ path: "/character" });
+        this.$router.replace({ name: "character" });
       }
     });
 
@@ -195,7 +193,7 @@ export default {
       this.ready = false;
       this.loading = false;
       this.$router.push({
-        path: LoginRoute
+        name: "login"
       });
     },
     async updateUserData() {

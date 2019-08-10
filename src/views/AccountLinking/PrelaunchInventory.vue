@@ -54,9 +54,11 @@ export default {
           }
         );
 
-        this.softCurrency = response.body.softCurrency;
-        this.hardCurrency = response.body.hardCurrency;
-        this.items = response.body.items;
+        if (response.body.items) {
+          this.softCurrency = response.body.softCurrency;
+          this.hardCurrency = response.body.hardCurrency;
+          this.items = response.body.items;
+        }
       } catch (exc) {
         console.log(exc);
 
