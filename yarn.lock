@@ -8083,6 +8083,10 @@ vuetify@^1.5.16:
   version "1.5.16"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.16.tgz#cc9d0199c389d64d15787ddc85ca47a28225eeee"
 
+vuex-i18n@^1.13.1:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.13.1.tgz#f9f6bf5de44f85929ff684170ed9bb5724cbba88"
+
 vuex-persist@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/vuex-persist/-/vuex-persist-2.0.1.tgz#411ef2becc04db3f222779f7c5d2e6615cbdd4ca"

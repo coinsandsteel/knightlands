@@ -1,6 +1,6 @@
 <template>
   <user-dialog
-    :title="template.caption"
+    :title="$t(template.caption)"
     @close="$close"
     :titleClass="`rarity-${template.rarity}`"
     :compact="true"
@@ -34,7 +34,7 @@
               v-for="(statValue, statId) in stats"
               :key="statId"
               class="stat-container width-100"
-            >{{statId}}</div>
+            >{{$t(statId)}}</div>
           </div>
           <div class="flex flex-column text-align-left">
             <div
@@ -54,13 +54,13 @@
           v-if="actions.equip && equip && isEquipment"
           class="common-btn center"
           @click="$close('equip')"
-        >Equip</custom-button>
+        >{{$t('equip')}}</custom-button>
         <custom-button
           v-if="actions.equip && unequip && isEquipment"
           type="grey"
           class="common-btn center"
           @click="$close('unequip')"
-        >Unequip</custom-button>
+        >{{$t('unequip')}}</custom-button>
       </div>
     </template>
   </user-dialog>
@@ -116,7 +116,7 @@ export default {
         type = this.template.equipmentType;
       }
 
-      return `${this.template.rarity} ${type}`;
+      return `${this.$t(this.template.rarity)} ${this.$t(type)}`;
     },
     stats() {
       return this.$game.itemsDB.getStats(this.item);

@@ -44,14 +44,28 @@ export default {
           signature: signedMessage
         });
 
-        await ShowWelcome(response.body.softCurrency, response.body.items);
+        if (response.body.items) {
+          await ShowWelcome(response.body.softCurrency, response.body.items);
+        } else {
+          await ShowPrompt(
+            "Success!",
+            "Your telegram is connected to Knightlands.",
+            [
+              {
+                type: "green",
+                title: "Continue to inventory",
+                response: true
+              }
+            ]
+          );
+        }
       } catch (exc) {
         console.log(exc);
 
         await ShowPrompt("Ooops!", "Link is expired!", [
           {
             type: "green",
-            title: "To inventory",
+            title: "Continue to inventory",
             response: true
           }
         ]);

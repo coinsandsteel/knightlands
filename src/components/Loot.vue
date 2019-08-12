@@ -63,22 +63,16 @@ export default {
   },
   data() {
     return {
-      itemData: this.item
+      itemData: undefined
     };
   },
   watch: {
     item() {
-      if (typeof this.item === "number") {
-        // template
-        this.itemData = {
-          template: this.item,
-          equipped: false,
-          count: 0
-        };
-      } else {
-        this.itemData = this.item;
-      }
+      this.updateItemData();
     }
+  },
+  mounted() {
+    this.updateItemData();
   },
   computed: {
     rarity() {
@@ -89,13 +83,33 @@ export default {
       return `slot-${this.$game.itemsDB.getRarity(this.itemData.template)}`;
     },
     count() {
+      if (!this.itemData) {
+        return 0;
+      }
+
       return this.itemData.count;
     },
     equipped() {
+      if (!this.itemData) {
+        return false;
+      }
+
       return !!this.itemData.equipped;
     }
   },
   methods: {
+    updateItemData() {
+      if (typeof this.item === "number") {
+        // template
+        this.itemData = {
+          template: this.item,
+          equipped: false,
+          count: 0
+        };
+      } else {
+        this.itemData = this.item;
+      }
+    },
     icon() {
       if ((!this.itemData || !this.itemData.id) && this.equipment) {
         return `/images/ui/equipment/${

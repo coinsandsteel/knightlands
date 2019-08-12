@@ -14,7 +14,9 @@ import {
 } from "@saeris/vue-spinners";
 import Notifications from "vue-notification";
 import VueResource from "vue-resource";
+import vuexI18n from "vuex-i18n";
 
+Vue.use(vuexI18n.plugin, store);
 Vue.use(VueResource);
 Vue.use(Router);
 Vue.use(Notifications);
@@ -30,6 +32,9 @@ Vue.use(LoadScript);
 Vue.config.productionTip = false;
 
 import router from "./router";
+
+import localisationSetup from "./strings/setup";
+localisationSetup.setup(Vue.i18n);
 
 window.onload = async () => {
   new Vue({
