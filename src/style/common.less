@@ -1,6 +1,7 @@
 @backgroundMainColor: #230e21;
 @backgroundOutsideColor: #0c080c;
 @lootCellSize: 5rem;
+@mobileLootCellSize: 7.5rem;
 
 .mobile(@rules) {
     @media only screen and (max-width: 480px) {
@@ -100,6 +101,10 @@
     font-size: 1.875rem * @fontSizeFactor;
 }
 
+h1 {
+    font-size: 4rem * @fontSizeFactor;
+}
+
 .text-align-left {
     text-align: left;
 }
@@ -117,6 +122,10 @@
 }
 
 .full-flex {
+    flex: 1;
+}
+
+.flex-full {
     flex: 1;
 }
 
@@ -155,6 +164,10 @@
 }
 
 .flex-item-center {
+    align-items: center;
+}
+
+.flex-items-center {
     align-items: center;
 }
 
@@ -281,7 +294,7 @@
 }
 
 .font-outline {
-    text-shadow: 0px 0px 4px #210028;
+    text-shadow: 2px 1px 5px #210028;
 }
 
 .center-transform {
@@ -299,8 +312,12 @@
     cursor: pointer;
 }
 
+.pointer-events-none {
+    pointer-events: none;
+}
+
 /* ICONS */
-@iconSize: 2rem;
+@iconSize: 2.5rem;
 
 .icon(@filename) {
     background: url("../assets/ui/@{filename}.png") no-repeat;
@@ -338,6 +355,10 @@
     .icon("icon_timer");
 }
 
+.icon-dkt {
+    .icon("icon_dkt");
+}
+
 .icon-size-mini {
     width: @iconSize * 0.75;
     height: @iconSize * 0.75;
@@ -355,11 +376,14 @@
     color: white !important;
 }
 
+@panelBorderWidth: 0.2rem;
+
 .panel {
     border-image: url("../assets/ui/border.png") round;
     border-image-slice: 45 fill;
     border-image-width: 1.63125rem;
     border-style: solid;
+    background-color: #343e52;
 }
 
 .panel-light {
@@ -367,6 +391,7 @@
     border-image-slice: 11 fill;
     border-image-width: 0.6rem;
     border-style: solid;
+    background-color: #585975;
 }
 
 .panel-dark {
@@ -374,6 +399,7 @@
     border-image-slice: 60 fill;
     border-image-width: 0.6rem;
     border-style: solid;
+    background-color: #2e2740;
 }
 
 .yellow-title {
@@ -402,6 +428,10 @@
 
 .width-100 {
     width: 100%;
+}
+
+.relative {
+    position: relative;
 }
 
 .zone-picture {

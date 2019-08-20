@@ -32,7 +32,7 @@ export default {
     barColor: { default: "#ffffff44" },
     barType: { default: "red" },
     width: { default: "100%" },
-    height: { default: "20px" },
+    height: { default: "2rem" },
     percentMode: { default: false },
     maxValue: { default: 100 },
     valueClass: { default: "" },
@@ -158,7 +158,7 @@ export default {
     barStyle() {
       return {
         "background-color": this.barColor,
-        height: "100%"
+        height: this.height
       };
     },
     fillStyle() {
@@ -248,6 +248,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  top: 0;
 }
 
 .bar-value-top {

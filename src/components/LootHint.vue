@@ -8,8 +8,8 @@
     <template v-slot:content>
       <div class="info flex flex-column">
         <div class="flex hint-header panel-light">
-          <loot class="loot-icon" :item="item" :interactible="false"></loot>
-          <div class="flex flex-column font-size-25 full-flex">
+          <loot class="loot-icon hintFix" :item="item" :interactible="false"></loot>
+          <div class="flex flex-column font-size-20 full-flex">
             <div class="text-align-left">
               <span>{{type}}</span>
             </div>
@@ -44,9 +44,12 @@
             >{{statValue}}</div>
           </div>
         </div>
-      </div>
 
-      <span class="loot-desc" v-if="item.description">{{template.description}}</span>
+        <span
+          class="loot-desc font-outline font-size-20"
+          v-if="template.description"
+        >{{$t(template.description, "")}}</span>
+      </div>
     </template>
     <template v-slot:footer>
       <div class="flex">
@@ -152,6 +155,8 @@ export default {
 
 .loot-desc {
   margin-top: 1.5rem;
+  margin-left: 0.5rem;
+  color: #dcb850;
 }
 
 .stat-container {

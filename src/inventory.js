@@ -1,15 +1,18 @@
 import Vue from "vue";
 
 class Inventory {
-    constructor() {
+    constructor(itemDB) {
+        this._itemDB = itemDB;
         this._vm = new Vue({
             data: () => {
                 return {
-                    items: {},
+                    items: [],
                     itemsBytemplate: {}
                 }
             }
         });
+
+        this._itemsById = new Map();
     }
 
     static get Changed() {
@@ -76,7 +79,7 @@ class Inventory {
             let changedItem = changes[itemId];
             if (!changedItem) {
                 // item was removed
-                this._vm.$delete(this._vm.items, itemId);
+                this._removeItem(itemId);
                 continue;
             }
 
@@ -90,10 +93,29 @@ class Inventory {
                 item.breakLimit = changedItem.breakLimit;
             } else {
                 // add new item
-                this._vm.$set(this._vm.items, itemId, changedItem);
-                this._indexItemByTemplate(item);
+                this._addItem(changedItem);
             }
         }
+
+        this._vm.items.sort((a, b) => {
+            let sortingFactorA = this._itemDB.getRarity(a.template);
+            let sortingFactorB = this._itemDB.getRarity(b.template);
+
+            if (sortingFactorA == sortingFactorB) {
+                sortingFactorA = a.id;
+                sortingFactorB = b.id;
+            }
+
+            if (sortingFactorA < sortingFactorB) {
+                return -1;
+            }
+
+            if (sortingFactorA > sortingFactorB) {
+                return 1;
+            }
+
+            return 0;
+        });
 
         this._vm.$emit(Inventory.Changed, inventoryChanges);
     }
@@ -116,6 +138,29 @@ class Inventory {
         });
 
         return totalCount;
+    }
+
+    _removeItem(itemId) {
+        let itemIndex = this._itemsById.get(itemId);
+        if (itemIndex === undefined) {
+            return;
+        }
+
+        this._itemsById.delete(itemId);
+
+        let item = this._vm.items[itemIndex];
+        let lastItem = this._vm.items[this._vm.items.length - 1];
+        this._vm.items[itemIndex] = lastItem;
+        this._vm.items.pop();
+
+        if (lastItem != item) {
+            this._itemsById.set(lastItem.id, itemIndex);
+        }
+    }
+
+    _addItem(item) {
+        this._itemsById.set(item.id, this._vm.items.push(item) - 1);
+        this._indexItemByTemplate(item);
     }
 }
 

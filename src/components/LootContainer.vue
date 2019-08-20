@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-center panel inventory-container">
-      <div class="flex flex-full loot-container inventory-items">
+      <div class="flex loot-container inventory-items">
         <loot
           v-for="(item, index) in items"
           :item="item"
@@ -66,20 +66,25 @@ export default {
 }
 
 .width(@cells) {
-  width: @lootCellSize * @cells + @inventoryMargin* @cells + @marginBetweenItems *
-    @cells;
+  width: @lootCellSize * @cells + @marginBetweenItems*2 * @cells;
+}
+
+.mobileWidth(@cells) {
+  width: @mobileLootCellSize * @cells + @marginBetweenItems*2 * @cells;
 }
 
 .inventory-items {
   .width(7);
 
-  @media only screen and (max-width: 450px) and (min-width: 400px) {
-    .width(8);
-  }
+  .mobile({.mobileWidth(5)});
 
-  @media only screen and (max-width: 480px) and (min-width: 451px) {
-    .width(9);
-  }
+  // @media only screen and (max-width: 450px) and (min-width: 400px) {
+  //   .width(7);
+  // }
+
+  // @media only screen and (max-width: 480px) and (min-width: 451px) {
+  //   .width(8);
+  // }
 
   & > * {
     margin: @marginBetweenItems;

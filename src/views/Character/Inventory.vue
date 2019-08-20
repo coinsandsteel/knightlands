@@ -48,7 +48,7 @@
     </div>
     <div class="flex full-flex dummy-height">
       <div v-bar class="width-100">
-        <loot-container class="flex-full" :items="filteredItems" :inventory="true" @hint="showHint"></loot-container>
+        <loot-container :items="filteredItems" :inventory="true" @hint="showHint"></loot-container>
       </div>
     </div>
   </div>
@@ -153,26 +153,6 @@ export default {
           this.filteredItems.push(item);
         }
       }
-
-      this.filteredItems.sort((a, b) => {
-        let sortingFactorA = itemsDB.getRarity(a.template);
-        let sortingFactorB = itemsDB.getRarity(b.template);
-
-        if (sortingFactorA == sortingFactorB) {
-          sortingFactorA = a.id;
-          sortingFactorB = b.id;
-        }
-
-        if (sortingFactorA < sortingFactorB) {
-          return -1;
-        }
-
-        if (sortingFactorA > sortingFactorB) {
-          return 1;
-        }
-
-        return 0;
-      });
     },
     equipmentRow1() {
       return [

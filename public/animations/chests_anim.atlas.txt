@@ -1,0 +1,167 @@
+
+chests_anim.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+blue_0
+  rotate: false
+  xy: 298, 78
+  size: 90, 35
+  orig: 90, 35
+  offset: 0, 0
+  index: -1
+blue_1
+  rotate: false
+  xy: 298, 45
+  size: 90, 31
+  orig: 90, 31
+  offset: 0, 0
+  index: -1
+blue_2
+  rotate: false
+  xy: 298, 17
+  size: 90, 26
+  orig: 90, 26
+  offset: 0, 0
+  index: -1
+blue_3
+  rotate: false
+  xy: 607, 163
+  size: 90, 22
+  orig: 90, 22
+  offset: 0, 0
+  index: -1
+blue_base
+  rotate: false
+  xy: 505, 108
+  size: 90, 63
+  orig: 90, 63
+  offset: 0, 0
+  index: -1
+brown_0
+  rotate: false
+  xy: 597, 123
+  size: 72, 38
+  orig: 72, 38
+  offset: 0, 0
+  index: -1
+brown_1
+  rotate: false
+  xy: 597, 89
+  size: 72, 32
+  orig: 72, 32
+  offset: 0, 0
+  index: -1
+brown_2
+  rotate: true
+  xy: 671, 89
+  size: 72, 28
+  orig: 72, 28
+  offset: 0, 0
+  index: -1
+brown_3
+  rotate: false
+  xy: 717, 178
+  size: 72, 21
+  orig: 72, 21
+  offset: 0, 0
+  index: -1
+brown_base
+  rotate: true
+  xy: 236, 25
+  size: 72, 60
+  orig: 72, 60
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 99
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+flash1
+  rotate: false
+  xy: 144, 99
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+flash2
+  rotate: false
+  xy: 286, 115
+  size: 124, 124
+  orig: 140, 140
+  offset: 8, 8
+  index: -1
+purple_0
+  rotate: false
+  xy: 505, 173
+  size: 100, 66
+  orig: 100, 66
+  offset: 0, 0
+  index: -1
+purple_1
+  rotate: false
+  xy: 126, 36
+  size: 108, 61
+  orig: 108, 61
+  offset: 0, 0
+  index: -1
+purple_2
+  rotate: false
+  xy: 607, 187
+  size: 108, 52
+  orig: 108, 52
+  offset: 0, 0
+  index: -1
+purple_3
+  rotate: false
+  xy: 717, 201
+  size: 108, 38
+  orig: 108, 38
+  offset: 0, 0
+  index: -1
+purple_base
+  rotate: false
+  xy: 2, 8
+  size: 122, 89
+  orig: 122, 89
+  offset: 0, 0
+  index: -1
+red_0
+  rotate: false
+  xy: 412, 112
+  size: 91, 46
+  orig: 91, 46
+  offset: 0, 0
+  index: -1
+red_1
+  rotate: false
+  xy: 827, 198
+  size: 91, 41
+  orig: 91, 41
+  offset: 0, 0
+  index: -1
+red_2
+  rotate: false
+  xy: 920, 202
+  size: 91, 37
+  orig: 91, 37
+  offset: 0, 0
+  index: -1
+red_3
+  rotate: false
+  xy: 126, 2
+  size: 91, 32
+  orig: 91, 32
+  offset: 0, 0
+  index: -1
+red_base
+  rotate: false
+  xy: 412, 160
+  size: 91, 79
+  orig: 91, 79
+  offset: 0, 0
+  index: -1

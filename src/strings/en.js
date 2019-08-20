@@ -8,5 +8,20 @@ export default {
     "common": "Common",
     "resource": "Resource",
     "axe": "Axe",
-    "legendary": "Legendary"
+    "legendary": "Legendary",
+    "full_energy_potion_desc": "Restores 100% of Energy.",
+    "kings_guard_sword_desc": "A gift from the King.",
+    "common_key_desc": "A little bit rusty.",
+    "attack": "Attack",
+    "defense": "Defense",
+    "dodge": "Dodge",
+    "energy": "Energy",
+    "presale-chest-0": "Rookie",
+    "presale-chest-1": "Lieutenant",
+    "presale-chest-2": "Knight",
+    "presale-chest-3": "King",
+    "continue_from_gacha": "TAP TO CONTINUE",
+    "open_next": "OPEN NEXT",
+    "button-open": "Open",
+    "transfer-chests": "Transfer chests"
 };

@@ -26,7 +26,7 @@ class ItemDatabase {
     let template = ItemTemplates[id];
     if (template.type == ItemType.Equipment) {
       return (
-        `/images/items/${template.type}/${getSlot(template.equipmentType)}/${template.icon}.png`
+        `/images/items/${template.type}/${template.equipmentType}/${template.icon}.png`
       );
     }
 
@@ -37,6 +37,23 @@ class ItemDatabase {
 
   getRarity(id) {
     return ItemTemplates[id].rarity;
+  }
+
+  getRarityAsNumber(id) {
+    switch (this.getRarity(id)) {
+      case "common":
+        return 0;
+      case "rare":
+        return 1;
+      case "epic":
+        return 2;
+      case "legendary":
+        return 3;
+      case "mythical":
+        return 4
+    }
+
+    return 0;
   }
 
   getItemType(id) {

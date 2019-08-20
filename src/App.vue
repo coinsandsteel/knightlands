@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="loading" class="flex flex-center loading">
-      <span class="font-size-30">Loading</span>
-    </div>
+    <loading-screen :loading="loading"></loading-screen>
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar v-if="$game.authenticated"></status-bar>
       <div class="flex">
@@ -11,7 +9,7 @@
         </div>
       </div>
       <keep-alive>
-        <router-view class="content" v-if="!loading" />
+        <router-view class="content flex flex-no-wrap flex-column" v-if="!loading" />
       </keep-alive>
       <div class="footer flex-item-center">
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
@@ -33,6 +31,8 @@
       </div>
     </div>
 
+    <portal-target class="overlay" name="overlay"></portal-target>
+
     <RaidStatusNotification />
 
     <dialogs-wrapper></dialogs-wrapper>
@@ -47,9 +47,10 @@ import { Promise } from "q";
 import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
+import LoadingScreen from "@/components/LoadingScreen.vue";
 
 export default {
-  components: { StatusBar, RaidStatusNotification },
+  components: { StatusBar, RaidStatusNotification, LoadingScreen },
   data() {
     return {
       showBackMenu: false,
@@ -221,31 +222,31 @@ export default {
 <style lang="less" scoped>
 @import (reference) "./style/common.less";
 
-.content-wrap {
-  height: 100%;
-}
-
-.loading {
+.overlay {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: black;
-  z-index: 999;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.content-wrap {
+  height: 100%;
 }
 
 .section-name {
   text-align: left;
   pointer-events: none;
   margin: 0 0 1rem 0;
-  padding-right: 2rem;
-  padding-bottom: 0.3rem;
+  padding-right: 3rem;
+  padding-top: 0.4rem;
   color: #281326;
+  background-color: #281326;
 
   border-image: url("./assets/ui/title_bg.png") stretch;
   border-image-slice: 28 49 28 2 fill;
-  border-image-width: 32px;
+  border-image-width: 64px;
 
   > div {
     margin-left: 1.1rem;
@@ -358,7 +359,7 @@ export default {
 @import (reference) "./style/common.less";
 
 html {
-  font-family: "Hind Vadodara", sans-serif;
+  font-family: "Overpass", sans-serif;
   font-size: 12px;
   line-height: 1.2;
   box-sizing: border-box;

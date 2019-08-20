@@ -41,6 +41,7 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.3);
+  z-index: 900;
 }
 
 .content {
@@ -59,7 +60,7 @@ export default {
 
 .dialog-title {
   margin-top: 3rem;
-  padding: 0 0.5rem 0 0.5rem;
+  padding: 0.5rem 0.65rem 0.5rem 0.65rem;
 }
 
 .close-btn {

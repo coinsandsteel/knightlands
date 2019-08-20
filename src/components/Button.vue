@@ -5,6 +5,7 @@
     :style="sizeStyle"
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
+    <div class="btn-fill"></div>
     <div class="btn-content">
       <slot>{{caption}}</slot>
     </div>
@@ -57,11 +58,16 @@ export default {
 @fontSize: 1.6rem;
 
 .pressed(@name) {
-  border-image: url("../assets/ui/@{name}_active.png") repeat;
-  border-image-slice: 62 52 52 42 fill;
-  border-image-width: 32px;
-  border-style: solid;
-  border-width: 1px;
+  & > .btn-fill {
+    background: url("../assets/ui/buttons/@{name}_active1.png"),
+      url("../assets/ui/buttons/@{name}_active3.png");
+    background-size: contain, contain;
+    background-repeat: no-repeat, no-repeat;
+    background-position: left, right;
+  }
+
+  background: repeat-x center url("../assets/ui/buttons/@{name}_active2.png");
+  background-size: 100% 100%;
 
   & > .btn-content {
     transform: translateY(0.1rem);
@@ -69,11 +75,16 @@ export default {
 }
 
 .selected(@name) {
-  border-image: url("../assets/ui/@{name}_selected.png") repeat;
-  border-image-slice: 62 52 52 42 fill;
-  border-image-width: 32px;
-  border-style: solid;
-  border-width: 1px;
+  & > .btn-fill {
+    background: url("../assets/ui/buttons/@{name}_selected1.png"),
+      url("../assets/ui/buttons/@{name}_selected3.png");
+    background-size: contain, contain;
+    background-repeat: no-repeat, no-repeat;
+    background-position: left, right;
+  }
+
+  background: repeat-x center url("../assets/ui/buttons/@{name}_selected2.png");
+  background-size: 100% 100%;
 
   & > .btn-content {
     transform: translateY(0.1rem);
@@ -81,20 +92,35 @@ export default {
 }
 
 .btn-bg(@name) {
-  border-image: url("../assets/ui/@{name}.png") repeat;
-  /* top | right | bottom | left */
-  border-image-slice: 62 52 52 42 fill;
-  border-image-width: 32px;
-  border-style: solid;
-  border-width: 1px;
-
   &:active {
     .pressed(@name);
   }
+
+  & > .btn-fill {
+    background: url("../assets/ui/buttons/@{name}1.png"),
+      url("../assets/ui/buttons/@{name}3.png");
+    background-size: contain, contain;
+    background-repeat: no-repeat, no-repeat;
+    background-position: left, right;
+  }
+
+  background: repeat-x center url("../assets/ui/buttons/@{name}2.png");
+  background-size: 100% 100%;
+}
+
+@btnFillExtrude: 3px;
+
+.btn-fill {
+  height: 100%;
+  width: calc(100% + @btnFillExtrude * 2);
+  position: absolute;
+  left: -@btnFillExtrude;
+  top: 0;
 }
 
 .btn {
   padding: 1.5rem;
+  position: relative;
   min-width: @width;
   font-size: @fontSize;
   font-weight: 700;
@@ -107,14 +133,6 @@ export default {
   cursor: pointer;
   user-select: none;
   color: #4e3948;
-}
-
-.small {
-  //   .mobile({height: @height / 2; width: @width / 2;});
-}
-
-.big {
-  //   .mobile({font-size: 2rem;});
 }
 
 .disabled {

@@ -4,7 +4,6 @@
       <progress-bar
         ref="health"
         :maxValue="maxHealth"
-        height="inherit"
         iconClass="icon-health"
         :hideMaxValue="false"
         :timer="healthTimer"
@@ -18,7 +17,6 @@
         ref="exp"
         :maxValue="nextExperience()"
         :percentMode="true"
-        height="inherit"
         iconClass="icon-exp"
         :hideMaxValue="false"
         v-model="exp"
@@ -32,7 +30,6 @@
         ref="energy"
         :maxValue="maxEnergy"
         v-model="energy"
-        height="inherit"
         iconClass="icon-energy"
         :hideMaxValue="false"
         :timer="energyTimer"
@@ -46,7 +43,6 @@
         ref="stamina"
         :maxValue="maxStamina"
         v-model="stamina"
-        height="inherit"
         iconClass="icon-stamina"
         :hideMaxValue="false"
         :timer="staminaTimer"
@@ -131,7 +127,6 @@ export default {
       return Math.floor(new Date().getTime() / 1000);
     },
     async refillTimer(stat) {
-      console.log("refil");
       let result = await TimerRefillModal(stat);
     }
   }

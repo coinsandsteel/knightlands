@@ -1,23 +1,28 @@
 <template>
   <div
-    class="loot-slot flex flex-center"
+    class="loot-slot flex relative flex-column"
     @click="$emit('hint', itemData)"
-    :class="[rarity, {interactible: interactible}]"
+    :class="[rarity,{interactible: interactible}, {'bottom': gacha}]"
   >
     <div class="inner-border">
-      <div :class="{'loot-equipped':(inventory && equipped)}"></div>
       <img class="icon" :src="icon()" slot="reference" />
+      <div :class="{'loot-equipped':(inventory && equipped)}"></div>
+      <!-- <div class="slot-border" :class="rarity"></div> -->
     </div>
-    <span
-      v-if="itemData && !equipment && count > 0"
-      class="loot-quantity font-size-20 font-outline"
-    >{{count}}</span>
+
+    <div class="loot-quantity" :class="{'bottom': gacha}">
+      <span
+        v-if="gacha || (itemData && !equipment && count > 0)"
+        class="font-size-20 digit-font font-outline"
+      >{{count}}</span>
+    </div>
   </div>
 </template>
 
 <script>
 const { EquipmentSlots } = require("@/../knightlands-shared/equipment_slot");
 import Stat from "@/../knightlands-shared/character_stat.js";
+import { Flipped } from "vue-flip-toolkit";
 
 /*
     Item's properties
@@ -43,8 +48,9 @@ SlotPlaceholders[EquipmentSlots.Pet] = "icon_slot_pet";
 SlotPlaceholders[EquipmentSlots.OffHand] = "icon_slot_offhand";
 
 export default {
+  components: { Flipped },
   props: {
-    item: [Object, Number],
+    item: [Object, Number, String],
     interactible: {
       type: Boolean,
       default: true
@@ -59,7 +65,12 @@ export default {
     },
     equipmentSlot: {
       type: String
-    }
+    },
+    gacha: {
+      type: Boolean,
+      default: false
+    },
+    quantity: Number
   },
   data() {
     return {
@@ -75,6 +86,9 @@ export default {
     this.updateItemData();
   },
   computed: {
+    itemKey() {
+      return !this.itemData ? "" : `${this.itemData.template}`;
+    },
     rarity() {
       if (!this.itemData) {
         return "";
@@ -99,12 +113,13 @@ export default {
   },
   methods: {
     updateItemData() {
-      if (typeof this.item === "number") {
+      if (typeof this.item !== "object") {
         // template
+        let template = this.$game.itemsDB.getTemplate(this.item * 1);
         this.itemData = {
-          template: this.item,
+          template: this.item * 1,
           equipped: false,
-          count: 0
+          count: template.quantity || this.quantity
         };
       } else {
         this.itemData = this.item;
@@ -134,28 +149,57 @@ export default {
 .loot-quantity {
   position: absolute;
   bottom: 0.2rem;
-  right: 0.4rem;
+  right: 0.6rem;
+
+  .mobile({bottom: 0.6rem; right: 0.8rem;});
+
+  &.bottom {
+    position: relative;
+    transform: translateX(-50%);
+    left: 50%;
+  }
 }
 
 .loot-slot {
   position: relative;
   background-image: url("../assets/ui/item_slot_dark.png");
   background-size: contain;
+  background-repeat: no-repeat;
 
   width: @lootCellSize;
   height: @lootCellSize;
-  // .mobile({width: 36px; height: 36px;});
+  .mobile({width: @mobileLootCellSize; height: @mobileLootCellSize;});
   // .big_retina({width: 40px; height: 40px;});
 
   .inner-border {
     position: relative;
     width: (100%);
-    height: (100%);
     padding: 0.5rem;
   }
 
   pointer-events: none;
   user-select: none;
+
+  &.hintFix {
+    max-height: @lootCellSize;
+    .mobile({max-height: @mobileLootCellSize;});
+  }
+
+  &.bottom {
+    height: unset;
+    min-height: @lootCellSize;
+    .mobile({min-height: @mobileLootCellSize;});
+  }
+}
+
+.slot-border {
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .slot-common {

@@ -119,6 +119,7 @@ export default {
   border-width: 1px;
 
   border-image: url("../assets/ui/tab.png") round;
+  background-color: #323c4f;
   .border();
   padding: 0.4rem 2rem 0.4rem 2rem;
   text-transform: uppercase;
@@ -128,6 +129,7 @@ export default {
   color: #fbffff;
   border-image: url("../assets/ui/tab_selected.png") round;
   .border();
+  background-color: #585f73;
 }
 
 .tabs__item:hover {

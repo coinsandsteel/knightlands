@@ -1,5 +1,8 @@
 import BlockchainClient from "./../blockchainClient";
 const PaymentGateway = require("./PaymentGateway.json");
+const PresaleChestGateway = require("./PresaleChestGateway.json");
+const PresaleChestToken = require("./PresaleChestToken.json");
+const Presale = require("./Presale.json");
 const TronWeb = require("tronweb");
 
 const getParamTypes = params => {
@@ -52,6 +55,30 @@ class TronBlockchainClient extends BlockchainClient {
         });
 
         this._paymentContract = this._tronWeb.contract(PaymentGateway.abi, PaymentGateway.address);
+        this._presaleChestGateway = this._tronWeb.contract(PresaleChestGateway.abi, PresaleChestGateway.address);
+        this._presale = this._tronWeb.contract(Presale.abi, Presale.address);
+    }
+
+    async fetchOwnedChests() {
+        if (!this._chestsContracts) {
+            this._chestsContracts = {};
+            for (let i = 0; i < 4; i++) {
+                let chestData = await this._presale.methods.chestStatus(i).call();
+                this._chestsContracts[i] = await this._tronWeb.contract().at(chestData[0]);
+            }
+        }
+
+        let chests = {};
+        for (let i = 0; i < 4; i++) {
+            let owned = await this._chestsContracts[i].balanceOf(this._tronWeb.defaultAddress.hex).call();
+            chests[i] = owned.toNumber();
+        }
+
+        return chests;
+    }
+
+    async transferPresaleChests(chestId, chestAmount) {
+        return await this._chestsContracts[chestId].sendToGateway(chestAmount).send({ shouldPollResponse: true });
     }
 
     // TODO automate raw transaction creation of the method from abi

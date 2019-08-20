@@ -15,7 +15,9 @@ import {
 import Notifications from "vue-notification";
 import VueResource from "vue-resource";
 import vuexI18n from "vuex-i18n";
+import PortalVue from "portal-vue";
 
+Vue.use(PortalVue)
 Vue.use(vuexI18n.plugin, store);
 Vue.use(VueResource);
 Vue.use(Router);

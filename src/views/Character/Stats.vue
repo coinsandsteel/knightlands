@@ -1,40 +1,22 @@
 <template>
   <div class="tab-content">
     <div class="flex flex-column attributes flex-no-wrap">
-      <div
+      <numeric-value
         v-for="att in Attributes"
         :key="att"
-        class="flex flex-no-wrap font-size-18 att-row flex-center flex-space-between"
+        class="att-row"
+        :showMax="true"
+        :value="getStatValue(att)"
+        :maxValue="getMaxStatValue(att)"
+        :caption="att"
+        :decreaseCondition="(getEditedAttribute(att) > 0 && attributesNeedReset)"
+        :increaseCondition="hasEnoughGold(att)"
       >
-        <i
-          :class="{'disabled-btn':!(getEditedAttribute(att) > 0 && attributesNeedReset)}"
-          class="pointer att-minus"
-          @click="decreaseAttribute(att)"
-          @mousedown="startAttributeDecrease(att)"
-          @mouseleave="stopAttributeModify"
-          @mouseup.prevent="stopAttributeModify"
-          @touchstart="startAttributeDecrease(att)"
-          @touchend="stopAttributeModify"
-          @touchcancel="stopAttributeModify"
-        ></i>
-        <span class="font-size-20 att-name">{{att}}</span>
-        <span class="font-size-20 att-value">{{getStatValue(att)}}/{{getMaxStatValue(att)}}</span>
-        <i
-          :class="{'disabled-btn' : !hasEnoughGold(att)}"
-          class="pointer att-plus"
-          @click="increaseAttribute(att)"
-          @mousedown="startAttributeIncrease(att)"
-          @mouseleave="stopAttributeModify"
-          @mouseup.prevent="stopAttributeModify"
-          @touchstart="startAttributeIncrease(att)"
-          @touchend="stopAttributeModify"
-          @touchcancel="stopAttributeModify"
-        ></i>
         <div class="flex" style="width: 30%">
           <span class="icon-gold"></span>
           <span>{{getUpgradePrice(att)}}</span>
         </div>
-      </div>
+      </numeric-value>
 
       <div
         v-show="attributesNeedReset"
@@ -55,20 +37,19 @@ import { setTimeout, clearTimeout, clearInterval, setInterval } from "timers";
 import CustomButton from "@/components/Button.vue";
 import TrainingCamp from "@/../knightlands-shared/training_camp";
 import { StatConversions } from "@/../knightlands-shared/character_stat.js";
+import NumericValue from "@/components/NumericValue.vue";
 const ContinuousEditingTimeout = 500;
 const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
 
 export default {
-  components: { CustomButton },
-  data() {
-    return {
-      Attributes: UpgradableCharacterStats,
-      longPressAttributeModificationTimeout: undefined,
-      attributeModificationInterval: undefined,
-      purchasedAttributes: {},
-      upgradePrice: {}
-    };
-  },
+  components: { CustomButton, NumericValue },
+  data: () => ({
+    Attributes: UpgradableCharacterStats,
+    longPressAttributeModificationTimeout: undefined,
+    attributeModificationInterval: undefined,
+    purchasedAttributes: {},
+    upgradePrice: {}
+  }),
   created() {
     for (let stat in UpgradableCharacterStats) {
       this.$set(this.upgradePrice, UpgradableCharacterStats[stat], 0);

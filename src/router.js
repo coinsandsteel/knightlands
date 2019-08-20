@@ -11,8 +11,8 @@ import RaidSummon from "./views/Raids/RaidSummon.vue";
 import RaidsSummonList from "./views/Raids/RaidsSummonList.vue";
 import CurrentRaids from "./views/Raids/CurrentRaids.vue";
 import RaidSummoning from "./views/Raids/RaidSummoning.vue";
-import PrelaunchInventory from "./views/AccountLinking/PrelaunchInventory.vue";
-import LinkTelegram from "./views/AccountLinking/LinkTelegram.vue";
+import PrelaunchInventory from "./views/Prelaunch/PrelaunchInventory.vue";
+import LinkTelegram from "./views/Prelaunch/LinkTelegram.vue";
 
 const router = new Router({
   routes: [{

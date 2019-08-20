@@ -37,7 +37,7 @@ class Game {
             })
         });
 
-        this._inventory = new Inventory();
+        this._inventory = new Inventory(this._items);
         this._crafting = new Crafting(CraftingRecipes, this._inventory);
 
         var options = {
@@ -123,6 +123,10 @@ class Game {
 
     get character() {
         return this._character;
+    }
+
+    get blockchainClient() {
+        return this._blockchainClient;
     }
 
     set blockchain(value) {
