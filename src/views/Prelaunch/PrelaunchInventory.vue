@@ -89,15 +89,11 @@ export default {
     ChestsTab
   }),
   mounted() {
-    if (this.ready) {
-      this.checkWelcomePackageStatus();
-    }
+    this.fetchInventory();
   },
   watch: {
     ready() {
-      if (this.ready) {
-        this.checkWelcomePackageStatus();
-      }
+      this.fetchInventory();
     },
     currentTab() {
       if (this.currentTab == this.InventoryTab) {
@@ -152,29 +148,29 @@ export default {
 
       this.loading = false;
     },
-    async checkWelcomePackageStatus() {
-      let response = await this.$http.get(
-        `${Config.httpEndpoint}/check/welcomeStatus`,
-        {
-          params: {
-            wallet: this.$game.account
-          }
-        }
-      );
+    // async checkWelcomePackageStatus() {
+    //   let response = await this.$http.get(
+    //     `${Config.httpEndpoint}/check/welcomeStatus`,
+    //     {
+    //       params: {
+    //         wallet: this.$game.account
+    //       }
+    //     }
+    //   );
 
-      if (response.body.ok) {
-        response = await this.$http.post(
-          `${Config.httpEndpoint}/get/welcomeKey`,
-          {
-            wallet: this.$game.account
-          }
-        );
-        this.welcomeToken = response.body.token;
-        this.signin = true;
-      } else {
-        await this.fetchInventory();
-      }
-    },
+    //   if (response.body.ok) {
+    //     response = await this.$http.post(
+    //       `${Config.httpEndpoint}/get/welcomeKey`,
+    //       {
+    //         wallet: this.$game.account
+    //       }
+    //     );
+    //     this.welcomeToken = response.body.token;
+    //     this.signin = true;
+    //   } else {
+    //     await this.fetchInventory();
+    //   }
+    // },
     async fetchInventory() {
       try {
         this.loading = true;
@@ -205,11 +201,11 @@ export default {
               sortingFactorB = b.id;
             }
 
-            if (sortingFactorA < sortingFactorB) {
+            if (sortingFactorA > sortingFactorB) {
               return -1;
             }
 
-            if (sortingFactorA > sortingFactorB) {
+            if (sortingFactorA < sortingFactorB) {
               return 1;
             }
 

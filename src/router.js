@@ -13,12 +13,22 @@ import CurrentRaids from "./views/Raids/CurrentRaids.vue";
 import RaidSummoning from "./views/Raids/RaidSummoning.vue";
 import PrelaunchInventory from "./views/Prelaunch/PrelaunchInventory.vue";
 import LinkTelegram from "./views/Prelaunch/LinkTelegram.vue";
+import LinkEmail from "./views/Prelaunch/LinkEmail.vue";
 
 const router = new Router({
   routes: [{
     path: "/link/:token/:user",
     name: "link-tg",
     component: LinkTelegram,
+    props: true,
+    meta: {
+      noBackButton: true
+    }
+  },
+  {
+    path: "/linkmail/:token/:email",
+    name: "link-mail",
+    component: LinkEmail,
     props: true,
     meta: {
       noBackButton: true

@@ -4,7 +4,7 @@
 
     <div v-else>
       <GridLoader color="#fde648" :size="15" margin="1px" v-if="loading" />
-      <custom-button type="yellow" @click="linkAccount" v-else>Link Telegram to your TRON wallet.</custom-button>
+      <custom-button type="yellow" @click="linkAccount" v-else>Link Email to your TRON wallet.</custom-button>
     </div>
   </div>
 </template>
@@ -22,26 +22,26 @@ const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
 
 export default {
   mixins: [AppSection],
-  props: ["token", "user"],
+  props: ["token", "email"],
   data: () => ({
     loading: false
   }),
   components: { CustomButton },
   created() {
-    this.title = "Link Telegram";
+    this.title = "Link Email";
   },
   methods: {
     async linkAccount() {
       let signedMessage = await this.$game.signMessage(
-        `${this.token}${this.user}`
+        `${this.token}${this.email}`
       );
 
       try {
         this.loading = true;
         let response = await this.$http.post(
-          `${Config.httpEndpoint}/link/telegram`,
+          `${Config.httpEndpoint}/link/email`,
           {
-            user: this.user,
+            email: this.email,
             address: this.$game.account,
             signature: signedMessage
           }
@@ -52,7 +52,7 @@ export default {
         } else {
           await ShowPrompt(
             "Success!",
-            "Your telegram is connected to Knightlands.",
+            "Your Email is connected to Knightlands.",
             [
               {
                 type: "green",

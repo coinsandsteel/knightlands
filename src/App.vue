@@ -239,7 +239,7 @@ export default {
   text-align: left;
   pointer-events: none;
   margin: 0 0 1rem 0;
-  padding-right: 3rem;
+  min-width: 20rem;
   padding-top: 0.4rem;
   color: #281326;
   background-color: #281326;

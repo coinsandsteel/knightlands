@@ -6,7 +6,7 @@
       </div>
 
       <div class="flex flex-center margin-top-3">
-        <loot v-for="(_, template) in items" :key="template" :item="template*1" />
+        <loot v-for="(record) in items" :key="record.item" :item="record.item*1" />
       </div>
     </template>
     <template v-slot:footer>

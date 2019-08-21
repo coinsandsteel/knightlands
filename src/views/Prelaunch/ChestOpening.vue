@@ -9,7 +9,7 @@
       <template v-slot:pending>
         <loading-screen :loading="true" :opacity="0.4"></loading-screen>
       </template>
-      <template v-slot="data">
+      <template class="flex-full" v-slot="data">
         <Flipper :flipKey="lootFlipKey">
           <h1
             class="chest-title font-weight-700"
@@ -435,7 +435,7 @@ export default {
 
 .gacha-continue {
   position: absolute;
-  bottom: 10rem;
+  bottom: 10%;
   left: 0;
   right: 0;
   opacity: 0;
