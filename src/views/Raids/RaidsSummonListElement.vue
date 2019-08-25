@@ -5,13 +5,7 @@
       <div class="pixelated boss-image" :style="enemyImage"></div>
     </div>
     <div class="flex flex-column full-flex flex-space-around">
-      <div class="flex flex-center">
-        <div
-          v-for="(stageSummon, idx) in stages"
-          :key="idx"
-          :class="[`stage${stageSummon.stage}`, {'disabled': !stageSummon.canCraft}]"
-        ></div>
-      </div>
+      <DifficultySelector :stages="stages" :preview="true" :stagesState="stageStates"></DifficultySelector>
       <custom-button type="grey" @click="openSummon">Open</custom-button>
     </div>
   </div>
@@ -23,13 +17,15 @@
 import RaidsMeta from "@/raids_meta.json";
 import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
+import DifficultySelector from "@/components/DifficultySelector.vue";
 
 export default {
   props: ["raid", "pendingList"],
-  components: { CustomButton },
+  components: { CustomButton, DifficultySelector },
   data() {
     return {
-      stages: []
+      stages: [],
+      stageStates: []
     };
   },
   computed: {
@@ -37,26 +33,24 @@ export default {
       return RaidsMeta[this.raid];
     },
     enemyImage() {
-      return `background-image: url("${UiConstants.enemyImage(
-        this.meta.icon
-      )}");`;
+      return UiConstants.backgroundImage(
+        UiConstants.enemyImage(this.meta.icon)
+      );
     }
   },
   activated() {
     // indicate which difficulty stage is available for summon for a quick overview
     this.stages.length = 0;
     this.meta.stages.forEach((bossStage, stage) => {
-      this.stages.push({
-        stage,
-        canCraft: this.$game.crafting.hasEnoughResourcesForRecipe(
-          bossStage.summonRecipe
-        )
-      });
+      this.stages.push(stage);
+      this.stageStates.push(
+        this.$game.crafting.hasEnoughResourcesForRecipe(bossStage.summonRecipe)
+      );
     });
   },
   methods: {
     openSummon() {
-      this.$router.push({ path: `/home/raids/summon/${this.raid}` });
+      this.$router.push({ name: "summon-raid", params: { raid: this.raid } });
     }
   }
 };

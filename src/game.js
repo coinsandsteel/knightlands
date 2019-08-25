@@ -12,6 +12,7 @@ import {
     player as PlayerExpTable
 } from "./expTables.json";
 const Operations = require("./../knightlands-shared/operations");
+import CurrencyType from "@/../knightlands-shared/currency_type";
 
 class Game {
     constructor(store) {
@@ -33,12 +34,14 @@ class Game {
                 questsProgress: {},
                 account: undefined,
                 ready: false,
-                walletReady: false
+                walletReady: false,
+                load: false
             })
         });
 
         this._inventory = new Inventory(this._items);
         this._crafting = new Crafting(CraftingRecipes, this._inventory);
+        this._serverTimeDiff = 0;
 
         var options = {
             hostname: Config.gameServerEndpoint,
@@ -93,6 +96,10 @@ class Game {
         return this._inventory;
     }
 
+    get load() {
+        return this._vm.load;
+    }
+
     walletReady() {
         return this._vm.walletReady;
     }
@@ -102,15 +109,15 @@ class Game {
     }
 
     get softCurrency() {
-        return this._vm.softCurrency;
+        return this.inventory.getCurrency(CurrencyType.Soft);
     }
 
     set softCurrency(value) {
-        this._vm.softCurrency = value;
+        this.inventory.setCurrency(CurrencyType.Soft, value);
     }
 
     get hardCurrency() {
-        return this._vm.hardCurrency;
+        return this.inventory.getCurrency(CurrencyType.Hard);
     }
 
     get ready() {
@@ -127,6 +134,10 @@ class Game {
 
     get blockchainClient() {
         return this._blockchainClient;
+    }
+
+    get now() {
+        return new Date().getTime() + this._serverTimeDiff;
     }
 
     set blockchain(value) {
@@ -163,6 +174,10 @@ class Game {
         this._socket.connect();
     }
 
+    openRefill(stat) {
+        this._vm.$emit("refill", stat);
+    }
+
     async signMessage(message) {
         return await this._blockchainClient.sign(message);
     }
@@ -175,7 +190,6 @@ class Game {
             let nonce = await this._request(Operations.Auth, {
                 address: publicAddress
             });
-
             // sign message
             let message = await this._blockchainClient.sign(nonce);
 
@@ -213,6 +227,8 @@ class Game {
         if (signedIn && !this._vm.authenticated) {
             this._vm.authenticated = true;
             this._vm.$emit(this.SignUp);
+
+            this._syncTime();
         } else if (!signedIn && this._vm.authenticated) {
             this._vm.authenticated = false;
             this._vm.$emit(this.SignedOut);
@@ -247,6 +263,7 @@ class Game {
 
     // EVENTS
     _handleInventoryUpdate(data) {
+        console.log("inventory update", data);
         this._inventory.mergeData(data);
     }
 
@@ -330,6 +347,8 @@ class Game {
 
             this._vm.softCurrency = info.softCurrency;
             this._vm.hardCurrency = info.hardCurrency;
+
+            this._vm.load = true;
         } catch (exc) {
             console.error("updateUserData", exc);
         }
@@ -459,18 +478,38 @@ class Game {
         return this._zones;
     }
 
+    createChannel(name) {
+        return this._socket.subscribe(name, {
+            waitForAuth: true
+        });
+    }
+
     /*
         Server Operations
     */
     async _wrapOperation(operation, ...args) {
         try {
             let result = await this._request(operation, ...args);
-            this._mergeData(result);
+            this._mergeData(result.changes);
             return result;
         } catch (exc) {
             console.log(exc);
             throw exc;
         }
+    }
+
+    async _syncTime() {
+        if (!this.authenticated) {
+            return;
+        }
+
+        try {
+            let serverTime = await this._request(Operations.SyncTime);
+            this._serverTimeDiff = serverTime.time - this.now;
+        } catch (exc) {
+            console.error(exc);
+        }
+        setTimeout(this._syncTime.bind(this), 5000);
     }
 
     async resetZone(zone) {
@@ -492,15 +531,6 @@ class Game {
         });
         return result.changes.inventory;
     }
-
-    // async engageQuestBoss(zone, hits) {
-    //     let stage = this.$store.getters.getZoneStage(zone);
-    //     await this._wrapOperation(Operations.AttackQuestBoss, {
-    //         zone,
-    //         stage,
-    //         hits
-    //     });
-    // }
 
     async equipItem(itemId) {
         await this._wrapOperation(Operations.EquipItem, {
@@ -525,6 +555,19 @@ class Game {
         });
     }
 
+    async claimRaidLoot(raidId) {
+        return await this._wrapOperation(Operations.ClaimRaidLoot, {
+            raidId
+        });
+    }
+
+    async attackRaidBoss(raidId, hits) {
+        await this._wrapOperation(Operations.AttackRaidBoss, {
+            raidId,
+            hits
+        });
+    }
+
     async refillTimer(stat, refillType, items) {
         await this._wrapOperation(Operations.RefillTimer, {
             stat,
@@ -535,6 +578,12 @@ class Game {
 
     async fetchCurrentRaids() {
         return await this._request(Operations.FetchRaidsList);
+    }
+
+    async fetchRaid(raidId) {
+        return await this._request(Operations.FetchRaidInfo, {
+            raidId
+        });
     }
 
     async fetchRaidSummonStatus(raid, stage) {

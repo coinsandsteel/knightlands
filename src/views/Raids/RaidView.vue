@@ -1,17 +1,485 @@
 <template>
-  <div></div>
+  <Promised class="flex flex-column flex-start relative" :promise="request" :pendingDelay="200">
+    <template v-slot:combined="{ isPending, isDelayOver, data }">
+      <div>
+        <loading-screen :loading="true" :opacity="0.4" v-show="isDelayOver && isPending"></loading-screen>
+
+        <boss-view
+          class="margin-bottom-2"
+          ref="bossView"
+          v-if="raidData"
+          :progress="raidProgress"
+          :raidTemplateId="raidData.raidTemplateId"
+          :timeLeft="timeLeft"
+        >
+          <DamageText
+            v-for="(damage) in playerDamages"
+            :key="damage.id"
+            :crit="damage.crit"
+          >{{damage.damage}}</DamageText>
+
+          <DamageLog :log="lastDamages"></DamageLog>
+        </boss-view>
+
+        <div v-if="raidData" class="flex flex-center font-size-20">
+          <IconWithValue iconClass="icon-user">
+            <span class="font-size-20 white-space-wide">{{slots}}/{{maxSlots}}</span>
+          </IconWithValue>
+          <span>{{$t("slots-avaialble")}}</span>
+        </div>
+
+        <!--COMBAT VIEW-->
+        <striped-panel v-if="participant">
+          <div class="title font-size-20 font-weight-700 rarity-mythical">
+            <span class="white-space">{{$t("dkt-bonus")}}</span>
+            <span>x{{dktBonus}}</span>
+          </div>
+
+          <striped-content classes="margin-top-3" contentClasses="width-100 flex flex-center">
+            <div class="flex flex-column flex-center font-size-20 white-font font-outline">
+              <span
+                class="yellow-title white-space-wide margin-bottom-2"
+              >{{$t("loot-tier", {tier: currentLootTier})}}</span>
+            </div>
+            <ProgressBar
+              v-model="lootProgress.current"
+              :maxValue="lootProgress.max"
+              :compact="false"
+              :hideMaxValue="lootProgress.current >= lootProgress.max"
+            ></ProgressBar>
+          </striped-content>
+
+          <div
+            class="flex flex-center width-100 margin-top-3 margin-bottom-3 flex-space-around full-flex"
+          >
+            <custom-button type="grey" class="raid-mid-btn">
+              <icon-with-value
+                valueClass="font-size-20 btn-fix"
+                iconClass="icon-challenge"
+              >{{$t("challenges")}}</icon-with-value>
+            </custom-button>
+
+            <custom-button type="grey" class="raid-mid-btn" @click="showRewards = true">
+              <icon-with-value
+                valueClass="font-size-20 btn-fix"
+                iconClass="icon-loot"
+              >{{$t("rewards")}}</icon-with-value>
+            </custom-button>
+          </div>
+
+          <div class="flex flex-center flex-space-evenly">
+            <custom-button :mini="true" @click="attack(1)">x1</custom-button>
+            <custom-button :mini="true" @click="attack(5)">x5</custom-button>
+            <custom-button :mini="true" @click="attack(10)">x10</custom-button>
+            <custom-button :mini="true" :locked="true" @click="attack(20)">x20</custom-button>
+            <custom-button :mini="true" :locked="true" @click="attack(50)">x50</custom-button>
+          </div>
+        </striped-panel>
+
+        <!--RAID WON-->
+        <striped-panel
+          contentClasses="flex-center"
+          v-else-if="raidData && raidData.finished && raidData.defeat"
+        >
+          <striped-content
+            stripeHeight="5rem"
+            class="width-100 margin-top-2 margin-bottom-2"
+            contentClasses="width-100 flex flex-center"
+          >
+            <span
+              class="flex font-size-25 font-weight-700 flex-center width-100 flex-space-around full-flex"
+            >{{$t("raid-victory")}}</span>
+          </striped-content>
+
+          <custom-button class="raid-mid-btn" @click="claimReward">
+            <span>{{$t("claim-reward")}}</span>
+          </custom-button>
+        </striped-panel>
+
+        <!--RAID LOST-->
+        <striped-panel
+          contentClasses="flex-center"
+          v-else-if="raidData && raidData.finished && !raidData.defeat"
+        >
+          <striped-content
+            stripeHeight="5rem"
+            class="width-100 margin-top-2 margin-bottom-2"
+            contentClasses="width-100 flex flex-center"
+          >
+            <span
+              class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
+            >{{$t("raid-lose", {boss: bossName})}}</span>
+          </striped-content>
+        </striped-panel>
+
+        <!--NOT IN RAID YET-->
+        <striped-panel contentClasses="flex-center" v-else>
+          <div class="flex flex-center width-100 margin-bottom-3 flex-space-around full-flex">
+            <custom-button type="grey" class="raid-mid-btn">
+              <icon-with-value
+                valueClass="btn-fix"
+                iconClass="icon-challenge big"
+              >{{$t("challenges")}}</icon-with-value>
+            </custom-button>
+
+            <custom-button type="grey" class="raid-mid-btn" @click="showRewards=true">
+              <icon-with-value valueClass="btn-fix" iconClass="icon-loot big">{{$t("rewards")}}</icon-with-value>
+            </custom-button>
+          </div>
+
+          <custom-button class="raid-mid-btn">
+            <span>{{$t("join")}}</span>
+            <icon-with-value valueClass="btn-fix" iconClass="icon-trx">{{900}}</icon-with-value>
+          </custom-button>
+        </striped-panel>
+
+        <keep-alive>
+          <Rewards
+            v-if="showRewards"
+            :raidTemplateId="raidData.raidTemplateId"
+            :stage="raidData.stage"
+            :currentDamage="currentDamage"
+            :dktFactor="raidData.dktFactor"
+            @close="showRewards=false"
+          ></Rewards>
+        </keep-alive>
+
+        <ClaimedReward v-if="showClaimedLoot"></ClaimedReward>
+      </div>
+    </template>
+
+    <template v-slot:rejected="error">
+      <div class="full-flex flex flex-center">
+        <p class="font-size-20 font-error">{{$t("unknown-error-msg")}}</p>
+        <custom-button @click="getRaid">{{$t("try-again")}}</custom-button>
+      </div>
+    </template>
+  </Promised>
 </template>
 
 <script>
-import AppSection from "@/AppSection.js";
+import AppSection from "@/AppSection";
+import { Promised } from "vue-promised";
+import LoadingScreen from "@/components/LoadingScreen.vue";
+import CustomButton from "@/components/Button.vue";
+import RaidsMeta from "@/raids_meta";
+import BossView from "./BossView.vue";
+import StripedPanel from "@/components/StripedPanel.vue";
+import StripedContent from "@/components/StripedContent.vue";
+import DifficultySelector from "@/components/DifficultySelector.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
+import DamageLog from "./DamageLog.vue";
+import ClaimedReward from "./ClaimedReward.vue";
+import CharacterStats from "@/../knightlands-shared/character_stat";
+import Errors from "@/../knightlands-shared/errors";
+import Prompt from "@/components/Prompt.vue";
+
+import { create as CreateDialog } from "vue-modal-dialogs";
+import Rewards from "./Rewards.vue";
+import anime from "animejs/lib/anime.es.js";
+
+const Events = require("@/../knightlands-shared/events");
+
+import DamageText from "./DamageText.vue";
+import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
+
+const ShowResourceRefill = CreateDialog(
+  NotEnoughResource,
+  ...NotEnoughResource.props
+);
+
+const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
+
+const ShowReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
 
 export default {
   name: "raid",
-  mixins: [AppSection]
+  components: {
+    LoadingScreen,
+    Promised,
+    CustomButton,
+    BossView,
+    StripedPanel,
+    StripedContent,
+    DifficultySelector,
+    IconWithValue,
+    Rewards,
+    ProgressBar,
+    DamageLog,
+    DamageText
+  },
+  channel: undefined,
+  mixins: [AppSection],
+  props: ["raid"],
+  data: () => ({
+    showRewards: false,
+    raidData: null,
+    request: null,
+    raidProgress: {
+      current: 1,
+      max: 1
+    },
+    lastDamages: [],
+    showClaimedLoot: false,
+    playerDamages: [],
+    lootProgress: {
+      current: 1,
+      max: 1
+    }
+  }),
+  created() {
+    this.title = this.$t("raid-view");
+    this.damageTextId = 0;
+    this.damageLogId = 0;
+  },
+  activated() {
+    this.getRaid();
+  },
+  deactivated() {
+    this.unsubscribe();
+  },
+  destroyed() {
+    this.unsubscribe();
+  },
+  watch: {
+    raid() {
+      this.getRaid();
+    }
+  },
+  computed: {
+    slots() {
+      return this.raidData.busySlots;
+    },
+    maxSlots() {
+      return this.meta.stages[this.raidData.stage].maxSlots;
+    },
+    meta() {
+      if (!this.raidData) {
+        return {};
+      }
+      return RaidsMeta[this.raidData.raidTemplateId] || {};
+    },
+    participant() {
+      if (!this.raidData) {
+        return false;
+      }
+
+      return (
+        this.raidData.currentDamage !== undefined && !this.raidData.finished
+      );
+    },
+    currentDamage() {
+      return this.raidData.currentDamage;
+    },
+    dktBonus() {
+      return Math.floor(this.raidData.dktFactor * 100) / 100;
+    },
+    timeLeft() {
+      return this.raidData.finished ? 0 : this.raidData.timeLeft;
+    },
+    bossName() {
+      return this.meta.name;
+    },
+    currentLootTier() {
+      let raidStage = this.meta.stages[this.raidData.stage];
+      let i = 0;
+      const length = raidStage.loot.damageThresholds.length;
+
+      this.lootProgress.current = this.raidData.currentDamage;
+
+      for (; i < length; ++i) {
+        let damageThreshold = raidStage.loot.damageThresholds[i];
+
+        let damageRequired =
+          this.raidProgress.current * damageThreshold.relativeThreshold;
+
+        if (damageRequired > this.raidData.currentDamage) {
+          this.lootProgress.max = Math.floor(damageRequired);
+          break;
+        }
+      }
+
+      return i;
+    }
+  },
+  methods: {
+    async claimReward() {
+      let rewards = await this.$game.claimRaidLoot(this.raid);
+      await ShowReward(rewards, this.raidData.raidTemplateId);
+    },
+    subscribeToRaid() {
+      this.unsubscribe();
+      this.channel = this.$game.createChannel(`raid/${this.raid}`);
+      this.channel.watch(this._handleEvents.bind(this));
+    },
+    unsubscribe() {
+      if (this.channel) {
+        this.channel.destroy();
+        this.channel = null;
+      }
+    },
+    handleBackButton() {
+      this.$router.back();
+      return true;
+    },
+    async getRaid() {
+      this.request = this.$game.fetchRaid(this.raid);
+
+      try {
+        this.raidData = await this.request;
+        this.raidProgress.current = this.raidData.bossState.health;
+        this.raidProgress.max = this.meta.stages[this.raidData.stage].health;
+        this.lastDamages = this.raidData.damageLog;
+
+        // if raid is not finished - try to listen
+        if (!this.raidData.finished) {
+          this.subscribeToRaid();
+        }
+      } catch (exc) {
+        console.error(exc);
+      }
+    },
+    async attack(hits) {
+      this.request = this.$game.attackRaidBoss(this.raid, hits);
+
+      try {
+        await this.request;
+
+        if (!this.$game.character.alive) {
+          let reponse = await ShowPrompt(
+            "player-raid-killed-title",
+            this.$t("player-raid-killed-message", { boss: this.bossName }),
+            [
+              {
+                type: "yellow",
+                response: true,
+                title: "do-refill"
+              }
+            ]
+          );
+
+          if (reponse === true) {
+            this.$game.openRefill(CharacterStats.Health);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        this._handleAttackRaidError(error);
+      }
+    },
+    _handleEvents(data) {
+      switch (data.event) {
+        case Events.RaidDamaged:
+          this._handleRaidDamage(data);
+          break;
+        case Events.RaidFinished:
+          this._handleRaidFinished(data);
+          break;
+      }
+    },
+    _handleRaidDamage(data) {
+      this.raidProgress.current = data.bossHp;
+
+      if (data.by == this.$game.account) {
+        // increase current damage
+        this.raidData.currentDamage += data.damage;
+      }
+
+      this._handlePlayerDamage(data.damage, data.crit, data.hits);
+    },
+    _handleRaidFinished(data) {
+      this.raidData.finished = true;
+
+      if (data.defeat) {
+        this.raidData.defeat = true;
+      }
+    },
+    _handlePlayerDamage(damage, crit, hits) {
+      this.lastDamages.push({
+        by: this.$game.account,
+        damage,
+        id: this.damageLogId++,
+        hits: hits
+      });
+
+      if (this.lastDamages.length > 10) {
+        this.lastDamages.splice(0, 1);
+      }
+
+      this.playerDamages.push({
+        damage: damage,
+        crit: crit,
+        id: this.damageTextId++
+      });
+
+      setTimeout(() => {
+        this.playerDamages.splice(0, 1);
+      }, 3000);
+
+      anime.remove(this.$refs.bossView.$refs.image);
+
+      // shake boss image
+      let timeline = anime.timeline({
+        targets: this.$refs.bossView.$refs.image
+      });
+
+      if (crit) {
+        timeline.add({
+          translateX: function(el, i) {
+            return `-=${anime.random(-1, -2)}rem`;
+          },
+          translateY: function(el, i) {
+            return `-=${anime.random(-1, 1)}rem`;
+          },
+          scale: 1.2 + Math.random() * 0.2,
+          duration: 0,
+          loop: 1
+        });
+      }
+
+      timeline.add(
+        {
+          filter: "brightness(100)",
+          duration: 0
+        },
+        0
+      );
+
+      timeline.add({
+        translateX: 0,
+        translateY: 0,
+        scale: 1,
+        filter: {
+          value: "brightness(1)",
+          easeing: "",
+          duration: 100
+        }
+      });
+    },
+    async _handleAttackRaidError(error) {
+      switch (error) {
+        case Errors.NoHealth:
+          await ShowResourceRefill(CharacterStats.Health);
+          break;
+
+        case Errors.NoStamina:
+          await ShowResourceRefill(CharacterStats.Stamina);
+          break;
+      }
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
+.btn-fix {
+  margin-top: 0.3rem;
+}
+
+.raid-mid-btn {
+  width: 15rem;
+}
 </style>
 
 

@@ -1,14 +1,15 @@
 <template>
   <div
-    class="btn"
-    :class="[type, {disabled:disabled}, {lockPressed: lockPressed}, {selected: selected}]"
+    class="btn relative"
+    :class="[type, {disabled:disabled||locked}, {lockPressed: lockPressed}, {selected: selected}, {'mini': mini}]"
     :style="sizeStyle"
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
     <div class="btn-fill"></div>
-    <div class="btn-content">
+    <div class="btn-content flex flex-center">
       <slot>{{caption}}</slot>
     </div>
+    <div v-if="locked" class="locked"></div>
   </div>
 </template>
 
@@ -35,7 +36,9 @@ export default {
       type: Boolean,
       default: false
     },
-    selected: Boolean
+    selected: Boolean,
+    locked: Boolean,
+    mini: Boolean
   },
   computed: {
     sizeStyle() {
@@ -54,7 +57,7 @@ export default {
 @import (reference) "../style/common.less";
 
 @height: 4.2125rem;
-@width: 10.875rem;
+@width: 10rem;
 @fontSize: 1.6rem;
 
 .pressed(@name) {
@@ -124,21 +127,30 @@ export default {
   min-width: @width;
   font-size: @fontSize;
   font-weight: 700;
-
-  //   .mobile({height: @height / 2; width: @width / 2; font-size: @fontSize / 2});
-  //   .big_retina(
-  //     {height: @height / 1; width: @width / 1; font-size: @fontSize / 2.2;}
-  //   );
-
   cursor: pointer;
   user-select: none;
   color: #4e3948;
+  height: 5rem;
+
+  &.mini {
+    min-width: unset;
+  }
 }
 
 .disabled {
   opacity: 0.6;
   pointer-events: none;
   cursor: not-allowed;
+}
+
+.locked {
+  background: no-repeat url("./../assets/ui/icon_lock_big.png");
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: contain;
+  position: absolute;
+  right: -1rem;
+  top: -1rem;
 }
 
 .red {
@@ -187,6 +199,7 @@ export default {
 
 .btn-content {
   transform: translateY(-0.2rem);
+  height: 100%;
 }
 </style>
 

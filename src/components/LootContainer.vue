@@ -3,9 +3,9 @@
     <div class="flex flex-center panel inventory-container">
       <div class="flex loot-container inventory-items">
         <loot
-          v-for="(item, index) in items"
+          v-for="item in items"
           :item="item"
-          :key="index"
+          :key="item.id"
           :inventory="inventory"
           :hint="hint"
           @hint="handleHint"

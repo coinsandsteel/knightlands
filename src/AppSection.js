@@ -26,7 +26,12 @@ export default {
     },
     methods: {
         _notifyApp() {
-            this.$app.$emit("section", this);
+            this.$nextTick(() => {
+                this.$app.$emit("section", {
+                    title: this.title,
+                    handleBackButton: this.handleBackButton.bind(this)
+                });
+            });
         },
         addFooter(component, props) {
             this.$app.$emit("footer", component, props);

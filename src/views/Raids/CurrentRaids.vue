@@ -1,22 +1,38 @@
 <template>
-  <div v-bar>
-    <div class="flex flex-column flex-item-center current-raids-list">
-      <current-raid-element v-for="raidData in raids" :key="raidData.id" :raidData="raidData"></current-raid-element>
-    </div>
-  </div>
+  <Promised :promise="request" :pendingDelay="200">
+    <template v-slot:combined="{ isPending, isDelayOver }">
+      <div>
+        <loading-screen :loading="true" :opacity="0.4" v-show="isDelayOver && isPending"></loading-screen>
+
+        <div v-bar>
+          <div class="flex flex-column flex-item-center current-raids-list">
+            <current-raid-element
+              v-for="(raidData, index) in raids"
+              :key="raidData.id"
+              :raidData="raidData"
+              @claimed="handleRaidClaimed(index)"
+            ></current-raid-element>
+          </div>
+        </div>
+      </div>
+    </template>
+  </Promised>
 </template>
 
 <script>
 import AppSection from "@/AppSection.js";
 import CustomButton from "@/components/Button.vue";
 import CurrentRaidElement from "./CurrentRaidElement.vue";
+import { Promised } from "vue-promised";
+import LoadingScreen from "@/components/LoadingScreen.vue";
 
 export default {
   name: "current-raids",
   mixins: [AppSection],
-  components: { CurrentRaidElement },
+  components: { CurrentRaidElement, Promised, LoadingScreen },
   data: () => ({
-    raids: []
+    raids: [],
+    request: null
   }),
   mounted() {
     this.fetchRaids();
@@ -26,16 +42,19 @@ export default {
   },
   activated() {
     // refresh raids list
+    this.fetchRaids();
     this.toggleFooter();
   },
   methods: {
     async fetchRaids() {
-      let raids = await this.$game.fetchCurrentRaids();
-      console.log(raids);
-      this.raids = raids;
+      this.request = this.$game.fetchCurrentRaids();
+
+      try {
+        this.raids = await this.request;
+      } catch {}
     },
     summonRaid() {
-      this.$router.push("/home/raids/summon");
+      this.$router.push({ name: "raids-for-summon" });
     },
     toggleFooter() {
       this.addFooter(CustomButton, {
@@ -43,6 +62,9 @@ export default {
         caption: "Summon",
         type: "yellow"
       });
+    },
+    handleRaidClaimed(raidIndex) {
+      this.raids.splice(raidIndex, 1);
     }
   }
 };

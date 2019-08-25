@@ -5,7 +5,7 @@
       <status-bar v-if="$game.authenticated"></status-bar>
       <div class="flex">
         <div class="section-name font-size-25">
-          <div>{{currentSection.title}}</div>
+          <div class="section-fill">{{title}}</div>
         </div>
       </div>
       <keep-alive>
@@ -54,16 +54,18 @@ export default {
   data() {
     return {
       showBackMenu: false,
-      currentSection: { title: "" },
+      title: null,
       loading: true,
       ready: false,
       footers: [],
       footerProps: []
     };
   },
+  sectionBackButton: null,
   beforeCreate() {
     this.$on("section", section => {
-      this.currentSection = section;
+      this.sectionBackButton = section.handleBackButton;
+      this.title = section.title;
     });
 
     this.$on("footer", (component, props) => {
@@ -84,7 +86,8 @@ export default {
       if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!this.$game.authenticated) {
           next({
-            name: "login"
+            name: "login",
+            query: { url: this.$route.path }
           });
           return;
         }
@@ -178,7 +181,7 @@ export default {
       }
     },
     handleBackButton() {
-      if (!this.currentSection || !this.currentSection.handleBackButton()) {
+      if (!this.sectionBackButton || !this.sectionBackButton()) {
         let split = this.$route.path.split("/");
 
         while (split[split.length - 1] == "") {
@@ -235,22 +238,29 @@ export default {
   height: 100%;
 }
 
+@sectionPaddingRight: 4rem;
+@sectionPaddingTop: 0.4rem;
+
 .section-name {
   text-align: left;
   pointer-events: none;
   margin: 0 0 1rem 0;
   min-width: 20rem;
-  padding-top: 0.4rem;
+  padding-top: @sectionPaddingTop;
+  padding-right: @sectionPaddingRight;
   color: #281326;
-  background-color: #281326;
 
-  border-image: url("./assets/ui/title_bg.png") stretch;
-  border-image-slice: 28 49 28 2 fill;
-  border-image-width: 64px;
-
-  > div {
+  & > .section-fill {
     margin-left: 1.1rem;
+    width: calc(100%);
+    height: calc(100%);
+    margin-top: -@sectionPaddingTop;
   }
+
+  background: url("./assets/ui/title_bg2.png"), url("./assets/ui/title_bg3.png");
+  background-size: 100% 100%, contain;
+  background-position: left, right;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .logo {
@@ -359,7 +369,7 @@ export default {
 @import (reference) "./style/common.less";
 
 html {
-  font-family: "Overpass", sans-serif;
+  font-family: "Alef", sans-serif;
   font-size: 12px;
   line-height: 1.2;
   box-sizing: border-box;

@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-    <router-view :parent="this"></router-view>
+    <router-view></router-view>
   </keep-alive>
 </template>
 
@@ -11,12 +11,3 @@ export default {
   name: "raids"
 };
 </script>
-
-
-<style lang="less">
-@import "./common.less";
-</style>
-
-
-<style lang="less" scoped>
-</style>

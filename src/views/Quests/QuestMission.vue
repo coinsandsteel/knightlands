@@ -50,13 +50,6 @@
         </div>
       </div>
       <loot-container class="full-flex loot center" :items="rewards" @hint="showHint"></loot-container>
-
-      <!-- <div v-show="quest.isBoss" class="flex flex-center stamina-buttons">
-        <custom-button width="5rem" @click="engageBoss(1)">x1</custom-button>
-        <custom-button width="5rem" @click="engageBoss(5)">x5</custom-button>
-        <custom-button width="5rem" @click="engageBoss(10)">x10</custom-button>
-        <custom-button width="5rem" @click="engageBoss(20)">x20</custom-button>
-      </div>-->
     </div>
     <div class="quest-footer flex flex-center">
       <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">Kill previous enemies</div>
@@ -123,7 +116,9 @@ export default {
       return this.zone.quests[this.questIndex].stages[this.stage];
     },
     zoneBackground() {
-      return `background-image: url("/images/levels/level${this.zone._id}.png");`;
+      return UiConstants.backgroundImage(
+        UiConstants.zoneImageByZoneId(this.zone._id)
+      );
     },
     enemyImage() {
       return `background-image: url("/images/enemies/${this.view.img}.png");`;

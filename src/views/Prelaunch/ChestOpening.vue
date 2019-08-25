@@ -384,7 +384,6 @@ export default {
   display: grid;
 
   &.expanded {
-    width: 80%;
     display: flex;
     position: inherit;
     margin: 0 auto;

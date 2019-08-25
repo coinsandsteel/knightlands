@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     updateItemData() {
-      if (typeof this.item !== "object") {
+      if (this.item && typeof this.item !== "object") {
         // template
         let template = this.$game.itemsDB.getTemplate(this.item * 1);
         this.itemData = {

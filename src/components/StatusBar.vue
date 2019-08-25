@@ -90,6 +90,11 @@ export default {
     ProgressBar,
     TimerRefill
   },
+  mounted() {
+    this.$game.on("refill", stat => {
+      this.refillTimer(stat);
+    });
+  },
   computed: {
     maxHealth() {
       return this.maxStats[CharacterStats.Health];
@@ -145,13 +150,7 @@ export default {
   flex-wrap: nowrap;
   flex-basis: 30%;
   align-items: flex-start;
-
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-
-  > :first-child {
-    margin-bottom: 1rem;
-  }
+  justify-content: space-evenly;
 }
 </style>
 

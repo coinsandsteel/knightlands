@@ -37,10 +37,6 @@ export default {
     };
   },
   created() {
-    console.log(
-      "this.$store.getters.itemFilters",
-      this.$store.getters.itemFilters
-    );
     this.itemFilters = Object.assign({}, this.$store.getters.itemFilters);
   },
   watch: {
@@ -51,7 +47,6 @@ export default {
       deep: true,
       handler() {
         this.$store.commit("setItemFilters", this.itemFilters);
-        console.log(this.itemFilters);
       }
     }
   },

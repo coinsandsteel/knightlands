@@ -81,9 +81,9 @@ export default {
   },
   props: {
     items: {
-      type: Object,
+      type: Array,
       default() {
-        return {};
+        return [];
       }
     }
   },
@@ -135,7 +135,6 @@ export default {
     async showItemFilter() {
       let filters = await ItemFilter();
       if (filters) {
-        this.$store.commit("setItemFilters", filters);
         this.filterItems(filters);
       }
     },
@@ -143,12 +142,16 @@ export default {
       let itemsDB = this.$game.itemsDB;
       this.filteredItems.length = 0;
 
-      for (let i in this.items) {
+      let i = 0;
+      const length = this.items.length;
+
+      for (; i < length; ++i) {
         let item = this.items[i];
         let template = item.template;
         if (
           filters[itemsDB.getItemType(template)] ||
-          filters[itemsDB.getSlot(template)]
+          (itemsDB.getTemplate(template).type == ItemType.Equipment &&
+            filters[itemsDB.getSlot(template)])
         ) {
           this.filteredItems.push(item);
         }

@@ -11,6 +11,8 @@
         :caption="att"
         :decreaseCondition="(getEditedAttribute(att) > 0 && attributesNeedReset)"
         :increaseCondition="hasEnoughGold(att)"
+        @inc="increaseAttribute(att)"
+        @dec="decreaseAttribute(att)"
       >
         <div class="flex" style="width: 30%">
           <span class="icon-gold"></span>
@@ -102,10 +104,6 @@ export default {
       }
     },
     increaseAttribute(attr) {
-      if (!this.hasEnoughGold(attr)) {
-        return false;
-      }
-
       let upgradePrice = this.getUpgradePrice(attr);
       this.upgradePrice[attr] += upgradePrice;
       this.$game.softCurrency -= upgradePrice;
@@ -113,10 +111,6 @@ export default {
       return true;
     },
     decreaseAttribute(attr) {
-      if (this.purchasedAttributes[attr] === 0) {
-        return false;
-      }
-
       this.purchasedAttributes[attr]--;
       let upgradePrice = this.getUpgradePrice(attr);
       this.upgradePrice[attr] -= upgradePrice;

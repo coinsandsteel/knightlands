@@ -1,21 +1,22 @@
 <template>
-  <div class="progress-bar" :style="progressStyle()" @click="$emit('refill')">
+  <div class="progress-bar width-100" @click="$emit('refill')">
     <div class="icon">
       <div :class="iconClass"></div>
     </div>
-    <div class="bar-container digit-font flex flex-center">
+    <div class="bar-container digit-font flex flex-center" :class="{'flex-column':isTop }">
+      <div
+        class="status-bar-font bar-value flex flex-center"
+        :class="[valueClass, {'bar-value-top': isTop}]"
+      >
+        <div v-show="showValue">{{currentValue}}</div>
+        <div v-show="!showValue" class="status-bar-font flex">
+          <div class="icon-timer icon-size-mini"></div>
+          {{timerValue.value}}
+        </div>
+      </div>
+
       <div class="bar" :style="barStyle()">
         <div class="progress" :class="progressType()" :style="fillStyle()"></div>
-        <div
-          class="status-bar-font bar-value flex flex-center"
-          :class="[valueClass, valuePositionClass]"
-        >
-          <div v-show="showValue">{{currentValue}}</div>
-          <div v-show="!showValue" class="status-bar-font flex">
-            <div class="icon-timer icon-size-mini"></div>
-            {{timerValue}}
-          </div>
-        </div>
       </div>
       <div v-if="plusButton" class="btn-plus" :class="`${plusButton}-btn`"></div>
     </div>
@@ -23,6 +24,8 @@
 </template>
 
 <script>
+import Timer from "@/timer.js";
+
 const Inside = "inside";
 const Top = "top";
 const ToggleTimerInterval = 6000;
@@ -45,12 +48,12 @@ export default {
     thresholds: {
       type: Array,
       default: () => []
-    }
+    },
+    compact: Boolean
   },
   data() {
     return {
-      timerInterval: undefined,
-      timerValue: "",
+      timerValue: new Timer(),
       timerShowInterval: undefined,
       showValue: true
     };
@@ -60,8 +63,8 @@ export default {
     this.toggleTimer();
   },
   computed: {
-    valuePositionClass() {
-      return this.valuePosition == Top ? "bar-value-top" : "";
+    isTop() {
+      return this.valuePosition == Top;
     },
     currentValue() {
       let value = this.percentMode
@@ -110,19 +113,10 @@ export default {
         return;
       }
 
-      let now = Math.floor(new Date().getTime() / 1000);
-      let timeUntilNextPoint =
-        this.timer.regenTime - (now - this.timer.lastRegenTime);
-      let minutes = Math.floor(timeUntilNextPoint / 60);
-      let seconds = timeUntilNextPoint % 60;
-      let leadingZeroesForSeconds = seconds > 9 ? "" : 0;
-      this.timerValue = `0${minutes}:${leadingZeroesForSeconds}${seconds}`;
-
-      clearInterval(this.timerInterval);
-
-      this.timerInterval = setInterval(() => {
-        this.updateTimerValue();
-      }, 1000);
+      this.timerValue.timeLeft =
+        this.timer.regenTime -
+        (this.$game.now / 1000 - this.timer.lastRegenTime);
+      this.timerValue.update();
     },
     progressType() {
       if (this.thresholds.length === 0) {
@@ -158,13 +152,18 @@ export default {
     barStyle() {
       return {
         "background-color": this.barColor,
-        height: this.height
+        height: this.compact ? "0.75rem" : this.height,
+        width: this.width
       };
     },
     fillStyle() {
+      let percentWidth = (this.value / this.maxValue) * 100;
+      if (percentWidth > 100) {
+        percentWidth = 100;
+      }
       return {
         height: "100%",
-        width: (this.value / this.maxValue) * 100 + "%"
+        width: percentWidth + "%"
       };
     },
     progressStyle() {
@@ -180,6 +179,7 @@ export default {
 
 <style lang="less" scoped>
 .progress-bar {
+  z-index: 1;
   position: relative;
   display: flex;
   align-items: center;
@@ -190,6 +190,7 @@ export default {
     position: relative;
 
     .bar {
+      z-index: -1;
       flex: 1;
       position: relative;
 
@@ -243,7 +244,6 @@ export default {
 
 .bar-value {
   color: #210028;
-
   position: absolute;
   bottom: 0;
   left: 0;
@@ -252,7 +252,7 @@ export default {
 }
 
 .bar-value-top {
-  bottom: 100%;
+  position: unset;
 }
 
 .timer {

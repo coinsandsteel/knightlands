@@ -1,15 +1,23 @@
 <template>
   <div class="mask flex flex-center" @click.self="handleClose">
-    <div class="content flex flex-column flex center panel-light">
+    <div class="content flex-no-wrap flex flex-column flex center panel-light">
       <div
-        class="dialog-title flex flex-center font-size-30 font-weight-700 font-outline"
+        class="dialog-title flex flex-center font-size-30 font-weight-700 margin-bottom-3 font-outline"
         :class="[titleClass, {compact:compact, 'title':compact}]"
+        v-if="title"
       >
         <span>{{title}}</span>
       </div>
       <div class="close-btn" @click="handleClose"></div>
-      <slot name="content"></slot>
-      <div class="footer">
+      <div v-bar="{
+          preventParentScroll: true,
+          scrollThrottle: 30,
+      }">
+        <div class="scrollable-content">
+          <slot name="content"></slot>
+        </div>
+      </div>
+      <div class="flex flex-center footer">
         <slot name="footer"></slot>
       </div>
     </div>
@@ -63,11 +71,8 @@ export default {
   padding: 0.5rem 0.65rem 0.5rem 0.65rem;
 }
 
-.close-btn {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  cursor: pointer;
+.scrollable-content {
+  max-height: 80vh;
 }
 </style>
 

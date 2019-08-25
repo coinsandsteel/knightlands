@@ -1,7 +1,7 @@
 <template>
   <div>
     <loot :item="item" />
-    <div>{{currentCount}} / {{requiredCount}}</div>
+    <div class="font-size-20 digit-font">{{currentCount()}} / {{requiredCount}}</div>
   </div>
 </template>
 
@@ -18,13 +18,15 @@ export default {
         count: 0
       };
     },
+    requiredCount() {
+      return this.ingridient.quantity;
+    }
+  },
+  methods: {
     currentCount() {
       return this.$game.inventory.getItemsCountByTemplate(
         this.ingridient.itemId
       );
-    },
-    requiredCount() {
-      return this.ingridient.quantity;
     }
   }
 };

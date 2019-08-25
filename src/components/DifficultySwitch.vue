@@ -4,12 +4,12 @@
 
 <script>
 import CustomButton from "./Button.vue";
-import DifficultySelector from "./DiffcultySelector.vue";
+import DifficultySelectorDialog from "./DifficultySelectorDialog.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import UiConstants from "@/ui_constants";
 
-const DifficultySelectorDialog = CreateDialog(
-  DifficultySelector,
+const ShowDifficultySelectorDialog = CreateDialog(
+  DifficultySelectorDialog,
   "stages",
   "current"
 );
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     async showSelector() {
-      let difficultyIndex = await DifficultySelectorDialog(
+      let difficultyIndex = await ShowDifficultySelectorDialog(
         this.stages,
         this.stage
       );

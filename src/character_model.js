@@ -45,6 +45,10 @@ class CharacterModel {
         });
     }
 
+    get alive() {
+        return this._vm.timers[CharacterStats.Health].value >= 1;
+    }
+
     get equipment() {
         return this._vm.equipment;
     }
@@ -98,7 +102,6 @@ class CharacterModel {
     }
 
     mergeData(data) {
-        console.log(data);
         this._mergeData(this._vm.$data, data);
     }
 
@@ -147,7 +150,7 @@ class CharacterModel {
     }
 
     getStat(stat) {
-        return this._vm.stats[stat];
+        return this._vm.stats[stat] || 0;
     }
 
     getAttribute(att) {

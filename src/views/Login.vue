@@ -1,6 +1,6 @@
 <template>
   <div class="login-container flex flex-center">
-    <div v-if="!$game.walletReady()">Unlock your Tronlink</div>
+    <div class="font-size-20" v-if="!$game.walletReady()">Unlock your wallet</div>
     <custom-button size="big" v-else @click="signIn">Sign in</custom-button>
   </div>
 </template>
@@ -25,7 +25,12 @@ export default {
   },
   methods: {
     redirectToNextPage() {
-      this.$router.replace({ name: "character" });
+      let url = this.$route.query.url;
+      if (url) {
+        this.$router.replace(url);
+      } else {
+        this.$router.replace({ name: "character" });
+      }
     },
     signIn() {
       this.$game.signIn();

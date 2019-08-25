@@ -29,7 +29,7 @@ const store = new Vuex.Store({
     },
     setItemFilters(state, filters) {
       for (let i in filters) {
-        state.itemFilters[i] = filters[i];
+        Vue.set(state.itemFilters, i, filters[i]);
       }
     },
     setZoneStage(state, args) {

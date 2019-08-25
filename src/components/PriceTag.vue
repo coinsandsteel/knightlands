@@ -1,13 +1,15 @@
 <template>
-  <div>{{price}} TRX</div>
+  <IconWithValue iconClass="icon-trx" valueClass="font-size-20">{{price}}</IconWithValue>
 </template>
 
 <script>
 const IAPs = require("@/iaps.json");
 import Blockchains from "@/../knightlands-shared/blockchains";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["iap", "overridePrice"],
+  components: { IconWithValue },
   data() {
     return {
       price: 0
@@ -28,7 +30,9 @@ export default {
     async refreshPrice() {
       let conversion = await this.$game.getCurrencyConversionRate();
       let iapMeta = IAPs[this.iap];
-      this.price = Math.floor(iapMeta.price * conversion.rate * 100) / 100;
+      if (iapMeta) {
+        this.price = Math.floor(iapMeta.price * conversion.rate * 100) / 100;
+      }
     }
   }
 };

@@ -1,8 +1,8 @@
 <template>
-  <user-dialog title="Recover energy" @close="$close(false)">
+  <user-dialog :title="$t(title)" @close="$close(false)">
     <template v-slot:content>
       <div class="flex flex-column">
-        <div class="font-size-20 margin-top-3">Choose how do you want to restore {{stat}}</div>
+        <div class="font-size-20">{{$t("refill-message")}}</div>
 
         <button-bar class="margin-top-2 margin-bottom-2" :sections="methods" v-model="methodChosen"></button-bar>
 
@@ -40,6 +40,7 @@
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import ButtonBar from "@/components/ButtonBar.vue";
+import CharacterStats from "@/../knightlands-shared/character_stat";
 
 export default {
   props: ["stat"],
@@ -51,9 +52,25 @@ export default {
       refillsToday: 8
     };
   },
+  computed: {
+    title() {
+      switch (this.stat) {
+        case CharacterStats.Health:
+          return "health-refill-title";
+
+        case CharacterStats.Stamina:
+          return "stamina-refill-title";
+
+        case CharacterStats.Energy:
+          return "energy-refill-title";
+      }
+    }
+  },
   methods: {
     async confirm() {
       await this.$game.refillTimer(this.stat, this.methodChosen);
+
+      this.$close();
     }
   }
 };

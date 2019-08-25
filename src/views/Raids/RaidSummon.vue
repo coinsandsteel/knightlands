@@ -1,55 +1,48 @@
 <template>
-  <div class="flex flex-column flex-center raid-summon-content">
-    <div
-      class="font-size-30 enemy-title-font raid-summon-title font-outline font-weight-700"
-    >{{name}}</div>
-    <div class="pixelated raid-summon-boss-image" :style="enemyImage"></div>
+  <div class="flex flex-column flex-start relative">
+    <boss-view v-if="raid" :raidTemplateId="raid"></boss-view>
 
-    <div class="flex flex-column flex-center margin-top-3">
-      <span class="font-size-25">Select Difficulty</span>
-      <div class="flex flex-center margin-top-small">
-        <div class="stage-selector" v-for="stage in availableDifficulties" :key="stage">
-          <input
-            :id="`stage${stage}`"
-            type="radio"
-            name="stage"
-            :value="stage"
-            ref="stages"
-            v-model="selectedStage"
+    <StripedPanel contentClasses="flex-center">
+      <span class="font-size-20 title margin-bottom-3">Select Difficulty</span>
+
+      <StripedContent classes="width-100" contentClasses="width-100">
+        <difficulty-selector :stages="availableDifficulties" v-model="selectedStage"></difficulty-selector>
+      </StripedContent>
+
+      <div class="margin-top-3" v-if="$game.load">
+        <span class="font-size-20 title margin-bottom">Required Essences</span>
+        <div class="flex flex-center margin-top-1">
+          <crafting-ingridient
+            v-for="(essence) in requiredEssences"
+            :key="essence.itemId"
+            :ingridient="essence"
           />
-          <label :for="`stage${stage}`" :class="`stage${stage}`"></label>
         </div>
       </div>
-    </div>
 
-    <div class="margin-top-2">
-      <span class="font-size-25">Required Essences</span>
-      <div class="flex flex-center margin-top-small">
-        <crafting-ingridient
-          v-for="(essence) in requiredEssences"
-          :key="essence.itemId"
-          :ingridient="essence"
-        />
-      </div>
-    </div>
-
-    <div class="margin-top-2 font-size-25">
-      <span>Summoning Fee:</span>
-      <price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag>
-    </div>
-
-    <div class="margin-top-2 flex flex-column flex-center">
-      <div v-if="pending" class="flex flex-center">
-        <div class="font-size-20">Waiting for payment confirmation.</div>
-        <GridLoader color="#fde648" :size="15" margin="1px" />
-      </div>
-      <div v-else-if="waitingForPayment" class="flex flex-center">
-        <div class="font-size-20">Waiting for payment...</div>
-        <GridLoader color="#fde648" :size="15" margin="1px" />
+      <div class="margin-top-2 font-size-20 flex flex-center">
+        <span>Summoning Fee:</span>
+        <price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag>
       </div>
 
-      <custom-button v-if="!pending" type="yellow" @click="confirmSummon">Summon</custom-button>
-    </div>
+      <div class="margin-top-2 flex flex-column flex-center">
+        <div v-if="pending" class="flex flex-center">
+          <div class="font-size-20">Waiting for payment confirmation.</div>
+          <GridLoader color="#fde648" :size="15" margin="1px" />
+        </div>
+        <div v-else-if="waitingForPayment" class="flex flex-center">
+          <div class="font-size-20">Waiting for payment...</div>
+          <GridLoader color="#fde648" :size="15" margin="1px" />
+        </div>
+
+        <custom-button
+          v-if="!pending"
+          type="yellow"
+          :disabled="!canSummon"
+          @click="confirmSummon"
+        >Summon</custom-button>
+      </div>
+    </StripedPanel>
   </div>
 </template>
 
@@ -64,7 +57,13 @@ import Prompt from "@/components/Prompt.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import PaymentStatus from "@/../knightlands-shared/payment_status";
 import Events from "@/../knightlands-shared/events";
+import BossView from "./BossView.vue";
+import StripedPanel from "@/components/StripedPanel.vue";
+import StripedContent from "@/components/StripedContent.vue";
+
 const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
+
+import DifficultySelector from "@/components/DifficultySelector.vue";
 
 export default {
   name: "raid-summon",
@@ -72,7 +71,15 @@ export default {
   props: {
     raid: String
   },
-  components: { CraftingIngridient, CustomButton, PriceTag },
+  components: {
+    CraftingIngridient,
+    CustomButton,
+    PriceTag,
+    BossView,
+    DifficultySelector,
+    StripedPanel,
+    StripedContent
+  },
   created() {
     this.title = "Summon Raid";
     this.listener = this.fetchSummonStatus.bind(this);
@@ -82,7 +89,6 @@ export default {
     this.$game.off(Events.RaidSummonStatus, this.listener);
   },
   mounted() {
-    this.$refs.stages[this.selectedStage].checked = true;
     this.fetchSummonStatus();
   },
   activated() {
@@ -149,6 +155,16 @@ export default {
       return this.$game.crafting.getRecipeIngridients(
         this.meta.stages[stage].summonRecipe
       );
+    },
+    canSummon() {
+      if (!this.meta) {
+        return false;
+      }
+
+      let stage = this.selectedStage;
+      return this.$game.crafting.hasEnoughResourcesForRecipe(
+        this.meta.stages[stage].summonRecipe
+      );
     }
   },
   methods: {
@@ -156,8 +172,6 @@ export default {
       if (this.statusFetchInProcess[this.selectedStage]) {
         return;
       }
-
-      console.log("fetching status...");
 
       this.statusFetchInProcess[this.selectedStage] = true;
 
@@ -211,40 +225,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.stage-selector {
-  display: inline-grid;
-
-  & input {
-    appearance: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  & label {
-    transition: all 100ms ease-in;
-    filter: brightness(1.8) grayscale(1) opacity(0.7);
-  }
-
-  & input:checked + label {
-    filter: none;
-  }
-}
-
 .raid-summon-title {
   position: absolute;
   top: 0;
-}
-
-.raid-summon-boss-image {
-  height: 25vh;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
-.raid-summon-content {
-  position: relative;
 }
 </style>
 
