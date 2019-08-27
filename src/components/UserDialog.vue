@@ -1,6 +1,6 @@
 <template>
   <div class="mask flex flex-center" @click.self="handleClose">
-    <div class="content flex-no-wrap flex flex-column flex center panel-light">
+    <div class="content flex-no-wrap flex flex-column flex center" :class="type">
       <div
         class="dialog-title flex flex-center font-size-30 font-weight-700 margin-bottom-3 font-outline"
         :class="[titleClass, {compact:compact, 'title':compact}]"
@@ -26,7 +26,15 @@
 
 <script>
 export default {
-  props: ["title", "compact", "titleClass"],
+  props: {
+    title: String,
+    compact: Boolean,
+    titleClass: String,
+    type: {
+      type: String,
+      default: "panel-light"
+    }
+  },
   methods: {
     handleClose() {
       if (this.$close) {

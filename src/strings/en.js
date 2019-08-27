@@ -52,5 +52,13 @@ export default {
     "stamina-refill-title": "Restore stamina",
     "refill-message": "Choose refill method",
     "player-raid-killed-title": "You died",
-    "player-raid-killed-message": "{boss} killed you. Restore your health to get back to combat."
+    "player-raid-killed-message": "{boss} killed you. Restore your health to get back to combat.",
+    "TopDamageDealers": "Highest Damage",
+    "TopDamageDealers-desc": "Be in the top to gain additional rewards.",
+    "LastHit": "Last Hit",
+    "LastHit-desc": "Be the last one who strikes the boss and earn additional rewards!",
+    "leaderboard": "Leaderboard",
+    "highscore-you-mark": "(You)",
+    "unlock-wallet": "Unlock your wallet.",
+    "no-wallet": "There is no Tron Wallet connected to your browser."
 }; 

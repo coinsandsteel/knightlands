@@ -22,6 +22,7 @@ class Game {
         this.Disconnected = "disconnected";
         this.WalletSignedIn = "wallet_sign_in";
         this.WalletSignedOut = "wallet_sign_out";
+        this.WalletChanged = "wallet_changed";
         this.$store = store;
         this._items = new ItemDatabase();
         this._expTable = PlayerExpTable;
@@ -151,10 +152,12 @@ class Game {
         setInterval(() => {
             if (this._blockchainClient.isReady()) {
                 this._vm.walletReady = true;
+
                 if (!this._vm.account) {
                     this._vm.account = this._blockchainClient.getAddress();
                 } else if (this._vm.account !== this._blockchainClient.getAddress()) {
                     this.logout();
+                    this._vm.$emit(this.WalletChanged, this._blockchainClient.getAddress());
                 }
             } else {
                 this._vm.walletReady = false;

@@ -220,17 +220,24 @@ h1 {
     flex-basis: 100%;
 }
 
-.margin(@side, @counter) when (@counter > 0) {
-  .margin(@side, (@counter - 1)); // next iteration
-  .margin-@{side}-@{counter} {
-    margin-@{side}: ~'@{counter}rem';
+.size(@property, @counter) when (@counter > 0) {
+  .size(@property, (@counter - 1)); // next iteration
+  .@{property}-@{counter} {
+    @{property}: ~'@{counter}rem';
   }
 }
 
-.margin(top, 6);
-.margin(left, 6);
-.margin(right, 6);
-.margin(bottom, 6);
+.size(margin-top, 6);
+.size(margin-bottom, 6);
+.size(margin-left, 6);
+.size(margin-right, 6);
+.size(margin, 6);
+
+.size(padding-top, 6);
+.size(padding-bottom, 6);
+.size(padding-left, 6);
+.size(padding-right, 6);
+.size(padding, 6);
 
 .font-outline {
   text-shadow: 

@@ -12,7 +12,7 @@
       ]"
       :disabled="tab.disabled || false"
       @click="handleClick(tab.value)"
-    >{{tab.title}}</div>
+    >{{$t(tab.title)}}</div>
 
     <!-- <div
       class="tabs__active-line"
@@ -40,19 +40,23 @@ export default {
     },
     wrapperClass: {
       type: String,
-      required: false
+      required: false,
+      default: "disabled-tabs"
     },
     tabClass: {
       type: String,
-      required: false
+      required: false,
+      default: "disabled-tabs__item"
     },
     tabActiveClass: {
       type: String,
-      required: false
+      required: false,
+      default: "disabled-tabs__item_active"
     },
     lineClass: {
       type: String,
-      required: false
+      required: false,
+      default: "disabled-tabs__active-line"
     }
   },
   watch: {
@@ -76,11 +80,11 @@ export default {
       this.newTab = value;
     },
     moveActiveLine(newValue) {
-      if (!this.currentTab) return;
-      const element = this.$refs[newValue][0];
-      if (!element) return;
-      this.activeLineWidth = element.clientWidth;
-      this.activeLineOffset = element.offsetLeft;
+      // if (!this.currentTab) return;
+      // const element = this.$refs[newValue][0];
+      // if (!element) return;
+      // this.activeLineWidth = element.clientWidth;
+      // this.activeLineOffset = element.offsetLeft;
     }
   },
   mounted() {

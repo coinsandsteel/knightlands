@@ -21,13 +21,12 @@
           <div class="chests-content panel flex flex-center flex-center flex-column">
             <span class="font-size-25 margin-bottom-5 title">Select chest to open</span>
             <div class="flex flex-center flex-column relative width-100">
-              <div class="relative chests-picker width-100">
+              <div class="margin-bottom-5 relative chests-picker width-100">
                 <div class="chests-picker-bg"></div>
                 <presale-chest-selector v-model="selectedChest" :chests="chests"></presale-chest-selector>
               </div>
 
               <custom-button
-                class="margin-top-5"
                 type="yellow"
                 @click="openChest"
                 :disabled="chests[selectedChest] <= 0"

@@ -18,8 +18,17 @@ class Timer {
         this._timeLeft = Math.floor(value);
     }
 
-    update() {
+    update(force) {
+        if (!force && this._timerTimeout) {
+            return;
+        }
+
+        this._update();
+    }
+
+    _update() {
         if (this._timeLeft < 0) {
+            this._timerTimeout = null;
             return;
         }
 
@@ -34,9 +43,10 @@ class Timer {
         this.value = `${hoursValue}${
             minutes > 9 ? "" : 0
             }${minutes}:${seconds > 9 ? "" : 0}${seconds}`;
+
         this._timerTimeout = setTimeout(() => {
             this._timeLeft--;
-            this.update();
+            this._update();
         }, 1000);
     }
 };

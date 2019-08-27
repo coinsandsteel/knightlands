@@ -52,7 +52,7 @@
           <div
             class="flex flex-center width-100 margin-top-3 margin-bottom-3 flex-space-around full-flex"
           >
-            <custom-button type="grey" class="raid-mid-btn">
+            <custom-button type="grey" class="raid-mid-btn" @click="showChallenges = true">
               <icon-with-value
                 valueClass="font-size-20 btn-fix"
                 iconClass="icon-challenge"
@@ -115,7 +115,7 @@
         <!--NOT IN RAID YET-->
         <striped-panel contentClasses="flex-center" v-else>
           <div class="flex flex-center width-100 margin-bottom-3 flex-space-around full-flex">
-            <custom-button type="grey" class="raid-mid-btn">
+            <custom-button type="grey" class="raid-mid-btn" @click="showChallenges = true">
               <icon-with-value
                 valueClass="btn-fix"
                 iconClass="icon-challenge big"
@@ -142,9 +142,9 @@
             :dktFactor="raidData.dktFactor"
             @close="showRewards=false"
           ></Rewards>
-        </keep-alive>
 
-        <ClaimedReward v-if="showClaimedLoot"></ClaimedReward>
+          <Challenges v-if="showChallenges" :challenges="raidData.challenges" :raidData="raidData"></Challenges>
+        </keep-alive>
       </div>
     </template>
 
@@ -177,6 +177,7 @@ import Prompt from "@/components/Prompt.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
+import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
 
 const Events = require("@/../knightlands-shared/events");
@@ -207,13 +208,15 @@ export default {
     Rewards,
     ProgressBar,
     DamageLog,
-    DamageText
+    DamageText,
+    Challenges
   },
   channel: undefined,
   mixins: [AppSection],
   props: ["raid"],
   data: () => ({
     showRewards: false,
+    showChallenges: false,
     raidData: null,
     request: null,
     raidProgress: {
@@ -221,7 +224,6 @@ export default {
       max: 1
     },
     lastDamages: [],
-    showClaimedLoot: false,
     playerDamages: [],
     lootProgress: {
       current: 1,
@@ -306,7 +308,8 @@ export default {
   methods: {
     async claimReward() {
       let rewards = await this.$game.claimRaidLoot(this.raid);
-      await ShowReward(rewards, this.raidData.raidTemplateId);
+      await ShowReward(rewards.response, this.raidData.raidTemplateId);
+      this.handleBackButton();
     },
     subscribeToRaid() {
       this.unsubscribe();
@@ -320,6 +323,11 @@ export default {
       }
     },
     handleBackButton() {
+      if (this.showChallenges) {
+        this.showChallenges = false;
+        return true;
+      }
+
       this.$router.back();
       return true;
     },
@@ -373,10 +381,18 @@ export default {
         case Events.RaidDamaged:
           this._handleRaidDamage(data);
           break;
+
         case Events.RaidFinished:
           this._handleRaidFinished(data);
           break;
+
+        case Events.RaidChallengeUpdate:
+          this._handleChallengeUpdate(data);
+          break;
       }
+    },
+    _handleChallengeUpdate(data) {
+      this.raidData.challenges[data.type] = data.data;
     },
     _handleRaidDamage(data) {
       this.raidProgress.current = data.bossHp;

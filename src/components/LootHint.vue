@@ -149,7 +149,6 @@ export default {
 }
 
 .info {
-  margin-top: 1.25rem;
   justify-content: space-between;
 }
 

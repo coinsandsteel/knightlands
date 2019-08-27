@@ -90,6 +90,10 @@ export default {
   }),
   mounted() {
     this.fetchInventory();
+    this.$game.on(this.$game.WalletChanged, () => {
+      console.log("wallet changed");
+      window.location.reload();
+    });
   },
   watch: {
     ready() {

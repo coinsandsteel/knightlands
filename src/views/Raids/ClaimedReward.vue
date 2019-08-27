@@ -1,13 +1,20 @@
 <template>
-  <UserDialog @close="$close">
+  <UserDialog :title="$t('raid-reward-title', {boss: $t(bossName)})" @close="$close">
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
-        <span class="font-size-20">{{$t("raid-reward-title", {boss: $t(bossName)})}}</span>
-        <IconWithValue iconClass="icon-dkt">{{rewards.dkt}}</IconWithValue>
-        <IconWithValue iconClass="icon-gold">{{rewards.gold}}</IconWithValue>
-        <IconWithValue iconClass="icon-exp">{{rewards.exp}}</IconWithValue>
+        <IconWithValue
+          class="margin-bottom-1"
+          valueClass="font-size-20 digit-font"
+          iconClass="icon-dkt"
+        >{{rewards.dkt}}</IconWithValue>
+        <IconWithValue
+          class="margin-bottom-1"
+          valueClass="font-size-20 digit-font"
+          iconClass="icon-gold"
+        >{{rewards.gold}}</IconWithValue>
+        <IconWithValue valueClass="font-size-20 digit-font" iconClass="icon-exp">{{rewards.exp}}</IconWithValue>
 
-        <div class="flex flex-center flex-column margin-bottom-2">
+        <div class="flex flex-center flex-column margin-top-3">
           <div class="flex flex-center reward-loot">
             <loot
               v-for="item in rewards.items"

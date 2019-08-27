@@ -33,26 +33,24 @@ class TronBlockchainClient extends BlockchainClient {
     }
 
     async init() {
-        await new Promise(resolve => {
-            let tries = 0;
-            // is it possible that injection can be delayed?
-            let interval = setInterval(() => {
-                if (!window.tronWeb && tries++ > 10) {
-                    const tronWeb = new TronWeb(
-                        "https://api.trongrid.io",
-                        "https://api.trongrid.io",
-                        "https://api.trongrid.io"
-                    );
-                    window.tronWeb = tronWeb;
-                }
-
-                if (window.tronWeb) {
-                    clearInterval(interval);
-                    this._tronWeb = window.tronWeb;
-                    resolve();
-                }
-            }, 100);
-        });
+        try {
+            await new Promise((resolve, reject) => {
+                let tries = 0;
+                // is it possible that injection can be delayed?
+                let interval = setInterval(() => {
+                    if (!window.tronWeb && tries++ > 10) {
+                        clearInterval(interval);
+                        reject();
+                    } else if (window.tronWeb) {
+                        clearInterval(interval);
+                        this._tronWeb = window.tronWeb;
+                        resolve();
+                    }
+                }, 100);
+            });
+        } catch (exc) {
+            throw exc;
+        }
 
         this._paymentContract = this._tronWeb.contract(PaymentGateway.abi, PaymentGateway.address);
         this._presaleChestGateway = this._tronWeb.contract(PresaleChestGateway.abi, PresaleChestGateway.address);

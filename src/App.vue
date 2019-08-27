@@ -4,8 +4,9 @@
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar v-if="$game.authenticated"></status-bar>
       <div class="flex">
-        <div class="section-name font-size-25">
-          <div class="section-fill">{{title}}</div>
+        <div class="flex flex-center section-name font-size-25">
+          <span class="relative section-title">{{title}}</span>
+          <div class="section-fill"></div>
         </div>
       </div>
       <keep-alive>
@@ -13,7 +14,7 @@
       </keep-alive>
       <div class="footer flex-item-center">
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
-        <div class="flex flex-end" style="flex: 1 1">
+        <div class="footer-container flex flex-end" style="flex: 1 1">
           <component
             v-for="(footer, index) in footers"
             :key="index"
@@ -132,39 +133,37 @@ export default {
 
     this._blockchainClient = BlockchainFactory(this.$store.state.blockchain);
 
-    await this._blockchainClient.init();
-    Vue.prototype.$game.blockchain = this._blockchainClient;
+    try {
+      await this._blockchainClient.init();
+      Vue.prototype.$game.blockchain = this._blockchainClient;
 
-    // redirect to login page if no wallet installed
-    // if (!this.$game.hasWallet) {
-    //   next({
-    //     path: "/login"
-    //   });
-    // }
-
-    // wait for wallet to be unlocked
-    await new Promise(resolve => {
-      let tries = 0;
-      let interval;
-      interval = setInterval(() => {
-        if (tries++ > 5) {
-          // redirect to login page
-          if (this.$route.matched.some(record => record.meta.requiresAuth)) {
-            if (!this.$game.authenticated) {
-              this.redirectToLogin();
+      // wait for wallet to be unlocked
+      await new Promise(resolve => {
+        let tries = 0;
+        let interval;
+        interval = setInterval(() => {
+          if (tries++ > 5) {
+            // redirect to login page
+            if (this.$route.matched.some(record => record.meta.requiresAuth)) {
+              if (!this.$game.authenticated) {
+                this.redirectToLogin();
+              }
             }
+            this.loading = false;
+            clearInterval(interval);
+            return;
           }
-          this.loading = false;
-          clearInterval(interval);
-          return;
-        }
 
-        if (this.$game.walletReady()) {
-          clearInterval(interval);
-          this.$game.connect();
-        }
-      }, 100);
-    });
+          if (this.$game.walletReady()) {
+            clearInterval(interval);
+            this.$game.connect();
+          }
+        }, 100);
+      });
+    } catch {
+      // no wallet installed
+      this.redirectToLogin();
+    }
   },
   methods: {
     handleToggleDrawer() {
@@ -242,25 +241,30 @@ export default {
 @sectionPaddingTop: 0.4rem;
 
 .section-name {
-  text-align: left;
-  pointer-events: none;
   margin: 0 0 1rem 0;
-  min-width: 20rem;
-  padding-top: @sectionPaddingTop;
-  padding-right: @sectionPaddingRight;
-  color: #281326;
 
   & > .section-fill {
-    margin-left: 1.1rem;
-    width: calc(100%);
+    width: @sectionPaddingRight;
     height: calc(100%);
-    margin-top: -@sectionPaddingTop;
+
+    background: url("./assets/ui/title_bg3.png");
+    background-size: contain;
+    background-position: left;
+    background-repeat: no-repeat;
   }
 
-  background: url("./assets/ui/title_bg2.png"), url("./assets/ui/title_bg3.png");
-  background-size: 100% 100%, contain;
-  background-position: left, right;
-  background-repeat: no-repeat, no-repeat;
+  & > .section-title {
+    text-align: left;
+    pointer-events: none;
+
+    min-width: 20rem;
+    // padding-top: @sectionPaddingTop;
+    // padding-right: @sectionPaddingRight;
+    padding-left: 1.2rem;
+    color: #281326;
+    position: relative;
+    background-color: #928691;
+  }
 }
 
 .logo {
@@ -408,5 +412,11 @@ a:visited {
   display: block;
   text-decoration: none;
   color: white;
+}
+
+.footer-container {
+  * > {
+    margin-right: 0.3rem;
+  }
 }
 </style>

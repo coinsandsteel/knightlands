@@ -131,6 +131,7 @@ export default {
   user-select: none;
   color: #4e3948;
   height: 5rem;
+  margin: 0 @btnFillExtrude 0 @btnFillExtrude;
 
   &.mini {
     min-width: unset;

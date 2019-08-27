@@ -66,14 +66,14 @@ export default {
     getMinDkt(threshold) {
       return (
         Math.floor(
-          threshold.dktReward * this.dktFactor * (1 - DktSpread) * 100
+          this.stageData.minDkt * threshold.dktReward * this.dktFactor
         ) / 100
       );
     },
     getMaxDkt(threshold) {
       return (
         Math.floor(
-          threshold.dktReward * this.dktFactor * (1 + DktSpread) * 100
+          this.stageData.maxDkt * threshold.dktReward * this.dktFactor
         ) / 100
       );
     },
