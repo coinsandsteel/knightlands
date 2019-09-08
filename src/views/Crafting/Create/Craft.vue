@@ -15,9 +15,9 @@
               contentClasses="width-100 flex flex-space-evenly"
             >
               <crafting-ingridient
-                v-for="(essence) in ingridients"
-                :key="essence.itemId"
-                :ingridient="essence"
+                v-for="(ingridient) in ingridients"
+                :key="ingridient.itemId"
+                :ingridient="ingridient"
                 size="small"
               />
             </StripedContent>

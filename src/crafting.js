@@ -39,10 +39,7 @@ class Crafting {
         const length = recipe.ingridients.length;
         for (; i < length; ++i) {
             let ingridient = recipe.ingridients[i];
-            ingridients.push({
-                itemId: ingridient.itemId,
-                quantity: ingridient.quantity
-            });
+            ingridients.push({...ingridient});
         }
 
         return ingridients;

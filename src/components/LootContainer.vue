@@ -9,6 +9,7 @@
           :inventory="inventory"
           :hint="hint"
           :selected="selected == item.id"
+          :class="lootClasses"
           @hint="handleHint(item, index)"
           v-bind="lootProps"
         ></loot>
@@ -40,7 +41,8 @@ export default {
     },
     panel : String,
     selectSlots: Boolean,
-    lootProps: Object
+    lootProps: Object,
+    lootClasses: String
   },
   methods: {
     handleHint(item, index) {

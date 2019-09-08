@@ -117,7 +117,7 @@ export default {
 }
 
 @btnFillExtrude: 3px;
-@btnFillExtrudeSkewed: 16px;
+@btnFillExtrudeSkewed: 20px;
 
 .btn-fill {
   height: 100%;

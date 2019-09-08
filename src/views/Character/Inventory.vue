@@ -1,5 +1,5 @@
 <template>
-  <Promised :promise="request">
+  <Promised class="tab-content dummy-height flex flex-column full-flex" :promise="request">
     <template v-slot:combined="{isPending, isDelayOver}">
       <loading-screen :loading="true" v-show="isDelayOver && isPending"></loading-screen>
 
@@ -221,7 +221,7 @@ export default {
       if (!item) {
         return;
       }
-      
+
       let action = await Hint(item, !item.equipped, item.equipped);
       await this.handleItemAction(item, action);
     },

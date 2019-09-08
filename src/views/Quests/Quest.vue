@@ -124,7 +124,7 @@ export default {
   },
   computed: {
     currentStageStage() {
-      return this.$store.state.zoneStages[this.zone];
+      return this.$store.getters.getZoneStage;
     },
     isZoneLocked() {
       return this.$game.getZoneLocked(this.zone, this.currentStageStage);

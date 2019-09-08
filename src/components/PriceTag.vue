@@ -15,6 +15,11 @@ export default {
       price: 0
     };
   },
+  watch: {
+    iap() {
+      this.refreshPrice();
+    }
+  },
   mounted() {
     if (this.overridePrice) {
       switch (this.$store.state.blockchain) {

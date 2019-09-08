@@ -23,18 +23,25 @@
 
         <span class="margin-top-1 margin-bottom-1 title font-size-20">{{$t("unbind-materials")}}</span>
 
-        <div class="flex flex-center margin-bottom-2">
-            <loot class="margin-right-half margin-bottom-half" 
-                v-for="(item, index) in unbindItems" 
-                :key="index" 
-                :item="item" 
-                :showLevel="true" 
-                :showUnbindLevels="true" 
-                :hideQuantity="true" 
-                :selected="selectedItems[index]" 
-                :locked="!selectedItems[index] && lockRest" 
-                @hint="toggleSelectItem(index)"
-            />
+        <div class="flex flex-center full-flex width-100 dummy-height margin-bottom-2">
+            <div v-bar class="flex width-100 height-100 dummy-height">
+                <div>
+                    <div class="flex width-100 flex-center dummy-height">
+                        <loot 
+                            v-for="(item, index) in unbindItems" 
+                            :key="index" 
+                            :item="item" 
+                            :showLevel="true" 
+                            :showUnbindLevels="true" 
+                            :hideQuantity="true" 
+                            :selected="selectedItems[index]" 
+                            :locked="!selectedItems[index] && lockRest" 
+                            @hint="toggleSelectItem(index)"
+                        />
+                    </div>
+                </div>
+            </div>
+            
         </div>
 
         <CustomButton type="yellow" :disabled="lockedTotal==0" @click="unbind">{{$t("btn-unbind")}}</CustomButton>
@@ -172,7 +179,7 @@ export default {
                         continue;
                     }
 
-                    let count = item.count;
+                    let count = item.count < 2 ? item.count : 2;
                     while (count-- > 0) {
                         if (item.unique) {
                             filteredItems.push(item);

@@ -732,5 +732,7 @@
     "clockwork_queen": "",
     "clockwork_knight_c": "",
     "clockwork_skull": "",
-    "clockwork_dragon_juggernaut": ""
+    "clockwork_dragon_juggernaut": "",
+    "btn-confirm": "Confirm",
+    "btn-pay": "Pay"
 }

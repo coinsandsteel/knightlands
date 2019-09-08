@@ -129,7 +129,6 @@ export default {
       this.timerValue.timeLeft =
         this.timer.regenTime -
         (this.$game.now / 1000 - this.timer.lastRegenTime);
-      this.timerValue.update();
     },
     progressType() {
       if (this.thresholds.length === 0) {

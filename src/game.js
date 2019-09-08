@@ -70,12 +70,13 @@ class Game {
         this._socket.on(Events.InventoryUpdate, this._handleInventoryUpdate.bind(this));
         this._socket.on(Events.RaidSummonStatus, this._handleRaidStatus.bind(this));
         this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
+        this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
 
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
 
         // pass socket to make character model listen to certain events
-        this._character = new CharacterModel(this._socket);
+        this._character = new CharacterModel(this._socket, this);
         Vue.prototype.$character = this._character;
     }
 
@@ -101,6 +102,10 @@ class Game {
 
     get load() {
         return this._vm.load;
+    }
+
+    get hasPremiumAccount() {
+        return false;
     }
 
     walletReady() {
@@ -321,6 +326,12 @@ class Game {
         this._vm.$emit(Events.CraftingStatus, data);
     }
 
+    _handleTimerRefilled(data) {
+        const { context } = data;
+        this._character.refillTimer(context);
+        this._vm.$emit(Events.TimerRefilled, context);
+    }
+
     _mergeData(data) {
         let {
             changes,
@@ -336,10 +347,30 @@ class Game {
         if (changes.questsProgress) {
             for (let zone in changes.questsProgress.zones) {
                 let quests = changes.questsProgress.zones[zone];
+                let zoneData = this._vm.questsProgress.zones[zone];
+                if (!zoneData) {
+                    zoneData = {};
+                    Vue.set(this._vm.questsProgress.zones, zone, zoneData);
+                }
+
                 for (let quest in quests) {
                     let stages = quests[quest];
+                    let stagesData = zoneData[quest];
+                    if (!stagesData) {
+                        stagesData = {};
+                        Vue.set(zoneData, quest, stagesData);
+                    }
+
                     for (let stage in stages) {
-                        this._vm.questsProgress.zones[zone][quest][stage].hits = stages[stage].hits;
+                        let stageData = stagesData[stage];
+                        if (!stageData) {
+                            stageData = {
+                                hits: 0
+                            };
+                            Vue.set(stagesData, stage, stageData);
+                        }
+                        
+                        stageData.hits = stages[stage].hits;
                     }
                 }
             }
@@ -609,11 +640,13 @@ class Game {
     }
 
     async refillTimer(stat, refillType, items) {
-        await this._wrapOperation(Operations.RefillTimer, {
+        let response = await this._wrapOperation(Operations.RefillTimer, {
             stat,
             refillType,
             items
         });
+
+        return response.response;
     }
 
     async fetchCurrentRaids() {
@@ -672,6 +705,18 @@ class Game {
     async fetchCraftingStatus(recipeId) {
         return await this._request(Operations.FetchCraftingStatus, {
             recipeId
+        });
+    }
+
+    async fetchTimerRefillStatus(stat) {
+        return await this._request(Operations.FetchRefillTimerStatus, {
+            stat
+        });
+    }
+
+    async getTimerRefillInfo(stat) {
+        return await this._request(Operations.GetTimerRefillInfo, {
+            stat
         });
     }
 }

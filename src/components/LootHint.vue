@@ -10,7 +10,7 @@
 
       <ItemInfo :item="item" :hideTitle="true">
 
-        <template v-slot:afterType>
+        <template v-slot:afterType v-if="isEquipment">
           <div class="flex flex-center margin-bottom-half">
             <span class="star" :class="{active: stars >= 1}"></span>
             <span class="star margin-right-auto" :class="{active: stars >= 2}"></span>

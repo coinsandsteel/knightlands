@@ -167,6 +167,30 @@ class Inventory {
         return item ? item.count : 0;
     }
 
+    hasMaxLevelItemByTemplate(template) {
+        let maxLevel = this._itemDB.getMaxLevel(template, 2);
+        let items = this._getItemsByTemplate(template);
+        
+        if (!items) {
+            return false;
+        }
+
+        let i = 0;
+        const length = items.length;
+        for (; i < length; ++i) {
+            let item = items[i];
+            if (!item.unique) {
+                continue;
+            }
+
+            if (item.level == maxLevel) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     getItemsCountByTemplate(templateId) {
         let totalCount = 0;
         let items = this._getItemsByTemplate(templateId);

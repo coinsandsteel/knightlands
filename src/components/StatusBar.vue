@@ -70,7 +70,7 @@
 <script>
 import ProgressBar from "./ProgressBar.vue";
 import CharacterStats from "@/../knightlands-shared/character_stat.js";
-import TimerRefill from "@/views/TimerRefill.vue";
+import TimerRefill from "@/views/TimerRefill/TimerRefill.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
 const TimerRefillModal = CreateDialog(TimerRefill, ...TimerRefill.props);
@@ -132,7 +132,7 @@ export default {
       return Math.floor(new Date().getTime() / 1000);
     },
     async refillTimer(stat) {
-      let result = await TimerRefillModal(stat);
+      await TimerRefillModal(stat);
     }
   }
 };

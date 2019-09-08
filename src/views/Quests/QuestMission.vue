@@ -1,85 +1,92 @@
 <template>
-  <div class="flex flex-column flex-center">
-    <div class="font-size-30 enemy-title-font font-outline font-weight-700">{{missionName}}</div>
+  <Promised :promise="request">
+    <template v-slot:combined="{isPending, isDelayOver, data}">
+      <div class="flex flex-column flex-center">
+        <LoadingScreen :loading="true" v-show="isPending && isDelayOver"></LoadingScreen>
 
-    <div :style="zoneBackground" class="flex quest-mid flex-center flex-no-wrap">
-      <div
-        :class="{hidden: questIndex <= 0}"
-        class="quest-nav flex flex-item-center"
-        @click="$emit('prevQuest')"
-      >
-        <div class="nav-arrow left"></div>
-      </div>
+        <div class="font-size-30 enemy-title-font font-outline font-weight-700">{{$t(missionName)}}</div>
 
-      <!-- ENEMY IMAGE HERE -->
-      <div class="quest-image pixelated flex flex-items-end flex-center">
-        <img :src="enemyImage" />
-      </div>
+        <div :style="zoneBackground" class="flex quest-mid flex-center flex-no-wrap">
+          <div
+            :class="{hidden: questIndex <= 0}"
+            class="quest-nav flex flex-item-center"
+            @click="$emit('prevQuest')"
+          >
+            <div class="nav-arrow left"></div>
+          </div>
 
-      <div
-        :class="{hidden: questIndex >= maxQuestIndex}"
-        class="quest-nav flex flex-item-center"
-        @click="$emit('nextQuest')"
-      >
-        <div class="nav-arrow"></div>
-      </div>
-    </div>
+          <!-- ENEMY IMAGE HERE -->
+          <div class="quest-image pixelated flex flex-items-end flex-center">
+            <img :src="enemyImage" />
+          </div>
 
-    <progress-bar
-      :percentMode="true"
-      v-model="progress.current"
-      :maxValue="progress.max"
-      height="0.75rem"
-      width="80%"
-      valuePosition="top"
-      barType="yellow"
-      valueClass="white-font font-outline font-size-30 quest-progress-value"
-      :thresholds="thresholds"
-    ></progress-bar>
-
-    <div class="quest-bottom panel flex flex-column full-flex">
-      <div class="flex quest-info-table">
-        <div class="flex-basis-50 font-size-30 flex flex-column flex-center flex-justify-start">
-          <div>Rewards</div>
-          <div class="margin-top-small">
-            <icon-with-value iconClass="icon-exp" :value="quest.exp"></icon-with-value>
-            <icon-with-value iconClass="icon-gold" :value="`${quest.goldMin}-${quest.goldMax}`"></icon-with-value>
+          <div
+            :class="{hidden: questIndex >= maxQuestIndex}"
+            class="quest-nav flex flex-item-center"
+            @click="$emit('nextQuest')"
+          >
+            <div class="nav-arrow"></div>
           </div>
         </div>
-        <div
-          class="flex-basis-50 font-size-30 flex flex-column flex-center flex-justify-start"
-          v-show="quest.energy"
-        >
-          <div>Cost</div>
-          <div class="margin-top-small">
-            <icon-with-value iconClass="icon-energy" :value="quest.energy"></icon-with-value>
+
+        <progress-bar
+          :percentMode="true"
+          v-model="progress.current"
+          :maxValue="progress.max"
+          height="0.75rem"
+          width="80%"
+          valuePosition="top"
+          barType="yellow"
+          valueClass="white-font font-outline font-size-30 quest-progress-value"
+          :thresholds="thresholds"
+        ></progress-bar>
+
+        <div class="quest-bottom panel flex flex-column full-flex">
+          <div class="flex quest-info-table">
+            <div class="flex-basis-50 font-size-30 flex flex-column flex-center flex-justify-start">
+              <div>Rewards</div>
+              <div class="margin-top-small">
+                <icon-with-value iconClass="icon-exp" :value="quest.exp"></icon-with-value>
+                <icon-with-value iconClass="icon-gold" :value="`${quest.goldMin}-${quest.goldMax}`"></icon-with-value>
+              </div>
+            </div>
+            <div
+              class="flex-basis-50 font-size-30 flex flex-column flex-center flex-justify-start"
+              v-show="quest.energy"
+            >
+              <div>Cost</div>
+              <div class="margin-top-small">
+                <icon-with-value iconClass="icon-energy" :value="quest.energy"></icon-with-value>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-center full-flex loot ">
+            <loot v-for="reward in rewards" :key="reward.id" :item="reward" @hint="handleHint"></loot>
+          </div>
+        </div>
+        <div class="quest-footer flex flex-center">
+          <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">Kill previous enemies</div>
+          <div v-else-if="progress.current >= progress.max">
+            <div class="font-size-30 font-outline green-title">Complete</div>
+          </div>
+          <div v-else class="flex flex-center width-100 flex-space-evenly">
+            <custom-button @click="engage(false)">Attack x1</custom-button>
+            <custom-button :locked="!$game.hasPremiumAccount" @click="engage(true)">Attack MAX</custom-button>
           </div>
         </div>
       </div>
-      <loot-container class="full-flex loot center" :items="rewards" @hint="showHint"></loot-container>
-    </div>
-    <div class="quest-footer flex flex-center">
-      <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">Kill previous enemies</div>
-      <div v-else-if="progress.current >= progress.max">
-        <div class="font-size-30 font-outline green-title">Complete</div>
-      </div>
-      <div v-else class="flex flex-center width-100 flex-space-evenly">
-        <custom-button @click="engage(false)">Attack x1</custom-button>
-        <custom-button @click="engage(true)">Attack MAX</custom-button>
-      </div>
-    </div>
-  </div>
+    </template>
+  </Promised>
+  
 </template>
 
 <script>
-import LootHint from "@/components/LootHint.vue";
-import { create as CreateDialog } from "vue-modal-dialogs";
+import HintHandler from "@/components/HintHandler.vue"
 import Zones from "@/campaign_database";
-
-const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
-
+import LoadingScreen from "@/components/LoadingScreen.vue"
 import ProgressBar from "@/components/ProgressBar.vue";
-import LootContainer from "@/components/LootContainer.vue";
+import Loot from "@/components/Loot.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 import Stat from "@/../knightlands-shared/character_stat.js";
 import IconWithValue from "@/components/IconWithValue.vue";
@@ -87,15 +94,29 @@ import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
 import Inventory from "@/inventory";
 
+const Events = require("@/../knightlands-shared/events");
+import Errors from "@/../knightlands-shared/errors";
+
+import { create } from "vue-modal-dialogs";
+import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
+
+import { Promised } from "vue-promised";
+
+const ShowResourceRefill = create(
+  NotEnoughResource,
+  ...NotEnoughResource.props
+);
+
 export default {
+  mixins: [HintHandler],
   props: ["zone", "questIndex", "maxQuestIndex", "stage"],
-  components: { LootContainer, ProgressBar, IconWithValue, CustomButton },
+  components: { LoadingScreen, Loot, ProgressBar, IconWithValue, CustomButton, Promised },
   data() {
     return {
       rewards: [],
       thresholds: UiConstants.progressThresholds,
-      lockUI: false,
-      lootHash: {}
+      lootHash: {},
+      request: null
     };
   },
   mounted() {
@@ -142,21 +163,20 @@ export default {
     }
   },
   methods: {
-    showHint(item) {
-      Hint(item);
-    },
     async engage(max, boss) {
-      this.lockUI = true;
-      let lootDrops = await this.$game.engageQuest(
+      this.request = this.$game.engageQuest(
         this.zone._id * 1,
         this.questIndex * 1,
         max
       );
 
-      this.lockUI = false;
+      try {
+        await this.request;
+      } catch(exc) {
+        await this._handleQuestError(exc);
+      }
     },
     handleInventoryDelta(lootDrops) {
-      console.log(lootDrops);
       for (let itemId in lootDrops.changes) {
         // if already was dropped before - just inc loot counter
         if (this.lootHash[itemId]) {
@@ -168,6 +188,18 @@ export default {
           this.$set(this.lootHash, itemId, copy);
           this.rewards.push(this.lootHash[itemId]);
         }
+      }
+    },
+    async _handleQuestError(error) {
+      console.log("_handleQuestError", error, Errors.NoEnergy)
+      switch (error) {
+        case Errors.NoHealth:
+          await ShowResourceRefill(Stat.Health);
+          break;
+
+        case Errors.NoEnergy:
+          await ShowResourceRefill(Stat.Energy);
+          break;
       }
     }
   }

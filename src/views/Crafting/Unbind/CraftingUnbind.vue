@@ -1,5 +1,5 @@
 <template>
-  <div class="padding-1">
+  <div class="padding-1 height-100 dummy-height">
     <div class="flex full-flex dummy-height">
       <div v-bar class="width-100 height-100 dummy-height">
         <LootContainer :items="items" @hint="openUnbind" :lootProps="{showUnbindLevels: true, showLevel: true}"></LootContainer>

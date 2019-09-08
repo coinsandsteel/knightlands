@@ -3,8 +3,9 @@ import Vue from "vue";
 import CharacterStats from "../knightlands-shared/character_stat.js";
 
 class CharacterModel {
-    constructor(socket) {
+    constructor(socket, game) {
         this._socket = socket;
+        this._game = game;
 
         let stats = {};
         stats[CharacterStats.Attack] = 0;
@@ -101,6 +102,11 @@ class CharacterModel {
         this._vm.freeAttributePoints = data.freeAttributePoints;
     }
 
+    refillTimer(stat) {
+        this.timers[stat].value = this.maxStats[stat];
+        clearTimeout(this.timers[stat].timeout);
+    }
+
     mergeData(data) {
         this._mergeData(this._vm.$data, data);
     }
@@ -171,22 +177,24 @@ class CharacterModel {
         this.timers[stat].lastRegenTime = timer.lastRegenTime;
         this.timers[stat].regenTime = timer.regenTime;
 
-        let now = Math.floor(new Date().getTime() / 1000);
-        this._setTimerInterval(stat, this.timers[stat].regenTime - (now - this.timers[stat].lastRegenTime));
+        this._setTimerInterval(stat, this.timers[stat].regenTime - (this._game.now/1000 - this.timers[stat].lastRegenTime));
     }
 
     _setTimerInterval(stat, interval) {
         interval *= 1000;
 
         if (this.timers[stat].value >= this.maxStats[stat]) {
+            // console.log(`timer ${stat} has reached maximum value ${this.maxStats[stat]}`);
             return;
         }
 
         clearTimeout(this.timers[stat].timeout);
-
+        
+        console.log(`timer ${stat} value ${this.timers[stat].value} interval ${interval}`);
         this.timers[stat].timeout = setTimeout(() => {
             this.timers[stat].value++;
-            this.timers[stat].lastRegenTime = Math.floor(new Date().getTime() / 1000);
+            this.timers[stat].lastRegenTime = Math.floor(this._game.now / 1000);
+            console.log(`timer ${stat} has fired! New value ${this.timers[stat].value}`);
             this._setTimerInterval(stat, this.timers[stat].regenTime);
         }, interval);
     }
