@@ -1,7 +1,7 @@
 <template>
   <user-dialog :title="$t(title)" @close="$close(false)">
     <template v-slot:content>
-      <div class="font-size-20 margin-top-3">{{$t(message)}}</div>
+      <div class="font-size-20 margin-top-3" v-html="$t(message)"></div>
     </template>
     <template v-slot:footer>
       <div class="flex flex-center button-container">

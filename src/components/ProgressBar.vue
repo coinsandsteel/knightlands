@@ -1,12 +1,18 @@
 <template>
-  <div class="progress-bar width-100" @click="$emit('refill')">
+  <div class="progress-bar flex flex-center flex-no-wrap width-100" @click="$emit('refill')">
     <div class="icon">
       <div :class="iconClass"></div>
     </div>
-    <div class="bar-container digit-font flex flex-center" :class="{'flex-column':isTop }">
+
+    <div
+      class="bar-container digit-font flex flex-center"
+      :class="[{'flex-column':isTop}, barClasses]"
+      :style="{'width': width}"
+    >
       <div
         class="status-bar-font bar-value flex flex-center"
         :class="[valueClass, {'bar-value-top': isTop}]"
+        v-if="!hideValues"
       >
         <div v-show="showValue">{{currentValue}}</div>
         <div v-show="!showValue" class="status-bar-font flex">
@@ -17,6 +23,7 @@
 
       <div class="bar" :style="barStyle()">
         <div class="progress" :class="progressType()" :style="fillStyle()"></div>
+        <div v-if="value2 > 0" class="progress progress2" :class="barType2" :style="fillStyle2()"></div>
       </div>
       <div v-if="plusButton" class="btn-plus" :class="`${plusButton}-btn`"></div>
     </div>
@@ -34,6 +41,7 @@ export default {
   props: {
     barColor: { default: "#ffffff44" },
     barType: { default: "red" },
+    barType2: { default: "red" },
     width: { default: "100%" },
     height: { default: "2rem" },
     percentMode: { default: false },
@@ -42,6 +50,7 @@ export default {
     iconClass: { type: String },
     hideMaxValue: { type: Boolean },
     value: { type: Number, default: 0 },
+    value2: { type: Number, default: 0 },
     timer: { type: Object },
     valuePosition: { type: String, default: Inside },
     plusButton: { type: String }, // possible values are grey, green, empty
@@ -49,7 +58,10 @@ export default {
       type: Array,
       default: () => []
     },
-    compact: Boolean
+    barClasses: String,
+    compact: Boolean,
+    hideValues: Boolean,
+    hideBackground: Boolean
   },
   data() {
     return {
@@ -67,9 +79,10 @@ export default {
       return this.valuePosition == Top;
     },
     currentValue() {
+      let useValue = this.value2 ? this.value2 : this.value;
       let value = this.percentMode
-        ? Math.floor((this.value / this.maxValue) * 100)
-        : this.value;
+        ? Math.floor((useValue / this.maxValue) * 100)
+        : useValue;
 
       if (!this.hideMaxValue && !this.percentMode) {
         value += `/${this.maxValue}`;
@@ -151,9 +164,8 @@ export default {
     },
     barStyle() {
       return {
-        "background-color": this.barColor,
-        height: this.compact ? "0.75rem" : this.height,
-        width: this.width
+        "background-color": this.hideBackground ? "#0000" :this.barColor,
+        height: this.compact ? "0.75rem" : this.height
       };
     },
     fillStyle() {
@@ -166,9 +178,18 @@ export default {
         width: percentWidth + "%"
       };
     },
+    fillStyle2() {
+      let percentWidth = (this.value2 / this.maxValue) * 100;
+      if (percentWidth > 100) {
+        percentWidth = 100;
+      }
+      return {
+        height: "100%",
+        width: percentWidth + "%"
+      };
+    },
     progressStyle() {
       return {
-        width: this.width,
         height: this.height
       };
     }
@@ -181,8 +202,6 @@ export default {
 .progress-bar {
   z-index: 1;
   position: relative;
-  display: flex;
-  align-items: center;
 
   .bar-container {
     width: 100%;
@@ -190,12 +209,21 @@ export default {
     position: relative;
 
     .bar {
+      width: 100%;
       z-index: -1;
       flex: 1;
       position: relative;
 
       .progress {
         transition: width 0.2s ease;
+      }
+
+      .progress2 {
+        position: absolute;
+        left:0;
+        top:0;
+        bottom: 0;
+        right: 0;
       }
     }
   }

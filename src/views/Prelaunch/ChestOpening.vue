@@ -80,7 +80,8 @@ const ChestSkeletons = {
   0: "brown",
   1: "blue",
   2: "red",
-  3: "purple"
+  3: "purple",
+  4: "love"
 };
 
 export default {

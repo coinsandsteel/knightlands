@@ -111,21 +111,19 @@ class CharacterModel {
         }
 
         if (data.equipment) {
-            this._removeData(this._vm.equipment, data.equipment, false);
+            this._removeData(this._vm.equipment, data.equipment, true);
         }
     }
 
-    _removeData(currentData, newData, root) {
+    _removeData(currentData, dataToRemove, root) {
         for (let i in currentData) {
-            if (typeof (currentData[i]) == "object") {
-                if (newData.hasOwnProperty(i) && typeof (newData[i]) == "object") {
-                    this._removeData(currentData[i], newData[i], false);
-                } else if (!root) {
+            if (dataToRemove.hasOwnProperty(i)) {
+                if (typeof dataToRemove[i] == "object") {
+                    this._removeData(currentData[i], dataToRemove[i], false);
+                } else {
                     this._vm.$delete(currentData, i);
                 }
-            } else if (!root && !newData.hasOwnProperty(i)) {
-                this._vm.$delete(currentData, i);
-            }
+            } 
         }
     }
 

@@ -39,10 +39,15 @@ class Inventory {
         this._vm.$off(event, callback);
     }
 
-    load(data) {
-        this._vm.items.length = 0;
+    clear() {
+        this._vm.items = [];
         this._itemsBytemplate.clear();
-        this._itemsById.clear();
+        this._itemsById.clear();    
+    }
+
+    load(data) {
+        this.clear();
+
         let i = 0;
         const length = data.items.length;
         for (; i < length; i++) {
@@ -72,8 +77,48 @@ class Inventory {
         return this.getItemsCountByTemplate(itemTemplate) >= quantity;
     }
 
+    filterItems(filter) {
+        return this._vm.items.filter(x => filter(x));
+    }
+
     getItem(itemId) {
         return this._itemsById.get(itemId * 1);
+    }
+
+    decreaseStackAndReturn(itemId) {
+        let item = this.getItem(itemId);
+        if (item.count == 1) {
+            this._removeItem(itemId);
+        } else {
+            item.count--;
+            item = { ...item };
+            item.count = 1;
+        }
+
+        return item;
+    }
+
+    increaseStack(item) {
+        let currentItem = this.getItem(item.id);
+        if (currentItem) {
+            currentItem.count++;
+        } else {
+            this._addItem(item);
+        }
+    }
+
+    // returns only first element
+    getItemByTemplate(template) {
+        let templates = this._getItemsByTemplate(template);
+        if (templates) {
+            return templates[0];
+        }
+
+        return null;
+    }
+
+    getItemsByTemplate(templateId) {
+        return this._getItemsByTemplate(templateId);
     }
 
     // returns reference to the array of items
@@ -159,19 +204,23 @@ class Inventory {
 
     _sort() {
         this._vm.items.sort((a, b) => {
-            let sortingFactorA = this._itemDB.getRarity(a.template);
-            let sortingFactorB = this._itemDB.getRarity(b.template);
+            let sortingFactorA = this._itemDB.getRarityAsNumber(
+                a.template
+            );
+            let sortingFactorB = this._itemDB.getRarityAsNumber(
+                b.template
+            );
 
             if (sortingFactorA == sortingFactorB) {
                 sortingFactorA = a.id;
                 sortingFactorB = b.id;
             }
 
-            if (sortingFactorA < sortingFactorB) {
+            if (sortingFactorA > sortingFactorB) {
                 return -1;
             }
 
-            if (sortingFactorA > sortingFactorB) {
+            if (sortingFactorA < sortingFactorB) {
                 return 1;
             }
 

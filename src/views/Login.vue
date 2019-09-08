@@ -1,8 +1,8 @@
 <template>
   <div class="login-container flex flex-center">
-    <div class="font-size-20" v-if="!$game.blockchainClient">{{$t("no-wallet")}}</div>
+    <div class="font-size-20" v-if="!$game.hasWallet()">{{$t("no-wallet")}}</div>
     <div class="font-size-20" v-else-if="!$game.walletReady()">{{$t("unlock-wallet")}}</div>
-    <custom-button size="big" v-else @click="signIn">Sign in</custom-button>
+    <custom-button size="big" v-else @click="signIn">{{$t("btn-signin")}}</custom-button>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
   methods: {
     redirectToNextPage() {
       let url = this.$route.query.url;
-      if (url) {
+      if (typeof url == "string" && !url.contains("login")) {
         this.$router.replace(url);
       } else {
         this.$router.replace({ name: "character" });

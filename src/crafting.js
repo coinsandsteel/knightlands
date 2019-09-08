@@ -6,10 +6,12 @@ class Crafting {
         this._inventory = inventory;
     }
 
-    hasEnoughResourcesForRecipe(recipeId) {
-        let recipe = this._recipes[recipeId];
-        if (!recipe) {
-            return false;
+    hasEnoughResourcesForRecipe(recipe) {
+        if (typeof recipe != "object") {
+            recipe = this.getRecipe(recipe);
+            if (!recipe) {
+                return false;
+            }
         }
 
         let enoughResources = true;
@@ -27,7 +29,7 @@ class Crafting {
     }
 
     getRecipeIngridients(recipeId) {
-        let recipe = this._recipes[recipeId];
+        let recipe = this.getRecipe(recipeId);
         if (!recipe) {
             return [];
         }
@@ -44,6 +46,18 @@ class Crafting {
         }
 
         return ingridients;
+    }
+
+    getRecipe(recipeId) {
+        return this._recipes[recipeId];
+    }
+
+    getResultItem(recipeId) {
+        let recipe = this.getRecipe(recipeId);
+        if (!recipe) {
+            return null;
+        }
+        return recipe.resultItem;
     }
 };
 

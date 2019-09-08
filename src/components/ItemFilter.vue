@@ -4,7 +4,7 @@
       <div class="flex flex-space-between margin-top-3 font-size-25">
         <p-check
           style="p-default p-curve p-thick"
-          class="checkbox margin-bottom-medium"
+          class="checkbox margin-bottom-1"
           name="check"
           color="warning"
           :checked="allFiltersState()"
@@ -14,7 +14,7 @@
         <p-check
           v-for="(_, filter) in itemFilters"
           :key="filter"
-          class="checkbox margin-bottom-medium"
+          class="checkbox margin-bottom-1"
           style="p-default p-curve p-thick"
           name="check"
           color="warning"

@@ -22,18 +22,17 @@
 
       <div class="margin-top-2 font-size-20 flex flex-center">
         <span>Summoning Fee:</span>
-        <price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag>
+        <price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag><price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag>
       </div>
 
       <div class="margin-top-2 flex flex-column flex-center">
-        <div v-if="pending" class="flex flex-center">
-          <div class="font-size-20">Waiting for payment confirmation.</div>
-          <GridLoader color="#fde648" :size="15" margin="1px" />
-        </div>
-        <div v-else-if="waitingForPayment" class="flex flex-center">
-          <div class="font-size-20">Waiting for payment...</div>
-          <GridLoader color="#fde648" :size="15" margin="1px" />
-        </div>
+        <LoadingIndicator v-if="pending" >
+          <div class="font-size-20">{{$t("waiting-for-tx-confirmation")}}</div>
+        </LoadingIndicator>
+
+        <LoadingIndicator v-else-if="waitingForPayment">
+          <div class="font-size-20">{{$t("waiting-for-payment")}}</div>
+        </LoadingIndicator>
 
         <custom-button
           v-if="!pending"
@@ -60,6 +59,7 @@ import Events from "@/../knightlands-shared/events";
 import BossView from "./BossView.vue";
 import StripedPanel from "@/components/StripedPanel.vue";
 import StripedContent from "@/components/StripedContent.vue";
+import LoadingIndicator from "@/components/LoadingIndicator.vue"
 
 const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
 
@@ -78,7 +78,8 @@ export default {
     BossView,
     DifficultySelector,
     StripedPanel,
-    StripedContent
+    StripedContent,
+    LoadingIndicator
   },
   created() {
     this.title = "Summon Raid";

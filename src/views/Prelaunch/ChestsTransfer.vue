@@ -20,7 +20,7 @@
                 class="font-size-18 margin-bottom-2"
               >Select how many chests you want to transfer:</span>
               <numeric-value
-                class="chests-count-input panel-dark"
+                class="chests-count-input panel-dark margin-bottom-2"
                 :value="chestsToTransfer"
                 :decreaseCondition="chestsToTransfer > 0"
                 :increaseCondition="chestsToTransfer < owned"
@@ -40,7 +40,7 @@
     <!-- The "rejected" scoped slot will be used if there is an error -->
     <template v-slot:rejected="error">
       <div class="full-flex flex flex-center">
-        <p class="font-size-20 font-error">Unexpected error.</p>
+        <p class="font-size-20 font-error">Unexpected error. Make sure that your wallet uses Mainnet.</p>
         <custom-button @click="tryAgain">Try again</custom-button>
       </div>
     </template>
@@ -105,8 +105,9 @@ export default {
       try {
         await this.request;
         this.chestsToTransfer = 0;
-        await this.fetchChests();
       } catch {}
+
+      await this.fetchChests();
     }
   }
 };

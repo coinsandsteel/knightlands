@@ -2,10 +2,10 @@
   <div class="mission-element panel">
     <div class="left-column flex flex-column flex-center flex-basis-50">
       <div class="title flex flex-center font-size-20 enemy-title-font">
-        <span>{{view.name}}</span>
+        <span>{{$t(missionName)}}</span>
       </div>
 
-      <div class="mission-image pixelated" :style="enemyImage()"></div>
+      <div class="mission-image pixelated" :style="enemyImage"></div>
 
       <progress-bar
         class="mission-progress"
@@ -68,10 +68,10 @@
 
 <script>
 import ProgressBar from "@/components/ProgressBar.vue";
-import ZoneViews from "@/zone_views";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import UiConstants from "@/ui_constants";
+import Zones from "@/campaign_database";
 
 export default {
   components: {
@@ -103,9 +103,8 @@ export default {
     progress() {
       return this.$game.getQuestProgress(this.zone._id, this.questIndex);
     },
-    view() {
-      if (!ZoneViews[this.zone._id]) return {};
-      return ZoneViews[this.zone._id].quests[this.questIndex] || {};
+    missionName() {
+      return Zones.getMissionName(this.zone._id, this.questIndex);
     },
     quest() {
       return this.zone.quests[this.questIndex].stages[this.stage];
@@ -120,13 +119,11 @@ export default {
         this.stage
       );
       return bossProgress.unlocked;
-    }
-  },
-  methods: {
+    },
     enemyImage() {
-      return `background-image: url("${UiConstants.enemyImage(
-        this.view.img
-      )}");`;
+      return UiConstants.backgroundImage(
+        Zones.getEnemyImage(this.zone._id, this.questIndex)
+      );
     }
   }
 };

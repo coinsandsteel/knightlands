@@ -1,23 +1,47 @@
 <template>
-  <div>
-    <!-- <router-link to="/settings"></router-link>
-    <a v-if="$game.authenticated" href="javascript:void(0)" @click="logout">
-      <span>Sign out</span>
-    </a>-->
+  <div class="flex flex-column flex-end flex-items-center relative">
+    <div class="home-art"></div>
 
-    <router-link class="test" tag="div" to="/home/quest" :append="true">QUESTS</router-link>
-    <router-link class="test" tag="div" to="/home/raids" :append="true">Raids</router-link>
+    <div class="flex width-100 flex-center margin-bottom-5">
+      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="quest" :append="true">
+        <SkewedButton :props='{type:"grey", icon:"icon-quests"}'>
+          {{$t("btn-quests")}}
+        </SkewedButton>
+      </router-link>
+
+      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="raids" :append="true">
+        <SkewedButton class="flex-basis-50" :props='{type:"red", icon:"icon-raids"}'>
+          {{$t("btn-raids")}}
+        </SkewedButton>
+      </router-link>
+
+      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="quest" :append="true">
+        <SkewedButton :props='{type:"purple", icon:"icon-settings"}'>
+          {{$t("btn-settings")}}
+        </SkewedButton>
+      </router-link>
+
+      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="quest" :append="true">
+        <SkewedButton :props='{type:"green", icon:"icon-divs"}'>
+          {{$t("btn-divs")}}
+        </SkewedButton>
+      </router-link>
+    </div>
+    
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
+import SkewedButton from "@/components/SkewedButton.vue"
+import IconWithValue from "@/components/IconWithValue.vue"
 
 export default {
   name: "home",
   mixins: [AppSection],
+  components: { SkewedButton, IconWithValue },
   created() {
-    this.title = "Home";
+    this.title = this.$t("window-title-home");
   },
   methods: {
     logout() {
@@ -28,17 +52,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.test {
-  border-image: url("../assets/ui/border.png") repeat;
-  border-image-slice: 40 fill;
-  border-image-width: 10px;
-  width: 100px;
-  height: 100px;
-  border-style: solid;
-  border-width: 2rem;
-  //   border-image-source: url("../assets/ui/border.png");
-  //   border-image-slice: 100% 0%;
-  //   border-image-repeat: repeat;
+.home-art {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-image: url("../assets/ui/background_home.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100%;
+  height: 50vh;
+  z-index: 0;
 }
 </style>
 

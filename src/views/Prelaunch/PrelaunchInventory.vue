@@ -10,22 +10,16 @@
     </div>
 
     <div class="flex flex-column flex-no-wrap full-flex width-100 height-100" v-else>
-      <tabs
-        :tabs="tabs"
-        :currentTab="currentTab"
-        :wrapper-class="'disabled-tabs'"
-        :tab-class="'disabled-tabs__item'"
-        :tab-active-class="'disabled-tabs__item_active'"
-        :line-class="'disabled-tabs__active-line'"
-        @onClick="switchTab"
-      />
+      <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
 
       <keep-alive>
         <div v-if="currentTab == InventoryTab" class="flex flex-column flex-full dummy-height">
+          <PresaleFeed></PresaleFeed>
+
           <div class="currency-bar digit-font flex flex-center flex-space-evenly">
-            <icon-with-value iconClass="icon-gold">{{softCurrency}}</icon-with-value>
-            <icon-with-value iconClass="icon-premium">{{hardCurrency}}</icon-with-value>
-            <icon-with-value iconClass="icon-dkt">{{dkt}}</icon-with-value>
+            <icon-with-value iconClass="icon-gold">{{Math.floor(softCurrency*100)/100}}</icon-with-value>
+            <icon-with-value iconClass="icon-premium">{{Math.floor(hardCurrency*100)/100}}</icon-with-value>
+            <icon-with-value iconClass="icon-dkt">{{Math.floor(dkt*100)/100}}</icon-with-value>
           </div>
 
           <div class="flex full-flex dummy-height" v-if="items.length > 0">
@@ -35,6 +29,7 @@
           </div>
         </div>
         <presale-chests v-if="currentTab == ChestsTab"></presale-chests>
+        <Referrals v-if="currentTab == ReferralsTab"></Referrals>
       </keep-alive>
     </div>
   </div>
@@ -52,6 +47,8 @@ import Config from "@/config";
 import WelcomeGift from "./WelcomeGift.vue";
 import Tabs from "@/components/Tabs.vue";
 import PresaleChests from "./PresaleChests.vue";
+import Referrals from "./Referrals.vue";
+import PresaleFeed from "./PresaleFeed.vue";
 
 const ShowWelcome = CreateDialog(WelcomeGift, ...WelcomeGift.props);
 const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
@@ -59,6 +56,7 @@ const ShowHint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
 
 const InventoryTab = "inventory";
 const ChestsTab = "open-chests";
+const ReferralsTab = "referrals";
 
 export default {
   mixins: [AppSection],
@@ -67,7 +65,9 @@ export default {
     CustomButton,
     LootContainer,
     Tabs,
-    PresaleChests
+    PresaleChests,
+    Referrals,
+    PresaleFeed
   },
   created() {
     this.title = "Inventory";
@@ -82,16 +82,18 @@ export default {
     welcomeToken: "",
     tabs: [
       { title: "inventory", value: InventoryTab },
-      { title: "chests", value: ChestsTab }
+      { title: "chests", value: ChestsTab },
+      { title: "referrals", value: ReferralsTab }
     ],
     currentTab: InventoryTab,
     InventoryTab,
-    ChestsTab
+    ChestsTab,
+    ReferralsTab
   }),
   mounted() {
     this.fetchInventory();
+
     this.$game.on(this.$game.WalletChanged, () => {
-      console.log("wallet changed");
       window.location.reload();
     });
   },
@@ -152,34 +154,11 @@ export default {
 
       this.loading = false;
     },
-    // async checkWelcomePackageStatus() {
-    //   let response = await this.$http.get(
-    //     `${Config.httpEndpoint}/check/welcomeStatus`,
-    //     {
-    //       params: {
-    //         wallet: this.$game.account
-    //       }
-    //     }
-    //   );
-
-    //   if (response.body.ok) {
-    //     response = await this.$http.post(
-    //       `${Config.httpEndpoint}/get/welcomeKey`,
-    //       {
-    //         wallet: this.$game.account
-    //       }
-    //     );
-    //     this.welcomeToken = response.body.token;
-    //     this.signin = true;
-    //   } else {
-    //     await this.fetchInventory();
-    //   }
-    // },
     async fetchInventory() {
       try {
         this.loading = true;
         let response = await this.$http.get(
-          `${Config.httpEndpoint}/inventory`,
+          `${Config.httpEndpoint}/get/inventory`,
           {
             params: {
               wallet: this.$game.account
@@ -228,6 +207,7 @@ export default {
         ]);
       }
     },
+
     async showHint(item) {
       if (!item) {
         return;

@@ -1,23 +1,30 @@
 <template>
   <div class="flex flex-column flex-center">
-    <div class="font-size-30 enemy-title-font font-outline font-weight-700">{{view.name}}</div>
-    <div :style="zoneBackground" class="pixelated flex quest-mid flex-center flex-no-wrap">
+    <div class="font-size-30 enemy-title-font font-outline font-weight-700">{{missionName}}</div>
+
+    <div :style="zoneBackground" class="flex quest-mid flex-center flex-no-wrap">
       <div
-        v-show="questIndex > 0"
+        :class="{hidden: questIndex <= 0}"
         class="quest-nav flex flex-item-center"
         @click="$emit('prevQuest')"
       >
         <div class="nav-arrow left"></div>
       </div>
-      <div class="quest-image" :style="enemyImage"></div>
+
+      <!-- ENEMY IMAGE HERE -->
+      <div class="quest-image pixelated flex flex-items-end flex-center">
+        <img :src="enemyImage" />
+      </div>
+
       <div
-        v-show="questIndex < maxQuestIndex"
+        :class="{hidden: questIndex >= maxQuestIndex}"
         class="quest-nav flex flex-item-center"
         @click="$emit('nextQuest')"
       >
         <div class="nav-arrow"></div>
       </div>
     </div>
+
     <progress-bar
       :percentMode="true"
       v-model="progress.current"
@@ -67,7 +74,7 @@
 <script>
 import LootHint from "@/components/LootHint.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
-import ZoneViews from "@/zone_views.js";
+import Zones from "@/campaign_database";
 
 const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
 
@@ -108,20 +115,16 @@ export default {
     progress() {
       return this.$game.getQuestProgress(this.zone._id, this.questIndex);
     },
-    view() {
-      if (!ZoneViews[this.zone._id]) return {};
-      return ZoneViews[this.zone._id].quests[this.questIndex] || {};
-    },
     quest() {
       return this.zone.quests[this.questIndex].stages[this.stage];
     },
     zoneBackground() {
       return UiConstants.backgroundImage(
-        UiConstants.zoneImageByZoneId(this.zone._id)
+        Zones.getBackground(this.zone._id)
       );
     },
     enemyImage() {
-      return `background-image: url("/images/enemies/${this.view.img}.png");`;
+      return Zones.getEnemyImage(this.zone._id, this.questIndex)
     },
     isBossUnlocked() {
       if (!this.zone.quests[this.questIndex].boss) {
@@ -133,6 +136,9 @@ export default {
         this.stage
       );
       return bossProgress.unlocked;
+    },
+    missionName() {
+      return Zones.getMissionName(this.zone._id, this.questIndex);
     }
   },
   methods: {
@@ -201,11 +207,18 @@ export default {
 }
 
 .quest-image {
-  height: 100%;
+  align-self: flex-end;
+  padding-bottom: 1rem;
+  height: 80%;
   width: 100%;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+
+  & img {
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
 .quest-bottom {
@@ -233,9 +246,14 @@ export default {
   top: 0;
 }
 
+.hidden {
+  opacity: 0;
+}
+
 .quest-nav {
   cursor: pointer;
   height: 14rem;
+  transition: all 0.2s ease;
 }
 </style>
 

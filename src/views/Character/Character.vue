@@ -1,15 +1,7 @@
 <template>
   <div class="flex flex-column">
-    <div class="flex flex-no-wrap full-flex flex-column">
-      <tabs
-        :tabs="tabs"
-        :currentTab="currentTab"
-        :wrapper-class="'disabled-tabs'"
-        :tab-class="'disabled-tabs__item'"
-        :tab-active-class="'disabled-tabs__item_active'"
-        :line-class="'disabled-tabs__active-line'"
-        @onClick="switchTab"
-      />
+    <div class="flex dummy-height flex-no-wrap full-flex flex-column">
+      <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
       <keep-alive>
         <inventory v-if="currentTab === InventoryTab" :items="$game.inventory.items"></inventory>
         <stats v-if="currentTab === StatsTab"></stats>
@@ -46,10 +38,7 @@ export default {
     };
   },
   mounted() {
-    this.title = `Character of ${this.$game.account.substr(
-      0,
-      4
-    )}...${this.$game.account.substr(-4)}`;
+    this.title = `Character of ${this.$game.shortAccount()}`;
   },
   methods: {
     switchTab(newTab) {

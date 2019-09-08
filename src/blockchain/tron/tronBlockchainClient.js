@@ -52,22 +52,29 @@ class TronBlockchainClient extends BlockchainClient {
             throw exc;
         }
 
-        this._paymentContract = this._tronWeb.contract(PaymentGateway.abi, PaymentGateway.address);
-        this._presaleChestGateway = this._tronWeb.contract(PresaleChestGateway.abi, PresaleChestGateway.address);
-        this._presale = this._tronWeb.contract(Presale.abi, Presale.address);
+        try {
+            this._paymentContract = this._tronWeb.contract(PaymentGateway.abi, PaymentGateway.address);
+
+            if (process.env.NODE_ENV == "production") {
+                this._presaleChestGateway = await this._tronWeb.contract().at("TAGCzgmuUGzfgNvaXKsztH9Kqk2rjwvJE4");
+                this._presale = await this._tronWeb.contract().at("TUCnRiaydK4h9BMtYZXXjUwNBrDYoXp2FB");
+            } else {
+                this._paymentContract = await this._tronWeb.contract().at(PaymentGateway.address);
+            }
+        } catch {}
     }
 
     async fetchOwnedChests() {
         if (!this._chestsContracts) {
             this._chestsContracts = {};
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 5; i++) {
                 let chestData = await this._presale.methods.chestStatus(i).call();
                 this._chestsContracts[i] = await this._tronWeb.contract().at(chestData[0]);
             }
         }
 
         let chests = {};
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             let owned = await this._chestsContracts[i].balanceOf(this._tronWeb.defaultAddress.hex).call();
             chests[i] = owned.toNumber();
         }

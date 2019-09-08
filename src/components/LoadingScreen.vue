@@ -12,7 +12,7 @@ export default {
     loading: Boolean,
     opacity: {
       type: Number,
-      default: 1
+      default: 0.4
     }
   },
   computed: {

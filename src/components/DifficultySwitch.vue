@@ -21,7 +21,7 @@ export default {
   props: ["stages", "current", "cb"],
   computed: {
     stage() {
-      return this.$store.getters.getZoneStage(this.current);
+      return this.$store.getters.getZoneStage;
     },
     caption() {
       return "Difficulty: " + UiConstants.stageNames[this.stage];

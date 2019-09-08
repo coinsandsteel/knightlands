@@ -56,14 +56,15 @@ export default {
   left: 0;
   top: 0;
   background: no-repeat url("../../assets/ui/difficulty_selected.png");
-  background-size: 100% 100%;
+  background-size: contain;
+  background-position: center;
   width: 100%;
   height: 100%;
 }
 
 .chest-count {
   position: absolute;
-  transform: translateX(-50%) translateY(120%);
+  transform: translateX(-50%);
   left: 50%;
   bottom: 0;
 }
@@ -73,7 +74,7 @@ export default {
   background-size: 80%;
   background-position: center;
   width: 8rem;
-  height: 8rem;
+  height: 12rem;
   display: inline-block;
   cursor: pointer;
 
@@ -96,6 +97,10 @@ export default {
 
 .chest3 {
   .chest-icon("chest4");
+}
+
+.chest4 {
+  .chest-icon("chest5");
 }
 </style>
 

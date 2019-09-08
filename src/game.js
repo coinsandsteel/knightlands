@@ -13,6 +13,7 @@ import {
 } from "./expTables.json";
 const Operations = require("./../knightlands-shared/operations");
 import CurrencyType from "@/../knightlands-shared/currency_type";
+import DisconnectCodes from "@/../knightlands-shared/disconnectCodes";
 
 class Game {
     constructor(store) {
@@ -46,17 +47,17 @@ class Game {
 
         var options = {
             hostname: Config.gameServerEndpoint,
-            secure: process.env.NODE_ENV == "production",
+            secure: process.env.NODE_ENV == "production" || process.env.NODE_ENV == "test",
             autoConnect: false,
             port: Config.gameServerPort,
             rejectUnauthorized: false, // Only necessary during debug if using a self-signed certificate
             connectTimeout: 5000,
             ackTimeout: 5000,
             autoReconnectOptions: {
-                initialDelay: 10000,
-                randomness: 10000,
+                initialDelay: 5000,
+                randomness: 5000,
                 multiplier: 1.5,
-                maxDelay: 60000
+                maxDelay: 15000
             }
         };
 
@@ -68,6 +69,7 @@ class Game {
 
         this._socket.on(Events.InventoryUpdate, this._handleInventoryUpdate.bind(this));
         this._socket.on(Events.RaidSummonStatus, this._handleRaidStatus.bind(this));
+        this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
 
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
@@ -81,7 +83,7 @@ class Game {
         return this.account === "TL58CLCzVVr9x4GoBPDxz7VW3Hko9oqrGi";
     }
 
-    get hasWallet() {
+    hasWallet() {
         return !!this._blockchainClient;
     }
 
@@ -157,6 +159,7 @@ class Game {
                     this._vm.account = this._blockchainClient.getAddress();
                 } else if (this._vm.account !== this._blockchainClient.getAddress()) {
                     this.logout();
+                    this._vm.account = this._blockchainClient.getAddress();
                     this._vm.$emit(this.WalletChanged, this._blockchainClient.getAddress());
                 }
             } else {
@@ -171,6 +174,16 @@ class Game {
 
     off(event, callback) {
         this._vm.$off(event, callback);
+    }
+
+    shortAccount(account) {
+        if (!account) {
+            account = this.account;
+        }
+        return `${account.substr(
+            0,
+            4
+        )}...${account.substr(-4)}`;
     }
 
     connect() {
@@ -205,7 +218,7 @@ class Game {
             // signing was rejected
             console.log("signIn", exc);
 
-            if (exc.includes("not unlocked")) {
+            if (exc && exc.message.includes("not unlocked")) {
                 //reset walletReady
                 this._vm.walletReady = false;
             }
@@ -243,7 +256,13 @@ class Game {
         this._vm.$emit(this.Ready, data.isAuthenticated);
     }
 
-    _handleDisconnect() {
+    _handleDisconnect(errorCode) {
+        if (errorCode == DisconnectCodes.OtherClientSignedIn) {
+            this.logout();
+        } else if (errorCode == DisconnectCodes.NotAllowed) {
+            this.logout();
+        }
+
         this._vm.$emit(this.Disconnected);
     }
 
@@ -262,17 +281,15 @@ class Game {
     logout() {
         this._socket.deauthenticate();
         this._socket.disconnect();
+        this._inventory.clear();
     }
 
     // EVENTS
     _handleInventoryUpdate(data) {
-        console.log("inventory update", data);
         this._inventory.mergeData(data);
     }
 
     _handleRaidStatus(data) {
-        console.log("raid status changed", data);
-
         const { iap, reason, context } = data;
 
         Vue.notify({
@@ -282,10 +299,26 @@ class Game {
                 context,
                 success: reason ? false : true,
             },
-            duration: -1
+            duration: 2000
         });
 
         this._vm.$emit(Events.RaidSummonStatus);
+    }
+
+    _handleCraftStatus(data) {
+        const { iap, reason, context } = data;
+
+        // Vue.notify({
+        //     group: "raid",
+        //     data: {
+        //         iap,
+        //         context,
+        //         success: reason ? false : true,
+        //     },
+        //     duration: -1
+        // });
+
+        this._vm.$emit(Events.CraftingStatus, data);
     }
 
     _mergeData(data) {
@@ -376,11 +409,15 @@ class Game {
         return stages;
     }
 
+    isZoneLocked(zone) {
+        // check if previous zone 0 stage is unlocked
+        return this.getZoneLocked(zone, 0);
+    }
 
     getZoneLocked(zone, stage) {
         // check if previous zone is complete
         if (!stage) {
-            stage = this.$store.getters.getZoneStage(zone);
+            stage = this.$store.getters.getZoneStage;
         }
 
         // zones is an array sorted by id, id starts from 1, thus -2 to get previous zone
@@ -394,7 +431,7 @@ class Game {
 
     getQuestBossProgress(zone, stage) {
         if (!stage) {
-            stage = this.$store.getters.getZoneStage(zone);
+            stage = this.$store.getters.getZoneStage;
         }
 
         let stages = this._vm.questsProgress.bosses[zone];
@@ -432,7 +469,7 @@ class Game {
     }
 
     getQuestProgress(zone, questId) {
-        let stage = this.$store.getters.getZoneStage(zone);
+        let stage = this.$store.getters.getZoneStage;
         let questData = this._zones[zone - 1].quests[questId];
         if (questData.boss) {
             let progress = this.getQuestBossProgress(zone);
@@ -481,9 +518,9 @@ class Game {
         return this._zones;
     }
 
-    createChannel(name) {
+    createChannel(name, waitForAuth = true) {
         return this._socket.subscribe(name, {
-            waitForAuth: true
+            waitForAuth
         });
     }
 
@@ -517,7 +554,7 @@ class Game {
 
     async resetZone(zone) {
         zone = zone * 1;
-        let stage = this.$store.getters.getZoneStage(zone);
+        let stage = this.$store.getters.getZoneStage;
         await this._wrapOperation(Operations.ResetZone, {
             zone,
             stage
@@ -525,7 +562,7 @@ class Game {
     }
 
     async engageQuest(zone, questIndex, max = false) {
-        let stage = this.$store.getters.getZoneStage(zone);
+        let stage = this.$store.getters.getZoneStage;
         let result = await this._wrapOperation(Operations.EngageQuest, {
             zone,
             questIndex,
@@ -604,6 +641,38 @@ class Game {
 
     async getCurrencyConversionRate() {
         return await this._request(Operations.GetCurrencyConversionRate);
+    }
+
+    async upgradeItem(itemId, materialId, count) {
+        let response = await this._wrapOperation(Operations.UpgradeItem, {
+            itemId, materialId, count
+        });
+
+        return response.response;
+    }
+
+    async unbindItem(itemId, items) {
+        let response = await this._wrapOperation(Operations.UnbindItem, {
+            itemId,
+            items
+        });
+
+        return response.response;
+    }
+
+    async craftRecipe(recipeId, currency) {
+        let response = await this._wrapOperation(Operations.CraftItem, {
+            recipeId,
+            currency
+        });
+
+        return response.response;
+    }
+
+    async fetchCraftingStatus(recipeId) {
+        return await this._request(Operations.FetchCraftingStatus, {
+            recipeId
+        });
     }
 }
 

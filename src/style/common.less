@@ -9,6 +9,12 @@
     }
 }
 
+.not-mobile(@rules) {
+    @media only screen and (min-width: 480px) {
+        @rules();
+    }
+}
+
 .laptop(@rules) {
     @media only screen and (max-width: 1280px) and (min-width: 1025px) {
         @rules();
@@ -152,6 +158,10 @@ h1 {
     align-items: center;
 }
 
+.flex-justify-center {
+    justify-content: center;
+}
+
 .flex-justify-start {
     justify-content: flex-start;
 }
@@ -212,12 +222,32 @@ h1 {
     flex-basis: 30%;
 }
 
+.flex-basis-40 {
+    flex-basis: 40%;
+}
+
 .flex-basis-50 {
     flex-basis: 50%;
 }
 
 .flex-basis-100 {
     flex-basis: 100%;
+}
+
+.margin-right-half {
+    margin-right: 0.5rem;
+}
+
+.margin-left-half {
+    margin-left: 0.5rem;
+}
+
+.margin-top-half {
+    margin-top: 0.5rem;
+}
+
+.margin-bottom-half {
+    margin-bottom: 0.5rem;
 }
 
 .size(@property, @counter) when (@counter > 0) {
@@ -263,6 +293,10 @@ h1 {
     cursor: pointer;
 }
 
+.margin-right-auto {
+    margin-right: auto;
+}
+
 .pointer-events-none {
     pointer-events: none;
 }
@@ -271,12 +305,45 @@ h1 {
     margin-right: 0.3rem;
 }
 
+.white-space-no-wrap {
+    white-space: nowrap;
+}
+
 .white-space-wide {
     margin-right: 0.6rem;
 }
 
+.absolute-stretch {
+    position: absolute !important;
+    top:0  !important;
+    left:0  !important;
+    right:0  !important;
+    bottom:0  !important;
+}
+
+.right-arrow {
+    background-image: url("../assets/ui/button_arrow.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
 /* ICONS */
 @iconSize: 2.5rem;
+
+.star {
+    background-image: url("../assets/ui/icon_star_empty.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    transition: all 0.2s ease;
+
+    &.active {
+        background-image: url("../assets/ui/icon_star.png");
+    }
+}
 
 .icon(@filename) {
     background: url("../assets/ui/@{filename}.png") no-repeat;
@@ -284,6 +351,11 @@ h1 {
     width: @iconSize;
     height: @iconSize;
     margin-right: 0.3rem;
+
+    &.huge {
+        width: @iconSize * 1.8;
+        height: @iconSize * 1.8;
+    }
 
     &.big {
         width: @iconSize * 1.5;
@@ -340,6 +412,12 @@ h1 {
     .icon("icon_tron");
 }
 
+.icon-trx-dark {
+    .icon("icon_tron");
+
+    filter: brightness(0);
+}
+
 .icon-info {
     .icon("icon_hint");
 }
@@ -354,6 +432,34 @@ h1 {
 
 .icon-attack {
     .icon("icon_attack");
+}
+
+.icon-raids {
+    .icon("skewed_icon_raids");
+}
+
+.icon-quests {
+    .icon("skewed_icon_quests");
+}
+
+.icon-divs {
+    .icon("skewed_icon_dividents");
+}
+
+.icon-settings {
+    .icon("skewed_icon_settings");
+}
+
+.icon-craft {
+    .icon("skewed_icon_craft");
+}
+
+.icon-craft-upgrade {
+    .icon("skewed_icon_unbind");
+}
+
+.icon-craft-level {
+    .icon("skewed_icon_upgrade");
 }
 
 .icon-size-mini {
@@ -417,13 +523,20 @@ h1 {
     color: #6a1e2b;
 }
 
-.height-100 {
-    height: 100%;
+//width/height generator with 5% step
+.widthHeight(@size, @counter) when (@counter > 0) {
+  .widthHeight(@size, (@counter - 5)); // next iteration
+  .@{size}-@{counter} {
+    @{size}: ~'@{counter}%';
+  }
 }
 
-.width-100 {
-    width: 100%;
-}
+.widthHeight(height, 100);
+.widthHeight(width, 100);
+.widthHeight(max-height, 100);
+.widthHeight(max-width, 100);
+.widthHeight(min-height, 100);
+.widthHeight(min-width, 100);
 
 .relative {
     position: relative;
@@ -454,13 +567,18 @@ h1 {
     transform: translateY(-50%);
 }
 
+.align-self-center {
+    align-self: center;
+}
+
 .title {
     border-image: url("../assets/ui/title.png") round;
     border-image-slice: 25 30 fill;
     border-image-width: 2rem;
     border-width: 1px;
     border-style: solid;
-    padding: 0.2rem 2rem 0.2rem 2rem;
+    padding: 0rem 2rem;
+    align-self: center;
 }
 
 .close-btn {

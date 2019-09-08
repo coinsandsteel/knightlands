@@ -5,12 +5,12 @@
       <status-bar v-if="$game.authenticated"></status-bar>
       <div class="flex">
         <div class="flex flex-center section-name font-size-25">
-          <span class="relative section-title">{{title}}</span>
+          <span class="relative section-title">{{$t(title)}}</span>
           <div class="section-fill"></div>
         </div>
       </div>
       <keep-alive>
-        <router-view class="content flex flex-no-wrap flex-column" v-if="!loading" />
+        <router-view class="content dummy-height flex flex-no-wrap flex-column" v-if="showContent" />
       </keep-alive>
       <div class="footer flex-item-center">
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
@@ -25,9 +25,35 @@
       </div>
       <div class="root-menu flex" v-if="$game.authenticated">
         <div id="nav">
-          <router-link to="/home"></router-link>
-          <router-link to="/character"></router-link>
-          <router-link to="/raid"></router-link>
+          <router-link class="flex flex-center" to="/home">
+            <span class="menu-icon home"></span>
+            <span class="menu-title">{{$t("menu-home")}}</span>
+          </router-link>
+
+          <router-link  class="flex flex-center" to="/character">
+            <span class="menu-icon character"></span>
+            <span class="menu-title">{{$t("menu-character")}}</span>
+          </router-link>
+
+          <router-link  class="flex flex-center" to="/crafting">
+            <span class="menu-icon crafting"></span>
+            <span class="menu-title">{{$t("menu-crafting")}}</span>
+          </router-link>
+
+          <!-- <router-link  class="flex flex-center" to="/">
+            <span class="menu-icon shop"></span>
+            <span class="menu-title">{{$t("menu-shop")}}</span>
+          </router-link> -->
+
+          <!-- <router-link  class="flex flex-center" to="/">
+            <span class="menu-icon guild"></span>
+            <span class="menu-title">{{$t("menu-guild")}}</span>
+          </router-link> -->
+<!-- 
+          <router-link  class="flex flex-center" to="/">
+            <span class="menu-icon chat"></span>
+            <span class="menu-title">{{$t("menu-chat")}}</span>
+          </router-link> -->
         </div>
       </div>
     </div>
@@ -79,6 +105,15 @@ export default {
       }
     });
   },
+  computed: {
+    showContent() {
+      if (this.$route.meta.skipReady) {
+        return !this.loading;
+      }
+
+      return !this.loading && this.ready;
+    }
+  },
   async created() {
     Vue.prototype.$app = this;
     Vue.prototype.$game = new Game(this.$store);
@@ -88,7 +123,7 @@ export default {
         if (!this.$game.authenticated) {
           next({
             name: "login",
-            query: { url: this.$route.path }
+            query: { url: to.path }
           });
           return;
         }
@@ -142,7 +177,7 @@ export default {
         let tries = 0;
         let interval;
         interval = setInterval(() => {
-          if (tries++ > 5) {
+          if (tries++ > 10) {
             // redirect to login page
             if (this.$route.matched.some(record => record.meta.requiresAuth)) {
               if (!this.$game.authenticated) {
@@ -158,7 +193,7 @@ export default {
             clearInterval(interval);
             this.$game.connect();
           }
-        }, 100);
+        }, 200);
       });
     } catch {
       // no wallet installed
@@ -219,6 +254,7 @@ export default {
 
 <style lang="scss">
 @import "~pretty-checkbox/src/pretty-checkbox.scss";
+@import "~vue-virtual-scroller/dist/vue-virtual-scroller.css";
 </style>
 
 <style lang="less" scoped>
@@ -312,34 +348,98 @@ export default {
 .root-menu {
   justify-content: space-between;
   background-color: #403f48;
-  height: 32px;
 }
 
 #nav {
   display: flex;
   width: 100%;
   align-items: center;
+  height: 5rem;
 
   a {
+    height: 100%;
     width: calc(100% - 30px);
-    line-height: 32px;
     text-align: center;
-    height: 32px;
-
-    display: flex;
-    justify-content: flex-start;
-
-    .icon {
-      height: 32px;
-      width: 32px;
-    }
+    background-color: #6b6f82;
+    position: relative;
 
     &:hover {
       background-color: #502d46;
     }
 
+    .menu-title {
+      font-size: 1.5rem;
+      position: absolute;
+      bottom: 0;
+      opacity: 0;
+      text-transform:uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .menu-icon {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 6rem;
+      height: 6rem;
+      transition: all 0.2s ease;
+      position: absolute;
+      bottom: -0.5rem;
+      z-index: 1;
+    }
+
+    .home {
+      background-image: url("./assets/ui/tabbar_home_selected.png");
+    }
+
+    .crafting {
+      background-image: url("./assets/ui/tabbar_craft_selected.png");
+    }
+
+    .character {
+      background-image: url("./assets/ui/tabbar_character_selected.png");
+    }
+
+    .shop {
+      background-image: url("./assets/ui/tabbar_shop_selected.png");
+    }
+
+    .chat {
+      background-image: url("./assets/ui/tabbar_chat_selected.png");
+    }
+
     &.router-link-active {
-      background-color: #5f3653;
+      background-color: #3f3e51;
+
+      .menu-title {
+        transition-delay: 0.2s;
+        opacity: 1;
+      }
+
+      .menu-icon {
+        bottom: 0.7rem;
+        z-index: 2;
+      }
+
+      .home {
+        background-image: url("./assets/ui/tabbar_home_selected.png");
+      }
+
+      .crafting {
+        background-image: url("./assets/ui/tabbar_craft_selected.png");
+      }
+
+      .character {
+        background-image: url("./assets/ui/tabbar_character_selected.png");
+      }
+
+      .shop {
+        background-image: url("./assets/ui/tabbar_shop_selected.png");
+      }
+
+      .chat {
+        background-image: url("./assets/ui/tabbar_chat_selected.png");
+      }
     }
   }
 }
@@ -356,6 +456,11 @@ export default {
   min-width: 35.625rem;
   margin: 0 auto;
   background: @backgroundMainColor;
+  background: linear-gradient(
+    0deg,
+    rgba(35, 14, 33, 1) 0%,
+    rgba(38, 16, 52, 1) 100%
+  );
   .mobile({min-width: unset; max-width: unset; width: 100%;});
   .tablet({width: 48rem;});
   .laptop_small({width: 48rem;});

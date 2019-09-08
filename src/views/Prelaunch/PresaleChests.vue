@@ -126,15 +126,25 @@ export default {
           0: 0,
           1: 0,
           2: 0,
-          3: 0
+          3: 0,
+          4: 0
         };
-        for (let i in chestStatus.body.chest) {
-          let opened = chestStatus.body.chest[i].opened || 0;
-          chests[i] = chestStatus.body.chest[i].total - opened;
+
+        if (chestStatus.body) {
+          if (chestStatus.body.chest) {
+            for (let i in chestStatus.body.chest) {
+              let opened = chestStatus.body.chest[i].opened || 0;
+              chests[i] = chestStatus.body.chest[i].total - opened;
+            }
+          }
+        
+          this.openToken = chestStatus.body.openingToken;
         }
+
         this.chests = chests;
-        this.openToken = chestStatus.body.openingToken;
-      } catch (exc) {}
+      } catch (exc) {
+        console.error(exc);
+      }
     },
     transferChests() {
       this.transfer = true;

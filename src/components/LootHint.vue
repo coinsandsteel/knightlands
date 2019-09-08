@@ -1,70 +1,63 @@
 <template>
   <user-dialog
     :title="$t(template.caption)"
-    @close="$close"
+    @close="handleClose"
     :titleClass="`rarity-${template.rarity}`"
     :compact="true"
+    :hideMask="hideMask"
   >
     <template v-slot:content>
-      <div class="info flex flex-column">
-        <div class="flex hint-header panel-light">
-          <loot class="loot-icon hintFix" :item="item" :interactible="false"></loot>
-          <div class="flex flex-column font-size-20 full-flex">
-            <div class="text-align-left">
-              <span>{{type}}</span>
-            </div>
-            <div v-if="isEquipment" class="text-align-left font-size-20">
+
+      <ItemInfo :item="item" :hideTitle="true">
+
+        <template v-slot:afterType>
+          <div class="flex flex-center margin-bottom-half">
+            <span class="star" :class="{active: stars >= 1}"></span>
+            <span class="star margin-right-auto" :class="{active: stars >= 2}"></span>
+          </div>
+        </template>
+
+        <template v-slot:beforeStats>
+          <div class="progress-bar-margin">
+            <div v-if="isEquipment && item.level" class="text-align-left font-size-20 margin-bottom-half">
               <span>Lvl: {{item.level}}</span>
             </div>
+            
             <progress-bar
               class="margin-top-small"
               v-model="item.exp"
               height="2rem"
-              width="80%"
+              width="70%"
               barType="yellow"
+              barClasses="margin-right-auto"
               :maxValue="nextExp"
               plusButton="green"
               v-if="isEquipment"
             ></progress-bar>
           </div>
-        </div>
-        <div class="stats flex flex-center font-size-25 flex-space-evenly">
-          <div class="flex flex-column flex-item-end text-align-right">
-            <div
-              v-for="(statValue, statId) in stats"
-              :key="statId"
-              class="stat-container width-100"
-            >{{$t(statId)}}</div>
-          </div>
-          <div class="flex flex-column text-align-left">
-            <div
-              v-for="(statValue, statId) in stats"
-              :key="statId"
-              class="stat-container width-100"
-            >{{statValue}}</div>
-          </div>
-        </div>
+        </template>
 
-        <span
-          class="loot-desc font-outline font-size-20"
-          v-if="template.description"
-        >{{$t(template.description, "")}}</span>
-      </div>
+      </ItemInfo>
+
     </template>
+
     <template v-slot:footer>
+
       <div class="flex">
         <custom-button
           v-if="actions.equip && equip && isEquipment"
           class="common-btn center"
-          @click="$close('equip')"
-        >{{$t('equip')}}</custom-button>
+          @click="handleClose('equip')"
+        >{{$t('btn-equip')}}</custom-button>
+
         <custom-button
           v-if="actions.equip && unequip && isEquipment"
           type="grey"
           class="common-btn center"
-          @click="$close('unequip')"
-        >{{$t('unequip')}}</custom-button>
+          @click="handleClose('unequip')"
+        >{{$t('btn-unequip')}}</custom-button>
       </div>
+
     </template>
   </user-dialog>
 </template>
@@ -73,6 +66,7 @@
 import CustomButton from "./Button.vue";
 import ProgressBar from "./ProgressBar.vue";
 import UserDialog from "./UserDialog.vue";
+import ItemInfo from "@/components/ItemInfo.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 import Stat from "@/../knightlands-shared/character_stat.js";
 
@@ -92,12 +86,14 @@ export default {
       default: () => ({
         equip: true
       })
-    }
+    },
+    hideMask: Boolean
   },
   components: {
     CustomButton,
     ProgressBar,
     UserDialog,
+    ItemInfo,
     Loot: () => import("./Loot.vue")
   },
   computed: {
@@ -123,9 +119,19 @@ export default {
     },
     stats() {
       return this.$game.itemsDB.getStats(this.item);
+    },
+    stars() {
+      return this.item.breakLimit;
     }
   },
   methods: {
+    handleClose(response) {
+      if (this.$close) {
+        this.$close(response);
+      } else {
+        this.$emit('close', this.item, response);
+      }
+    },
     statName(statId) {
       return Stat.toString(statId);
     }
@@ -146,6 +152,11 @@ export default {
 
 .loot-icon {
   margin-right: 10px;
+}
+
+.progress-bar-margin {
+  margin-top: 1rem;
+  margin-left: 10rem;
 }
 
 .info {

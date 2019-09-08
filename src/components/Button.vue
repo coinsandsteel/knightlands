@@ -1,11 +1,11 @@
 <template>
   <div
     class="btn relative"
-    :class="[type, {disabled:disabled||locked}, {lockPressed: lockPressed}, {selected: selected}, {'mini': mini}]"
+    :class="[btnType, {disabled:disabled||locked}, {lockPressed: lockPressed}, {selected: selected}, {'mini': mini}, {skewed: skewed}, btnClass]"
     :style="sizeStyle"
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
-    <div class="btn-fill"></div>
+    <div class="btn-fill" :class="{skewed: skewed}"></div>
     <div class="btn-content flex flex-center">
       <slot>{{caption}}</slot>
     </div>
@@ -38,7 +38,9 @@ export default {
     },
     selected: Boolean,
     locked: Boolean,
-    mini: Boolean
+    mini: Boolean,
+    skewed: Boolean,
+    btnClass: String
   },
   computed: {
     sizeStyle() {
@@ -47,6 +49,9 @@ export default {
       }
 
       return `width: ${this.width}`;
+    },
+    btnType() {
+      return this.skewed ? `${this.type}-skewed` : this.type;
     }
   }
 };
@@ -112,6 +117,7 @@ export default {
 }
 
 @btnFillExtrude: 3px;
+@btnFillExtrudeSkewed: 16px;
 
 .btn-fill {
   height: 100%;
@@ -119,10 +125,15 @@ export default {
   position: absolute;
   left: -@btnFillExtrude;
   top: 0;
+
+  &.skewed {
+    width: calc(100% + @btnFillExtrudeSkewed * 2);
+    left: -@btnFillExtrudeSkewed;
+  }
 }
 
 .btn {
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 1.5rem 1.5rem;
   position: relative;
   min-width: @width;
   font-size: @fontSize;
@@ -136,12 +147,29 @@ export default {
   &.mini {
     min-width: unset;
   }
+
+  &.skewed {
+    margin: 0 @btnFillExtrudeSkewed 0 @btnFillExtrudeSkewed;
+    height: 6rem;
+  }
 }
 
 .disabled {
   opacity: 0.6;
   pointer-events: none;
   cursor: not-allowed;
+}
+
+.skewed-stripes {
+  background: no-repeat url("./../assets/ui/buttons/skewed_button_glow.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: contain;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.25rem;
+  bottom: 0.7rem;
 }
 
 .locked {
@@ -160,6 +188,22 @@ export default {
   &.lockPressed {
     .pressed("button_red");
   }
+}
+
+.red-skewed {
+  .btn-bg("skewed_button_red");
+}
+
+.grey-skewed {
+  .btn-bg("skewed_button_blue");
+}
+
+.green-skewed {
+  .btn-bg("skewed_button_green");
+}
+
+.purple-skewed {
+  .btn-bg("skewed_button_purple");
 }
 
 .blue {
@@ -199,7 +243,7 @@ export default {
 }
 
 .btn-content {
-  transform: translateY(-0.2rem);
+  transform: translateY(-0.15rem);
   height: 100%;
 }
 </style>

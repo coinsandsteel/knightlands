@@ -2,7 +2,7 @@
   <Promised class="flex flex-column flex-start relative" :promise="request" :pendingDelay="200">
     <template v-slot:combined="{ isPending, isDelayOver, data }">
       <div>
-        <loading-screen :loading="true" :opacity="0.4" v-show="isDelayOver && isPending"></loading-screen>
+        <loading-screen :loading="true" v-show="isDelayOver && isPending"></loading-screen>
 
         <boss-view
           class="margin-bottom-2"

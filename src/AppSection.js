@@ -1,22 +1,15 @@
 export default {
     props: ["parent"],
-    data() {
-        return {
-            title: "default-title",
-            footers: []
-        }
-    },
+    useRouterBack: false,
+    data: () => ({
+        title: "default-title",
+        footers: []
+    }),
     mounted() {
         this._notifyApp();
     },
     activated() {
         this._notifyApp();
-
-        // if (this.handleBackButton) {
-        //     this.$app.$on("back", this.handleBackButton.bind(this));
-        // }
-
-        // this.$app.$emit("footer", this.footers);
     },
     deactivated() {
         this.removeFooter();
@@ -40,6 +33,10 @@ export default {
             this.$app.$emit("footer");
         },
         handleBackButton() {
+            if (this.$options.useRouterBack) {
+                this.$router.back();
+                return true;
+            }
             return false;
         }
     }

@@ -1,22 +1,16 @@
-export const Quests = {
+import ZonesMeta from "@/zones_meta";
 
-};
-
-
-const ZonesDatabase = {
-    "1": {
-        name: "Test Forest"
+export default {
+    getZoneName(zoneId) {
+        return (ZonesMeta[zoneId] || {}).name;
     },
-    "2": {
-        name: "Clouds and Mountains"
-    }
-};
-
-export const Zones = {
-    getName(zoneId) {
-        return (ZonesDatabase[zoneId] || {}).name;
+    getMissionName(zoneId, questIndex) {
+        return (ZonesMeta[zoneId] || {}).questsId[questIndex].name;
     },
     getBackground(zoneId) {
-        return `/images/levels/level${zoneId}.png`;
+        return `/images/zones/${(ZonesMeta[zoneId] || {}).background}.jpg`;
+    },
+    getEnemyImage(zoneId, questIndex) {
+        return `/images/enemies/${(ZonesMeta[zoneId] || {}).questsId[questIndex].image}.png`;
     }
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <loot :item="item" />
-    <div class="font-size-20 digit-font">{{currentCount()}} / {{requiredCount}}</div>
+    <loot :locked="notEnoughMaterials" :item="item" :size="size" :hideQuantity="true" />
+    <div v-if="!hideCount" class="font-size-20 digit-font">{{currentCount}}/{{requiredCount}}</div>
   </div>
 </template>
 
@@ -10,7 +10,14 @@ import Loot from "@/components/Loot.vue";
 
 export default {
   components: { Loot },
-  props: ["ingridient"],
+  props: {
+    ingridient: Object,
+    size: {
+      type: String,
+      default: ""
+    },
+    hideCount: Boolean
+  },
   computed: {
     item() {
       return {
@@ -20,9 +27,10 @@ export default {
     },
     requiredCount() {
       return this.ingridient.quantity;
-    }
-  },
-  methods: {
+    },
+    notEnoughMaterials() {
+      return this.requiredCount > this.currentCount;
+    },
     currentCount() {
       return this.$game.inventory.getItemsCountByTemplate(
         this.ingridient.itemId
@@ -31,8 +39,5 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-</style>
 
 

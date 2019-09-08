@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div class="flex flex-center panel inventory-container">
+    <div class="flex flex-center inventory-container" :type="panel">
       <div class="flex loot-container inventory-items">
         <loot
-          v-for="item in items"
+          v-for="(item, index) in items"
           :item="item"
           :key="item.id"
           :inventory="inventory"
           :hint="hint"
-          @hint="handleHint"
+          :selected="selected == item.id"
+          @hint="handleHint(item, index)"
+          v-bind="lootProps"
         ></loot>
       </div>
     </div>
@@ -22,7 +24,9 @@ export default {
   components: {
     Loot
   },
-  props: ["items", "inventory", "hint"],
+  data:()=>({
+    selected: null
+  }),
   props: {
     items: {
       type: Array
@@ -33,16 +37,18 @@ export default {
     },
     hint: {
       type: Function
-    }
-  },
-  data() {
-    return {
-      showModal: true
-    };
+    },
+    panel : String,
+    selectSlots: Boolean,
+    lootProps: Object
   },
   methods: {
-    handleHint(item) {
-      this.$emit("hint", item);
+    handleHint(item, index) {
+      this.$emit("hint", item, index);
+
+      if (this.selectSlots) {
+        this.selected = item.id;
+      }
     }
   }
 };
@@ -62,7 +68,7 @@ export default {
 
 .inventory-container {
   margin: @inventoryMargin;
-  padding: @inventoryPadding;
+  // padding: @inventoryPadding;
 }
 
 .width(@cells) {

@@ -7,11 +7,12 @@
             v-for="zone in zones"
             v-bind:key="zone._id"
             class="element mission1 font-size-30"
+            :class="{'zone-locked': isLocked(zone)}"
             :to="{ path: zone._id+'', append: true }"
           >
             <div class="zone-picture">
               <img class="pixelated" :src="getZoneImage(zone._id)" />
-              <div class="font-size-30 overlay-title font-outline">{{getZoneName(zone._id)}}</div>
+              <div class="font-size-30 overlay-title font-outline">{{$t(getZoneName(zone._id))}}</div>
             </div>
           </router-link>
         </div>
@@ -66,9 +67,9 @@
 
 <script>
 import QuestMissionElement from "./QuestMissionElement.vue";
-import { Zones } from "@/campaign_database";
+import Zones from "@/campaign_database";
 import AppSection from "@/AppSection";
-import ZoneSelection from "@/components/ZoneSelection.vue";
+import ZoneSelection from "./ZoneSelection.vue";
 import QuestMission from "./QuestMission.vue";
 import CustomButton from "@/components/Button.vue";
 import DifficultySwitch from "@/components/DifficultySwitch.vue";
@@ -130,8 +131,11 @@ export default {
     }
   },
   methods: {
+    isLocked(zone) {
+      return this.$game.isZoneLocked(zone._id);
+    },
     zoneStage(zone) {
-      return this.$store.getters.getZoneStage(zone);
+      return this.$store.getters.getZoneStage;
     },
     toggleFooterButtons() {
       this.removeFooter();
@@ -167,7 +171,6 @@ export default {
     },
     handleDifficultySwitch(stage) {
       this.$store.commit("setZoneStage", {
-        zone: this.zone,
         stage
       });
     },
@@ -206,7 +209,7 @@ export default {
       this.toggleFooterButtons();
     },
     getZoneName(zone) {
-      return Zones.getName(zone);
+      return Zones.getZoneName(zone);
     },
     getZoneImage(zone) {
       return Zones.getBackground(zone);
@@ -262,6 +265,11 @@ export default {
 
 .quests {
   height: 90%;
+}
+
+.zone-locked {
+  filter: grayscale(100%) brightness(20%) sepia(100%) hue-rotate(-50deg)
+    saturate(600%) contrast(0.8);
 }
 
 .button {
