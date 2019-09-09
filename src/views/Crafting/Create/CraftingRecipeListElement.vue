@@ -12,6 +12,7 @@
         :ingridient="essence"
         size="mini"
         :hideCount="true"
+        :hintHandler="ingridientHintHandler"
         class="margin-right-half"
       />
     </div>
@@ -26,7 +27,7 @@ import Loot from "@/components/Loot.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 
 export default {
-  props: ["recipe"],
+  props: ["recipe", "ingridientHintHandler"],
   mixins: [HintHandler],
   components: { CustomButton, Loot, CraftingIngridient },
   computed: {

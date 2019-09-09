@@ -56,6 +56,13 @@
           class="common-btn center"
           @click="handleClose('unequip')"
         >{{$t('btn-unequip')}}</custom-button>
+
+        <custom-button
+          v-for="(btn, index) in buttons"
+          :key="index"
+          :class="btn.type"
+          @click="handleClose(btn.response)"
+        >{{$t(btn.title)}}</custom-button>
       </div>
 
     </template>
@@ -69,6 +76,9 @@ import UserDialog from "./UserDialog.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 import Stat from "@/../knightlands-shared/character_stat.js";
+
+// Button object
+// { type:"yellow", title, response }
 
 export default {
   props: {
@@ -87,7 +97,8 @@ export default {
         equip: true
       })
     },
-    hideMask: Boolean
+    hideMask: Boolean,
+    buttons: Array
   },
   components: {
     CustomButton,

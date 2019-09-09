@@ -4,13 +4,14 @@
     <div class="full-flex height-100 dummy-height relative">
       <div class="wrapper dummy-height">
         <RecycleScroller
+          ref="scroller"
           class="scroller"
           :items="filteredRecipes"
           :item-size="112"
           key-field="id"
           v-slot="{ item }"
         >
-          <CraftingRecipeListElement :recipe="item" @craft="handleCraft"></CraftingRecipeListElement>
+          <CraftingRecipeListElement :recipe="item" @craft="handleCraft" :ingridientHintHandler="handleIngridientHint"></CraftingRecipeListElement>
         </RecycleScroller>
       </div>
     </div>
@@ -23,9 +24,12 @@ import IconTabs from "./IconTabs.vue";
 import CraftingRecipeListElement from "./CraftingRecipeListElement.vue";
 import Toggle from "@/components/Toggle.vue";
 import AppSection from "@/AppSection";
+import CustomButton from "@/components/Button.vue";
+import HintHandler from "@/components/HintHandler.vue";
+const ItemType = require("@/../knightlands-shared/item_type");
 
 export default {
-  mixins: [TabHandler, AppSection],
+  mixins: [TabHandler, AppSection, HintHandler],
   components: { IconTabs, CraftingRecipeListElement, Toggle },
   data: () => ({
     recipes: [],
@@ -43,6 +47,21 @@ export default {
       caption: "toggle-available-recipes",
       startValue: this.onlyAvailabe
     });
+
+    this.addFooter(CustomButton, {
+      cb: this.showItemFilter.bind(this),
+      caption: "Filter",
+      type: "grey"
+    });
+
+    if (this.scrollState) {
+      this.$nextTick(()=>{
+        this.$refs.scroller.updateVisibleItems(false);
+        this.$refs.scroller.scrollToPosition(this.scrollState.start);
+      });
+    } else {
+      this.$refs.scroller.updateVisibleItems(false);
+    }
   },
   watch: {
     recipes() {
@@ -50,7 +69,29 @@ export default {
     }
   },
   methods: {
+    async handleIngridientHint(item) {
+      let buttons = [];
+      let recipe = this.$game.crafting.getRecipeByItem(item.template);
+      if (recipe) {
+        buttons.push({
+          type:"yellow",
+          title:"btn-open-craft",
+          response: true
+        });
+      }
+
+      let response = await this.showHint(item, buttons);
+      if (response === true) {
+        // go to ingridient item
+        this.handleCraft(recipe.id);
+      }
+    },
+    showItemFilter() {
+      
+    },
     handleCraft(recipeId) {
+      this.scrollState = this.$refs.scroller.getScroll();
+
       this.$router.push({
         name: "craft",
         params: {

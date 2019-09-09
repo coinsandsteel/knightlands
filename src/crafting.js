@@ -28,6 +28,16 @@ class Crafting {
         return enoughResources;
     }
 
+    getRecipeByItem(itemTemplate) {
+        for (let i in this._recipes) {
+            if (this._recipes[i].resultItem == itemTemplate) {
+                return this._recipes[i];
+            }
+        }
+
+        return null;
+    }
+
     getRecipeIngridients(recipeId) {
         let recipe = this.getRecipe(recipeId);
         if (!recipe) {
