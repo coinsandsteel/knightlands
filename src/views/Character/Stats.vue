@@ -14,7 +14,7 @@
         @inc="increaseAttribute(att)"
         @dec="decreaseAttribute(att)"
       >
-        <div class="flex" style="width: 30%">
+        <div class="flex flex-items-center" style="width: 30%">
           <span class="icon-gold"></span>
           <span>{{getUpgradePrice(att)}}</span>
         </div>

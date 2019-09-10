@@ -4,40 +4,38 @@
       <loading-screen :loading="true" v-show="isDelayOver && isPending"></loading-screen>
 
       <div class="tab-content dummy-height flex flex-column full-flex">
-        <div class="equipment-container flex">
+        <div class="equipment-container flex flex-space-evenly">
           <div class="flex">
 
             <div class="equipment-container-row flex flex-column flex-center">
-              <div v-for="slot in equipmentRow1()" :key="slot" class="equipment-slot">
-                <loot
-                  :item="itemsInSlots[slot]"
-                  :equipment="true"
-                  :equipmentSlot="slot"
-                  @hint="showEquipmentHint"
-                ></loot>
-              </div>
+              <loot
+                v-for="slot in equipmentRow1()" :key="slot" class="equipment-slot"
+                :item="itemsInSlots[slot]"
+                :equipment="true"
+                :equipmentSlot="slot"
+                @hint="showEquipmentHint"
+              ></loot>
             </div>
 
             <div class="equipment-container-row flex flex-column flex-center flex-space-between">
-              <div v-for="slot in equipmentRow2()" :key="slot" class="equipment-slot">
-                <loot
-                  :item="itemsInSlots[slot]"
-                  :equipment="true"
-                  :equipmentSlot="slot"
-                  @hint="showEquipmentHint"
-                ></loot>
-              </div>
+              <loot
+                v-for="slot in equipmentRow2()"
+                :key="slot" class="equipment-slot"
+                :item="itemsInSlots[slot]"
+                :equipment="true"
+                :equipmentSlot="slot"
+                @hint="showEquipmentHint"
+              ></loot>
             </div>
 
             <div class="equipment-container-row flex flex-column flex-center">
-              <div v-for="slot in equipmentRow3()" :key="slot" class="equipment-slot">
-                <loot
-                  :item="itemsInSlots[slot]"
-                  :equipment="true"
-                  :equipmentSlot="slot"
-                  @hint="showEquipmentHint"
-                ></loot>
-              </div>
+              <loot
+                v-for="slot in equipmentRow3()" :key="slot" class="equipment-slot"
+                :item="itemsInSlots[slot]"
+                :equipment="true"
+                :equipmentSlot="slot"
+                @hint="showEquipmentHint"
+              ></loot>
             </div>
 
           </div>
@@ -190,8 +188,6 @@ export default {
       }
 
       this.currentSlideIndex = currentSlide;
-
-      this.hintItems.length = 3;
 
       for (let i = -1; i < maxSlideIndex; ++i) {
         // find correct indicies for items to place

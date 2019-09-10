@@ -26,7 +26,12 @@ import Toggle from "@/components/Toggle.vue";
 import AppSection from "@/AppSection";
 import CustomButton from "@/components/Button.vue";
 import HintHandler from "@/components/HintHandler.vue";
+
 const ItemType = require("@/../knightlands-shared/item_type");
+
+import { create } from "vue-modal-dialogs";
+import RecipeFilter from "./../RecipeFilter.vue";
+const ShowFilters = create(RecipeFilter, ...RecipeFilter.props);
 
 export default {
   mixins: [TabHandler, AppSection, HintHandler],
@@ -36,10 +41,11 @@ export default {
     filtered: [],
     filteredRecipes: [],
     onlyAvailabe: false,
-    listId: ""
+    listId: "",
+    filters: {}
   }),
   mounted() {
-    this.handleAvailableToggle(this.$store.getters.getAvailableSwitchInCraftingList(this.listId));
+    this.onlyAvailabe = this.$store.getters.getAvailableSwitchInCraftingList(this.listId);
   },
   activated() {
     this.addFooter(Toggle, {
@@ -86,8 +92,9 @@ export default {
         this.handleCraft(recipe.id);
       }
     },
-    showItemFilter() {
-      
+    async showItemFilter() {
+      this.filters = await ShowFilters(this.listId, {});
+      this.handleAvailableToggle(this.onlyAvailabe);
     },
     handleCraft(recipeId) {
       this.scrollState = this.$refs.scroller.getScroll();
@@ -100,7 +107,58 @@ export default {
       });
     },
     updateList() {
-      this.filteredRecipes = this.onlyAvailabe ? this.filtered : this.recipes;
+      let recipes = this.onlyAvailabe ? this.filtered : this.recipes;
+
+      if (!this.filters.rarity) {
+        this.filters = this.$store.getters.getRecipeFilters(this.listId);
+      }
+
+      let i = 0;
+      const length = recipes.length;
+      this.filteredRecipes.length = 0;
+      for (; i < length; ++i) {
+        let recipe = this.$game.crafting.getRecipe(recipes[i]);
+        let rarity = this.$game.itemsDB.getRarity(recipe.resultItem);
+        if (this.filters.rarity[rarity]) {
+          this.filteredRecipes.push(recipe.id);
+        }
+      }
+
+      this.$nextTick(()=>{
+        this.$refs.scroller.updateVisibleItems(false);
+      });
+    },
+    updateRecipes() {
+      this.sortRecipes(this.recipes);
+    },
+    sortRecipes(recipes) {
+      const itemsDB = this.$game.itemsDB;
+      const crafting = this.$game.crafting;
+      recipes.sort((a, b) => {
+        let recipeA = crafting.getRecipe(a);
+        let recipeB = crafting.getRecipe(b);
+        let sortingFactorA = itemsDB.getRarityAsNumber(
+            recipeA.resultItem
+        );
+        let sortingFactorB = itemsDB.getRarityAsNumber(
+            recipeB.resultItem
+        );
+
+        if (sortingFactorA == sortingFactorB) {
+            sortingFactorA = recipeA.id;
+            sortingFactorB = recipeB.id;
+        }
+
+        if (sortingFactorA > sortingFactorB) {
+            return 1;
+        }
+
+        if (sortingFactorA < sortingFactorB) {
+            return -1;
+        }
+
+        return 0;
+      });
     },
     handleAvailableToggle(value) {
       this.$store.commit("setAvailableSwitchInCraftingList", {

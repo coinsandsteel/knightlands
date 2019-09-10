@@ -82,6 +82,10 @@ export default {
       return this.$game.itemsDB.getStats(this.item);
     },
     properties() {
+      if (!this.template.properties) {
+        return [];
+      }
+
       let props = new Array(this.template.properties.length);
 
       let i = 0;

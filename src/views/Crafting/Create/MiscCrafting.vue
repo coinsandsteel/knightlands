@@ -29,6 +29,8 @@ export default {
 
     this.currentTab = this.tabs[0].value;
     this.recipes = CraftingRecipes[3] || [];
+
+    this.updateRecipes();
   }
 };
 </script>

@@ -24,7 +24,7 @@
                 </div>
 
                 <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase">
-                  <custom-button width="16rem" type="yellow" @click="confirm">{{$t("btn-confirm")}}</custom-button>
+                  <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
                 </PaymentStatus>
               </div>
 
@@ -36,17 +36,17 @@
                   </div>
                 </div>
 
-                <custom-button width="16rem" type="yellow" @click="confirm">{{$t("btn-confirm")}}</custom-button>
+                <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
               </div>
 
               <div class="flex flex-basis-100 flex-column flex-item-center" v-show="methodChosen == 1">
                 <!-- Shinies -->
-                <custom-button width="16rem" type="yellow" @click="confirm">{{$t("btn-confirm")}}</custom-button>
+                <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
               </div>
 
               <div class="flex flex-basis-100 flex-column flex-item-center" v-show="methodChosen == 2">
                 <!--Items -->
-                <custom-button width="16rem" type="yellow" @click="confirm">{{$t("btn-confirm")}}</custom-button>
+                <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import CustomButton from "@/components/Button.vue";
+import PromisedButton from "@/components/PromisedButton.vue";
 import ButtonBar from "@/components/ButtonBar.vue";
 import CharacterStats from "@/../knightlands-shared/character_stat";
 import PaymentStatus from "@/components/PaymentStatus.vue";
@@ -78,7 +78,7 @@ const HealthMethods = ["gold", "shinies", "items"];
 export default {
   mixins: [PaymentHandler],
   props: ["stat"],
-  components: { UserDialog, CustomButton, ButtonBar, PaymentStatus, PriceTag, Promised, LoadingScreen, IconWithValue },
+  components: { UserDialog, PromisedButton, ButtonBar, PaymentStatus, PriceTag, Promised, LoadingScreen, IconWithValue },
   data() {
     return {
       methodChosen: 0,
@@ -89,7 +89,8 @@ export default {
       eventHandler: null,
       refillsToday: 0,
       resetTimer: new Timer(true),
-      softCost: 0
+      softCost: 0,
+      purchasePromise: null
     };
   },
   created() {
@@ -123,7 +124,8 @@ export default {
   methods: {
     async confirm() {
       if (this.showPayedOption) {
-        await this.purchaseRequest(this.$game.refillTimer(this.stat, this.methodChosen));
+        this.purchasePromise = this.$game.refillTimer(this.stat, this.methodChosen);
+        await this.purchaseRequest(this.purchasePromise);
       } else {
         await this.$game.refillTimer(this.stat, this.methodChosen);
         this.$close();

@@ -94,12 +94,15 @@ export default {
     this.title = "window-upgrade-item";
     this.$options.useRouterBack = true;
   },
-  mounted() {
+  activated() {
     this.prepareItemForUpgrading();
     this.updateMaterialList();
   },
-  destroyed() {
-    this.cancelUpgrading(this.itemId);
+  mounted() {
+    // this.prepareItemForUpgrading();
+  },
+  deactivated() {
+    this.cancelUpgrading();
   },
   data: ()=>({
     selectedOption: 0,
@@ -111,20 +114,18 @@ export default {
   }),
   watch: {
     itemId(_, oldItemId) {
-      this.cancelUpgrading(oldItemId);
+      this.cancelUpgrading();
       this.prepareItemForUpgrading();
       this.updateMaterialList();
     }
   },
   methods: {
-    cancelUpgrading(oldItem) {
-      if (oldItem) {
-        // return item back to inventory if it wasn't upgraded
-        let item = this.$game.inventory.getItem(oldItem);
-        if (item && !item.unique) {
-          this.$game.inventory.increaseStack(item);
-        }
+    cancelUpgrading() {
+      if (this.item && !this.item.unique) {
+        this.$game.inventory.increaseStack(this.item);
       }
+
+      this.item = null;
     },
     prepareItemForUpgrading() {
       let item = this.$game.inventory.getItem(this.itemId);
@@ -135,9 +136,9 @@ export default {
         
         this.currentExp = item.exp;
         this.futureExp = item.exp;
-      }
 
-      this.item = item;
+        this.item = item;
+      }
     },
     selectMaterial(material) {
       this.selectedMaterial = material;
@@ -171,6 +172,9 @@ export default {
       let newItemId = await this.$game.upgradeItem(this.itemId, this.selectedMaterial.id, this.optionFactor);
       if (newItemId != this.itemId) {
         this.$router.replace({ name: "upgrade-item", params: { itemId: newItemId } });
+      } else {
+        let newItem = this.$game.inventory.getItem(newItemId);
+        this.item = newItem;
       }
 
       // if material was removed - remove it from material list too
@@ -205,6 +209,10 @@ export default {
         let hash = {};
         upgradeMeta.slotsMaterials.forEach(slot=>hash[slot] = true);
         materials = materials.concat(this.$game.inventory.filterItems(x=>{
+          if (x.unique && x.id == this.item.id) {
+            return false;
+          }
+
           return hash[this.$game.itemsDB.getSlot(x.template)];
         }));
       }

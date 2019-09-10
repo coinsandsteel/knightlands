@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-center relative recipe panel">
-    <Loot :item="item" class="hintFix" @hint="handleHint" size="small"></Loot>
+    <Loot :item="item" class="hintFix" @hint="handleHint" ></Loot>
     <span class="font-size-20 title" :class="`rarity-${rarity}`">{{$t(name)}}</span>
 
     <div

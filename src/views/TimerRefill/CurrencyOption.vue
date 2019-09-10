@@ -19,6 +19,9 @@ export default {
     props: ["stat"],
     data: ()=>({
         statusRequest: null
-    })
+    }),
+    methods: {
+        
+    }
 }
 </script>

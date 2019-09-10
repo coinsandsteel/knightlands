@@ -3,7 +3,6 @@ import App from "./App.vue";
 import store from "./store";
 import Router from "vue-router";
 import LoadScript from "vue-plugin-load-script";
-import DrawerLayout from "vue-drawer-layout";
 import Vuebar from "vuebar";
 import VueAgile from "vue-agile";
 import * as ModalDialogs from "vue-modal-dialogs";
@@ -30,7 +29,6 @@ Vue.use(VueCollapse);
 Vue.use(ModalDialogs);
 Vue.use(VueAgile);
 Vue.use(Vuebar);
-Vue.use(DrawerLayout);
 Vue.use(LoadScript);
 
 Vue.config.productionTip = false;

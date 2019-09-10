@@ -86,6 +86,8 @@ export default {
           this.recipes.push(recipes[i]);
         }
       }
+
+      this.updateRecipes();
     }
   }
 };

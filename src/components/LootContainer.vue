@@ -66,7 +66,7 @@ export default {
 
 @inventoryPadding: 1rem;
 @inventoryMargin: 0.5rem;
-@marginBetweenItems: 0.3rem;
+@marginBetweenItems: 0rem;
 
 .inventory-container {
   margin: @inventoryMargin;
@@ -84,7 +84,7 @@ export default {
 .inventory-items {
   .width(7);
 
-  .mobile({.mobileWidth(5)});
+  .mobile({.mobileWidth(6)});
 
   // @media only screen and (max-width: 450px) and (min-width: 400px) {
   //   .width(7);

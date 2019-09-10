@@ -26,17 +26,17 @@
       <div class="root-menu flex" v-if="$game.authenticated">
         <div id="nav">
           <router-link class="flex flex-center" to="/home">
-            <span class="menu-icon home"></span>
+            <span class="menu-icon home pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-home")}}</span>
           </router-link>
 
           <router-link  class="flex flex-center" to="/character">
-            <span class="menu-icon character"></span>
+            <span class="menu-icon character pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-character")}}</span>
           </router-link>
 
           <router-link  class="flex flex-center" to="/crafting">
-            <span class="menu-icon crafting"></span>
+            <span class="menu-icon crafting pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-crafting")}}</span>
           </router-link>
 
@@ -92,7 +92,9 @@ export default {
   beforeCreate() {
     this.$on("section", section => {
       this.sectionBackButton = section.handleBackButton;
-      this.title = section.title;
+      if (section.title) {
+        this.title = section.title;
+      }
     });
 
     this.$on("footer", (component, props) => {
@@ -445,6 +447,7 @@ export default {
 }
 
 #app {
+  overflow: hidden;
   position: relative;
   color: white;
   -webkit-font-smoothing: antialiased;

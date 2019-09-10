@@ -211,10 +211,10 @@ export default {
   user-select: none;
 
   &.hintFix {
-    .not-mobile(
-      {width: @lootCellSize * 1.5; height: @lootCellSize * 1.5; max-height: @lootCellSize *
-        1.5;}
-    );
+    // .not-mobile(
+    //   {width: @lootCellSize * 1.5; height: @lootCellSize * 1.5; max-height: @lootCellSize *
+    //     1.5;}
+    // );
     .mobile({max-height: @mobileLootCellSize;});
   }
 

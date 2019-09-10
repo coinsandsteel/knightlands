@@ -67,11 +67,11 @@ export default {
         this.title = "window-unbind-item";
         this.$options.useRouterBack = true;
     },
-    mounted() {
-        this.prepareItemForUnbind();
+    activated() {
         this.updateUnbindItemsList();
+        this.prepareItemForUnbind();
     },
-    destroyed() {
+    deactivated() {
         this.cancelUnbind(this.itemId);
     },
     data: ()=>({
@@ -83,8 +83,8 @@ export default {
         lockedTotal: 0
     }),
     watch: {
-        itemId(_, oldItemId) {
-            this.cancelUnbind(oldItemId);
+        itemId() {
+            this.cancelUnbind();
             this.prepareItemForUnbind();
             this.updateUnbindItemsList();
         }
@@ -195,14 +195,11 @@ export default {
 
             this.unbindItems = filteredItems;
         },
-        cancelUnbind(oldItem) {
-            if (oldItem) {
-                // return item back to inventory if it wasn't upgraded
-                let item = this.$game.inventory.getItem(oldItem);
-                if (item && !item.unique) {
-                    this.$game.inventory.increaseStack(item);
-                }
+        cancelUnbind() {
+            if (this.item && !this.item.unique) {
+                this.$game.inventory.increaseStack(this.item);
             }
+            this.item = null;
         },
         prepareItemForUnbind() {
             let item = this.$game.inventory.getItem(this.itemId);

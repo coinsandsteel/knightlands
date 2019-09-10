@@ -377,10 +377,25 @@ class Game {
 
             for (let zone in changes.questsProgress.bosses) {
                 let stages = changes.questsProgress.bosses[zone];
+                let zoneData = this._vm.questsProgress.bosses[zone];
+                if (!zoneData) {
+                    zoneData = {};
+                    Vue.set(this._vm.questsProgress.bosses, zone, zoneData);
+                }
+
                 for (let stage in stages) {
-                    this._vm.questsProgress.bosses[zone][stage].damageRecieved = stages[stage].damageRecieved;
+                    let stageData = zoneData[stage];
+                    if (!stageData) {
+                        stageData = {
+                            damageRecieved: 0,
+                            unlocked: false
+                        };
+                        Vue.set(zoneData, stage, stageData);
+                    }
+
+                    stageData.damageRecieved = stages[stage].damageRecieved;
                     if (stages[stage].unlocked !== undefined) {
-                        this._vm.questsProgress.bosses[zone][stage].unlocked = stages[stage].unlocked;
+                        stageData.unlocked = stages[stage].unlocked;
                     }
                 }
             }

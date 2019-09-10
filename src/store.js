@@ -22,7 +22,8 @@ const store = new Vuex.Store({
     itemFilters: {},
     zoneStage: 0,
     blockchain: Blockchains.Tron,
-    craftingListOptions: {}
+    craftingListOptions: {},
+    recipeFilters: {}
   },
   mutations: {
     setQuestZone(state, zoneId) {
@@ -40,6 +41,9 @@ const store = new Vuex.Store({
       let options = state.craftingListOptions[args.listId] || {};
       options.availableSwitch = args.value;
       Vue.set(state.craftingListOptions, args.listId, options);
+    },
+    setRecipeFilters(state, args) {
+      Vue.set(state.recipeFilters, args.id, args.filters);
     }
   },
   getters: {
@@ -70,10 +74,13 @@ const store = new Vuex.Store({
     },
     getZoneStage: state  => {
       return state.zoneStage;
+    },
+    getRecipeFilters: state => id => {
+      return state.recipeFilters[id] || {};
     }
   },
   plugins: [vuexPersist.plugin],
-  strict: process.env.NODE_ENV !== 'production'
+  strict: false
 });
 
 export default store;

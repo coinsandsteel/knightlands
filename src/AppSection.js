@@ -2,7 +2,7 @@ export default {
     props: ["parent"],
     useRouterBack: false,
     data: () => ({
-        title: "default-title",
+        title: null,
         footers: []
     }),
     mounted() {

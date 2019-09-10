@@ -218,12 +218,14 @@ class Inventory {
         let lastItem = this._vm.items[this._vm.items.length - 1];
         this._vm.items[item.index] = lastItem;
         this._vm.items.pop();
+        this._sort();
     }
 
     _addItem(item) {
         item.index = this._vm.items.push(item) - 1;
         this._itemsById.set(item.id, item);
         this._indexItemByTemplate(item);
+        this._sort();
     }
 
     _sort() {
@@ -250,6 +252,12 @@ class Inventory {
 
             return 0;
         });
+
+        let i = 0;
+        const l = this._vm.items.length;
+        for (; i < l; ++i) {
+            this._vm.items[i].index = i;
+        }
     }
 }
 
