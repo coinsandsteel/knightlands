@@ -5,8 +5,8 @@
 
       <div class="tab-content dummy-height flex flex-column full-flex">
         <div class="equipment-container flex flex-space-evenly">
-          <div class="flex">
-
+          <div class="relative flex">
+            <img class="heroImage" src="../../assets/ui/character.png" />
             <div class="equipment-container-row flex flex-column flex-center">
               <loot
                 v-for="slot in equipmentRow1()" :key="slot" class="equipment-slot"
@@ -145,6 +145,10 @@ export default {
       this.updateItems();
     }
   },
+  created() {
+    this.filteredItemsBuffers = [[], []];
+    this.bufferIndex = 0;
+  },
   mounted() {
     this.updateItems();
   },
@@ -160,7 +164,7 @@ export default {
   },
   methods: {
     updateItems() {
-      this.filterItems(this.$store.getters.itemFilters);
+      this.filterItems(this.$store.getters.getItemFilters);
     },
     updateHintItems(index) {
       let currentSlide = this.currentSlideIndex;
@@ -253,7 +257,8 @@ export default {
     },
     filterItems(filters) {
       let itemsDB = this.$game.itemsDB;
-      this.filteredItems.length = 0;
+      let buffer = this.filteredItemsBuffers[this.bufferIndex++%2];
+      buffer.length = 0;
 
       let i = 0;
       const length = this.items.length;
@@ -266,9 +271,11 @@ export default {
           (itemsDB.getTemplate(template).type == ItemType.Equipment &&
             filters[itemsDB.getSlot(template)])
         ) {
-          this.filteredItems.push(item);
+          buffer.push(item);
         }
       }
+
+      this.filteredItems = buffer;
     },
     equipmentRow1() {
       return [
@@ -311,4 +318,13 @@ export default {
   background-color: rgba(0, 0, 0, 0.616);
   z-index: 900;
 }
+
+.heroImage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  max-width: 5rem;;
+}
+
 </style>

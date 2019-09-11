@@ -43,7 +43,7 @@
 
         <div class="quest-bottom panel flex flex-column full-flex">
           <div class="flex quest-info-table">
-            <div class="flex-basis-50 font-size-30 flex flex-column flex-center flex-justify-start">
+            <div class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start">
               <div>Rewards</div>
               <div class="margin-top-small">
                 <icon-with-value iconClass="icon-exp" :value="quest.exp"></icon-with-value>
@@ -51,7 +51,7 @@
               </div>
             </div>
             <div
-              class="flex-basis-50 font-size-30 flex flex-column flex-center flex-justify-start"
+              class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start"
               v-show="quest.energy"
             >
               <div>Cost</div>
@@ -108,6 +108,7 @@ const ShowResourceRefill = create(
 );
 
 export default {
+  name: "quest-mission",
   mixins: [HintHandler],
   props: ["zone", "questIndex", "maxQuestIndex", "stage"],
   components: { LoadingScreen, Loot, ProgressBar, IconWithValue, CustomButton, Promised },

@@ -18,6 +18,7 @@ import RaidsMeta from "@/raids_meta.json";
 import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
 import DifficultySelector from "@/components/DifficultySelector.vue";
+import Campaign from "@/campaign_database";
 
 export default {
   props: ["raid", "pendingList"],
@@ -34,7 +35,7 @@ export default {
     },
     enemyImage() {
       return UiConstants.backgroundImage(
-        UiConstants.enemyImage(this.meta.icon)
+        Campaign.getRaidImage(this.raid)
       );
     }
   },

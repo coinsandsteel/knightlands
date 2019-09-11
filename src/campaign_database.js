@@ -1,4 +1,5 @@
 import ZonesMeta from "@/zones_meta";
+import RaidsMeta from "@/raids_meta";
 
 export default {
     getZoneName(zoneId) {
@@ -12,5 +13,8 @@ export default {
     },
     getEnemyImage(zoneId, questIndex) {
         return `/images/enemies/${(ZonesMeta[zoneId] || {}).questsId[questIndex].image}.png`;
+    },
+    getRaidImage(raid) {
+        return `/images/enemies/${(RaidsMeta[raid] || {}).icon}.png`;
     }
 };

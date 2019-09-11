@@ -16,10 +16,23 @@ import {
 import ItemType from "@/../knightlands-shared/item_type";
 import Blockchains from "@/../knightlands-shared/blockchains";
 
+let filters = {
+  ...ItemType,
+  ...EquipmentSlots
+};
+
+// equipment is expanded with equipment slots instead
+delete filters.Equipment;
+
+let defaultFilters = {};
+for (let i in filters) {
+  defaultFilters[filters[i]] = true;
+}
+
 const store = new Vuex.Store({
   state: {
     selectedQuestZone: undefined,
-    itemFilters: {},
+    itemFilters: defaultFilters,
     zoneStage: 0,
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
@@ -53,24 +66,8 @@ const store = new Vuex.Store({
     selectedQuestZone: state => {
       return state.selectedQuestZone;
     },
-    itemFilters: state => {
-      let filters = {
-        ...ItemType,
-        ...EquipmentSlots
-      };
-
-      // equipment is expanded with equipment slots instead
-      delete filters.Equipment;
-
-      let itemFilters = state.itemFilters;
-
-      if (Object.keys(state.itemFilters).length !== Object.keys(filters).length) {
-        itemFilters = {};
-        for (let i in filters) {
-          itemFilters[filters[i]] = true;
-        }
-      }
-      return itemFilters;
+    getItemFilters: state => {
+      return state.itemFilters;
     },
     getZoneStage: state  => {
       return state.zoneStage;

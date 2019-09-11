@@ -734,5 +734,8 @@
     "clockwork_skull": "",
     "clockwork_dragon_juggernaut": "",
     "btn-confirm": "Confirm",
-    "btn-pay": "Pay"
+    "btn-pay": "Pay",
+    "upgrade-list-empty-msg": "There are no items to upgrade.",
+    "btn-open-craft": "Open Recipe",
+    "leveling-list-empty-msg": "There are no items to level up."
 }

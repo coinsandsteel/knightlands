@@ -1,10 +1,14 @@
 <template>
   <div class="padding-1">
     <div class="flex full-flex dummy-height">
-      <div v-bar class="width-100 height-100 dummy-height">
+      <div v-bar class="width-100 height-100 dummy-height" v-if="items.length > 0">
         <LootContainer :items="items" @hint="openUpgrade" :lootProps="{showLevel:true, hideQuantity:true}"></LootContainer>
       </div>
+      <div class="flex flex-center width-100 height-100" v-else>
+        <span class="font-size-20">{{$t("leveling-list-empty-msg")}}</span>
+      </div>
     </div>
+    
   </div>
 </template>
 

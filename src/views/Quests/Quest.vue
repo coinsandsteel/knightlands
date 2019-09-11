@@ -22,7 +22,7 @@
     <keep-alive>
       <div v-if="zone" v-bar>
         <div>
-          <keep-alive>
+          <keep-alive exclude="quest-mission">
             <quest-mission
               class="quest-view"
               v-if="quest && currentQuest"

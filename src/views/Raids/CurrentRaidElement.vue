@@ -44,6 +44,7 @@ import Timer from "@/timer.js";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import ClaimedReward from "./ClaimedReward.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
+import Campaign from "@/campaign_database";
 
 const ShowReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
 
@@ -74,7 +75,7 @@ export default {
     },
     raidImage() {
       return UiConstants.backgroundImage(
-        UiConstants.enemyImage(RaidsMeta[this.raidData.raidTemplateId].icon)
+        Campaign.getRaidImage(this.raidData.raidTemplateId)
       );
     },
     progress() {

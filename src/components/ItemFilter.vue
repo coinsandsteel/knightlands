@@ -37,7 +37,7 @@ export default {
     };
   },
   created() {
-    this.itemFilters = Object.assign({}, this.$store.getters.itemFilters);
+    this.itemFilters = Object.assign({}, this.$store.getters.getItemFilters);
   },
   watch: {
     allFilters() {
