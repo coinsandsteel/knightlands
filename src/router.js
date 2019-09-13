@@ -30,6 +30,10 @@ import Unbind from "./views/Crafting/Unbind/Unbind.vue";
 import Craft from "./views/Crafting/Create/Craft.vue";
 import Create from "./views/Crafting/Create/Create.vue";
 
+import CraftingEnchant from "./views/Crafting/Enchant/CraftingEnchant.vue";
+import Enchant from "./views/Crafting/Enchant/Enchant.vue";
+import EnchantItem from "./views/Crafting/Enchant/EnchantItem.vue";
+
 const router = new Router({
   routes: [
     {
@@ -45,17 +49,17 @@ const router = new Router({
           component: CraftingHome
         },
         {
-          path: "create",
+          path: "craft",
           component: Create,
           children: [
             {
               path: "",
-              name: "crafting-create",
+              name: "crafting",
               component: Crafting
             },
             {
               name: "craft",
-              path: "craft/:recipeId",
+              path: "item/:recipeId",
               component: Craft,
               props: true
             }
@@ -91,6 +95,23 @@ const router = new Router({
               path: "item/:itemId",
               name: "unbind-item",
               component: UnbindItem,
+              props: true
+            }
+          ]
+        },
+        {
+          path: "enchant",
+          component: Enchant,
+          children: [
+            {
+              path: "",
+              name: "crafting-enchant",
+              component: CraftingEnchant
+            },
+            {
+              path: "item/:itemId",
+              name: "enchant-item",
+              component: EnchantItem,
               props: true
             }
           ]
@@ -141,8 +162,7 @@ const router = new Router({
       }
     },
     {
-      path: "/quest/:zone?/:quest?",
-      alias: "/home/quest/:zone?/:quest?",
+      path: "/home/quest/:zone?/:quest?",
       props: true,
       name: "quests",
       component: Quest,

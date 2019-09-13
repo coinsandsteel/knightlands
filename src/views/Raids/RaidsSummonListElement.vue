@@ -1,12 +1,12 @@
 <template>
   <div class="flex raid-summon-element panel-light">
     <div class="flex flex-column flex-center full-flex">
-      <div class="title font-size-20 enemy-title-font">{{meta.name}}</div>
+      <div class="title font-size-20 enemy-title-font">{{$t(meta.name)}}</div>
       <div class="pixelated boss-image" :style="enemyImage"></div>
     </div>
-    <div class="flex flex-column full-flex flex-space-around">
+    <div class="flex flex-column flex-center full-flex flex-space-around">
       <DifficultySelector :stages="stages" :preview="true" :stagesState="stageStates"></DifficultySelector>
-      <custom-button type="grey" @click="openSummon">Open</custom-button>
+      <custom-button type="grey" @click="openSummon">{{$t("btn-summon-raid")}}</custom-button>
     </div>
   </div>
 </template>

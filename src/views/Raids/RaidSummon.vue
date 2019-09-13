@@ -22,7 +22,7 @@
 
       <div class="margin-top-2 font-size-20 flex flex-center">
         <span>Summoning Fee:</span>
-        <price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag><price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag>
+        <price-tag :iap="iap" :overridePrice="awaitedPrice"></price-tag>
       </div>
 
       <div class="margin-top-2 flex flex-column flex-center">

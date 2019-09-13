@@ -1,4 +1,5 @@
 import Vue from "vue";
+import throttle from "lodash.throttle";
 
 class Inventory {
     constructor(itemDB) {
@@ -13,6 +14,7 @@ class Inventory {
         // lookup tables
         this._itemsBytemplate = new Map();
         this._itemsById = new Map();
+        this._sort = throttle(this._doSort.bind(this), 0, { leading: false });
     }
 
     static get Changed() {
@@ -228,7 +230,7 @@ class Inventory {
         this._sort();
     }
 
-    _sort() {
+    _doSort() {
         this._vm.items.sort((a, b) => {
             let sortingFactorA = this._itemDB.getRarityAsNumber(
                 a.template

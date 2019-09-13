@@ -1,7 +1,7 @@
 <template>
     <CustomButton v-bind="props" @click="$emit('click')">
         <template v-if="showLoading">
-            <LoadingIndicator type="scale"></LoadingIndicator>
+            <LoadingIndicator color="#4e3948" type="scale"></LoadingIndicator>
         </template>
         <template v-else>
             <slot></slot>
@@ -14,7 +14,7 @@ import CustomButton from "@/components/Button.vue";
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 
 export default {
-    props: ["promise", "props"],
+    props: ["promise", "props", "loadingAsDefault"],
     components: { CustomButton, LoadingIndicator },
     data: ()=>({
         showLoading: false

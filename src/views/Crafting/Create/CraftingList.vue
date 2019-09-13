@@ -60,6 +60,8 @@ export default {
       type: "grey"
     });
 
+    this.handleAvailableToggle(this.onlyAvailabe);
+
     if (this.scrollState) {
       this.$nextTick(()=>{
         this.$refs.scroller.updateVisibleItems(false);

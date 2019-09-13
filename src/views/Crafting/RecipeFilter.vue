@@ -2,15 +2,6 @@
   <user-dialog title="filter" @close="$close(itemFilters)">
     <template v-slot:content>
       <div class="flex flex-space-between margin-top-3 font-size-25">
-        <!-- <p-check
-          style="p-default p-curve p-thick"
-          class="checkbox margin-bottom-1"
-          name="check"
-          color="warning"
-          :checked="allFiltersState()"
-          v-model="allFilters"
-        >All</p-check> -->
-
         <p-check
           v-for="(_, filter) in itemFilters.rarity"
           :key="filter"
@@ -28,10 +19,9 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-const Rarity = require("@/../knightlands-shared/rarity");
 
 export default {
-    props: ["id", "types"],
+  props: ["id", "types"],
   components: { UserDialog },
   data() {
     return {
@@ -41,15 +31,7 @@ export default {
   },
   created() {
     let filters = this.$store.getters.getRecipeFilters(this.id);
-    let rarity = {};
-    for (let i in Rarity) {
-        rarity[Rarity[i]] = filters.rarity && filters.rarity[Rarity[i]] != undefined ? filters.rarity[Rarity[i]] : true;
-    }
-
-    this.itemFilters = {
-        rarity: rarity,
-        types: {...this.types}
-    };
+    this.itemFilters = filters;
   },
   watch: {
     allFilters() {
@@ -59,8 +41,8 @@ export default {
       deep: true,
       handler() {
         this.$store.commit("setRecipeFilters", {
-            id: this.id,
-            filters: this.itemFilters
+          id: this.id,
+          filters: this.itemFilters
         });
       }
     }

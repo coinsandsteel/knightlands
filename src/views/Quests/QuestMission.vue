@@ -10,20 +10,35 @@
           <div
             :class="{hidden: questIndex <= 0}"
             class="quest-nav flex flex-item-center"
-            @click="$emit('prevQuest')"
+            @click="goToPrev"
           >
             <div class="nav-arrow left"></div>
           </div>
 
           <!-- ENEMY IMAGE HERE -->
-          <div class="quest-image pixelated flex flex-items-end flex-center">
+          <!-- <div class="quest-image pixelated flex flex-items-end flex-center">
             <img :src="enemyImage" />
-          </div>
+          </div> -->
+
+          <agile
+            ref="enemyList"
+            :dots="false"
+            :navButtons="false"
+            :centerMode="true"
+            :speed="300"
+            :infinite="false"
+            class="pixelated quest-enemies width-100 flex flex-items-end flex-center"
+            @afterChange="handleEnemyChanged($event)"
+          >
+            <div v-for="index in enemyList" :key="index" class="quest-image">
+              <img :src="enemyImage(index)" />
+            </div>
+          </agile>
 
           <div
             :class="{hidden: questIndex >= maxQuestIndex}"
-            class="quest-nav flex flex-item-center"
-            @click="$emit('nextQuest')"
+            class="quest-nav right flex flex-item-center"
+            @click="goToNext"
           >
             <div class="nav-arrow"></div>
           </div>
@@ -121,10 +136,15 @@ export default {
     };
   },
   mounted() {
+    this.$refs.enemyList.goTo(this.questIndex * 1);
+
     this.$game.inventory.on(
       Inventory.Changed,
       this.handleInventoryDelta.bind(this)
     );
+  },
+  activated() {
+    this.$refs.enemyList.goTo(this.questIndex);
   },
   destroyed() {
     this.$game.inventory.off(Inventory.Changed);
@@ -134,6 +154,9 @@ export default {
     this.lootHash = {};
   },
   computed: {
+    enemyList() {
+      return [0,1,2,3,4,5];
+    },
     progress() {
       return this.$game.getQuestProgress(this.zone._id, this.questIndex);
     },
@@ -144,9 +167,6 @@ export default {
       return UiConstants.backgroundImage(
         Zones.getBackground(this.zone._id)
       );
-    },
-    enemyImage() {
-      return Zones.getEnemyImage(this.zone._id, this.questIndex)
     },
     isBossUnlocked() {
       if (!this.zone.quests[this.questIndex].boss) {
@@ -164,6 +184,29 @@ export default {
     }
   },
   methods: {
+    goToNext() {
+      this.$refs.enemyList.goToNext();
+    },
+    goToPrev() {
+      this.$refs.enemyList.goToPrev();
+    },
+    handleEnemyChanged(event) {
+      let questIndex = this.enemyList[event.currentSlide];
+      if (this.questIndex == questIndex) {
+        return;
+      }
+
+      this.$router.replace({
+          name: "quests",
+          params: {
+            zone: this.zone._id,
+            quest: questIndex
+          }
+        });
+    },
+    enemyImage(questIndex) {
+      return Zones.getEnemyImage(this.zone._id, questIndex);
+    },
     async engage(max, boss) {
       this.request = this.$game.engageQuest(
         this.zone._id * 1,
@@ -239,11 +282,16 @@ export default {
   width: 100%;
 }
 
-.quest-image {
-  align-self: flex-end;
-  padding-bottom: 1rem;
+.quest-enemies {
   height: 80%;
   width: 100%;
+}
+
+.quest-image {
+  width: 100vw;
+  align-self: flex-end;
+  padding-bottom: 1rem;
+  
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -284,9 +332,17 @@ export default {
 }
 
 .quest-nav {
+  left: 0;
+  position: absolute;
+  z-index: 2;
   cursor: pointer;
   height: 14rem;
   transition: all 0.2s ease;
+
+  &.right {
+    left: unset;
+    right: 0;
+  }
 }
 </style>
 

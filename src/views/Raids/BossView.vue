@@ -35,6 +35,7 @@ import UiConstants from "@/ui_constants";
 import RaidsMeta from "@/raids_meta";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Timer from "@/timer.js";
+import Campaign from "@/campaign_database";
 
 export default {
   props: ["raidTemplateId", "progress", "timeLeft", "defeat"],
@@ -66,12 +67,12 @@ export default {
     },
     enemyImage() {
       return UiConstants.backgroundImage(
-        UiConstants.enemyImage(this.meta.icon)
+        Campaign.getRaidImage(this.raidTemplateId)
       );
     },
     zoneBackground() {
       return UiConstants.backgroundImage(
-        UiConstants.zoneImage(this.meta.zoneImage)
+        Campaign.getRaidBackground(this.raidTemplateId)
       );
     },
     name() {
@@ -102,7 +103,7 @@ export default {
 }
 
 .raid-boss-image {
-  height: 25vh;
+  height: 90%;
   width: 100%;
   background-repeat: no-repeat;
   background-size: contain;

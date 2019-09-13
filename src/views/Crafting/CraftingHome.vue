@@ -3,33 +3,37 @@
     <div class="home-art"></div>
 
     <div class="flex width-100 flex-center margin-bottom-5">
-      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="create" :append="true">
-        <SkewedButton :props='{type:"grey", icon:"icon-craft"}'>
-          {{$t("btn-crafting")}}
-        </SkewedButton>
-      </router-link>
-
       <div class="flex flex-center width-100">
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="upgrade" :append="true">
-          <SkewedButton class="flex-basis-50" :props='{type:"purple", icon:"icon-craft-upgrade"}'>
-            {{$t("btn-crafting-upgrade")}}
-          </SkewedButton>
+        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="craft" :append="true">
+          <SkewedButton :props='{type:"grey", icon:"icon-craft"}'>{{$t("btn-crafting")}}</SkewedButton>
         </router-link>
 
         <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="level" :append="true">
-          <SkewedButton :props='{type:"green", icon:"icon-craft-level"}'>
-            {{$t("btn-crafting-level")}}
-          </SkewedButton>
+          <SkewedButton
+            :props='{type:"green", icon:"icon-craft-level"}'
+          >{{$t("btn-crafting-level")}}</SkewedButton>
+        </router-link>
+      </div>
+
+      <div class="flex flex-center width-100">
+        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="upgrade" :append="true">
+          <SkewedButton
+            class="flex-basis-50"
+            :props="{type:'purple', icon:'icon-craft-upgrade'}"
+          >{{$t("btn-crafting-upgrade")}}</SkewedButton>
+        </router-link>
+
+        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="enchant" :append="true">
+          <SkewedButton :props='{type:"red", icon:"icon-enchant"}'>{{$t("btn-enchant")}}</SkewedButton>
         </router-link>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script>
-import AppSection from "@/AppSection"
-import SkewedButton from "@/components/SkewedButton.vue"
+import AppSection from "@/AppSection";
+import SkewedButton from "@/components/SkewedButton.vue";
 
 export default {
   mixins: [AppSection],

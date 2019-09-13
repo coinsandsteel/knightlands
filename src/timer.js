@@ -4,6 +4,7 @@ class Timer {
         this._timerTimeout = undefined;
         this._timeLeft = 0;
         this.value = showHours ? "00:00:00" : "00:00";
+        this._lastUpdate = new Date().getTime();
     }
 
     get timeLeft() {
@@ -49,8 +50,11 @@ class Timer {
             }${minutes}:${seconds > 9 ? "" : 0}${seconds}`;
 
         this._timerTimeout = setTimeout(() => {
-            this._timeLeft--;
+            let now = new Date().getTime();
+            let timeElapsed = Math.round((now - this._lastUpdate) / 1000);
+            this._timeLeft -= timeElapsed;
             this._update();
+            this._lastUpdate = now;
         }, 1000);
     }
 };

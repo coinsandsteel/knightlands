@@ -5,11 +5,9 @@
                 <div class="font-size-20">{{$t("waiting-for-tx-confirmation")}}</div>
             </LoadingIndicator>
 
-            <div class="flex flex-center" v-else-if="waitingForPayment">
-                <LoadingIndicator>
-                    <div class="font-size-20">{{$t("waiting-for-payment")}}</div>
-                </LoadingIndicator>
+            <div class="flex flex-column flex-center" v-else-if="waitingForPayment">
                 <CustomButton type="yellow" @click="$emit('pay', status)">{{$t("btn-pay")}}</CustomButton>
+                <div class="font-size-20 margin-top-1">{{$t("waiting-for-payment")}}</div>
             </div>
             
 
@@ -19,9 +17,9 @@
 </template>
 
 <script>
-import LoadingIndicator from "@/components/LoadingIndicator.vue"
+import LoadingIndicator from "@/components/LoadingIndicator.vue";
 import PaymentStatus from "@/../knightlands-shared/payment_status";
-import CustomButton from "@/components/Button.vue"
+import CustomButton from "@/components/Button.vue";
 
 export default {
     components: { LoadingIndicator, CustomButton },

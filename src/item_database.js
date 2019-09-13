@@ -68,6 +68,9 @@ class ItemDatabase {
 
   getRarity(item) {
     if (typeof item == "number") {
+      if (!ItemTemplates[item]) {
+        console.log("no item", item);
+      }
       return ItemTemplates[item].rarity;
     }
     return ItemTemplates[item.template].rarity;

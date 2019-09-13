@@ -17,6 +17,7 @@
     "fitty": "^2.2.6",
     "hooper": "^0.3.4",
     "intersection-observer": "^0.7.0",
+    "lodash.throttle": "^4.1.1",
     "node-sass": "^4.12.0",
     "pify": "^4.0.1",
     "pixi.js-legacy": "^5.0.4",

@@ -15,6 +15,7 @@ import {
 
 import ItemType from "@/../knightlands-shared/item_type";
 import Blockchains from "@/../knightlands-shared/blockchains";
+const Rarity = require("@/../knightlands-shared/rarity");
 
 let filters = {
   ...ItemType,
@@ -73,7 +74,20 @@ const store = new Vuex.Store({
       return state.zoneStage;
     },
     getRecipeFilters: state => id => {
-      return state.recipeFilters[id] || {};
+      let filters = state.recipeFilters[id];
+      if (!filters || !filters.rarity) {
+        filters = {
+          rarity: {}
+        };
+
+        for (let i in Rarity) {
+          filters.rarity[Rarity[i]] = true;
+        }
+
+        state.recipeFilters[id] = filters;
+      }
+
+      return filters;
     }
   },
   plugins: [vuexPersist.plugin],

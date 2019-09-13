@@ -25,7 +25,7 @@
           <keep-alive exclude="quest-mission">
             <quest-mission
               class="quest-view"
-              v-if="quest && currentQuest"
+              v-if="showQuest"
               :zone="currentZone"
               :questIndex="quest"
               :maxQuestIndex="currentZone.quests.length-1"
@@ -128,6 +128,9 @@ export default {
     },
     isZoneLocked() {
       return this.$game.getZoneLocked(this.zone, this.currentStageStage);
+    },
+    showQuest() {
+      return this.quest!==undefined && this.currentQuest;
     }
   },
   methods: {
@@ -141,7 +144,7 @@ export default {
       this.removeFooter();
       // don't show inside quest or in zone list
 
-      if (!this.zone || this.quest) {
+      if (!this.zone || this.quest !== undefined) {
         return;
       }
 
