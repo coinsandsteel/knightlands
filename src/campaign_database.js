@@ -19,5 +19,9 @@ export default {
     },
     getRaidBackground(raid) {
         return `/images/raids/${(RaidsMeta[raid] || {}).zoneImage}.jpg`;
+    },
+    isLastZone(zoneId) {
+        zoneId = zoneId * 1;
+        return !ZonesMeta[zoneId + 1];
     }
 };

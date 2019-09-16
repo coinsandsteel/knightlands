@@ -40,10 +40,10 @@
             <span class="menu-title">{{$t("menu-crafting")}}</span>
           </router-link>
 
-          <!-- <router-link  class="flex flex-center" to="/">
+          <router-link  class="flex flex-center" to="/summon">
             <span class="menu-icon shop"></span>
             <span class="menu-title">{{$t("menu-shop")}}</span>
-          </router-link> -->
+          </router-link>
 
           <!-- <router-link  class="flex flex-center" to="/">
             <span class="menu-icon guild"></span>
@@ -75,6 +75,11 @@ import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+
+import {create} from "vue-modal-dialogs";
+
+import LevelUp from "@/views/LevelUp.vue";
+const ShowLevelUp = create(LevelUp);
 
 export default {
   components: { StatusBar, RaidStatusNotification, LoadingScreen },
@@ -119,6 +124,11 @@ export default {
   async created() {
     Vue.prototype.$app = this;
     Vue.prototype.$game = new Game(this.$store);
+
+    this.$game.on("level-up", async ()=>{
+      await ShowLevelUp();
+    });
+
     // check if the page requires authentication
     this.$router.beforeEach(async (to, from, next) => {
       if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -481,15 +491,15 @@ export default {
 @import (reference) "./style/common.less";
 
 html {
-  font-family: "Alef", sans-serif;
-  font-size: 12px;
+  font-family: "Brandon", sans-serif;
+  font-size: 9px;
   line-height: 1.2;
   box-sizing: border-box;
 
   .mobile({font-size: 8px;});
-  .tablet({font-size: 9px;});
-  .laptop_small({font-size: 9px;});
-  .laptop({font-size: 10px;});
+  .tablet({font-size: 8px;});
+  .laptop_small({font-size: 8px;});
+  .laptop({font-size: 8px;});
 
   @media only screen and (max-width: 320px) {
     font-size: 7px;

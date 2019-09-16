@@ -40,20 +40,23 @@
 
           </div>
 
-          <div class="flex flex-no-wrap flex-space-around font-size-20">
+          <div class="flex flex-column height-100">
+            <span class="font-size-20 padding-top-1 margin-bottom-1">{{$t("character-level", {level: $game.character.level})}}</span>
+            <div class="flex flex-no-wrap full-flex flex-space-around font-size-20">
+              
+              <div
+                class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
+              >
+                <span v-for="stat in stats" :key="stat" class>{{stat}}</span>
+              </div>
 
-            <div
-              class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
-            >
-              <span v-for="stat in stats" :key="stat" class>{{stat}}</span>
+              <div
+                class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
+              >
+                <span v-for="stat in stats" :key="stat" class="attribute">{{$character.getStat(stat)}}</span>
+              </div>
+
             </div>
-
-            <div
-              class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
-            >
-              <span v-for="stat in stats" :key="stat" class="attribute">{{$character.getStat(stat)}}</span>
-            </div>
-
           </div>
         </div>
 
@@ -104,6 +107,7 @@ import CharacterStats from "@/../knightlands-shared/character_stat.js";
 import ItemInfo from "@/components/ItemInfo.vue"
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue"
+import CharacterStat from '../../../knightlands-shared/character_stat';
 
 const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
 const ItemFilter = CreateDialog(ItemFilterComponent);
@@ -133,7 +137,6 @@ export default {
       filteredItems: [],
       slots: {},
       itemsInSlots: this.$character.equipment,
-      stats: CharacterStats,
       hintItems: [],
       showHintItems: false,
       currentSlideIndex: 0,
@@ -161,6 +164,22 @@ export default {
   },
   deactivated() {
     this.removeFooter();
+  },
+  computed: {
+    stats() {
+      let stats = [];
+      stats.push(CharacterStat.Health);
+      stats.push(CharacterStat.Attack);
+      stats.push(CharacterStat.CriticalChance);
+      stats.push(CharacterStat.Defense);
+      stats.push(CharacterStat.RaidDamage);
+      
+      stats.push(CharacterStat.Energy);
+      stats.push(CharacterStat.Stamina);
+      stats.push(CharacterStat.Luck);
+
+      return stats;
+    }
   },
   methods: {
     updateItems() {
@@ -230,10 +249,18 @@ export default {
 
       let itemSlot = this.$game.itemsDB.getSlot(item.template);
 
-      if (action == "equip") {
-        this.request = this.$game.equipItem(item.id);
-      } else if (action == "unequip") {
-        this.request = this.$game.unequipItem(itemSlot);
+      switch (action) {
+        case "equip":
+          this.request = this.$game.equipItem(item.id);
+          break;
+
+        case "unequip":
+          this.request = this.$game.unequipItem(itemSlot);
+          break;
+
+        case "use":
+          this.request = this.$game.useItem(item.id);
+          break;
       }
     },
     showHint(item, index) {

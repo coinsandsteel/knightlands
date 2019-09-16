@@ -1,6 +1,6 @@
 <template>
     <CustomButton v-bind="props" :skewed="true" btnClass="skewed-btn">
-        <div class="flex flex-center flex-start flex-no-wrap center-transform-vertical">
+        <div class="flex flex-center flex-start flex-no-wrap">
             <span :class="props.icon" class="huge icon-skewed"></span>
             <span><slot></slot></span>
         </div>

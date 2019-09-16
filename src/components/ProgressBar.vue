@@ -10,7 +10,7 @@
       :style="{'width': width}"
     >
       <div
-        class="status-bar-font bar-value flex flex-center"
+        class="status-bar-font bar-value flex flex-center font-weight-700"
         :class="[valueClass, {'bar-value-top': isTop}]"
         v-if="!hideValues"
       >

@@ -28,7 +28,7 @@
               v-model="item.exp"
               height="2rem"
               width="70%"
-              barType="yellow"
+              barType="green"
               barClasses="margin-right-auto"
               :maxValue="nextExp"
               :plusButton="item.equipped?'':'green'"
@@ -57,6 +57,10 @@
           class="common-btn center"
           @click="handleClose('unequip')"
         >{{$t('btn-unequip')}}</custom-button>
+
+        <CustomButton v-if="isConsumable" @click="handleClose('use')">
+          {{$t('btn-use-consumable')}}
+        </CustomButton>
 
         <custom-button
           v-for="(btn, index) in buttons"
@@ -111,6 +115,9 @@ export default {
   computed: {
     isEquipment() {
       return this.template.type == ItemType.Equipment;
+    },
+    isConsumable() {
+      return this.template.type == ItemType.Consumable;
     },
     template() {
       return this.$game.itemsDB.getTemplate(this.item.template);

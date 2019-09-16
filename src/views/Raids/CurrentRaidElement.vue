@@ -1,6 +1,6 @@
 <template>
   <div class="full-flex panel current-raid-cell">
-    <span class="current-raid-name center-transform title font-size-20 enemy-title-font">{{name}}</span>
+    <span class="current-raid-name max-width-70 center-transform title font-size-20 enemy-title-font">{{$t(name)}}</span>
 
     <div class="flex full-flex width-100 height-100">
       <div class="flex-basis-50 relative">
@@ -25,7 +25,7 @@
           {{$t("time-left")}}:
           <span class="enemy-title-font">{{timer.value}}</span>
         </span>
-        <custom-button class="margin-top-2" type="grey" @click="viewRaid">{{$t("continue")}}</custom-button>
+        <custom-button class="margin-top-half" type="grey" @click="viewRaid">{{$t("continue")}}</custom-button>
       </div>
 
       <div class="flex-basis-50 flex flex-column flex-item-center flex-end" v-else>

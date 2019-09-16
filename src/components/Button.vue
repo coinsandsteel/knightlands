@@ -6,7 +6,7 @@
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
     <div class="btn-fill" :class="{skewed: skewed}"></div>
-    <div class="btn-content flex flex-center">
+    <div class="btn-content flex flex-center font-weight-700 font-size-20">
       <slot>{{caption}}</slot>
     </div>
     <div v-if="locked" class="locked"></div>
@@ -117,7 +117,7 @@ export default {
 }
 
 @btnFillExtrude: 3px;
-@btnFillExtrudeSkewed: 20px;
+@btnFillExtrudeSkewed: 2rem;
 
 .btn-fill {
   height: 100%;
@@ -133,7 +133,7 @@ export default {
 }
 
 .btn {
-  padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+  padding: 0 1.5rem;
   position: relative;
   min-width: @width;
   font-size: @fontSize;
@@ -142,14 +142,14 @@ export default {
   user-select: none;
   color: #4e3948;
   height: 5rem;
-  margin: 0 @btnFillExtrude 0 @btnFillExtrude;
 
   &.mini {
     min-width: unset;
   }
 
   &.skewed {
-    margin: 0 @btnFillExtrudeSkewed 0 @btnFillExtrudeSkewed;
+    margin-left: @btnFillExtrudeSkewed;
+    margin-right: @btnFillExtrudeSkewed;
     height: 6rem;
   }
 }

@@ -44,7 +44,7 @@
             
         </div>
 
-        <CustomButton type="yellow" :disabled="lockedTotal==0" @click="unbind">{{$t("btn-unbind")}}</CustomButton>
+        <CustomButton type="yellow" :disabled="lockedTotal==0" @click="unbind">{{$t("btn-upgrade")}}</CustomButton>
     </div>
   </div>
 </template>
@@ -207,9 +207,9 @@ export default {
                 if (!item.unique) {
                     item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
                 }
-            }
 
-            this.item = item;
+                this.item = item;
+            }
         }
     }
 }

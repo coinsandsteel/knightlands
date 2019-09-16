@@ -1,7 +1,7 @@
 @backgroundMainColor: #230e21;
 @backgroundOutsideColor: #0c080c;
-@lootCellSize: 75px;
-@mobileLootCellSize: 50px;
+@lootCellSize: 6.25rem;
+@mobileLootCellSize: 6.25rem;
 
 .mobile(@rules) {
     @media only screen and (max-width: 480px) {
@@ -48,17 +48,14 @@
 }
 
 @font-face {
-    font-family: 'Saira Semi Condensed', sans-serif;
-    src: url('https://fonts.googleapis.com/css?family=Saira+Semi+Condensed&display=swap');
+    font-family: 'Brandon';
+    src: url("../assets/fonts/brandon/Brandon\ Grotesque\ Regular.otf");
 }
 
 @font-face {
-    font-family: 'Carrosserie';
-    src: url("../assets/fonts/Carrosserie\ Bold.otf");
-}
-
-.digit-font {
-    font-family: 'Carrosserie';
+    font-family: 'Brandon';
+    font-weight: 700;
+    src: url("../assets/fonts/brandon/Brandon\ Grotesque\ Bold.otf");
 }
 
 .font-weight-700 {
@@ -76,15 +73,15 @@
 @fontSizeFactor: 1.4;
 
 .font-size-5 {
-    font-size: 0.3125rem * @fontSizeFactor;
-}
-
-.font-size-10 {
     font-size: 0.625rem * @fontSizeFactor;
 }
 
+.font-size-10 {
+    font-size: 0.75rem * @fontSizeFactor;
+}
+
 .font-size-12 {
-    font-size: .75rem * @fontSizeFactor;
+    font-size: .9375rem * @fontSizeFactor;
 }
 
 .font-size-15 {
@@ -92,19 +89,23 @@
 }
 
 .font-size-18 {
-    font-size: 1.125rem * @fontSizeFactor;
-}
-
-.font-size-20 {
     font-size: 1.25rem * @fontSizeFactor;
 }
 
-.font-size-25 {
+.font-size-20 {
     font-size: 1.5625rem * @fontSizeFactor;
 }
 
-.font-size-30 {
+.font-size-25 {
     font-size: 1.875rem * @fontSizeFactor;
+}
+
+.font-size-30 {
+    font-size: 2rem * @fontSizeFactor;
+}
+
+.font-size-4 {
+    font-size: 4rem * @fontSizeFactor;
 }
 
 h1 {
@@ -319,6 +320,9 @@ h1 {
     left:0  !important;
     right:0  !important;
     bottom:0  !important;
+}
+.z-index-1 {
+    z-index: 1;
 }
 
 .right-arrow {
@@ -636,10 +640,6 @@ h1 {
     height: 100%;
 }
 
-.agile__slide {
-    height: 100%;
-}
-
 .nav-arrow {
     background-image: url("../assets/ui/button_arrow.png");
     background-size: contain;
@@ -650,4 +650,12 @@ h1 {
     &.left {
         transform: rotateZ(180deg);
     }
+}
+
+.full-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }

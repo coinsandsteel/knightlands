@@ -9,12 +9,16 @@
         <span>{{title}}</span>
       </div>
 
-      <div class="close-btn" @click="handleClose"></div>
+      <div v-if="!hideCloseBtn" class="close-btn" @click="handleClose"></div>
+      
+      <div v-if="disableScroll">
+        <slot name="content"></slot>
+      </div>
 
       <div v-bar="{
           preventParentScroll: true,
           scrollThrottle: 30,
-      }">
+      }" v-else>
         <div class="scrollable-content">
           <slot name="content"></slot>
         </div>
@@ -32,12 +36,14 @@ export default {
     title: String,
     compact: Boolean,
     titleClass: String,
+    hideCloseBtn: Boolean,
     type: {
       type: String,
       default: "panel-light"
     },
     contentClass: String,
-    hideMask: Boolean
+    hideMask: Boolean,
+    disableScroll: Boolean
   },
   methods: {
     handleClose() {

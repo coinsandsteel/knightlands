@@ -126,7 +126,7 @@ export default {
   background-color: #323c4f;
   .border();
   padding: 0.4rem 2rem 0.4rem 2rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .tabs__item_active {

@@ -1,202 +1,237 @@
 
 chests_anim.png
-size: 180,1021
+size: 196,1052
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 blue_0
-  rotate: true
-  xy: 41, 3
+  rotate: false
+  xy: 2, 111
   size: 90, 35
   orig: 90, 35
   offset: 0, 0
   index: -1
 blue_1
   rotate: false
-  xy: 78, 62
+  xy: 94, 114
   size: 90, 31
   orig: 90, 31
   offset: 0, 0
   index: -1
 blue_2
   rotate: false
-  xy: 78, 34
+  xy: 94, 86
   size: 90, 26
   orig: 90, 26
   offset: 0, 0
   index: -1
 blue_3
   rotate: false
-  xy: 78, 10
+  xy: 2, 87
   size: 90, 22
   orig: 90, 22
   offset: 0, 0
   index: -1
 blue_base
-  rotate: true
-  xy: 95, 98
+  rotate: false
+  xy: 104, 338
   size: 90, 63
   orig: 90, 63
   offset: 0, 0
   index: -1
 brown_0
   rotate: false
-  xy: 104, 243
+  xy: 76, 46
   size: 72, 38
   orig: 72, 38
   offset: 0, 0
   index: -1
 brown_1
   rotate: true
-  xy: 144, 854
+  xy: 150, 12
   size: 72, 32
   orig: 72, 32
   offset: 0, 0
   index: -1
 brown_2
   rotate: false
-  xy: 104, 213
+  xy: 76, 16
   size: 72, 28
   orig: 72, 28
   offset: 0, 0
   index: -1
 brown_3
   rotate: false
-  xy: 95, 190
+  xy: 2, 2
   size: 72, 21
   orig: 72, 21
   offset: 0, 0
   index: -1
 brown_base
   rotate: false
-  xy: 104, 283
+  xy: 2, 25
   size: 72, 60
   orig: 72, 60
   offset: 0, 0
   index: -1
 flash
   rotate: false
-  xy: 2, 879
+  xy: 2, 910
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 flash1
   rotate: false
-  xy: 2, 745
+  xy: 2, 776
   size: 132, 132
   orig: 140, 140
   offset: 4, 4
   index: -1
 flash2
   rotate: false
-  xy: 2, 536
+  xy: 2, 567
   size: 116, 116
   orig: 140, 140
   offset: 12, 12
   index: -1
 love_0
   rotate: false
-  xy: 2, 279
+  xy: 2, 344
   size: 100, 64
   orig: 100, 64
   offset: 0, 0
   index: -1
 love_1
   rotate: true
-  xy: 120, 549
+  xy: 136, 766
   size: 100, 58
   orig: 100, 58
   offset: 0, 0
   index: -1
 love_2
-  rotate: true
-  xy: 120, 447
+  rotate: false
+  xy: 2, 285
   size: 100, 57
   orig: 100, 57
   offset: 0, 0
   index: -1
 love_3
   rotate: false
-  xy: 2, 224
+  xy: 2, 230
   size: 100, 53
   orig: 100, 53
   offset: 0, 0
   index: -1
 love_base
-  rotate: false
-  xy: 2, 345
+  rotate: true
+  xy: 120, 562
   size: 100, 72
   orig: 100, 72
   offset: 0, 0
   index: -1
 purple_0
   rotate: true
-  xy: 112, 345
+  xy: 126, 664
   size: 100, 66
   orig: 100, 66
   offset: 0, 0
   index: -1
 purple_1
   rotate: false
-  xy: 2, 473
+  xy: 2, 504
   size: 108, 61
   orig: 108, 61
   offset: 0, 0
   index: -1
 purple_2
   rotate: false
-  xy: 2, 419
+  xy: 2, 450
   size: 108, 52
   orig: 108, 52
   offset: 0, 0
   index: -1
 purple_3
-  rotate: true
-  xy: 136, 651
+  rotate: false
+  xy: 2, 410
   size: 108, 38
   orig: 108, 38
   offset: 0, 0
   index: -1
 purple_base
   rotate: false
-  xy: 2, 654
+  xy: 2, 685
   size: 122, 89
   orig: 122, 89
   offset: 0, 0
   index: -1
 red_0
   rotate: false
-  xy: 2, 95
+  xy: 2, 182
   size: 91, 46
   orig: 91, 46
   offset: 0, 0
   index: -1
 red_1
-  rotate: true
-  xy: 136, 761
+  rotate: false
+  xy: 95, 186
   size: 91, 41
   orig: 91, 41
   offset: 0, 0
   index: -1
 red_2
-  rotate: true
-  xy: 2, 2
+  rotate: false
+  xy: 95, 147
   size: 91, 37
   orig: 91, 37
   offset: 0, 0
   index: -1
 red_3
-  rotate: true
-  xy: 144, 928
+  rotate: false
+  xy: 2, 148
   size: 91, 32
   orig: 91, 32
   offset: 0, 0
   index: -1
 red_base
-  rotate: false
-  xy: 2, 143
+  rotate: true
+  xy: 112, 469
   size: 91, 79
   orig: 91, 79
+  offset: 0, 0
+  index: -1
+small_0
+  rotate: false
+  xy: 104, 282
+  size: 90, 54
+  orig: 90, 54
+  offset: 0, 0
+  index: -1
+small_1
+  rotate: true
+  xy: 144, 960
+  size: 90, 50
+  orig: 90, 50
+  offset: 0, 0
+  index: -1
+small_2
+  rotate: true
+  xy: 144, 868
+  size: 90, 47
+  orig: 90, 47
+  offset: 0, 0
+  index: -1
+small_3
+  rotate: false
+  xy: 104, 229
+  size: 90, 51
+  orig: 90, 51
+  offset: 0, 0
+  index: -1
+small_base
+  rotate: false
+  xy: 112, 403
+  size: 78, 64
+  orig: 78, 64
   offset: 0, 0
   index: -1

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column flex-item-center panel-content" :class="type">
+  <div class="flex flex-column flex-item-center panel-content" :class="[type, containerClasses]">
     <slot name="header">
       <span v-if="title" class="flex flex-center font-size-25 margin-bottom-5 title">{{$t("title")}}</span>
     </slot>
@@ -14,6 +14,7 @@ export default {
   props: {
     title: String,
     contentClasses: [Array, String],
+    containerClasses: [Array, String],
     type: {
       type: String,
       default: "panel"
@@ -32,12 +33,11 @@ export default {
   padding: 3rem 0 3rem 0;
 }
 
-@pickerBgHeight: 160%;
 .stripe {
   position: absolute;
   background-color: #303048;
   width: calc(100% + @contentPadding * 2 - @panelBorderWidth*2);
-  height: @pickerBgHeight;
+  height: 100%;
   left: 0;
   top: 50%;
   transform: translateX(-@contentPadding + @panelBorderWidth) translateY(-50%);

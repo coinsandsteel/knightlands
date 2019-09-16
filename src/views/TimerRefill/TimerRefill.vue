@@ -3,15 +3,15 @@
     <template v-slot:content>
       <Promised :promise="infoRequest">
         <template v-slot:combined="{isPending, isDelayOver}">
+          <loading-screen :loading="true" v-show="isPending && isDelayOver"></loading-screen>
           <div class="flex flex-column">
-            <loading-screen :loading="true" v-show="isPending && isDelayOver"></loading-screen>
 
             <div class="font-size-20">{{$t("refill-message")}}</div>
 
             <button-bar class="margin-top-2 margin-bottom-2" :sections="methods" v-model="methodChosen"></button-bar>
 
-            <div class="flex refill-method-content">
-              <div class="flex flex-basis-100 flex-column flex-item-center" v-show="showPayedOption">
+            <div class="flex flex-center flex-items-end refill-method-content">
+              <div class="flex flex-basis-100 height-100 flex-column flex-item-center" v-show="showPayedOption">
                 <!-- Native Currency -->
                 <div class="flex flex-column flex-center flex-1">
                   <div class="flex flex-center margin-bottom-2 font-size-20">
@@ -35,19 +35,19 @@
                     <IconWithValue iconClass="icon-gold">{{softCost}}</IconWithValue>
                   </div>
                 </div>
-
-                <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
               </div>
 
               <div class="flex flex-basis-100 flex-column flex-item-center" v-show="methodChosen == 1">
                 <!-- Shinies -->
-                <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
+                <!-- <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton> -->
               </div>
 
               <div class="flex flex-basis-100 flex-column flex-item-center" v-show="methodChosen == 2">
                 <!--Items -->
-                <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
+                <!-- <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton> -->
               </div>
+
+              <PromisedButton v-show="!showPayedOption" :disabled="!canProcceed" :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton>
             </div>
           </div>
         </template>
@@ -66,7 +66,7 @@ import PaymentStatus from "@/components/PaymentStatus.vue";
 import PriceTag from "@/components/PriceTag.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue"
+import PaymentHandler from "@/components/PaymentHandler.vue";
 import CharacterStat from '../../../knightlands-shared/character_stat';
 import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue"
@@ -102,6 +102,11 @@ export default {
     this.fetchPaymentStatus();
   },
   computed: {
+    canProcceed() {
+      if (this.showGoldOption) {
+        return this.$game.softCurrency >= this.softCost;
+      }
+    },
     showGoldOption() {
       return this.methodChosen == 0 && this.stat == CharacterStat.Health;
     },

@@ -1,6 +1,8 @@
 <template>
   <div class="pixelated relative flex flex-column boss-view flex-center flex-no-wrap">
     <div class="relative boss-image height-100 width-100" :style="zoneBackground">
+      <div ref="image" class="relative raid-boss-image" :style="enemyImage"></div>
+
       <div
         class="font-size-30 relative enemy-title-font raid-summon-title font-outline font-weight-700"
       >{{$t(name)}}</div>
@@ -8,7 +10,6 @@
         v-if="timer"
         class="font-size-20 relative enemy-title-font raid-summon-title font-outline font-weight-700"
       >{{timer.value}}</div>
-      <div ref="image" class="relative raid-boss-image" :style="enemyImage"></div>
 
       <div class="inner-content">
         <slot></slot>
@@ -98,11 +99,12 @@ export default {
   .quest-nav:last-child {
     padding-right: 1rem;
   }
-
-  overflow: hidden;
 }
 
 .raid-boss-image {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
   height: 90%;
   width: 100%;
   background-repeat: no-repeat;

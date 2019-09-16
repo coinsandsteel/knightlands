@@ -1,161 +1,190 @@
 <template>
-  <Promised :promise="request">
-    <template v-slot:combined="{isPending, isDelayOver, data}">
-      <div class="flex flex-column flex-center">
-        <LoadingScreen :loading="true" v-show="isPending && isDelayOver"></LoadingScreen>
+  <div class="flex flex-column flex-center">
+    <div class="flex flex-center flex-column font-outline font-size-30 enemy-title">
+      <span class="rarity-mythical font-weight-700" v-show="isBoss">BOSS</span>
+      <div class="enemy-title-font">
+        {{$t(missionName)}}
+      </div>
+    </div>
 
-        <div class="font-size-30 enemy-title-font font-outline font-weight-700">{{$t(missionName)}}</div>
+    <div :style="zoneBackground" class="flex quest-mid relative flex-center flex-no-wrap">
+      <div
+        :class="{hidden: questIndex <= 0}"
+        class="quest-nav flex flex-item-center"
+        @click="goToPrev"
+      >
+        <div class="nav-arrow left"></div>
+      </div>
 
-        <div :style="zoneBackground" class="flex quest-mid flex-center flex-no-wrap">
-          <div
-            :class="{hidden: questIndex <= 0}"
-            class="quest-nav flex flex-item-center"
-            @click="goToPrev"
-          >
-            <div class="nav-arrow left"></div>
-          </div>
+      <agile
+        ref="enemyList"
+        :dots="false"
+        :navButtons="false"
+        :centerMode="true"
+        :speed="300"
+        :infinite="false"
+        class="pixelated quest-enemies width-100"
+        @afterChange="handleEnemyChanged($event)"
+      >
+        <div
+          v-for="index in enemyList"
+          :key="index"
+          class="quest-image flex flex-column flex-center flex-end"
+        >
+          <img ref="enemyView" :src="enemyImage(index)" />
+        </div>
+      </agile>
 
-          <!-- ENEMY IMAGE HERE -->
-          <!-- <div class="quest-image pixelated flex flex-items-end flex-center">
-            <img :src="enemyImage" />
-          </div> -->
+      <div
+        :class="{hidden: questIndex >= maxQuestIndex}"
+        class="quest-nav right flex flex-item-center"
+        @click="goToNext"
+      >
+        <div class="nav-arrow"></div>
+      </div>
 
-          <agile
-            ref="enemyList"
-            :dots="false"
-            :navButtons="false"
-            :centerMode="true"
-            :speed="300"
-            :infinite="false"
-            class="pixelated quest-enemies width-100 flex flex-items-end flex-center"
-            @afterChange="handleEnemyChanged($event)"
-          >
-            <div v-for="index in enemyList" :key="index" class="quest-image">
-              <img :src="enemyImage(index)" />
-            </div>
-          </agile>
+      <div class="absolute-stretch z-index-1">
+        <DamageText
+              v-for="(damage) in playerDamages"
+              :key="damage.id"
+              :crit="damage.crit"
+            >{{damage.damage}}</DamageText>
+      </div>
+    </div>
 
-          <div
-            :class="{hidden: questIndex >= maxQuestIndex}"
-            class="quest-nav right flex flex-item-center"
-            @click="goToNext"
-          >
-            <div class="nav-arrow"></div>
+    <progress-bar
+      :percentMode="true"
+      v-model="progress.current"
+      :maxValue="progress.max"
+      height="0.75rem"
+      width="80%"
+      valuePosition="top"
+      barType="yellow"
+      valueClass="white-font font-outline font-size-30 quest-progress-value"
+      :thresholds="thresholds"
+    ></progress-bar>
+
+    <div class="quest-bottom panel flex flex-column full-flex">
+      <div class="flex quest-info-table">
+        <div class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start">
+          <div>Rewards</div>
+          <div class="margin-top-small">
+            <icon-with-value iconClass="icon-exp" :value="quest.exp"></icon-with-value>
+            <icon-with-value iconClass="icon-gold" :value="`${quest.goldMin}-${quest.goldMax}`"></icon-with-value>
           </div>
         </div>
-
-        <progress-bar
-          :percentMode="true"
-          v-model="progress.current"
-          :maxValue="progress.max"
-          height="0.75rem"
-          width="80%"
-          valuePosition="top"
-          barType="yellow"
-          valueClass="white-font font-outline font-size-30 quest-progress-value"
-          :thresholds="thresholds"
-        ></progress-bar>
-
-        <div class="quest-bottom panel flex flex-column full-flex">
-          <div class="flex quest-info-table">
-            <div class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start">
-              <div>Rewards</div>
-              <div class="margin-top-small">
-                <icon-with-value iconClass="icon-exp" :value="quest.exp"></icon-with-value>
-                <icon-with-value iconClass="icon-gold" :value="`${quest.goldMin}-${quest.goldMax}`"></icon-with-value>
-              </div>
-            </div>
-            <div
-              class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start"
-              v-show="quest.energy"
-            >
-              <div>Cost</div>
-              <div class="margin-top-small">
-                <icon-with-value iconClass="icon-energy" :value="quest.energy"></icon-with-value>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex flex-center full-flex loot ">
-            <loot v-for="reward in rewards" :key="reward.id" :item="reward" @hint="handleHint"></loot>
-          </div>
-        </div>
-        <div class="quest-footer flex flex-center">
-          <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">Kill previous enemies</div>
-          <div v-else-if="progress.current >= progress.max">
-            <div class="font-size-30 font-outline green-title">Complete</div>
-          </div>
-          <div v-else class="flex flex-center width-100 flex-space-evenly">
-            <custom-button @click="engage(false)">Attack x1</custom-button>
-            <custom-button :locked="!$game.hasPremiumAccount" @click="engage(true)">Attack MAX</custom-button>
+        <div
+          class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start"
+          v-show="quest.energy"
+        >
+          <div>Cost</div>
+          <div class="margin-top-small">
+            <icon-with-value iconClass="icon-energy" :value="quest.energy"></icon-with-value>
           </div>
         </div>
       </div>
-    </template>
-  </Promised>
-  
+
+      <div class="flex full-flex padding-left-2 padding-right-2">
+        <loot v-for="reward in rewards" :key="reward.id" :item="reward" @hint="handleHint"></loot>
+      </div>
+    </div>
+    <div class="quest-footer flex flex-center">
+      <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">Kill previous enemies</div>
+
+      <div v-else-if="progress.current >= progress.max && hasNextZone">
+        <CustomButton v-if="isBoss" type="yellow" @click="goToNextZone">{{$t("btn-next-quest")}}</CustomButton>
+        <div class="font-size-30 font-outline green-title" v-else>{{$t("quest-complete")}}</div>
+      </div>
+
+      <div v-else class="flex flex-center width-100 flex-space-evenly">
+        <PromisedButton :promise="request" @click="engage(false)" :props='{width: "15rem"}'>Attack x1</PromisedButton>
+        <PromisedButton :promise="request" :locked="!$game.hasPremiumAccount" @click="engage(true)" :props='{width: "15rem"}'>Attack MAX</PromisedButton>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import HintHandler from "@/components/HintHandler.vue"
+import HintHandler from "@/components/HintHandler.vue";
 import Zones from "@/campaign_database";
-import LoadingScreen from "@/components/LoadingScreen.vue"
+import LoadingScreen from "@/components/LoadingScreen.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Loot from "@/components/Loot.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 import Stat from "@/../knightlands-shared/character_stat.js";
 import IconWithValue from "@/components/IconWithValue.vue";
 import UiConstants from "@/ui_constants";
-import CustomButton from "@/components/Button.vue";
 import Inventory from "@/inventory";
-
+import PromisedButton from "@/components/PromisedButton.vue";
+import CustomButton from "@/components/Button.vue";
+import DamageText from "@/views/Raids/DamageText.vue";
 const Events = require("@/../knightlands-shared/events");
 import Errors from "@/../knightlands-shared/errors";
 
 import { create } from "vue-modal-dialogs";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
 
-import { Promised } from "vue-promised";
-
 const ShowResourceRefill = create(
   NotEnoughResource,
   ...NotEnoughResource.props
 );
 
+import anime from "animejs/lib/anime.es.js";
+
 export default {
   name: "quest-mission",
   mixins: [HintHandler],
   props: ["zone", "questIndex", "maxQuestIndex", "stage"],
-  components: { LoadingScreen, Loot, ProgressBar, IconWithValue, CustomButton, Promised },
+  components: {
+    LoadingScreen,
+    Loot,
+    ProgressBar,
+    IconWithValue,
+    PromisedButton,
+    CustomButton,
+    DamageText
+  },
   data() {
     return {
       rewards: [],
       thresholds: UiConstants.progressThresholds,
       lootHash: {},
-      request: null
+      request: null,
+      playerDamages: []
     };
   },
   mounted() {
-    this.$refs.enemyList.goTo(this.questIndex * 1);
+    this.damageTextId = 0;
 
     this.$game.inventory.on(
       Inventory.Changed,
       this.handleInventoryDelta.bind(this)
     );
+
+    this.$refs.enemyList.goTo(this.questIndex * 1);
   },
   activated() {
+    this.$game.inventory.on(
+      Inventory.Changed,
+      this.handleInventoryDelta.bind(this)
+    );
+
     this.$refs.enemyList.goTo(this.questIndex);
   },
   destroyed() {
     this.$game.inventory.off(Inventory.Changed);
   },
   deactivated() {
+    this.$game.inventory.off(Inventory.Changed);
     this.rewards = [];
     this.lootHash = {};
   },
   computed: {
     enemyList() {
-      return [0,1,2,3,4,5];
+      return [0, 1, 2, 3, 4, 5];
+    },
+    isBoss() {
+      return this.questIndex == 5;
     },
     progress() {
       return this.$game.getQuestProgress(this.zone._id, this.questIndex);
@@ -164,9 +193,7 @@ export default {
       return this.zone.quests[this.questIndex].stages[this.stage];
     },
     zoneBackground() {
-      return UiConstants.backgroundImage(
-        Zones.getBackground(this.zone._id)
-      );
+      return UiConstants.backgroundImage(Zones.getBackground(this.zone._id));
     },
     isBossUnlocked() {
       if (!this.zone.quests[this.questIndex].boss) {
@@ -181,9 +208,17 @@ export default {
     },
     missionName() {
       return Zones.getMissionName(this.zone._id, this.questIndex);
+    },
+    hasNextZone() {
+      return !Zones.isLastZone(this.zone._id);
     }
   },
   methods: {
+    goToNextZone() {
+      this.$router.replace({name: "quests", params: {
+        zone: this.zone._id + 1
+      }});
+    },
     goToNext() {
       this.$refs.enemyList.goToNext();
     },
@@ -197,12 +232,12 @@ export default {
       }
 
       this.$router.replace({
-          name: "quests",
-          params: {
-            zone: this.zone._id,
-            quest: questIndex
-          }
-        });
+        name: "quests",
+        params: {
+          zone: this.zone._id,
+          quest: questIndex
+        }
+      });
     },
     enemyImage(questIndex) {
       return Zones.getEnemyImage(this.zone._id, questIndex);
@@ -215,8 +250,15 @@ export default {
       );
 
       try {
-        await this.request;
-      } catch(exc) {
+        let damages = await this.request;
+
+        let delay = 0;
+        for (let i = 0; i < damages.length; ++i) {
+          this.handleDamage(damages[i].damage, damages[i].crit, delay);
+          delay += 150;
+        }
+        
+      } catch (exc) {
         await this._handleQuestError(exc);
       }
     },
@@ -235,7 +277,7 @@ export default {
       }
     },
     async _handleQuestError(error) {
-      console.log("_handleQuestError", error, Errors.NoEnergy)
+      console.log("_handleQuestError", error, Errors.NoEnergy);
       switch (error) {
         case Errors.NoHealth:
           await ShowResourceRefill(Stat.Health);
@@ -245,6 +287,56 @@ export default {
           await ShowResourceRefill(Stat.Energy);
           break;
       }
+    },
+    handleDamage(damage, crit, delay) {
+      this.playerDamages.push({
+        damage: damage,
+        crit: crit,
+        id: this.damageTextId++
+      });
+
+      setTimeout(() => {
+        this.playerDamages.splice(0, 1);
+      }, 3000);
+
+      const enemyView = this.$refs.enemyView[this.questIndex];
+      anime.remove(enemyView);
+      let timeline = anime.timeline({
+        targets: enemyView
+      });
+
+      if (crit) {
+        timeline.add({
+          translateX: function(el, i) {
+            return `-=${anime.random(-1, -2)}rem`;
+          },
+          translateY: function(el, i) {
+            return `-=${anime.random(-1, 1)}rem`;
+          },
+          scale: 1.2 + Math.random() * 0.2,
+          duration: 0,
+          loop: 1
+        });
+      }
+
+      timeline.add(
+        {
+          filter: "brightness(100)",
+          duration: 0
+        },
+        0
+      );
+
+      timeline.add({
+        translateX: 0,
+        translateY: 0,
+        scale: 1,
+        filter: {
+          value: "brightness(1)",
+          easeing: "",
+          duration: 100
+        }
+      });
     }
   }
 };
@@ -252,6 +344,10 @@ export default {
 
 
 <style lang="less" scoped>
+.agile__slide {
+  display: flex;
+}
+
 .stamina-buttons {
   padding: 0.5rem;
   * > {
@@ -262,11 +358,12 @@ export default {
 .quest-mid {
   width: 100%;
   height: 30vh;
+  min-height: 10vh;
   justify-content: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 
   .quest-nav:first-child {
     padding-left: 1rem;
@@ -278,7 +375,6 @@ export default {
 }
 
 .quest-footer {
-  min-height: 10rem;
   width: 100%;
 }
 
@@ -289,12 +385,8 @@ export default {
 
 .quest-image {
   width: 100vw;
-  align-self: flex-end;
   padding-bottom: 1rem;
-  
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  height: 100%;
 
   & img {
     max-width: 100%;
@@ -322,9 +414,10 @@ export default {
   width: 100%;
 }
 
-.enemy-title-font {
+.enemy-title {
   position: absolute;
   top: 0;
+  z-index: 1;
 }
 
 .hidden {

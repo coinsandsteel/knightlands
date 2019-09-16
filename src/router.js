@@ -34,6 +34,16 @@ import CraftingEnchant from "./views/Crafting/Enchant/CraftingEnchant.vue";
 import Enchant from "./views/Crafting/Enchant/Enchant.vue";
 import EnchantItem from "./views/Crafting/Enchant/EnchantItem.vue";
 
+import SummonRoot from "./views/Summon/SummonRoot.vue";
+import SummonHome from "./views/Summon/SummonHome.vue";
+
+import ShopRoot from "./views/Summon/Shop/ShopRoot.vue";
+import ShopHome from "./views/Summon/Shop/ShopHome.vue";
+
+import ChestsRoot from "./views/Summon/Chests/ChestsRoot.vue";
+import ChooseChest from "./views/Summon/Chests/ChooseChest.vue";
+import OpenChest from "./views/Summon/Chests/OpenChest.vue";
+
 const router = new Router({
   routes: [
     {
@@ -113,6 +123,48 @@ const router = new Router({
               name: "enchant-item",
               component: EnchantItem,
               props: true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: "/summon",
+      component: SummonRoot,
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          path: "",
+          name: "summon",
+          component: SummonHome
+        },
+        {
+          path: "chests",
+          component: ChestsRoot,
+          children: [
+            {
+              path: "",
+              name: "chests",
+              component: ChooseChest
+            },
+            {
+              path: "open/:chest",
+              name: "open-chest",
+              component: OpenChest,
+              props: true
+            }
+          ]
+        },
+        {
+          path: "shop",
+          component: ShopRoot,
+          children: [
+            {
+              path: "",
+              name: "shop",
+              component: ShopHome
             }
           ]
         }

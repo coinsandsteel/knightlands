@@ -44,6 +44,7 @@
 
     <div v-if="!onlyStats" class="flex flex-items-center font-size-18 flex-column flex-no-wrap">
       <div class="margin-bottom-half" v-for="p in properties" :key="p" v-html="p"></div>
+      <div class="margin-bottom-half" v-if="action" v-html="action"></div>
     </div>  
 
     <span
@@ -80,6 +81,14 @@ export default {
     },
     stats() {
       return this.$game.itemsDB.getStats(this.item);
+    },
+    action() {
+      let action = this.template.action;
+      if (!action) {
+        return "";
+      }
+      
+      return this.$t(action.action, action);
     },
     properties() {
       if (!this.template.properties) {

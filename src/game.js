@@ -69,6 +69,7 @@ class Game {
 
         this._socket.on(Events.InventoryUpdate, this._handleInventoryUpdate.bind(this));
         this._socket.on(Events.RaidSummonStatus, this._handleRaidStatus.bind(this));
+        this._socket.on(Events.RaidJoinStatus, this._handleRaidJoinStatus.bind(this));
         this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
         this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
 
@@ -223,7 +224,7 @@ class Game {
             // signing was rejected
             console.log("signIn", exc);
 
-            if (exc && exc.message.includes("not unlocked")) {
+            if (exc.message && exc.message.includes("not unlocked")) {
                 //reset walletReady
                 this._vm.walletReady = false;
             }
@@ -256,9 +257,13 @@ class Game {
         }
     }
 
-    _handleConnection(data) {
+    async _handleConnection(data) {
         this._vm.ready = true;
         this._vm.$emit(this.Ready, data.isAuthenticated);
+        
+        if (data.isAuthenticated) {
+            await this.updateUserData();
+        }
     }
 
     _handleDisconnect(errorCode) {
@@ -294,6 +299,10 @@ class Game {
         this._inventory.mergeData(data);
     }
 
+    _handleRaidJoinStatus(data) {
+        this._vm.$emit(Events.RaidJoinStatus, data);
+    }
+
     _handleRaidStatus(data) {
         const { iap, reason, context } = data;
 
@@ -307,7 +316,7 @@ class Game {
             duration: 2000
         });
 
-        this._vm.$emit(Events.RaidSummonStatus);
+        this._vm.$emit(Events.RaidSummonStatus, data);
     }
 
     _handleCraftStatus(data) {
@@ -329,7 +338,7 @@ class Game {
     _handleTimerRefilled(data) {
         const { context } = data;
         this._character.refillTimer(context);
-        this._vm.$emit(Events.TimerRefilled, context);
+        this._vm.$emit(Events.TimerRefilled, data);
     }
 
     _mergeData(data) {
@@ -338,7 +347,14 @@ class Game {
             removals
         } = data;
 
-        this.character.mergeData(changes.character);
+        if (changes.character) {
+            if (this.character.level < changes.character.level) {
+                this._vm.$emit('level-up');
+            }
+            
+            this.character.mergeData(changes.character);
+        }
+        
 
         if (removals) {
             this.character.removeData(removals.character);
@@ -615,7 +631,7 @@ class Game {
             stage,
             max
         });
-        return result.changes.inventory;
+        return result.response;
     }
 
     async equipItem(itemId) {
@@ -654,6 +670,12 @@ class Game {
         });
     }
 
+    async useItem(itemId) {
+        await this._wrapOperation(Operations.UseItem, {
+            itemId
+        });
+    }
+
     async refillTimer(stat, refillType, items) {
         let response = await this._wrapOperation(Operations.RefillTimer, {
             stat,
@@ -666,6 +688,18 @@ class Game {
 
     async fetchCurrentRaids() {
         return await this._request(Operations.FetchRaidsList);
+    }
+
+    async fetchRaidJoinStatus(raidId) {
+        return await this._request(Operations.FetchRaidJoinStatus, {
+            raidId
+        });
+    }
+
+    async joinRaid(raidId) {
+        return await this._request(Operations.JoinRaid, {
+            raidId
+        });
     }
 
     async fetchRaid(raidId) {

@@ -59,9 +59,7 @@ export default {
 
 <style lang="less" scoped>
 .raid-summon-element {
-  width: 100%;
   height: 16rem;
-  padding: 0 1rem 0 1rem;
 }
 
 .boss-image {

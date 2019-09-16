@@ -28,10 +28,8 @@ export default {
 
 <style lang="less" scoped>
 .summon-list {
-  padding: 1rem 0 1rem 0;
-
   * > {
-    margin: 1rem 0 1rem 0;
+    margin: 1rem 1rem;
   }
 }
 </style>

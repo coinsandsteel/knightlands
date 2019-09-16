@@ -5,7 +5,7 @@
     <StripedPanel contentClasses="flex-center">
       <span class="font-size-20 title margin-bottom-3">Select Difficulty</span>
 
-      <StripedContent classes="width-100" contentClasses="width-100">
+      <StripedContent classes="width-100" stripeHeight="10rem" contentClasses="width-100">
         <difficulty-selector :stages="availableDifficulties" v-model="selectedStage"></difficulty-selector>
       </StripedContent>
 
