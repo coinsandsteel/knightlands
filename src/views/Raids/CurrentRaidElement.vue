@@ -1,6 +1,6 @@
 <template>
   <div class="full-flex panel current-raid-cell">
-    <span class="current-raid-name max-width-70 center-transform title font-size-20 enemy-title-font">{{$t(name)}}</span>
+    <span class="current-raid-name max-width-90 center-transform title font-size-18 enemy-title-font">{{$t(name)}}</span>
 
     <div class="flex full-flex width-100 height-100">
       <div class="flex-basis-50 relative">
@@ -120,7 +120,7 @@ export default {
 }
 
 .current-raid-image {
-  flex: 1 1;
+  white-space: nowrap;
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;

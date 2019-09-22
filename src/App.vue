@@ -118,7 +118,7 @@ export default {
         return !this.loading;
       }
 
-      return !this.loading && this.ready;
+      return !this.loading && this.$game.ready && this.$game.authenticated;
     }
   },
   async created() {
@@ -166,9 +166,8 @@ export default {
 
     // fetch initial data
     this.$game.on(this.$game.SignUp, async () => {
-      await this.updateUserData();
+      await this.$game.updateUserData();
       this.loading = false;
-      this.ready = true;
       if (this.$route.name == "login") {
         this.$router.replace({ name: "character" });
       }
@@ -492,7 +491,7 @@ export default {
 
 html {
   font-family: "Brandon", sans-serif;
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1.2;
   box-sizing: border-box;
 

@@ -64,7 +64,8 @@ export default {
   bottom: 0;
   top: 0;
   z-index: 10;
-  padding: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   background-color: @backgroundMainColor;
 }
 </style>

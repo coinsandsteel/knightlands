@@ -69,14 +69,17 @@
         <div v-show="showHintItems">
           <transition>
 
-            <div class="items-bg-mask flex flex-center" @click.self="showHintItems = false">
-              <transition>
+            <div class="items-bg-mask relative flex flex-center" @click.self="showHintItems = false">
                 <Hooper ref="hooper" style="height: 100%" :infiniteScroll="true" @slide="updateHintItems">
                   <slide v-for="(item, index) in hintItems" :key="index">
-                    <LootHint :item="item.item" :equip="!item.equipped" :unequip="item.equipped" :hideMask="true" @close="handleItemAction"></LootHint>
+                    <LootHint :item="item.item" :equip="!item.equipped" :unequip="item.equipped" :hideMask="true" :showButtons="true" @close="handleItemAction"></LootHint>
                   </slide>
                 </Hooper>
-              </transition>
+
+                <div class="flex flex-center flex-space-between absolute-stretch pointer-events-none">
+                  <div class="nav-arrow left"></div>
+                  <div class="nav-arrow"></div>
+                </div>
             </div>
 
           </transition>
@@ -107,10 +110,12 @@ import CharacterStats from "@/../knightlands-shared/character_stat.js";
 import ItemInfo from "@/components/ItemInfo.vue"
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue"
-import CharacterStat from '../../../knightlands-shared/character_stat';
+import CharacterStat from '@/../knightlands-shared/character_stat';
+import OpenedBox from "./OpenedBox.vue";
 
-const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
+const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "showButtons");
 const ItemFilter = CreateDialog(ItemFilterComponent);
+const ShowOpenedBox = CreateDialog(OpenedBox, ...OpenedBox.props);
 
 export default {
   mixins: [AppSection],
@@ -241,7 +246,7 @@ export default {
         return;
       }
 
-      let action = await Hint(item, !item.equipped, item.equipped);
+      let action = await Hint(item, !item.equipped, item.equipped, true);
       await this.handleItemAction(item, action);
     },
     async handleItemAction(item, action) {
@@ -261,6 +266,13 @@ export default {
         case "use":
           this.request = this.$game.useItem(item.id);
           break;
+
+        case "open":
+          let template = item.template;
+          this.request = this.$game.useItem(item.id);
+          let items = await this.request;
+          await ShowOpenedBox(template, items);
+          break;
       }
     },
     showHint(item, index) {
@@ -273,7 +285,7 @@ export default {
       this.showHintItems = true;
 
       this.$nextTick(()=>{
-        this.$refs.hooper.update();
+        this.$refs.hooper.updateWidth();
       });
     },
     async showItemFilter() {

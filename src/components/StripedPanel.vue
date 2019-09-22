@@ -35,7 +35,6 @@ export default {
 
 .stripe {
   position: absolute;
-  background-color: #303048;
   width: calc(100% + @contentPadding * 2 - @panelBorderWidth*2);
   height: 100%;
   left: 0;
@@ -45,7 +44,7 @@ export default {
 
 .panel-content {
   padding: 1rem @contentPadding 1rem @contentPadding;
-  margin: 2rem 3rem 0rem 3rem;
+  // margin: 2rem 3rem 0rem 3rem;
 }
 
 .panel-content {

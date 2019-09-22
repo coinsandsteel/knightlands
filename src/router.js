@@ -44,6 +44,10 @@ import ChestsRoot from "./views/Summon/Chests/ChestsRoot.vue";
 import ChooseChest from "./views/Summon/Chests/ChooseChest.vue";
 import OpenChest from "./views/Summon/Chests/OpenChest.vue";
 
+import AdventuresRoot from "./views/Adventures/AdventuresRoot.vue";
+import Adventures from "./views/Adventures/Adventures.vue";
+import StartAdventure from "./views/Adventures/StartAdventure.vue";
+
 const router = new Router({
   routes: [
     {
@@ -171,6 +175,26 @@ const router = new Router({
       ]
     },
     {
+      path: "/home/adventures",
+      component: AdventuresRoot,
+      children: [
+        {
+          path: "",
+          name: "adventures",
+          component: Adventures
+        },
+        {
+          path: "start",
+          name: "start-adventure",
+          component: StartAdventure,
+          props: true
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: "/link/:token/:user",
       name: "link-tg",
       component: LinkTelegram,
@@ -198,14 +222,16 @@ const router = new Router({
       meta: { 
         skipReady: true 
       }
-    }, {
+    }, 
+    {
       path: "/home",
       name: "home",
       component: Home,
       meta: {
         requiresAuth: true
       }
-    }, {
+    }, 
+    {
       path: "/character",
       name: "character",
       component: Character,

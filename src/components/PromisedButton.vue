@@ -1,7 +1,7 @@
 <template>
-  <CustomButton v-bind="props" :disabled="disabled" :locked="locked" @click="$emit('click')">
+  <CustomButton v-bind="props" :disabled="disabled" :locked="locked" @click="handleClick">
     <keep-alive>
-      <template v-if="showLoading">
+      <template v-if="showLoading || forceLoading">
         <LoadingIndicator color="#4e3948" type="scale"></LoadingIndicator>
       </template>
       <template v-else>
@@ -16,7 +16,7 @@ import CustomButton from "@/components/Button.vue";
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 
 export default {
-  props: ["promise", "props", "loadingAsDefault", "disabled", "locked"],
+  props: ["promise", "props", "loadingAsDefault", "disabled", "locked", "forceLoading"],
   components: { CustomButton, LoadingIndicator },
   data: () => ({
     showLoading: false
@@ -30,6 +30,11 @@ export default {
     }
   },
   methods: {
+    handleClick() {
+      if (!this.showLoading) {
+        this.$emit('click');
+      }
+    },
     async _await() {
       this.showLoading = true;
 

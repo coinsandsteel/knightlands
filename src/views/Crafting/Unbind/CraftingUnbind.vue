@@ -33,8 +33,12 @@ export default {
         let item = items[i];
         let template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (!template.unbindable) {
+        if (!template.unbindable || item.breakLimit == 2) {
           continue;
+        }
+
+        if (this.$game.inventory.getItemsCountByTemplate(item.template) < 2) {
+          continue;          
         }
 
         filteredItems.push(item);

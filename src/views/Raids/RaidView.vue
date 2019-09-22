@@ -29,7 +29,7 @@
           </div>
 
           <!--COMBAT VIEW-->
-          <striped-panel v-if="participant">
+          <striped-panel class="margin-1" v-if="participant">
             <div class="title font-size-20 font-weight-700 rarity-mythical">
               <span class="white-space">{{$t("dkt-bonus")}}</span>
               <span>x{{dktBonus}}</span>
@@ -338,7 +338,7 @@ export default {
         let damageThreshold = raidStage.loot.damageThresholds[i];
 
         let damageRequired =
-          this.raidProgress.current * damageThreshold.relativeThreshold;
+          raidStage.health * damageThreshold.relativeThreshold / raidStage.maxSlots;
 
         if (damageRequired > this.raidData.currentDamage) {
           this.lootProgress.max = Math.floor(damageRequired);

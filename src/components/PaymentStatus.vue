@@ -2,14 +2,13 @@
     <div class="flex flex-column flex-center">
         <keep-alive>
             <LoadingIndicator v-if="pending" >
-                <div class="font-size-20">{{$t("waiting-for-tx-confirmation")}}</div>
+                <div class="font-size-15">{{$t("waiting-for-tx-confirmation")}}</div>
             </LoadingIndicator>
 
             <div class="flex flex-column flex-center" v-else-if="waitingForPayment">
                 <CustomButton type="yellow" @click="$emit('pay', status)">{{$t("btn-pay")}}</CustomButton>
-                <div class="font-size-20 margin-top-1">{{$t("waiting-for-payment")}}</div>
+                <div class="font-size-15 margin-top-1">{{$t("waiting-for-payment")}}</div>
             </div>
-            
 
             <slot v-else></slot>
         </keep-alive>

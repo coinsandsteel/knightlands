@@ -531,6 +531,10 @@ h1 {
     color: #6a1e2b;
 }
 
+.orange-title {
+    color: #ffae01;
+}
+
 //width/height generator with 5% step
 .widthHeight(@size, @counter) when (@counter > 0) {
   .widthHeight(@size, (@counter - 5)); // next iteration
@@ -658,4 +662,27 @@ h1 {
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+@arrowSize: 2rem;
+
+.arrow-up-positive {
+    background: url("../assets/ui/arrow_up_green.png") no-repeat;
+    background-size: contain;
+    width: @arrowSize;
+    height: @arrowSize;
+}
+
+.arrow-down-negative {
+    background: url("../assets/ui/arrow_down_red.png") no-repeat;
+    background-size: contain;
+    width: @arrowSize;
+    height: @arrowSize;
+}
+
+.arrow-up {
+    background: url("../assets/ui/arrow_up_yellow.png") no-repeat;
+    background-size: contain;
+    width: @arrowSize;
+    height: @arrowSize;
 }

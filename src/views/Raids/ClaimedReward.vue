@@ -44,7 +44,7 @@ import LootHint from "@/components/LootHint.vue";
 import Loot from "@/components/Loot.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
-const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
+const Hint = CreateDialog(LootHint, "item");
 
 export default {
   components: {
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     async showHint(item) {
-      await Hint(item, false, false, { equip: false });
+      await Hint(item);
     }
   }
 };

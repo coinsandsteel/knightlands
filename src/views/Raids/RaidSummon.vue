@@ -2,7 +2,7 @@
   <div class="flex flex-column flex-start relative">
     <boss-view v-if="raid" :raidTemplateId="raid"></boss-view>
 
-    <StripedPanel contentClasses="flex-center">
+    <StripedPanel class="margin-1" contentClasses="flex-center">
       <span class="font-size-20 title margin-bottom-3">Select Difficulty</span>
 
       <StripedContent classes="width-100" stripeHeight="10rem" contentClasses="width-100">

@@ -266,7 +266,7 @@ export default {
         level++;
       }
 
-      this.futureExp = exp;
+      this.futureExp = Math.round(exp);
 
       return level;
     },

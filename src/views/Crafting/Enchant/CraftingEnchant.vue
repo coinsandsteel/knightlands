@@ -1,10 +1,10 @@
 <template>
   <div class="padding-1 height-100 dummy-height">
     <div class="flex full-flex dummy-height">
-      <!-- <div v-bar class="width-100 height-100 dummy-height" v-if="items.length > 0">
+      <div v-bar class="width-100 height-100 dummy-height" v-if="items.length > 0">
         <LootContainer :items="items" @hint="openUnbind" :lootProps="{showUnbindLevels: true, showLevel: true}"></LootContainer>
-      </div> -->
-      <div class="flex flex-center width-100 height-100" >
+      </div>
+      <div class="flex flex-center width-100 height-100" v-else>
         <span class="font-size-20">{{$t("enchant-list-empty-msg")}}</span>
       </div>
     </div>
@@ -28,12 +28,12 @@ export default {
       let items = this.$game.inventory.items;
       let i = 0;
       const length = items.length;
-
+      const maxEnchant = this.$game.itemsDB.getMaxEnchantingLevel();
       for (; i < length; ++i) {
         let item = items[i];
         let template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (!template.unbindable) {
+        if (!template.enchantable || item.enchant >= maxEnchant) {
           continue;
         }
 

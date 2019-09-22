@@ -4,20 +4,16 @@ const ItemTemplates = require("./items.json");
 const {
   getSlot
 } = require("@/../knightlands-shared/equipment_slot");
-
 const ItemType = require("@/../knightlands-shared/item_type");
-
 const Meta = require("./meta.json");
-
 const Properties = require("./item_properties.json");
-
 const UpgradeMeta = require("./upgrade_meta.json");
-
+const EnchantingMeta = require("./enchanting_meta.json");
 import ItemStatResolver from "@/../knightlands-shared/item_stat_resolver";
 
 class ItemDatabase {
   constructor() {
-    this._itemStatResolver = new ItemStatResolver(Meta.statConversions, Meta.itemPower, Meta.itemPowerSlotFactors);
+    this._itemStatResolver = new ItemStatResolver(Meta.statConversions, Meta.itemPower, Meta.itemPowerSlotFactors, Meta.charmItemPower);
   }
 
   getName(id) {
@@ -26,6 +22,10 @@ class ItemDatabase {
     }
 
     return ItemTemplates[id].caption;
+  }
+
+  getMaxEnchantingLevel() {
+    return EnchantingMeta.maxEnchanting;
   }
 
   getIcon(id) {
@@ -153,21 +153,28 @@ class ItemDatabase {
     return null
   }
 
-  getStats(item, forceLevel) {
+  getStats(item, forceLevel, forceEnchanting) {
     let template;
     let level = 1;
+    let enchantingLevel = 0;
+
     if (typeof item == "number") {
       template = this.getTemplate(item);
     } else {
       template = this.getTemplate(item.template);
       level = item.level || 1;
+      enchantingLevel = item.enchant || 0;
     }
 
     if (forceLevel) {
       level = forceLevel;
     }
 
-    return this._itemStatResolver.convertStats(template, level);
+    if (forceEnchanting) {
+      enchantingLevel = forceEnchanting;
+    }
+
+    return this._itemStatResolver.convertStats(template, level, enchantingLevel);
   }
 }
 

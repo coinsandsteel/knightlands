@@ -6,7 +6,7 @@
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
     <div class="btn-fill" :class="{skewed: skewed}"></div>
-    <div class="btn-content flex flex-center font-weight-700 font-size-20">
+    <div class="btn-content flex flex-center font-weight-700" :class="fontClass">
       <slot>{{caption}}</slot>
     </div>
     <div v-if="locked" class="locked"></div>
@@ -40,7 +40,11 @@ export default {
     locked: Boolean,
     mini: Boolean,
     skewed: Boolean,
-    btnClass: String
+    btnClass: String,
+    fontClass: {
+      type: String,
+      default: "font-size-20"
+    }
   },
   computed: {
     sizeStyle() {

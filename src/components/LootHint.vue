@@ -7,22 +7,24 @@
     :hideMask="hideMask"
   >
     <template v-slot:content>
-
       <ItemInfo :item="item" :hideTitle="true">
-
         <template v-slot:afterType v-if="isEquipment">
           <div class="flex flex-center margin-bottom-half">
             <span class="star" :class="{active: stars >= 1}"></span>
             <span class="star margin-right-auto" :class="{active: stars >= 2}"></span>
+            <span class="arrow-up" v-if="stars<2" @click="upgradeItem"></span>
           </div>
         </template>
 
         <template v-slot:beforeStats>
           <div class="progress-bar-margin">
-            <div v-if="isEquipment && item.level" class="text-align-left font-size-20 margin-bottom-half">
+            <div
+              v-if="isEquipment && item.level"
+              class="text-align-left font-size-20 margin-bottom-half"
+            >
               <span>Lvl: {{item.level}}</span>
             </div>
-            
+
             <progress-bar
               class="margin-top-small"
               v-model="item.exp"
@@ -37,15 +39,13 @@
             ></progress-bar>
           </div>
         </template>
-
       </ItemInfo>
-
     </template>
 
     <template v-slot:footer>
-
-      <div class="flex">
+      <div class="flex" v-if="showButtons">
         <custom-button
+          type="yellow"
           v-if="actions.equip && equip && isEquipment"
           class="common-btn center"
           @click="handleClose('equip')"
@@ -58,18 +58,22 @@
           @click="handleClose('unequip')"
         >{{$t('btn-unequip')}}</custom-button>
 
-        <CustomButton v-if="isConsumable" @click="handleClose('use')">
-          {{$t('btn-use-consumable')}}
-        </CustomButton>
+        <CustomButton type="yellow" v-if="isBox" @click="handleClose('open')">{{$t('btn-open-box')}}</CustomButton>
+
+        <CustomButton
+          type="yellow"
+          v-else-if="isConsumable"
+          @click="handleClose('use')"
+        >{{$t('btn-use-consumable')}}</CustomButton>
 
         <custom-button
+          type="yellow"
           v-for="(btn, index) in buttons"
           :key="index"
           :class="btn.type"
           @click="handleClose(btn.response)"
         >{{$t(btn.title)}}</custom-button>
       </div>
-
     </template>
   </user-dialog>
 </template>
@@ -80,7 +84,8 @@ import ProgressBar from "./ProgressBar.vue";
 import UserDialog from "./UserDialog.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
-import Stat from "@/../knightlands-shared/character_stat.js";
+import Stat from "@/../knightlands-shared/character_stat";
+const ItemActions = require("@/../knightlands-shared/item_actions");
 
 // Button object
 // { type:"yellow", title, response }
@@ -103,7 +108,8 @@ export default {
       })
     },
     hideMask: Boolean,
-    buttons: Array
+    buttons: Array,
+    showButtons: Boolean
   },
   components: {
     CustomButton,
@@ -118,6 +124,13 @@ export default {
     },
     isConsumable() {
       return this.template.type == ItemType.Consumable;
+    },
+    isBox() {
+      if (!this.isConsumable) {
+        return false;
+      }
+
+      return this.template.action.action == ItemActions.OpenBox;
     },
     template() {
       return this.$game.itemsDB.getTemplate(this.item.template);
@@ -144,15 +157,22 @@ export default {
     }
   },
   methods: {
+    upgradeItem() {
+      this.handleClose();
+      this.$router.push({ name: "unbind-item", params: { itemId: this.item.id } });
+    },
     handleLevelProgressClick() {
       this.handleClose();
-      this.$router.push({ name: "upgrade-item", params: { itemId: this.item.id } });
+      this.$router.push({
+        name: "upgrade-item",
+        params: { itemId: this.item.id }
+      });
     },
     handleClose(response) {
       if (this.$close) {
         this.$close(response);
       } else {
-        this.$emit('close', this.item, response);
+        this.$emit("close", this.item, response);
       }
     },
     statName(statId) {

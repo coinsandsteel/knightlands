@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-center flex-no-wrap">
     <div v-if="!flip" v-bind:class="iconClass" class="value-icon"></div>
-    <div class="font-size-20" :class="valueClass">
+    <div :class="valueClass">
       <slot>{{value}}</slot>
     </div>
     <div v-if="flip" v-bind:class="iconClass" class="value-icon"></div>
@@ -10,7 +10,15 @@
 
 <script>
 export default {
-  props: ["iconClass", "valueClass", "value", "flip"]
+  props: {
+    iconClass: String,
+    value: [String, Number],
+    flip: Boolean,
+    valueClass: {
+      type: String,
+      default: "font-size-20"
+    }
+  }
 };
 </script>
 

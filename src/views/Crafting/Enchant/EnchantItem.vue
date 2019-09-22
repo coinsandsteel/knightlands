@@ -1,51 +1,133 @@
 <template>
   <div class="padding-1 flex flex-column flex-justify-center dummy-height">
-    <div class="padding-1 dummy-height flex flex-center flex-column panel" v-if="item">
-        <ItemInfo :item="item" :onlyStats="true"  :lootProps="{onlyIcon:true}">
+    <Promised :promise="request">
+      <template v-slot:combined="{ isPending, isDelayOver, data }">
+        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
-            <template v-slot:afterStats>
-                <div>
-                    <div class="flex flex-center margin-top-1 font-size-20">
-                        <span class="flex flex-center flex-start margin-bottom-half">{{$t("max-level")}} {{maxLevel}} <span class="margin-left-half margin-right-half right-arrow"></span> {{nextMaxLevel}}</span>
-                    </div>
-
-                    <div class="flex flex-center">
-                        <span class="margin-left-1 star" :class="{active: stars >= 1}"></span>
-                        <span class="star" :class="{active: stars >= 2}"></span>
-                        <span class="margin-left-half margin-right-half right-arrow"></span>
-                        <span class="star" :class="{active: futureStars >= 1}"></span>
-                        <span class="star" :class="{active: futureStars >= 2}"></span>
-                    </div>
+        <StripedPanel class="dummy-height flex flex-center flex-column" v-if="item">
+          <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}">
+            <template v-slot:beforeStats>
+              <div ref="level">
+                <div class="flex flex-center margin-top-1 font-size-20">
+                  <span
+                    class="flex flex-center flex-start margin-bottom-half"
+                    v-if="canEnchant"
+                    
+                  >
+                    <span class="yellow-title margin-right-half">{{$t("enchanting-level")}}</span>
+                    {{item.enchant || 0}}
+                    <span
+                      class="margin-left-half margin-right-half right-arrow"
+                    ></span>
+                    <span class="green-title">{{(item.enchant || 0) + 1}}</span>
+                  </span>
+                  <span class="rarity-mythical" v-else>{{$t("enchanting-maxed-out")}}</span>
                 </div>
+              </div>
             </template>
 
-         </ItemInfo>
-
-        <span class="margin-top-1 margin-bottom-1 title font-size-20">{{$t("enchant-materials")}}</span>
-
-        <div class="flex flex-center full-flex width-100 dummy-height margin-bottom-2">
-            <div v-bar class="flex width-100 height-100 dummy-height">
-                <div>
-                    <div class="flex width-100 flex-center dummy-height">
-                        <loot 
-                            v-for="(item, index) in unbindItems" 
-                            :key="index" 
-                            :item="item" 
-                            :showLevel="true" 
-                            :showUnbindLevels="true" 
-                            :hideQuantity="true" 
-                            :selected="selectedItems[index]" 
-                            :locked="!selectedItems[index] && lockRest" 
-                            @hint="toggleSelectItem(index)"
-                        />
-                    </div>
+            <template v-slot:stats v-if="canEnchant">
+              <div
+                class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
+              >
+                <div class="flex width-40 flex-column flex-item-end text-align-right">
+                  <div
+                    v-for="(statValue, statId) in stats"
+                    :key="statId"
+                    class="margin-bottom-half width-100"
+                  >{{$t(statId)}}</div>
                 </div>
-            </div>
-            
-        </div>
+                <div class="flex width-40 flex-column text-align-left">
+                  <div
+                    v-for="(statValue, statId) in stats"
+                    :key="statId"
+                    class="margin-bottom-half flex flex-center flex-start width-100"
+                  >
+                    {{statValue}}
+                    <span class="margin-left-half margin-right-half right-arrow"></span>
+                    {{futureStats[statId]}}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </ItemInfo>
 
-        <CustomButton type="yellow" :disabled="lockedTotal==0" @click="unbind">{{$t("btn-enchant")}}</CustomButton>
-    </div>
+          <template v-if="canEnchant">
+            <span
+              class="margin-top-1 margin-bottom-1 title font-size-20"
+            >{{$t("enchant-materials")}}</span>
+
+            <StripedContent
+              classes="margin-top-2 margin-bottom-2"
+              contentClasses="width-100 flex flex-space-evenly"
+              stripeHeight="10rem"
+            >
+              <crafting-ingridient
+                v-for="(ingridient) in ingridients"
+                :key="ingridient.itemId"
+                :ingridient="ingridient"
+                :hintHandler="showHint"
+              />
+            </StripedContent>
+
+            <template v-if="!paymentInProcess">
+              <transition name="fade">
+                <span
+                  class="margin-top-1 margin-bottom-1 rarity-mythical font-outline font-size-20"
+                  v-if="failed"
+                >{{$t("enchant-failed")}}</span>
+              </transition>
+              <transition name="fade">
+                <span
+                  class="margin-top-1 margin-bottom-1 orange-title font-outline font-size-20"
+                  v-if="!failed"
+                >{{$t("enchant-success-rate", {rate: stepData.successRate})}}</span>
+              </transition>
+            </template>
+
+            <div class="flex flex-center width-100" v-if="!paymentInProcess">
+              <CustomButton type="yellow" @click="enchant(currencies.Soft)">
+                {{$t("btn-enchant")}}
+                <IconWithValue iconClass="icon-gold">{{stepData.soft}}</IconWithValue>
+              </CustomButton>
+            </div>
+
+            <StripedContent
+              classes="margin-top-3 margin-bottom-5"
+              contentClasses="width-100 flex flex-space-evenly"
+              stripeHeight="13rem"
+              color="#2c5c40"
+              v-if="stepData.successRate < 100"
+            >
+              <PaymentStatus
+                ref="paymentStatus"
+                :request="fetchPayment"
+                @pay="continuePurchase"
+                class="width-100"
+              >
+                <div class="flex flex-column width-100">
+                  <span
+                    class="margin-top-1 margin-bottom-1 rarity-rare font-outline font-size-20"
+                  >{{$t("enchant-success-rate", {rate: 100})}}</span>
+
+                  <div class="flex flex-center width-100 flex-space-evenly">
+                    <CustomButton type="green" @click="enchant(currencies.Fiat)">
+                      {{$t("btn-enchant")}}
+                      <PriceTag :dark="true" :iap="stepData.iap"></PriceTag>
+                    </CustomButton>
+
+                    <CustomButton type="grey" @click="enchant(currencies.Hard)">
+                      {{$t("btn-enchant")}}
+                      <IconWithValue iconClass="icon-premium">{{stepData.hard}}</IconWithValue>
+                    </CustomButton>
+                  </div>
+                </div>
+              </PaymentStatus>
+            </StripedContent>
+          </template>
+        </StripedPanel>
+      </template>
+    </Promised>
   </div>
 </template>
 
@@ -57,160 +139,203 @@ import LootContainer from "@/components/LootContainer.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
-import Loot from "@/components/Loot.vue"
+import Loot from "@/components/Loot.vue";
+import StripedPanel from "@/components/StripedPanel.vue";
+import StripedContent from "@/components/StripedContent.vue";
+import HintHandler from "@/components/HintHandler.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
+import PriceTag from "@/components/PriceTag.vue";
+import { Promised } from "vue-promised";
+import LoadingScreen from "@/components/LoadingScreen.vue";
+import CurrencyType from "@/../knightlands-shared/currency_type";
+import PaymentHandler from "@/components/PaymentHandler.vue";
+import PaymentStatus from "@/components/PaymentStatus.vue";
+const EnchantingMeta = require("@/enchanting_meta.json");
+const Events = require("@/../knightlands-shared/events");
 
 export default {
-    mixins: [AppSection, PromptMixin],
-    props: ["itemId"],
-    components: { ItemInfo, LootContainer, CustomButton, Loot },
-    created() {
-        this.title = "window-unbind-item";
-        this.$options.useRouterBack = true;
-    },
-    activated() {
-        this.updateEncahntItemsList();
-        this.prepareItemForEnchant();
-    },
-    deactivated() {
-        this.cancelUnbind(this.itemId);
-    },
-    data: ()=>({
-        item: null,
-        selectedMaterial: null,
-        unbindItems: [],
-        selectedItems: {},
-        lockRest: false,
-        lockedTotal: 0
-    }),
-    watch: {
-        itemId() {
-            this.cancelUnbind();
-            this.prepareItemForEnchant();
-            this.updateEncahntItemsList();
-        }
-    },
-    computed: {
-        maxLevel() {
-            return this.$game.itemsDB.getMaxLevel(this.item);
-        },
-        nextMaxLevel() {
-            return this.$game.itemsDB.getMaxLevel(this.item, this.item.breakLimit+this.lockedTotal);
-        },
-        copiesHave() {
-            return this.$game.inventory.getItemsCountByTemplate(this.item.template);
-        },
-        stars() {
-            return this.item.breakLimit;
-        },
-        futureStars() {
-            return this.stars + this.lockedTotal;
-        }
-    },
-    methods: {
-        async enchant() {
-            let itemName = this.$t(this.$game.itemsDB.getName(this.item.template));
-            let itemRarity = this.$game.itemsDB.getRarity(this.item.template);
-            let confirmation = await this.showPrompt(this.$t("unbind-confirm-title"), this.$t("unbind-confirm-text", {item: itemName, rarity: itemRarity}), 
-            [
-                {
-                    type: "red",
-                    title: this.$t("btn-cancel"),
-                    response: false
-                },
-                {
-                    type: "green",
-                    title: this.$t("btn-ok"),
-                    response: "ok"
-                }
-            ]);
-
-            if (confirmation == "ok") {
-                let items = {};
-                for (let i in this.selectedItems) {
-                    let unbindItem = this.unbindItems[i];
-                    if (!items[unbindItem.id]) {
-                        items[unbindItem.id] = 1;
-                    } else {
-                        items[unbindItem.id]++;
-                    }
-                }
-
-                let newItemId = await this.$game.unbindItem(this.itemId, items);
-                if (newItemId != this.itemId) {
-                    this.$router.replace({ name: "enchant-item", params: { itemId: newItemId } });
-                }
-
-                this.updateEncahntItemsList();
-            }
-        },
-        toggleSelectItem(itemIndex) {
-            if (this.lockRest && !this.selectedItems[itemIndex]) {
-                return;
-            }
-
-            if (this.selectedItems[itemIndex]) {
-                this.selectedItems[itemIndex] = !this.selectedItems[itemIndex];
-            } else {
-                this.$set(this.selectedItems, itemIndex, true);
-            }
-
-            if (this.selectedItems[itemIndex]) {
-                this.lockedTotal++;
-            } else {
-                this.$delete(this.selectedItems, itemIndex);
-                this.lockedTotal--;
-            }
-
-            this.lockRest = (2 - this.item.breakLimit) == this.lockedTotal;
-        },
-        updateEncahntItemsList() {
-            this.selectedItems = {};
-            this.lockedTotal = 0;
-            let filteredItems = [];
-            
-            if (this.item) {
-                let items = this.$game.inventory.getItemsByTemplate(this.item.template);
-                let i = 0;
-                const length = items.length;
-
-                for (; i < length; ++i) {
-                    let item = items[i];
-                    if (item.unique && item.id == this.itemId) {
-                        continue;
-                    }
-
-                    let count = item.count < 2 ? item.count : 2;
-                    while (count-- > 0) {
-                        if (item.unique) {
-                            filteredItems.push(item);
-                        } else {
-                            filteredItems.push({
-                                id: item.id,
-                                template: item.template
-                            });
-                        }
-                    }
-                }
-            }
-
-            this.unbindItems = filteredItems;
-        },
-        cancelUnbind() {
-            if (this.item && !this.item.unique) {
-                this.$game.inventory.increaseStack(this.item);
-            }
-            this.item = null;
-        },
-        prepareItemForEnchant() {
-            let item = this.$game.inventory.getItem(this.itemId);
-            if (item) {
-                if (!item.unique) {
-                    item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
-                }
-            }
-
-            this.item = item;
-        }
+  mixins: [AppSection, PromptMixin, HintHandler, PaymentHandler],
+  props: ["itemId"],
+  components: {
+    ItemInfo,
+    LootContainer,
+    CustomButton,
+    Loot,
+    StripedPanel,
+    StripedContent,
+    CraftingIngridient,
+    IconWithValue,
+    PriceTag,
+    Promised,
+    LoadingScreen,
+    PaymentStatus
+  },
+  created() {
+    this.title = "window-enchant-item";
+    this.$options.useRouterBack = true;
+    this.$options.paymentEvents = [Events.ItemEnchanted];
+  },
+  activated() {
+    this.prepareItemForEnchant();
+    this.fetchPaymentStatus();
+    this.updateEnchantItemsList();
+  },
+  deactivated() {},
+  data: () => ({
+    item: null,
+    ingridients: [],
+    request: null,
+    currencies: CurrencyType,
+    fetchPayment: null,
+    failed: false,
+    paymentInProcess: false
+  }),
+  watch: {
+    itemId() {
+      this.prepareItemForEnchant();
+      this.fetchPaymentStatus();
+      this.updateEnchantItemsList();
     }
-}
+  },
+  computed: {
+    canEnchant() {
+      return (
+        this.currentEnchantingLevel < this.$game.itemsDB.getMaxEnchantingLevel()
+      );
+    },
+    currentEnchantingLevel() {
+      if (!this.item) return 0;
+      return this.item.enchant || 0;
+    },
+    stepData() {
+      if (this.item) {
+        let template = this.$game.itemsDB.getTemplate(this.item.template);
+        return EnchantingMeta.steps[template.rarity].steps[
+          this.currentEnchantingLevel
+        ];
+      }
+
+      return null;
+    },
+    stats() {
+      return this.$game.itemsDB.getStats(this.item);
+    },
+    futureStats() {
+      return this.$game.itemsDB.getStats(
+        this.item,
+        null,
+        this.currentEnchantingLevel + 1
+      );
+    }
+  },
+  methods: {
+    async fetchPaymentStatus() {
+      this.paymentInProcess = false;
+      this.fetchPayment = this.$game.fetchEnchantingStatus(this.itemId);
+      await this.fetchPayment;
+      this.$nextTick(() => {
+        if (!this.$refs.paymentStatus) {
+          this.paymentInProcess = false;
+        } else {
+          this.paymentInProcess =
+            this.$refs.paymentStatus.pending ||
+            this.$refs.paymentStatus.waitingForPayment;
+        }
+      });
+    },
+    async enchant(currency) {
+      let itemName = this.$t(this.$game.itemsDB.getName(this.item.template));
+      let itemRarity = this.$game.itemsDB.getRarity(this.item.template);
+
+      let confirmation = await this.showPrompt(
+        this.$t("enchanting-confirm-title"),
+        this.$t("enchanting-confirm-text", {
+          item: itemName,
+          rarity: itemRarity
+        }),
+        [
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: "ok"
+          }
+        ]
+      );
+
+      if (confirmation == "ok") {
+        this.request = this.$game.enchantItem(this.itemId, currency);
+
+        if (currency == CurrencyType.Fiat) {
+          this.request = this.purchaseRequest(this.request);
+        }
+
+        let newItemId = await this.request;
+        if (newItemId === false) {
+          // failed
+          this.failed = true;
+          clearTimeout(this.failedTimeout);
+          this.failedTimeout = setTimeout(() => (this.failed = false), 3000);
+
+          let timeline = anime({
+            targets: this.$refs.level,
+            translateX: [
+                { value: "-0.5rem" },
+                { value: "0.45rem" },
+                { value: "-0.4rem" },
+                { value: "0.35rem" },
+                { value: "-0.3rem" },
+                { value: "0.25rem" },
+                { value: "-0.2rem" },
+                { value: "0rem" }
+
+            ],
+            easing: 'easeOutExpo',
+            duration: 325,
+            loop: 1
+          });
+        } else if (newItemId && newItemId != this.itemId) {
+          this.$router.replace({
+            name: "enchant-item",
+            params: { itemId: newItemId }
+          });
+        }
+
+        this.updateEnchantItemsList();
+      }
+    },
+    updateEnchantItemsList() {
+      this.ingridients.length = 0;
+
+      if (this.item && this.stepData) {
+        let i = 0;
+        let ingridients = this.stepData.ingridients;
+        const length = ingridients.length;
+
+        for (; i < length; ++i) {
+          let ingridient = ingridients[i];
+          this.ingridients.push(ingridient);
+        }
+      }
+    },
+    prepareItemForEnchant() {
+      let item = this.$game.inventory.getItem(this.itemId);
+      this.item = item;
+    }
+  }
+};
 </script>
+
+<style lang="less" scoped>
+.fade-enter-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

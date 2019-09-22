@@ -1,5 +1,5 @@
 <template>
-  <IconWithValue :iconClass="dark?'icon-trx-dark':'icon-trx'" valueClass="font-size-20">{{price}}</IconWithValue>
+  <IconWithValue :iconClass="dark?'icon-trx-dark':'icon-trx'" :valueClass="valueClass" :flip="flip">{{price}}</IconWithValue>
 </template>
 
 <script>
@@ -8,7 +8,16 @@ import Blockchains from "@/../knightlands-shared/blockchains";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  props: ["iap", "overridePrice", "dark"],
+  props: {
+    iap: String,
+    overridePrice: Number,
+    dark: Boolean,
+    flip: Boolean,
+    valueClass: {
+      type: String,
+      default: "font-size-20"
+    }
+  },
   components: { IconWithValue },
   data() {
     return {

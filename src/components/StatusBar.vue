@@ -5,7 +5,7 @@
         ref="health"
         :maxValue="maxHealth"
         iconClass="icon-health"
-        :hideMaxValue="false"
+        :hideMaxValue="true"
         :timer="healthTimer"
         plusButton="grey"
         v-model="health"

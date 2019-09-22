@@ -2,17 +2,20 @@
   <div class="login-container flex flex-center">
     <div class="font-size-20" v-if="!$game.hasWallet()">{{$t("no-wallet")}}</div>
     <div class="font-size-20" v-else-if="!$game.walletReady()">{{$t("unlock-wallet")}}</div>
-    <custom-button size="big" v-else @click="signIn">{{$t("btn-signin")}}</custom-button>
+    <PromisedButton :promise="request" size="big" v-else @click="signIn">{{$t("btn-signin")}}</PromisedButton>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
-import CustomButton from "@/components/Button.vue";
+import PromisedButton from "@/components/PromisedButton.vue";
 
 export default {
-  components: { CustomButton },
+  components: { PromisedButton },
   mixins: [AppSection],
+  data: ()=>({
+    request: null
+  }),
   created() {
     this.title = "Sign in";
     this.$game.on(this.$game.SignUp, () => {
@@ -34,7 +37,7 @@ export default {
       }
     },
     signIn() {
-      this.$game.signIn();
+      this.request = this.$game.signIn();
     }
   }
 };

@@ -1,19 +1,20 @@
 <template>
-    <div>
-      <canvas ref="canvas" class="width-100 height-100">
-
-      </canvas>
-    </div>
+  <div>
+    <canvas ref="canvas" class="width-100 height-100" />
+  </div>
 </template>
 
 <script>
 import spine from "@/spine.js";
 
 export default {
-props: ["skeletonFile", "skeletonName", "atlas", "atlasImage", "translateY"],
+  props: ["skeletonFile", "skeletonName", "atlas", "atlasImage", "translateY"],
   created() {
     this.lastFrameTime = Date.now() / 1000;
   },
+  data: ()=>({
+    ready: false
+  }),
   mounted() {
     this.$nextTick(() => {
       this.canvas = this.$refs.canvas;
@@ -30,22 +31,37 @@ props: ["skeletonFile", "skeletonName", "atlas", "atlasImage", "translateY"],
       requestAnimationFrame(this.load.bind(this));
     });
   },
+  watch: {
+    skeletonFile() {
+      if (this.assetManager && this.skeletonFile) {
+        this.assetManager.loadText(`animations/${this.skeletonFile}.json`);
+      }
+    },
+    skeletonName() {
+      if (this.skeletonName) {
+        this.skeleton = null;
+        this.ready = false;
+        requestAnimationFrame(this.load.bind(this));
+      }
+    }
+  },
   methods: {
-      getState() {
-          return this.state;
-      },
+    isReady() {
+      return this.ready;
+    },
+    getState() {
+      return this.state;
+    },
     load() {
-      if (this.assetManager.isLoadingComplete()) {
-        var data = this.loadSkeleton(
-          this.skeletonName,
-          "default"
-        );
+      if (!this.skeleton && this.assetManager.isLoadingComplete()) {
+        var data = this.loadSkeleton(this.skeletonName, "default");
 
         this.skeleton = data.skeleton;
         this.state = data.state;
         this.bounds = data.bounds;
 
         this.$emit("ready");
+        this.ready = true;
 
         requestAnimationFrame(this.render.bind(this));
       } else {
@@ -84,21 +100,21 @@ props: ["skeletonFile", "skeletonName", "atlas", "atlasImage", "translateY"],
         new spine.AnimationStateData(skeleton.data)
       );
 
-    //   animationState.addListener({
-    //     event: (trackIndex, event) => {
-    //       // spawn loot
-    //       if (event.data.name == "spawn_loot") {
-    //         this.showLoot = true;
-    //       }
-    //     },
-    //     complete: function(trackIndex, loopCount) {},
-    //     start: function(trackIndex) {
-    //       // console.log("Animation on track " + trackIndex + " started");
-    //     },
-    //     end: function(trackIndex) {
-    //       console.log("Animation on track " + trackIndex + " ended");
-    //     }
-    //   });
+      //   animationState.addListener({
+      //     event: (trackIndex, event) => {
+      //       // spawn loot
+      //       if (event.data.name == "spawn_loot") {
+      //         this.showLoot = true;
+      //       }
+      //     },
+      //     complete: function(trackIndex, loopCount) {},
+      //     start: function(trackIndex) {
+      //       // console.log("Animation on track " + trackIndex + " started");
+      //     },
+      //     end: function(trackIndex) {
+      //       console.log("Animation on track " + trackIndex + " ended");
+      //     }
+      //   });
       // Pack everything up and return to caller.
       return { skeleton: skeleton, state: animationState, bounds: bounds };
     },
@@ -135,6 +151,10 @@ props: ["skeletonFile", "skeletonName", "atlas", "atlasImage", "translateY"],
       return { offset: offset, size: size };
     },
     render() {
+      if (!this.skeleton) {
+        return;
+      }
+
       var now = Date.now() / 1000;
       var delta = now - this.lastFrameTime;
       this.lastFrameTime = now;

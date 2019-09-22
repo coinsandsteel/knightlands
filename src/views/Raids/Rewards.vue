@@ -7,7 +7,7 @@
           v-for="(threshold, index) in loot.damageThresholds"
           :key="index"
         >
-          <div class="title flex flex-center compact font-size-15">
+          <div class="title flex flex-center compact font-size-18">
             <span class="margin-title tier-font">{{$t("tier")}}</span>
             <span class="title-space tier-font">{{index+1}}</span>
             <span class="margin-title">{{getDamage(threshold)}}</span>
@@ -19,13 +19,28 @@
             <IconWithValue
               iconClass="icon-dkt"
               valueClass="font-weight-700"
-              class="margin-top-1 margin-bottom-1"
+              class="margin-top-1 margin-bottom-1 font-size-18"
             >{{getMinDkt(threshold)}} - {{getMaxDkt(threshold)}}</IconWithValue>
+
+            <div class="flex flex-center reward-loot">
+              <loot
+                v-for="item in threshold.lootGuarantees"
+                :item="item.itemId"
+                :key="item.itemId"
+                :quantity="item.minCount"
+                :gacha="true"
+                @hint="showHint"
+              ></loot>
+            </div>
+
+            <div class="flex flex-center compact width-100 font-size-18 margin-top-1 margin-bottom-1">{{$t("raid-possible-loot")}}</div>
+
             <div class="flex flex-center reward-loot">
               <loot
                 v-for="item in threshold.lootPreview"
                 :item="item.itemId"
                 :key="item.itemId"
+                :gacha="true"
                 @hint="showHint"
               ></loot>
             </div>
@@ -44,7 +59,7 @@ import LootHint from "@/components/LootHint.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
-const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
+const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "hideButtons");
 
 const DktSpread = 0.3;
 
@@ -78,7 +93,10 @@ export default {
       );
     },
     getDamage(threshold) {
-      return Math.floor(this.stageData.health * threshold.relativeThreshold);
+      return Math.floor(
+        (this.stageData.health * threshold.relativeThreshold) /
+          this.stageData.maxSlots
+      );
     },
     tierUnlocked(threshold) {
       return this.getDamage(threshold) <= this.currentDamage;
@@ -109,9 +127,7 @@ export default {
         return;
       }
 
-      let action = await Hint(item, !item.equipped, item.equipped, {
-        equip: false
-      });
+      let action = await Hint(item, !item.equipped, item.equipped, true);
     }
   }
 };

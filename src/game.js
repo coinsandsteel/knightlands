@@ -27,6 +27,7 @@ class Game {
         this.$store = store;
         this._items = new ItemDatabase();
         this._expTable = PlayerExpTable;
+        this._requestInProgress = false;
 
         this._vm = new Vue({
             data: () => ({
@@ -72,6 +73,8 @@ class Game {
         this._socket.on(Events.RaidJoinStatus, this._handleRaidJoinStatus.bind(this));
         this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
         this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
+        this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
+        this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
 
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
@@ -207,28 +210,34 @@ class Game {
     async signIn() {
         const publicAddress = this.account;
 
-        try {
-            // get nonce first
-            let nonce = await this._request(Operations.Auth, {
-                address: publicAddress
-            });
-            // sign message
-            let message = await this._blockchainClient.sign(nonce);
+        return new Promise(async (resolve, reject)=>{
+            try {
+                // get nonce first
+                let nonce = await this._request(Operations.Auth, {
+                    address: publicAddress
+                });
+                // sign message
+                let message = await this._blockchainClient.sign(nonce);
+    
+                // send signed message
+                await this._request(Operations.Auth, {
+                    address: publicAddress,
+                    message: message
+                });
 
-            // send signed message
-            await this._request(Operations.Auth, {
-                address: publicAddress,
-                message: message
-            });
-        } catch (exc) {
-            // signing was rejected
-            console.log("signIn", exc);
+                resolve();
+            } catch (exc) {
+                // signing was rejected
+                console.log("signIn", exc);
+    
+                if (exc.message && exc.message.includes("not unlocked")) {
+                    //reset walletReady
+                    this._vm.walletReady = false;
+                }
 
-            if (exc.message && exc.message.includes("not unlocked")) {
-                //reset walletReady
-                this._vm.walletReady = false;
+                reject();
             }
-        }
+        });
     }
 
     async purchaseIAP(iap, paymentId, price, signature) {
@@ -258,12 +267,12 @@ class Game {
     }
 
     async _handleConnection(data) {
-        this._vm.ready = true;
-        this._vm.$emit(this.Ready, data.isAuthenticated);
-        
         if (data.isAuthenticated) {
             await this.updateUserData();
         }
+        
+        this._vm.ready = true;
+        this._vm.$emit(this.Ready, data.isAuthenticated);
     }
 
     _handleDisconnect(errorCode) {
@@ -339,6 +348,14 @@ class Game {
         const { context } = data;
         this._character.refillTimer(context);
         this._vm.$emit(Events.TimerRefilled, data);
+    }
+
+    _handleChestOpened(data) {
+        this._vm.$emit(Events.ChestOpened, data);
+    }
+
+    _handleItemEnchanted(data) {
+        this._vm.$emit(Events.ItemEnchanted, data);
     }
 
     _mergeData(data) {
@@ -538,7 +555,7 @@ class Game {
             let maxProgress = questData.stages[stage].health;
             return {
                 max: maxProgress,
-                current: progress.damageRecieved
+                current: progress.damageRecieved || 0
             }
         }
 
@@ -671,9 +688,10 @@ class Game {
     }
 
     async useItem(itemId) {
-        await this._wrapOperation(Operations.UseItem, {
+        let response = await this._wrapOperation(Operations.UseItem, {
             itemId
         });
+        return response.response;
     }
 
     async refillTimer(stat, refillType, items) {
@@ -768,6 +786,41 @@ class Game {
             stat
         });
     }
+
+    async openChest(chest, iap) {
+        let response = await this._wrapOperation(Operations.OpenChest, {
+            chest,
+            iap
+        });
+
+        return response.response;
+    }
+
+    async getchChestOpenStatus(chest) {
+        return await this._request(Operations.FetchChestOpenStatus, {
+            chest
+        });
+    }
+
+    async getChestsStatus() {
+        let response = await this._wrapOperation(Operations.GetChestsStatus);
+        return response.response;
+    }
+
+    async enchantItem(itemId, currency) {
+        let response = await this._wrapOperation(Operations.EnchantItem, {
+            itemId,
+            currency
+        });
+
+        return response.response;
+    }
+
+    async fetchEnchantingStatus(itemId) {
+        return await this._request(Operations.FetchEnchantingStatus, {
+            itemId
+        });
+    } 
 }
 
 export default Game;

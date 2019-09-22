@@ -22,7 +22,9 @@
     <slot name="beforeStats"></slot>
 
     <slot name="stats">
-      <div class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly">
+      <div
+        class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
+      >
         <div class="flex width-40 flex-column flex-item-end text-align-right">
           <div
             v-for="(statValue, statId) in stats"
@@ -45,7 +47,7 @@
     <div v-if="!onlyStats" class="flex flex-items-center font-size-18 flex-column flex-no-wrap">
       <div class="margin-bottom-half" v-for="p in properties" :key="p" v-html="p"></div>
       <div class="margin-bottom-half" v-if="action" v-html="action"></div>
-    </div>  
+    </div>
 
     <span
       class="loot-desc font-size-20"
@@ -55,9 +57,11 @@
 </template>
 
 <script>
+const ItemActions = require("@/../knightlands-shared/item_actions");
 import Loot from "@/components/Loot.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 import ItemProperties from "@/../knightlands-shared/item_properties";
+import RaidsMeta from "@/raids_meta";
 
 export default {
   props: {
@@ -84,11 +88,25 @@ export default {
     },
     action() {
       let action = this.template.action;
-      if (!action) {
+      if (!action || action.action == ItemActions.OpenBox) {
         return "";
       }
-      
-      return this.$t(action.action, action);
+
+      let params = { ...action };
+
+      if (action.action == ItemActions.Buff) {
+        params.duration = params.duration / 3600;
+      } else if (action.action == ItemActions.RaidBuff) {
+        params.raid = this.$t(RaidsMeta[params.raid].name);
+      }
+
+      if (action.relative) {
+        params.suffix = "%";
+      } else {
+        params.suffix = "";
+      }
+
+      return this.$t(action.action, params);
     },
     properties() {
       if (!this.template.properties) {
@@ -101,7 +119,9 @@ export default {
       let propIndex = 0;
       const length = this.template.properties.length;
       for (; i < length; i++) {
-        const property = this.$game.itemsDB.getProperty(this.template.properties[i]);
+        const property = this.$game.itemsDB.getProperty(
+          this.template.properties[i]
+        );
         if (!property) {
           continue;
         }
@@ -115,7 +135,7 @@ export default {
           }
         }
 
-        let locParams = {...property};
+        let locParams = { ...property };
 
         if (locParams.rarity) {
           locParams.rarityClass = locParams.rarity;
@@ -141,7 +161,7 @@ export default {
             case 1:
               stage = "hard";
               break;
-          
+
             case 2:
               stage = "ruthless";
               break;

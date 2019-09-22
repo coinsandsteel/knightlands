@@ -1,6 +1,6 @@
 <template>
   <div :class="classes" class="flex flex-items-center relative">
-    <div class="stripe" :style="height"></div>
+    <div class="stripe" :style="style"></div>
     <div :class="contentClasses" class="relative">
       <slot></slot>
     </div>
@@ -15,14 +15,21 @@ export default {
       default: null
     },
     contentClasses: [Array, String],
-    classes: [Array, String]
+    classes: [Array, String],
+    color: {
+      type: String,
+      default: "#303048"
+    }
   },
   computed: {
-    height() {
+    style() {
       if (!this.stripeHeight) {
         return "";
       }
-      return `height: ${this.stripeHeight}`;
+      return {
+        height: this.stripeHeight,
+        'background-color': this.color
+      };
     }
   }
 };

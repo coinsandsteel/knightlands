@@ -2,39 +2,43 @@
   <div class="flex flex-column flex-end flex-items-center relative">
     <div class="home-art"></div>
 
-    <div class="flex width-100 flex-center margin-bottom-5">
-      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="quest" :append="true">
-        <SkewedButton :props='{type:"grey", icon:"icon-quests"}'>
-          {{$t("btn-quests")}}
-        </SkewedButton>
-      </router-link>
+    <div class="flex width-100 flex-items-end flex-space-evenly margin-bottom-5">
+      <div class="flex flex-column flex-basis-40">
 
-      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="raids" :append="true">
-        <SkewedButton class="flex-basis-50" :props='{type:"red", icon:"icon-raids"}'>
-          {{$t("btn-raids")}}
-        </SkewedButton>
-      </router-link>
+        <router-link tag="div" class="margin-bottom-1" to="quest" :append="true">
+          <SkewedButton :props="{type:'green', icon:'icon-divs'}">{{$t("btn-divs")}}</SkewedButton>
+        </router-link>
 
-      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="quest" :append="true">
-        <SkewedButton :props='{type:"purple", icon:"icon-settings"}'>
-          {{$t("btn-settings")}}
-        </SkewedButton>
-      </router-link>
+        <router-link tag="div" class="margin-bottom-1" to="quest" :append="true">
+          <SkewedButton :props="{type:'purple', icon:'icon-settings'}">{{$t("btn-settings")}}</SkewedButton>
+        </router-link>
+        
+      </div>
 
-      <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="quest" :append="true">
-        <SkewedButton :props='{type:"green", icon:"icon-divs"}'>
-          {{$t("btn-divs")}}
-        </SkewedButton>
-      </router-link>
+      <div class="flex flex-column flex-basis-40">
+        <router-link tag="div" class="margin-bottom-1" to="adventures" :append="true">
+          <SkewedButton :props="{type:'grey', icon:'icon-quests'}">{{$t("btn-adventures")}}</SkewedButton>
+        </router-link>
+
+        <router-link tag="div" class="margin-bottom-1" to="quest" :append="true">
+          <SkewedButton :props="{type:'grey', icon:'icon-quests'}">{{$t("btn-quests")}}</SkewedButton>
+        </router-link>
+
+        <router-link tag="div" class="margin-bottom-1" to="raids" :append="true">
+          <SkewedButton
+            class="flex-basis-50"
+            :props="{type:'red', icon:'icon-raids'}"
+          >{{$t("btn-raids")}}</SkewedButton>
+        </router-link>
+      </div>
     </div>
-    
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
-import SkewedButton from "@/components/SkewedButton.vue"
-import IconWithValue from "@/components/IconWithValue.vue"
+import SkewedButton from "@/components/SkewedButton.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   name: "home",

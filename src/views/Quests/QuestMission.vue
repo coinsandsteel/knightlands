@@ -43,7 +43,7 @@
         <div class="nav-arrow"></div>
       </div>
 
-      <div class="absolute-stretch z-index-1">
+      <div class="absolute-stretch z-index-1 pointer-events-none">
         <DamageText
               v-for="(damage) in playerDamages"
               :key="damage.id"
@@ -92,8 +92,7 @@
       <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">Kill previous enemies</div>
 
       <div v-else-if="progress.current >= progress.max && hasNextZone">
-        <CustomButton v-if="isBoss" type="yellow" @click="goToNextZone">{{$t("btn-next-quest")}}</CustomButton>
-        <div class="font-size-30 font-outline green-title" v-else>{{$t("quest-complete")}}</div>
+        <CustomButton type="yellow" @click="goToNextMission">{{$t("btn-next-quest")}}</CustomButton>
       </div>
 
       <div v-else class="flex flex-center width-100 flex-space-evenly">
@@ -214,7 +213,19 @@ export default {
     }
   },
   methods: {
-    goToNextZone() {
+    goToNextMission() {
+      // find next unfinished quest
+      let i = 0;
+      const l = this.enemyList.length;
+      for (; i < l; ++i) {
+        let index = this.enemyList[i];
+        let progress = this.$game.getQuestProgress(this.zone._id, index);
+        if (progress.current < progress.max) {
+          this.$refs.enemyList.goTo(index);
+          return;
+        }
+      }
+
       this.$router.replace({name: "quests", params: {
         zone: this.zone._id + 1
       }});

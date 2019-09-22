@@ -48,17 +48,17 @@ class Inventory {
     }
 
     load(data) {
-        this.clear();
+        this._vm.items = [];
 
         let i = 0;
         const length = data.items.length;
         for (; i < length; i++) {
-            this._addItem(data.items[i]);
+            let newItem = data.items[i];
+            let item = this.getItem(newItem.id) || newItem;
+            this._addItem(item);
         }
 
         this._vm.$set(this._vm, "currencies", data.currencies);
-
-        this._sort();
     }
 
     _indexItemByTemplate(item) {
@@ -150,6 +150,7 @@ class Inventory {
                 // update fields
                 item.count = changedItem.count;
                 item.equipped = changedItem.equipped;
+                item.enchant = changedItem.enchant;
                 item.level = changedItem.level;
                 item.exp = changedItem.exp;
                 item.breakLimit = changedItem.breakLimit;
@@ -216,6 +217,12 @@ class Inventory {
         }
 
         this._itemsById.delete(itemId);
+
+        let items = this._getItemsByTemplate(item.template);
+        let index = items.findIndex(x=>x.id == itemId);
+        if (index != -1) {
+            items.splice(index, 1);
+        }
 
         let lastItem = this._vm.items[this._vm.items.length - 1];
         this._vm.items[item.index] = lastItem;
