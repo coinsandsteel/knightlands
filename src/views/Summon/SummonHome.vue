@@ -5,12 +5,12 @@
     <div class="flex width-100 flex-center margin-bottom-5">
       <div class="flex flex-center width-100">
         <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="chests" :append="true">
-          <SkewedButton :props='{type:"grey"}'>{{$t("btn-chests")}}</SkewedButton>
+          <SkewedButton :props='{type:"grey", icon:"icon-chests"}'>{{$t("btn-chests")}}</SkewedButton>
         </router-link>
 
         <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="shop" :append="true">
           <SkewedButton
-            :props='{type:"green"}'
+            :props='{type:"green", icon:"icon-shop"}'
           >{{$t("btn-shop")}}</SkewedButton>
         </router-link>
       </div>

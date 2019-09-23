@@ -10,7 +10,7 @@
     <div class="flex flex-space-between">
       <div>
         <div class="flex flex-center">
-          <div class="flex flex-items-center panel-dark padding-left-1 padding-right-1">
+          <div class="flex flex-items-center panel-input padding-left-1 padding-right-1">
             <div class="key-icon" :style="getKeyIcon"></div>
             <span class="font-size-18">{{totalKeys}}</span>
           </div>
@@ -28,7 +28,7 @@
       <div class="flex flex-column flex-items-end" v-else-if="hasKey">
         <span
           class="font-size-18 margin-bottom-half"
-          v-show="timer.value > 0"
+          v-show="timer.timeLeft > 0"
         >{{$t("free-chest-timer", {timer: timer.value})}}</span>
 
         <CustomButton :disabled="!hasKey" type="yellow" @click="$emit('open', chest.name)">
@@ -68,6 +68,11 @@
           </PromisedButton>
         </div>
       </PaymentStatus>
+      <span
+          class="font-size-18 margin-bottom-half"
+          v-else
+          v-show="timer.timeLeft > 0"
+        >{{$t("free-chest-timer", {timer: timer.value})}}</span>
     </div>
   </StripedPanel>
 </template>
@@ -133,7 +138,7 @@ export default {
     },
     updateAll() {
       if (this.chest.meta.freeOpens > 0) {
-        let resetCycle = this.chest.meta.freeOpens * 86400000;
+        let resetCycle = 86400000 / this.chest.meta.freeOpens;
         let timeUntilNextFreeOpening =
           this.$game.now - this.chest.lastFreeOpening;
         this.timer.timeLeft = (resetCycle - timeUntilNextFreeOpening) / 1000;

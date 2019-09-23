@@ -49,6 +49,7 @@ class Inventory {
 
     load(data) {
         this._vm.items = [];
+        this._itemsBytemplate.clear();
 
         let i = 0;
         const length = data.items.length;

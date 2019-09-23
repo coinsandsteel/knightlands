@@ -821,6 +821,33 @@ class Game {
             itemId
         });
     } 
+
+    async fetchAdventuresStatus() {
+        return (await this._wrapOperation(Operations.FetchAdventuresStatus)).response;
+    }
+
+    async buyAdventureSlot() {
+        return (await this._wrapOperation(Operations.BuyAdventureSlot)).response;
+    }
+
+    async startAdventure(adventureSlot, adventureIndex) {
+        return (await this._wrapOperation(Operations.StartAdventure, {
+            slot: adventureSlot,
+            adventureIndex
+        })).response;
+    }
+
+    async claimAdventure(slot) {
+        return (await this._wrapOperation(Operations.ClaimAdventure, {
+            slot
+        })).response;
+    }
+
+    async refreshAdventure(slot) {
+        return (await this._wrapOperation(Operations.RefreshAdventures, {
+            slot
+        })).response;
+    }
 }
 
 export default Game;

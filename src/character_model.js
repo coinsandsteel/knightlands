@@ -46,6 +46,10 @@ class CharacterModel {
         });
     }
 
+    getTimer(stat) {
+        return this._vm.timers[stat];
+    }
+
     get alive() {
         return this._vm.timers[CharacterStats.Health].value >= 1;
     }
@@ -190,13 +194,13 @@ class CharacterModel {
 
         clearTimeout(this.timers[stat].timeout);
         
-        console.log(`timer ${stat} value ${this.timers[stat].value} interval ${interval}`);
+        // console.log(`timer ${stat} value ${this.timers[stat].value} interval ${interval}`);
         this.timers[stat].timeout = setTimeout(() => {
             let now = Math.floor(this._game.now / 1000);
             let pointsRegened  = Math.round((now - this.timers[stat].lastRegenTime) / this.timers[stat].regenTime);
             this.timers[stat].value += pointsRegened;
             this.timers[stat].lastRegenTime = now;
-            console.log(`timer ${stat} has fired! New value ${this.timers[stat].value}`);
+            // console.log(`timer ${stat} has fired! New value ${this.timers[stat].value}`);
             this._setTimerInterval(stat, this.timers[stat].regenTime);
         }, interval);
     }

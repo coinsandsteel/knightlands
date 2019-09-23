@@ -13,14 +13,18 @@ class Timer {
 
     set timeLeft(value) {
         if (this._timeLeft < 1 || value < 1) {
-            clearTimeout(this._timerTimeout);
-            this._timerTimeout = null;
+            this.stop();
         }
 
         this._timeLeft = Math.floor(value);
         if (this._timeLeft > 0 && !this._timerTimeout) {
             this._update();
-        }   
+        }
+    }
+
+    stop() {
+        clearTimeout(this._timerTimeout);
+        this._timerTimeout = null;
     }
 
     update(force) {

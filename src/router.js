@@ -46,7 +46,6 @@ import OpenChest from "./views/Summon/Chests/OpenChest.vue";
 
 import AdventuresRoot from "./views/Adventures/AdventuresRoot.vue";
 import Adventures from "./views/Adventures/Adventures.vue";
-import StartAdventure from "./views/Adventures/StartAdventure.vue";
 
 const router = new Router({
   routes: [
@@ -182,12 +181,6 @@ const router = new Router({
           path: "",
           name: "adventures",
           component: Adventures
-        },
-        {
-          path: "start",
-          name: "start-adventure",
-          component: StartAdventure,
-          props: true
         }
       ],
       meta: {

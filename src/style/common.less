@@ -96,6 +96,10 @@
     font-size: 1.5625rem * @fontSizeFactor;
 }
 
+.font-size-22 {
+    font-size: 1.6625rem * @fontSizeFactor;
+}
+
 .font-size-25 {
     font-size: 1.875rem * @fontSizeFactor;
 }
@@ -249,6 +253,22 @@ h1 {
 
 .margin-bottom-half {
     margin-bottom: 0.5rem;
+}
+
+.padding-right-half {
+    padding-right: 0.5rem;
+}
+
+.padding-left-half {
+    padding-left: 0.5rem;
+}
+
+.padding-top-half {
+    padding-top: 0.5rem;
+}
+
+.padding-bottom-half {
+    padding-bottom: 0.5rem;
 }
 
 .size(@property, @counter) when (@counter > 0) {
@@ -470,9 +490,25 @@ h1 {
     .icon("skewed_icon_sharp");
 }
 
+.icon-chests {
+    .icon("skewed_icon_chests");
+}
+
+.icon-shop {
+    .icon("skewed_icon_shop");
+}
+
 .icon-size-mini {
     width: @iconSize * 0.75;
     height: @iconSize * 0.75;
+}
+
+.icon-marker {
+    .icon("marker");
+}
+
+.icon-refresh {
+    .icon("icon_refresh");
 }
 
 .vb {
@@ -507,6 +543,12 @@ h1 {
 
 .panel-dark {
     border-image: url("../assets/ui/difficulty_bg.png") round;
+    border-image-slice: 18 fill;
+    border-image-width: 0.6rem;
+}
+
+.panel-input {
+    border-image: url("../assets/ui/text_input.png") round;
     border-image-slice: 18 fill;
     border-image-width: 0.6rem;
 }

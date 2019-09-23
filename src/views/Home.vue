@@ -17,7 +17,10 @@
 
       <div class="flex flex-column flex-basis-40">
         <router-link tag="div" class="margin-bottom-1" to="adventures" :append="true">
-          <SkewedButton :props="{type:'grey', icon:'icon-quests'}">{{$t("btn-adventures")}}</SkewedButton>
+          <SkewedButton :props="{type:'grey', icon:'icon-quests'}">
+            <span>{{$t("btn-adventures")}}</span>
+            <AdventuresMarker></AdventuresMarker>
+          </SkewedButton>
         </router-link>
 
         <router-link tag="div" class="margin-bottom-1" to="quest" :append="true">
@@ -39,11 +42,12 @@
 import AppSection from "@/AppSection";
 import SkewedButton from "@/components/SkewedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
 
 export default {
   name: "home",
   mixins: [AppSection],
-  components: { SkewedButton, IconWithValue },
+  components: { SkewedButton, IconWithValue, AdventuresMarker },
   created() {
     this.title = this.$t("window-title-home");
   },

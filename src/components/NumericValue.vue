@@ -11,9 +11,11 @@
       @touchend="stopAttributeModify"
       @touchcancel="stopAttributeModify"
     ></i>
-    <span class="font-size-20 att-name" v-if="caption">{{caption}}</span>
-    <span class="font-size-20 att-value" v-if="showMax">{{value}}/{{maxValue}}</span>
-    <span class="font-size-20 att-value" v-else>{{value}}</span>
+    <slot name="between">
+      <span class="font-size-20 att-name" v-if="caption">{{caption}}</span>
+      <span class="font-size-20 att-value" v-if="showMax">{{value}}/{{maxValue}}</span>
+      <span class="font-size-20 att-value" v-else>{{value}}</span>
+    </slot>
     <i
       :class="{'disabled-btn' : !increaseCondition}"
       class="pointer att-plus"

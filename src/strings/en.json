@@ -841,5 +841,17 @@
     "enchanting-maxed-out": "Max Enchanting Level.",
     "btn-adventures": "Adventures",
     "adventure-title": "{rarity} adventure",
-    "adventure-start": "Start"
+    "adventure-start": "Start",
+    "adventure-expand-message": "You can have more adventures running at the same time.",
+    "adventure-expand": "Expand",
+    "start-adventure": "Start",
+    "adventure-in-progress": "In progress",
+    "claim-adventure": "Claim",
+    "adventure-finished": "Adventure rewards",
+    "window-choose-chest": "Open chests",
+    "btn-refresh": "Refresh",
+    "next-refresh": "Refresh after {time}",
+    "window-title-summon": "Shop",
+    "window-adventures": "Adventures",
+    "btn-upgrade": "Upgrade"
 }
