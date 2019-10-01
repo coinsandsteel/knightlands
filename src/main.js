@@ -17,6 +17,9 @@ import vuexI18n from "vuex-i18n";
 import PortalVue from "portal-vue";
 import VueVirtualScroller from "vue-virtual-scroller";
 
+import RecipeScheme from "@/views/Crafting/RecipeBook/RecipeScheme.vue";
+Vue.component("recipe-scheme", RecipeScheme);
+
 Vue.use(VueVirtualScroller);
 Vue.use(PortalVue);
 Vue.use(vuexI18n.plugin, store);

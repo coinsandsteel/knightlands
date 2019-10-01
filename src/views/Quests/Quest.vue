@@ -24,7 +24,7 @@
         <div>
           <keep-alive exclude="quest-mission">
             <quest-mission
-              class="quest-view"
+              class="quest-view flex-no-wrap"
               v-if="showQuest"
               :zone="currentZone"
               :questIndex="quest"

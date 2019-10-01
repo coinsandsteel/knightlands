@@ -231,6 +231,10 @@ h1 {
     flex-basis: 40%;
 }
 
+.flex-basis-45 {
+    flex-basis: 45%;
+}
+
 .flex-basis-50 {
     flex-basis: 50%;
 }
@@ -298,6 +302,10 @@ h1 {
     -1px -1px     #210028,
      1px  1px 5px #555;
 }
+
+.font-shadow {
+    text-shadow: 0.5px 0.5px #210028;
+  }
 
 .center-transform {
     left: 50%;
@@ -375,6 +383,7 @@ h1 {
     width: @iconSize;
     height: @iconSize;
     margin-right: 0.3rem;
+    margin-left: 0.3rem;
 
     &.huge {
         width: @iconSize * 1.8;
@@ -511,6 +520,22 @@ h1 {
     .icon("icon_refresh");
 }
 
+.icon-water {
+    .icon("element_water");
+}
+
+.icon-earth {
+    .icon("element_earth");
+}
+
+.icon-light {
+    .icon("element_light");
+}
+
+.icon-darkness {
+    .icon("element_dark");
+}
+
 .vb {
     height: 100%;
 }
@@ -521,6 +546,10 @@ h1 {
 
 .white-font {
     color: white !important;
+}
+
+.text-italic {
+    font-style: italic;
 }
 
 @panelBorderWidth: 0.2rem;
@@ -553,6 +582,12 @@ h1 {
     border-image-width: 0.6rem;
 }
 
+.panel-selected {
+    border-image: url("../assets/ui/difficulty_selected.png") round;
+    border-image-slice: 18 fill;
+    border-image-width: 0.6rem;
+}
+
 .yellow-title {
     color: #fde648;
 }
@@ -575,6 +610,10 @@ h1 {
 
 .orange-title {
     color: #ffae01;
+}
+
+.desc-font {
+    color: #d7bd8f;
 }
 
 //width/height generator with 5% step

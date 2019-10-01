@@ -18,6 +18,7 @@ class TronBlockchainClient extends BlockchainClient {
         super();
 
         this._tronWeb = null;
+        this._tronWasInited = false;
     }
 
     getAddress() {
@@ -51,6 +52,20 @@ class TronBlockchainClient extends BlockchainClient {
         } catch (exc) {
             throw exc;
         }
+
+        this._initContracts();
+    }
+
+    async _initContracts() {
+        await new Promise((resolve, _) => {
+            // is it possible that injection can be delayed?
+            let interval = setInterval(() => {
+                if (this._tronWeb.ready) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 500);
+        });
 
         try {
             this._paymentContract = this._tronWeb.contract(PaymentGateway.abi, PaymentGateway.address);

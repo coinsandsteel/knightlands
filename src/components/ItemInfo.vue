@@ -15,7 +15,8 @@
     ></loot>
 
     <div class="flex flex-center font-size-20">
-      <span>{{type}}</span>
+      <span :class="{'margin-right-1': !hasElement}">{{type}}</span>
+      <div v-if="hasElement" :class="elementIcon" class="big"></div>
       <slot name="afterType"></slot>
     </div>
 
@@ -47,12 +48,21 @@
     <div v-if="!onlyStats" class="flex flex-items-center font-size-18 flex-column flex-no-wrap">
       <div class="margin-bottom-half" v-for="p in properties" :key="p" v-html="p"></div>
       <div class="margin-bottom-half" v-if="action" v-html="action"></div>
+      <span
+        class="margin-bottom-half"
+        v-if="template.maxStacks > 0"
+      >{{$t("max-stacks", {max: template.maxStacks})}}</span>
     </div>
 
     <span
-      class="loot-desc font-size-20"
-      v-if="!onlyStats && template.description"
-    >{{$t(template.description, "")}}</span>
+      class="loot-desc desc-font font-size-20 margin-bottom-1"
+      v-if="!onlyStats && desc"
+    >{{desc}}</span>
+
+    <span
+      class="loot-desc desc-font font-size-20"
+      v-if="!onlyStats && isOffHand"
+    >{{$t(`${template.equipmentType}-bonus`)}}</span>
   </div>
 </template>
 
@@ -60,6 +70,10 @@
 const ItemActions = require("@/../knightlands-shared/item_actions");
 import Loot from "@/components/Loot.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
+const {
+  EquipmentSlots,
+  getSlot
+} = require("@/../knightlands-shared/equipment_slot");
 import ItemProperties from "@/../knightlands-shared/item_properties";
 import RaidsMeta from "@/raids_meta";
 
@@ -72,8 +86,32 @@ export default {
   },
   components: { Loot },
   computed: {
+    isOffHand() {
+      if (this.template.type != ItemType.Equipment) {
+        return false;
+      }
+
+      return getSlot(this.template.equipmentType) == EquipmentSlots.OffHand;
+    },
     template() {
       return this.$game.itemsDB.getTemplate(this.item);
+    },
+    elementIcon() {
+      return `icon-${this.template.element}`;
+    },
+    hasElement() {
+      if (this.template.type != ItemType.Equipment) {
+        return false;
+      }
+
+      if (getSlot(this.template.equipmentType) != EquipmentSlots.MainHand) {
+        return false;
+      }
+
+      return this.template.element != "physical";
+    },
+    desc() {
+      return this.$t(this.template.description, "");
     },
     type() {
       let type = this.template.type;
@@ -104,6 +142,10 @@ export default {
         params.suffix = "%";
       } else {
         params.suffix = "";
+      }
+
+      if (params.stat) {
+        params.stat = this.$t(params.stat);
       }
 
       return this.$t(action.action, params);
@@ -184,7 +226,6 @@ export default {
 
         props[propIndex++] = this.$t(locKey, locParams);
       }
-
       return props;
     }
   }

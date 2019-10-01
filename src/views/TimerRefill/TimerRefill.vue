@@ -22,7 +22,7 @@
                   <!-- Native Currency -->
                   <div class="flex flex-column flex-center flex-1">
                     <div class="flex flex-center margin-bottom-2 font-size-20">
-                      <div>Price to restore 100% of {{stat}}:</div>
+                      <div>Price to restore 100% of {{$t(stat)}}:</div>
                       <PriceTag :iap="iap"></PriceTag>
                     </div>
 
@@ -30,7 +30,7 @@
                       class="flex flex-center font-size-20 margin-bottom-1"
                     >Refills today: {{refillsToday}}</span>
                     <span
-                      class="flex flex-center font-size-15 margin-bottom-1"
+                      class="flex flex-center font-size-18 margin-bottom-1"
                     >Time until reset: {{resetTimer.value}}</span>
                   </div>
 
@@ -58,30 +58,47 @@
               <keep-alive>
                 <div
                   class="flex flex-basis-100 flex-column flex-item-center"
-                  v-if="methodChosen == 1"
+                  v-if="methodChosen == 1 && !isHealth"
                 >
                   <!-- Shinies -->
-                  <!-- <PromisedButton :promise="purchasePromise" :props="{width:'16rem', type:'yellow'}" @click="confirm">{{$t("btn-confirm")}}</PromisedButton> -->
+                  <div class="flex flex-basis-100 height-100 flex-column flex-item-center">
+                    <!-- Native Currency -->
+                    <div class="flex flex-column flex-center flex-1">
+                      <div class="flex flex-center margin-bottom-2 font-size-20">
+                        <div>Price to restore 100% of {{stat}}:</div>
+                        <IconWithValue iconClass="icon-premium">{{hardCost}}</IconWithValue>
+                      </div>
+
+                      <span
+                        class="flex flex-center font-size-20 margin-bottom-1"
+                      >Refills today: {{refillsToday}}</span>
+                      <span
+                        class="flex flex-center font-size-18 margin-bottom-1"
+                      >Time until reset: {{resetTimer.value}}</span>
+                    </div>
+                  </div>
                 </div>
               </keep-alive>
 
               <keep-alive>
                 <div
                   class="flex width-100 height-100 flex-column flex-item-center"
-                  v-if="methodChosen == 2"
+                  v-if="methodChosen == 1 && isHealth || methodChosen == 2"
                 >
                   <!--Items -->
                   <RefillWithItems @canProceed="itemStateChanged" :stat="stat"></RefillWithItems>
                 </div>
               </keep-alive>
 
-              <PromisedButton
+              <div class="flex">
+                <PromisedButton
                 v-show="!showPayedOption"
                 :disabled="!canProcceed"
                 :promise="purchasePromise"
                 :props="{width:'16rem', type:'yellow'}"
                 @click="confirm"
               >{{$t("btn-confirm")}}</PromisedButton>
+              </div>
             </div>
           </div>
         </template>
@@ -107,7 +124,7 @@ import RefillWithItems from "./RefillWithItems.vue";
 const Events = require("@/../knightlands-shared/events");
 
 const NonHealthMethods = ["pay", "shinies", "items"];
-const HealthMethods = ["gold", "shinies", "items"];
+const HealthMethods = ["gold", "items"];
 
 export default {
   mixins: [PaymentHandler],
@@ -151,6 +168,10 @@ export default {
   watch: {
     methodChosen() {
       this.canBeConfirmed = false;
+
+      if (this.methodChosen == 1) {
+        this.canBeConfirmed = this.hardCost <= this.$game.hardCurrency;
+      }
     }
   },
   computed: {
@@ -161,11 +182,14 @@ export default {
 
       return this.canBeConfirmed;
     },
+    isHealth() {
+      return this.stat == CharacterStat.Health;
+    },
     showGoldOption() {
-      return this.methodChosen == 0 && this.stat == CharacterStat.Health;
+      return this.methodChosen == 0 && this.isHealth;
     },
     showPayedOption() {
-      return this.methodChosen == 0 && this.stat != CharacterStat.Health;
+      return this.methodChosen == 0 && !this.isHealth;
     },
     title() {
       switch (this.stat) {
@@ -193,7 +217,11 @@ export default {
         );
         await this.purchaseRequest(this.purchasePromise);
       } else {
-        await this.$game.refillTimer(this.stat, this.methodChosen, this.items);
+        let method = this.methodChosen;
+        if (this.isHealth && method == 1) {
+          method = 2;
+        }
+        await this.$game.refillTimer(this.stat, method, this.items);
         this.$close();
       }
     },
@@ -211,6 +239,7 @@ export default {
       this.iap = info.iap;
       this.refillsToday = info.refills;
       this.softCost = info.soft;
+      this.hardCost = info.hard;
       this.resetTimer.timeLeft = info.timeTillReset / 1000;
     }
   }

@@ -21,7 +21,7 @@
             <DamageLog :log="lastDamages"></DamageLog>
           </boss-view>
 
-          <div class="flex flex-center font-size-20">
+          <div class="flex flex-center font-size-20 margin-bottom-1">
             <IconWithValue iconClass="icon-user">
               <span class="font-size-20 white-space-wide">{{slots}}/{{maxSlots}}</span>
             </IconWithValue>
@@ -29,7 +29,7 @@
           </div>
 
           <!--COMBAT VIEW-->
-          <striped-panel class="margin-1" v-if="participant">
+          <striped-panel v-if="participant">
             <div class="title font-size-20 font-weight-700 rarity-mythical">
               <span class="white-space">{{$t("dkt-bonus")}}</span>
               <span>x{{dktBonus}}</span>
@@ -144,7 +144,7 @@
                 @click="join"
               >
                 <span class="margin-right-half">{{$t("join")}}</span>
-                <PriceTag dark="true" :iap="stageData.joinIap"></PriceTag>
+                <PriceTag :dark="true" :iap="stageData.joinIap"></PriceTag>
               </PromisedButton>
             </PaymentStatus>
           </striped-panel>

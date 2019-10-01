@@ -10,7 +10,7 @@
         :maxValue="getMaxStatValue(att)"
         :caption="att"
         :decreaseCondition="(getEditedAttribute(att) > 0 && attributesNeedReset)"
-        :increaseCondition="hasEnoughGold(att)"
+        :increaseCondition="hasEnoughGold(att) && getAttributeValue(att) < getMaxStat(att)"
         @inc="increaseAttribute(att)"
         @dec="decreaseAttribute(att)"
       >
@@ -76,6 +76,9 @@ export default {
     },
     getStatValue(stat) {
       return this.getAttributeValue(stat) * StatConversions[stat];
+    },
+    getMaxStat(stat) {
+      return TrainingCamp.getMaxStat(this.$character.level);
     },
     getMaxStatValue(stat) {
       return (

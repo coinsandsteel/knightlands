@@ -9,7 +9,7 @@
     <template v-slot:content>
       <ItemInfo :item="item" :hideTitle="true">
         <template v-slot:afterType v-if="isEquipment">
-          <div class="flex flex-center margin-bottom-half">
+          <div class="flex flex-center">
             <span class="star" :class="{active: stars >= 1}"></span>
             <span class="star margin-right-auto" :class="{active: stars >= 2}"></span>
             <span class="arrow-up" v-if="stars<2" @click="upgradeItem"></span>
@@ -162,6 +162,10 @@ export default {
       this.$router.push({ name: "unbind-item", params: { itemId: this.item.id } });
     },
     handleLevelProgressClick() {
+      if (this.item.equipped) {
+        return;
+      }
+      
       this.handleClose();
       this.$router.push({
         name: "upgrade-item",

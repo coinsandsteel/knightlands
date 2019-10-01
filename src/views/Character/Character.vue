@@ -5,6 +5,7 @@
       <keep-alive>
         <inventory v-if="currentTab === InventoryTab" :items="$game.inventory.items"></inventory>
         <stats v-if="currentTab === StatsTab"></stats>
+        <Buffs v-if="currentTab === BuffsTab"></Buffs>
       </keep-alive>
     </div>
   </div>
@@ -14,27 +15,32 @@
 import Tabs from "@/components/Tabs.vue";
 import Inventory from "./Inventory.vue";
 import Stats from "./Stats.vue";
+import Buffs from "./Buffs/Buffs.vue";
 import AppSection from "@/AppSection";
 
 const InventoryTab = "inventory";
 const StatsTab = "stats";
+const BuffsTab = "buffs";
 
 export default {
   mixins: [AppSection],
   components: {
     Tabs,
     Stats,
-    Inventory
+    Inventory,
+    Buffs
   },
   data() {
     return {
       tabs: [
         { title: "inventory", value: InventoryTab, to: "/character/inventory" },
-        { title: "training", value: StatsTab, to: "/character/stats" }
+        { title: "training", value: StatsTab, to: "/character/stats" },
+        { title: "buffs", value: BuffsTab, to: "/character/buffs" }
       ],
       currentTab: InventoryTab,
       InventoryTab: InventoryTab,
-      StatsTab: StatsTab
+      StatsTab: StatsTab,
+      BuffsTab: BuffsTab
     };
   },
   mounted() {

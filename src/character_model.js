@@ -1,20 +1,12 @@
 import Vue from "vue";
 
-import CharacterStats from "../knightlands-shared/character_stat.js";
+import CharacterStats, { DefaultStats } from "../knightlands-shared/character_stat.js";
+import Buffs from "../knightlands-shared/buffs";
 
 class CharacterModel {
     constructor(socket, game) {
         this._socket = socket;
         this._game = game;
-
-        let stats = {};
-        stats[CharacterStats.Attack] = 0;
-        stats[CharacterStats.Defense] = 0;
-        stats[CharacterStats.Health] = 0;
-        stats[CharacterStats.Energy] = 0;
-        stats[CharacterStats.Stamina] = 0;
-        stats[CharacterStats.Luck] = 0;
-        stats[CharacterStats.CriticalChance] = 0;
 
         let timers = {};
         timers[CharacterStats.Health] = {
@@ -37,13 +29,25 @@ class CharacterModel {
             data: () => ({
                 equipment: {},
                 timers: timers, // timers for health, energy, stamina etc.
-                stats: Object.assign({}, stats), // final stats
-                attributes: Object.assign({}, stats), //upgradable stats
+                stats: Object.assign({}, DefaultStats), // final stats
+                attributes: Object.assign({}, DefaultStats), //upgradable stats
                 freeAttributePoints: 0,
                 level: 1,
-                exp: 0
+                exp: 0,
+                buffResolver: null,
+                buffs: []
             })
         });
+
+        this._vm.buffResolver = new Buffs();
+    }
+
+    get buffResolver() {
+        return this._vm.buffResolver;
+    }
+
+    get buffs() {
+        return this._vm.buffs;
     }
 
     getTimer(stat) {
@@ -82,6 +86,16 @@ class CharacterModel {
         this._vm.exp = value;
     }
 
+    applyBuff(buff) {
+        const currentBuff = this._vm.buffs.find(x=>x.template == buff.template);
+        if (currentBuff) {
+            currentBuff.applyTime = buff.applyTime;
+        } else {
+            this._vm.buffs.push(buff);
+            this._sortBuffs();
+        }
+    }
+
     assignData(data) {
         let attributes = this.attributes;
         for (let i in data.attributes) {
@@ -104,6 +118,28 @@ class CharacterModel {
         this._vm.level = data.level;
         this._vm.exp = data.exp;
         this._vm.freeAttributePoints = data.freeAttributePoints;
+
+        this._vm.buffs = data.buffs;
+
+        this._sortBuffs();
+        this._calculateBuffs();
+    }
+
+    _sortBuffs() {
+        this._vm.buffs.sort((a,b)=>{
+            const sortingFactorA = a.template;
+            const sortingFactorB = b.template;
+
+            if (sortingFactorA > sortingFactorB) {
+                return -1;
+            }
+
+            if (sortingFactorA < sortingFactorB) {
+                return 1;
+            }
+
+            return 0;
+        });
     }
 
     refillTimer(stat) {
@@ -125,6 +161,10 @@ class CharacterModel {
         }
     }
 
+    _calculateBuffs() {
+        this.buffResolver.calculate(this._game.now, this._vm.stats, this._vm.buffs);
+    }
+
     _removeData(currentData, dataToRemove, root) {
         for (let i in currentData) {
             if (dataToRemove.hasOwnProperty(i)) {
@@ -139,18 +179,29 @@ class CharacterModel {
 
     _mergeData(currentData, newData) {
         for (let i in newData) {
-            if (typeof (newData[i]) == "object") {
-                if (currentData.hasOwnProperty(i)) {
-                    this._mergeData(currentData[i], newData[i]);
-                } else {
-                    this._vm.$set(currentData, i, newData[i]);
-                }
-            } else if (!currentData.hasOwnProperty(i)) {
-                this._vm.$set(currentData, i, newData[i]);
-            } else if (currentData[i] !== newData[i]) {
+            const newField = newData[i];
+
+            if (Array.isArray(newData[i])) {
                 currentData[i] = newData[i];
+                continue;
+            }
+
+            if (typeof (newField) == "object") {
+                if (currentData.hasOwnProperty(i)) {
+                    this._mergeData(currentData[i], newField);
+                } else {
+                    this._vm.$set(currentData, i, newField);
+                }
+            } 
+            else if (!currentData.hasOwnProperty(i)) {
+                this._vm.$set(currentData, i, newField);
+            } 
+            else if (currentData[i] !== newField) {
+                currentData[i] = newField;
             }
         }
+
+        this._calculateBuffs();
     }
 
     equipItem(item) {

@@ -4,12 +4,15 @@
       <loading-screen :loading="true" v-show="isDelayOver && isPending"></loading-screen>
 
       <div class="tab-content dummy-height flex flex-column full-flex">
+        <!-- Equipment + quick stats overview -->
         <div class="equipment-container flex flex-space-evenly">
           <div class="relative flex">
             <img class="heroImage" src="../../assets/ui/character.png" />
             <div class="equipment-container-row flex flex-column flex-center">
               <loot
-                v-for="slot in equipmentRow1()" :key="slot" class="equipment-slot"
+                v-for="slot in equipmentRow1()"
+                :key="slot"
+                class="equipment-slot"
                 :item="itemsInSlots[slot]"
                 :equipment="true"
                 :equipmentSlot="slot"
@@ -20,7 +23,8 @@
             <div class="equipment-container-row flex flex-column flex-center flex-space-between">
               <loot
                 v-for="slot in equipmentRow2()"
-                :key="slot" class="equipment-slot"
+                :key="slot"
+                class="equipment-slot"
                 :item="itemsInSlots[slot]"
                 :equipment="true"
                 :equipmentSlot="slot"
@@ -30,58 +34,80 @@
 
             <div class="equipment-container-row flex flex-column flex-center">
               <loot
-                v-for="slot in equipmentRow3()" :key="slot" class="equipment-slot"
+                v-for="slot in equipmentRow3()"
+                :key="slot"
+                class="equipment-slot"
                 :item="itemsInSlots[slot]"
                 :equipment="true"
                 :equipmentSlot="slot"
                 @hint="showEquipmentHint"
               ></loot>
             </div>
-
           </div>
 
           <div class="flex flex-column height-100">
-            <span class="font-size-20 padding-top-1 margin-bottom-1">{{$t("character-level", {level: $game.character.level})}}</span>
+            <span
+              class="font-size-20 padding-top-1 margin-bottom-1"
+            >{{$t("character-level", {level: $game.character.level})}}</span>
             <div class="flex flex-no-wrap full-flex flex-space-around font-size-20">
-              
               <div
                 class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
               >
-                <span v-for="stat in stats" :key="stat" class>{{stat}}</span>
+                <span v-for="stat in stats" :key="stat" class>{{$t(stat)}}</span>
               </div>
 
               <div
                 class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
               >
-                <span v-for="stat in stats" :key="stat" class="attribute">{{$character.getStat(stat)}}</span>
+                <span
+                  v-for="stat in stats"
+                  :key="stat"
+                  class="attribute"
+                >{{$character.getStat(stat)}}</span>
               </div>
-
             </div>
+
+            <CustomButton type="grey" @click="openDetails">{{$t("btn-details")}}</CustomButton>
           </div>
         </div>
 
+        <!-- Inventory  -->
         <div class="flex full-flex dummy-height">
           <div v-bar class="width-100 height-100 dummy-height">
             <loot-container :items="filteredItems" :inventory="true" @hint="showHint"></loot-container>
           </div>
         </div>
 
+        <!-- Loot hints -->
         <div v-show="showHintItems">
           <transition>
+            <div
+              class="items-bg-mask relative flex flex-center"
+              @click.self="showHintItems = false"
+            >
+              <Hooper
+                ref="hooper"
+                style="height: 100%"
+                :infiniteScroll="true"
+                @slide="updateHintItems"
+              >
+                <slide v-for="(item, index) in hintItems" :key="index">
+                  <LootHint
+                    :item="item.item"
+                    :equip="!item.equipped"
+                    :unequip="item.equipped"
+                    :hideMask="true"
+                    :showButtons="true"
+                    @close="handleItemAction"
+                  ></LootHint>
+                </slide>
+              </Hooper>
 
-            <div class="items-bg-mask relative flex flex-center" @click.self="showHintItems = false">
-                <Hooper ref="hooper" style="height: 100%" :infiniteScroll="true" @slide="updateHintItems">
-                  <slide v-for="(item, index) in hintItems" :key="index">
-                    <LootHint :item="item.item" :equip="!item.equipped" :unequip="item.equipped" :hideMask="true" :showButtons="true" @close="handleItemAction"></LootHint>
-                  </slide>
-                </Hooper>
-
-                <div class="flex flex-center flex-space-between absolute-stretch pointer-events-none">
-                  <div class="nav-arrow left"></div>
-                  <div class="nav-arrow"></div>
-                </div>
+              <div class="flex flex-center flex-space-between absolute-stretch pointer-events-none">
+                <div class="nav-arrow left"></div>
+                <div class="nav-arrow"></div>
+              </div>
             </div>
-
           </transition>
         </div>
       </div>
@@ -90,8 +116,8 @@
 </template>
 
 <script>
-import { Hooper, Slide } from 'hooper';
-import 'hooper/dist/hooper.css';
+import { Hooper, Slide } from "hooper";
+import "hooper/dist/hooper.css";
 
 import Loot from "@/components/Loot.vue";
 import LootHint from "@/components/LootHint.vue";
@@ -107,15 +133,18 @@ import {
 import ItemType from "@/../knightlands-shared/item_type";
 import EquipmentType from "@/../knightlands-shared/equipment_type";
 import CharacterStats from "@/../knightlands-shared/character_stat.js";
-import ItemInfo from "@/components/ItemInfo.vue"
+import ItemInfo from "@/components/ItemInfo.vue";
 import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue"
-import CharacterStat from '@/../knightlands-shared/character_stat';
-import OpenedBox from "./OpenedBox.vue";
+import LoadingScreen from "@/components/LoadingScreen.vue";
+import CharacterStat from "@/../knightlands-shared/character_stat";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+import StatDetails from "./StatDetails.vue";
+const ItemActions = require("@/../knightlands-shared/item_actions");
 
 const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "showButtons");
 const ItemFilter = CreateDialog(ItemFilterComponent);
-const ShowOpenedBox = CreateDialog(OpenedBox, ...OpenedBox.props);
+const ShowItems = CreateDialog(ItemsReceived, ...ItemsReceived.props);
+const ShowDetails = CreateDialog(StatDetails);
 
 export default {
   mixins: [AppSection],
@@ -123,11 +152,12 @@ export default {
     Loot,
     LootContainer,
     LootHint,
-    Hooper, 
+    Hooper,
     Slide,
     ItemInfo,
     Promised,
-    LoadingScreen
+    LoadingScreen,
+    CustomButton
   },
   props: {
     items: {
@@ -145,7 +175,8 @@ export default {
       hintItems: [],
       showHintItems: false,
       currentSlideIndex: 0,
-      request: null
+      request: null,
+      showDetails: false
     };
   },
   watch: {
@@ -163,7 +194,7 @@ export default {
   activated() {
     this.addFooter(CustomButton, {
       cb: this.showItemFilter.bind(this),
-      caption: "Filter",
+      caption: this.$t("btn-filter"),
       type: "grey"
     });
   },
@@ -175,10 +206,8 @@ export default {
       let stats = [];
       stats.push(CharacterStat.Health);
       stats.push(CharacterStat.Attack);
-      stats.push(CharacterStat.CriticalChance);
       stats.push(CharacterStat.Defense);
-      stats.push(CharacterStat.RaidDamage);
-      
+
       stats.push(CharacterStat.Energy);
       stats.push(CharacterStat.Stamina);
       stats.push(CharacterStat.Luck);
@@ -187,12 +216,16 @@ export default {
     }
   },
   methods: {
+    openDetails() {
+      ShowDetails();
+    },
     updateItems() {
       this.filterItems(this.$store.getters.getItemFilters);
     },
     updateHintItems(index) {
       let currentSlide = this.currentSlideIndex;
-      let maxSlideIndex = (this.filteredItems.length < 3 ? this.filteredItems.length : 3) - 1;
+      let maxSlideIndex =
+        (this.filteredItems.length < 3 ? this.filteredItems.length : 3) - 1;
       let direction = 1;
       let cs = index.currentSlide;
       let fs = index.slideFrom;
@@ -271,7 +304,7 @@ export default {
           let template = item.template;
           this.request = this.$game.useItem(item.id);
           let items = await this.request;
-          await ShowOpenedBox(template, items);
+          await ShowItems(items);
           break;
       }
     },
@@ -284,7 +317,7 @@ export default {
 
       this.showHintItems = true;
 
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$refs.hooper.updateWidth();
       });
     },
@@ -296,7 +329,7 @@ export default {
     },
     filterItems(filters) {
       let itemsDB = this.$game.itemsDB;
-      let buffer = this.filteredItemsBuffers[this.bufferIndex++%2];
+      let buffer = this.filteredItemsBuffers[this.bufferIndex++ % 2];
       buffer.length = 0;
 
       let i = 0;
@@ -305,9 +338,18 @@ export default {
       for (; i < length; ++i) {
         let item = this.items[i];
         let template = item.template;
+        const templateData = itemsDB.getTemplate(template);
+
+        if (templateData.type == ItemType.Consumable) {
+          // skip buffs 
+          if (templateData.action.action == ItemActions.Buff || templateData.action.action == ItemActions.RaidBuff) {
+            continue;
+          }
+        }
+
         if (
           filters[itemsDB.getItemType(template)] ||
-          (itemsDB.getTemplate(template).type == ItemType.Equipment &&
+          (templateData.type == ItemType.Equipment &&
             filters[itemsDB.getSlot(template)])
         ) {
           buffer.push(item);
@@ -363,7 +405,6 @@ export default {
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
-  max-width: 5rem;;
+  max-width: 5rem;
 }
-
 </style>

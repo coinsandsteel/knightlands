@@ -21,7 +21,7 @@
       <div class="loot-quantity" :class="{'bottom': gacha}" v-else>
         <span
           v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))"
-          class="font-size-20 font-weight-700 digit-font font-outline"
+          class="font-size-18 font-weight-700 digit-font font-outline"
         >{{count}}</span>
       </div>
 

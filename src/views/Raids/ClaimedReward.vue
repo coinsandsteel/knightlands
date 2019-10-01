@@ -2,17 +2,20 @@
   <UserDialog :title="$t('raid-reward-title', {boss: $t(bossName)})" @close="$close">
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
+
         <IconWithValue
           class="margin-bottom-1"
           valueClass="font-size-20 digit-font"
           iconClass="icon-dkt"
         >{{rewards.dkt}}</IconWithValue>
+
         <IconWithValue
           class="margin-bottom-1"
           valueClass="font-size-20 digit-font"
           iconClass="icon-gold"
         >{{rewards.gold}}</IconWithValue>
-        <IconWithValue valueClass="font-size-20 digit-font" iconClass="icon-exp">{{rewards.exp}}</IconWithValue>
+
+        <!-- <IconWithValue valueClass="font-size-20 digit-font" iconClass="icon-exp">{{rewards.exp}}</IconWithValue> -->
 
         <div class="flex flex-center flex-column margin-top-3">
           <div class="flex flex-center reward-loot">
@@ -21,6 +24,7 @@
               :item="item.item"
               :quantity="item.quantity"
               :key="item.item"
+              :gacha="true"
               @hint="showHint"
             ></loot>
           </div>

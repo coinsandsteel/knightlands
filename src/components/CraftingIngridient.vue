@@ -2,8 +2,8 @@
   <div>
     <loot :locked="notEnoughMaterials" :item="item" :size="size" :hideQuantity="true" @hint="hintHandleFunction" />
 
-    <div v-if="!hideCount && ingridient.maxLevelRequired" class="font-size-20 digit-font">Lvl: {{levelRequired}}</div>
-    <div v-else-if="!hideCount" class="font-size-20 digit-font">{{currentCount}}/{{requiredCount}}</div>
+    <div v-if="!hideCount && ingridient.maxLevelRequired" class="font-size-18 digit-font">Lvl: {{levelRequired}}</div>
+    <div v-else-if="!hideCount" class="font-size-18 digit-font"><span v-if="!hideCurrentCount">{{currentCount}}/</span>{{requiredCount}}</div>
   </div>
 </template>
 
@@ -21,7 +21,8 @@ export default {
       default: ""
     },
     hideCount: Boolean,
-    hintHandler: Function
+    hintHandler: Function,
+    hideCurrentCount: Boolean
   },
   computed: {
     hintHandleFunction() {

@@ -30,17 +30,17 @@
             <span class="menu-title">{{$t("menu-home")}}</span>
           </router-link>
 
-          <router-link  class="flex flex-center" to="/character">
+          <router-link class="flex flex-center" to="/character">
             <span class="menu-icon character pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-character")}}</span>
           </router-link>
 
-          <router-link  class="flex flex-center" to="/crafting">
+          <router-link class="flex flex-center" to="/crafting">
             <span class="menu-icon crafting pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-crafting")}}</span>
           </router-link>
 
-          <router-link  class="flex flex-center" to="/summon">
+          <router-link class="flex flex-center" to="/summon">
             <span class="menu-icon shop"></span>
             <span class="menu-title">{{$t("menu-shop")}}</span>
           </router-link>
@@ -48,12 +48,12 @@
           <!-- <router-link  class="flex flex-center" to="/">
             <span class="menu-icon guild"></span>
             <span class="menu-title">{{$t("menu-guild")}}</span>
-          </router-link> -->
-<!-- 
+          </router-link>-->
+          <!-- 
           <router-link  class="flex flex-center" to="/">
             <span class="menu-icon chat"></span>
             <span class="menu-title">{{$t("menu-chat")}}</span>
-          </router-link> -->
+          </router-link>-->
         </div>
       </div>
     </div>
@@ -76,10 +76,16 @@ import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 
-import {create} from "vue-modal-dialogs";
+import { create } from "vue-modal-dialogs";
 
 import LevelUp from "@/views/LevelUp.vue";
 const ShowLevelUp = create(LevelUp);
+
+import SelectClass from "@/views/SelectClass/SelectClass.vue";
+const ShowSelectClass = create(SelectClass);
+
+import DailyLogin from "@/views/DailyLogin/DailyLogin.vue";
+const ShowDailyLogin = create(DailyLogin, ...DailyLogin.props);
 
 export default {
   components: { StatusBar, RaidStatusNotification, LoadingScreen },
@@ -125,7 +131,17 @@ export default {
     Vue.prototype.$app = this;
     Vue.prototype.$game = new Game(this.$store);
 
-    this.$game.on("level-up", async ()=>{
+    this.$game.on("change-class", async () => {
+      if (this.selectionShown) {
+        return;
+      }
+
+      this.selectionShown = true;
+      await ShowSelectClass();
+      this.selectionShown = false;
+    });
+
+    this.$game.on("level-up", async () => {
       await ShowLevelUp();
     });
 
@@ -167,6 +183,14 @@ export default {
     // fetch initial data
     this.$game.on(this.$game.SignUp, async () => {
       await this.$game.updateUserData();
+
+      const dailyRewardStatus = await this.$game.fetchDailyRewardStatus();
+      if (dailyRewardStatus.readyToCollect) {
+        this.$nextTick(() => {
+          ShowDailyLogin(dailyRewardStatus.step);
+        });
+      }
+
       this.loading = false;
       if (this.$route.name == "login") {
         this.$router.replace({ name: "character" });
@@ -383,7 +407,7 @@ export default {
       position: absolute;
       bottom: 0;
       opacity: 0;
-      text-transform:uppercase;
+      text-transform: uppercase;
       transition: all 0.2s ease;
     }
 

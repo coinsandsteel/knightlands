@@ -159,6 +159,9 @@ export default {
           // spawn loot
           if (event.data.name == "spawn_loot") {
             this.showLoot = true;
+            setTimeout(()=>{
+              this.showContinue = true;
+            }, 1000);
           }
         }
       });
@@ -237,8 +240,6 @@ export default {
       let state = this.$refs.animation.getState();
       state.setAnimation(0, "open3", false);
       state.setAnimation(1, "waiting3", true);
-
-      this.showContinue = true;
     }
   }
 };

@@ -6,7 +6,7 @@
     >{{$t("adventure-title", {rarity: $t(rarity)})}}</span>
 
     <div class="flex flex-space-between margin-top-1 padding-left-1 padding-right-1">
-      <div class="flex flex-6">
+      <div class="flex flex-10">
         <Loot
           v-for="record in loot"
           :item="record.itemId"
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="flex flex-column flex-2 flex-space-evenly">
+      <div class="flex flex-column flex-4 flex-space-evenly">
         <span class="panel-input padding-top-half padding-bottom-half">
           <IconWithValue iconClass="icon-timer small" valueClass="font-size-18">{{timer.value}}</IconWithValue>
         </span>
@@ -55,15 +55,16 @@ export default {
   data: () => ({
     timer: new Timer(true)
   }),
-  mounted() {
-    if (this.preview) {
-      this.timer.timeLeft = this.adventure.duration;
-      this.timer.stop();
-    } else {
-      this.timer.timeLeft =
-        this.adventure.duration -
-        (this.$game.now - this.adventure.startTime) / 1000;
+  watch: {
+    adventure: {
+      deep: true,
+      handler() {
+        this.refreshTimer();
+      }
     }
+  },
+  mounted() {
+    this.refreshTimer();
   },
   computed: {
     rarity() {
@@ -73,7 +74,19 @@ export default {
       return this.adventure.loot.guaranteedRecords;
     },
     hasRandom() {
-        return this.adventure.loot.records.length > 0;
+      return this.adventure.loot.records.length > 0;
+    }
+  },
+  methods: {
+    refreshTimer() {
+      if (this.preview) {
+        this.timer.timeLeft = this.adventure.duration;
+        this.timer.stop();
+      } else {
+        this.timer.timeLeft =
+          this.adventure.duration -
+          (this.$game.now - this.adventure.startTime) / 1000;
+      }
     }
   }
 };

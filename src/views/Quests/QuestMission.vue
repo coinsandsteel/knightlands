@@ -152,12 +152,15 @@ export default {
       playerDamages: []
     };
   },
+  created() {
+    this.handleInventoryCallback = this.handleInventoryDelta.bind(this);
+  },
   mounted() {
     this.damageTextId = 0;
 
     this.$game.inventory.on(
       Inventory.Changed,
-      this.handleInventoryDelta.bind(this)
+      this.handleInventoryCallback
     );
 
     this.$refs.enemyList.goTo(this.questIndex * 1);
@@ -165,16 +168,16 @@ export default {
   activated() {
     this.$game.inventory.on(
       Inventory.Changed,
-      this.handleInventoryDelta.bind(this)
+      this.handleInventoryCallback
     );
 
     this.$refs.enemyList.goTo(this.questIndex);
   },
   destroyed() {
-    this.$game.inventory.off(Inventory.Changed);
+    this.$game.inventory.off(Inventory.Changed, this.handleInventoryCallback);
   },
   deactivated() {
-    this.$game.inventory.off(Inventory.Changed);
+    this.$game.inventory.off(Inventory.Changed, this.handleInventoryCallback);
     this.rewards = [];
     this.lootHash = {};
   },
@@ -262,7 +265,6 @@ export default {
 
       try {
         let damages = await this.request;
-
         let delay = 0;
         for (let i = 0; i < damages.length; ++i) {
           this.handleDamage(damages[i].damage, damages[i].crit, delay);
@@ -278,7 +280,7 @@ export default {
         // if already was dropped before - just inc loot counter
         if (this.lootHash[itemId]) {
           this.lootHash[itemId].count += lootDrops.delta[itemId];
-        } else {
+        } else if (lootDrops.changes[itemId]) {
           // or add to loot array and hash for tracking
           let copy = { ...lootDrops.changes[itemId] };
           copy.count = lootDrops.delta[itemId];
@@ -288,7 +290,6 @@ export default {
       }
     },
     async _handleQuestError(error) {
-      console.log("_handleQuestError", error, Errors.NoEnergy);
       switch (error) {
         case Errors.NoHealth:
           await ShowResourceRefill(Stat.Health);

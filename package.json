@@ -21,6 +21,7 @@
     "intersection-observer": "^0.7.0",
     "lodash.throttle": "^4.1.1",
     "node-sass": "^4.12.0",
+    "panzoom": "^8.4.0",
     "pify": "^4.0.1",
     "pixi.js-legacy": "^5.0.4",
     "portal-vue": "^2.1.6",

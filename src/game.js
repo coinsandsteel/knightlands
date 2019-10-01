@@ -14,6 +14,7 @@ import {
 const Operations = require("./../knightlands-shared/operations");
 import CurrencyType from "@/../knightlands-shared/currency_type";
 import DisconnectCodes from "@/../knightlands-shared/disconnectCodes";
+import Classes from "@/classes";
 
 class Game {
     constructor(store) {
@@ -31,6 +32,7 @@ class Game {
 
         this._vm = new Vue({
             data: () => ({
+                classInited: false,
                 authenticated: false,
                 softCurrency: 0,
                 hardCurrency: 0,
@@ -51,9 +53,8 @@ class Game {
             secure: process.env.NODE_ENV == "production" || process.env.NODE_ENV == "test",
             autoConnect: false,
             port: Config.gameServerPort,
-            rejectUnauthorized: false, // Only necessary during debug if using a self-signed certificate
-            connectTimeout: 5000,
-            ackTimeout: 5000,
+            connectTimeout: 10000,
+            ackTimeout: 10000,
             autoReconnectOptions: {
                 initialDelay: 5000,
                 randomness: 5000,
@@ -75,6 +76,7 @@ class Game {
         this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
         this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
         this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
+        this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
 
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
@@ -82,6 +84,10 @@ class Game {
         // pass socket to make character model listen to certain events
         this._character = new CharacterModel(this._socket, this);
         Vue.prototype.$character = this._character;
+    }
+
+    dailyRewardStep() {
+        return this._vm.dailyRewardStep;
     }
 
     get isAdmin() {
@@ -210,7 +216,7 @@ class Game {
     async signIn() {
         const publicAddress = this.account;
 
-        return new Promise(async (resolve, reject)=>{
+        return new Promise(async (resolve, reject) => {
             try {
                 // get nonce first
                 let nonce = await this._request(Operations.Auth, {
@@ -218,7 +224,7 @@ class Game {
                 });
                 // sign message
                 let message = await this._blockchainClient.sign(nonce);
-    
+
                 // send signed message
                 await this._request(Operations.Auth, {
                     address: publicAddress,
@@ -229,7 +235,7 @@ class Game {
             } catch (exc) {
                 // signing was rejected
                 console.log("signIn", exc);
-    
+
                 if (exc.message && exc.message.includes("not unlocked")) {
                     //reset walletReady
                     this._vm.walletReady = false;
@@ -270,7 +276,7 @@ class Game {
         if (data.isAuthenticated) {
             await this.updateUserData();
         }
-        
+
         this._vm.ready = true;
         this._vm.$emit(this.Ready, data.isAuthenticated);
     }
@@ -306,6 +312,10 @@ class Game {
     // EVENTS
     _handleInventoryUpdate(data) {
         this._inventory.mergeData(data);
+    }
+
+    _handleBuffApplied(data) {
+        this._character.applyBuff(data);
     }
 
     _handleRaidJoinStatus(data) {
@@ -345,6 +355,7 @@ class Game {
     }
 
     _handleTimerRefilled(data) {
+        console.log("timer refilled", data);
         const { context } = data;
         this._character.refillTimer(context);
         this._vm.$emit(Events.TimerRefilled, data);
@@ -358,20 +369,33 @@ class Game {
         this._vm.$emit(Events.ItemEnchanted, data);
     }
 
+    _checkClassChoice() {
+        if (!this._vm.classInited) {
+            if (Classes.find(x => x.minLevel <= this.character.level)) {
+                this._vm.$emit("change-class");
+            }
+        }
+    }
+
     _mergeData(data) {
         let {
             changes,
             removals
         } = data;
 
+        if (changes.classInited) {
+            this._vm.classInited = changes.classInited;
+        }
+
         if (changes.character) {
             if (this.character.level < changes.character.level) {
-                this._vm.$emit('level-up');
+                this._vm.$emit("level-up");
             }
-            
+
             this.character.mergeData(changes.character);
+
+            this._checkClassChoice();
         }
-        
 
         if (removals) {
             this.character.removeData(removals.character);
@@ -402,7 +426,7 @@ class Game {
                             };
                             Vue.set(stagesData, stage, stageData);
                         }
-                        
+
                         stageData.hits = stages[stage].hits;
                     }
                 }
@@ -460,10 +484,19 @@ class Game {
                 this._vm.$set(this._vm, "questsProgress", info.questsProgress);
             }
 
+            if (info.classInited) {
+                this._vm.classInited = info.classInited;
+            }
+
             this._vm.softCurrency = info.softCurrency;
             this._vm.hardCurrency = info.hardCurrency;
 
+            if (!this._vm.load) {
+                this._checkClassChoice();
+            }
+
             this._vm.load = true;
+
         } catch (exc) {
             console.error("updateUserData", exc);
         }
@@ -531,18 +564,13 @@ class Game {
     }
 
     getZoneStageStatuses(zone) {
+        let lastZoneId = this._zones.length;
         let questData = this._zones[zone - 1].quests[0];
         let stages = [];
-        let previousCompletedStage = -1;
+
         for (let stage in questData.stages) {
-            let status = this.getZoneCompletedRecords(zone, stage)[stage];
-            if (status) {
-                previousCompletedStage = stage;
-            }
+            let status = this.getZoneCompletedRecords(lastZoneId, stage)[stage];
             stages.push(status);
-            if (stages.length == 1 || previousCompletedStage == stage - 1) {
-                stages[stage] = true;
-            }
         }
         return stages;
     }
@@ -820,7 +848,7 @@ class Game {
         return await this._request(Operations.FetchEnchantingStatus, {
             itemId
         });
-    } 
+    }
 
     async fetchAdventuresStatus() {
         return (await this._wrapOperation(Operations.FetchAdventuresStatus)).response;
@@ -847,6 +875,20 @@ class Game {
         return (await this._wrapOperation(Operations.RefreshAdventures, {
             slot
         })).response;
+    }
+
+    async selectClass(className) {
+        return (await this._wrapOperation(Operations.ChangeClass, {
+            class: className
+        })).response;
+    }
+
+    async fetchDailyRewardStatus() {
+        return (await this._wrapOperation(Operations.FetchDailyRewardStatus)).response;
+    }
+
+    async collectDailyReward() {
+        return (await this._wrapOperation(Operations.CollectDailyReward)).response;
     }
 }
 

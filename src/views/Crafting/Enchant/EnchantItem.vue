@@ -86,7 +86,7 @@
             </template>
 
             <div class="flex flex-center width-100" v-if="!paymentInProcess">
-              <CustomButton type="yellow" @click="enchant(currencies.Soft)">
+              <CustomButton type="yellow" @click="enchant(currencies.Soft)" :disabled="!(enoughResources && enoughSoft)">
                 {{$t("btn-enchant")}}
                 <IconWithValue iconClass="icon-gold">{{stepData.soft}}</IconWithValue>
               </CustomButton>
@@ -111,12 +111,12 @@
                   >{{$t("enchant-success-rate", {rate: 100})}}</span>
 
                   <div class="flex flex-center width-100 flex-space-evenly">
-                    <CustomButton type="green" @click="enchant(currencies.Fiat)">
+                    <CustomButton type="green" @click="enchant(currencies.Fiat)" :disabled="!enoughResources">
                       {{$t("btn-enchant")}}
                       <PriceTag :dark="true" :iap="stepData.iap"></PriceTag>
                     </CustomButton>
 
-                    <CustomButton type="grey" @click="enchant(currencies.Hard)">
+                    <CustomButton type="grey" @click="enchant(currencies.Hard)" :disabled="!(enoughResources && enoughHard)">
                       {{$t("btn-enchant")}}
                       <IconWithValue iconClass="icon-premium">{{stepData.hard}}</IconWithValue>
                     </CustomButton>
@@ -202,6 +202,15 @@ export default {
       return (
         this.currentEnchantingLevel < this.$game.itemsDB.getMaxEnchantingLevel()
       );
+    },
+    enoughSoft() {
+      return this.stepData.soft <= this.$game.softCurrency;
+    },
+    enoughHard() {
+      return this.stepData.soft <= this.$game.hardCurrency;
+    },
+    enoughResources() {
+      return this.$game.crafting.hasEnoughIngridients(this.ingridients);
     },
     currentEnchantingLevel() {
       if (!this.item) return 0;

@@ -100,12 +100,11 @@ export default {
         await ShowRewards(items);
       }
     },
-    async startAdventure(adventure, adventureIndex) {
-      let slotIndex = this.adventures.findIndex(x => x == adventure);
-      this.request = this.$game.startAdventure(slotIndex, adventureIndex);
+    async startAdventure(adventureIndex) {
+      this.request = this.$game.startAdventure(this.selectedAventureIndex, adventureIndex);
 
       let adventureUpdate = await this.request;
-      this.$set(this.adventures, slotIndex, adventureUpdate);
+      this.$set(this.adventures, this.selectedAventureIndex, adventureUpdate);
       this.handleBackButton();
     },
     async buySlot() {

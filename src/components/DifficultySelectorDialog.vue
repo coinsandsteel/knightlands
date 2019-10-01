@@ -2,15 +2,16 @@
   <user-dialog title="Select Difficulty" @close="$close(current)">
     <template v-slot:content>
       <div class="flex flex-center flex-column flex-space-between button-column">
-        <custom-button
-          v-for="(status, index) in stages"
-          :key="index"
-          :type="getStageBtnStyle(index)"
-          :caption="getStageBtnCaption(index)"
-          :disabled="!status"
-          :lockPressed="index == current"
-          @click="$close(index)"
-        ></custom-button>
+        <div v-for="(status, index) in stages" :key="index" class="flex flex-center flex-column">
+          <custom-button
+            :type="getStageBtnStyle(index)"
+            :caption="getStageBtnCaption(index)"
+            :disabled="!isUnlocked(index)"
+            :lockPressed="index == current"
+            @click="$close(index)"
+          ></custom-button>
+          <span v-if="!isUnlocked(index)" class="font-size-18 font-shadow rarity-mythical">{{$t("finish-zone", {zone: lastZoneName, difficulty: getStageBtnCaption(index-1)})}}</span>
+        </div>
       </div>
     </template>
   </user-dialog>
@@ -20,6 +21,7 @@
 import UserDialog from "./UserDialog.vue";
 import CustomButton from "./Button.vue";
 import UiConstants from "@/ui_constants";
+import Campaign from "@/campaign_database";
 
 export default {
   components: {
@@ -27,7 +29,21 @@ export default {
     CustomButton
   },
   props: ["stages", "current"],
+  data: ()=>({
+    lastZoneName: ""
+  }),
+  async mounted() {
+    let zones = await this.$game.getZonesData();
+    this.lastZoneName = this.$t(Campaign.getZoneName(zones.length));
+  },
   methods: {
+    isUnlocked(stage) {
+      if (stage > 0) {
+        return this.stages[stage - 1];
+      } else {
+        return true;
+      }
+    },
     getStageBtnStyle(stage) {
       switch (stage) {
         case 0:
@@ -42,7 +58,7 @@ export default {
       return "";
     },
     getStageBtnCaption(stage) {
-      return UiConstants.stageNames[stage];
+      return this.$t(UiConstants.stageNames[stage]);
     }
   }
 };

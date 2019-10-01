@@ -30,6 +30,10 @@ import Unbind from "./views/Crafting/Unbind/Unbind.vue";
 import Craft from "./views/Crafting/Create/Craft.vue";
 import Create from "./views/Crafting/Create/Create.vue";
 
+import RecipeBookRoot from "./views/Crafting/RecipeBook/RecipeBookRoot.vue";
+import RecipeBook from "./views/Crafting/RecipeBook/RecipeBook.vue";
+import RecipeBookPage from "./views/Crafting/RecipeBook/RecipeBookPage.vue";
+
 import CraftingEnchant from "./views/Crafting/Enchant/CraftingEnchant.vue";
 import Enchant from "./views/Crafting/Enchant/Enchant.vue";
 import EnchantItem from "./views/Crafting/Enchant/EnchantItem.vue";
@@ -125,6 +129,23 @@ const router = new Router({
               path: "item/:itemId",
               name: "enchant-item",
               component: EnchantItem,
+              props: true
+            }
+          ]
+        },
+        {
+          path: "recipes",
+          component: RecipeBookRoot,
+          children: [
+            {
+              path: "",
+              name: "recipe-book",
+              component: RecipeBook
+            },
+            {
+              path: "page/:recipeId",
+              name: "recipe-book-page",
+              component: RecipeBookPage,
               props: true
             }
           ]

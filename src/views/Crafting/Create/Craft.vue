@@ -66,7 +66,7 @@ import PaymentStatus from "@/components/PaymentStatus.vue"
 import PaymentHandler from "@/components/PaymentHandler.vue"
 import Events from "@/../knightlands-shared/events";
 import ItemCreatedPopup from "./ItemCreatedPopup.vue";
-import HintHandler from "@/components/HintHandler.vue";
+import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -74,7 +74,7 @@ const ShowItemCreated = create(ItemCreatedPopup, ...ItemCreatedPopup.props);
 
 export default {
   props: ["recipeId"],
-  mixins: [AppSection, PaymentHandler, HintHandler],
+  mixins: [AppSection, PaymentHandler, CraftingIngridientHintHandler],
   components: {
     StripedContent,
     StripedPanel,
@@ -118,28 +118,6 @@ export default {
     }
   },
   methods: {
-    async handleIngridientHint(item) {
-      let buttons = [];
-      let recipe = this.$game.crafting.getRecipeByItem(item.template);
-      if (recipe) {
-        buttons.push({
-          type:"yellow",
-          title:"btn-open-craft",
-          response: true
-        });
-      }
-
-      let response = await this.showHint(item, buttons);
-      if (response === true) {
-        // go to ingridient item
-         this.$router.push({
-          name: "craft",
-          params: {
-            recipeId: recipe.id
-          }
-        });
-      }
-    },
     async handlePaymentComplete(iap, item) {
       if (item) {
         await ShowItemCreated(item.resultItem);

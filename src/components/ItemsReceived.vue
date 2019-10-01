@@ -1,19 +1,7 @@
 <template>
-  <UserDialog :title="$t('box-opened-title', {item: $t(itemName)})" @close="$close">
+  <UserDialog :title="$t('box-opened-title')" @close="$close">
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
-        <!-- <IconWithValue
-          class="margin-bottom-1"
-          valueClass="font-size-20 digit-font"
-          iconClass="icon-dkt"
-        >{{rewards.dkt}}</IconWithValue>
-
-        <IconWithValue
-          class="margin-bottom-1"
-          valueClass="font-size-20 digit-font"
-          iconClass="icon-gold"
-        >{{rewards.gold}}</IconWithValue>-->
-
         <div class="flex flex-center flex-column margin-top-3">
           <div class="flex flex-center reward-loot">
             <loot
@@ -53,12 +41,7 @@ export default {
     CustomButton,
     Loot
   },
-  props: ["itemId", "items"],
-  computed: {
-    itemName() {
-      return this.$game.itemsDB.getName(this.itemId);
-    }
-  }
+  props: ["items"]
 };
 </script>
 

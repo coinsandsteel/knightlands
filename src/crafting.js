@@ -6,6 +6,19 @@ class Crafting {
         this._inventory = inventory;
     }
 
+    hasEnoughIngridients(ingridients) {
+        let enoughResources = true;
+        const length = ingridients.length;
+        for (let i = 0; i < length; ++i) {
+            let ingridient = ingridients[i];
+            if (!this._inventory.hasItemTemplate(ingridient.itemId, ingridient.quantity)) {
+                enoughResources = false;
+                break;
+            }
+        }
+        return enoughResources;
+    }
+
     hasEnoughResourcesForRecipe(recipe) {
         if (typeof recipe != "object") {
             recipe = this.getRecipe(recipe);
@@ -14,18 +27,7 @@ class Crafting {
             }
         }
 
-        let enoughResources = true;
-        let i = 0;
-        const length = recipe.ingridients.length;
-        for (; i < length; ++i) {
-            let ingridient = recipe.ingridients[i];
-            if (!this._inventory.hasItemTemplate(ingridient.itemId, ingridient.quantity)) {
-                enoughResources = false;
-                break;
-            }
-        }
-
-        return enoughResources;
+        return this.hasEnoughIngridients(recipe.ingridients);
     }
 
     getRecipeByItem(itemTemplate) {
@@ -49,7 +51,7 @@ class Crafting {
         const length = recipe.ingridients.length;
         for (; i < length; ++i) {
             let ingridient = recipe.ingridients[i];
-            ingridients.push({...ingridient});
+            ingridients.push({ ...ingridient });
         }
 
         return ingridients;

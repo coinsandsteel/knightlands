@@ -22,16 +22,19 @@ let filters = {
   ...EquipmentSlots
 };
 
-// equipment is expanded with equipment slots instead
-delete filters.Equipment;
-
 let defaultFilters = {};
 for (let i in filters) {
   defaultFilters[filters[i]] = true;
 }
 
+// equipment is expanded with equipment slots instead
+delete filters.Equipment;
+
+const FiltersVersion = 3;
+
 const store = new Vuex.Store({
   state: {
+    itemFiltersVersion: 0,
     selectedQuestZone: undefined,
     itemFilters: defaultFilters,
     zoneStage: 0,
@@ -68,6 +71,10 @@ const store = new Vuex.Store({
       return state.selectedQuestZone;
     },
     getItemFilters: state => {
+      if (state.itemFiltersVersion != FiltersVersion) {
+        state.itemFiltersVersion = FiltersVersion;
+        state.itemFilters = defaultFilters;
+      }
       return state.itemFilters;
     },
     getZoneStage: state  => {

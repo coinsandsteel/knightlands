@@ -43,11 +43,13 @@ import AppSection from "@/AppSection";
 import SkewedButton from "@/components/SkewedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
+import PromisedButton from "@/components/PromisedButton.vue";
+
 
 export default {
   name: "home",
   mixins: [AppSection],
-  components: { SkewedButton, IconWithValue, AdventuresMarker },
+  components: { SkewedButton, IconWithValue, AdventuresMarker, PromisedButton },
   created() {
     this.title = this.$t("window-title-home");
   },

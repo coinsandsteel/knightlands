@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     startAdventure(adventureIndex) {
-      this.$emit("start", this.adventure, adventureIndex);
+      this.$emit("start", adventureIndex);
     },
     handleBackButton() {
       this.$emit("back");
