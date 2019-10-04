@@ -1,7 +1,7 @@
 <template>
   <nav class="tabs flex flex-no-wrap" :class="wrapperClass">
     <div
-      class="tabs__item font-size-20"
+      class="tabs__item font-size-18"
       v-for="tab in tabs"
       :ref="tab.value"
       :key="tab.title"
@@ -98,7 +98,7 @@ export default {
   justify-content: flex-start;
   width: 100%;
   position: relative;
-  padding: 0 2rem 0 2rem;
+  padding: 0 1rem 0 1rem;
   border-bottom: 1px solid #515e6f;
 
   * > {
@@ -125,7 +125,7 @@ export default {
   border-image: url("../assets/ui/tab.png") round;
   background-color: #323c4f;
   .border();
-  padding: 0.4rem 2rem 0.4rem 2rem;
+  padding: 0.4rem 1rem 0.4rem 1rem;
   text-transform: capitalize;
 }
 

@@ -40,7 +40,8 @@ class Game {
                 account: undefined,
                 ready: false,
                 walletReady: false,
-                load: false
+                load: false,
+                beast: {}
             })
         });
 
@@ -77,6 +78,7 @@ class Game {
         this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
         this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
         this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
+        this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
 
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
@@ -88,6 +90,10 @@ class Game {
 
     dailyRewardStep() {
         return this._vm.dailyRewardStep;
+    }
+
+    beast() {
+        return this._vm.beast;
     }
 
     get isAdmin() {
@@ -318,6 +324,10 @@ class Game {
         this._character.applyBuff(data);
     }
 
+    _handleItemPurchased(data) {
+        this._vm.$emit(Events.ItemPurchased, data);
+    }
+
     _handleRaidJoinStatus(data) {
         this._vm.$emit(Events.RaidJoinStatus, data);
     }
@@ -340,22 +350,10 @@ class Game {
 
     _handleCraftStatus(data) {
         const { iap, reason, context } = data;
-
-        // Vue.notify({
-        //     group: "raid",
-        //     data: {
-        //         iap,
-        //         context,
-        //         success: reason ? false : true,
-        //     },
-        //     duration: -1
-        // });
-
         this._vm.$emit(Events.CraftingStatus, data);
     }
 
     _handleTimerRefilled(data) {
-        console.log("timer refilled", data);
         const { context } = data;
         this._character.refillTimer(context);
         this._vm.$emit(Events.TimerRefilled, data);
@@ -399,6 +397,12 @@ class Game {
 
         if (removals) {
             this.character.removeData(removals.character);
+        }
+
+        if (changes.beast) {
+            this._vm.beast.exp = changes.beast.exp || this._vm.beast.exp;
+            this._vm.beast.level = changes.beast.level || this._vm.beast.level;
+            this._vm.beast.index = changes.beast.index || this._vm.beast.index;
         }
 
         if (changes.questsProgress) {
@@ -487,6 +491,8 @@ class Game {
             if (info.classInited) {
                 this._vm.classInited = info.classInited;
             }
+
+            this._vm.beast = info.beast;
 
             this._vm.softCurrency = info.softCurrency;
             this._vm.hardCurrency = info.hardCurrency;
@@ -754,6 +760,12 @@ class Game {
         });
     }
 
+    async fetchRaidWeakness(raid, stage) {
+        return (await this._wrapOperation(Operations.UpgradeItem, {
+            raid, stage
+        })).response;
+    }
+
     async fetchRaidSummonStatus(raid, stage) {
         return await this._request(Operations.FetchRaidSummonStatus, {
             raid, stage
@@ -771,9 +783,9 @@ class Game {
         return await this._request(Operations.GetCurrencyConversionRate);
     }
 
-    async upgradeItem(itemId, materialId, count) {
+    async upgradeItem(itemId, materials, count) {
         let response = await this._wrapOperation(Operations.UpgradeItem, {
-            itemId, materialId, count
+            itemId, materials, count
         });
 
         return response.response;
@@ -815,10 +827,11 @@ class Game {
         });
     }
 
-    async openChest(chest, iap) {
+    async openChest(chest, iap, count) {
         let response = await this._wrapOperation(Operations.OpenChest, {
             chest,
-            iap
+            iap,
+            count
         });
 
         return response.response;
@@ -889,6 +902,36 @@ class Game {
 
     async collectDailyReward() {
         return (await this._wrapOperation(Operations.CollectDailyReward)).response;
+    }
+
+    async beastRegularBoost(count) {
+        return (await this._wrapOperation(Operations.BeastRegularBoost, {
+            count
+        })).response;
+    }
+
+    async beastAdvancedBoost(count) {
+        return (await this._wrapOperation(Operations.BeastAdvancedBoost, {
+            count
+        })).response;
+    }
+
+    async purchaseBeastBoost(iapIndex) {
+        return (await this._wrapOperation(Operations.BeastAdvancedBoost, {
+            iapIndex
+        })).response;
+    }
+
+    async evolveBeast() {
+        return await this._wrapOperation(Operations.EvolveBeast);
+    }
+
+    async fetchBeastBoostPurchase() {
+        return (await this._wrapOperation(Operations.FetchBeastBoostPurchase)).response;
+    }
+
+    async cancelPurchase(id) {
+        return (await this._wrapOperation(Operations.CancelPayment, { id })).response;
     }
 }
 

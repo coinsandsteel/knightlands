@@ -1,11 +1,11 @@
 <template>
   <div class="mission-element panel">
-    <div class="left-column flex flex-column flex-center flex-basis-50">
-      <div class="title flex flex-center font-size-20 enemy-title-font">
+    <div class="left-column flex flex-column flex-center flex-5 margin-right-1">
+      <div class="mission-title width-100 title flex flex-center font-size-18 enemy-title-font">
         <span>{{$t(missionName)}}</span>
       </div>
 
-      <div class="mission-image pixelated" :style="enemyImage"></div>
+      <div class="mission-image pixelated margin-top-2" :style="enemyImage"></div>
 
       <progress-bar
         class="mission-progress"
@@ -21,25 +21,27 @@
       ></progress-bar>
     </div>
 
-    <div class="flex-basis-50 font-size-18 right-column flex-column flex-item-center">
+    <div class="flex-5 font-size-18 right-column flex-column flex-item-center">
       <div class="info flex margin-top-small">
-        <div class="flex-basis-50">
-          <div class="margin-bottom-small yellow-title text-align-left">Rewards</div>
+        <div class="flex-3 flex flex-column flex-items-start">
+          <div class="margin-bottom-small yellow-title margin-bottom-half">Rewards</div>
           <div class="list digit-font font-outline">
             <icon-with-value
+              class="flex-start"
               iconClass="icon-exp icon-size-mini"
               :value="quest.exp"
-              valueClass="info-font "
+              valueClass="info-font"
             ></icon-with-value>
             <icon-with-value
+              class="flex-start"
               iconClass="icon-gold icon-size-mini"
               :value="`${quest.goldMin}-${quest.goldMax}`"
               valueClass="info-font"
             ></icon-with-value>
           </div>
         </div>
-        <div class="flex-basis-50" v-show="quest.energy > 0">
-          <div class="margin-bottom-small blue-title text-align-left">Cost</div>
+        <div class="flex-1  flex flex-column flex-items-start" v-show="quest.energy > 0">
+          <div class="margin-bottom-small blue-title margin-bottom-half">Cost</div>
           <div class="list digit-font font-outline">
             <icon-with-value
               iconClass="icon-energy icon-size-mini"
@@ -143,6 +145,13 @@ export default {
 
 .mission-progress {
   width: 90% !important;
+}
+
+.mission-title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .mission-element {

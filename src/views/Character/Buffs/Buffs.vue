@@ -1,6 +1,12 @@
 <template>
   <div class="tab-content width-100 flex padding-2">
-      <BuffSlot v-for="record in buffs" :key="(record.buff || record.item).template" :buff="record.buff" :item="record.item" @info="handleInfo"></BuffSlot>
+    <BuffSlot
+      v-for="record in buffs"
+      :key="(record.buff || record.item).template"
+      :buff="record.buff"
+      :item="record.item"
+      @info="handleInfo"
+    ></BuffSlot>
   </div>
 </template>
 
@@ -19,8 +25,8 @@ const ShowBuffInfo = create(BuffInfo, ...BuffInfo.props);
 
 export default {
   mixins: [AppSection],
-  components: {BuffSlot},
-  data:()=>({
+  components: { BuffSlot },
+  data: () => ({
     buffs: []
   }),
   created() {
@@ -38,7 +44,7 @@ export default {
       const buffs = [];
       const activeBuffs = this.$game.character.buffs;
       const activeBuffsHash = {};
-      activeBuffs.forEach(buff=>{
+      activeBuffs.forEach(buff => {
         activeBuffsHash[buff.template] = buff;
         buffs.push({
           buff
@@ -62,14 +68,16 @@ export default {
           return false;
         }
 
-        if (template.action.action == ItemActions.Buff || template.action.action == ItemActions.RaidBuff) {
+        if (
+          template.action.action == ItemActions.Buff ||
+          template.action.action == ItemActions.RaidBuff
+        ) {
           return true;
         }
 
         return false;
       });
 
-      
       let i = 0;
       const length = items.length;
       for (; i < length; ++i) {

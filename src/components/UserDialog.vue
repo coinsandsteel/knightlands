@@ -2,7 +2,7 @@
   <div class="flex mask-hidden flex-center width-100 height-100" @click.self="handleClose" :class="{'mask': !hideMask}">
     <div class="content flex-no-wrap flex flex-column flex center" :class="[type, contentClass]">
       <div
-        class="margin-top-3 flex flex-center font-size-25 font-weight-700 margin-bottom-3 font-outline"
+        class="margin-top-3 flex flex-center font-size-25 font-weight-700 margin-bottom-2 font-outline"
         :class="[titleClass, {compact:compact, 'title':compact}]"
         v-if="title"
       >
@@ -17,7 +17,7 @@
 
       <div v-bar="{
           preventParentScroll: true,
-          scrollThrottle: 30,
+          scrollThrottle: 30
       }" v-else>
         <div class="scrollable-content">
           <slot name="content"></slot>
@@ -72,12 +72,13 @@ export default {
 
 .content {
   position: relative;
-  padding: 1rem;
+  padding-top: 1rem;
   width: 90%;
 }
 
 .footer {
   margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .scrollable-content {

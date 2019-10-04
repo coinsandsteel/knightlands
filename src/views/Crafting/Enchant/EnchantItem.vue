@@ -28,7 +28,7 @@
 
             <template v-slot:stats v-if="canEnchant">
               <div
-                class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
+                class="margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
               >
                 <div class="flex width-40 flex-column flex-item-end text-align-right">
                   <div

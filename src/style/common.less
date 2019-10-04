@@ -446,13 +446,15 @@ h1 {
 }
 
 .icon-trx-dark {
-    .icon("icon_tron");
-
-    filter: brightness(0);
+    .icon("icon_tron_dark");
 }
 
 .icon-info {
     .icon("icon_hint");
+    
+    &.dark {
+        .icon("icon_hint_dark");
+    }
 }
 
 .icon-mark {

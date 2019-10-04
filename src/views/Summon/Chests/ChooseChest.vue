@@ -12,6 +12,7 @@
               :chest="chest"
               :pending="pendingOpening"
               @open="openChest"
+              @openBatch="openBatchChest"
               @wait="pendingOpening = true"
             />
           </div>
@@ -50,13 +51,19 @@ export default {
     pendingOpening: false
   }),
   methods: {
+    openBatchChest(chest, count) {
+      this.$router.push({
+          name: "open-chest",
+          params: { chest, count }
+        });
+    },
     openChest(chest, iap, items) {
       if (iap) {
         this.request = this.$game.openChest(chest, iap);
       } else {
         this.$router.push({
           name: "open-chest",
-          params: { chest: chest, items: items }
+          params: { chest, items }
         });
       }
     },

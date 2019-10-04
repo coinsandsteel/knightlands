@@ -58,6 +58,9 @@ export default {
       this.$set(this.purchasedAttributes, UpgradableCharacterStats[stat], 0);
     }
   },
+  deactivated() {
+    this.resetAttributes();
+  },
   computed: {
     attributesNeedReset() {
       for (let i in this.purchasedAttributes) {
@@ -121,47 +124,6 @@ export default {
 
       return true;
     },
-    startAttributeDecrease(attr) {
-      this.modifyAttributeLongPress(attr, 4, -1);
-    },
-    startAttributeIncrease(attr) {
-      this.modifyAttributeLongPress(attr, 4, 1);
-    },
-    modifyAttributeLongPress(attr, pointsPerSecond, stepValue) {
-      this.longPressAttributeModificationTimeout = setTimeout(() => {
-        this.modifyAttributeLongPress(attr, pointsPerSecond * 2, stepValue);
-        this.modifyAttributeContinuously(attr, pointsPerSecond, stepValue);
-      }, ContinuousEditingTimeout);
-    },
-    modifyAttributeContinuously(attr, speed, stepValue) {
-      if (this.attributeModificationInterval) {
-        clearInterval(this.attributeModificationInterval);
-      }
-
-      this.attributeModificationInterval = setInterval(() => {
-        let result = false;
-        if (stepValue < 0) {
-          result = this.decreaseAttribute(attr);
-        } else {
-          result = this.increaseAttribute(attr);
-        }
-
-        if (!result) {
-          this.stopAttributeModify();
-        }
-      }, 1000 / speed);
-    },
-    stopAttributeModify() {
-      if (this.longPressAttributeModificationTimeout) {
-        clearTimeout(this.longPressAttributeModificationTimeout);
-        this.longPressAttributeModificationTimeout = undefined;
-      }
-
-      if (this.attributeModificationInterval) {
-        clearInterval(this.attributeModificationInterval);
-        this.attributeModificationInterval = undefined;
-      }
-    },
     async confirmAttributes() {
       let totalGold = 0;
       for (let i in this.upgradePrice) {
@@ -192,7 +154,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "./style.less";
 
 .confirm-stats {
   width: 60%;
@@ -242,21 +203,5 @@ export default {
 
 .att-minus {
   .att-btn("button_minus_training_camp");
-}
-
-.att-row {
-  padding: 1rem 1rem 1rem 3rem;
-
-  &:first-child {
-    padding-top: 2.5rem;
-  }
-
-  &:nth-child(even) {
-    background-color: #302235;
-  }
-
-  &:nth-child(odd) {
-    background-color: #3b2d3f;
-  }
 }
 </style>;

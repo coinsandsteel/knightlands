@@ -40,6 +40,10 @@ export default {
         async continuePurchase(paymentStatus) {
             let { signature, price, iap, paymentId } = paymentStatus;
             await this.purchase(signature, price, iap, paymentId);
+        },
+        async cancelPurchase(paymentStatus) {
+            await this.$game.cancelPurchase(paymentStatus.id);
+            await this.fetchPaymentStatus(paymentStatus.iap);
         }
     }
 }

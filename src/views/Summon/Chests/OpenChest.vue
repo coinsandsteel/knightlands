@@ -50,8 +50,8 @@
         <div @click="handleContinue" class="continueButton"></div>
 
         <div class="gacha-continue pointer pointer-events-none" :class="{'show': showContinue}">
-          <span class="font-size-30 font-weight-700" v-if="hasMoreChests">{{$t("open_next")}}</span>
-          <span v-else class="font-size-30 font-weight-700">{{$t("continue_from_gacha")}}</span>
+          <!-- <span class="font-size-30 font-weight-700" v-if="hasMoreChests">{{$t("open_next")}}</span> -->
+          <span class="font-size-30 font-weight-700">{{$t("continue_from_gacha")}}</span>
         </div>
       </template>
 
@@ -90,7 +90,7 @@ const ChestSkeletons = {
 
 export default {
   mixins: [AppSection],
-  props: ["chest", "items"],
+  props: ["chest", "items", "count"],
   data: () => ({
     loot: [],
     request: null,
@@ -147,11 +147,7 @@ export default {
       }
     },
     handleContinue() {
-      if (this.hasMoreChests) {
-        this.openNext();
-      } else {
-        this.handleBackButton();
-      }
+      this.handleBackButton();
     },
     handleAnimationReady() {
       this.$refs.animation.getState().addListener({
@@ -226,7 +222,7 @@ export default {
       let state = this.$refs.animation.getState();
       state.setAnimation(0, "idle", false);
 
-      this.request = this.$game.openChest(this.chest);
+      this.request = this.$game.openChest(this.chest, null, this.count || 1);
 
       try {
         this.loot = await this.request;

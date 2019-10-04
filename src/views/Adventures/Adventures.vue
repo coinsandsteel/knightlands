@@ -83,7 +83,7 @@ export default {
   },
   computed: {
     upgradePrice() {
-      if (!this.adventures || this.adventures.length == 0) return 0;
+      if (!this.adventures || this.adventures.length == 0 || this.adventures.length >= AdventuresMeta.upgradePrice.length) return 0;
       return AdventuresMeta.upgradePrice[this.adventures.length - 1].soft;
     },
     enoughCurrency() {

@@ -1,5 +1,9 @@
 <template>
   <div class="flex full-flex padding-bottom-1 width-100 flex-column flex-no-wrap flex-items-center">
+    <div class="margin-bottom-2 width-75">
+      <progress-bar :maxValue="maxStat" :hideMaxValue="true" v-model="barValue" :barType="color"></progress-bar>
+    </div>
+
     <div v-bar="{
           preventParentScroll: true,
           scrollThrottle: 30,
@@ -18,9 +22,7 @@
       </div>
     </div>
 
-    <div class="margin-top-2 width-75">
-      <progress-bar :maxValue="maxStat" :hideMaxValue="true" v-model="barValue" :barType="color"></progress-bar>
-    </div>
+    
   </div>
 </template>
 

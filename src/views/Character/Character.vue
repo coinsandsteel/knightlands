@@ -6,6 +6,7 @@
         <inventory v-if="currentTab === InventoryTab" :items="$game.inventory.items"></inventory>
         <stats v-if="currentTab === StatsTab"></stats>
         <Buffs v-if="currentTab === BuffsTab"></Buffs>
+        <Beasts v-if="currentTab === BeastsTab"></Beasts>
       </keep-alive>
     </div>
   </div>
@@ -16,11 +17,13 @@ import Tabs from "@/components/Tabs.vue";
 import Inventory from "./Inventory.vue";
 import Stats from "./Stats.vue";
 import Buffs from "./Buffs/Buffs.vue";
+import Beasts from "./BeastTaming/BeastTaming.vue";
 import AppSection from "@/AppSection";
 
 const InventoryTab = "inventory";
 const StatsTab = "stats";
 const BuffsTab = "buffs";
+const BeastsTab = "beasts";
 
 export default {
   mixins: [AppSection],
@@ -28,19 +31,22 @@ export default {
     Tabs,
     Stats,
     Inventory,
-    Buffs
+    Buffs,
+    Beasts
   },
   data() {
     return {
       tabs: [
         { title: "inventory", value: InventoryTab, to: "/character/inventory" },
         { title: "training", value: StatsTab, to: "/character/stats" },
-        { title: "buffs", value: BuffsTab, to: "/character/buffs" }
+        { title: "buffs", value: BuffsTab, to: "/character/buffs" },
+        { title: "beast", value: BeastsTab, to: "/character/beasts" },
       ],
       currentTab: InventoryTab,
       InventoryTab: InventoryTab,
       StatsTab: StatsTab,
-      BuffsTab: BuffsTab
+      BuffsTab: BuffsTab,
+      BeastsTab: BeastsTab
     };
   },
   mounted() {
@@ -55,7 +61,7 @@ export default {
 </script>
 
 <!--Rest of the style-->
-<style lang="less" scoped>
+<style lang="less">
 @import "./style.less";
 </style>
 

@@ -105,7 +105,7 @@ export default {
       }
     }
   },
-  async mounted() {
+  async activated() {
     this.title = "Quests";
 
     await this.loadZones();

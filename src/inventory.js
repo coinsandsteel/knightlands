@@ -243,6 +243,7 @@ class Inventory {
             let sortingFactorA = this._itemDB.getRarityAsNumber(
                 a.template
             );
+            
             let sortingFactorB = this._itemDB.getRarityAsNumber(
                 b.template
             );

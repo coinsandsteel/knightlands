@@ -11,7 +11,7 @@
       <div>
         <div class="flex flex-center">
           <div class="flex flex-items-center panel-input padding-left-1 padding-right-1">
-            <div class="key-icon" :style="getKeyIcon"></div>
+            <div class="key-icon" :style="keyIcon"></div>
             <span class="font-size-18">{{totalKeys}}</span>
           </div>
         </div>
@@ -31,12 +31,21 @@
           v-show="timer.timeLeft > 0"
         >{{$t("free-chest-timer", {timer: timer.value})}}</span>
 
-        <CustomButton :disabled="!hasKey" type="yellow" @click="$emit('open', chest.name)">
+        <div class="flex flex-center flex-items-end flex-column">
+          <CustomButton :disabled="!hasKey" type="yellow" @click="$emit('open', chest.name)">
           <div class="flex flex-items-center">
             <span class="margin-right-half">{{$t('btn-open')}}</span>
-            <div class="key-icon small" :style="getKeyIcon"></div>
+            <div class="key-icon small" :style="keyIcon"></div>
           </div>
         </CustomButton>
+        <CustomButton class="margin-top-1" v-show="batchSize > 1" type="yellow" @click="$emit('openBatch', chest.name, batchSize)">
+          <div class="flex flex-items-center">
+            <span class="margin-right-half">{{$t('btn-open')}}</span>
+            <div class="key-icon small" :style="keyIcon"></div>
+            <span>x{{batchSize}}</span>
+          </div>
+        </CustomButton>
+        </div>
       </div>
 
       <PaymentStatus
@@ -146,7 +155,7 @@ export default {
     }
   },
   computed: {
-    getKeyIcon() {
+    keyIcon() {
       return `background-image: url(${this.$game.itemsDB.getIcon(
         this.chest.meta.keyItem
       )});`;
@@ -155,6 +164,9 @@ export default {
       return this.$game.inventory.getItemsCountByTemplate(
         this.chest.meta.keyItem
       );
+    },
+    batchSize() {
+      return this.totalKeys > 10 ? 10 : this.totalKeys;
     },
     hasKey() {
       return this.totalKeys > 0;

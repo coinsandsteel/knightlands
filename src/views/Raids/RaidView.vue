@@ -35,7 +35,11 @@
               <span>x{{dktBonus}}</span>
             </div>
 
-            <striped-content classes="margin-top-3" stripeHeight="8rem" contentClasses="width-100 flex flex-center">
+            <striped-content
+              classes="margin-top-3"
+              stripeHeight="8rem"
+              contentClasses="width-100 flex flex-center"
+            >
               <div class="flex flex-column flex-center font-size-20 white-font font-outline">
                 <span
                   class="yellow-title white-space-wide margin-bottom-2"
@@ -64,6 +68,13 @@
                   valueClass="font-size-20 btn-fix"
                   iconClass="icon-loot"
                 >{{$t("rewards")}}</icon-with-value>
+              </custom-button>
+
+              <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
+                <icon-with-value
+                  valueClass="font-size-20 btn-fix"
+                  iconClass="icon-info dark"
+                >{{$t("raid-info")}}</icon-with-value>
               </custom-button>
             </div>
 
@@ -135,6 +146,13 @@
                   iconClass="icon-loot"
                 >{{$t("rewards")}}</icon-with-value>
               </custom-button>
+
+              <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
+                <icon-with-value
+                  valueClass="font-size-20 btn-fix"
+                  iconClass="icon-info dark"
+                >{{$t("raid-info")}}</icon-with-value>
+              </custom-button>
             </div>
 
             <PaymentStatus :request="statusRequest" @pay="continuePurchase">
@@ -164,6 +182,15 @@
               :challenges="raidData.challenges"
               :raidData="raidData"
             ></Challenges>
+
+            <RaidInfo
+              v-if="showInfo"
+              :raidTemplateId="raidData.raidTemplateId"
+              :stage="raidData.stage"
+              :weakness="raidData.weakness"
+              :dktFactor="raidData.dktFactor"
+              @close="showInfo = false"
+            ></RaidInfo>
           </keep-alive>
         </template>
       </div>
@@ -203,6 +230,7 @@ import PriceTag from "@/components/PriceTag.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
+import RaidInfo from "./RaidInfo.vue";
 import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
 
@@ -238,7 +266,8 @@ export default {
     Challenges,
     PaymentStatus,
     PromisedButton,
-    PriceTag
+    PriceTag,
+    RaidInfo
   },
   channel: undefined,
   mixins: [AppSection, PaymentHandler],
@@ -248,6 +277,7 @@ export default {
     purchasePromise: null,
     showRewards: false,
     showChallenges: false,
+    showInfo: false,
     raidData: null,
     request: null,
     raidProgress: {
@@ -338,7 +368,8 @@ export default {
         let damageThreshold = raidStage.loot.damageThresholds[i];
 
         let damageRequired =
-          raidStage.health * damageThreshold.relativeThreshold / raidStage.maxSlots;
+          (raidStage.health * damageThreshold.relativeThreshold) /
+          raidStage.maxSlots;
 
         if (damageRequired > this.raidData.currentDamage) {
           this.lootProgress.max = Math.floor(damageRequired);

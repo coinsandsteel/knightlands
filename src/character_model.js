@@ -126,7 +126,7 @@ class CharacterModel {
     }
 
     _sortBuffs() {
-        this._vm.buffs.sort((a,b)=>{
+        this._vm.buffs.sort((a,b) => {
             const sortingFactorA = a.template;
             const sortingFactorB = b.template;
 
@@ -202,6 +202,10 @@ class CharacterModel {
         }
 
         this._calculateBuffs();
+
+        for (let stat in this.timers) {
+            this._scheduleTimer(stat);
+        }
     }
 
     equipItem(item) {
@@ -231,7 +235,10 @@ class CharacterModel {
         this.timers[stat].value = timer.value;
         this.timers[stat].lastRegenTime = timer.lastRegenTime;
         this.timers[stat].regenTime = timer.regenTime;
+        this._scheduleTimer(stat);
+    }
 
+    _scheduleTimer(stat) {
         this._setTimerInterval(stat, this.timers[stat].regenTime - (this._game.now/1000 - this.timers[stat].lastRegenTime));
     }
 
@@ -252,7 +259,7 @@ class CharacterModel {
             this.timers[stat].value += pointsRegened;
             this.timers[stat].lastRegenTime = now;
             // console.log(`timer ${stat} has fired! New value ${this.timers[stat].value}`);
-            this._setTimerInterval(stat, this.timers[stat].regenTime);
+            this._scheduleTimer(stat);
         }, interval);
     }
 }

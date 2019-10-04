@@ -383,7 +383,6 @@ export default {
 
 
 <style lang="less" scoped>
-@import "./style.less";
 @import (reference) "./../../style/common.less";
 
 .attribute {

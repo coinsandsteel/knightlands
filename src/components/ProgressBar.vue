@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-bar flex flex-center flex-no-wrap width-100" @click="$emit('refill')">
+  <div class="progress-bar flex flex-center flex-no-wrap" @click="$emit('refill')" :class="{'width-100': expand}">
     <div class="icon">
       <div :class="iconClass"></div>
     </div>
@@ -61,7 +61,11 @@ export default {
     barClasses: String,
     compact: Boolean,
     hideValues: Boolean,
-    hideBackground: Boolean
+    hideBackground: Boolean,
+    expand: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

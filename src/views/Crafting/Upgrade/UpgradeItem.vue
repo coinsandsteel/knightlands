@@ -6,7 +6,11 @@
         <template v-slot:beforeStats>
           <div class="progress-bar-margin">
             <div class="text-align-left font-size-20">
-              <span class="flex flex-center flex-start margin-bottom-half">Lvl: {{item.level}} <span class="margin-left-half margin-right-half right-arrow"></span> {{level}}</span>
+              <span class="flex flex-center flex-start margin-bottom-half">
+                Lvl: {{item.level}}
+                <span class="margin-left-half margin-right-half right-arrow"></span>
+                {{level}}
+              </span>
             </div>
             <div class="relative">
               <progress-bar
@@ -34,7 +38,9 @@
 
         <!-- replace stats -->
         <template v-slot:stats>
-          <div class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly">
+          <div
+            class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
+          >
             <div class="flex width-40 flex-column flex-item-end text-align-right">
               <div
                 v-for="(statValue, statId) in stats"
@@ -47,30 +53,62 @@
                 v-for="(statValue, statId) in stats"
                 :key="statId"
                 class="margin-bottom-half flex flex-center flex-start width-100"
-              >{{statValue}}<span class="margin-left-half margin-right-half right-arrow"></span>{{futureStats[statId]}}</div>
+              >
+                {{statValue}}
+                <span class="margin-left-half margin-right-half right-arrow"></span>
+                {{futureStats[statId]}}
+              </div>
             </div>
           </div>
         </template>
       </ItemInfo>
 
       <!-- Upgrade Materials -->
-      <span class="margin-top-1 title font-size-20">{{$t("upgrade-materials")}}</span>
-      <div class="flex full-flex width-100 dummy-height">
+      <span class="margin-top-1 title font-size-20 margin-bottom-1">{{$t("upgrade-materials")}}</span>
+      <div class="flex flex-center full-flex width-100 dummy-height">
         <div v-bar class="width-100 height-100 dummy-height">
-          <LootContainer :items="upgradeMaterials" @hint="selectMaterial" :selectSlots="true"></LootContainer>
+          <div>
+            <div class="flex flex-center dummy-height">
+              <loot
+                v-for="(mat, index) in upgradeMaterials"
+                :key="mat.id"
+                :item="mat"
+                @hint="toggleMaterial(index)"
+                :locked="!selectedMaterials[index] && lockRest"
+                :selected="selectedMaterials[index]"
+              ></loot>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="flex margin-top-1 flex-space-evenly width-100">
-        <div class="flex flex-center flex-no-wrap font-size-20 font-weight-700">
-          <CustomButton type="grey" :mini="true" :lockPressed="selectedOption == 0" @click="selectedOption=0">x1</CustomButton>
-          <CustomButton type="grey" :mini="true" :lockPressed="selectedOption == 1" @click="selectedOption=1">x5</CustomButton>
-          <CustomButton type="grey" :mini="true" :lockPressed="selectedOption == 2" @click="selectedOption=2">x25</CustomButton>
+        <div
+          class="flex flex-center flex-no-wrap font-size-20 font-weight-700"
+          v-show="totalMaterials < 2"
+        >
+          <CustomButton
+            type="grey"
+            :mini="true"
+            :lockPressed="selectedOption == 0"
+            @click="selectedOption=0"
+          >x1</CustomButton>
+          <CustomButton
+            type="grey"
+            :mini="true"
+            :lockPressed="selectedOption == 1"
+            @click="selectedOption=1"
+          >x5</CustomButton>
+          <CustomButton
+            type="grey"
+            :mini="true"
+            :lockPressed="selectedOption == 2"
+            @click="selectedOption=2"
+          >x25</CustomButton>
         </div>
 
         <CustomButton type="green" :disabled="!canUpgrade" @click="confirmUpgrade">{{$t("confirm")}}</CustomButton>
       </div>
-      
     </div>
   </div>
 </template>
@@ -79,9 +117,9 @@
 import AppSection from "@/AppSection";
 import ItemInfo from "@/components/ItemInfo.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
-import LootContainer from "@/components/LootContainer.vue"
-import CustomButton from "@/components/Button.vue"
-import PromptMixin from "@/components/PromptMixin.vue"
+import Loot from "@/components/Loot.vue";
+import CustomButton from "@/components/Button.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 const Rarity = require("@/../knightlands-shared/rarity");
 const ItemType = require("@/../knightlands-shared/item_type");
@@ -89,7 +127,7 @@ const ItemType = require("@/../knightlands-shared/item_type");
 export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
-  components: { ItemInfo, ProgressBar, LootContainer, CustomButton },
+  components: { ItemInfo, ProgressBar, Loot, CustomButton },
   created() {
     this.title = "window-upgrade-item";
     this.$options.useRouterBack = true;
@@ -98,18 +136,15 @@ export default {
     this.prepareItemForUpgrading();
     this.updateMaterialList();
   },
-  mounted() {
-    // this.prepareItemForUpgrading();
-  },
   deactivated() {
     this.cancelUpgrading();
   },
-  data: ()=>({
+  data: () => ({
     selectedOption: 0,
     item: null,
     futureExp: 0,
     currentExp: 0,
-    selectedMaterial: null,
+    selectedMaterials: {},
     upgradeMaterials: []
   }),
   watch: {
@@ -133,23 +168,34 @@ export default {
         if (!item.unique) {
           item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
         }
-        
+
         this.currentExp = item.exp;
         this.futureExp = item.exp;
 
         this.item = item;
       }
     },
-    selectMaterial(material) {
-      this.selectedMaterial = material;
+    toggleMaterial(index) {
+      let state = this.selectedMaterials[index];
+
+      if (this.lockRest && !state) {
+        return;
+      }
+      
+      if (state !== undefined) {
+        this.selectedMaterials[index] = !state;
+      } else {
+        this.$set(this.selectedMaterials, index, true);
+      }
+
+      if (!this.selectedMaterials[index]) {
+        this.$delete(this.selectedMaterials, index);
+      }
     },
     async confirmUpgrade() {
-      let confirmation = "ok";
-
-      let materialTemplate = this.$game.itemsDB.getTemplate(this.selectedMaterial);
-      if (materialTemplate.type == ItemType.Equipment && materialTemplate.rarity ) {
-        let materialName = this.$t(this.$game.itemsDB.getName(this.selectedMaterial));
-        confirmation = await this.showPrompt(this.$t("upgrade-confirm-title"), this.$t("upgrade-confirm-text", {item: materialName, rarity:materialTemplate.rarity, count:this.optionFactor}), 
+      const confirmation = await this.showPrompt(
+        this.$t("upgrade-confirm-title"),
+        this.$t("upgrade-confirm-text"),
         [
           {
             type: "red",
@@ -161,29 +207,35 @@ export default {
             title: this.$t("btn-ok"),
             response: "ok"
           }
-        ]);
-      }
+        ]
+      );
 
       if (confirmation == "ok") {
         await this.upgradeItem();
       }
     },
     async upgradeItem() {
-      let newItemId = await this.$game.upgradeItem(this.itemId, this.selectedMaterial.id, this.optionFactor);
+      let newItemId = await this.$game.upgradeItem(
+        this.itemId,
+        this.selectedMaterialsAsArray.map(x=>x.id),
+        this.optionFactor
+      );
+
       if (newItemId != this.itemId) {
-        this.$router.replace({ name: "upgrade-item", params: { itemId: newItemId } });
+        this.item.unique = true;
+        this.$router.replace({
+          name: "upgrade-item",
+          params: { itemId: newItemId }
+        });
       } else {
         let newItem = this.$game.inventory.getItem(newItemId);
         this.item = newItem;
       }
 
-      // if material was removed - remove it from material list too
-      if (!this.$game.inventory.hasItem(this.selectedMaterial.id, 1)) {
-        this.upgradeMaterials = this.upgradeMaterials.filter(x=>x != this.selectedMaterial);
-        this.selectedMaterial = null;
-      }
+      this.updateMaterialList();
     },
     updateMaterialList() {
+      this.$set(this, "selectedMaterials", {});
       this.upgradeMaterials = [];
 
       if (!this.item) {
@@ -197,7 +249,7 @@ export default {
 
       let materials = [];
       if (upgradeMeta.experienceMaterials) {
-        upgradeMeta.experienceMaterials.forEach(m=>{
+        upgradeMeta.experienceMaterials.forEach(m => {
           let materialItem = this.$game.inventory.getItemByTemplate(m.itemId);
           if (materialItem) {
             materials.push(materialItem);
@@ -207,22 +259,37 @@ export default {
 
       if (upgradeMeta.slotsMaterials) {
         let hash = {};
-        upgradeMeta.slotsMaterials.forEach(slot=>hash[slot] = true);
-        materials = materials.concat(this.$game.inventory.filterItems(x=>{
-          if (x.unique && x.id == this.item.id) {
-            return false;
-          }
+        upgradeMeta.slotsMaterials.forEach(slot => (hash[slot] = true));
+        materials = materials.concat(
+          this.$game.inventory.filterItems(x => {
+            if (x.unique && x.id == this.item.id) {
+              return false;
+            }
 
-          return hash[this.$game.itemsDB.getSlot(x.template)];
-        }));
+            return hash[this.$game.itemsDB.getSlot(x.template)];
+          })
+        );
       }
 
       this.upgradeMaterials = materials;
     }
   },
   computed: {
+    totalMaterials() {
+      return this.selectedMaterialsAsArray.length;
+    },
+    selectedMaterialsAsArray() {
+      const materials = [];
+      for (let i in this.selectedMaterials) {
+        materials.push(this.upgradeMaterials[i]);
+      }
+      return materials;
+    },
     canUpgrade() {
-      return this.selectedMaterial && this.item.level < this.$game.itemsDB.getMaxLevel(this.item);
+      return (
+        this.totalMaterials > 0 &&
+        this.item.level < this.$game.itemsDB.getMaxLevel(this.item)
+      );
     },
     stats() {
       return this.$game.itemsDB.getStats(this.item);
@@ -238,19 +305,28 @@ export default {
         optionFactor = 25;
       }
 
-      if (this.selectedMaterial) {
-        if (optionFactor > this.selectedMaterial.count) {
-          optionFactor = this.selectedMaterial.count;
+      if (this.totalMaterials == 1) {
+        if (optionFactor > this.selectedMaterialsAsArray[0].count) {
+          optionFactor = this.selectedMaterialsAsArray[0].count;
         }
+      } else if (this.totalMaterials > 1) {
+        // multiselect always 1 item selected
+        optionFactor = 1;
       }
 
       return optionFactor;
     },
+    lockRest() {
+      return this.level == this.$game.itemsDB.getMaxLevel(this.item);
+    },
     level() {
       let materialExp = 0;
 
-      if (this.selectedMaterial) {
-        materialExp = this.$game.itemsDB.getMaterialExp(this.item, this.selectedMaterial);
+      if (this.totalMaterials > 0) {
+        for (let i = 0; i < this.selectedMaterialsAsArray.length; i++) {
+          const material = this.selectedMaterialsAsArray[i];
+          materialExp += this.$game.itemsDB.getMaterialExp(this.item, material);
+        }
       }
 
       let level = this.item.level;
@@ -287,8 +363,7 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  right:0;
+  right: 0;
   bottom: 0;
 }
-
 </style>

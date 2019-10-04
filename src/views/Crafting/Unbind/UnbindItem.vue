@@ -159,8 +159,10 @@ export default {
         return;
       }
 
-      if (this.selectedItems[itemIndex]) {
-        this.selectedItems[itemIndex] = !this.selectedItems[itemIndex];
+      const state = this.selectedItems[itemIndex];
+
+      if (state !== undefined) {
+        this.selectedItems[itemIndex] = !state;
       } else {
         this.$set(this.selectedItems, itemIndex, true);
       }
