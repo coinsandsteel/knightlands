@@ -51,6 +51,16 @@ import OpenChest from "./views/Summon/Chests/OpenChest.vue";
 import AdventuresRoot from "./views/Adventures/AdventuresRoot.vue";
 import Adventures from "./views/Adventures/Adventures.vue";
 
+import ForsakenTowerRoot from "./views/ForsakenTower/ForsakenTowerRoot.vue";
+import ForsakenTower from "./views/ForsakenTower/ForsakenTower.vue";
+
+import DailyRewards from "./views/DailyRewards/DailyRewards.vue";
+
+import TrialsRoot from "./views/Trials/TrialsRoot.vue";
+import HonorTrials from "./views/Trials/Trials.vue";
+import TrialsOfHonor from "./views/Trials/Honor/TrialsOfHonor.vue";
+import HonorTrialsList from "./views/Trials/Honor/TrialsList.vue";
+
 const router = new Router({
   routes: [
     {
@@ -195,6 +205,10 @@ const router = new Router({
       ]
     },
     {
+      path: "/home/daily-rewards",
+      component: DailyRewards,
+    },
+    {
       path: "/home/adventures",
       component: AdventuresRoot,
       children: [
@@ -202,6 +216,44 @@ const router = new Router({
           path: "",
           name: "adventures",
           component: Adventures
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/home/onyx-tower",
+      component: ForsakenTowerRoot,
+      children: [
+        {
+          path: "",
+          name: "onyx-tower",
+          component: ForsakenTower
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/home/trials",
+      component: TrialsRoot,
+      children: [
+        {
+          path: "",
+          component: HonorTrials
+        },
+        {
+          path: "honor",
+          component: TrialsOfHonor,
+          children: [
+            {
+              path: "",
+              name: "trials-of-honor",
+              component: HonorTrialsList
+            }
+          ]
         }
       ],
       meta: {

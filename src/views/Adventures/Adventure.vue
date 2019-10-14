@@ -31,7 +31,7 @@
           v-if="!preview && timer.timeLeft > 0"
         >{{$t("adventure-in-progress")}}</span>
         <CustomButton
-          type="yellow"
+          type="green"
           @click="$emit('claim')"
           v-else-if="timer.timeLeft <= 0"
         >{{$t("claim-adventure")}}</CustomButton>

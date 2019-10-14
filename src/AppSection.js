@@ -5,6 +5,9 @@ export default {
         title: null,
         footers: []
     }),
+    created() {
+        this._title = this.title;
+    },
     mounted() {
         this._notifyApp();
     },
@@ -12,9 +15,9 @@ export default {
         this._notifyApp();
     },
     deactivated() {
-        this.removeFooter();
+        this.removeFooter();    
     },
-    beforeDestroy() {
+    destroyed() {
         this.removeFooter();
     },
     methods: {
@@ -27,16 +30,15 @@ export default {
             });
         },
         addFooter(component, props) {
+            this.hasFooter = true;
             this.$app.$emit("footer", component, props);
         },
         removeFooter() {
-            this.$app.$emit("footer");
+            if (this.hasFooter) {
+                this.$app.$emit("footer");
+            }
         },
         handleBackButton() {
-            if (this.$options.useRouterBack) {
-                this.$router.back();
-                return true;
-            }
             return false;
         }
     }

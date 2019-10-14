@@ -26,7 +26,7 @@
       </div>
 
       <div v-if="showLevel && itemData && itemData.level > 1" class="item-level">
-        <span class="font-size-20 digit-font font-outline">Lvl: {{itemData.level || 1}}</span>
+        <span class="font-size-18 digit-font font-outline">Lvl:{{itemData.level || 1}}</span>
       </div>
     </template>
   </div>
@@ -236,7 +236,7 @@ export default {
 }
 
 .slot-common {
-  background-image: url("../assets/ui/slot_common.png");
+  background-image: url("../assets/ui/slot_effect_active.png");
 }
 
 .slot-rare {

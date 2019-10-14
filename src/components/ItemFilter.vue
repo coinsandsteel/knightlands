@@ -1,7 +1,7 @@
 <template>
   <user-dialog title="filter" @close="$close(itemFilters)">
     <template v-slot:content>
-      <div class="flex flex-space-between margin-top-3 font-size-25">
+      <div class="flex width-100 padding-1 flex-space-evenly margin-top-3 font-size-25">
         <p-check
           style="p-default p-curve p-thick"
           class="checkbox margin-bottom-1"
@@ -78,7 +78,6 @@ export default {
 
 <style lang="less" scoped>
 .checkbox {
-  flex-basis: 50%;
   min-width: 40%;
   text-align: left;
   flex: 1;

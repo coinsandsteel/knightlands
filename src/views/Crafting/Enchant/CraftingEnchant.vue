@@ -24,16 +24,31 @@ export default {
   },
   computed: {
     items() {
-      let filteredItems = [];
+      const filteredItems = [];
+      const filteredIds = {};
+      const maxEnchant = this.$game.itemsDB.getMaxEnchantingLevel();
+
+      // place equipment items first
+      for (let slot in this.$game.character.equipment) {
+        const gear = this.$game.character.equipment[slot];
+        const template = this.$game.itemsDB.getTemplate(gear.template);
+
+        if (!template.enchantable || gear.enchant >= maxEnchant) {
+          continue;
+        }
+
+        filteredIds[gear.id] = true;
+        filteredItems.push(gear);
+      }
+
       let items = this.$game.inventory.items;
       let i = 0;
       const length = items.length;
-      const maxEnchant = this.$game.itemsDB.getMaxEnchantingLevel();
       for (; i < length; ++i) {
-        let item = items[i];
-        let template = this.$game.itemsDB.getTemplate(item.template);
+        const item = items[i];
+        const template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (!template.enchantable || item.enchant >= maxEnchant) {
+        if (!template.enchantable || item.enchant >= maxEnchant || filteredIds[item.id]) {
           continue;
         }
 

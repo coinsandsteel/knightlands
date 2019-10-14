@@ -219,6 +219,18 @@ h1 {
     flex-direction: row-reverse;
 }
 
+.flex-self-center {
+    align-self: center;
+}
+
+.flex-self-start {
+    align-self: flex-start;
+}
+
+.flex-self-end {
+    align-self: flex-end;
+}
+
 .flex-basis-25 {
     flex-basis: 25%;
 }
@@ -282,17 +294,19 @@ h1 {
   }
 }
 
+.size(margin, 6);
 .size(margin-top, 6);
 .size(margin-bottom, 6);
 .size(margin-left, 6);
 .size(margin-right, 6);
-.size(margin, 6);
 
+
+.size(padding, 6);
 .size(padding-top, 6);
 .size(padding-bottom, 6);
 .size(padding-left, 6);
 .size(padding-right, 6);
-.size(padding, 6);
+
 
 .font-outline {
   text-shadow: 
@@ -451,7 +465,7 @@ h1 {
 
 .icon-info {
     .icon("icon_hint");
-    
+
     &.dark {
         .icon("icon_hint_dark");
     }
@@ -505,6 +519,10 @@ h1 {
     .icon("skewed_icon_chests");
 }
 
+.icon-recipe-book {
+    .icon("skewed_icon_recipes");
+}
+
 .icon-shop {
     .icon("skewed_icon_shop");
 }
@@ -533,6 +551,29 @@ h1 {
 .icon-light {
     .icon("element_light");
 }
+
+.icon-adventures {
+    .icon("skewed_icon_adventures");
+}
+
+.icon-tower {
+    .icon("skewed_icon_tower");
+}
+
+.icon-trials {
+    .icon("skewed_icon_quests");
+}
+
+.icon-goldExchange {
+    .icon("skewed_icon_exchange");
+}
+
+.item-icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 3rem;
+    height: 3rem;
+  }
 
 .icon-darkness {
     .icon("element_dark");

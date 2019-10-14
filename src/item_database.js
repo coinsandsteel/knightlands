@@ -2,7 +2,8 @@
 
 const ItemTemplates = require("./items.json");
 const {
-  getSlot
+  getSlot,
+  EquipmentSlots
 } = require("@/../knightlands-shared/equipment_slot");
 const ItemType = require("@/../knightlands-shared/item_type");
 const Meta = require("./meta.json");
@@ -14,6 +15,10 @@ import ItemStatResolver from "@/../knightlands-shared/item_stat_resolver";
 class ItemDatabase {
   constructor() {
     this._itemStatResolver = new ItemStatResolver(Meta.statConversions, Meta.itemPower, Meta.itemPowerSlotFactors, Meta.charmItemPower);
+  }
+
+  getPower(stats) {
+    return this._itemStatResolver.inverseStats(stats);
   }
 
   getName(id) {
@@ -76,6 +81,10 @@ class ItemDatabase {
     return ItemTemplates[item.template].rarity;
   }
 
+  isWeapon(id) {
+    return this.getSlot(id) == EquipmentSlots.MainHand || this.getSlot(id) == EquipmentSlots.OffHand;
+  }
+
   getEquipmentType(id) {
     return ItemTemplates[id].equipmentType;
   }
@@ -110,13 +119,13 @@ class ItemDatabase {
 
     if (materialTemplate.type == ItemType.Equipment) {
       let materialSlot = this.getSlot(material.template);
-      expPerMaterial = UpgradeMeta.rarityExpFactor.find(x=>x.rarity==materialTemplate.rarity).exp;
-      expPerMaterial *= UpgradeMeta.slotExpFactor.find(x=>x.slot==materialSlot).expFactor;
+      expPerMaterial = UpgradeMeta.rarityExpFactor.find(x => x.rarity == materialTemplate.rarity).exp;
+      expPerMaterial *= UpgradeMeta.slotExpFactor.find(x => x.slot == materialSlot).expFactor;
       expPerMaterial *= UpgradeMeta.levelExpFactor[material.level - 1];
     } else {
       let materialExp = meta.experienceMaterials.find(x => x.itemId == material.template);
       if (materialExp) {
-          expPerMaterial = materialExp.experience;
+        expPerMaterial = materialExp.experience;
       }
     }
 
@@ -129,7 +138,7 @@ class ItemDatabase {
     let i = 0;
     const length = levelingMeta.length;
     for (; i < length; ++i) {
-      levelingMeta[i].slots.forEach(slot=>slots[slot]=true);
+      levelingMeta[i].slots.forEach(slot => slots[slot] = true);
     }
 
     return slots;

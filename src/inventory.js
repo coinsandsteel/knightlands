@@ -26,7 +26,7 @@ class Inventory {
     }
 
     getCurrency(type) {
-        return Math.floor((this._vm.currencies[type] || 1) * 100) / 100;
+        return Math.floor((this._vm.currencies[type] || 0) * 100) / 100;
     }
 
     setCurrency(type, value) {
@@ -88,12 +88,12 @@ class Inventory {
         return this._itemsById.get(itemId * 1);
     }
 
-    decreaseStackAndReturn(itemId) {
+    decreaseStackAndReturn(itemId, count = 1) {
         let item = this.getItem(itemId);
-        if (item.count == 1) {
+        if (item.count <= count) {
             this._removeItem(itemId);
         } else {
-            item.count--;
+            item.count -= count;
             item = { ...item };
             item.count = 1;
         }

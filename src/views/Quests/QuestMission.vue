@@ -2,9 +2,7 @@
   <div class="flex flex-column flex-center">
     <div class="flex flex-center flex-column font-outline font-size-30 enemy-title">
       <span class="rarity-mythical font-weight-700" v-show="isBoss">BOSS</span>
-      <div class="enemy-title-font">
-        {{$t(missionName)}}
-      </div>
+      <div class="enemy-title-font">{{$t(missionName)}}</div>
     </div>
 
     <div :style="zoneBackground" class="flex quest-mid relative flex-center flex-no-wrap">
@@ -45,10 +43,10 @@
 
       <div class="absolute-stretch z-index-1 pointer-events-none">
         <DamageText
-              v-for="(damage) in playerDamages"
-              :key="damage.id"
-              :crit="damage.crit"
-            >{{damage.damage}}</DamageText>
+          v-for="(damage) in playerDamages"
+          :key="damage.id"
+          :crit="damage.crit"
+        >{{damage.damage}}</DamageText>
       </div>
     </div>
 
@@ -96,8 +94,17 @@
       </div>
 
       <div v-else class="flex flex-center width-100 flex-space-evenly">
-        <PromisedButton :promise="request" @click="engage(false)" :props='{width: "15rem"}'>Attack x1</PromisedButton>
-        <PromisedButton :promise="request" :locked="!$game.hasPremiumAccount" @click="engage(true)" :props='{width: "15rem"}'>Attack MAX</PromisedButton>
+        <PromisedButton
+          :promise="request"
+          @click="engage(false)"
+          :props="{width: '15rem'}"
+        >Attack x1</PromisedButton>
+        <PromisedButton
+          :promise="request"
+          :locked="!$game.hasPremiumAccount"
+          @click="engage(true)"
+          :props="{width: '15rem'}"
+        >Attack MAX</PromisedButton>
       </div>
     </div>
   </div>
@@ -158,18 +165,12 @@ export default {
   mounted() {
     this.damageTextId = 0;
 
-    this.$game.inventory.on(
-      Inventory.Changed,
-      this.handleInventoryCallback
-    );
+    this.$game.inventory.on(Inventory.Changed, this.handleInventoryCallback);
 
     this.$refs.enemyList.goTo(this.questIndex * 1);
   },
   activated() {
-    this.$game.inventory.on(
-      Inventory.Changed,
-      this.handleInventoryCallback
-    );
+    this.$game.inventory.on(Inventory.Changed, this.handleInventoryCallback);
 
     this.$refs.enemyList.goTo(this.questIndex);
   },
@@ -229,9 +230,12 @@ export default {
         }
       }
 
-      this.$router.replace({name: "quests", params: {
-        zone: this.zone._id + 1
-      }});
+      this.$router.replace({
+        name: "quests",
+        params: {
+          zone: this.zone._id + 1
+        }
+      });
     },
     goToNext() {
       this.$refs.enemyList.goToNext();
@@ -270,7 +274,6 @@ export default {
           this.handleDamage(damages[i].damage, damages[i].crit, delay);
           delay += 150;
         }
-        
       } catch (exc) {
         await this._handleQuestError(exc);
       }

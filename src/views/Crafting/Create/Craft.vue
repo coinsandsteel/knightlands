@@ -15,6 +15,7 @@
               contentClasses="width-100 flex flex-space-evenly"
             >
               <crafting-ingridient
+              ref="ingridients"
                 v-for="(ingridient) in ingridients"
                 :key="ingridient.itemId"
                 :ingridient="ingridient"
@@ -23,14 +24,14 @@
             </StripedContent>
 
             <div class="flex flex-center width-100 flex-space-evenly">
-              <CustomButton :disabled="!canCraft" type="yellow" v-if="recipe.softCurrencyFee > 0" @click="craftWithSoft()">
+              <CustomButton :disabled="!canCraft && $game.softCurrency >= recipe.softCurrencyFee" type="yellow" v-if="recipe.softCurrencyFee > 0" @click="craftWithSoft()">
                 <div class="flex flex-center">
                   <span class="margin-right-half">{{$t("btn-build")}}</span>
                   <IconWithValue iconClass="icon-gold">{{recipe.softCurrencyFee}}</IconWithValue>
                 </div>
               </CustomButton>
 
-              <CustomButton :disabled="!canCraft" type="grey" v-if="recipe.hardCurrencyFee > 0" @click="craftWithHard()">
+              <CustomButton :disabled="!canCraft && $game.hardCurrency >= recipe.hardCurrencyFee" type="grey" v-if="recipe.hardCurrencyFee > 0" @click="craftWithHard()">
                 <div class="flex flex-center">
                   {{$t("btn-build")}}
                   <IconWithValue iconClass="icon-premium">{{recipe.hardCurrencyFee}}</IconWithValue>
@@ -90,13 +91,17 @@ export default {
   },
   data: ()=>({
     fetchPayment: null,
-    request: null
+    request: null,
+    ready: false
   }),
   created() {
     this.title = "window-craft";
     this.$options.useRouterBack = true;
     this.$options.paymentEvents.push(Events.CraftingStatus);
     this.fetchPaymentStatus();
+  },
+  mounted() {
+    this.ready = true;
   },
   watch: {
     recipeId() {
@@ -114,7 +119,21 @@ export default {
       return this.$game.crafting.getRecipeIngridients(this.recipeId);
     },
     canCraft() {
-      return this.$game.crafting.hasEnoughResourcesForRecipe(this.recipeId);
+      if (!this.ready) {
+        return false;
+      }
+
+      let hasEnough = true;
+
+      for (let i = 0; i < this.$refs.ingridients.length; ++i) {
+        const ingridient = this.$refs.ingridients[i];
+        if (ingridient.notEnoughMaterials) {
+          hasEnough = false;
+          break;
+        }
+      }
+
+      return hasEnough;
     }
   },
   methods: {

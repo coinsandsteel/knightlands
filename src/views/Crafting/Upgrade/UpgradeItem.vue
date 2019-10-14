@@ -14,15 +14,17 @@
             </div>
             <div class="relative">
               <progress-bar
-                v-model="futureExp"
+                v-model="item.exp"
                 height="2rem"
                 width="70%"
                 barType="green"
+                barType2="yellow"
+                :value2="futureExp"
                 :maxValue="nextExp"
-                :hideValues="item.level == level"
+                :hideMainBar="item.level != level"
               ></progress-bar>
 
-              <progress-bar
+              <!-- <progress-bar
                 v-model="item.exp"
                 v-show="item.level == level"
                 height="2rem"
@@ -31,7 +33,7 @@
                 :maxValue="nextExp"
                 :hideBackground="true"
                 class="absolute-stretch"
-              ></progress-bar>
+              ></progress-bar> -->
             </div>
           </div>
         </template>
@@ -164,11 +166,22 @@ export default {
     },
     prepareItemForUpgrading() {
       let item = this.$game.inventory.getItem(this.itemId);
-      if (item) {
+      if (item && !item.equipped) {
         if (!item.unique) {
           item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
         }
+      } else {
+        // try search in equipment gear
+        for (const slot in this.$game.character.equipment) {
+          const gear = this.$game.character.equipment[slot];
+          if (gear.id == this.itemId) {
+            item = gear;
+            break;
+          }
+        }
+      }
 
+      if (item) {
         this.currentExp = item.exp;
         this.futureExp = item.exp;
 
@@ -221,17 +234,7 @@ export default {
         this.optionFactor
       );
 
-      if (newItemId != this.itemId) {
-        this.item.unique = true;
-        this.$router.replace({
-          name: "upgrade-item",
-          params: { itemId: newItemId }
-        });
-      } else {
-        let newItem = this.$game.inventory.getItem(newItemId);
-        this.item = newItem;
-      }
-
+      this.prepareItemForUpgrading();
       this.updateMaterialList();
     },
     updateMaterialList() {

@@ -15,7 +15,7 @@
 <script>
 import Tabs from "@/components/Tabs.vue";
 import Inventory from "./Inventory.vue";
-import Stats from "./Stats.vue";
+import Stats from "./Training/Stats.vue";
 import Buffs from "./Buffs/Buffs.vue";
 import Beasts from "./BeastTaming/BeastTaming.vue";
 import AppSection from "@/AppSection";

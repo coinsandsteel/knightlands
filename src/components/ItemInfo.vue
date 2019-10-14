@@ -7,7 +7,7 @@
     >{{$t(template.caption)}}</span>
 
     <loot
-      class="loot-icon hintFix"
+      class="loot-icon hintFix margin-left-1"
       :class="{'offset-loot': !hideTitle}"
       :item="item"
       :interactible="false"

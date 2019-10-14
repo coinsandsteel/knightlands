@@ -5,7 +5,7 @@
         <loot
           v-for="(item, index) in items"
           :item="item"
-          :key="item.id"
+          :key="index"
           :inventory="inventory"
           :hint="hint"
           :selected="selected == item.id"

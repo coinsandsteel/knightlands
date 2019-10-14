@@ -1,7 +1,7 @@
 <template>
   <nav class="tabs flex flex-no-wrap" :class="wrapperClass">
     <div
-      class="tabs__item font-size-18"
+      class="tabs__item font-size-20"
       v-for="tab in tabs"
       :ref="tab.value"
       :key="tab.title"

@@ -25,9 +25,28 @@ export default {
   },
   computed: {
     items() {
-      let filteredItems = [];
-      let items = this.$game.inventory.items;
-      let upgradableSlots = this.$game.itemsDB.getUpgradableSlots();
+      const upgradableSlots = this.$game.itemsDB.getUpgradableSlots();
+      const filteredItems = [];
+      const filteredIds = {};
+
+      // place equipment items first
+      for (let slot in this.$game.character.equipment) {
+        const gear = this.$game.character.equipment[slot];
+        const template = this.$game.itemsDB.getTemplate(gear.template);
+
+        if (
+          template.type != ItemType.Equipment || !upgradableSlots[this.$game.itemsDB.getSlot(gear.template)]
+        ) {
+          continue;
+        }
+
+        if (gear.level < this.$game.itemsDB.getMaxLevel(gear)) {
+          filteredIds[gear.id] = true;
+          filteredItems.push(gear);
+        }
+      }
+
+      const items = this.$game.inventory.items;
       let i = 0;
       const length = items.length;
 
@@ -36,7 +55,7 @@ export default {
         let template = this.$game.itemsDB.getTemplate(item.template);
 
         if (
-          template.type != ItemType.Equipment || !upgradableSlots[this.$game.itemsDB.getSlot(item.template)]
+          template.type != ItemType.Equipment || !upgradableSlots[this.$game.itemsDB.getSlot(item.template)] || filteredIds[item.id]
         ) {
           continue;
         }

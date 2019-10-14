@@ -47,8 +47,14 @@
 
           <div class="flex flex-column height-100">
             <span
-              class="font-size-20 padding-top-1 margin-bottom-1"
+              class="font-size-20 padding-top-1 flex-self-start" 
             >{{$t("character-level", {level: $game.character.level})}}</span>
+
+            <span
+              class="font-size-20 rarity-legendary padding-top-1 margin-bottom-1 flex-self-start"
+            >{{$t("character-power", {power: totalPower()})}}</span>
+            
+
             <div class="flex flex-no-wrap full-flex flex-space-around font-size-20">
               <div
                 class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
@@ -63,6 +69,7 @@
                   v-for="stat in stats"
                   :key="stat"
                   class="attribute"
+                  :class="{'rarity-rare': hasBonus(stat)}"
                 >{{$character.getStat(stat)}}</span>
               </div>
             </div>
@@ -210,17 +217,22 @@ export default {
 
       stats.push(CharacterStat.Energy);
       stats.push(CharacterStat.Stamina);
-      stats.push(CharacterStat.Luck);
 
       return stats;
     }
   },
   methods: {
+    totalPower() {
+      return this.$game.itemsDB.getPower(this.$game.character.maxStats);
+    },
     openDetails() {
       ShowDetails();
     },
     updateItems() {
       this.filterItems(this.$store.getters.getItemFilters);
+    },
+    hasBonus(stat) {
+      return !!this.$game.character.buffResolver.bonusStats[stat];
     },
     updateHintItems(index) {
       let currentSlide = this.currentSlideIndex;

@@ -7,7 +7,9 @@
             <div class="flex flex-center margin-top-1 font-size-20">
               <span class="flex flex-center flex-start margin-bottom-half">
                 {{$t("max-level")}} {{maxLevel}}
-                <span class="margin-left-half margin-right-half right-arrow"></span>
+                <span
+                  class="margin-left-half margin-right-half right-arrow"
+                ></span>
                 {{nextMaxLevel}}
               </span>
             </div>
@@ -21,7 +23,6 @@
             </div>
           </div>
         </template>
-
       </ItemInfo>
 
       <span class="margin-top-1 margin-bottom-1 title font-size-20">{{$t("unbind-materials")}}</span>
@@ -224,12 +225,24 @@ export default {
     },
     prepareItemForUnbind() {
       let item = this.$game.inventory.getItem(this.itemId);
-      if (item) {
+      
+      if (item && !item.equipped) {
         if (!item.unique) {
           item = { ...item };
           item.count = 1;
         }
+      } else {
+        // try search in equipment gear
+        for (const slot in this.$game.character.equipment) {
+          const gear = this.$game.character.equipment[slot];
+          if (gear.id == this.itemId) {
+            item = gear;
+            break;
+          }
+        }
+      }
 
+      if (item) {
         this.item = item;
       }
     }

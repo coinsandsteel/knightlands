@@ -5,7 +5,7 @@
       :value="selected"
       :maxValue="item.count"
       :decreaseCondition="selected > 0"
-      :increaseCondition="selected < item.count"
+      :increaseCondition="canAdd()"
       @inc="inc"
       @dec="dec"
     >
@@ -20,14 +20,18 @@
 <script>
 import Loot from "@/components/Loot.vue";
 import NumericValue from "@/components/NumericValue.vue";
+import CharacterStat from "@/../knightlands-shared/character_stat";
 
 export default {
-  props: ["item"],
+  props: ["item", "predictedHp"],
   components: { NumericValue, Loot },
   data: () => ({
     selected: 0
   }),
   methods: {
+    canAdd() {
+      return this.selected < this.item.count && this.predictedHp < this.$game.character.getMaxStat(CharacterStat.Health);
+    },
     handleHint(item) {
       this.$emit("hint", item);
     },

@@ -5,7 +5,7 @@
     <div class="flex width-100 flex-center margin-bottom-5">
       <div class="flex flex-center width-100">
         <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="recipes" :append="true">
-          <SkewedButton :props='{type:"grey", icon:"icon-craft"}'>{{$t("btn-recipes")}}</SkewedButton>
+          <SkewedButton :props='{type:"grey", icon:"icon-recipe-book"}'>{{$t("btn-recipes")}}</SkewedButton>
         </router-link>
 
         <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="craft" :append="true">

@@ -22,7 +22,7 @@
       </div>
 
       <div class="bar" :style="barStyle()">
-        <div class="progress" :class="progressType()" :style="fillStyle()"></div>
+        <div v-if="!hideMainBar" class="progress" :class="progressType()" :style="fillStyle()"></div>
         <div v-if="value2 > 0" class="progress progress2" :class="barType2" :style="fillStyle2()"></div>
       </div>
       <div v-if="plusButton" class="btn-plus" :class="`${plusButton}-btn`"></div>
@@ -61,6 +61,7 @@ export default {
     barClasses: String,
     compact: Boolean,
     hideValues: Boolean,
+    hideMainBar: Boolean,
     hideBackground: Boolean,
     expand: {
       type: Boolean,
@@ -219,9 +220,11 @@ export default {
 
       .progress {
         transition: width 0.2s ease;
+        z-index: 1;
       }
 
       .progress2 {
+        z-index: -1;
         position: absolute;
         left:0;
         top:0;

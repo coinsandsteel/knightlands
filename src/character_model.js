@@ -86,6 +86,10 @@ class CharacterModel {
         this._vm.exp = value;
     }
 
+    getMaxStat(stat) {
+        return this._vm.stats[stat];
+    }
+
     applyBuff(buff) {
         const currentBuff = this._vm.buffs.find(x=>x.template == buff.template);
         if (currentBuff) {

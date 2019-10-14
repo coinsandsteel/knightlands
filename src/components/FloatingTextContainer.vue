@@ -8,7 +8,7 @@
 import FloatingText from "@/components/FloatingText.vue";
 
 export default {
-  props: ["config"],
+  props: ["config", "enemyView"],
   components: { FloatingText },
   data: () => ({
     floatingText: [],
@@ -25,6 +25,10 @@ export default {
       setTimeout(() => {
         this.floatingText.splice(0, 1);
       }, 3000);
+
+      if (this.enemyView) {
+        this.enemyView.onDamage(crit);
+      }
     }
   }
 };

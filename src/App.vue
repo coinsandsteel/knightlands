@@ -84,9 +84,6 @@ const ShowLevelUp = create(LevelUp);
 import SelectClass from "@/views/SelectClass/SelectClass.vue";
 const ShowSelectClass = create(SelectClass);
 
-import DailyLogin from "@/views/DailyLogin/DailyLogin.vue";
-const ShowDailyLogin = create(DailyLogin, ...DailyLogin.props);
-
 export default {
   components: { StatusBar, RaidStatusNotification, LoadingScreen },
   data() {
@@ -183,14 +180,7 @@ export default {
     // fetch initial data
     this.$game.on(this.$game.SignUp, async () => {
       await this.$game.updateUserData();
-
-      const dailyRewardStatus = await this.$game.fetchDailyRewardStatus();
-      if (dailyRewardStatus.readyToCollect) {
-        this.$nextTick(() => {
-          ShowDailyLogin(dailyRewardStatus.step);
-        });
-      }
-
+      
       this.loading = false;
       if (this.$route.name == "login") {
         this.$router.replace({ name: "character" });

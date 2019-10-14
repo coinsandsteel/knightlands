@@ -1,15 +1,27 @@
 <template>
   <div>
-    <loot :locked="notEnoughMaterials" :item="item" :size="size" :hideQuantity="true" @hint="hintHandleFunction" />
+    <loot
+      :locked="!noLocking && notEnoughMaterials"
+      :item="item"
+      :size="size"
+      :hideQuantity="true"
+      @hint="hintHandleFunction"
+    />
+    <div
+      v-if="!hideCount && ingridient.maxLevelRequired"
+      class="font-size-18 digit-font"
+    >Lvl: {{levelRequired}}</div>
 
-    <div v-if="!hideCount && ingridient.maxLevelRequired" class="font-size-18 digit-font">Lvl: {{levelRequired}}</div>
-    <div v-else-if="!hideCount" class="font-size-18 digit-font"><span v-if="!hideCurrentCount">{{currentCount}}/</span>{{requiredCount}}</div>
+    <div v-else-if="!hideCount" class="font-size-18 digit-font">
+      <span v-if="!hideCurrentCount">{{currentCount}}/</span>
+      {{requiredCount}}
+    </div>
   </div>
 </template>
 
 <script>
 import Loot from "@/components/Loot.vue";
-import HintHandler from "@/components/HintHandler.vue"
+import HintHandler from "@/components/HintHandler.vue";
 
 export default {
   mixins: [HintHandler],
@@ -22,7 +34,8 @@ export default {
     },
     hideCount: Boolean,
     hintHandler: Function,
-    hideCurrentCount: Boolean
+    hideCurrentCount: Boolean,
+    noLocking: Boolean
   },
   computed: {
     hintHandleFunction() {
@@ -39,7 +52,9 @@ export default {
     },
     notEnoughMaterials() {
       if (this.ingridient.maxLevelRequired) {
-        return !this.$game.inventory.hasMaxLevelItemByTemplate(this.ingridient.itemId);
+        return !this.$game.inventory.hasMaxLevelItemByTemplate(
+          this.ingridient.itemId
+        );
       }
 
       return this.requiredCount > this.currentCount;

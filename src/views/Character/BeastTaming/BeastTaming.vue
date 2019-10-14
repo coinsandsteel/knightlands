@@ -1,14 +1,12 @@
 <template>
   <div class="relative flex flex-column flex-center flex-no-wrap">
-    <div class="beast-view pixelated relative height-100 width-100">
-      <span class="beast-name font-size-30 enemy-title-font font-outline">{{$t(name)}}</span>
-      <img :src="enemyImage" />
+    <EnemyView :name="name" background="/images/beast_bg.png" :image="enemyImage">
       <FloatingTextContainer
         ref="floatingText"
         class="absolute-stretch"
         :config="{fontSizeNormal: 3, fontSizeCrit: 3}"
       ></FloatingTextContainer>
-    </div>
+    </EnemyView>
 
     <div class="flex flex-center width-100">
       <span class="font-size-20 margin-left-1 margin-right-1">{{$t("beast-level", {level: level})}}</span>
@@ -64,14 +62,14 @@
       <div class="width-100 flex flex-space-evenly font-size-18 margin-bottom-2">
         <div class="flex flex-column width-45">
           <span>{{$t("beast-boost", {count: 1})}}</span>
-          <PromisedButton :promise="request" :props="{type:'yellow'}" @click="regularBoost(1)">
+          <PromisedButton :promise="request" :props="{type:'yellow'}" @click="regularBoost(1)" :disabled="!canBoost(1)">
             <IconWithValue iconClass="icon-gold">{{softPrice}}</IconWithValue>
           </PromisedButton>
         </div>
 
         <div class="flex flex-column width-45">
           <span>{{$t("beast-boost", {count: 50})}}</span>
-          <PromisedButton :promise="request" :props="{type:'yellow'}" @click="regularBoost(50)">
+          <PromisedButton :promise="request" :props="{type:'yellow'}" @click="regularBoost(50)" :disabled="!canBoost(50)">
             <IconWithValue iconClass="icon-gold">{{softPrice * 50}}</IconWithValue>
           </PromisedButton>
         </div>
@@ -84,16 +82,20 @@
       <div class="width-100 flex flex-column flex-center" v-if="totalSouls() > 0">
         <div class="flex flex-center panel-input padding-1 font-size-18">
           <span>{{$t(beastItemName)}}</span>
-          <div class="key-icon" :style="ticketIcon"></div>
+          <div class="item-icon" :style="ticketIcon"></div>
           <span>{{totalSouls()}}</span>
         </div>
 
         <div class="width-100 flex flex-space-evenly font-size-18">
           <div class="flex flex-column width-45">
             <span>{{$t("beast-boost", {count: 1})}}</span>
-            <PromisedButton :promise="request" :props="{type:'green'}" @click="advancedBoost(1)">
+            <PromisedButton
+              :promise="request"
+              :props="{type:'green'}"
+              @click="advancedBoost(1)"
+            >
               <div class="flex flex-items-center padding-left-1 padding-right-1">
-                <div class="key-icon" :style="ticketIcon"></div>
+                <div class="item-icon" :style="ticketIcon"></div>
                 <span class="font-size-18">1</span>
               </div>
             </PromisedButton>
@@ -107,7 +109,7 @@
               @click="advancedBoost(batchBoost())"
             >
               <div class="flex flex-items-center padding-left-1 padding-right-1">
-                <div class="key-icon" :style="ticketIcon"></div>
+                <div class="item-icon" :style="ticketIcon"></div>
                 <span class="font-size-18">{{batchBoost()}}</span>
               </div>
             </PromisedButton>
@@ -115,7 +117,13 @@
         </div>
       </div>
 
-      <PaymentStatus :request="statusRequest" @pay="continuePurchase" @cancel="cancelPurchase" :cancel="true" v-else>
+      <PaymentStatus
+        :request="statusRequest"
+        @pay="continuePurchase"
+        @cancel="cancelPurchase"
+        :cancel="true"
+        v-else
+      >
         <div class="width-100 flex flex-space-evenly font-size-18">
           <div
             class="flex flex-column width-45"
@@ -156,6 +164,7 @@ import PriceTag from "@/components/PriceTag.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
+import EnemyView from "@/components/EnemyView.vue";
 
 const Events = require("@/../knightlands-shared/events");
 
@@ -169,7 +178,8 @@ export default {
     PaymentStatus,
     PriceTag,
     ProgressBar,
-    FloatingTextContainer
+    FloatingTextContainer,
+    EnemyView
   },
   data: () => ({
     request: null,
@@ -252,13 +262,13 @@ export default {
     softPrice() {
       return Beasts.softPrice;
     },
-    enemyImage() {
-      return `/images/enemies/${Beasts.levels[this.beastIndex].image}.png`;
-    },
     ticketIcon() {
       return `background-image: url(${this.$game.itemsDB.getIcon(
         Beasts.ticketItem
       )});`;
+    },
+    enemyImage() {
+      return Beasts.levels[this.beastIndex].image;
     },
 
     iaps() {
@@ -266,6 +276,9 @@ export default {
     }
   },
   methods: {
+    canBoost(count) {
+      return count * this.softPrice <= this.$game.softCurrency;
+    },
     batchBoost() {
       return this.totalSouls() > MaxBoostSize
         ? MaxBoostSize
@@ -320,53 +333,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.image() {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
-.image {
-  .image();
-}
-
-.beast-image {
-  background: url("../../../assets/beast_bg.png");
-  position: absolute;
-  bottom: 2rem;
-  left: 0;
-  height: 90%;
-  width: 100%;
-
-  .image();
-}
-
-.beast-view {
-  width: 100%;
-  height: 25vh;
-  justify-content: center;
-  background: url("../../../assets/beast_bg.png");
-  .image();
-
-  & img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-}
-
-.key-icon {
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 3rem;
-  height: 3rem;
-}
-
-.beast-name {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-</style>

@@ -4,7 +4,7 @@
       <span class="font-size-20 margin-bottom-1">{{$t(itemName)}}</span>
       <Loot :item="resultItem" :hideQuantity="true" @hint="handleHint"></Loot>
     </div>
-    <CustomButton type="yellow" @click="openPage(page.startRecipe)">Open</CustomButton>
+    <CustomButton class="margin-right-4" type="yellow" @click="openPage(page.startRecipe)">Open</CustomButton>
   </div>
 </template>
 

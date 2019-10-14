@@ -15,6 +15,7 @@
             v-for="item in items"
             :key="item.id"
             :item="item"
+            :predictedHp="barValue"
             @changed="handleItemSelected"
             @hint="handleHint"
           />

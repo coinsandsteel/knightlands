@@ -41,7 +41,9 @@ class Game {
                 ready: false,
                 walletReady: false,
                 load: false,
-                beast: {}
+                beast: {},
+                towerFreeAttempts: 0,
+                rank: 0
             })
         });
 
@@ -78,6 +80,7 @@ class Game {
         this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
         this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
         this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
+        this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
         this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
 
         // let's avoid using callbacks
@@ -94,6 +97,10 @@ class Game {
 
     beast() {
         return this._vm.beast;
+    }
+
+    rank() {
+        return this._vm.rank;
     }
 
     get isAdmin() {
@@ -126,6 +133,10 @@ class Game {
 
     walletReady() {
         return this._vm.walletReady;
+    }
+
+    towerFreeAttempts() {
+        return this._vm.towerFreeAttempts;
     }
 
     get authenticated() {
@@ -324,6 +335,10 @@ class Game {
         this._character.applyBuff(data);
     }
 
+    _handleBuffUpdate(data) {
+        // this._character.mergeData(data);
+    }
+
     _handleItemPurchased(data) {
         this._vm.$emit(Events.ItemPurchased, data);
     }
@@ -403,6 +418,10 @@ class Game {
             this._vm.beast.exp = changes.beast.exp || this._vm.beast.exp;
             this._vm.beast.level = changes.beast.level || this._vm.beast.level;
             this._vm.beast.index = changes.beast.index || this._vm.beast.index;
+        }
+
+        if (changes.tower) {
+            this._vm.towerFreeAttempts = changes.tower.freeAttemps || this._vm.towerFreeAttempts;
         }
 
         if (changes.questsProgress) {
@@ -493,6 +512,7 @@ class Game {
             }
 
             this._vm.beast = info.beast;
+            this._vm.towerFreeAttempts = info.tower.freeAttemps;
 
             this._vm.softCurrency = info.softCurrency;
             this._vm.hardCurrency = info.hardCurrency;
@@ -904,6 +924,14 @@ class Game {
         return (await this._wrapOperation(Operations.CollectDailyReward)).response;
     }
 
+    async fetchDailyRefillsStatus() {
+        return (await this._wrapOperation(Operations.FetchDailyRefillsStatus)).response;
+    }
+
+    async collectDailyRefills() {
+        return (await this._wrapOperation(Operations.CollectDailyRefills)).response;
+    }
+
     async beastRegularBoost(count) {
         return (await this._wrapOperation(Operations.BeastRegularBoost, {
             count
@@ -932,6 +960,53 @@ class Game {
 
     async cancelPurchase(id) {
         return (await this._wrapOperation(Operations.CancelPayment, { id })).response;
+    }
+
+    async fetchTowerFloors(page) {
+        return (await this._wrapOperation(Operations.FetchTowerFloors, { page })).response;
+    }
+
+    async challengeTowerFloor(floor) {
+        return (await this._wrapOperation(Operations.ChallengeTowerFloor, { floor })).response;
+    }
+
+    async fetchCurrentFloor() {
+        return (await this._wrapOperation(Operations.FetchChallengedTowerFloor)).response;
+    }
+
+    async cancelTowerFloor() {
+        return (await this._wrapOperation(Operations.CancelTowerFloor)).response;
+    }
+
+    async claimTowerFloorRewards() {
+        return (await this._wrapOperation(Operations.ClaimTowerFloorRewards)).response;
+    }
+
+    async skipTowerFloor(floor) {
+        return (await this._wrapOperation(Operations.SkipTowerFloor, { floor })).response;
+    }
+
+    async attackTowerFloor() {
+        return (await this._wrapOperation(Operations.AttackTowerFloor)).response;
+    }
+
+    // Trials
+    async fetchTrialState(trialType, trialId) {
+        return (await this._wrapOperation(Operations.FetchTrialState, {
+            trialType, trialId
+        })).response;
+    }
+
+    async engageTrialFight(trialType, trialId, stageId, fightIndex) {
+        return (await this._wrapOperation(Operations.ChallengeTrialFight, {
+            trialType, trialId, stageId, fightIndex
+        })).response;
+    }
+
+    async attackTrial(trialType) {
+        return (await this._wrapOperation(Operations.AttackTrial, {
+            trialType
+        })).response;
     }
 }
 

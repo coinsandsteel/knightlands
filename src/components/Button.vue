@@ -7,7 +7,7 @@
   >
     <div class="btn-fill" :class="{skewed: skewed}"></div>
     <div class="btn-content flex flex-center font-weight-700" :class="fontClass">
-      <slot>{{caption}}</slot>
+      <slot>{{$t(caption)}}</slot>
     </div>
     <div v-if="locked" class="locked"></div>
   </div>
@@ -137,7 +137,9 @@ export default {
 }
 
 .btn {
-  padding: 0 1.5rem;
+  padding: 0 1rem;
+  margin: 0 @btnFillExtrude;
+
   position: relative;
   min-width: @width;
   font-size: @fontSize;
