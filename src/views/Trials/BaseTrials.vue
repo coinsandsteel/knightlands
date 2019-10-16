@@ -1,16 +1,19 @@
 <template>
   <div>
-    <keep-alive>
-      <slot
-        name="trial"
-        :state="state"
-        :id="trialId"
-        :trialIndex="trialIndex"
-        :mountCallback="addBackButtonListener"
-        :engage="engageFight"
-        v-if="trialId!==null"
-      ></slot>
-      <slot name="list" :state="state" :openTrial="openTrial" :trialType="trialType" v-else></slot>
+    <keep-alive exclude="trial-cards">
+      <Cards v-if="showCards"></Cards>
+      <template v-else>
+        <slot
+          name="trial"
+          :state="state"
+          :id="trialId"
+          :trialIndex="trialIndex"
+          :mountCallback="addBackButtonListener"
+          :engage="engageFight"
+          v-if="trialId!==null"
+        ></slot>
+        <slot name="list" :state="state" :openTrial="openTrial" :trialType="trialType" v-else></slot>
+      </template>
     </keep-alive>
   </div>
 </template>
@@ -19,29 +22,32 @@
 import AppSection from "@/AppSection";
 import CustomButton from "@/components/Button.vue";
 import TrialFooter from "./TrialFooter.vue";
+import Cards from "./Cards/Cards.vue";
 
 export default {
   mixins: [AppSection],
   props: ["titleStr", "trialType"],
+  components: { Cards },
   data: () => ({
     request: null,
     state: null,
     trialId: null,
-    trialIndex: 0
+    trialIndex: 0,
+    showCards: false
   }),
   activated() {
     this.title = this.titleStr;
     this.fetchRemoteState();
+
+    this.addFooter(TrialFooter, {
+      trialType: this.trialType,
+      state: this.state,
+      openCards: this.openCards.bind(this)
+    });
   },
   watch: {
     "state.currentFight": {
       handler() {
-        this.removeFooter();
-        this.addFooter(TrialFooter, {
-          trialType: this.trialType,
-          state: this.state
-        });
-
         if (this.state.currentFight) {
           // open current fight right away
           this.trialId = this.state.currentFight.trialId;
@@ -62,9 +68,16 @@ export default {
       this.backButtonListener = callback;
     },
     handleBackButton() {
+      if (this.showCards) {
+        this.showCards = false;
+        return true;
+      }
+
       if (this.trialId !== null && this.backButtonListener()) {
         return true;
-      } else if (this.trialId !== null) {
+      }
+
+      if (this.trialId !== null) {
         this.trialId = null;
         return true;
       }
@@ -74,7 +87,9 @@ export default {
     async fetchRemoteState() {
       this.state = this.$game.getTrialState(this.trialType);
     },
-    openCards() {},
+    openCards() {
+      this.showCards = true;
+    },
     openTrial(trialId, trialIndex) {
       this.trialId = trialId;
       this.trialIndex = trialIndex;
