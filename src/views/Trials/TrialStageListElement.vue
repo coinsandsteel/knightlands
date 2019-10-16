@@ -13,7 +13,7 @@
         </div>
         <div class="flex margin-top-half">
           <Loot
-            v-for="reward in rewards"
+            v-for="reward in rewards()"
             :key="reward.itemId"
             :item="reward.itemId"
             :quantity="reward.maxCount"
@@ -26,12 +26,19 @@
       <div class="flex flex-column flex-items-center flex-space-between flex-4">
          <span v-if="locked" class="rarity-mythical font-size-18">{{$t("trial-stage-locked")}}</span>
 
-        <div class="flex font-size-20 margin-bottom-1" v-else>
+        <div class="flex font-size-20 margin-bottom-1" v-else-if="!readyToCollect">
           <span>{{$t("trial-stage-progress")}}</span>
           <span class="margin-left-1">{{fightsComplete}}/{{totalFights}}</span>
         </div>
         <div class="flex">
           <CustomButton
+            v-if="readyToCollect"
+            type="green"
+            @click="$emit('collect', index)"
+          >{{$t("trial-stage-collect")}}</CustomButton>
+
+          <CustomButton
+            v-else
             :disabled="locked"
             type="yellow"
             @click="$emit('continue', index)"
@@ -51,18 +58,26 @@ export default {
   props: ["index", "stage", "state", "locked"],
   components: { CustomButton, IconWithValue, Loot },
   computed: {
+    readyToCollect() {
+      return this.cleared && !this.collected;
+    },
     fightsComplete() {
       return this.state ? Object.keys(this.state.finishedFights).length : 0;
     },
     totalFights() {
       return this.stage.fights.length;
     },
-    rewards() {
-      if (!this.state || !this.state.firstTimeCleared) {
-        return this.stage.firstClearanceReward.loot.guaranteedLootRecords;
+    cleared() {
+      if (!this.state) {
+        return false;
       }
-
-      return this.stage.repeatedReward.loot.records;
+      return this.state.cleared;
+    },
+    collected() {
+      if (!this.state) {
+        return true;
+      }
+      return this.state.collected;
     },
     soft() {
       if (!this.state || !this.state.firstTimeCleared) {
@@ -82,6 +97,13 @@ export default {
   methods: {
     handleHint(item) {
       this.$emit("hint", item);
+    },
+    rewards() {
+      if (!this.state || !this.state.firstTimeCleared) {
+        return this.stage.firstClearanceReward.loot.guaranteedLootRecords;
+      }
+
+      return this.stage.repeatedReward.loot.lootRecords;
     }
   }
 };

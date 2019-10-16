@@ -7,6 +7,9 @@
         :state="fight"
         :trialIndex="trialIndex"
         :trialType="trialType"
+        :trialMeta="trialMeta"
+        @win="handleFightFinished(true)"
+        @lose="handleFightFinished(false)"
       ></FightView>
       <div class="width-100" v-bar v-else>
         <div>
@@ -16,7 +19,8 @@
               :key="fight.id"
               :fight="fight"
               :index="index"
-              :locked="index != lastClearedFight+1"
+              :completed="index < lastClearedFight+1"
+              :locked="index > lastClearedFight+1"
               @engage="engage(index)"
             ></TrialFightListElement>
           </div>
@@ -29,32 +33,49 @@
 <script>
 import TrialFightListElement from "./TrialFightListElement.vue";
 import FightView from "./FightView.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
-  props: ["stage", "state", "fightState", "trialIndex", "trialType"],
+  mixins: [PromptMixin],
+  props: [
+    "stage",
+    "state",
+    "fightState",
+    "trialIndex",
+    "trialType",
+    "trialMeta"
+  ],
   components: { TrialFightListElement, FightView },
   data: () => ({
     fight: null,
     lastClearedFight: -1
   }),
-  activated() {
-    this.lastClearedFight = -1;
-
-    if (this.fightState) {
-      // open fight
-      this.fight = this.fightState;
-    } else if (this.state) {
-      for (let i = 0; i < this.stage.fights.length; ++i) {
-        const fight = this.stage.fight[i];
-        if (this.state.finishedFights[fight.id]) {
-          this.lastClearedFight++;
-        } else {
-          break;
+  watch: {
+    fightState: {
+      handler() {
+        if (this.fightState) {
+          // open fight
+          this.fight = this.fightState;
         }
-      }
+      },
+      immediate: true
+    },
+    "state.cleared": {
+      handler() {
+        if (this.cleared) {
+          this.$emit("cleared");
+        }
+      },
+      immediate: true
     }
   },
+  activated() {
+    this.refresh();
+  },
   computed: {
+    cleared() {
+      return this.state && this.state.cleared && !this.state.collected;
+    },
     fightMeta() {
       if (!this.fight) {
         return null;
@@ -64,8 +85,48 @@ export default {
     }
   },
   methods: {
+    refresh() {
+      this.lastClearedFight = -1;
+
+      if (this.state) {
+        for (let i = 0; i < this.stage.fights.length; ++i) {
+          const fight = this.stage.fights[i];
+          if (this.state.finishedFights[fight.id]) {
+            this.lastClearedFight++;
+          } else {
+            break;
+          }
+        }
+      }
+    },
     engage(fightIndex) {
       this.$emit("engage", this.stage.id, fightIndex);
+    },
+    handleFightFinished(win) {
+      this.fight = null;
+
+      if (this.cleared) {
+        return;
+      }
+
+      let title, message;
+      if (win) {
+        title = "trial-fight-win-t";
+        message = "trial-fight-win-m";
+      } else {
+        title = "trial-fight-lose-t";
+        message = "trial-fight-lose-m";
+      }
+
+      this.showPrompt(this.$t(title), this.$t(message), [
+        {
+          type: "green",
+          title: this.$t("btn-ok"),
+          response: "ok"
+        }
+      ]);
+
+      this.refresh();
     }
   }
 };

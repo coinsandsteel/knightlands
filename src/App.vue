@@ -488,10 +488,10 @@ export default {
     rgba(38, 16, 52, 1) 100%
   );
   .mobile({min-width: unset; max-width: unset; width: 100%;});
-  .tablet({width: 48rem;});
-  .laptop_small({width: 48rem;});
-  .laptop({width: 48rem;});
-  width: 48rem;
+  // .tablet({width: 60rem;});
+  // .laptop_small({width: 60rem;});
+  // .laptop({width: 60rem;});
+  width: 60rem;
 }
 
 .home-link {

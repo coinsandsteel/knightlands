@@ -15,6 +15,8 @@ const Operations = require("./../knightlands-shared/operations");
 import CurrencyType from "@/../knightlands-shared/currency_type";
 import DisconnectCodes from "@/../knightlands-shared/disconnectCodes";
 import Classes from "@/classes";
+import TrialCardsResolver from "@/../knightlands-shared/trial_cards_resolver";
+import TrialsMeta from "@/trials_meta";
 
 class Game {
     constructor(store) {
@@ -43,7 +45,8 @@ class Game {
                 load: false,
                 beast: {},
                 towerFreeAttempts: 0,
-                rank: 0
+                rank: 0,
+                trials: {}
             })
         });
 
@@ -88,6 +91,7 @@ class Game {
 
         // pass socket to make character model listen to certain events
         this._character = new CharacterModel(this._socket, this);
+        
         Vue.prototype.$character = this._character;
     }
 
@@ -101,6 +105,18 @@ class Game {
 
     rank() {
         return this._vm.rank;
+    }
+
+    getTrialState(trialType) {
+        return this._vm.trials[trialType];
+    }
+
+    getTrialsCard() {
+        return this._vm.trials.cards;
+    }
+
+    get trialCardsResolver() {
+        return this._trialCardsResolver;
     }
 
     get isAdmin() {
@@ -390,6 +406,38 @@ class Game {
         }
     }
 
+    mergeObjects(vm, currentData, newData) {
+        for (let i in newData) {
+            const newField = newData[i];
+
+            if (Array.isArray(newData[i])) {
+                currentData[i] = newData[i];
+                continue;
+            }
+
+            if (typeof (newField) == "object") {
+                if (currentData.hasOwnProperty(i)) {
+                    this.mergeObjects(vm, currentData[i], newField);
+                } else {
+                    vm.$set(currentData, i, newField);
+                }
+            }
+            else {
+                vm.$set(currentData, i, newField);
+            }
+        }
+    }
+
+    mergeRemoval(vm, currentData, removedFields) {
+        for (let i in removedFields) {
+            if (typeof removedFields[i] == "object") {
+                this.mergeRemoval(vm, currentData[i], removedFields[i]);
+            } else {
+                vm.$delete(currentData, i);
+            }
+        }
+    }
+
     _mergeData(data) {
         let {
             changes,
@@ -422,6 +470,14 @@ class Game {
 
         if (changes.tower) {
             this._vm.towerFreeAttempts = changes.tower.freeAttemps || this._vm.towerFreeAttempts;
+        }
+
+        if (removals && removals.trials) {
+            this.mergeRemoval(this._vm, this._vm.trials, removals.trials);
+        }
+
+        if (changes.trials) {
+            this.mergeObjects(this._vm, this._vm.trials, changes.trials);
         }
 
         if (changes.questsProgress) {
@@ -513,13 +569,15 @@ class Game {
 
             this._vm.beast = info.beast;
             this._vm.towerFreeAttempts = info.tower.freeAttemps;
-
+            this._vm.trials = info.trials;
             this._vm.softCurrency = info.softCurrency;
             this._vm.hardCurrency = info.hardCurrency;
 
             if (!this._vm.load) {
                 this._checkClassChoice();
             }
+
+            this._trialCardsResolver = new TrialCardsResolver(this._vm.trials.cards.modifiers, TrialsMeta.cardModifiers);
 
             this._vm.load = true;
 
@@ -1006,6 +1064,24 @@ class Game {
     async attackTrial(trialType) {
         return (await this._wrapOperation(Operations.AttackTrial, {
             trialType
+        })).response;
+    }
+
+    async fetchTrialFightMeta(trialType, trialId, stageId, fightIndex) {
+        return (await this._wrapOperation(Operations.FetchTrialFightMeta, {
+            trialType, trialId, stageId, fightIndex
+        })).response;
+    }
+
+    async collectTrialStageReward(trialType, trialId, stageId) {
+        return (await this._wrapOperation(Operations.CollectTrialStageReward, {
+            trialType, trialId, stageId
+        })).response;
+    }
+
+    async chooseTrialCard(trialType, cardIndex) {
+        return (await this._wrapOperation(Operations.ChooseTrialCard, {
+            trialType, cardIndex
         })).response;
     }
 }

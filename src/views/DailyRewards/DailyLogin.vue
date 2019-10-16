@@ -1,23 +1,33 @@
 <template>
-  <div class="flex flex-center flex-column padding-1 panel">
-    <div class="flex  flex-space-evenly width-90">
-        <span class="font-size-18 width-100 margin-bottom-3">{{$t('daily-login-desc')}}</span>
-
-        <DailyReward
-          v-for="(reward, index) in rewards"
-          :key="index"
-          :index="index"
-          :current="step == index"
-          :collected="index < (!collected ? step-1: step)"
-          :reward="reward"
-          @hint="rewardHint"
-        ></DailyReward>
+  <div class="flex flex-center height-100 flex-column flex-no-wrap padding-1 panel">
+    <div class="flex flex-space-evenly full-flex">
+      <span class="font-size-18 width-100 margin-bottom-3">{{$t('daily-login-desc')}}</span>
+      <div class="width-100" v-bar>
+        <div>
+          <div class="flex width-100 flex-space-evenly">
+          <DailyReward
+            v-for="(reward, index) in rewards"
+            :key="index"
+            :index="index"
+            :current="step == index"
+            :collected="isCollected(index)"
+            :reward="reward"
+            @hint="rewardHint"
+          ></DailyReward>
+        </div>
+        </div>
       </div>
+    </div>
 
-      <div class="margin-top-3 flex flex-center width-100">
-        <PromisedButton :props="{type:'green'}" :promise="request" @click="collect" v-if="!collected">{{$t("claim-daily-bonus")}}</PromisedButton>
-        <span class="font-size-18" v-else>{{$t("time-till-reward", {time: timer.value})}}</span>
-      </div>
+    <div class="margin-top-3 flex flex-center width-100">
+      <PromisedButton
+        :props="{type:'green'}"
+        :promise="request"
+        @click="collect"
+        v-if="!collected"
+      >{{$t("claim-daily-bonus")}}</PromisedButton>
+      <span class="font-size-18" v-else>{{$t("time-till-reward", {time: timer.value})}}</span>
+    </div>
   </div>
 </template>
 
@@ -50,6 +60,9 @@ export default {
     this.timer.timeLeft = dailyRewardStatus.untilNext / 1000;
   },
   methods: {
+    isCollected(index) {
+      return index < (!this.collected ? this.step-1: this.step);
+    },
     rewardHint(reward) {
       this.handleHint({
         template: reward.itemId,

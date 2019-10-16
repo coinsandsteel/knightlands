@@ -34,12 +34,19 @@ export default {
     this.fetchRemoteState();
   },
   watch: {
-    state() {
-      this.removeFooter();
-      this.addFooter(TrialFooter, {
-        trialType: this.trialType,
-        state: this.state
-      });
+    "state.currentFight": {
+      handler() {
+        this.removeFooter();
+        this.addFooter(TrialFooter, {
+          trialType: this.trialType,
+          state: this.state
+        });
+
+        if (this.state.currentFight) {
+          // open current fight right away
+          this.trialId = this.state.currentFight.trialId;
+        }
+      }
     }
   },
   methods: {
@@ -50,11 +57,6 @@ export default {
         stageId,
         fightIndex
       );
-
-      const response = await this.request;
-      if (response) {
-        this.state = response;
-      }
     },
     addBackButtonListener(callback) {
       this.backButtonListener = callback;
@@ -70,13 +72,7 @@ export default {
       return false;
     },
     async fetchRemoteState() {
-      this.request = this.$game.fetchTrialState(this.trialType);
-      this.state = await this.request;
-
-      if (this.state.currentFight) {
-        // open current fight right away
-        this.trialId = this.state.currentFight.trialId;
-      }
+      this.state = this.$game.getTrialState(this.trialType);
     },
     openCards() {},
     openTrial(trialId, trialIndex) {

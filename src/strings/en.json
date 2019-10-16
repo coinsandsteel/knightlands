@@ -915,5 +915,19 @@
     "trial-stage-title": "Stage {stage}",
     "trial-stage-progress": "Progress:",
     "trial-stage-locked": "Clear previous stage",
-    "trial-fight-title": "Fight {fight}"
+    "trial-fight-title": "Fight {fight}",
+    "trial-fight-completed": "Completed",
+    "trial-stage-collect": "Collect",
+    "trial-choose-cards-title": "Choose your Fate",
+    "tap-to-continue": "Tap to continue",
+    "trial-fight-win-t": "Victory!",
+    "trial-fight-win-m": "Well done :)",
+    "trial-fight-lose-t": "Lost!",
+    "trial-fight-lose-m": "Try to improve your weapon and armour.",
+    "trial-stage-cleared-t": "Stage Cleared",
+    "trial-stage-cleared-m": "Well done :)",
+    "damageEnemy": "Deal Damage",
+    "giveGold": "Gold",
+    "giveExp": "XP",
+    "healPlayer": "Heal"
 }

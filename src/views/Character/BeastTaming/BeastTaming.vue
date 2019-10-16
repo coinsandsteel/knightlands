@@ -1,5 +1,6 @@
 <template>
-  <div class="relative flex flex-column flex-center flex-no-wrap">
+  <div v-bar>
+    <div class="relative flex flex-column flex-center flex-no-wrap">
     <EnemyView :name="name" background="/images/beast_bg.png" :image="enemyImage">
       <FloatingTextContainer
         ref="floatingText"
@@ -148,6 +149,7 @@
       :props="{type:'yellow'}"
       @click="evolve"
     >{{$t("beast-evolve")}}</PromisedButton>
+  </div>
   </div>
 </template>
 

@@ -348,7 +348,7 @@ export default {
         scale: 1,
         filter: {
           value: "brightness(1)",
-          easeing: "",
+          easing: "",
           duration: 100
         }
       });

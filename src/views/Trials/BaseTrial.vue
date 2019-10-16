@@ -16,18 +16,22 @@
                 :locked="isStageLocked(index)"
                 @hint="handleHint"
                 @continue="continueToStage"
+                @collect="collectStageReward"
               ></TrialStageListElement>
             </div>
           </div>
         </div>
 
         <TrialStage
-          v-else
+          v-else-if="trialState"
+          :trialMeta="meta"
           :trialType="trialType"
           :trialIndex="trialIndex"
           :stage="selectedStage"
+          :state="selectedStateState"
           :fightState="state.currentFight"
           @engage="engageFight"
+          @cleared="handleStageCleared"
         ></TrialStage>
       </keep-alive>
     </template>
@@ -40,31 +44,78 @@ import HintHandler from "@/components/HintHandler.vue";
 import TrialStage from "./TrialStage.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
   props: ["trialType", "meta", "mountCallback", "state", "trialIndex"],
-  mixins: [HintHandler],
+  mixins: [HintHandler, PromptMixin],
   components: { TrialStageListElement, TrialStage, Promised, LoadingScreen },
   data: () => ({
     request: null,
     trialState: null,
     lastStageCleared: -1,
-    selectedStage: null
+    selectedStage: null,
+    selectedStateState: null
   }),
   mounted() {
     this.mountCallback(this.handleBackButton.bind(this));
   },
-  activated() {
-    if (this.state.currentFight) {
-      // open fight
-      this.selectedStage = this.meta.stages.find(
-        s => s.id == this.state.currentFight.stageId
-      );
+  watch: {
+    trialType: {
+      handler() {
+        if (this._stateWatcher) {
+          this._stateWatcher();
+        }
+        this._stateWatcher = this.$watch(
+          `state.trials.${this.meta.id}.stages`,
+          this.refresh.bind(this)
+        );
+        this.refresh();
+      },
+      immediate: true
     }
-
-    this.fetchRemoteState();
   },
   methods: {
+    refresh() {
+      this.trialState = this.state.trials[this.meta.id];
+
+      if (this.state.currentFight) {
+        const stageId = this.state.currentFight.stageId;
+        // open fight
+        this.selectedStage = this.meta.stages.find(s => s.id == stageId);
+        this.selectedStateState = this.trialState.stages[stageId];
+      }
+
+      // find latest stageId that is not cleared yet
+      const metaStages = this.meta.stages;
+
+      this.lastStageCleared = -1; // index
+
+      for (let i = 0; i < metaStages.length; ++i) {
+        const stage = metaStages[i];
+        const stageState = this.trialState.stages[stage.id];
+        if (stageState && stageState.cleared) {
+          this.lastStageCleared = i;
+        } else {
+          break;
+        }
+      }
+    },
+    handleStageCleared() {
+      this.selectedStage = null;
+      this.showPrompt(
+        this.$t("trial-stage-cleared-t"),
+        this.$t("trial-stage-cleared-m"),
+        [
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: "ok"
+          }
+        ]
+      );
+      this.refresh();
+    },
     isStageLocked(stageIndex) {
       if (this.state.currentFight) {
         return (
@@ -85,27 +136,16 @@ export default {
 
       return false;
     },
-    async continueToStage(stageIndex) {
+    continueToStage(stageIndex) {
       this.selectedStage = this.meta.stages[stageIndex];
     },
-    async fetchRemoteState() {
-      this.request = this.$game.fetchTrialState(this.trialType, this.meta.id);
-      this.trialState = await this.request;
-
-      // find latest stageId that is not cleared yet
-      const metaStages = this.meta.stages;
-
-      this.lastStageCleared = -1; // index
-
-      for (let i = 0; i < metaStages.length; ++i) {
-        const stage = metaStages[i];
-        const stageState = this.trialState.stages[stage.id];
-        if (stageState && stageState.cleared) {
-          this.lastStageCleared = i;
-        } else {
-          break;
-        }
-      }
+    async collectStageReward(stageIndex) {
+      const stageMeta = this.meta.stages[stageIndex];
+      this.request = this.$game.collectTrialStageReward(
+        this.trialType,
+        this.meta.id,
+        stageMeta.id
+      );
     }
   }
 };

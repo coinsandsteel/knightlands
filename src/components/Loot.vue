@@ -236,7 +236,7 @@ export default {
 }
 
 .slot-common {
-  background-image: url("../assets/ui/slot_effect_active.png");
+  background-image: url("../assets/ui/slot_common.png");
 }
 
 .slot-rare {

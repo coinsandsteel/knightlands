@@ -32,7 +32,7 @@
         </ul>
       </StripedContent>
 
-      <div class="flex">
+      <div class="flex flex-center">
         <CustomButton class="center margin-top-3" type="yellow" @click="$close">{{$t('continue')}}</CustomButton>
       </div>
     </StripedPanel>
