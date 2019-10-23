@@ -21,7 +21,10 @@
                     ></span>
                     <span class="green-title">{{(item.enchant || 0) + 1}}</span>
                   </span>
-                  <span class="rarity-mythical" v-else>{{$t("enchanting-maxed-out")}}</span>
+                  <span class="flex flex-center flex-start margin-bottom-half" v-else>
+                    <span class="rarity-mythical margin-right-half">{{$t("enchanting-maxed-out")}}</span>
+                    <span>{{item.enchant}}</span>
+                  </span>
                 </div>
               </div>
             </template>
@@ -71,16 +74,16 @@
             </StripedContent>
 
             <template v-if="!paymentInProcess">
-              <transition name="fade">
+              <transition name="fade" mode="out-in">
                 <span
                   class="margin-top-1 margin-bottom-1 rarity-mythical font-outline font-size-20"
                   v-if="failed"
+                  key="failed"
                 >{{$t("enchant-failed")}}</span>
-              </transition>
-              <transition name="fade">
                 <span
                   class="margin-top-1 margin-bottom-1 orange-title font-outline font-size-20"
                   v-if="!failed"
+                  key="success"
                 >{{$t("enchant-success-rate", {rate: stepData.successRate})}}</span>
               </transition>
             </template>
@@ -286,10 +289,22 @@ export default {
 
         let newItemId = await this.request;
         if (newItemId === false) {
-          // failed
+          this.notifyEnchantingFailed();
+        } else if (newItemId && newItemId != this.itemId) {
+          this.$router.replace({
+            name: "enchant-item",
+            params: { itemId: newItemId }
+          });
+        }
+
+        this.updateEnchantItemsList();
+      }
+    },
+    notifyEnchantingFailed() {
+      // failed
           this.failed = true;
           clearTimeout(this.failedTimeout);
-          this.failedTimeout = setTimeout(() => (this.failed = false), 3000);
+          this.failedTimeout = setTimeout(() => (this.failed = false), 2000);
 
           let timeline = anime({
             targets: this.$refs.level,
@@ -302,21 +317,11 @@ export default {
                 { value: "0.25rem" },
                 { value: "-0.2rem" },
                 { value: "0rem" }
-
             ],
             easing: 'easeOutExpo',
             duration: 325,
             loop: 1
           });
-        } else if (newItemId && newItemId != this.itemId) {
-          this.$router.replace({
-            name: "enchant-item",
-            params: { itemId: newItemId }
-          });
-        }
-
-        this.updateEnchantItemsList();
-      }
     },
     updateEnchantItemsList() {
       this.ingridients.length = 0;
@@ -353,9 +358,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.fade-enter-active {
+.fade-enter-active  {
   transition: opacity 0.2s;
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;

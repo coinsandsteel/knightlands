@@ -4,7 +4,7 @@
       <div>
         <loading-screen :loading="true" :opacity="0.4" v-show="isDelayOver && isPending"></loading-screen>
 
-        <div v-bar>
+        <div v-bar v-if="raids.length > 0">
           <div class="flex flex-column flex-item-center current-raids-list">
             <current-raid-element
               v-for="(raidData, index) in raids"
@@ -13,6 +13,11 @@
               @claimed="handleRaidClaimed(index)"
             ></current-raid-element>
           </div>
+        </div>
+
+        <div class="flex flex-column flex-center height-100 width-100" v-else>
+          <span class="font-size-22 margin-bottom-2">{{$t("raids-empty")}}</span>
+          <CustomButton type="yellow" @click="summonRaid">{{$t("raid-summon-now")}}</CustomButton>
         </div>
       </div>
     </template>
@@ -29,7 +34,7 @@ import LoadingScreen from "@/components/LoadingScreen.vue";
 export default {
   name: "current-raids",
   mixins: [AppSection],
-  components: { CurrentRaidElement, Promised, LoadingScreen },
+  components: { CurrentRaidElement, Promised, LoadingScreen, CustomButton },
   data: () => ({
     raids: [],
     request: null

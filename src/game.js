@@ -91,7 +91,7 @@ class Game {
 
         // pass socket to make character model listen to certain events
         this._character = new CharacterModel(this._socket, this);
-        
+
         Vue.prototype.$character = this._character;
     }
 
@@ -438,12 +438,21 @@ class Game {
         }
     }
 
-    _mergeData(data) {
-        let {
-            changes,
-            removals
-        } = data;
+    _removeData(removals) {
+        if (!removals) {
+            return;
+        }
 
+        if (removals.character) {
+            this.character.removeData(removals.character);
+        }
+
+        if (removals.trials) {
+            this.mergeRemoval(this._vm, this._vm.trials, removals.trials);
+        }
+    }
+
+    _mergeData(changes) {
         if (changes.classInited) {
             this._vm.classInited = changes.classInited;
         }
@@ -458,9 +467,7 @@ class Game {
             this._checkClassChoice();
         }
 
-        if (removals) {
-            this.character.removeData(removals.character);
-        }
+
 
         if (changes.beast) {
             this._vm.beast.exp = changes.beast.exp || this._vm.beast.exp;
@@ -470,10 +477,6 @@ class Game {
 
         if (changes.tower) {
             this._vm.towerFreeAttempts = changes.tower.freeAttemps || this._vm.towerFreeAttempts;
-        }
-
-        if (removals && removals.trials) {
-            this.mergeRemoval(this._vm, this._vm.trials, removals.trials);
         }
 
         if (changes.trials) {
@@ -559,25 +562,29 @@ class Game {
             this._character.assignData(info.character);
             this._inventory.load(info.inventory);
 
-            if (info.questsProgress) {
-                this._vm.$set(this._vm, "questsProgress", info.questsProgress);
+            if (this._vm.load) {
+                this._mergeData(info);
+            } else {
+                if (info.questsProgress) {
+                    this._vm.$set(this._vm, "questsProgress", info.questsProgress);
+                }
+
+                if (info.classInited) {
+                    this._vm.classInited = info.classInited;
+                }
+
+                this._vm.beast = info.beast;
+                this._vm.towerFreeAttempts = info.tower.freeAttemps;
+                this._vm.trials = info.trials;
+                this._vm.softCurrency = info.softCurrency;
+                this._vm.hardCurrency = info.hardCurrency;
+
+                if (!this._vm.load) {
+                    this._checkClassChoice();
+                }
+
+                this._trialCardsResolver = new TrialCardsResolver(this._vm.trials.cards.modifiers, TrialsMeta.cardModifiers);
             }
-
-            if (info.classInited) {
-                this._vm.classInited = info.classInited;
-            }
-
-            this._vm.beast = info.beast;
-            this._vm.towerFreeAttempts = info.tower.freeAttemps;
-            this._vm.trials = info.trials;
-            this._vm.softCurrency = info.softCurrency;
-            this._vm.hardCurrency = info.hardCurrency;
-
-            if (!this._vm.load) {
-                this._checkClassChoice();
-            }
-
-            this._trialCardsResolver = new TrialCardsResolver(this._vm.trials.cards.modifiers, TrialsMeta.cardModifiers);
 
             this._vm.load = true;
 
@@ -721,7 +728,8 @@ class Game {
     async _wrapOperation(operation, ...args) {
         try {
             let result = await this._request(operation, ...args);
-            this._mergeData(result.changes);
+            this._mergeData(result.changes.changes);
+            this._removeData(result.changes.removals);
             return result;
         } catch (exc) {
             console.log(exc);
@@ -1083,6 +1091,20 @@ class Game {
         return (await this._wrapOperation(Operations.ChooseTrialCard, {
             trialType, cardIndex
         })).response;
+    }
+
+    async upgradeTrialsCard(cardEffect) {
+        return (await this._wrapOperation(Operations.ImproveTrialCard, {
+            cardEffect
+        })).response;
+    }
+
+    async resetTrialsCards() {
+        return (await this._wrapOperation(Operations.ResetTrialCards)).response;
+    }
+
+    async summonTrialCards(trialType) {
+        return (await this._wrapOperation(Operations.SummonTrialCards, { trialType })).response;
     }
 }
 

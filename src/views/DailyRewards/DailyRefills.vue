@@ -5,11 +5,10 @@
         <span class="font-size-18 width-100 margin-bottom-3">{{$t('daily-refills-desc')}}</span>
 
         <DailyRefill v-for="refill in refills" :key="refill.type" :refill="refill" :collected="collected"></DailyRefill>
-
       </div>
 
       <div class="margin-top-3 flex flex-center width-100">
-        <PromisedButton :props="{type:'green'}" :promise="request" @click="collect" v-if="!collected">{{$t("claim-daily-refill")}}</PromisedButton>
+        <PromisedButton type="green" :promise="request" @click="collect" v-if="!collected">{{$t("claim-daily-refill")}}</PromisedButton>
         <span class="font-size-18" v-else>{{$t("time-till-refill", {time: timer.value})}}</span>
       </div>
   </div>

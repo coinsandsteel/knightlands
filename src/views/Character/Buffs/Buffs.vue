@@ -1,12 +1,18 @@
 <template>
-  <div class="tab-content width-100 flex padding-2">
-    <BuffSlot
+  <div class="tab-content width-100 height-100 flex padding-2">
+    <template v-if="buffs.length > 0">
+      <BuffSlot
       v-for="record in buffs"
       :key="(record.buff || record.item).template"
       :buff="record.buff"
       :item="record.item"
       @info="handleInfo"
     ></BuffSlot>
+    </template>
+    <div class="flex flex-column flex-center width-100 height-100">
+      <span class="font-size-22 margin-bottom-2">{{$t("buffs-empty")}}</span>
+      <CustomButton type="yellow" @click="goToShop">{{$t("buff-now")}}</CustomButton>
+    </div>
   </div>
 </template>
 
@@ -18,6 +24,7 @@ import AppSection from "@/AppSection";
 import BuffSlot from "./BuffSlot.vue";
 import BuffInfo from "./BuffInfo.vue";
 import Inventory from "@/inventory";
+import CustomButton from "@/components/Button.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -25,7 +32,7 @@ const ShowBuffInfo = create(BuffInfo, ...BuffInfo.props);
 
 export default {
   mixins: [AppSection],
-  components: { BuffSlot },
+  components: { BuffSlot, CustomButton },
   data: () => ({
     buffs: []
   }),
@@ -40,6 +47,9 @@ export default {
     this.$game.inventory.off(Inventory.Changed, this.handleInventoryCallback);
   },
   methods: {
+    goToShop() {
+      this.$router.push({name: "shop"});
+    },
     refreshBuffs() {
       const buffs = [];
       const activeBuffs = this.$game.character.buffs;

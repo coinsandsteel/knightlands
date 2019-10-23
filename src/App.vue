@@ -14,7 +14,8 @@
       </keep-alive>
       <div class="footer flex-item-center">
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
-        <div class="footer-container flex flex-end" style="flex: 1 1">
+        <portal-target class="footer-container flex flex-end width-100" name="footer"></portal-target>
+        <div class="footer-container flex flex-end full-flex">
           <component
             v-for="(footer, index) in footers"
             :key="index"
@@ -41,17 +42,17 @@
           </router-link>
 
           <router-link class="flex flex-center" to="/summon">
-            <span class="menu-icon shop"></span>
+            <span class="menu-icon shop pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-shop")}}</span>
           </router-link>
 
           <!-- <router-link  class="flex flex-center" to="/">
-            <span class="menu-icon guild"></span>
+            <span class="menu-icon guild pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-guild")}}</span>
           </router-link>-->
           <!-- 
           <router-link  class="flex flex-center" to="/">
-            <span class="menu-icon chat"></span>
+            <span class="menu-icon chat pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-chat")}}</span>
           </router-link>-->
         </div>

@@ -48,6 +48,10 @@ export default {
         const item = items[i];
         const template = this.$game.itemsDB.getTemplate(item.template);
 
+        if (template.type != ItemType.Equipment) {
+          continue;
+        }
+
         if (!template.enchantable || item.enchant >= maxEnchant || filteredIds[item.id]) {
           continue;
         }

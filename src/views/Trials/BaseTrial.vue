@@ -45,11 +45,16 @@ import TrialStage from "./TrialStage.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+
+import { create } from "vue-modal-dialogs";
+
+const ShowRewards = create(ItemsReceived, "items", "soft", "exp");
 
 export default {
   props: ["trialType", "meta", "mountCallback", "state", "trialIndex"],
   mixins: [HintHandler, PromptMixin],
-  components: { TrialStageListElement, TrialStage, Promised, LoadingScreen },
+  components: { TrialStageListElement, TrialStage, Promised, LoadingScreen,ItemsReceived },
   data: () => ({
     request: null,
     trialState: null,
@@ -61,6 +66,16 @@ export default {
     this.mountCallback(this.handleBackButton.bind(this));
   },
   watch: {
+    selectedStage: {
+      handler() {
+        if (this.selectedStage && this.trialState) {
+          this.selectedStateState = this.trialState.stages[
+            this.selectedStage.id
+          ];
+        }
+      },
+      immediate: true
+    },
     trialType: {
       handler() {
         if (this._stateWatcher) {
@@ -83,7 +98,7 @@ export default {
         const stageId = this.state.currentFight.stageId;
         // open fight
         this.selectedStage = this.meta.stages.find(s => s.id == stageId);
-        this.selectedStateState = this.trialState.stages[stageId];
+        this.selectedStateState = this.trialState.stages[this.selectedStage.id];
       }
 
       // find latest stageId that is not cleared yet
@@ -126,7 +141,7 @@ export default {
       return stageIndex > this.lastStageCleared + 1;
     },
     engageFight(stageId, fightIndex) {
-      this.$emit("engage", this.meta.id, stageId, fightIndex);
+      this.$emit("engage", this.meta.id, stageId, fightIndex, () => {});
     },
     handleBackButton() {
       if (this.selectedStage) {
@@ -146,6 +161,9 @@ export default {
         this.meta.id,
         stageMeta.id
       );
+
+      const results = await this.request;
+      ShowRewards(results.items, results.soft, results.exp);
     }
   }
 };

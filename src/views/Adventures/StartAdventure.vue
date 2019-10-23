@@ -7,6 +7,10 @@
       :preview="true"
       @start="startAdventure(index)"
     ></Adventure>
+
+    <portal to="footer" v-if="isActive">
+      <RefreshButton :adventure="adventure" :index="index"></RefreshButton>
+    </portal>
   </div>
 </template>
 
@@ -18,13 +22,7 @@ import RefreshButton from "./RefreshButton.vue";
 export default {
   mixins: [AppSection],
   props: ["adventure", "index"],
-  components: { Adventure },
-  mounted() {
-    this.addFooter(RefreshButton, {
-      adventure: this.adventure,
-      index: this.index
-    });
-  },
+  components: { Adventure, RefreshButton },
   methods: {
     startAdventure(adventureIndex) {
       this.$emit("start", adventureIndex);

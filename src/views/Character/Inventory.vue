@@ -96,6 +96,7 @@
                 ref="hooper"
                 style="height: 100%"
                 :infiniteScroll="true"
+                :autoPlay="false"
                 @slide="updateHintItems"
               >
                 <slide v-for="(item, index) in hintItems" :key="index">

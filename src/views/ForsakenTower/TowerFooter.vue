@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-center font-size-18">
+  <div class="flex flex-center font-size-18 flex-no-wrap">
     <div class="flex flex-center padding-1 panel-input height-100">
       <span>{{$t("free-attemps", {attempts: freeTickets})}}</span>
     </div>

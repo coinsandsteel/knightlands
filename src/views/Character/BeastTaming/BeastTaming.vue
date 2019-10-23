@@ -55,7 +55,7 @@
     </div>
 
     <div
-      class="panel width-100 flex flex-column margin-left-half margin-right-half padding-bottom-2 padding-top-1"
+      class="panel flex flex-column margin-left-half margin-right-half padding-bottom-2 padding-top-1"
       v-if="!isMax"
     >
       <span class="title font-size-22 margin-bottom-1">{{$t('regular-boost')}}</span>
@@ -63,14 +63,14 @@
       <div class="width-100 flex flex-space-evenly font-size-18 margin-bottom-2">
         <div class="flex flex-column width-45">
           <span>{{$t("beast-boost", {count: 1})}}</span>
-          <PromisedButton :promise="request" :props="{type:'yellow'}" @click="regularBoost(1)" :disabled="!canBoost(1)">
+          <PromisedButton :promise="request" type="yellow" @click="regularBoost(1)" :disabled="!canBoost(1)">
             <IconWithValue iconClass="icon-gold">{{softPrice}}</IconWithValue>
           </PromisedButton>
         </div>
 
         <div class="flex flex-column width-45">
           <span>{{$t("beast-boost", {count: 50})}}</span>
-          <PromisedButton :promise="request" :props="{type:'yellow'}" @click="regularBoost(50)" :disabled="!canBoost(50)">
+          <PromisedButton :promise="request" type="yellow" @click="regularBoost(50)" :disabled="!canBoost(50)">
             <IconWithValue iconClass="icon-gold">{{softPrice * 50}}</IconWithValue>
           </PromisedButton>
         </div>
@@ -92,7 +92,7 @@
             <span>{{$t("beast-boost", {count: 1})}}</span>
             <PromisedButton
               :promise="request"
-              :props="{type:'green'}"
+              type="green"
               @click="advancedBoost(1)"
             >
               <div class="flex flex-items-center padding-left-1 padding-right-1">
@@ -106,7 +106,7 @@
             <span>{{$t("beast-boost", {count: batchBoost()})}}</span>
             <PromisedButton
               :promise="request"
-              :props="{type:'green'}"
+              type="green"
               @click="advancedBoost(batchBoost())"
             >
               <div class="flex flex-items-center padding-left-1 padding-right-1">
@@ -134,7 +134,7 @@
             <span>{{$t("beast-souls", {count: iapMeta.ticketsCount})}}</span>
             <PromisedButton
               :promise="request"
-              :props="{type:'green'}"
+              type="green"
               @click="purchaseBoostItems(index)"
             >
               <PriceTag :dark="true" :iap="iapMeta.iap"></PriceTag>
@@ -146,7 +146,7 @@
 
     <PromisedButton
       v-else-if="canEvolve"
-      :props="{type:'yellow'}"
+      type="yellow"
       @click="evolve"
     >{{$t("beast-evolve")}}</PromisedButton>
   </div>

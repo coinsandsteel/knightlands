@@ -2,6 +2,35 @@
   <UserDialog :title="$t('box-opened-title')" @close="$close">
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
+
+        <IconWithValue
+          class="margin-bottom-1"
+          valueClass="font-size-20 digit-font"
+          iconClass="icon-dkt"
+          v-if="dkt"
+        >{{dkt}}</IconWithValue>
+
+        <IconWithValue
+          class="margin-bottom-1"
+          valueClass="font-size-20 digit-font"
+          iconClass="icon-premium"
+          v-if="hard"
+        >{{hard}}</IconWithValue>
+
+        <IconWithValue
+          class="margin-bottom-1"
+          valueClass="font-size-20 digit-font"
+          iconClass="icon-gold"
+          v-if="soft"
+        >{{soft}}</IconWithValue>
+
+        <IconWithValue
+          class="margin-bottom-1"
+          valueClass="font-size-20 digit-font"
+          iconClass="icon-exp"
+          v-if="exp"
+        >{{exp}}</IconWithValue>
+
         <div class="flex flex-center flex-column margin-top-3">
           <div class="flex flex-center reward-loot">
             <loot
@@ -41,7 +70,7 @@ export default {
     CustomButton,
     Loot
   },
-  props: ["items"]
+  props: ["items", "soft", "hard", "exp", "dkt"]
 };
 </script>
 

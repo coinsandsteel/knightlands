@@ -15,6 +15,9 @@
         <slot name="list" :state="state" :openTrial="openTrial" :trialType="trialType" v-else></slot>
       </template>
     </keep-alive>
+    <portal to="footer" :slim="true" v-if="isActive">
+      <TrialFooter :trialType="trialType" :state="state" @open="openCards"></TrialFooter>
+    </portal>
   </div>
 </template>
 
@@ -27,7 +30,7 @@ import Cards from "./Cards/Cards.vue";
 export default {
   mixins: [AppSection],
   props: ["titleStr", "trialType"],
-  components: { Cards },
+  components: { Cards, TrialFooter },
   data: () => ({
     request: null,
     state: null,
@@ -38,12 +41,9 @@ export default {
   activated() {
     this.title = this.titleStr;
     this.fetchRemoteState();
-
-    this.addFooter(TrialFooter, {
-      trialType: this.trialType,
-      state: this.state,
-      openCards: this.openCards.bind(this)
-    });
+  },
+  deactivated() {
+    this.showCards = false;
   },
   watch: {
     "state.currentFight": {
@@ -56,7 +56,7 @@ export default {
     }
   },
   methods: {
-    async engageFight(trialId, stageId, fightIndex) {
+    async engageFight(trialId, stageId, fightIndex, callback) {
       this.request = this.$game.engageTrialFight(
         this.trialType,
         trialId,

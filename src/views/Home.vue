@@ -11,11 +11,11 @@
           </SkewedButton>
         </router-link>
 
-        <router-link tag="div" class="margin-bottom-1" to="quest" :append="true">
+        <router-link tag="div" class="margin-bottom-1" to="dividends" :append="true">
           <SkewedButton :props="{type:'green', icon:'icon-divs'}">{{$t("btn-divs")}}</SkewedButton>
         </router-link>
 
-        <router-link tag="div" class="margin-bottom-1" to="quest" :append="true">
+        <router-link tag="div" class="margin-bottom-1" to="settings" :append="true">
           <SkewedButton :props="{type:'purple', icon:'icon-settings'}">{{$t("btn-settings")}}</SkewedButton>
         </router-link>
       </div>
@@ -60,7 +60,6 @@ import AppSection from "@/AppSection";
 import SkewedButton from "@/components/SkewedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
-import PromisedButton from "@/components/PromisedButton.vue";
 import CheckinMarker from "@/components/Markers/CheckinMarker.vue";
 
 export default {
@@ -70,7 +69,6 @@ export default {
     SkewedButton,
     IconWithValue,
     AdventuresMarker,
-    PromisedButton,
     CheckinMarker
   },
   created() {

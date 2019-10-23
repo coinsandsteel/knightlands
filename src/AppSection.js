@@ -3,18 +3,22 @@ export default {
     useRouterBack: false,
     data: () => ({
         title: null,
-        footers: []
+        footers: [],
+        isActive: false
     }),
     created() {
         this._title = this.title;
     },
     mounted() {
+        this.isActive = true;
         this._notifyApp();
     },
     activated() {
+        this.isActive = true;
         this._notifyApp();
     },
     deactivated() {
+        this.isActive = false;
         this.removeFooter();    
     },
     destroyed() {
@@ -39,6 +43,10 @@ export default {
             }
         },
         handleBackButton() {
+            if (this.$options.useRouterBack) {
+                this.$router.back();
+                return true;
+            }
             return false;
         }
     }

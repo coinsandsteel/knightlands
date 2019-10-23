@@ -21,7 +21,7 @@
 
     <div class="margin-top-3 flex flex-center width-100">
       <PromisedButton
-        :props="{type:'green'}"
+        type="green"
         :promise="request"
         @click="collect"
         v-if="!collected"
@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     isCollected(index) {
-      return index < (!this.collected ? this.step-1: this.step);
+      return index <= this.step-1;
     },
     rewardHint(reward) {
       this.handleHint({
@@ -77,6 +77,7 @@ export default {
       }
       await ShowItems(items);
       this.collected = true;
+      this.step++;
     }
   }
 };

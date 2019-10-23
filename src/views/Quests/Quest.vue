@@ -62,6 +62,16 @@
         </div>
       </div>
     </keep-alive>
+
+    <portal to="footer" v-if="isActive" :slim="true">
+      <CustomButton v-if="allFinished" @click="handleResetProgress" type="grey">{{$t("btn-reset")}}</CustomButton>
+      <DifficultySwitch
+        v-if="zone !== undefined && zones.length > 0"
+        :cb="handleDifficultySwitch"
+        :stages="$game.getZoneStageStatuses(zone)"
+        :current="zone"
+      ></DifficultySwitch>
+    </portal>
   </div>
 </template>
 
@@ -89,7 +99,8 @@ export default {
       zones: [],
       currentQuest: undefined,
       currentZone: {},
-      loaded: false
+      loaded: false,
+      allFinished: false
     };
   },
   watch: {
@@ -130,7 +141,7 @@ export default {
       return this.$game.getZoneLocked(this.zone, this.currentStageStage);
     },
     showQuest() {
-      return this.quest!==undefined && this.currentQuest;
+      return this.quest !== undefined && this.currentQuest;
     }
   },
   methods: {
@@ -148,28 +159,13 @@ export default {
         return;
       }
 
-      let allFinished = true;
+      this.allFinished = true;
       let stage = this.zoneStage(this.zone);
       this.currentZone.quests.forEach((quest, index) => {
         let progress = this.$game.getQuestProgress(this.zone, index);
         if (progress.current < progress.max) {
-          allFinished = false;
+          this.allFinished = false;
         }
-      });
-
-      if (allFinished) {
-        this.addFooter(CustomButton, {
-          cb: this.handleResetProgress.bind(this),
-          caption: "Reset",
-          type: "grey"
-        });
-      }
-
-      // show difficulty switch
-      this.addFooter(DifficultySwitch, {
-        cb: this.handleDifficultySwitch.bind(this),
-        stages: this.$game.getZoneStageStatuses(this.zone),
-        current: this.zone
       });
     },
     handleDifficultySwitch(stage) {

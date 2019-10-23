@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-center flex-no-wrap">
-    <div v-if="!flip" v-bind:class="iconClass" class="value-icon"></div>
+    <span v-if="!flip" v-bind:class="iconClass" class="value-icon"></span>
     <div :class="valueClass">
       <slot>{{value}}</slot>
     </div>
-    <div v-if="flip" v-bind:class="iconClass" class="value-icon"></div>
+    <span v-if="flip" v-bind:class="iconClass" class="value-icon"></span>
   </div>
 </template>
 

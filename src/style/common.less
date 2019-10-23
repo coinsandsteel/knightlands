@@ -398,6 +398,7 @@ h1 {
     height: @iconSize;
     margin-right: 0.3rem;
     margin-left: 0.3rem;
+    display: inline-block;
 
     &.huge {
         width: @iconSize * 1.8;
@@ -568,12 +569,37 @@ h1 {
     .icon("skewed_icon_exchange");
 }
 
-.item-icon {
+.item-icon() {
     background-repeat: no-repeat;
     background-size: contain;
     width: 3rem;
     height: 3rem;
-  }
+    display: inline-block;
+}
+
+.item-icon {
+    .item-icon();
+}
+
+.icon-refill-tower {
+    .icon("skewed_icon_tower");
+}
+
+.icon-refill-armourTrials {
+    .icon("ticket_blue");
+}
+
+.icon-refill-weaponTrials {
+    .icon("ticket_red");
+}
+
+.icon-refill-accessoryTrials {
+    .icon("ticket_yellow");
+}
+
+.icon-refill-goldExchange {
+    .icon("skewed_icon_exchange");
+}
 
 .icon-darkness {
     .icon("element_dark");

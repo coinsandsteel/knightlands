@@ -16,7 +16,7 @@
           <div>
             <TrialFightListElement
               v-for="(fight, index) in stage.fights"
-              :key="fight.id"
+              :key="`${fight.id}_${lastClearedFight}`"
               :fight="fight"
               :index="index"
               :completed="index < lastClearedFight+1"
@@ -65,6 +65,12 @@ export default {
         if (this.cleared) {
           this.$emit("cleared");
         }
+      },
+      immediate: true
+    },
+    "state.finishedFights": {
+      handler() {
+        this.refresh();
       },
       immediate: true
     }

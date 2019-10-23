@@ -1,7 +1,6 @@
 import Router from "vue-router";
 import Character from "./views/Character/Character.vue";
 import Quest from "./views/Quests/Quest.vue";
-import Dividends from "./views/Dividends.vue";
 import Login from "./views/Login.vue";
 import Admin from "./views/Admin.vue";
 import Home from "./views/Home.vue";
@@ -60,6 +59,9 @@ import TrialsRoot from "./views/Trials/TrialsRoot.vue";
 import HonorTrials from "./views/Trials/Trials.vue";
 import TrialsOfHonor from "./views/Trials/Honor/TrialsOfHonor.vue";
 import HonorTrialsList from "./views/Trials/Honor/TrialsList.vue";
+
+import Dividends from "./views/Dividends/Dividends.vue";
+import Settings from "./views/Settings/Settings.vue";
 
 const router = new Router({
   routes: [
@@ -367,10 +369,19 @@ const router = new Router({
       ]
     },
     {
-      path: "/dividends",
+      path: "/home/dividends",
       props: true,
       name: "dividends",
       component: Dividends,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/home/settings",
+      props: true,
+      name: "settings",
+      component: Settings,
       meta: {
         requiresAuth: true
       }

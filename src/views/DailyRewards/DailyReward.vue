@@ -8,7 +8,7 @@
 
     <span
       v-if="!collected"
-      class="font-size-18 quantity font-weight-700 font-outline"
+      class="font-size-22 quantity font-weight-700 font-outline"
     >{{reward.minCount}}</span>
 
     <span

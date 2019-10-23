@@ -6,7 +6,7 @@
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
     <div class="btn-fill" :class="{skewed: skewed}"></div>
-    <div class="btn-content flex flex-center font-weight-700" :class="fontClass">
+    <div class="btn-content flex flex-center font-weight-700 flex-no-wrap" :class="fontClass">
       <slot>{{$t(caption)}}</slot>
     </div>
     <div v-if="locked" class="locked"></div>

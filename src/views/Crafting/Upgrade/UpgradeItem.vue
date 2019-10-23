@@ -33,7 +33,7 @@
                 :maxValue="nextExp"
                 :hideBackground="true"
                 class="absolute-stretch"
-              ></progress-bar> -->
+              ></progress-bar>-->
             </div>
           </div>
         </template>
@@ -194,7 +194,7 @@ export default {
       if (this.lockRest && !state) {
         return;
       }
-      
+
       if (state !== undefined) {
         this.selectedMaterials[index] = !state;
       } else {
@@ -230,12 +230,19 @@ export default {
     async upgradeItem() {
       let newItemId = await this.$game.upgradeItem(
         this.itemId,
-        this.selectedMaterialsAsArray.map(x=>x.id),
+        this.selectedMaterialsAsArray.map(x => x.id),
         this.optionFactor
       );
 
-      this.prepareItemForUpgrading();
-      this.updateMaterialList();
+      if (newItemId != this.itemId) {
+        this.$router.replace({
+          name: "upgrade-item",
+          params: { itemId: newItemId }
+        });
+      } else {
+        this.prepareItemForUpgrading();
+        this.updateMaterialList();
+      }
     },
     updateMaterialList() {
       this.$set(this, "selectedMaterials", {});

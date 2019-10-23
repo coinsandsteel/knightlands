@@ -21,7 +21,8 @@
         <PromisedButton
           :promise="request"
           @click="close(true)"
-          :props="{width: '15rem', type:'red'}"
+          width="15rem"
+          type="red"
         >{{$t("continue")}}</PromisedButton>
       </div>
 
@@ -29,13 +30,15 @@
         <PromisedButton
           :promise="request"
           @click="attack"
-          :props="{width: '15rem', type:'yellow'}"
+          width="15rem"
+          type="yellow"
         >{{$t("btn-attack")}}</PromisedButton>
 
         <PromisedButton
           :promise="request"
           @click="cancel"
-          :props="{width: '15rem', type:'red'}"
+          width="15rem"
+          type="red"
         >{{$t("btn-cancel")}}</PromisedButton>
       </div>
 
@@ -43,7 +46,8 @@
         <PromisedButton
           :promise="request"
           @click="collect"
-          :props="{width: '15rem', type:'green'}"
+          width="15rem"
+          type="green"
         >{{$t("claim-reward")}}</PromisedButton>
       </div>
     </div>

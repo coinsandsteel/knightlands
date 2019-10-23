@@ -37,7 +37,8 @@
                   <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase">
                     <PromisedButton
                       :promise="purchasePromise"
-                      :props="{width:'16rem', type:'yellow'}"
+                      width="16rem"
+                      type="yellow"
                       @click="confirm"
                     >{{$t("btn-confirm")}}</PromisedButton>
                   </PaymentStatus>
@@ -92,12 +93,13 @@
 
               <div class="flex">
                 <PromisedButton
-                v-show="!showPayedOption"
-                :disabled="!canProcceed"
-                :promise="purchasePromise"
-                :props="{width:'16rem', type:'yellow'}"
-                @click="confirm"
-              >{{$t("btn-confirm")}}</PromisedButton>
+                  v-show="!showPayedOption"
+                  :disabled="!canProcceed"
+                  :promise="purchasePromise"
+                  width="16rem"
+                  type="yellow"
+                  @click="confirm"
+                >{{$t("btn-confirm")}}</PromisedButton>
               </div>
             </div>
           </div>

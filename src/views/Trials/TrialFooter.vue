@@ -9,7 +9,7 @@
       <span>{{totalTickets}}</span>
     </div>
 
-    <CustomButton type="grey" @click="openCards">{{$t("btn-level-trials-cards")}}</CustomButton>
+    <CustomButton type="grey" @click="$emit('open')">{{$t("btn-level-trials-cards")}}</CustomButton>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ import CustomButton from "@/components/Button.vue";
 import TowerMeta from "@/tower_meta";
 
 export default {
-  props: ["trialType", "state", "openCards"],
+  props: ["trialType", "state"],
   components: { CustomButton },
   computed: {
     ticketItemName() {

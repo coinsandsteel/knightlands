@@ -158,7 +158,8 @@
             <PaymentStatus :request="statusRequest" @pay="continuePurchase">
               <PromisedButton
                 :promise="purchasePromise"
-                :props="{width:'16rem', type:'yellow'}"
+                width="16rem"
+                type="yellow"
                 @click="join"
               >
                 <span class="margin-right-half">{{$t("join")}}</span>

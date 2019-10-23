@@ -180,36 +180,40 @@ export default {
     updateUnbindItemsList() {
       this.selectedItems = {};
       this.lockedTotal = 0;
+      
       let filteredItems = [];
 
       if (this.item) {
         let items = this.$game.inventory.getItemsByTemplate(this.item.template);
-        let i = 0;
-        const length = items.length;
 
-        for (; i < length; ++i) {
-          let item = items[i];
-          if (item.unique && item.id == this.itemId) {
-            continue;
-          }
+        if (items) {
+          let i = 0;
+          const length = items.length;
 
-          let count = item.count;
-          if (item.id == this.itemId) {
-            count -= 1;
-          }
+          for (; i < length; ++i) {
+            let item = items[i];
+            if (item.unique && item.id == this.itemId) {
+              continue;
+            }
 
-          if (count > 2) {
-            count = 2;
-          }
+            let count = item.count;
+            if (item.id == this.itemId) {
+              count -= 1;
+            }
 
-          while (count-- > 0) {
-            if (item.unique) {
-              filteredItems.push(item);
-            } else {
-              filteredItems.push({
-                id: item.id,
-                template: item.template
-              });
+            if (count > 2) {
+              count = 2;
+            }
+
+            while (count-- > 0) {
+              if (item.unique) {
+                filteredItems.push(item);
+              } else {
+                filteredItems.push({
+                  id: item.id,
+                  template: item.template
+                });
+              }
             }
           }
         }
@@ -225,7 +229,7 @@ export default {
     },
     prepareItemForUnbind() {
       let item = this.$game.inventory.getItem(this.itemId);
-      
+
       if (item && !item.equipped) {
         if (!item.unique) {
           item = { ...item };

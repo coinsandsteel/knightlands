@@ -65,7 +65,7 @@
             :key="iap.iap"
             :promise="request"
             :forceLoading="pending"
-            :props="{type:'yellow'}"
+            type="yellow"
             @click="purchaseChestOpening(iap.iap)"
             class="margin-bottom-1"
           >

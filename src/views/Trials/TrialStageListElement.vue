@@ -1,8 +1,11 @@
 <template>
   <div class="flex flex-column panel padding-top-1 padding-bottom-1 margin-1">
     <span
-      class="font-size-22 flex-self-start margin-left-3 margin-bottom-1"
-    >{{$t("trial-stage-title", {stage: index + 1})}}</span>
+      class="font-size-22 flex-self-start margin-left-3 margin-bottom-1 flex flex-center"
+    >
+      <span>{{$t("trial-stage-title", {stage: index + 1})}}</span>
+      <span v-if="isElemental" :class="`icon-${stage.element}`"></span>
+    </span>
 
     <div class="flex flex-full flex-space-between">
       <div class="flex flex-column flex-items-start padding-left-3 flex-8">
@@ -14,7 +17,7 @@
         <div class="flex margin-top-half">
           <Loot
             v-for="reward in rewards()"
-            :key="reward.itemId"
+            :key="`${reward.itemId}_${reward.maxCount}`"
             :item="reward.itemId"
             :quantity="reward.maxCount"
             size="small"
@@ -53,6 +56,7 @@
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Loot from "@/components/Loot.vue";
+import Elements from "@/../knightlands-shared/elements";
 
 export default {
   props: ["index", "stage", "state", "locked"],
@@ -92,6 +96,9 @@ export default {
       }
 
       return this.stage.repeatedReward.exp;
+    },
+    isElemental() {
+      return this.stage.element != Elements.Physical;
     }
   },
   methods: {

@@ -19,6 +19,10 @@
         @challenge="challengeFloor"
       ></FloorListElement>
     </RecycleScroller>
+
+    <portal to="footer" :slim="true" v-if="isActive">
+      <tower-footer></tower-footer>
+    </portal>
   </div>
 </template>
 
@@ -31,7 +35,7 @@ import ForsakenTowerFloor from "./ForsakenTowerFloor.vue";
 
 export default {
   mixins: [AppSection, HintHandler],
-  components: { FloorListElement, ForsakenTowerFloor },
+  components: { FloorListElement, ForsakenTowerFloor, TowerFooter },
   data: () => ({
     floors: [],
     itemSize: 150,
@@ -43,9 +47,6 @@ export default {
     this.fetchInProcess = false;
     this.startPage = -1;
     this.endPage = -1;
-  },
-  activated() {
-    this.addFooter(TowerFooter);
   },
   watch: {
     currentFloor() {

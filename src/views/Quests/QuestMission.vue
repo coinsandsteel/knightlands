@@ -97,13 +97,13 @@
         <PromisedButton
           :promise="request"
           @click="engage(false)"
-          :props="{width: '15rem'}"
+          width="15rem"
         >Attack x1</PromisedButton>
         <PromisedButton
           :promise="request"
           :locked="!$game.hasPremiumAccount"
           @click="engage(true)"
-          :props="{width: '15rem'}"
+          width="15rem"
         >Attack MAX</PromisedButton>
       </div>
     </div>

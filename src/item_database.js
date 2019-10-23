@@ -114,8 +114,8 @@ class ItemDatabase {
 
   getMaterialExp(item, material) {
     let expPerMaterial = 0;
-    let meta = this.getUpgradeMeta(item);
-    let materialTemplate = ItemTemplates[material.template];
+    const meta = this.getUpgradeMeta(item);
+    const materialTemplate = ItemTemplates[material.template];
 
     if (materialTemplate.type == ItemType.Equipment) {
       let materialSlot = this.getSlot(material.template);

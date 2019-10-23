@@ -174,14 +174,14 @@ class CharacterModel {
             if (dataToRemove.hasOwnProperty(i)) {
                 if (typeof dataToRemove[i] == "object") {
                     this._removeData(currentData[i], dataToRemove[i], false);
-                } else {
+                } else if (!root) {
                     this._vm.$delete(currentData, i);
                 }
             } 
         }
     }
 
-    _mergeData(currentData, newData) {
+    _mergeData(currentData, newData, root = true) {
         for (let i in newData) {
             const newField = newData[i];
 
@@ -192,12 +192,12 @@ class CharacterModel {
 
             if (typeof (newField) == "object") {
                 if (currentData.hasOwnProperty(i)) {
-                    this._mergeData(currentData[i], newField);
-                } else {
+                    this._mergeData(currentData[i], newField, false);
+                } else if (!root) {
                     this._vm.$set(currentData, i, newField);
                 }
             } 
-            else if (!currentData.hasOwnProperty(i)) {
+            else if (!root && !currentData.hasOwnProperty(i)) {
                 this._vm.$set(currentData, i, newField);
             } 
             else if (currentData[i] !== newField) {

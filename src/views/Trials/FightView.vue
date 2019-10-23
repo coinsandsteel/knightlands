@@ -19,7 +19,10 @@
 
     <div class="panel flex flex-column width-100 padding-1 margin-1">
       <span class="margin-top-1 margin-bottom-1 font-size-22">{{$t("tower-player-hp")}}</span>
-      <ProgressBar v-model="playerHealth" :maxValue="state.maxPlayerHealth"></ProgressBar>
+      <ProgressBar v-model="playerHealth" :maxValue="maxHealth"></ProgressBar>
+
+      <span class="margin-top-1 margin-bottom-1 font-size-22">{{$t("trial-player-mana")}}</span>
+      <ProgressBar barType="blue" :value="mana" :maxValue="maxMana"></ProgressBar>
 
       <!-- <div v-if="lost" class="flex margin-top-2 width-100 flex-center">
         <PromisedButton
@@ -33,8 +36,15 @@
         <PromisedButton
           :promise="request"
           @click="attack"
-          :props="{width: '15rem', type:'yellow'}"
+          type="red"
         >{{$t("btn-attack")}}</PromisedButton>
+
+        <PromisedButton
+          :promise="request"
+          :disabled="!enoughManaToSummon"
+          @click="summonCards"
+          type="blue"
+        >{{$t("btn-summon-trial-cards")}}</PromisedButton>
 
         <!-- <PromisedButton
           :promise="request"
@@ -73,6 +83,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import CardSelector from "./Cards/CardSelector.vue";
 import TrialCardsEffect from "@/../knightlands-shared/trial_cards_effect";
+import TrialsMeta from "@/trials_meta";
 
 export default {
   props: ["state", "meta", "trialIndex", "trialType", "trialMeta"],
@@ -98,10 +109,22 @@ export default {
     enemyImage() {
       return this.meta.image;
     },
+    mana() {
+      return this.$game.getTrialsCard().mana;
+    },
+    maxMana() {
+      return TrialsMeta.maxMana;
+    },
+    maxHealth() {
+      return this.state.maxPlayerHealth;
+    },
     fightMeta() {
       return this.trialMeta.stages.find(s => s.id == this.state.stageId).fights[
         this.state.index
       ];
+    },
+    enoughManaToSummon() {
+      return this.mana >= TrialsMeta.cardSummonCost;
     }
   },
   watch: {
@@ -124,6 +147,10 @@ export default {
     this.fetchRemoteData();
   },
   methods: {
+    async summonCards() {
+      this.request = await this.$game.summonTrialCards(this.trialType);
+      this.cards = await this.request;
+    },
     async fetchRemoteData() {
       this.request = this.$game.fetchTrialFightMeta(
         this.trialType,
@@ -149,8 +176,8 @@ export default {
 
         case TrialCardsEffect.HealPlayer:
           this.playerHealth += modValue;
-          if (this.playerHealth > this.state.playerMaxHealth) {
-            this.playerHealth = this.state.playerMaxHealth;
+          if (this.playerHealth > this.maxHealth) {
+            this.playerHealth = this.maxHealth;
           }
           break;
       }
@@ -168,7 +195,6 @@ export default {
 
       this.enemyHealth = attackResult.enemyHealth;
       this.playerHealth = attackResult.playerHealth;
-      this.cards = cards;
     }
   }
 };

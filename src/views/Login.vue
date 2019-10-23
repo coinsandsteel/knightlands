@@ -30,7 +30,7 @@ export default {
   methods: {
     redirectToNextPage() {
       let url = this.$route.query.url;
-      if (typeof url == "string" && !url.contains("login")) {
+      if (typeof url == "string" && !url.includes("login")) {
         this.$router.replace(url);
       } else {
         this.$router.replace({ name: "character" });

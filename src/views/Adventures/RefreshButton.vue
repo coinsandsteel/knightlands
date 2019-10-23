@@ -1,5 +1,5 @@
 <template>
-  <PromisedButton :props="{'type': 'grey'}" @click="refresh" :promise="request">
+  <PromisedButton type="grey" @click="refresh" :promise="request">
     <div class="flex flex-center font-size-18">
         <div class="icon-refresh"></div>
         <span v-if="timer.timeLeft > 0">{{$t("next-refresh", {time: timer.value})}}</span>

@@ -27,7 +27,10 @@
         </div>
 
         <div class="flex">
-          <span v-show="completed" class="rarity-mythical font-size-18">{{$t("trial-fight-completed")}}</span>
+          <span
+            v-show="completed"
+            class="rarity-mythical font-size-18"
+          >{{$t("trial-fight-completed")}}</span>
           <CustomButton
             v-show="!completed"
             :disabled="locked"

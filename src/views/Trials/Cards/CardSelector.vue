@@ -1,17 +1,22 @@
 <template>
-  <div class="cards-container flex flex-center flex-space-between" @click="handleContinue">
-    <span
+  <div class="cards-container flex" @click="handleContinue">
+    <!-- <span
       class="cards-title center-transform rarity-legendary font-outline"
       :class="{show: choice}"
-    >{{$t("trial-choose-cards-title")}}</span>
-    <Card
-      v-for="(card, index) in cards"
-      :key="index"
-      :effect="card"
-      :fightMeta="fightMeta"
-      ref="cards"
-      @click="handleCardChoice(index)"
-    ></Card>
+    >{{$t("trial-choose-cards-title")}}</span> -->
+
+    <div class="flex flex-center flex-space-evenly width-100 height-100 flex-self-end">
+      <Card
+        v-for="(card, index) in cards"
+        :key="index"
+        :effect="card"
+        :fightMeta="fightMeta"
+        ref="cards"
+        class="flex-basis-40"
+        @click="handleCardChoice(index)"
+      ></Card>
+    </div>
+
     <span
       class="cards-footer center-transform rarity-common font-outline"
       :class="{show: showContinue}"
@@ -20,6 +25,8 @@
 </template>
 
 <script>
+const RowCount = 2; // how many cards per row?
+
 import Card from "./Card.vue";
 import anime from "animejs/lib/anime.es.js";
 
@@ -55,7 +62,7 @@ export default {
         this.choice = false;
 
         const timeline = anime.timeline({
-            duration: 500
+          duration: 500
         });
 
         timeline
@@ -95,17 +102,18 @@ export default {
       }
 
       this.$refs.cards.forEach(card => {
-        card.setFlipped(true, false);
+        card.setFlipped(false, false);
       });
 
-      // show cards, back faced
+      // show cards
       await this._createShowSequence().finished;
 
-      this.showContinue = true;
+      this.choice = true;
     },
     _createShowSequence(reversed) {
       let elWdith = 0;
       const targets = [];
+
       this.$refs.cards.forEach(card => {
         targets.push(card.$el);
         elWdith = card.$el.offsetWidth;
@@ -153,7 +161,7 @@ export default {
             value: anime.stagger([-45, 45])
           },
           {
-            duration: 1000,
+            duration: 700,
             value: 0,
             delay: anime.stagger(250),
             easing: "easeOutCubic"
@@ -186,11 +194,16 @@ export default {
       }
 
       this.chosenCard = cardIndex;
-      this.cardEffectData = await this.$game.chooseTrialCard(this.trialType, cardIndex);
+      this.cardEffectData = await this.$game.chooseTrialCard(
+        this.trialType,
+        cardIndex
+      );
 
+      // set chosen card effect type
       const card = this.$refs.cards[cardIndex];
+      card.overriddenEffect = this.cardEffectData.effect;
       const cardPosition = card.$el.getBoundingClientRect();
-      const duration = 1000;
+      const duration = 600;
 
       // hide rest of the cards
       const hideTargets = this.$refs.cards
@@ -256,7 +269,7 @@ export default {
 
   & .cards-title {
     font-size: 6rem;
-    top: 20vh;
+    top: 10%;
     .cards-text();
   }
 

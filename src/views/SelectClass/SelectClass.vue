@@ -18,7 +18,7 @@
           <PromisedButton
             :promise="request"
             :disabled="!selectedClass"
-            :props="{type:'yellow'}"
+            type="yellow"
             @click="confirm"
           >{{$t('choose-class')}}</PromisedButton>
         </div>

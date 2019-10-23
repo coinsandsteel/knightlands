@@ -57,7 +57,6 @@ export default {
 
 <style lang="less" scoped>
 .card {
-  width: 30%;
   perspective: 1000px;
 
   &.elevated {
