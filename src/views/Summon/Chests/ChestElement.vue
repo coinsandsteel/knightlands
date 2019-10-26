@@ -10,8 +10,8 @@
     <div class="flex flex-space-between">
       <div>
         <div class="flex flex-center">
-          <div class="flex flex-items-center panel-input padding-left-1 padding-right-1">
-            <div class="key-icon" :style="keyIcon"></div>
+          <div class="flex flex-items-center panel-input padding-1">
+            <div class="item-icon" :style="keyIcon"></div>
             <span class="font-size-18">{{totalKeys}}</span>
           </div>
         </div>
@@ -35,13 +35,13 @@
           <CustomButton :disabled="!hasKey" type="yellow" @click="$emit('open', chest.name)">
           <div class="flex flex-items-center">
             <span class="margin-right-half">{{$t('btn-open')}}</span>
-            <div class="key-icon small" :style="keyIcon"></div>
+            <div class="item-icon" :style="keyIcon"></div>
           </div>
         </CustomButton>
         <CustomButton class="margin-top-1" v-show="batchSize > 1" type="yellow" @click="$emit('openBatch', chest.name, batchSize)">
           <div class="flex flex-items-center">
             <span class="margin-right-half">{{$t('btn-open')}}</span>
-            <div class="key-icon small" :style="keyIcon"></div>
+            <div class="item-icon" :style="keyIcon"></div>
             <span>x{{batchSize}}</span>
           </div>
         </CustomButton>
@@ -203,17 +203,5 @@ export default {
 
 .velvet_chest {
   .chest-icon("chest_large");
-}
-
-.key-icon {
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 4rem;
-  height: 4rem;
-
-  &.small {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 </style>

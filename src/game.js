@@ -476,7 +476,9 @@ class Game {
         }
 
         if (changes.tower) {
-            this._vm.towerFreeAttempts = changes.tower.freeAttemps || this._vm.towerFreeAttempts;
+            if (changes.tower.hasOwnProperty("freeAttemps")) {
+                this._vm.towerFreeAttempts = changes.tower.freeAttemps;
+            }
         }
 
         if (changes.trials) {

@@ -1,9 +1,15 @@
 <template>
   <div class="flex flex-items-center flex-start">
-    <div class="trials-bg width-100 flex flex-column flex-end flex-items-end flex-space-between">
-      <span class="trial-title font-outline padding-1">{{$t("window-trials-armour")}}</span>
+    <div
+      class="trials-bg width-100 flex flex-column flex-end flex-items-end flex-space-between margin-bottom-1"
+      v-for="(trial, index) in trials"
+      :key="index"
+      :style="background(trial)"
+      :class="`color-${trial}`"
+    >
+      <span class="trial-title text-align-right font-outline padding-1 font-weight-700">{{$t(`window-trials-${trial}`)}}</span>
       <div class="flex margin-1">
-        <CustomButton type="red" @click="goTo('trials-of-honor')">{{$t("btn-enter")}}</CustomButton>
+        <CustomButton type="red" @click="goTo(trial)">{{$t("btn-enter")}}</CustomButton>
       </div>
     </div>
   </div>
@@ -12,16 +18,43 @@
 <script>
 import AppSection from "@/AppSection";
 import CustomButton from "@/components/Button.vue";
+import TrialType from "@/../knightlands-shared/trial_type";
+import TrialBackgrounds from "./trialBackgrounds";
+
+const trials = [TrialType.Armour, TrialType.Weapon];
 
 export default {
   mixins: [AppSection],
   components: { CustomButton },
+  data: () => ({
+    trials
+  }),
   created() {
     this.title = "window-trials";
   },
   methods: {
-    goTo(name) {
+    goTo(trialType) {
+      let name;
+
+      switch (trialType) {
+        case TrialType.Armour:
+          name = "trials-of-honor";
+          break;
+
+        case TrialType.Weapon:
+          name = "conjured-trials";
+          break;
+      }
+
       this.$router.push({ name });
+    },
+    background(trialType) {
+      return {
+        "background-image": `url(${TrialBackgrounds.getBackground(
+          trialType,
+          3
+        )})`
+      };
     }
   }
 };
@@ -33,9 +66,17 @@ export default {
 
 <style lang="less" scoped>
 .trials-bg {
-  background: no-repeat url("../../assets/backgrounds/trials.jpg");
   height: 20vh;
   background-size: cover;
-  background-position: bottom;
+  background-position: center;
 }
+
+.color-armour {
+  color: #bdb8ff;
+}
+
+.color-weapon {
+  color: #ffe0a7;
+}
+
 </style>

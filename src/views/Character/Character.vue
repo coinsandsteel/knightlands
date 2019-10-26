@@ -13,11 +13,6 @@
 </template>
 
 <script>
-import Tabs from "@/components/Tabs.vue";
-import Inventory from "./Inventory.vue";
-import Stats from "./Training/Stats.vue";
-import Buffs from "./Buffs/Buffs.vue";
-import Beasts from "./BeastTaming/BeastTaming.vue";
 import AppSection from "@/AppSection";
 
 const InventoryTab = "inventory";
@@ -28,11 +23,11 @@ const BeastsTab = "beasts";
 export default {
   mixins: [AppSection],
   components: {
-    Tabs,
-    Stats,
-    Inventory,
-    Buffs,
-    Beasts
+    Tabs: () => import("@/components/Tabs.vue"),
+    Stats: () => import("./Training/Stats.vue"),
+    Inventory: () => import("./Inventory.vue"),
+    Buffs: () => import("./Buffs/Buffs.vue"),
+    Beasts: () => import("./BeastTaming/BeastTaming.vue")
   },
   data() {
     return {
@@ -40,7 +35,7 @@ export default {
         { title: "inventory", value: InventoryTab, to: "/character/inventory" },
         { title: "training", value: StatsTab, to: "/character/stats" },
         { title: "buffs", value: BuffsTab, to: "/character/buffs" },
-        { title: "beast", value: BeastsTab, to: "/character/beasts" },
+        { title: "beast", value: BeastsTab, to: "/character/beasts" }
       ],
       currentTab: InventoryTab,
       InventoryTab: InventoryTab,

@@ -21,12 +21,12 @@
       <div class="loot-quantity" :class="{'bottom': gacha}" v-else>
         <span
           v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))"
-          class="font-size-18 font-weight-700 digit-font font-outline"
+          class="font-size-18 font-weight-700 digit-font font-outline bold"
         >{{count}}</span>
       </div>
 
       <div v-if="showLevel && itemData && itemData.level > 1" class="item-level">
-        <span class="font-size-18 digit-font font-outline">Lvl:{{itemData.level || 1}}</span>
+        <span class="font-size-18 digit-font font-outline font-weight-700 bold">Lvl{{itemData.level || 1}}</span>
       </div>
     </template>
   </div>

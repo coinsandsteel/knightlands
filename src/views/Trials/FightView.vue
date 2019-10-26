@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex flex-column flex-center flex-no-wrap">
-    <EnemyView ref="enemyView" :image="enemyImage" :background="`/images/${background}`">
+    <EnemyView ref="enemyView" :image="enemyImage" :background="`${background}`">
       <FloatingTextContainer
         ref="floatingText"
         :enemyView="$refs.enemyView"

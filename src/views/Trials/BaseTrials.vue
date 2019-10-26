@@ -26,6 +26,7 @@ import AppSection from "@/AppSection";
 import CustomButton from "@/components/Button.vue";
 import TrialFooter from "./TrialFooter.vue";
 import Cards from "./Cards/Cards.vue";
+import Errors from "@/../knightlands-shared/errors";
 
 export default {
   mixins: [AppSection],
@@ -63,6 +64,16 @@ export default {
         stageId,
         fightIndex
       );
+
+      try {
+        await this.request;
+      } catch (exc) {
+        if (exc.includes(Errors.TrialNoAttempts)) {
+          this.showPrompt("prompt-snap-title", "trials-no-keys", [
+            { type: "green", title: "Ok", response: true }
+          ]);
+        }
+      }
     },
     addBackButtonListener(callback) {
       this.backButtonListener = callback;

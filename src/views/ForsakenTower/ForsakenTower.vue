@@ -15,6 +15,7 @@
       <FloorListElement
         :floor="item"
         :locked="item._id > floorsCleared"
+        :firstTime="item._id == floorsCleared"
         @hint="handleHint"
         @challenge="challengeFloor"
       ></FloorListElement>
@@ -32,9 +33,11 @@ import FloorListElement from "./FloorListElement.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import TowerFooter from "./TowerFooter.vue";
 import ForsakenTowerFloor from "./ForsakenTowerFloor.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
+import Errors from "@/../knightlands-shared/errors";
 
 export default {
-  mixins: [AppSection, HintHandler],
+  mixins: [AppSection, HintHandler, PromptMixin],
   components: { FloorListElement, ForsakenTowerFloor, TowerFooter },
   data: () => ({
     floors: [],
@@ -98,9 +101,17 @@ export default {
       this.scrollToFloor(this.floorsCleared);
     },
     async challengeFloor(floorIndex) {
-      const floor = await this.$game.challengeTowerFloor(floorIndex);
-      if (floor) {
-        this.openFloor(floor);
+      try {
+        const floor = await this.$game.challengeTowerFloor(floorIndex);
+        if (floor) {
+          this.openFloor(floor);
+        }
+      } catch (exc) {
+        if (exc.includes(Errors.TowerNoTicket)) {
+          this.showPrompt("prompt-snap-title", "tower-no-keys", [
+            { type: "green", title: "Ok", response: true }
+          ]);
+        }
       }
     },
     openFloor(floorState) {

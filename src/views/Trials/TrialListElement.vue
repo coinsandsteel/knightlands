@@ -5,7 +5,7 @@
     :class="[`rarity-${trial.rarity}`]"
   >
     <span
-      class="trial-title padding-1 font-outline text-align-right padding-right-3"
+      class="trial-title padding-1 font-outline text-align-right padding-right-3 font-weight-700"
     >{{$t(trial.rarity)}}</span>
     <div class="flex flex-end margin-1">
       <CustomButton v-on="$listeners" :locked="locked">{{$t("btn-enter")}}</CustomButton>
@@ -23,7 +23,7 @@ export default {
   computed: {
     background() {
       return {
-        "background-image": `url(/images/${TrialBackground.getBackground(this.trialType, this.index)})`
+        "background-image": `url(${TrialBackground.getBackground(this.trialType, this.index)})`
       };
     }
   }

@@ -6,7 +6,7 @@
 
     <div class="flex flex-full flex-space-between">
       <div class="flex flex-column flex-items-start padding-left-3">
-        <span class="font-size-18 margin-bottom-half">{{$t("tower-rewards")}}</span>
+        <span class="font-size-18 margin-bottom-half">{{$t(firstTime||locked?"tower-rewards":"tower-rewards-2")}}</span>
         <div class="flex flex-space-evenly">
           <IconWithValue
             valueClass="font-size-18 margin-right-3"
@@ -36,8 +36,11 @@
           <span>{{floor.attack}}</span>
         </div>
         <div class="flex">
-            
-          <CustomButton :disabled="locked" type="yellow" @click="$emit('challenge', floor._id)">{{$t("tower-challenge")}}</CustomButton>
+          <CustomButton
+            :disabled="locked"
+            type="yellow"
+            @click="$emit('challenge', floor._id)"
+          >{{$t("tower-challenge")}}</CustomButton>
         </div>
       </div>
     </div>
@@ -50,11 +53,15 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import Loot from "@/components/Loot.vue";
 
 export default {
-  props: ["floor", "locked"],
+  props: ["floor", "locked", "firstTime"],
   components: { CustomButton, IconWithValue, Loot },
   computed: {
     rewards() {
-      return this.floor.firstClearReward.guaranteedRecords;
+      if (this.firstTime || this.locked) {
+        return this.floor.firstClearReward.guaranteedRecords;
+      }
+
+      return this.floor.repeatClearReward.records;
     }
   },
   methods: {

@@ -1,67 +1,68 @@
 import Router from "vue-router";
-import Character from "./views/Character/Character.vue";
-import Quest from "./views/Quests/Quest.vue";
-import Login from "./views/Login.vue";
-import Admin from "./views/Admin.vue";
-import Home from "./views/Home.vue";
-import Raids from "./views/Raids/Raids.vue";
-import RaidView from "./views/Raids/RaidView.vue";
-import RaidSummon from "./views/Raids/RaidSummon.vue";
-import RaidsSummonList from "./views/Raids/RaidsSummonList.vue";
-import CurrentRaids from "./views/Raids/CurrentRaids.vue";
-import RaidSummoning from "./views/Raids/RaidSummoning.vue";
-import PrelaunchInventory from "./views/Prelaunch/PrelaunchInventory.vue";
-import LinkTelegram from "./views/Prelaunch/LinkTelegram.vue";
-import LinkEmail from "./views/Prelaunch/LinkEmail.vue";
 
-import CraftingRoot from "./views/Crafting/CraftingRoot.vue";
-import Crafting from "./views/Crafting/Create/Crafting.vue";
-import CraftingHome from "./views/Crafting/CraftingHome.vue";
+const Character = ()=>import("./views/Character/Character.vue");
+const Quest = ()=>import("./views/Quests/Quest.vue");
+const Login = ()=>import("./views/Login.vue");
+const Admin = ()=>import("./views/Admin.vue");
+const Home = ()=>import("./views/Home.vue");
+const Raids = ()=>import("./views/Raids/Raids.vue");
+const RaidView = ()=>import("./views/Raids/RaidView.vue");
+const RaidSummon = ()=>import("./views/Raids/RaidSummon.vue");
+const RaidsSummonList = ()=>import("./views/Raids/RaidsSummonList.vue");
+const CurrentRaids = ()=>import("./views/Raids/CurrentRaids.vue");
+const RaidSummoning = ()=>import("./views/Raids/RaidSummoning.vue");
+const PrelaunchInventory = ()=>import("./views/Prelaunch/PrelaunchInventory.vue");
+const LinkTelegram = ()=>import("./views/Prelaunch/LinkTelegram.vue");
+const LinkEmail = ()=>import("./views/Prelaunch/LinkEmail.vue");
 
-import CraftingUpgrade from "./views/Crafting/Upgrade/CraftingUpgrade.vue";
-import UpgradeItem from "./views/Crafting/Upgrade/UpgradeItem.vue";
-import Upgrade from "./views/Crafting/Upgrade/Upgrade.vue";
+const CraftingRoot = ()=>import("./views/Crafting/CraftingRoot.vue");
+const Crafting = ()=>import("./views/Crafting/Create/Crafting.vue");
+const CraftingHome = ()=>import("./views/Crafting/CraftingHome.vue");
 
-import CraftingUnbind from "./views/Crafting/Unbind/CraftingUnbind.vue";
-import UnbindItem from "./views/Crafting/Unbind/UnbindItem.vue";
-import Unbind from "./views/Crafting/Unbind/Unbind.vue";
+const CraftingUpgrade = ()=>import("./views/Crafting/Upgrade/CraftingUpgrade.vue");
+const UpgradeItem = ()=>import("./views/Crafting/Upgrade/UpgradeItem.vue");
+const Upgrade = ()=>import("./views/Crafting/Upgrade/Upgrade.vue");
 
-import Craft from "./views/Crafting/Create/Craft.vue";
-import Create from "./views/Crafting/Create/Create.vue";
+const CraftingUnbind = ()=>import("./views/Crafting/Unbind/CraftingUnbind.vue");
+const UnbindItem = ()=>import("./views/Crafting/Unbind/UnbindItem.vue");
+const Unbind = ()=>import("./views/Crafting/Unbind/Unbind.vue");
 
-import RecipeBookRoot from "./views/Crafting/RecipeBook/RecipeBookRoot.vue";
-import RecipeBook from "./views/Crafting/RecipeBook/RecipeBook.vue";
-import RecipeBookPage from "./views/Crafting/RecipeBook/RecipeBookPage.vue";
+const Craft = ()=>import("./views/Crafting/Create/Craft.vue");
+const Create = ()=>import("./views/Crafting/Create/Create.vue");
 
-import CraftingEnchant from "./views/Crafting/Enchant/CraftingEnchant.vue";
-import Enchant from "./views/Crafting/Enchant/Enchant.vue";
-import EnchantItem from "./views/Crafting/Enchant/EnchantItem.vue";
+const RecipeBookRoot = ()=>import("./views/Crafting/RecipeBook/RecipeBookRoot.vue");
+const RecipeBook = ()=>import("./views/Crafting/RecipeBook/RecipeBook.vue");
+const RecipeBookPage = ()=>import("./views/Crafting/RecipeBook/RecipeBookPage.vue");
 
-import SummonRoot from "./views/Summon/SummonRoot.vue";
-import SummonHome from "./views/Summon/SummonHome.vue";
+const CraftingEnchant = ()=>import("./views/Crafting/Enchant/CraftingEnchant.vue");
+const Enchant = ()=>import("./views/Crafting/Enchant/Enchant.vue");
+const EnchantItem = ()=>import("./views/Crafting/Enchant/EnchantItem.vue");
 
-import ShopRoot from "./views/Summon/Shop/ShopRoot.vue";
-import ShopHome from "./views/Summon/Shop/ShopHome.vue";
+const SummonRoot = ()=>import("./views/Summon/SummonRoot.vue");
+const SummonHome = ()=>import("./views/Summon/SummonHome.vue");
 
-import ChestsRoot from "./views/Summon/Chests/ChestsRoot.vue";
-import ChooseChest from "./views/Summon/Chests/ChooseChest.vue";
-import OpenChest from "./views/Summon/Chests/OpenChest.vue";
+const ShopRoot = ()=>import("./views/Summon/Shop/ShopRoot.vue");
+const ShopHome = ()=>import("./views/Summon/Shop/ShopHome.vue");
 
-import AdventuresRoot from "./views/Adventures/AdventuresRoot.vue";
-import Adventures from "./views/Adventures/Adventures.vue";
+const ChestsRoot = ()=>import("./views/Summon/Chests/ChestsRoot.vue");
+const ChooseChest = ()=>import("./views/Summon/Chests/ChooseChest.vue");
+const OpenChest = ()=>import("./views/Summon/Chests/OpenChest.vue");
 
-import ForsakenTowerRoot from "./views/ForsakenTower/ForsakenTowerRoot.vue";
-import ForsakenTower from "./views/ForsakenTower/ForsakenTower.vue";
+const AdventuresRoot = ()=>import("./views/Adventures/AdventuresRoot.vue");
+const Adventures = ()=>import("./views/Adventures/Adventures.vue");
 
-import DailyRewards from "./views/DailyRewards/DailyRewards.vue";
+const ForsakenTowerRoot = ()=>import("./views/ForsakenTower/ForsakenTowerRoot.vue");
+const ForsakenTower = ()=>import("./views/ForsakenTower/ForsakenTower.vue");
 
-import TrialsRoot from "./views/Trials/TrialsRoot.vue";
-import HonorTrials from "./views/Trials/Trials.vue";
-import TrialsOfHonor from "./views/Trials/Honor/TrialsOfHonor.vue";
-import HonorTrialsList from "./views/Trials/Honor/TrialsList.vue";
+const DailyRewards = ()=>import("./views/DailyRewards/DailyRewards.vue");
 
-import Dividends from "./views/Dividends/Dividends.vue";
-import Settings from "./views/Settings/Settings.vue";
+const TrialsRoot = ()=>import("./views/Trials/TrialsRoot.vue");
+const HonorTrials = ()=>import("./views/Trials/Trials.vue");
+const TrialsOfHonor = ()=>import("./views/Trials/Honor/TrialsOfHonor.vue");
+const HonorTrialsList = ()=>import("./views/Trials/Honor/TrialsList.vue");
+
+const Dividends = ()=>import("./views/Dividends/Dividends.vue");
+const Settings = ()=>import("./views/Settings/Settings.vue");
 
 const router = new Router({
   routes: [
@@ -254,6 +255,17 @@ const router = new Router({
               path: "",
               name: "trials-of-honor",
               component: HonorTrialsList
+            }
+          ]
+        },
+        {
+          path: "conjured",
+          component: () => import("./views/Trials/Conjured/ConjuredTrials.vue"),
+          children: [
+            {
+              path: "",
+              name: "conjured-trials",
+              component: () => import("./views/Trials/Conjured/TrialsList.vue")
             }
           ]
         }

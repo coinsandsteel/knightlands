@@ -6,14 +6,16 @@
       <keep-alive>
         <div class="width-100" v-bar v-if="!selectedStage">
           <div>
-            <div class="flex flex-column" v-if="trialState">
+            <div class="flex flex-column">
               <TrialStageListElement
                 v-for="(stage, index) in meta.stages"
                 :key="stage.id"
                 :index="index"
                 :stage="stage"
-                :state="trialState.stages[stage.id]"
+                :state="trialState && trialState.stages[stage.id]"
                 :locked="isStageLocked(index)"
+                :inFight="!!state.currentFight"
+                :element="getElement(stage.id)"
                 @hint="handleHint"
                 @continue="continueToStage"
                 @collect="collectStageReward"
@@ -23,7 +25,7 @@
         </div>
 
         <TrialStage
-          v-else-if="trialState"
+          v-else
           :trialMeta="meta"
           :trialType="trialType"
           :trialIndex="trialIndex"
@@ -46,6 +48,7 @@ import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
+import Elements from "@/../knightlands-shared/elements";
 
 import { create } from "vue-modal-dialogs";
 
@@ -54,7 +57,13 @@ const ShowRewards = create(ItemsReceived, "items", "soft", "exp");
 export default {
   props: ["trialType", "meta", "mountCallback", "state", "trialIndex"],
   mixins: [HintHandler, PromptMixin],
-  components: { TrialStageListElement, TrialStage, Promised, LoadingScreen,ItemsReceived },
+  components: {
+    TrialStageListElement,
+    TrialStage,
+    Promised,
+    LoadingScreen,
+    ItemsReceived
+  },
   data: () => ({
     request: null,
     trialState: null,
@@ -106,21 +115,23 @@ export default {
 
       this.lastStageCleared = -1; // index
 
-      for (let i = 0; i < metaStages.length; ++i) {
-        const stage = metaStages[i];
-        const stageState = this.trialState.stages[stage.id];
-        if (stageState && stageState.cleared) {
-          this.lastStageCleared = i;
-        } else {
-          break;
+      if (this.trialState) {
+        for (let i = 0; i < metaStages.length; ++i) {
+          const stage = metaStages[i];
+          const stageState = this.trialState.stages[stage.id];
+          if (stageState && stageState.cleared) {
+            this.lastStageCleared = i;
+          } else {
+            break;
+          }
         }
       }
     },
     handleStageCleared() {
       this.selectedStage = null;
       this.showPrompt(
-        this.$t("trial-stage-cleared-t"),
-        this.$t("trial-stage-cleared-m"),
+        "trial-stage-cleared-t",
+        "trial-stage-cleared-m",
         [
           {
             type: "green",
@@ -130,6 +141,10 @@ export default {
         ]
       );
       this.refresh();
+    },
+    getElement(stageId) {
+      if (!this.state.elements) return Elements.Physical;
+      return this.state.elements[stageId];
     },
     isStageLocked(stageIndex) {
       if (this.state.currentFight) {

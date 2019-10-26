@@ -11,10 +11,23 @@
           key-field="id"
           v-slot="{ item }"
         >
-          <CraftingRecipeListElement :recipe="item" @craft="handleCraft" :ingridientHintHandler="handleIngridientHint"></CraftingRecipeListElement>
+          <CraftingRecipeListElement
+            :recipe="item"
+            @craft="handleCraft"
+            :ingridientHintHandler="handleIngridientHint"
+          ></CraftingRecipeListElement>
         </RecycleScroller>
       </div>
     </div>
+
+    <portal v-if="isActive" to="footer">
+      <Toggle
+        :cb="handleAvailableToggle"
+        :startValue="onlyAvailabe"
+        caption="toggle-available-recipes"
+      ></Toggle>
+      <CustomButton type="grey" @click="showItemFilter">Filter</CustomButton>
+    </portal>
   </div>
 </template>
 
@@ -35,7 +48,7 @@ const ShowFilters = create(RecipeFilter, ...RecipeFilter.props);
 
 export default {
   mixins: [TabHandler, AppSection, HintHandler],
-  components: { IconTabs, CraftingRecipeListElement, Toggle },
+  components: { IconTabs, CraftingRecipeListElement, Toggle, CustomButton },
   data: () => ({
     recipes: [],
     filtered: [],
@@ -45,25 +58,15 @@ export default {
     filters: {}
   }),
   mounted() {
-    this.onlyAvailabe = this.$store.getters.getAvailableSwitchInCraftingList(this.listId);
+    this.onlyAvailabe = this.$store.getters.getAvailableSwitchInCraftingList(
+      this.listId
+    );
   },
   activated() {
-    this.addFooter(Toggle, {
-      cb: this.handleAvailableToggle.bind(this),
-      caption: "toggle-available-recipes",
-      startValue: this.onlyAvailabe
-    });
-
-    this.addFooter(CustomButton, {
-      cb: this.showItemFilter.bind(this),
-      caption: "Filter",
-      type: "grey"
-    });
-
     this.handleAvailableToggle(this.onlyAvailabe);
 
     if (this.scrollState) {
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$refs.scroller.updateVisibleItems(false);
         this.$refs.scroller.scrollToPosition(this.scrollState.start);
       });
@@ -82,8 +85,8 @@ export default {
       let recipe = this.$game.crafting.getRecipeByItem(item.template);
       if (recipe) {
         buttons.push({
-          type:"yellow",
-          title:"btn-open-craft",
+          type: "yellow",
+          title: "btn-open-craft",
           response: true
         });
       }
@@ -126,7 +129,7 @@ export default {
         }
       }
 
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$refs.scroller.updateVisibleItems(false);
       });
     },
@@ -139,24 +142,20 @@ export default {
       recipes.sort((a, b) => {
         let recipeA = crafting.getRecipe(a);
         let recipeB = crafting.getRecipe(b);
-        let sortingFactorA = itemsDB.getRarityAsNumber(
-            recipeA.resultItem
-        );
-        let sortingFactorB = itemsDB.getRarityAsNumber(
-            recipeB.resultItem
-        );
+        let sortingFactorA = itemsDB.getRarityAsNumber(recipeA.resultItem);
+        let sortingFactorB = itemsDB.getRarityAsNumber(recipeB.resultItem);
 
         if (sortingFactorA == sortingFactorB) {
-            sortingFactorA = recipeA.id;
-            sortingFactorB = recipeB.id;
+          sortingFactorA = recipeA.id;
+          sortingFactorB = recipeB.id;
         }
 
         if (sortingFactorA > sortingFactorB) {
-            return 1;
+          return 1;
         }
 
         if (sortingFactorA < sortingFactorB) {
-            return -1;
+          return -1;
         }
 
         return 0;
@@ -172,14 +171,16 @@ export default {
       this.filtered.length = 0;
 
       if (value) {
-          let i = 0;
-          const length = this.recipes.length;
-          
-          for (; i < length; ++i) {
-            if (this.$game.crafting.hasEnoughResourcesForRecipe(this.recipes[i])) {
-              this.filtered.push(this.recipes[i]);
-            }
+        let i = 0;
+        const length = this.recipes.length;
+
+        for (; i < length; ++i) {
+          if (
+            this.$game.crafting.hasEnoughResourcesForRecipe(this.recipes[i])
+          ) {
+            this.filtered.push(this.recipes[i]);
           }
+        }
       }
 
       this.updateList();

@@ -43,7 +43,7 @@
     </template>
 
     <template v-slot:footer>
-      <div class="flex" v-if="showButtons">
+      <div class="flex width-100 flex-space-evenly" v-if="showButtons">
         <custom-button
           type="yellow"
           v-if="actions.equip && equip && isEquipment"

@@ -146,10 +146,11 @@ h1 {
 }
 
 .flex(@counter) when (@counter > 0) {
-  .flex((@counter - 1)); // next iteration
-  .flex-@{counter} {
-    flex: @counter;
-  }
+    .flex((@counter - 1)); // next iteration
+
+    .flex-@{counter} {
+        flex: @counter;
+    }
 }
 
 .flex(12);
@@ -288,10 +289,11 @@ h1 {
 }
 
 .size(@property, @counter) when (@counter > 0) {
-  .size(@property, (@counter - 1)); // next iteration
-  .@{property}-@{counter} {
-    @{property}: ~'@{counter}rem';
-  }
+    .size(@property, (@counter - 1)); // next iteration
+
+    .@{property}-@{counter} {
+        @{property}:~'@{counter}rem';
+    }
 }
 
 .size(margin, 6);
@@ -309,17 +311,29 @@ h1 {
 
 
 .font-outline {
-  text-shadow: 
-     1px  1px     #210028, 
-    -1px  1px     #210028, 
-     1px -1px     #210028, 
-    -1px -1px     #210028,
-     1px  1px 5px #555;
+    text-shadow:
+        0.5px 0.5px #210028,
+        -0.5px 0.5px #210028,
+        0.5px -0.5px #210028,
+        -0.5px -0.5px #210028;
+
+    &.bold {
+        text-shadow:
+            1px 1px #210028,
+            -1px 1px #210028,
+            1px -1px #210028,
+            -1px -1px #210028;
+    }
+}
+
+.font-shadow {
+    text-shadow:
+        2px 2px #210028;
 }
 
 .font-shadow {
     text-shadow: 0.5px 0.5px #210028;
-  }
+}
 
 .center-transform {
     left: 50%;
@@ -358,11 +372,12 @@ h1 {
 
 .absolute-stretch {
     position: absolute !important;
-    top:0  !important;
-    left:0  !important;
-    right:0  !important;
-    bottom:0  !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
 }
+
 .z-index-1 {
     z-index: 1;
 }
@@ -687,10 +702,11 @@ h1 {
 
 //width/height generator with 5% step
 .widthHeight(@size, @counter) when (@counter > 0) {
-  .widthHeight(@size, (@counter - 5)); // next iteration
-  .@{size}-@{counter} {
-    @{size}: ~'@{counter}%';
-  }
+    .widthHeight(@size, (@counter - 5)); // next iteration
+
+    .@{size}-@{counter} {
+        @{size}:~'@{counter}%';
+    }
 }
 
 .widthHeight(height, 100);
@@ -756,10 +772,10 @@ h1 {
     z-index: 1;
 }
 
-@commonRarityColor: #bdbebf;
+@commonRarityColor: #e3e3e3;
 @rareRarityColor: #70ee70;
 @epicRarityColor: #c965ee;
-@legendaryRarityColor: #fdc64f;
+@legendaryRarityColor: #ff9800;
 @mythicalRarityColor: #ff0d74;
 
 .rarity-common {

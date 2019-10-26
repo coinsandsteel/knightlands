@@ -1,0 +1,128 @@
+<template>
+  <div class="flex flex-items-center font-size-18 flex-column flex-no-wrap">
+    <div class="margin-bottom-half" v-for="p in properties" :key="p" v-html="p"></div>
+    <div class="margin-bottom-half" v-if="action" v-html="action"></div>
+    <span
+      class="margin-bottom-half"
+      v-if="template.maxStacks > 0"
+    >{{$t("max-stacks", {max: template.maxStacks})}}</span>
+  </div>
+</template>
+
+<script>
+const ItemActions = require("@/../knightlands-shared/item_actions");
+import ItemProperties from "@/../knightlands-shared/item_properties";
+
+export default {
+  props: ["item"],
+  computed: {
+    template() {
+      return this.$game.itemsDB.getTemplate(this.item);
+    },
+    action() {
+      let action = this.template.action;
+      if (!action || action.action == ItemActions.OpenBox) {
+        return "";
+      }
+
+      let params = { ...action };
+
+      if (action.action == ItemActions.Buff) {
+        params.duration = params.duration / 3600;
+      } else if (action.action == ItemActions.RaidBuff) {
+        params.raid = this.$t(RaidsMeta[params.raid].name);
+      }
+
+      if (action.relative) {
+        params.suffix = "%";
+      } else {
+        params.suffix = "";
+      }
+
+      if (params.stat) {
+        params.stat = this.$t(params.stat);
+      }
+
+      return this.$t(action.action, params);
+    },
+    properties() {
+      if (!this.template.properties) {
+        return [];
+      }
+
+      let props = new Array(this.template.properties.length);
+
+      let i = 0;
+      let propIndex = 0;
+      const length = this.template.properties.length;
+      for (; i < length; i++) {
+        const property = this.$game.itemsDB.getProperty(
+          this.template.properties[i]
+        );
+        if (!property) {
+          continue;
+        }
+
+        let locKey = property.type;
+        if (property.type == ItemProperties.IncreasedStatBasedOnMood) {
+          if (property.value2 > 0) {
+            locKey = ItemProperties.IncreasedStatBasedOnMood + "_positive";
+          } else {
+            locKey = ItemProperties.IncreasedStatBasedOnMood + "_negative";
+          }
+        }
+
+        let locParams = { ...property };
+
+        if (locParams.rarity) {
+          locParams.rarityClass = locParams.rarity;
+          locParams.rarity = this.$t(locParams.rarity);
+        }
+
+        if (locParams.item) {
+          locParams.rarityClass = this.$game.itemsDB.getRarity(locParams.item);
+        }
+
+        if (locParams.item) {
+          locParams.item = this.$t(this.$game.itemsDB.getName(locParams.item));
+        } else if (property.type == ItemProperties.ExtraStatIfItemNotEquipped) {
+          locParams.rarityClass = this.$game.itemsDB.getRarity(this.item);
+          locParams.item = this.$t(this.$game.itemsDB.getName(this.item));
+          locParams.maxItemCount = locParams.maxItemCount || 1;
+        }
+
+        if (locParams.hasOwnProperty("raidStage")) {
+          let stage = "normal";
+
+          switch (locParams.raidStage) {
+            case 1:
+              stage = "hard";
+              break;
+
+            case 2:
+              stage = "ruthless";
+              break;
+
+            case 3:
+              stage = "torment";
+              break;
+          }
+
+          locParams.raidStage = this.$t(stage);
+        }
+
+        if (locParams.stat) {
+          locParams.stat = this.$t(locParams.stat);
+        }
+
+        if (locParams.baseStat) {
+          locParams.baseStat = this.$t(locParams.baseStat);
+        }
+
+        props[propIndex++] = this.$t(locKey, locParams);
+      }
+      return props;
+    }
+  }
+};
+</script>

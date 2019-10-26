@@ -886,7 +886,8 @@
     "btn-tower": "Onyx Tower",
     "window-tower": "Onyx Tower",
     "tower-floor-title": "Floor {floor}",
-    "tower-rewards": "Clearance Rewards",
+    "tower-rewards": "First time clearance rewards",
+    "tower-rewards-2": "Possible rewards",
     "tower-challenge": "Challenge",
     "tower_key": "Tower Key",
     "tower-locked": "Complete previous floor",
@@ -915,6 +916,7 @@
     "trial-stage-title": "Stage {stage}",
     "trial-stage-progress": "Progress:",
     "trial-stage-locked": "Clear previous stage",
+    "trial-stage-locked-2": "Finish current fight",
     "trial-fight-title": "Fight {fight}",
     "trial-fight-completed": "Completed",
     "trial-stage-collect": "Collect",
@@ -939,6 +941,12 @@
     "btn-summon-trial-cards": "Summon Cards",
     "raids-empty": "There are no raids yet.",
     "raid-summon-now": "Summon Now",
-    "buffs-empty": "There are no power ups.",
-    "buff-now": "Get stronger"
+    "buffs-empty": "It seems you need some additional power.",
+    "buff-now": "Get stronger",
+    "window-trials-weapon": "Conjured Trials",
+    "mythical": "Mythical",
+    "btn-compare": "Compare",
+    "prompt-snap-title": "Oh snap!",
+    "tower-no-keys": "No Onyx Keys!",
+    "trials-no-keys": "No trial tickets!"
 }

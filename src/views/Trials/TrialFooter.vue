@@ -51,9 +51,10 @@ export default {
 }
 
 .armour {
-    background-image: url("../../assets/ui/ticket_red.png");
+  background-image: url("../../assets/ui/ticket_blue.png");
 }
 
 .weapon {
+  background-image: url("../../assets/ui/ticket_red.png");
 }
 </style>
