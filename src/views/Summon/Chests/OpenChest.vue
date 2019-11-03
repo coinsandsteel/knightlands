@@ -155,9 +155,7 @@ export default {
           // spawn loot
           if (event.data.name == "spawn_loot") {
             this.showLoot = true;
-            setTimeout(()=>{
-              this.showContinue = true;
-            }, 1000);
+            this.showContinue = true;
           }
         }
       });

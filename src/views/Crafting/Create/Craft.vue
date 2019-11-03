@@ -5,7 +5,7 @@
         <LoadingScreen :loading=true :opacity="0.7" v-show="isPending && isDelayOver"></LoadingScreen>
 
         <StripedPanel class="craft width-100" contentClasses="height-100" v-if="recipeId">
-          <ItemInfo :item="item"></ItemInfo>
+          <ItemInfo :item="item" class="width-100"></ItemInfo>
 
           <div class="flex flex-column flex-items-center flex-end full-flex">
             <span class="title font-size-20 margin-top-3">{{$t("ingridients")}}</span>
@@ -17,7 +17,7 @@
               <crafting-ingridient
               ref="ingridients"
                 v-for="(ingridient) in ingridients"
-                :key="ingridient.itemId"
+                :key="`${ingridient.itemId}_${ingridientsKey}`"
                 :ingridient="ingridient"
                 :hintHandler="handleIngridientHint"
               />
@@ -92,7 +92,8 @@ export default {
   data: ()=>({
     fetchPayment: null,
     request: null,
-    ready: false
+    ready: false,
+    ingridientsKey: 0
   }),
   created() {
     this.title = "window-craft";
@@ -140,6 +141,7 @@ export default {
     async handlePaymentComplete(iap, item) {
       if (item) {
         await ShowItemCreated(item.resultItem);
+        this.ingridientsKey++;
       }
     },
     async fetchPaymentStatus() {

@@ -275,6 +275,11 @@ const router = new Router({
       }
     },
     {
+      path: "/home/gold",
+      name: "gold-exchange",
+      component: () => import("./views/GoldExchange/GoldExchange.vue")
+    },
+    {
       path: "/link/:token/:user",
       name: "link-tg",
       component: LinkTelegram,

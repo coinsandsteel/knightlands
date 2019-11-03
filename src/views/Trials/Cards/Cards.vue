@@ -8,13 +8,9 @@
             <span>{{points}}</span>
           </div>
 
-          <CustomButton
-            :disabled="!needReset"
-            type="yellow"
-            @click="resetCards"
-          >
-          {{$t("trials-cards-reset")}}
-          <IconWithValue iconClass="icon-gold">{{resetCost}}</IconWithValue>
+          <CustomButton :disabled="!needReset" type="yellow" @click="resetCards">
+            {{$t("trials-cards-reset")}}
+            <IconWithValue iconClass="icon-gold">{{resetCost}}</IconWithValue>
           </CustomButton>
         </portal>
 
@@ -51,7 +47,13 @@ import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   name: "trial-cards",
-  components: { CardModifier, CustomButton, Promised, LoadingScreen, IconWithValue },
+  components: {
+    CardModifier,
+    CustomButton,
+    Promised,
+    LoadingScreen,
+    IconWithValue
+  },
   data: () => ({
     cardModifiers: TrialsMeta.cardModifiers,
     modifiersLevels: {},
@@ -62,7 +64,9 @@ export default {
   },
   computed: {
     resetCost() {
-      return this.$game.trialCardsResolver.getResetPrice(this.totalPoints - this.points);
+      return this.$game.trialCardsResolver.getResetPrice(
+        this.totalPoints - this.points
+      );
     },
     points() {
       return this.$game.getTrialsCard().points;

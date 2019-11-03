@@ -91,7 +91,8 @@ export default {
     QuestMissionElement,
     ZoneSelection,
     QuestMission,
-    DifficultySwitch
+    DifficultySwitch,
+    CustomButton
   },
   props: ["zone", "quest"],
   data() {

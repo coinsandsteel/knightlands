@@ -33,11 +33,11 @@
       </div>-->
 
       <div class="flex margin-top-2 flex-center width-100 flex-space-evenly">
-        <PromisedButton
+        <AttackButton
           :promise="request"
           @click="attack"
           type="red"
-        >{{$t("btn-attack")}}</PromisedButton>
+        >{{$t("btn-attack")}}</AttackButton>
 
         <PromisedButton
           :promise="request"
@@ -79,6 +79,7 @@ import EnemyView from "@/components/EnemyView.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
 import TrialBackground from "./trialBackgrounds";
 import PromisedButton from "@/components/PromisedButton.vue";
+import AttackButton from "@/components/AttackButton.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import CardSelector from "./Cards/CardSelector.vue";
@@ -92,7 +93,8 @@ export default {
     FloatingTextContainer,
     PromisedButton,
     ProgressBar,
-    CardSelector
+    CardSelector,
+    AttackButton
   },
   data: () => ({
     request: null,

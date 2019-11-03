@@ -1,7 +1,7 @@
 <template>
   <div class="padding-1 dummy-height full-flex">
     <div class="padding-1 dummy-height full-flex flex flex-center flex-column panel" v-if="item">
-      <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}">
+      <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}" class="width-100">
         <!-- Add leveling bar -->
         <template v-slot:beforeStats>
           <div class="progress-bar-margin">
@@ -16,6 +16,7 @@
               <progress-bar
                 v-model="item.exp"
                 height="2rem"
+                class="flex-start"
                 width="70%"
                 barType="green"
                 barType2="yellow"

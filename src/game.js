@@ -46,7 +46,8 @@ class Game {
                 beast: {},
                 towerFreeAttempts: 0,
                 rank: 0,
-                trials: {}
+                trials: {},
+                goldExchange: {}
             })
         });
 
@@ -85,6 +86,9 @@ class Game {
         this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
         this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
         this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
+        this._socket.on(Events.TrialAttemptsPurchased, this._handleTrialAttemptsPurchase.bind(this));
+        this._socket.on(Events.TowerAttemptsPurchased, this._handleTowerAttemptsPurchase.bind(this));
+        this._socket.on(Events.GoldExchangeBoostPurchased, this._handleGoldExchangeBoosted.bind(this));
 
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
@@ -113,6 +117,10 @@ class Game {
 
     getTrialsCard() {
         return this._vm.trials.cards;
+    }
+
+    getGoldExchange() {
+        return this._vm.goldExchange;
     }
 
     get trialCardsResolver() {
@@ -359,6 +367,20 @@ class Game {
         this._vm.$emit(Events.ItemPurchased, data);
     }
 
+    _handleTrialAttemptsPurchase(data) {
+        this.getTrialState(data.context.trialType).attempts += data.context.count;
+        this._vm.$emit(Events.TrialAttemptsPurchased, data);
+    }
+
+    _handleTowerAttemptsPurchase(data) {
+        this._vm.$emit(Events.TowerAttemptsPurchased, data);
+    }   
+
+    _handleGoldExchangeBoosted(data) {
+        this.mergeObjects(this._vm, this._vm.goldExchange, data.context);
+        this._vm.$emit(Events.GoldExchangeBoostPurchased, data);
+    }
+
     _handleRaidJoinStatus(data) {
         this._vm.$emit(Events.RaidJoinStatus, data);
     }
@@ -467,12 +489,12 @@ class Game {
             this._checkClassChoice();
         }
 
-
+        if (changes.goldExchange) {
+            this.mergeObjects(this._vm, this._vm.goldExchange, changes.goldExchange);
+        }
 
         if (changes.beast) {
-            this._vm.beast.exp = changes.beast.exp || this._vm.beast.exp;
-            this._vm.beast.level = changes.beast.level || this._vm.beast.level;
-            this._vm.beast.index = changes.beast.index || this._vm.beast.index;
+            this.mergeObjects(this._vm, this._vm.beast, changes.beast);
         }
 
         if (changes.tower) {
@@ -1107,6 +1129,35 @@ class Game {
 
     async summonTrialCards(trialType) {
         return (await this._wrapOperation(Operations.SummonTrialCards, { trialType })).response;
+    }
+
+    async fetchTrialsAttemptsStatus(trialType) {
+        return (await this._wrapOperation(Operations.FetchTrialAttemptsStatus, { trialType })).response;
+    }
+
+    async purchaseTrialsAttempts(trialType, iapIndex) {
+        return (await this._wrapOperation(Operations.PurchaseTrialAttempts, { trialType, iapIndex })).response;
+    }
+
+    // Gold exchange
+    async getGoldExchangeMeta() {
+        return (await this._wrapOperation(Operations.GetGoldExchangeMeta)).response;
+    }
+
+    async fetchGoldExchangeBoostPremiumStatus() {
+        return (await this._wrapOperation(Operations.FetchGoldExchangePremiumBoostStatus)).response;
+    }
+
+    async obtainGoldFromGoldExchange() {
+        return (await this._wrapOperation(Operations.ObtainGoldFromGoldExchange)).response;
+    }
+
+    async boostGoldExchange() {
+        return (await this._wrapOperation(Operations.BoostGoldExchange)).response;
+    }
+
+    async premiumBoostGoldExchange(count) {
+        return (await this._wrapOperation(Operations.PremiumBoostGoldExchange, {count})).response;
     }
 }
 

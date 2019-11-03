@@ -5,7 +5,7 @@
         <loading-screen :loading="true" :opacity="0.4" v-show="isDelayOver && isPending"></loading-screen>
 
         <div v-bar v-if="raids.length > 0">
-          <div class="flex flex-column flex-item-center current-raids-list">
+          <div class="flex flex-column current-raids-list">
             <current-raid-element
               v-for="(raidData, index) in raids"
               :key="raidData.id"
@@ -78,7 +78,7 @@ export default {
 <style lang="less" scoped>
 .current-raids-list {
   > * {
-    margin: 1rem 2rem 1rem 2rem;
+    margin: 1rem 1rem 1rem 1rem;
   }
 
   min-height: 0;

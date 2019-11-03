@@ -1,36 +1,30 @@
 <template>
   <div class="flex flex-column flex-end flex-items-center relative">
     <div class="home-art"></div>
+    <div class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5">
+      <MenuIconRow>
+        <MenuIcon icon="icon-recipe-book" to="recipes" :append="true">
+          <span>{{$t("btn-recipes")}}</span>
+        </MenuIcon>
 
-    <div class="flex width-100 flex-center margin-bottom-5">
-      <div class="flex flex-center width-100">
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="recipes" :append="true">
-          <SkewedButton :props='{type:"grey", icon:"icon-recipe-book"}'>{{$t("btn-recipes")}}</SkewedButton>
-        </router-link>
+        <MenuIcon icon="icon-craft" to="craft" :append="true">
+          <span>{{$t("btn-crafting")}}</span>
+        </MenuIcon>
+      </MenuIconRow>
 
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="craft" :append="true">
-          <SkewedButton :props='{type:"grey", icon:"icon-craft"}'>{{$t("btn-crafting")}}</SkewedButton>
-        </router-link>
+      <MenuIconRow>
+        <MenuIcon icon="icon-craft-level" to="level" :append="true">
+          <span>{{$t("btn-crafting-level")}}</span>
+        </MenuIcon>
 
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="level" :append="true">
-          <SkewedButton
-            :props='{type:"green", icon:"icon-craft-level"}'
-          >{{$t("btn-crafting-level")}}</SkewedButton>
-        </router-link>
-      </div>
+        <MenuIcon icon="icon-craft-upgrade" to="upgrade" :append="true">
+          <span>{{$t("btn-crafting-upgrade")}}</span>
+        </MenuIcon>
 
-      <div class="flex flex-center width-100">
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="upgrade" :append="true">
-          <SkewedButton
-            class="flex-basis-50"
-            :props="{type:'purple', icon:'icon-craft-upgrade'}"
-          >{{$t("btn-crafting-upgrade")}}</SkewedButton>
-        </router-link>
-
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="enchant" :append="true">
-          <SkewedButton :props='{type:"red", icon:"icon-enchant"}'>{{$t("btn-enchant")}}</SkewedButton>
-        </router-link>
-      </div>
+        <MenuIcon icon="icon-enchant" to="enchant" :append="true">
+          <span>{{$t("btn-enchant")}}</span>
+        </MenuIcon>
+      </MenuIconRow>
     </div>
   </div>
 </template>
@@ -38,10 +32,12 @@
 <script>
 import AppSection from "@/AppSection";
 import SkewedButton from "@/components/SkewedButton.vue";
+import MenuIcon from "@/components/MenuIcon.vue";
+import MenuIconRow from "@/components/MenuIconRow.vue";
 
 export default {
   mixins: [AppSection],
-  components: { SkewedButton },
+  components: { SkewedButton, MenuIcon, MenuIconRow },
   created() {
     this.title = this.$t("window-title-crafting");
   },

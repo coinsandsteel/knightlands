@@ -27,12 +27,12 @@
       </div>
 
       <div v-else-if="!finished" class="flex margin-top-2 flex-center width-100 flex-space-evenly">
-        <PromisedButton
+        <AttackButton
           :promise="request"
           @click="attack"
           width="15rem"
           type="yellow"
-        >{{$t("btn-attack")}}</PromisedButton>
+        >{{$t("btn-attack")}}</AttackButton>
 
         <PromisedButton
           :promise="request"
@@ -59,6 +59,7 @@ import EnemyView from "@/components/EnemyView.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
 import TowerMeta from "@/tower_meta";
 import PromisedButton from "@/components/PromisedButton.vue";
+import AttackButton from "@/components/AttackButton.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -71,7 +72,7 @@ const ShowRewards = create(ClaimedReward, ...ClaimedReward.props);
 export default {
   mixins: [PromptMixin],
   props: ["floor"],
-  components: { EnemyView, FloatingTextContainer, PromisedButton, ProgressBar },
+  components: { EnemyView, FloatingTextContainer, PromisedButton, ProgressBar, AttackButton },
   data: () => ({
     request: null,
     barThreshold: UiConstants.progressThresholds,

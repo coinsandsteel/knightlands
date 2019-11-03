@@ -948,5 +948,16 @@
     "btn-compare": "Compare",
     "prompt-snap-title": "Oh snap!",
     "tower-no-keys": "No Onyx Keys!",
-    "trials-no-keys": "No trial tickets!"
+    "trials-no-keys": "No trial tickets!",
+    "trials-purchase-attempts": "Purchase Attempts",
+    "btn-reset": "Reset",
+    "btn-goldExchange": "Gold Exchange",
+    "window-gold-exchange": "Gold Exchange",
+    "gld-exchange-boost": "Free Boost",
+    "prem-gld-exchange-boost": "Premium Boost",
+    "gold-exchange-exp": "Experience to next level",
+    "gld-exchange-obtain": "Obtain",
+    "gld-exchange-obtain-prg": "Daily obtains left: {count}",
+    "gld-exchange-boosts-left": "Free boost left: {count}",
+    "gld-exchange-level": "Level {level}"
 }

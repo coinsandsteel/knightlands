@@ -17,7 +17,7 @@
         <div class="flex margin-top-half">
           <Loot
             v-for="reward in rewards"
-            :key="reward.itemId"
+            :key="`${reward.itemId}${floor._id}`"
             :item="reward.itemId"
             :quantity="reward.maxCount"
             size="small"

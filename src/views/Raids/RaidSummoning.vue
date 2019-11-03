@@ -1,6 +1,6 @@
 <template>
   <keep-alive exclude="raid-summon">
-    <router-view :parent="this"></router-view>
+    <router-view></router-view>
   </keep-alive>
 </template>
 

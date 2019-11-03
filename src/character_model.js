@@ -161,7 +161,7 @@ class CharacterModel {
         }
 
         if (data.equipment) {
-            this._removeData(this._vm.equipment, data.equipment, true);
+            this._removeData(this._vm.equipment, data.equipment, false);
         }
     }
 
@@ -182,6 +182,7 @@ class CharacterModel {
     }
 
     _mergeData(currentData, newData, root = true) {
+        // console.log(currentData, newData);
         for (let i in newData) {
             const newField = newData[i];
 

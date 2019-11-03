@@ -5,13 +5,12 @@ import { create as CreateDialog } from "vue-modal-dialogs";
 
 export default {
   methods: {
-    async showHint(item, buttons) {
-      let actions = this.hintActions || { equip: false };
+    async showHint(item, buttons, showButtons = true) {
       buttons = buttons || [];
-      return await Hint(item, !item.equipped, item.equipped, actions, buttons, buttons.length > 0);
+      return await Hint(item, !item.equipped, item.equipped, { equip: true }, buttons, showButtons);
     },
     async handleHint(item) {
-      return this.showHint(item);
+      return this.showHint(item, undefined, false);
     }
   }
 };

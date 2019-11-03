@@ -1,7 +1,7 @@
 <template>
   <div class="padding-1 flex flex-column flex-justify-center dummy-height">
     <div class="padding-1 dummy-height flex flex-center flex-column panel" v-if="item">
-      <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}">
+      <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}" class="width-100">
         <template v-slot:afterStats>
           <div>
             <div class="flex flex-center margin-top-1 font-size-20">
@@ -82,7 +82,6 @@ export default {
     selectedMaterial: null,
     unbindItems: [],
     selectedItems: {},
-    lockRest: false,
     lockedTotal: 0
   }),
   watch: {
@@ -110,6 +109,9 @@ export default {
     },
     futureStars() {
       return this.stars + this.lockedTotal;
+    },
+    lockRest() {
+      return 2 - this.stars == this.lockedTotal;
     }
   },
   methods: {
@@ -174,8 +176,6 @@ export default {
         this.$delete(this.selectedItems, itemIndex);
         this.lockedTotal--;
       }
-
-      this.lockRest = 2 - this.item.breakLimit == this.lockedTotal;
     },
     updateUnbindItemsList() {
       this.selectedItems = {};
@@ -197,7 +197,7 @@ export default {
             }
 
             let count = item.count;
-            if (item.id == this.itemId) {
+            if (item.id == this.itemId && !this.item.equipped) {
               count -= 1;
             }
 

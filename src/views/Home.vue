@@ -2,55 +2,58 @@
   <div class="flex flex-column flex-end flex-items-center relative">
     <div class="home-art"></div>
 
-    <div class="flex width-100 flex-items-end flex-space-evenly margin-bottom-5 flex-no-wrap">
-      <div class="flex flex-column flex-basis-40">
-        <router-link tag="div" class="margin-bottom-1" to="daily-rewards" :append="true">
-          <SkewedButton :props="{type:'green', icon:'icon-settings'}">
-            <span>{{$t("btn-check-in")}}</span>
-            <CheckinMarker></CheckinMarker>
-          </SkewedButton>
-        </router-link>
+    <div class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5">
+      <MenuIconRow>
+        <MenuIcon icon="icon-quests" to="quest" :append="true">
+          {{$t("btn-quests")}}
+        </MenuIcon>
 
-        <router-link tag="div" class="margin-bottom-1" to="dividends" :append="true">
-          <SkewedButton :props="{type:'green', icon:'icon-divs'}">{{$t("btn-divs")}}</SkewedButton>
-        </router-link>
+        <MenuIcon icon="icon-raids" to="raids" :append="true">
+          {{$t("btn-raids")}}
+        </MenuIcon>
 
-        <router-link tag="div" class="margin-bottom-1" to="settings" :append="true">
-          <SkewedButton :props="{type:'purple', icon:'icon-settings'}">{{$t("btn-settings")}}</SkewedButton>
-        </router-link>
-      </div>
+        <MenuIcon icon="icon-trials" to="trials" :append="true">
+          {{$t("btn-trials")}}
+        </MenuIcon>
+      </MenuIconRow>
 
-      <div class="flex flex-column flex-basis-40">
-        <router-link tag="div" class="margin-bottom-1" to="trials" :append="true">
-          <SkewedButton :props="{type:'grey', icon:'icon-trials'}">
-            <span>{{$t("btn-trials")}}</span>
-          </SkewedButton>
-        </router-link>
+      <MenuIconRow>
+        <MenuIcon icon="icon-goldExchange" to="gold" :append="true">
+          {{$t("btn-goldExchange")}}
+        </MenuIcon>
 
-        <router-link tag="div" class="margin-bottom-1" to="onyx-tower" :append="true">
-          <SkewedButton :props="{type:'grey', icon:'icon-tower'}">
-            <span>{{$t("btn-tower")}}</span>
-          </SkewedButton>
-        </router-link>
+        <MenuIcon icon="icon-tower" to="onyx-tower" :append="true">
+          {{$t("btn-tower")}}
+        </MenuIcon>
 
-        <router-link tag="div" class="margin-bottom-1" to="adventures" :append="true">
-          <SkewedButton :props="{type:'grey', icon:'icon-adventures'}">
-            <span>{{$t("btn-adventures")}}</span>
+        <MenuIcon icon="icon-adventures" to="adventures" :append="true">
+          {{$t("btn-adventures")}}
+          <template v-slot:marker>
             <AdventuresMarker></AdventuresMarker>
-          </SkewedButton>
-        </router-link>
+          </template>
+        </MenuIcon>
+      </MenuIconRow>
 
-        <router-link tag="div" class="margin-bottom-1" to="quest" :append="true">
-          <SkewedButton :props="{type:'grey', icon:'icon-quests'}">{{$t("btn-quests")}}</SkewedButton>
-        </router-link>
+      <MenuIconRow>
+        <MenuIcon icon="icon-calendar" to="daily-rewards" :append="true">
+          <template v-slot:default>
+            {{$t("btn-check-in")}}
+          </template>
 
-        <router-link tag="div" class="margin-bottom-1" to="raids" :append="true">
-          <SkewedButton
-            class="flex-basis-50"
-            :props="{type:'red', icon:'icon-raids'}"
-          >{{$t("btn-raids")}}</SkewedButton>
-        </router-link>
-      </div>
+          <template v-slot:marker>
+            <CheckinMarker></CheckinMarker>
+          </template>
+          
+        </MenuIcon>
+
+        <MenuIcon icon="icon-divs" to="dividends" :append="true">
+          {{$t("btn-divs")}}
+        </MenuIcon>
+
+        <MenuIcon icon="icon-settings" to="settings" :append="true">
+          {{$t("btn-settings")}}
+        </MenuIcon>
+      </MenuIconRow>
     </div>
   </div>
 </template>
@@ -61,6 +64,8 @@ import SkewedButton from "@/components/SkewedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
 import CheckinMarker from "@/components/Markers/CheckinMarker.vue";
+import MenuIcon from "@/components/MenuIcon.vue";
+import MenuIconRow from "@/components/MenuIconRow.vue";
 
 export default {
   name: "home",
@@ -69,7 +74,9 @@ export default {
     SkewedButton,
     IconWithValue,
     AdventuresMarker,
-    CheckinMarker
+    CheckinMarker,
+    MenuIcon,
+    MenuIconRow
   },
   created() {
     this.title = this.$t("window-title-home");

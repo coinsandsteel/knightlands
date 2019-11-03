@@ -10,11 +10,11 @@
     <div
       v-if="!hideCount && ingridient.maxLevelRequired"
       class="font-size-18 digit-font"
-    >Lvl: {{levelRequired}}</div>
+    >Lvl:{{levelRequired}}</div>
 
     <div v-else-if="!hideCount" class="font-size-18 digit-font">
       <span v-if="!hideCurrentCount">{{currentCount}}/</span>
-      {{requiredCount}}
+      <span>{{requiredCount}}</span>
     </div>
   </div>
 </template>

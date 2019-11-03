@@ -2,30 +2,31 @@
   <div class="flex flex-column flex-end flex-items-center relative">
     <div class="home-art"></div>
 
-    <div class="flex width-100 flex-center margin-bottom-5">
-      <div class="flex flex-center width-100">
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="chests" :append="true">
-          <SkewedButton :props='{type:"grey", icon:"icon-chests"}'>{{$t("btn-chests")}}</SkewedButton>
-        </router-link>
+    <div class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5">
+      <MenuIconRow>
+        <MenuIcon icon="icon-chests" to="chests" :append="true">
+          {{$t("btn-chests")}}
+          <template v-slot:marker>
+            <FreeChestsMarker></FreeChestsMarker>
+          </template>
+        </MenuIcon>
 
-        <router-link tag="div" class="flex-basis-40 margin-bottom-1" to="shop" :append="true">
-          <SkewedButton
-            :props='{type:"green", icon:"icon-shop"}'
-          >{{$t("btn-shop")}}</SkewedButton>
-        </router-link>
-      </div>
+        <MenuIcon icon="icon-shop" to="shop" :append="true">{{$t("btn-shop")}}</MenuIcon>
+      </MenuIconRow>
     </div>
-
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
 import SkewedButton from "@/components/SkewedButton.vue";
+import FreeChestsMarker from "@/components/Markers/FreeChestsMarker.vue";
+import MenuIcon from "@/components/MenuIcon.vue";
+import MenuIconRow from "@/components/MenuIconRow.vue";
 
 export default {
   mixins: [AppSection],
-  components: { SkewedButton },
+  components: { SkewedButton, FreeChestsMarker, MenuIcon, MenuIconRow },
   created() {
     this.title = this.$t("window-title-summon");
   },
@@ -43,7 +44,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  // background-image: url("../../assets/ui/background_craft.jpg");
+  background-image: url("../../assets/ui/background_craft.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

@@ -94,11 +94,11 @@
       </div>
 
       <div v-else class="flex flex-center width-100 flex-space-evenly">
-        <PromisedButton
+        <AttackButton
           :promise="request"
           @click="engage(false)"
           width="15rem"
-        >Attack x1</PromisedButton>
+        >Attack x1</AttackButton>
         <PromisedButton
           :promise="request"
           :locked="!$game.hasPremiumAccount"
@@ -122,6 +122,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import UiConstants from "@/ui_constants";
 import Inventory from "@/inventory";
 import PromisedButton from "@/components/PromisedButton.vue";
+import AttackButton from "@/components/AttackButton.vue";
 import CustomButton from "@/components/Button.vue";
 import DamageText from "@/views/Raids/DamageText.vue";
 const Events = require("@/../knightlands-shared/events");
@@ -148,7 +149,8 @@ export default {
     IconWithValue,
     PromisedButton,
     CustomButton,
-    DamageText
+    DamageText,
+    AttackButton
   },
   data() {
     return {
@@ -266,7 +268,7 @@ export default {
         this.questIndex * 1,
         max
       );
-
+      console.log("engage");
       try {
         let damages = await this.request;
         let delay = 0;
@@ -348,9 +350,10 @@ export default {
         scale: 1,
         filter: {
           value: "brightness(1)",
-          easing: "",
+          easing: "linear",
           duration: 100
         }
+          
       });
     }
   }

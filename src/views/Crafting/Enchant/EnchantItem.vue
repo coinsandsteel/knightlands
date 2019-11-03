@@ -5,7 +5,7 @@
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
         <StripedPanel class="dummy-height flex flex-center flex-column" v-if="item">
-          <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}">
+          <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}" class="width-100">
             <template v-slot:beforeStats>
               <div ref="level">
                 <div class="flex flex-center margin-top-1 font-size-20">

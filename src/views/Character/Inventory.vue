@@ -150,7 +150,7 @@ import LootHint from "@/components/LootHint.vue";
 import CompareItems from "@/components/CompareItems.vue";
 
 const ItemFilter = CreateDialog(ItemFilterComponent);
-const ShowItems = CreateDialog(ItemsReceived, ...ItemsReceived.props);
+const ShowItems = CreateDialog(ItemsReceived, "items", "soft", "hard", "exp", "dkt");
 const ShowDetails = CreateDialog(StatDetails);
 const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 

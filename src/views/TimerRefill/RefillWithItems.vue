@@ -95,7 +95,8 @@ export default {
         template: item.template,
         value: action.value,
         relative: action.relative,
-        count: count
+        count: count,
+        stat: action.stat
       };
 
       this.usedItems[item.template] = {
@@ -110,7 +111,7 @@ export default {
         const consumable = this.selectedItems[itemId];
         if (consumable.relative) {
           restoredValue +=
-            (baseValue * consumable.value * consumable.count) / 100;
+            (this.$game.character.getMaxStat(consumable.stat) * consumable.value * consumable.count) / 100;
         }
       }
 

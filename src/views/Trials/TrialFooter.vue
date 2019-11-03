@@ -5,8 +5,9 @@
     </div>
 
     <div class="flex flex-center padding-1 panel-input height-100">
-      <div class="key-icon" :class="trialType"></div>
+      <div class="item-icon" :class="trialType"></div>
       <span>{{totalTickets}}</span>
+      <span class="item-icon icon-plus margin-left-half" @click="$emit('purchaseAttempts')"></span>
     </div>
 
     <CustomButton type="grey" @click="$emit('open')">{{$t("btn-level-trials-cards")}}</CustomButton>
@@ -41,20 +42,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.key-icon {
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 3rem;
-  height: 3rem;
-}
-
-.armour {
-  background-image: url("../../assets/ui/ticket_blue.png");
-}
-
-.weapon {
-  background-image: url("../../assets/ui/ticket_red.png");
-}
-</style>

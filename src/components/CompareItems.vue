@@ -1,7 +1,7 @@
 <template>
   <UserDialog :compact="true" @close="$close">
     <template v-slot:content>
-      <div class="flex width-100 padding-top-4">
+      <div class="flex flex-no-wrap width-100 padding-top-4">
         <div class="flex-basis-50 flex flex-column flex-items-start">
           <span
             class="font-size-20 padding-1 margin-bottom-half item-title width-100"
@@ -18,7 +18,7 @@
               ></loot>
 
               <div class="flex flex-items-start font-size-20 margin-left-1">
-                <div v-if="hasElement(leftItem)" :class="elementIcon" class="big"></div>
+                <div v-if="hasElement(leftItem)" :class="`icon-${getElement(leftItem)}`" class="big"></div>
                 <div class="flex flex-center">
                   <span class="star" :class="{active: leftItem.stars >= 1}"></span>
                   <span class="star margin-right-auto" :class="{active: leftItem.stars >= 2}"></span>
@@ -55,7 +55,7 @@
 
           <div class="flex space-evenly">
               <div class="flex flex-items-start font-size-20 margin-right-1">
-                <div v-if="hasElement(rightItem)" :class="elementIcon" class="big"></div>
+                <div v-if="hasElement(rightItem)" :class="`icon-${getElement(rightItem)}`" class="big"></div>
                 <div class="flex flex-center">
                   <span class="star" :class="{active: rightItem.stars >= 1}"></span>
                   <span class="star margin-right-auto" :class="{active: rightItem.stars >= 2}"></span>
@@ -136,6 +136,9 @@ export default {
       }
 
       return template.element != "physical";
+    },
+    getElement(item) {
+        return this.$game.itemsDB.getTemplate(item.template).element;
     },
     getType(item) {
       const template = this.$game.itemsDB.getTemplate(item.template);

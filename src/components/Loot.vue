@@ -13,7 +13,11 @@
     <template v-if="!onlyIcon">
       <span v-if="!showUnbindLevels && itemData && itemData.unique" class="unique"></span>
 
-      <div class="flex flex-center width-100 flex-evenly-spaced stars-container" :class="{top: showLevel && itemData}" v-if="showUnbindLevels">
+      <div
+        class="flex flex-center width-100 flex-evenly-spaced stars-container"
+        :class="{top: showLevel && itemData}"
+        v-if="showUnbindLevels"
+      >
         <span class="star" :class="{active: itemData && itemData.breakLimit>=1}"></span>
         <span class="star" :class="{active: itemData && itemData.breakLimit>=2}"></span>
       </div>
@@ -26,7 +30,9 @@
       </div>
 
       <div v-if="showLevel && itemData && itemData.level > 1" class="item-level">
-        <span class="font-size-18 digit-font font-outline font-weight-700 bold">Lvl{{itemData.level || 1}}</span>
+        <span
+          class="font-size-18 digit-font font-outline font-weight-700 bold"
+        >Lvl{{itemData.level || 1}}</span>
       </div>
     </template>
   </div>
@@ -187,18 +193,13 @@ export default {
   .mobile({width: @mobileLootCellSize; height: @mobileLootCellSize;});
 
   &.small {
-    .mobile(
-      {width: @mobileLootCellSize * 0.75; height: @mobileLootCellSize * 0.75;}
-    );
+    width: @mobileLootCellSize * 0.75;
+    height: @mobileLootCellSize * 0.75;
   }
 
   &.mini {
-    .mobile(
-      {width: @mobileLootCellSize * 0.5; height: @mobileLootCellSize * 0.5;}
-    );
-
-    width: @lootCellSize * 0.75;
-    height: @lootCellSize * 0.75;
+    width: @mobileLootCellSize * 0.5;
+    height: @mobileLootCellSize * 0.5;
   }
 
   .inner-border {

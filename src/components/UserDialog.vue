@@ -6,7 +6,7 @@
         :class="[titleClass, {compact:compact, 'title':compact}]"
         v-if="title"
       >
-        <span>{{title}}</span>
+        <span>{{$t(title)}}</span>
       </div>
 
       <div v-if="!hideCloseBtn" class="close-btn" @click="handleClose"></div>

@@ -1,25 +1,27 @@
 <template>
-  <div class="flex flex-center height-100 flex-column flex-no-wrap padding-1 panel">
-    <div class="flex flex-space-evenly full-flex">
+  <div class="dummy-height flex flex-center flex-column flex-no-wrap padding-1 panel">
+    <div class="dummy-height flex flex-column flex-no-wrap full-flex">
       <span class="font-size-18 width-100 margin-bottom-3">{{$t('daily-login-desc')}}</span>
-      <div class="width-100" v-bar>
-        <div>
-          <div class="flex width-100 flex-space-evenly">
-          <DailyReward
-            v-for="(reward, index) in rewards"
-            :key="index"
-            :index="index"
-            :current="step == index"
-            :collected="isCollected(index)"
-            :reward="reward"
-            @hint="rewardHint"
-          ></DailyReward>
+      <div class="full-flex dummy-height">
+        <div class="width-100" v-bar>
+        <div class="dummy-height height-100">
+          <div class="flex width-100 dummy-height flex-space-evenly">
+            <DailyReward
+              v-for="(reward, index) in rewards"
+              :key="index"
+              :index="index"
+              :current="step == index"
+              :collected="isCollected(index)"
+              :reward="reward"
+              @hint="rewardHint"
+            ></DailyReward>
+          </div>
         </div>
-        </div>
+      </div>
       </div>
     </div>
 
-    <div class="margin-top-3 flex flex-center width-100">
+    <div class="dummy-height margin-top-3 flex flex-center width-100">
       <PromisedButton
         type="green"
         :promise="request"
@@ -61,7 +63,7 @@ export default {
   },
   methods: {
     isCollected(index) {
-      return index <= this.step-1;
+      return index <= this.step - 1;
     },
     rewardHint(reward) {
       this.handleHint({

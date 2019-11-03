@@ -33,7 +33,7 @@
               barType="green"
               barClasses="margin-right-auto"
               :maxValue="nextExp"
-              :plusButton="item.equipped?'':'green'"
+              plusButton="green"
               @refill="handleLevelProgressClick"
               v-if="isEquipment"
             ></progress-bar>
@@ -161,11 +161,7 @@ export default {
       this.handleClose();
       this.$router.push({ name: "unbind-item", params: { itemId: this.item.id } });
     },
-    handleLevelProgressClick() {
-      if (this.item.equipped) {
-        return;
-      }
-      
+    handleLevelProgressClick() {    
       this.handleClose();
       this.$router.push({
         name: "upgrade-item",

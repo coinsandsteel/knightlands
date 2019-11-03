@@ -79,11 +79,11 @@
             </div>
 
             <div class="flex flex-center flex-space-evenly">
-              <custom-button :mini="true" @click="attack(1)">x1</custom-button>
-              <custom-button :mini="true" @click="attack(5)">x5</custom-button>
-              <custom-button :mini="true" @click="attack(10)">x10</custom-button>
-              <custom-button :mini="true" :locked="true" @click="attack(20)">x20</custom-button>
-              <custom-button :mini="true" :locked="true" @click="attack(50)">x50</custom-button>
+              <AttackButton :promise="request" :mini="true" @click="attack(1)">x1</AttackButton>
+              <AttackButton :promise="request" :mini="true" @click="attack(5)">x5</AttackButton>
+              <AttackButton :promise="request" :mini="true" @click="attack(10)">x10</AttackButton>
+              <AttackButton :promise="request" :mini="true" :locked="true" @click="attack(20)">x20</AttackButton>
+              <AttackButton :promise="request" :mini="true" :locked="true" @click="attack(50)">x50</AttackButton>
             </div>
           </striped-panel>
 
@@ -227,6 +227,7 @@ import Errors from "@/../knightlands-shared/errors";
 import Prompt from "@/components/Prompt.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
+import AttackButton from "@/components/AttackButton.vue";
 import PriceTag from "@/components/PriceTag.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
@@ -268,7 +269,8 @@ export default {
     PaymentStatus,
     PromisedButton,
     PriceTag,
-    RaidInfo
+    RaidInfo,
+    AttackButton
   },
   channel: undefined,
   mixins: [AppSection, PaymentHandler],

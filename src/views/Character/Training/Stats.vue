@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-content">
+  <div class="tab-content" v-bar>
     <div class="flex flex-column attributes flex-no-wrap">
       <div
         class="flex flex-center flex-no-wrap att-row width-100"

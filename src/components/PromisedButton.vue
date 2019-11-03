@@ -57,6 +57,8 @@ export default {
 
         this.loading = false;
         this.showLoading = false;
+
+        this.$emit("promiseFinished");
       }
     }
   }

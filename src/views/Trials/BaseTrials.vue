@@ -16,7 +16,12 @@
       </template>
     </keep-alive>
     <portal to="footer" :slim="true" v-if="isActive">
-      <TrialFooter :trialType="trialType" :state="state" @open="openCards"></TrialFooter>
+      <TrialFooter
+        :trialType="trialType"
+        :state="state"
+        @open="openCards"
+        @purchaseAttempts="purchaseAttempts"
+      ></TrialFooter>
     </portal>
   </div>
 </template>
@@ -27,9 +32,15 @@ import CustomButton from "@/components/Button.vue";
 import TrialFooter from "./TrialFooter.vue";
 import Cards from "./Cards/Cards.vue";
 import Errors from "@/../knightlands-shared/errors";
+import PromptMixin from "@/components/PromptMixin.vue";
+
+import PurchaseAttempts from "./PurchaseAttempts.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowPurchaseAttempts = create(PurchaseAttempts);
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, PromptMixin],
   props: ["titleStr", "trialType"],
   components: { Cards, TrialFooter },
   data: () => ({
@@ -57,6 +68,9 @@ export default {
     }
   },
   methods: {
+    async purchaseAttempts() {
+      const reponse = await ShowPurchaseAttempts();
+    },
     async engageFight(trialId, stageId, fightIndex, callback) {
       this.request = this.$game.engageTrialFight(
         this.trialType,

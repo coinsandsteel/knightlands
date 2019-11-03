@@ -9,9 +9,11 @@
           <div class="section-fill"></div>
         </div>
       </div>
-      <keep-alive>
+
+      <keep-alive exclude="gold-exchange">
         <router-view class="content dummy-height flex flex-no-wrap flex-column" v-if="showContent" />
       </keep-alive>
+
       <div class="footer flex-item-center">
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
         <portal-target class="footer-container flex flex-end width-100" name="footer"></portal-target>
@@ -485,8 +487,8 @@ export default {
   background: @backgroundMainColor;
   background: linear-gradient(
     0deg,
-    rgba(35, 14, 33, 1) 0%,
-    rgba(38, 16, 52, 1) 100%
+    #371c35 0%,
+    #261034 100%
   );
   .mobile({min-width: unset; max-width: unset; width: 100%;});
   // .tablet({width: 60rem;});
@@ -506,7 +508,7 @@ export default {
 
 html {
   font-family: "Brandon", sans-serif;
-  font-size: 10px;
+  font-size: 8px;
   line-height: 1.2;
   box-sizing: border-box;
 
