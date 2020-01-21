@@ -1,18 +1,32 @@
 <template>
   <nav class="tabs flex flex-no-wrap" :class="wrapperClass">
-    <div
-      class="tabs__item font-size-20"
-      v-for="tab in tabs"
-      :ref="tab.value"
-      :key="tab.title"
-      :class="[
+    <template v-if="router">
+      <router-link
+        class="tabs__item font-size-20"
+        v-for="tab in tabs"
+        :ref="tab.value"
+        :key="tab.title"
+        :to="tab.to"
+        tag="div"
+        :disabled="tab.disabled"
+        @click="handleClick(tab.value)"
+      >{{$t(tab.title)}}</router-link>
+    </template>
+    <template v-else>
+      <div
+        class="tabs__item font-size-20"
+        v-for="tab in tabs"
+        :ref="tab.value"
+        :key="tab.title"
+        :class="[
         { 'tabs__item_active' : tab.value === currentTab },
         tab.value === currentTab && tabActiveClass ? tabActiveClass: '',
         tabClass,
       ]"
-      :disabled="tab.disabled || false"
-      @click="handleClick(tab.value)"
-    >{{$t(tab.title)}}</div>
+        :disabled="tab.disabled"
+        @click="handleClick(tab.value)"
+      >{{$t(tab.title)}}</div>
+    </template>
 
     <!-- <div
       class="tabs__active-line"
@@ -38,6 +52,7 @@ export default {
       type: [Boolean, String, Array],
       default: undefined
     },
+    router: Boolean,
     wrapperClass: {
       type: String,
       required: false,
@@ -103,6 +118,13 @@ export default {
 
   * > {
     margin: 0 2px 0 2px;
+  }
+
+  & .router-link-active {
+    color: #fbffff;
+    border-image: url("../assets/ui/tab_selected.png") round;
+    .border();
+    background-color: #585f73;
   }
 }
 

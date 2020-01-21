@@ -1,12 +1,9 @@
 <template>
   <div class="flex flex-column">
     <div class="flex dummy-height flex-no-wrap full-flex flex-column">
-      <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+      <tabs :tabs="tabs" :router="true" :currentTab="currentTab" @onClick="switchTab" />
       <keep-alive>
-        <inventory v-if="currentTab === InventoryTab" :items="$game.inventory.items"></inventory>
-        <stats v-if="currentTab === StatsTab"></stats>
-        <Buffs v-if="currentTab === BuffsTab"></Buffs>
-        <Beasts v-if="currentTab === BeastsTab"></Beasts>
+        <router-view></router-view>
       </keep-alive>
     </div>
   </div>
@@ -15,27 +12,23 @@
 <script>
 import AppSection from "@/AppSection";
 
-const InventoryTab = "inventory";
-const StatsTab = "stats";
-const BuffsTab = "buffs";
-const BeastsTab = "beasts";
+const InventoryTab = "character";
+const StatsTab = "character-training";
+const BuffsTab = "character-buffs";
+const BeastsTab = "character-beast";
 
 export default {
   mixins: [AppSection],
   components: {
-    Tabs: () => import("@/components/Tabs.vue"),
-    Stats: () => import("./Training/Stats.vue"),
-    Inventory: () => import("./Inventory.vue"),
-    Buffs: () => import("./Buffs/Buffs.vue"),
-    Beasts: () => import("./BeastTaming/BeastTaming.vue")
+    Tabs: () => import("@/components/Tabs.vue")
   },
   data() {
     return {
       tabs: [
         { title: "inventory", value: InventoryTab, to: "/character/inventory" },
-        { title: "training", value: StatsTab, to: "/character/stats" },
+        { title: "training", value: StatsTab, to: "/character/training" },
         { title: "buffs", value: BuffsTab, to: "/character/buffs" },
-        { title: "beast", value: BeastsTab, to: "/character/beasts" }
+        { title: "beast", value: BeastsTab, to: "/character/beast" }
       ],
       currentTab: InventoryTab,
       InventoryTab: InventoryTab,
@@ -45,11 +38,12 @@ export default {
     };
   },
   mounted() {
-    this.title = `Character of ${this.$game.shortAccount()}`;
+    this.title = `Character`;
   },
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
+      this.$router.replace({ name: newTab });
     }
   }
 };

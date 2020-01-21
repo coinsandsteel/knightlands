@@ -77,6 +77,8 @@
             </PromisedButton>
           </div>
         </div>
+
+        <div class="font-size-18 margin-top-2">{{$t("time-till-refill", {time: timer.value})}}</div>
       </div>
     </div>
   </div>
@@ -92,6 +94,7 @@ import GoldExchangeMeta from "@/goldExchange";
 import PriceTag from "@/components/PriceTag.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 const Events = require("@/../knightlands-shared/events");
+import Timer from "@/timer";
 
 export default {
   name: "gold-exchange",
@@ -108,7 +111,8 @@ export default {
     levelMeta: null,
     request: null,
     paymentStatusRequest: null,
-    exchangeMeta: GoldExchangeMeta
+    exchangeMeta: GoldExchangeMeta,
+    timer: new Timer(true)
   }),
   created() {
     this.$options.paymentEvents = [Events.GoldExchangeBoostPurchased];
@@ -136,6 +140,8 @@ export default {
   methods: {
     async fetchLevelMeta() {
       this.levelMeta = await this.$game.getGoldExchangeMeta();
+
+      this.timer.timeLeft = Math.floor(this.$game.now % 86400000) / 1000;
     },
     freeBoost() {
       this.request = this.$game.boostGoldExchange();

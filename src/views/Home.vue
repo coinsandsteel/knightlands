@@ -4,6 +4,12 @@
 
     <div class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5">
       <MenuIconRow>
+        <MenuIcon icon="icon-daily-quests" to="daily-quests" :append="true">
+          {{$t("btn-daily-quests")}}
+        </MenuIcon>
+      </MenuIconRow>
+
+      <MenuIconRow>
         <MenuIcon icon="icon-quests" to="quest" :append="true">
           {{$t("btn-quests")}}
         </MenuIcon>

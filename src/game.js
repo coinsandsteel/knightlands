@@ -1,3 +1,5 @@
+/*jshint esversion: 9 */
+
 import SocketCluster from "socketcluster-client";
 import pify from "pify";
 import Vue from "vue";
@@ -8,9 +10,7 @@ import CraftingRecipes from "./crafting_recipes.json";
 import Crafting from "./crafting";
 import Events from "./../knightlands-shared/events";
 import Config from "./config";
-import {
-    player as PlayerExpTable
-} from "./expTables.json";
+import { player as PlayerExpTable } from "./expTables.json";
 const Operations = require("./../knightlands-shared/operations");
 import CurrencyType from "@/../knightlands-shared/currency_type";
 import DisconnectCodes from "@/../knightlands-shared/disconnectCodes";
@@ -42,12 +42,13 @@ class Game {
                 account: undefined,
                 ready: false,
                 walletReady: false,
-                load: false,
+                loaded: false,
                 beast: {},
                 towerFreeAttempts: 0,
                 rank: 0,
                 trials: {},
-                goldExchange: {}
+                goldExchange: {},
+                dailyQuests: {}
             })
         });
 
@@ -57,7 +58,8 @@ class Game {
 
         var options = {
             hostname: Config.gameServerEndpoint,
-            secure: process.env.NODE_ENV == "production" || process.env.NODE_ENV == "test",
+            secure:
+                process.env.NODE_ENV == "production" || process.env.NODE_ENV == "test",
             autoConnect: false,
             port: Config.gameServerPort,
             connectTimeout: 10000,
@@ -76,9 +78,15 @@ class Game {
         this._socket.on("disconnect", this._handleDisconnect.bind(this));
         this._socket.on("authStateChange", this._handleAuthentication.bind(this));
 
-        this._socket.on(Events.InventoryUpdate, this._handleInventoryUpdate.bind(this));
+        this._socket.on(
+            Events.InventoryUpdate,
+            this._handleInventoryUpdate.bind(this)
+        );
         this._socket.on(Events.RaidSummonStatus, this._handleRaidStatus.bind(this));
-        this._socket.on(Events.RaidJoinStatus, this._handleRaidJoinStatus.bind(this));
+        this._socket.on(
+            Events.RaidJoinStatus,
+            this._handleRaidJoinStatus.bind(this)
+        );
         this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
         this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
         this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
@@ -86,9 +94,18 @@ class Game {
         this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
         this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
         this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
-        this._socket.on(Events.TrialAttemptsPurchased, this._handleTrialAttemptsPurchase.bind(this));
-        this._socket.on(Events.TowerAttemptsPurchased, this._handleTowerAttemptsPurchase.bind(this));
-        this._socket.on(Events.GoldExchangeBoostPurchased, this._handleGoldExchangeBoosted.bind(this));
+        this._socket.on(
+            Events.TrialAttemptsPurchased,
+            this._handleTrialAttemptsPurchase.bind(this)
+        );
+        this._socket.on(
+            Events.TowerAttemptsPurchased,
+            this._handleTowerAttemptsPurchase.bind(this)
+        );
+        this._socket.on(
+            Events.GoldExchangeBoostPurchased,
+            this._handleGoldExchangeBoosted.bind(this)
+        );
 
         // let's avoid using callbacks
         this._emitFn = pify(this._socket.emit);
@@ -123,6 +140,10 @@ class Game {
         return this._vm.goldExchange;
     }
 
+    dailyQuests() {
+        return this._vm.dailyQuests;
+    }
+
     get trialCardsResolver() {
         return this._trialCardsResolver;
     }
@@ -148,7 +169,7 @@ class Game {
     }
 
     get load() {
-        return this._vm.load;
+        return this._vm.loaded;
     }
 
     get hasPremiumAccount() {
@@ -216,7 +237,10 @@ class Game {
                 } else if (this._vm.account !== this._blockchainClient.getAddress()) {
                     this.logout();
                     this._vm.account = this._blockchainClient.getAddress();
-                    this._vm.$emit(this.WalletChanged, this._blockchainClient.getAddress());
+                    this._vm.$emit(
+                        this.WalletChanged,
+                        this._blockchainClient.getAddress()
+                    );
                 }
             } else {
                 this._vm.walletReady = false;
@@ -236,10 +260,7 @@ class Game {
         if (!account) {
             account = this.account;
         }
-        return `${account.substr(
-            0,
-            4
-        )}...${account.substr(-4)}`;
+        return `${account.substr(0, 4)}...${account.substr(-4)}`;
     }
 
     connect() {
@@ -288,7 +309,12 @@ class Game {
     }
 
     async purchaseIAP(iap, paymentId, price, signature) {
-        let tx = await this._blockchainClient.purchaseIAP(iap, paymentId, price, signature);
+        let tx = await this._blockchainClient.purchaseIAP(
+            iap,
+            paymentId,
+            price,
+            signature
+        );
         await this.sendPayment(paymentId, tx);
     }
 
@@ -374,7 +400,7 @@ class Game {
 
     _handleTowerAttemptsPurchase(data) {
         this._vm.$emit(Events.TowerAttemptsPurchased, data);
-    }   
+    }
 
     _handleGoldExchangeBoosted(data) {
         this.mergeObjects(this._vm, this._vm.goldExchange, data.context);
@@ -393,7 +419,7 @@ class Game {
             data: {
                 iap,
                 context,
-                success: reason ? false : true,
+                success: reason ? false : true
             },
             duration: 2000
         });
@@ -437,14 +463,13 @@ class Game {
                 continue;
             }
 
-            if (typeof (newField) == "object") {
+            if (typeof newField == "object") {
                 if (currentData.hasOwnProperty(i)) {
                     this.mergeObjects(vm, currentData[i], newField);
                 } else {
                     vm.$set(currentData, i, newField);
                 }
-            }
-            else {
+            } else {
                 vm.$set(currentData, i, newField);
             }
         }
@@ -501,6 +526,10 @@ class Game {
             if (changes.tower.hasOwnProperty("freeAttemps")) {
                 this._vm.towerFreeAttempts = changes.tower.freeAttemps;
             }
+        }
+
+        if (changes.dailyQuests) {
+            this._vm.dailyQuests = changes.dailyQuests;
         }
 
         if (changes.trials) {
@@ -586,7 +615,7 @@ class Game {
             this._character.assignData(info.character);
             this._inventory.load(info.inventory);
 
-            if (this._vm.load) {
+            if (this._vm.loaded) {
                 this._mergeData(info);
             } else {
                 if (info.questsProgress) {
@@ -600,18 +629,21 @@ class Game {
                 this._vm.beast = info.beast;
                 this._vm.towerFreeAttempts = info.tower.freeAttemps;
                 this._vm.trials = info.trials;
+                this._vm.dailyQuests = info.dailyQuests;
                 this._vm.softCurrency = info.softCurrency;
                 this._vm.hardCurrency = info.hardCurrency;
 
-                if (!this._vm.load) {
+                if (!this._vm.loaded) {
                     this._checkClassChoice();
                 }
 
-                this._trialCardsResolver = new TrialCardsResolver(this._vm.trials.cards.modifiers, TrialsMeta.cardModifiers);
+                this._trialCardsResolver = new TrialCardsResolver(
+                    this._vm.trials.cards.modifiers,
+                    TrialsMeta.cardModifiers
+                );
             }
 
-            this._vm.load = true;
-
+            this._vm.loaded = true;
         } catch (exc) {
             console.error("updateUserData", exc);
         }
@@ -699,7 +731,7 @@ class Game {
             return {
                 max: maxProgress,
                 current: progress.damageRecieved || 0
-            }
+            };
         }
 
         let quests = this._vm.questsProgress.zones[zone];
@@ -747,8 +779,8 @@ class Game {
     }
 
     /*
-        Server Operations
-    */
+          Server Operations
+      */
     async _wrapOperation(operation, ...args) {
         try {
             let result = await this._request(operation, ...args);
@@ -872,13 +904,15 @@ class Game {
 
     async fetchRaidWeakness(raid, stage) {
         return (await this._wrapOperation(Operations.UpgradeItem, {
-            raid, stage
+            raid,
+            stage
         })).response;
     }
 
     async fetchRaidSummonStatus(raid, stage) {
         return await this._request(Operations.FetchRaidSummonStatus, {
-            raid, stage
+            raid,
+            stage
         });
     }
 
@@ -895,7 +929,9 @@ class Game {
 
     async upgradeItem(itemId, materials, count) {
         let response = await this._wrapOperation(Operations.UpgradeItem, {
-            itemId, materials, count
+            itemId,
+            materials,
+            count
         });
 
         return response.response;
@@ -974,7 +1010,8 @@ class Game {
     }
 
     async fetchAdventuresStatus() {
-        return (await this._wrapOperation(Operations.FetchAdventuresStatus)).response;
+        return (await this._wrapOperation(Operations.FetchAdventuresStatus))
+            .response;
     }
 
     async buyAdventureSlot() {
@@ -1007,7 +1044,8 @@ class Game {
     }
 
     async fetchDailyRewardStatus() {
-        return (await this._wrapOperation(Operations.FetchDailyRewardStatus)).response;
+        return (await this._wrapOperation(Operations.FetchDailyRewardStatus))
+            .response;
     }
 
     async collectDailyReward() {
@@ -1015,7 +1053,8 @@ class Game {
     }
 
     async fetchDailyRefillsStatus() {
-        return (await this._wrapOperation(Operations.FetchDailyRefillsStatus)).response;
+        return (await this._wrapOperation(Operations.FetchDailyRefillsStatus))
+            .response;
     }
 
     async collectDailyRefills() {
@@ -1045,23 +1084,29 @@ class Game {
     }
 
     async fetchBeastBoostPurchase() {
-        return (await this._wrapOperation(Operations.FetchBeastBoostPurchase)).response;
+        return (await this._wrapOperation(Operations.FetchBeastBoostPurchase))
+            .response;
     }
 
     async cancelPurchase(id) {
-        return (await this._wrapOperation(Operations.CancelPayment, { id })).response;
+        return (await this._wrapOperation(Operations.CancelPayment, { id }))
+            .response;
     }
 
     async fetchTowerFloors(page) {
-        return (await this._wrapOperation(Operations.FetchTowerFloors, { page })).response;
+        return (await this._wrapOperation(Operations.FetchTowerFloors, { page }))
+            .response;
     }
 
     async challengeTowerFloor(floor) {
-        return (await this._wrapOperation(Operations.ChallengeTowerFloor, { floor })).response;
+        return (await this._wrapOperation(Operations.ChallengeTowerFloor, {
+            floor
+        })).response;
     }
 
     async fetchCurrentFloor() {
-        return (await this._wrapOperation(Operations.FetchChallengedTowerFloor)).response;
+        return (await this._wrapOperation(Operations.FetchChallengedTowerFloor))
+            .response;
     }
 
     async cancelTowerFloor() {
@@ -1069,11 +1114,13 @@ class Game {
     }
 
     async claimTowerFloorRewards() {
-        return (await this._wrapOperation(Operations.ClaimTowerFloorRewards)).response;
+        return (await this._wrapOperation(Operations.ClaimTowerFloorRewards))
+            .response;
     }
 
     async skipTowerFloor(floor) {
-        return (await this._wrapOperation(Operations.SkipTowerFloor, { floor })).response;
+        return (await this._wrapOperation(Operations.SkipTowerFloor, { floor }))
+            .response;
     }
 
     async attackTowerFloor() {
@@ -1083,13 +1130,17 @@ class Game {
     // Trials
     async fetchTrialState(trialType, trialId) {
         return (await this._wrapOperation(Operations.FetchTrialState, {
-            trialType, trialId
+            trialType,
+            trialId
         })).response;
     }
 
     async engageTrialFight(trialType, trialId, stageId, fightIndex) {
         return (await this._wrapOperation(Operations.ChallengeTrialFight, {
-            trialType, trialId, stageId, fightIndex
+            trialType,
+            trialId,
+            stageId,
+            fightIndex
         })).response;
     }
 
@@ -1101,19 +1152,25 @@ class Game {
 
     async fetchTrialFightMeta(trialType, trialId, stageId, fightIndex) {
         return (await this._wrapOperation(Operations.FetchTrialFightMeta, {
-            trialType, trialId, stageId, fightIndex
+            trialType,
+            trialId,
+            stageId,
+            fightIndex
         })).response;
     }
 
     async collectTrialStageReward(trialType, trialId, stageId) {
         return (await this._wrapOperation(Operations.CollectTrialStageReward, {
-            trialType, trialId, stageId
+            trialType,
+            trialId,
+            stageId
         })).response;
     }
 
     async chooseTrialCard(trialType, cardIndex) {
         return (await this._wrapOperation(Operations.ChooseTrialCard, {
-            trialType, cardIndex
+            trialType,
+            cardIndex
         })).response;
     }
 
@@ -1128,15 +1185,22 @@ class Game {
     }
 
     async summonTrialCards(trialType) {
-        return (await this._wrapOperation(Operations.SummonTrialCards, { trialType })).response;
+        return (await this._wrapOperation(Operations.SummonTrialCards, {
+            trialType
+        })).response;
     }
 
     async fetchTrialsAttemptsStatus(trialType) {
-        return (await this._wrapOperation(Operations.FetchTrialAttemptsStatus, { trialType })).response;
+        return (await this._wrapOperation(Operations.FetchTrialAttemptsStatus, {
+            trialType
+        })).response;
     }
 
     async purchaseTrialsAttempts(trialType, iapIndex) {
-        return (await this._wrapOperation(Operations.PurchaseTrialAttempts, { trialType, iapIndex })).response;
+        return (await this._wrapOperation(Operations.PurchaseTrialAttempts, {
+            trialType,
+            iapIndex
+        })).response;
     }
 
     // Gold exchange
@@ -1145,11 +1209,14 @@ class Game {
     }
 
     async fetchGoldExchangeBoostPremiumStatus() {
-        return (await this._wrapOperation(Operations.FetchGoldExchangePremiumBoostStatus)).response;
+        return (await this._wrapOperation(
+            Operations.FetchGoldExchangePremiumBoostStatus
+        )).response;
     }
 
     async obtainGoldFromGoldExchange() {
-        return (await this._wrapOperation(Operations.ObtainGoldFromGoldExchange)).response;
+        return (await this._wrapOperation(Operations.ObtainGoldFromGoldExchange))
+            .response;
     }
 
     async boostGoldExchange() {
@@ -1157,7 +1224,9 @@ class Game {
     }
 
     async premiumBoostGoldExchange(count) {
-        return (await this._wrapOperation(Operations.PremiumBoostGoldExchange, {count})).response;
+        return (await this._wrapOperation(Operations.PremiumBoostGoldExchange, {
+            count
+        })).response;
     }
 }
 

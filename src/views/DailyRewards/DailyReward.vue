@@ -1,22 +1,24 @@
 <template>
   <div
     class="relative slot-daily-reward padding-top-half flex flex-no-wrap flex-items-center flex-column"
-    :class="{active:active}"
+    :class="{ active: active }"
     @click="$emit('hint', reward)"
   >
-    <img :class="{trans: collected}" class="icon" :src="icon" />
+    <img :class="{ trans: collected }" class="icon" :src="icon" />
 
     <span
       v-if="!collected"
       class="font-size-22 quantity font-weight-700 font-outline"
-    >{{reward.minCount}}</span>
+      >{{ reward.minCount }}</span
+    >
 
     <span
-      :class="{trans: collected}"
+      :class="{ trans: collected }"
       class="font-size-18 font-weight-700 font-outline"
-    >{{$t("daily-reward-day", {day: index+1})}}</span>
+      >{{ $t("daily-reward-day", { day: index + 1 }) }}</span
+    >
 
-    <div class="absolute-stretch" :class="{collected: collected}"></div>
+    <div class="absolute-stretch" :class="{ collected: collected }"></div>
     <div class="absolute-stretch active" v-if="active"></div>
   </div>
 </template>

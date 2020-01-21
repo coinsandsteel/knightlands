@@ -2,10 +2,13 @@
   <user-dialog :title="$t(title)" @close="$close(false)" :disableScroll="true">
     <template v-slot:content>
       <Promised :promise="infoRequest">
-        <template v-slot:combined="{isPending, isDelayOver}">
-          <loading-screen :loading="true" v-show="isPending && isDelayOver"></loading-screen>
+        <template v-slot:combined="{ isPending, isDelayOver }">
+          <loading-screen
+            :loading="true"
+            v-show="isPending && isDelayOver"
+          ></loading-screen>
           <div class="flex flex-column">
-            <div class="font-size-20">{{$t("refill-message")}}</div>
+            <div class="font-size-20">{{ $t("refill-message") }}</div>
 
             <button-bar
               class="margin-top-2 margin-bottom-2"
@@ -13,7 +16,9 @@
               v-model="methodChosen"
             ></button-bar>
 
-            <div class="flex flex-center flex-no-wrap flex-column flex-end refill-method-content">
+            <div
+              class="flex flex-center flex-no-wrap flex-column flex-end refill-method-content"
+            >
               <keep-alive>
                 <div
                   class="flex flex-basis-100 height-100 flex-column flex-item-center"
@@ -22,35 +27,44 @@
                   <!-- Native Currency -->
                   <div class="flex flex-column flex-center flex-1">
                     <div class="flex flex-center margin-bottom-2 font-size-20">
-                      <div>Price to restore 100% of {{$t(stat)}}:</div>
+                      <div>Price to restore 100% of {{ $t(stat) }}:</div>
                       <PriceTag :iap="iap"></PriceTag>
                     </div>
 
-                    <span
-                      class="flex flex-center font-size-20 margin-bottom-1"
-                    >Refills today: {{refillsToday}}</span>
-                    <span
-                      class="flex flex-center font-size-18 margin-bottom-1"
-                    >Time until reset: {{resetTimer.value}}</span>
+                    <span class="flex flex-center font-size-20 margin-bottom-1"
+                      >Refills today: {{ refillsToday }}</span
+                    >
+                    <span class="flex flex-center font-size-18 margin-bottom-1"
+                      >Time until reset: {{ resetTimer.value }}</span
+                    >
                   </div>
 
-                  <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase">
+                  <PaymentStatus
+                    :request="refillStatusRequest"
+                    @pay="continuePurchase"
+                  >
                     <PromisedButton
                       :promise="purchasePromise"
                       width="16rem"
                       type="yellow"
                       @click="confirm"
-                    >{{$t("btn-confirm")}}</PromisedButton>
+                      >{{ $t("btn-confirm") }}</PromisedButton
+                    >
                   </PaymentStatus>
                 </div>
               </keep-alive>
 
               <keep-alive>
-                <div class="flex flex-basis-100 flex-column flex-item-center" v-if="showGoldOption">
+                <div
+                  class="flex flex-basis-100 flex-column flex-item-center"
+                  v-if="showGoldOption"
+                >
                   <div class="flex flex-column flex-center flex-1">
                     <div class="flex flex-center margin-bottom-2 font-size-20">
-                      <span>Price to restore 100% of {{stat}}:</span>
-                      <IconWithValue iconClass="icon-gold">{{softCost}}</IconWithValue>
+                      <span>Price to restore 100% of {{ stat }}:</span>
+                      <IconWithValue iconClass="icon-gold">{{
+                        softCost
+                      }}</IconWithValue>
                     </div>
                   </div>
                 </div>
@@ -62,20 +76,28 @@
                   v-if="methodChosen == 1 && !isHealth"
                 >
                   <!-- Shinies -->
-                  <div class="flex flex-basis-100 height-100 flex-column flex-item-center">
+                  <div
+                    class="flex flex-basis-100 height-100 flex-column flex-item-center"
+                  >
                     <!-- Native Currency -->
                     <div class="flex flex-column flex-center flex-1">
-                      <div class="flex flex-center margin-bottom-2 font-size-20">
-                        <div>Price to restore 100% of {{stat}}:</div>
-                        <IconWithValue iconClass="icon-premium">{{hardCost}}</IconWithValue>
+                      <div
+                        class="flex flex-center margin-bottom-2 font-size-20"
+                      >
+                        <div>Price to restore 100% of {{ stat }}:</div>
+                        <IconWithValue iconClass="icon-premium">{{
+                          hardCost
+                        }}</IconWithValue>
                       </div>
 
                       <span
                         class="flex flex-center font-size-20 margin-bottom-1"
-                      >Refills today: {{refillsToday}}</span>
+                        >Refills today: {{ refillsToday }}</span
+                      >
                       <span
                         class="flex flex-center font-size-18 margin-bottom-1"
-                      >Time until reset: {{resetTimer.value}}</span>
+                        >Time until reset: {{ resetTimer.value }}</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -84,10 +106,13 @@
               <keep-alive>
                 <div
                   class="flex width-100 height-100 flex-column flex-item-center"
-                  v-if="methodChosen == 1 && isHealth || methodChosen == 2"
+                  v-if="(methodChosen == 1 && isHealth) || methodChosen == 2"
                 >
                   <!--Items -->
-                  <RefillWithItems @canProceed="itemStateChanged" :stat="stat"></RefillWithItems>
+                  <RefillWithItems
+                    @canProceed="itemStateChanged"
+                    :stat="stat"
+                  ></RefillWithItems>
                 </div>
               </keep-alive>
 
@@ -99,7 +124,8 @@
                   width="16rem"
                   type="yellow"
                   @click="confirm"
-                >{{$t("btn-confirm")}}</PromisedButton>
+                  >{{ $t("btn-confirm") }}</PromisedButton
+                >
               </div>
             </div>
           </div>
@@ -204,6 +230,8 @@ export default {
         case CharacterStats.Energy:
           return "energy-refill-title";
       }
+
+      return "";
     }
   },
   methods: {
@@ -253,5 +281,3 @@ export default {
   height: 50vh;
 }
 </style>
-
-

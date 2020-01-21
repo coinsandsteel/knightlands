@@ -31,6 +31,7 @@ export default {
             await this.fetchPaymentStatus(iap);
 
             try {
+                console.log("purchase....");
                 await this.$game.purchaseIAP(iap, paymentId, price, signature);
                 await this.fetchPaymentStatus(iap);
             } catch (exc) {

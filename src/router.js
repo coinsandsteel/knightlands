@@ -1,68 +1,73 @@
 import Router from "vue-router";
 
-const Character = ()=>import("./views/Character/Character.vue");
-const Quest = ()=>import("./views/Quests/Quest.vue");
-const Login = ()=>import("./views/Login.vue");
-const Admin = ()=>import("./views/Admin.vue");
-const Home = ()=>import("./views/Home.vue");
-const Raids = ()=>import("./views/Raids/Raids.vue");
-const RaidView = ()=>import("./views/Raids/RaidView.vue");
-const RaidSummon = ()=>import("./views/Raids/RaidSummon.vue");
-const RaidsSummonList = ()=>import("./views/Raids/RaidsSummonList.vue");
-const CurrentRaids = ()=>import("./views/Raids/CurrentRaids.vue");
-const RaidSummoning = ()=>import("./views/Raids/RaidSummoning.vue");
-const PrelaunchInventory = ()=>import("./views/Prelaunch/PrelaunchInventory.vue");
-const LinkTelegram = ()=>import("./views/Prelaunch/LinkTelegram.vue");
-const LinkEmail = ()=>import("./views/Prelaunch/LinkEmail.vue");
+const Character = () => import("./views/Character/Character.vue");
+const CharacterTraining = () => import("./views/Character/Training/Stats.vue");
+const CharacterInventory = () => import("./views/Character/Inventory.vue");
+const CharacterBuffs = () => import("./views/Character/Buffs/Buffs.vue");
+const CharacterBeast = () => import("./views/Character/BeastTaming/BeastTaming.vue")
 
-const CraftingRoot = ()=>import("./views/Crafting/CraftingRoot.vue");
-const Crafting = ()=>import("./views/Crafting/Create/Crafting.vue");
-const CraftingHome = ()=>import("./views/Crafting/CraftingHome.vue");
+const Quest = () => import("./views/Quests/Quest.vue");
+const Login = () => import("./views/Login.vue");
+const Admin = () => import("./views/Admin.vue");
+const Home = () => import("./views/Home.vue");
+const Raids = () => import("./views/Raids/Raids.vue");
+const RaidView = () => import("./views/Raids/RaidView.vue");
+const RaidSummon = () => import("./views/Raids/RaidSummon.vue");
+const RaidsSummonList = () => import("./views/Raids/RaidsSummonList.vue");
+const CurrentRaids = () => import("./views/Raids/CurrentRaids.vue");
+const RaidSummoning = () => import("./views/Raids/RaidSummoning.vue");
+const PrelaunchInventory = () => import("./views/Prelaunch/PrelaunchInventory.vue");
+const LinkTelegram = () => import("./views/Prelaunch/LinkTelegram.vue");
+const LinkEmail = () => import("./views/Prelaunch/LinkEmail.vue");
 
-const CraftingUpgrade = ()=>import("./views/Crafting/Upgrade/CraftingUpgrade.vue");
-const UpgradeItem = ()=>import("./views/Crafting/Upgrade/UpgradeItem.vue");
-const Upgrade = ()=>import("./views/Crafting/Upgrade/Upgrade.vue");
+const CraftingRoot = () => import("./views/Crafting/CraftingRoot.vue");
+const Crafting = () => import("./views/Crafting/Create/Crafting.vue");
+const CraftingHome = () => import("./views/Crafting/CraftingHome.vue");
 
-const CraftingUnbind = ()=>import("./views/Crafting/Unbind/CraftingUnbind.vue");
-const UnbindItem = ()=>import("./views/Crafting/Unbind/UnbindItem.vue");
-const Unbind = ()=>import("./views/Crafting/Unbind/Unbind.vue");
+const CraftingUpgrade = () => import("./views/Crafting/Upgrade/CraftingUpgrade.vue");
+const UpgradeItem = () => import("./views/Crafting/Upgrade/UpgradeItem.vue");
+const Upgrade = () => import("./views/Crafting/Upgrade/Upgrade.vue");
 
-const Craft = ()=>import("./views/Crafting/Create/Craft.vue");
-const Create = ()=>import("./views/Crafting/Create/Create.vue");
+const CraftingUnbind = () => import("./views/Crafting/Unbind/CraftingUnbind.vue");
+const UnbindItem = () => import("./views/Crafting/Unbind/UnbindItem.vue");
+const Unbind = () => import("./views/Crafting/Unbind/Unbind.vue");
 
-const RecipeBookRoot = ()=>import("./views/Crafting/RecipeBook/RecipeBookRoot.vue");
-const RecipeBook = ()=>import("./views/Crafting/RecipeBook/RecipeBook.vue");
-const RecipeBookPage = ()=>import("./views/Crafting/RecipeBook/RecipeBookPage.vue");
+const Craft = () => import("./views/Crafting/Create/Craft.vue");
+const Create = () => import("./views/Crafting/Create/Create.vue");
 
-const CraftingEnchant = ()=>import("./views/Crafting/Enchant/CraftingEnchant.vue");
-const Enchant = ()=>import("./views/Crafting/Enchant/Enchant.vue");
-const EnchantItem = ()=>import("./views/Crafting/Enchant/EnchantItem.vue");
+const RecipeBookRoot = () => import("./views/Crafting/RecipeBook/RecipeBookRoot.vue");
+const RecipeBook = () => import("./views/Crafting/RecipeBook/RecipeBook.vue");
+const RecipeBookPage = () => import("./views/Crafting/RecipeBook/RecipeBookPage.vue");
 
-const SummonRoot = ()=>import("./views/Summon/SummonRoot.vue");
-const SummonHome = ()=>import("./views/Summon/SummonHome.vue");
+const CraftingEnchant = () => import("./views/Crafting/Enchant/CraftingEnchant.vue");
+const Enchant = () => import("./views/Crafting/Enchant/Enchant.vue");
+const EnchantItem = () => import("./views/Crafting/Enchant/EnchantItem.vue");
 
-const ShopRoot = ()=>import("./views/Summon/Shop/ShopRoot.vue");
-const ShopHome = ()=>import("./views/Summon/Shop/ShopHome.vue");
+const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
+const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
-const ChestsRoot = ()=>import("./views/Summon/Chests/ChestsRoot.vue");
-const ChooseChest = ()=>import("./views/Summon/Chests/ChooseChest.vue");
-const OpenChest = ()=>import("./views/Summon/Chests/OpenChest.vue");
+const ShopRoot = () => import("./views/Summon/Shop/ShopRoot.vue");
+const ShopHome = () => import("./views/Summon/Shop/ShopHome.vue");
 
-const AdventuresRoot = ()=>import("./views/Adventures/AdventuresRoot.vue");
-const Adventures = ()=>import("./views/Adventures/Adventures.vue");
+const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
+const ChooseChest = () => import("./views/Summon/Chests/ChooseChest.vue");
+const OpenChest = () => import("./views/Summon/Chests/OpenChest.vue");
 
-const ForsakenTowerRoot = ()=>import("./views/ForsakenTower/ForsakenTowerRoot.vue");
-const ForsakenTower = ()=>import("./views/ForsakenTower/ForsakenTower.vue");
+const AdventuresRoot = () => import("./views/Adventures/AdventuresRoot.vue");
+const Adventures = () => import("./views/Adventures/Adventures.vue");
 
-const DailyRewards = ()=>import("./views/DailyRewards/DailyRewards.vue");
+const ForsakenTowerRoot = () => import("./views/ForsakenTower/ForsakenTowerRoot.vue");
+const ForsakenTower = () => import("./views/ForsakenTower/ForsakenTower.vue");
 
-const TrialsRoot = ()=>import("./views/Trials/TrialsRoot.vue");
-const HonorTrials = ()=>import("./views/Trials/Trials.vue");
-const TrialsOfHonor = ()=>import("./views/Trials/Honor/TrialsOfHonor.vue");
-const HonorTrialsList = ()=>import("./views/Trials/Honor/TrialsList.vue");
+const DailyRewards = () => import("./views/DailyRewards/DailyRewards.vue");
 
-const Dividends = ()=>import("./views/Dividends/Dividends.vue");
-const Settings = ()=>import("./views/Settings/Settings.vue");
+const TrialsRoot = () => import("./views/Trials/TrialsRoot.vue");
+const HonorTrials = () => import("./views/Trials/Trials.vue");
+const TrialsOfHonor = () => import("./views/Trials/Honor/TrialsOfHonor.vue");
+const HonorTrialsList = () => import("./views/Trials/Honor/TrialsList.vue");
+
+const Dividends = () => import("./views/Dividends/Dividends.vue");
+const Settings = () => import("./views/Settings/Settings.vue");
 
 const router = new Router({
   routes: [
@@ -249,6 +254,7 @@ const router = new Router({
         },
         {
           path: "honor",
+          name: "trial-honor",
           component: TrialsOfHonor,
           children: [
             {
@@ -260,6 +266,7 @@ const router = new Router({
         },
         {
           path: "conjured",
+          name: "trial-conjured",
           component: () => import("./views/Trials/Conjured/ConjuredTrials.vue"),
           children: [
             {
@@ -278,6 +285,11 @@ const router = new Router({
       path: "/home/gold",
       name: "gold-exchange",
       component: () => import("./views/GoldExchange/GoldExchange.vue")
+    },
+    {
+      path: "/home/daily-quests",
+      name: "daily-quests",
+      component: () => import("./views/DailyQuests/DailyQuests.vue")
     },
     {
       path: "/link/:token/:user",
@@ -304,10 +316,10 @@ const router = new Router({
       alias: "/inventory",
       name: "inventory",
       component: PrelaunchInventory,
-      meta: { 
-        skipReady: true 
+      meta: {
+        skipReady: true
       }
-    }, 
+    },
     {
       path: "/home",
       name: "home",
@@ -315,14 +327,35 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
-    }, 
+    },
     {
       path: "/character",
-      name: "character",
       component: Character,
       meta: {
         requiresAuth: true
-      }
+      },
+      children: [
+        {
+          path: "inventory",
+          name: "character",
+          component: CharacterInventory
+        },
+        {
+          path: "training",
+          name: "character-training",
+          component: CharacterTraining
+        },
+        {
+          path: "buffs",
+          name: "character-buffs",
+          component: CharacterBuffs
+        },
+        {
+          path: "beast",
+          name: "character-beast",
+          component: CharacterBeast
+        }
+      ]
     },
     {
       path: "/home/quest/:zone?/:quest?",
@@ -344,44 +377,29 @@ const router = new Router({
           path: "view/:raid",
           props: true,
           name: "view-raid",
-          component: RaidView,
-          meta: {
-            requiresAuth: true
-          }
+          component: RaidView
         },
         {
           path: "summon",
           component: RaidSummoning,
-          meta: {
-            requiresAuth: true
-          },
           children: [
             {
               path: ":raid",
               props: true,
               name: "summon-raid",
-              component: RaidSummon,
-              meta: {
-                requiresAuth: true
-              }
+              component: RaidSummon
             },
             {
               path: "",
               name: "raids-for-summon",
-              component: RaidsSummonList,
-              meta: {
-                requiresAuth: true
-              }
+              component: RaidsSummonList
             }
           ]
         },
         {
           path: "",
           name: "raids",
-          component: CurrentRaids,
-          meta: {
-            requiresAuth: true
-          }
+          component: CurrentRaids
         }
       ]
     },
@@ -407,8 +425,8 @@ const router = new Router({
       path: "/login",
       name: "login",
       component: Login,
-      meta: { 
-        skipReady: true 
+      meta: {
+        skipReady: true
       }
     },
     {

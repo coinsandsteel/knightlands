@@ -33,7 +33,7 @@
             <span class="menu-title">{{$t("menu-home")}}</span>
           </router-link>
 
-          <router-link class="flex flex-center" to="/character">
+          <router-link class="flex flex-center" to="/character/inventory">
             <span class="menu-icon character pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-character")}}</span>
           </router-link>

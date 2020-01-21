@@ -1,5 +1,9 @@
 <template>
-  <div class="progress-bar flex flex-center flex-no-wrap" @click="$emit('refill')" :class="{'width-100': expand}">
+  <div
+    class="progress-bar flex flex-center flex-no-wrap"
+    @click="$emit('refill')"
+    :class="{'width-100': expand}"
+  >
     <div class="icon">
       <div :class="iconClass"></div>
     </div>
@@ -14,6 +18,7 @@
         :class="valueClass"
         v-if="!hideValues && isTop"
       >
+        <slot name="label"></slot>
         <div v-show="showValue">{{currentValue}}</div>
         <div v-show="!showValue" class="status-bar-font flex">
           <div class="icon-timer icon-size-mini"></div>
@@ -26,16 +31,17 @@
         <div v-if="value2 > 0" class="progress progress2" :class="barType2" :style="fillStyle2()"></div>
 
         <div
-        class="status-bar-font bar-value flex flex-center font-weight-700"
-        :class="valueClass"
-        v-if="!hideValues && !isTop"
-      >
-        <div v-show="showValue">{{currentValue}}</div>
-        <div v-show="!showValue" class="status-bar-font flex flex-center">
-          <div class="icon-timer icon-size-mini"></div>
-          <span>{{timerValue.value}}</span>
+          class="status-bar-font bar-value flex flex-center font-weight-700"
+          :class="valueClass"
+          v-if="!hideValues && !isTop"
+        >
+          <slot name="label"></slot>
+          <div v-show="showValue">{{currentValue}}</div>
+          <div v-show="!showValue" class="status-bar-font flex flex-center">
+            <div class="icon-timer icon-size-mini"></div>
+            <span>{{timerValue.value}}</span>
+          </div>
         </div>
-      </div>
       </div>
       <div v-if="plusButton" class="btn-plus" :class="`${plusButton}-btn`"></div>
     </div>
@@ -156,9 +162,6 @@ export default {
       let lowestThreshold = 99;
       let thresholdBarType = this.barType;
       let currentPercentValue = this.value / this.maxValue;
-      if (currentPercentValue < 1) {
-        let k = 0;
-      }
 
       for (let i = 0; i < this.thresholds.length; i++) {
         let threshold = this.thresholds[i];
@@ -180,7 +183,7 @@ export default {
     },
     barStyle() {
       return {
-        "background-color": this.hideBackground ? "#0000" :this.barColor,
+        "background-color": this.hideBackground ? "#0000" : this.barColor,
         height: this.compact ? "0.75rem" : this.height
       };
     },
@@ -238,8 +241,8 @@ export default {
       .progress2 {
         z-index: -1;
         position: absolute;
-        left:0;
-        top:0;
+        left: 0;
+        top: 0;
         bottom: 0;
         right: 0;
       }

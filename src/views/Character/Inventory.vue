@@ -169,14 +169,6 @@ export default {
     LoadingScreen,
     CustomButton
   },
-  props: {
-    items: {
-      type: Array,
-      default() {
-        return [];
-      }
-    }
-  },
   data() {
     return {
       filteredItems: [],
@@ -212,6 +204,9 @@ export default {
     this.removeFooter();
   },
   computed: {
+    items() {
+      return this.$game.inventory.items;
+    },
     stats() {
       let stats = [];
       stats.push(CharacterStat.Health);
