@@ -52,8 +52,6 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import StripedPanel from "@/components/StripedPanel.vue";
-import StripedContent from "@/components/StripedContent.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import RaidsMeta from "@/raids_meta";
 import CustomButton from "@/components/Button.vue";
@@ -64,8 +62,6 @@ export default {
   mixins: [HintHandler],
   components: {
     UserDialog,
-    StripedPanel,
-    StripedContent,
     IconWithValue,
     CustomButton,
     Loot

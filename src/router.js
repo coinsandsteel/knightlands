@@ -284,12 +284,18 @@ const router = new Router({
     {
       path: "/home/gold",
       name: "gold-exchange",
-      component: () => import("./views/GoldExchange/GoldExchange.vue")
+      component: () => import("./views/GoldExchange/GoldExchange.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/home/daily-quests",
       name: "daily-quests",
-      component: () => import("./views/DailyQuests/DailyQuests.vue")
+      component: () => import("./views/DailyQuests/DailyQuests.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/link/:token/:user",

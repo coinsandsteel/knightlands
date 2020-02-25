@@ -19,7 +19,7 @@
         </div>
 
         <ProgressBar
-          v-model="$game.dailyQuests().points"
+          v-model="currentPoints"
           :maxValue="maxPoints"
           :hideMaxValue="true"
           :hideValues="true"
@@ -42,17 +42,23 @@
             :key="idx"
             class="task-icon"
             :class="taskIcon(task.type)"
-            @click="selectTask(idx)"
+            @click="selectQuest(idx)"
           ></span>
         </div>
       </StripedContent>
 
       <div class="flex flex-column">
         <!-- SELECTED TASK -->
-        <span class="font-size-22 margin-bottom-half font-weight-900 title">{{$t(currentTask.type)}}</span>
+        <span
+          class="font-size-22 margin-bottom-half font-weight-900 title"
+        >{{$t(currentQuest.type)}}</span>
+
         <div class="font-size-18 margin-bottom-2">
-          <span class="green-title margin-right-half">Progress</span>
-          <span>{{`0/${currentTask.value}`}}</span>
+          <span class="green-title margin-right-half">{{$t('daily-quest-progress')}}</span>
+          <span
+            v-if="isActiveQuest(currentQuestIndex)"
+          >{{`${activeQuestProgress}/${currentQuest.value}`}}</span>
+          <span v-else>{{`0/${currentQuest.value}`}}</span>
         </div>
 
         <div class="flex flex-space-around">
@@ -60,9 +66,9 @@
             <div class="margin-bottom-half">
               <span class="margin-right-half">Rarity:</span>
               <span
-                :class="`rarity-${currentTask.rarity}`"
+                :class="`rarity-${currentQuest.rarity}`"
                 class="font-weight-700"
-              >{{$t(currentTask.rarity)}}</span>
+              >{{$t(currentQuest.rarity)}}</span>
             </div>
             <span>{{$t("daily-quests-ap", {ap: currentTaskMeta.points})}}</span>
           </div>
@@ -82,8 +88,13 @@
         </div>
 
         <div class="flex flex-center">
+          <span
+            v-if="isFinished(currentQuestIndex)"
+            class="font-size-22 font-weight-900 orange-title"
+          >{{$t("daily-quest-finished")}}</span>
+
           <CustomButton
-            v-if="isAccepted(currentTaskIndex)"
+            v-else-if="isActiveQuest(currentQuestIndex)"
             type="yellow"
             @click="jumpToCurrentTask"
           >{{$t("daily-quests-go")}}</CustomButton>
@@ -91,7 +102,7 @@
           <CustomButton
             v-else
             type="yellow"
-            @click="acceptTask(currentTaskIndex)"
+            @click="acceptTask(currentQuestIndex)"
           >{{$t("daily-quests-accept")}}</CustomButton>
         </div>
       </div>
@@ -112,20 +123,35 @@
           <span class="margin-right-half">Completed Tasks:</span>
         </template>
       </ProgressBar>
+      <div class="font-size-18 margin-top-2">{{$t("daily-quests-timer", {time: timer.value})}}</div>
     </div>
 
     <div class="flex flex-space-evenly margin-top-1">
-      <!-- TASK REFRESH -->
+      <!-- BOTTOM BUTTONS -->
       <div class="flex flex-column">
         <span class="font-size-18">{{$t("daily-quests-refreshes", {count: attemptsIap.count})}}</span>
-        <PromisedButton type="green">
+        <PromisedButton type="green" :promise="request">
           <PriceTag :iap="attemptsIap.iap" :dark="true"></PriceTag>
         </PromisedButton>
       </div>
 
       <div class="flex flex-column">
-        <span class="font-size-18">Free refreshes: {{$game.dailyQuests().freeRefreshes}}</span>
-        <PromisedButton type="blue">{{$t("daily-quests-refresh")}}</PromisedButton>
+        <span class="font-size-18">Free refreshes: {{freeRefreshes}}</span>
+        <PromisedButton
+          type="blue"
+          @click="refreshTasks"
+          :promise="request"
+        >{{$t("daily-quests-refresh")}}</PromisedButton>
+      </div>
+
+      <div class="flex flex-column">
+        <span class="font-size-18">&nbsp;</span>
+        <PromisedButton
+          type="yellow"
+          @click="claimRewards"
+          :disabled="!canClaimRewards"
+          :promise="request"
+        >{{$t("daily-quests-claim")}}</PromisedButton>
       </div>
     </div>
   </div>
@@ -142,8 +168,13 @@ import StripedPanel from "@/components/StripedPanel.vue";
 import StripedContent from "@/components/StripedContent.vue";
 import PriceTag from "@/components/PriceTag.vue";
 import CustomButton from "@/components/Button.vue";
-import DailyTaskType from "@/../knightlands-shared/daily_task_type";
+import DailyTaskType from "@/../knightlands-shared/daily_quest_type";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Timer from "@/timer";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+import { create as CreateDialog } from "vue-modal-dialogs";
+
+const ShowItems = CreateDialog(ItemsReceived, "items", "soft", "hard", "exp", "dkt");
 
 export default {
   mixins: [AppSection, PromptMixin],
@@ -162,11 +193,14 @@ export default {
   },
   data: () => ({
     meta: DailyQuestsMeta,
-    currentTask: {},
-    currentTaskIndex: -1
+    currentQuest: {},
+    currentQuestIndex: -1,
+    timer: new Timer(true),
+    request: null
   }),
   mounted() {
-    this.selectTask(0);
+    this.selectQuest(0);
+    this.timer.timeLeft = Math.floor(this.$game.now % 86400000) / 1000;
   },
   computed: {
     rewards() {
@@ -180,12 +214,11 @@ export default {
       return rewards.rewards;
     },
     maxPoints() {
-      let maxPoints = 0;
-      for (let reward of this.rewards) {
-        maxPoints += reward.pointsRequired;
-      }
-
-      return maxPoints;
+      return this.rewards[this.rewards.length - 1].pointsRequired;
+    },
+    activeQuestProgress() {
+      if (!this.hasActiveQuest) return 0;
+      return this.$game.dailyQuests().currentTask.progress;
     },
     attemptsIap() {
       return DailyQuestsMeta.iaps[0];
@@ -194,39 +227,71 @@ export default {
       return this.$game.dailyQuests().tasks;
     },
     currentTaskMeta() {
-      if (!this.currentTask.rarity) {
+      if (!this.currentQuest.rarity) {
         return {};
       }
 
       let rules = DailyQuestsMeta.rarityRules.find(
-        x => x.rarity == this.currentTask.rarity
+        x => x.rarity == this.currentQuest.rarity
       );
       return rules;
+    },
+    hasActiveQuest() {
+      const currentTask = this.$game.dailyQuests().currentTask;
+      return !!currentTask && currentTask.progress < currentTask.maxProgress;
+    },
+    currentPoints() {
+      return this.$game.dailyQuests().points;
+    },
+    freeRefreshes() {
+      return this.$game.dailyQuests().freeRefreshes;
+    },
+    canClaimRewards() {
+      const dq = this.$game.dailyQuests();
+      let canClaim = false;
+      for (let index = 0; index < dq.rewards.length; index++) {
+        const rewardRecord = dq.rewards[index];
+        if (
+          rewardRecord.pointsRequired > dq.claimedPoints &&
+          rewardRecord.pointsRequired <= dq.points
+        ) {
+          canClaim = true;
+          break;
+        }
+      }
+      return canClaim;
     }
   },
   methods: {
     async acceptTask() {
-      let response = await this.showPrompt(
-        this.$t("confirm-action-title"),
-        this.$t("daily-quest-accept-content", { task: this.$t(this.currentTask.type) }),
-        [
-          {
-            type: "yellow",
-            title: "daily-quest-accept",
-            response: true
-          }
-        ]
-      );
+      let response = true;
+
+      if (this.hasActiveQuest) {
+        response = await this.showPrompt(
+          this.$t("confirm-action-title"),
+          this.$t("daily-quest-accept-content", {
+            task: this.$t(this.currentQuest.type)
+          }),
+          [
+            {
+              type: "yellow",
+              title: "daily-quest-accept",
+              response: true
+            }
+          ]
+        );
+      }
 
       if (response === true) {
-
+        await this.$game.acceptDailyQuest(this.currentQuestIndex);
       }
     },
-    isAccepted(taskIndex) {
-      return (
-        this.$game.dailyQuests().currentTask &&
-        this.$game.dailyQuests().currentTask.index == taskIndex
-      );
+    isActiveQuest(questIndex) {
+      const currentTask = this.$game.dailyQuests().currentTask;
+      return this.hasActiveQuest && currentTask.index == questIndex;
+    },
+    isFinished(questIndex) {
+      return this.$game.dailyQuests().completedTasks[questIndex];
     },
     taskIcon(type) {
       switch (type) {
@@ -264,7 +329,7 @@ export default {
       return type;
     },
     jumpToCurrentTask() {
-      switch (this.currentTask.type) {
+      switch (this.currentQuest.type) {
         case DailyTaskType.DailyEnchantItem:
           this.$router.push({ name: "crafting-enchant" });
           break;
@@ -297,9 +362,19 @@ export default {
           break;
       }
     },
-    selectTask(idx) {
-      this.currentTask = this.taskList[idx];
-      this.currentTaskIndex = idx;
+    selectQuest(idx) {
+      this.currentQuest = this.taskList[idx];
+      this.currentQuestIndex = idx;
+    },
+    async refreshTasks() {
+      if (this.freeRefreshes > 0) {
+        await this.$game.refreshDailyQuests();
+      }
+    },
+    async claimRewards() {
+      this.request = this.$game.claimDailyQuestsRewards();
+      let items = await this.request;
+      await ShowItems(items);
     }
   }
 };

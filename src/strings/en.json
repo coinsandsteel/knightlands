@@ -971,7 +971,11 @@
     "daily-quests-accept": "Accept Quest",
     "confirm-action-title": "Confirm Action",
     "daily-quest-accept-content": "Are you sure that you want to accept {task}? <p class='rarity-mythical'>Current task progress will be lost!</p>",
+    "daily-quest-progress": "Progress",
+    "daily-quest-finished": "Quest Finished",
+    "daily-quests-timer": "Time until reset: {time}",
     "dailySpendGold": "Spend Gold",
     "dailyBoostBeast": "Boost Beast",
-    "dailyLevelUpItem": "Level Up Equipment"
+    "dailyLevelUpItem": "Level Up Equipment",
+    "daily-quests-claim": "Claim Rewards"
 }

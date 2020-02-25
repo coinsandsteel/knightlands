@@ -39,6 +39,7 @@ export default {
   },
   mounted() {
     this.title = `Character`;
+    this.$options.useRouterBack = true;
   },
   methods: {
     switchTab(newTab) {

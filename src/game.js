@@ -529,7 +529,7 @@ class Game {
         }
 
         if (changes.dailyQuests) {
-            this._vm.dailyQuests = changes.dailyQuests;
+            this.mergeObjects(this._vm, this._vm.dailyQuests, changes.dailyQuests);
         }
 
         if (changes.trials) {
@@ -1227,6 +1227,21 @@ class Game {
         return (await this._wrapOperation(Operations.PremiumBoostGoldExchange, {
             count
         })).response;
+    }
+
+    // Daily quests
+    async acceptDailyQuest(questIndex) {
+        return (await this._wrapOperation(Operations.AcceptDailyTask, {
+            index: questIndex
+        })).response;
+    }
+
+    async refreshDailyQuests() {
+        return (await this._wrapOperation(Operations.RefreshDailyTasks)).response;
+    }
+
+    async claimDailyQuestsRewards() {
+        return (await this._wrapOperation(Operations.ClaimDailyTasksRewards)).response;
     }
 }
 
