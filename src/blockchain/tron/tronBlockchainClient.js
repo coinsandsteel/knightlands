@@ -106,7 +106,7 @@ class TronBlockchainClient extends BlockchainClient {
     // TODO automate raw transaction creation of the method from abi
     async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {
         console.log(PaymentGateway.address);
-        let tx = await this._tronWeb.transactionBuilder.triggerSmartContract(PaymentGateway.address, "purchase(string,string,uint256,bytes)", {
+        let tx = await this._tronWeb.transactionBuilder.triggerSmartContract(PaymentGateway.address, "purchase(string,string,uint256,uint256,uint256,bytes)", {
             callValue: price
         }, [{
             type: "string",
