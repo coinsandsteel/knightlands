@@ -308,11 +308,13 @@ class Game {
         });
     }
 
-    async purchaseIAP(iap, paymentId, price, signature) {
+    async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {
         let tx = await this._blockchainClient.purchaseIAP(
             iap,
             paymentId,
             price,
+            nonce, 
+            timestamp,
             signature
         );
         await this.sendPayment(paymentId, tx);

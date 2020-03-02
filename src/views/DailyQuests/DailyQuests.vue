@@ -14,6 +14,7 @@
             v-for="(reward, index) in rewards"
             :key="index"
             :points="reward.pointsRequired"
+            :step="index + 1"
             :style="{ width: `${100/rewards.length}%`}"
           ></PointsMilestone>
         </div>
@@ -296,34 +297,34 @@ export default {
     taskIcon(type) {
       switch (type) {
         case DailyTaskType.DailyEnchantItem:
-          return "icon-enchant";
+          return "icon-daily-enchant";
 
         case DailyTaskType.DailyLevelUpItem:
-          return "icon-craft-level";
+          return "icon-daily-lvl-item";
 
         case DailyTaskType.DailyBoostBeast:
-          return "icon-enchant";
+          return "icon-daily-boost-beast";
 
         case DailyTaskType.DailySpendGold:
-          return "icon-goldExchange";
+          return "icon-daily-spend-gold";
 
         case DailyTaskType.DailyTower:
-          return "icon-tower";
+          return "icon-daily-tower";
 
         case DailyTaskType.DailyArmourTrial:
-          return "icon-trials";
+          return "icon-daily-arm-trial";
 
         case DailyTaskType.DailyWeaponTrial:
-          return "icon-trials";
+          return "icon-daily-wep-trial";
 
         case DailyTaskType.DailyAccessoryTrial:
-          return "icon-trials";
+          return "icon-daily-acc-trial";
 
         case DailyTaskType.DailyEngageQuest:
-          return "icon-quests";
+          return "icon-daily-quest";
 
         case DailyTaskType.DailySpendPremium:
-          return "icon-shop";
+          return "icon-daily-spend-prem";
       }
 
       return type;

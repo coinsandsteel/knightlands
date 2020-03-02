@@ -241,11 +241,11 @@ export default {
     async confirmSummon() {
       // summon was already requested and server waits for transaction object
       if (this.waitingForPayment) {
-        const { iap, paymentId, price, signature } = this.selectedStageStatus[
+        const { iap, paymentId, price, nonce, timestamp, signature } = this.selectedStageStatus[
           this.selectedStage
         ];
 
-        await this.$game.purchaseIAP(iap, paymentId, price, signature);
+        await this.$game.purchaseIAP(iap, paymentId, price, nonce, timestamp, signature);
 
         return;
       }
@@ -260,7 +260,7 @@ export default {
       );
 
       if (result === true) {
-        let { signature, price, iap, paymentId } = await this.$game.summonRaid(
+        let { signature, price, iap, paymentId, nonce, timestamp } = await this.$game.summonRaid(
           this.raid,
           this.selectedStage
         );
@@ -268,7 +268,7 @@ export default {
         await this.fetchSummonStatus();
 
         try {
-          await this.$game.purchaseIAP(iap, paymentId, price, signature);
+          await this.$game.purchaseIAP(iap, paymentId, price, nonce, timestamp, signature);
           await this.fetchSummonStatus();
         } catch (exc) {
           console.log("Payment failed with exception", exc);

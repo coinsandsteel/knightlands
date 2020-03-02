@@ -977,5 +977,9 @@
     "dailySpendGold": "Spend Gold",
     "dailyBoostBeast": "Boost Beast",
     "dailyLevelUpItem": "Level Up Equipment",
+    "dailyArmourTrial": "Engage Trials of Honor",
+    "dailyWeaponTrial": "Engage Conjured Trials",
+    "dailyEnchantItem": "Enchant Equipment",
+    "dailyTower": "Engage Onyx Tower",
     "daily-quests-claim": "Claim Rewards"
 }
