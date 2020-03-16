@@ -24,7 +24,6 @@
 
 <script>
 import AppSection from "@/AppSection";
-import CustomButton from "@/components/Button.vue";
 import ChestsMeta from "@/chests_meta";
 import ChestElement from "./ChestElement.vue";
 import { Promised } from "vue-promised";
@@ -34,7 +33,7 @@ const ChestNames = ["wooden_chest", "silver_chest", "velvet_chest"];
 
 export default {
   mixins: [AppSection],
-  components: { CustomButton, ChestElement, Promised, LoadingScreen },
+  components: { ChestElement, Promised, LoadingScreen },
   created() {
     this.title = "window-choose-chest";
   },

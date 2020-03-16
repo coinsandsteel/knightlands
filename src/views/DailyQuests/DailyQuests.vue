@@ -38,13 +38,12 @@
       >
         <div class="flex flex-no-wrap flex-space-evenly">
           <!-- TASK LIST -->
-          <span
-            v-for="(task, idx) in taskList"
-            :key="idx"
-            class="task-icon"
-            :class="taskIcon(task.type)"
-            @click="selectQuest(idx)"
-          ></span>
+          <TaskSlot v-for="(task, idx) in taskList" :key="idx" :rarity="task.rarity" @click="selectQuest(idx)" :selected="currentQuestIndex == idx" :finished="isFinished(idx)">
+            <span
+              class="task-icon"
+              :class="taskIcon(task.type)"
+            ></span>
+          </TaskSlot>
         </div>
       </StripedContent>
 
@@ -173,9 +172,17 @@ import DailyTaskType from "@/../knightlands-shared/daily_quest_type";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Timer from "@/timer";
 import ItemsReceived from "@/components/ItemsReceived.vue";
+import TaskSlot from "./TaskSlot.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
-const ShowItems = CreateDialog(ItemsReceived, "items", "soft", "hard", "exp", "dkt");
+const ShowItems = CreateDialog(
+  ItemsReceived,
+  "items",
+  "soft",
+  "hard",
+  "exp",
+  "dkt"
+);
 
 export default {
   mixins: [AppSection, PromptMixin],
@@ -187,7 +194,8 @@ export default {
     StripedPanel,
     StripedContent,
     CustomButton,
-    PriceTag
+    PriceTag,
+    TaskSlot
   },
   created() {
     this.title = "window-daily-quests";
@@ -292,7 +300,9 @@ export default {
       return this.hasActiveQuest && currentTask.index == questIndex;
     },
     isFinished(questIndex) {
-      return this.$game.dailyQuests().completedTasks[questIndex];
+      const completedTasks = this.$game.dailyQuests().completedTasks;
+      if (!completedTasks) return false;
+      return completedTasks[questIndex];
     },
     taskIcon(type) {
       switch (type) {

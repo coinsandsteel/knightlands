@@ -36,8 +36,6 @@ class Game {
             data: () => ({
                 classInited: false,
                 authenticated: false,
-                softCurrency: 0,
-                hardCurrency: 0,
                 questsProgress: {},
                 account: undefined,
                 ready: false,
@@ -105,6 +103,10 @@ class Game {
         this._socket.on(
             Events.GoldExchangeBoostPurchased,
             this._handleGoldExchangeBoosted.bind(this)
+        );
+        this._socket.on(
+            Events.DivTokenWithdrawal,
+            this._handleDivTokenWithdrawal.bind(this)
         );
 
         // let's avoid using callbacks
@@ -200,6 +202,10 @@ class Game {
         return this.inventory.getCurrency(CurrencyType.Hard);
     }
 
+    get dkt() {
+        return this.inventory.getCurrency(CurrencyType.Dkt);
+    }
+
     get ready() {
         return this._vm.ready;
     }
@@ -218,6 +224,10 @@ class Game {
 
     get now() {
         return new Date().getTime() + this._serverTimeDiff;
+    }
+
+    get nowSec() {
+        return Math.floor(this.now / 1000);
     }
 
     set blockchain(value) {
@@ -254,6 +264,10 @@ class Game {
 
     off(event, callback) {
         this._vm.$off(event, callback);
+    }
+
+    removeAllListeners(evt) {
+        this._vm.$off(evt);
     }
 
     shortAccount(account) {
@@ -407,6 +421,11 @@ class Game {
     _handleGoldExchangeBoosted(data) {
         this.mergeObjects(this._vm, this._vm.goldExchange, data.context);
         this._vm.$emit(Events.GoldExchangeBoostPurchased, data);
+    }
+
+    _handleDivTokenWithdrawal(data) {
+        this._inventory.setCurrency(CurrencyType.Dkt, data.dkt);
+        this._vm.$emit(Events.DivTokenWithdrawal, data);
     }
 
     _handleRaidJoinStatus(data) {
@@ -601,14 +620,6 @@ class Game {
                 }
             }
         }
-
-        if (changes.hasOwnProperty("softCurrency")) {
-            this._vm.softCurrency = changes.softCurrency;
-        }
-
-        if (changes.hasOwnProperty("hardCurrency")) {
-            this._vm.hardCurrency = changes.hardCurrency;
-        }
     }
 
     async updateUserData() {
@@ -632,8 +643,6 @@ class Game {
                 this._vm.towerFreeAttempts = info.tower.freeAttemps;
                 this._vm.trials = info.trials;
                 this._vm.dailyQuests = info.dailyQuests;
-                this._vm.softCurrency = info.softCurrency;
-                this._vm.hardCurrency = info.hardCurrency;
 
                 if (!this._vm.loaded) {
                     this._checkClassChoice();
@@ -1244,6 +1253,24 @@ class Game {
 
     async claimDailyQuestsRewards() {
         return (await this._wrapOperation(Operations.ClaimDailyTasksRewards)).response;
+    }
+
+    // Dividends
+    async requestDividendTokenWithdrawal(amount) {
+        return (await this._wrapOperation(Operations.WithdrawDividendToken, {
+            amount
+        })).response;
+    }
+
+    async fetchPendingDividendTokenWithdrawal() {
+        return (await this._wrapOperation(Operations.FetchPendingDividendTokenWithdrawal)).response;
+    }
+
+    async sendDividendTokenWithdrawal(amount, nonce, signature) {
+        const tx = await this.blockchainClient.dividendTokenWithdrawal(amount, nonce, signature);
+        return (await this._wrapOperation(Operations.SendDividendTokenWithdrawal, {
+            tx
+        })).response;
     }
 }
 

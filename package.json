@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prebuild": "node ./node_modules/rimraf/bin.js ./node_modules/.cache",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode dev",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service build --mode test"

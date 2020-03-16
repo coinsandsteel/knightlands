@@ -20,9 +20,11 @@ export default {
   height: 100%;
 
   & .divider {
-    width: 0.5rem;
+    width: 8px;
     height: 100%;
-    background-color: aquamarine;
+    border-image: url("../../assets/ui/progress_bar_tall_divider.png") round;
+    border-image-slice: 8 fill;
+    border-image-width: 1rem;
 
     &.hidden {
       background-color: #ffffff00;

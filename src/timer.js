@@ -1,5 +1,9 @@
-class Timer {
+import EventEmitter from "events";
+
+class Timer extends EventEmitter {
     constructor(showHours) {
+        super();
+
         this._showHours = showHours;
         this._timerTimeout = undefined;
         this._timeLeft = 0;
@@ -37,6 +41,7 @@ class Timer {
 
     _update() {
         if (this._timeLeft < 0) {
+            this.emit("finished", this);
             this._timerTimeout = null;
             return;
         }
