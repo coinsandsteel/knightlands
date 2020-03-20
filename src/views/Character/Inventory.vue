@@ -78,11 +78,7 @@
         </div>
 
         <!-- Inventory  -->
-        <div class="flex full-flex dummy-height">
-          <div v-bar class="width-100 height-100 dummy-height">
-            <loot-container :items="filteredItems" :inventory="true" @hint="_showHint"></loot-container>
-          </div>
-        </div>
+        <LootContainer :items="filteredItems" :inventory="true" @hint="_showHint"></LootContainer>
 
         <!-- Loot hints -->
         <div v-show="showHintItems">
@@ -132,25 +128,28 @@ import LootContainer from "@/components/LootContainer.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import AppSection from "@/AppSection";
 import CustomButton from "@/components/Button.vue";
-import {
-  EquipmentSlots,
-  getSlot
-} from "@/../knightlands-shared/equipment_slot";
-import ItemType from "@/../knightlands-shared/item_type";
-import EquipmentType from "@/../knightlands-shared/equipment_type";
-import CharacterStats from "@/../knightlands-shared/character_stat.js";
+import { EquipmentSlots } from "@/../knightlands-shared/equipment_slot";
+// import EquipmentType from "@/../knightlands-shared/equipment_type";
+// import CharacterStats from "@/../knightlands-shared/character_stat.js";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CharacterStat from "@/../knightlands-shared/character_stat";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import StatDetails from "./StatDetails.vue";
 import HintHandler from "@/components/HintHandler.vue";
-const ItemActions = require("@/../knightlands-shared/item_actions");
 import LootHint from "@/components/LootHint.vue";
 import CompareItems from "@/components/CompareItems.vue";
+import DoubleBuffer from "@/helpers/DoubleBuffer";
 
 const ItemFilter = CreateDialog(ItemFilterComponent);
-const ShowItems = CreateDialog(ItemsReceived, "items", "soft", "hard", "exp", "dkt");
+const ShowItems = CreateDialog(
+  ItemsReceived,
+  "items",
+  "soft",
+  "hard",
+  "exp",
+  "dkt"
+);
 const ShowDetails = CreateDialog(StatDetails);
 const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 
@@ -164,7 +163,7 @@ export default {
     LootHint,
     Hooper,
     Slide,
-    ItemInfo: () => import("@/components/ItemInfo.vue"),
+    // ItemInfo: () => import("@/components/ItemInfo.vue"),
     Promised,
     LoadingScreen,
     CustomButton
@@ -187,8 +186,7 @@ export default {
     }
   },
   created() {
-    this.filteredItemsBuffers = [[], []];
-    this.bufferIndex = 0;
+    this.filteredItemsBuffer = new DoubleBuffer(); 
   },
   mounted() {
     this.updateItems();
@@ -249,7 +247,7 @@ export default {
           {
             title: "btn-compare",
             response: CompareItemsAction,
-            type:"grey"
+            type: "grey"
           }
         ];
       }
@@ -259,9 +257,9 @@ export default {
       let currentSlide = this.currentSlideIndex;
       let maxSlideIndex =
         (this.filteredItems.length < 3 ? this.filteredItems.length : 3) - 1;
-      let direction = 1;
-      let cs = index.currentSlide;
-      let fs = index.slideFrom;
+      // let direction = 1;
+      // let cs = index.currentSlide;
+      // let fs = index.slideFrom;
 
       if (typeof index == "object") {
         currentSlide = index.currentSlide;
@@ -270,7 +268,7 @@ export default {
           currentSlide = maxSlideIndex;
         } else if (currentSlide > maxSlideIndex) {
           currentSlide = 0;
-          direction = -1;
+          // direction = -1;
         }
 
         // get item by slide
@@ -328,8 +326,10 @@ export default {
           break;
 
         case "unequip":
-          const itemSlot = this.$game.itemsDB.getSlot(item.template);
-          this.request = this.$game.unequipItem(itemSlot);
+          {
+            const itemSlot = this.$game.itemsDB.getSlot(item.template);
+            this.request = this.$game.unequipItem(itemSlot);
+          }
           break;
 
         case "use":
@@ -337,10 +337,11 @@ export default {
           break;
 
         case "open":
-          let template = item.template;
-          this.request = this.$game.useItem(item.id);
-          let items = await this.request;
-          await ShowItems(items);
+          {
+            this.request = this.$game.useItem(item.id);
+            let items = await this.request;
+            await ShowItems(items);
+          }
           break;
 
         case CompareItemsAction:
@@ -368,38 +369,7 @@ export default {
       }
     },
     filterItems(filters) {
-      let itemsDB = this.$game.itemsDB;
-      let buffer = this.filteredItemsBuffers[this.bufferIndex++ % 2];
-      buffer.length = 0;
-
-      let i = 0;
-      const length = this.items.length;
-
-      for (; i < length; ++i) {
-        let item = this.items[i];
-        let template = item.template;
-        const templateData = itemsDB.getTemplate(template);
-
-        if (templateData.type == ItemType.Consumable) {
-          // skip buffs
-          if (
-            templateData.action.action == ItemActions.Buff ||
-            templateData.action.action == ItemActions.RaidBuff
-          ) {
-            continue;
-          }
-        }
-
-        if (
-          filters[itemsDB.getItemType(template)] ||
-          (templateData.type == ItemType.Equipment &&
-            filters[itemsDB.getSlot(template)])
-        ) {
-          buffer.push(item);
-        }
-      }
-
-      this.filteredItems = buffer;
+      this.filteredItems = this.$game.inventory.filterItemsByType(filters, this.filteredItemsBuffer.get());
     },
     equipmentRow1() {
       return [

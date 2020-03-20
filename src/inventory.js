@@ -1,5 +1,7 @@
 import Vue from "vue";
 import throttle from "lodash.throttle";
+import ItemType from "@/../knightlands-shared/item_type";
+const ItemActions = require("@/../knightlands-shared/item_actions");
 
 class Inventory {
     constructor(itemDB) {
@@ -44,7 +46,7 @@ class Inventory {
     clear() {
         this._vm.items = [];
         this._itemsBytemplate.clear();
-        this._itemsById.clear();    
+        this._itemsById.clear();
     }
 
     load(data) {
@@ -78,6 +80,40 @@ class Inventory {
 
     hasItemTemplate(itemTemplate, quantity) {
         return this.getItemsCountByTemplate(itemTemplate) >= quantity;
+    }
+
+    filterItemsByType(filters, buffer) {
+        buffer = buffer || [];
+        buffer.length = 0;
+        
+        let i = 0;
+        const length = this.items.length;
+
+        for (; i < length; ++i) {
+            let item = this.items[i];
+            let template = item.template;
+            const templateData = this._itemDB.getTemplate(template);
+
+            if (templateData.type == ItemType.Consumable) {
+                // skip buffs
+                if (
+                    templateData.action.action == ItemActions.Buff ||
+                    templateData.action.action == ItemActions.RaidBuff
+                ) {
+                    continue;
+                }
+            }
+
+            if (
+                filters[this._itemDB.getItemType(template)] ||
+                (templateData.type == ItemType.Equipment &&
+                    filters[this._itemDB.getSlot(template)])
+            ) {
+                buffer.push(item);
+            }
+        }
+
+        return buffer;
     }
 
     filterItems(filter) {
@@ -129,6 +165,8 @@ class Inventory {
         return this._itemsBytemplate.get(templateId);
     }
 
+
+
     mergeData(inventoryChanges) {
         let {
             changes,
@@ -174,7 +212,7 @@ class Inventory {
     hasMaxLevelItemByTemplate(template) {
         let maxLevel = this._itemDB.getMaxLevel(template, 2);
         let items = this._getItemsByTemplate(template);
-        
+
         if (!items) {
             return false;
         }
@@ -220,7 +258,7 @@ class Inventory {
         this._itemsById.delete(itemId);
 
         let items = this._getItemsByTemplate(item.template);
-        let index = items.findIndex(x=>x.id == itemId);
+        let index = items.findIndex(x => x.id == itemId);
         if (index != -1) {
             items.splice(index, 1);
         }
@@ -243,7 +281,7 @@ class Inventory {
             let sortingFactorA = this._itemDB.getRarityAsNumber(
                 a.template
             );
-            
+
             let sortingFactorB = this._itemDB.getRarityAsNumber(
                 b.template
             );

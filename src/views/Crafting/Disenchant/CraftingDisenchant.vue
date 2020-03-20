@@ -1,41 +1,44 @@
 <template>
   <div class="padding-1 height-100 dummy-height">
-    <LootContainer
-      :items="items"
-      @hint="openUnbind"
-      :lootProps="{showUnbindLevels: true, showLevel: true}"
-    >
-      <span class="font-size-20">{{$t("upgrade-list-empty-msg")}}</span>
-    </LootContainer>
+    <Promised :promise="request">
+      <template v-slot:combined="{ isPending, isDelayOver, data }">
+        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+
+        <LootContainer
+          :items="items"
+          :lootProps="{showUnbindLevels: true, showLevel: true}"
+        ></LootContainer>
+      </template>
+    </Promised>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
+import { Promised } from "vue-promised";
+import PromptMixin from "@/components/PromptMixin.vue";
 import LootContainer from "@/components/LootContainer.vue";
-const ItemType = require("@/../knightlands-shared/item_type");
+import LoadingScreen from "@/components/LoadingScreen.vue";
+
+import ItemFilterComponent from "@/components/ItemFilter.vue";
+import { create as CreateDialog } from "vue-modal-dialogs";
+
+const ItemFilter = CreateDialog(ItemFilterComponent);
 
 export default {
-  mixins: [AppSection],
-  components: { LootContainer },
-  created() {
-    this.title = "window-unbind-items-list";
-  },
+  data: () => ({}),
   computed: {
     items() {
       const filteredItems = [];
       const filteredIds = {};
+      const maxEnchant = this.$game.itemsDB.getMaxEnchantingLevel();
 
       // place equipment items first
       for (let slot in this.$game.character.equipment) {
         const gear = this.$game.character.equipment[slot];
         const template = this.$game.itemsDB.getTemplate(gear.template);
 
-        if (!template.unbindable || gear.breakLimit == 2) {
-          continue;
-        }
-
-        if (this.$game.inventory.getItemsCountByTemplate(gear.template) == 0) {
+        if (!template.enchantable || gear.enchant >= maxEnchant) {
           continue;
         }
 
@@ -46,20 +49,19 @@ export default {
       let items = this.$game.inventory.items;
       let i = 0;
       const length = items.length;
-
       for (; i < length; ++i) {
         const item = items[i];
         const template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (
-          !template.unbindable ||
-          item.breakLimit == 2 ||
-          filteredIds[item.id]
-        ) {
+        if (template.type != ItemType.Equipment) {
           continue;
         }
 
-        if (this.$game.inventory.getItemsCountByTemplate(item.template) < 2) {
+        if (
+          !template.enchantable ||
+          item.enchant >= maxEnchant ||
+          filteredIds[item.id]
+        ) {
           continue;
         }
 
@@ -67,11 +69,6 @@ export default {
       }
 
       return filteredItems;
-    }
-  },
-  methods: {
-    openUnbind(item) {
-      this.$router.push({ name: "unbind-item", params: { itemId: item.id } });
     }
   }
 };

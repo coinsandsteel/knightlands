@@ -2,5 +2,6 @@ module.exports = {
     configureWebpack: {
         devtool: "source-map"
     },
-    chainWebpack: config => config.plugins.delete('named-chunks')
+    chainWebpack: config => config.plugins.delete('named-chunks'),
+    lintOnSave: false
 };

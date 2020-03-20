@@ -988,5 +988,6 @@
     "div-token-freeze-failed": "DKT freez has been failed. Make sure you have enough bandwidth and energy for transaction.",
     "div-token-unfreeze-failed": "DKT unfreeze has been failed. Make sure you have enough bandwidth and energy for transaction.",
     "div-claim-failed": "Dividends weren't claimed. Try again later.",
-    "payment-failed": "Payment has failed. Please try again later."
+    "payment-failed": "Payment has failed. Please try again later.",
+    "btn-disenchant": "Disenchant"
 }

@@ -136,7 +136,10 @@ export default {
   }),
   created() {
     this.title = "window-dividends";
-    this.nextPayoutTimer.on("finished", this.handlePayoutTimerFinished.bind(this));
+    this.nextPayoutTimer.on(
+      "finished",
+      this.handlePayoutTimerFinished.bind(this)
+    );
   },
   async activated() {
     this.$game.on(Events.DivTokenWithdrawal, this.handleWithdrawal.bind(this));
@@ -243,18 +246,25 @@ export default {
     },
     async fetchDividendsInfo() {
       this.request = this.$game.blockchainClient.fetchDividendsInfo();
-      this.divsInfo = await this.request;
-      console.log(this.divsInfo);
-      this.unfreezeTimer.timeLeft =
-        Number(this.divsInfo.state.depositTimestamp) +
-        this.divsInfo.freezeDuration -
-        this.$game.nowSec;
 
-      const payoutPeriodDuration = this.divsInfo.payoutPeriod * 30;
-      this.nextPayoutTimer.timeLeft =
-        payoutPeriodDuration -
-        ((this.$game.nowSec - this.divsInfo.stakingStart) %
-          payoutPeriodDuration);
+      try {
+        this.divsInfo = await this.request;
+        console.log(this.divsInfo);
+
+        this.unfreezeTimer.timeLeft =
+          Number(this.divsInfo.state.depositTimestamp) +
+          this.divsInfo.freezeDuration -
+          this.$game.nowSec;
+
+        const payoutPeriodDuration = this.divsInfo.payoutPeriod * 30;
+        this.nextPayoutTimer.timeLeft =
+          payoutPeriodDuration -
+          ((this.$game.nowSec - this.divsInfo.stakingStart) %
+            payoutPeriodDuration);
+      } catch {
+        // possible stack overflow
+        await this.fetchDividendsInfo();
+      }
     },
     async withdrawToken() {
       this.request = this.$game.requestDividendTokenWithdrawal(this.dkt);

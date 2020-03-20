@@ -27,7 +27,7 @@
 
       <span class="margin-top-1 margin-bottom-1 title font-size-20">{{$t("unbind-materials")}}</span>
 
-      <div class="flex flex-center full-flex width-100 dummy-height margin-bottom-2">
+      <div class="flex flex-center full-flex width-100 dummy-height margin-bottom-2 upgrade-height-fix">
         <div v-bar class="flex width-100 height-100 dummy-height">
           <div>
             <div class="flex width-100 flex-center dummy-height">
@@ -253,3 +253,9 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.upgrade-height-fix {
+  min-height: 7rem;
+}
+</style>

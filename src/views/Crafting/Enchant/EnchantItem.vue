@@ -138,11 +138,9 @@
 import AppSection from "@/AppSection";
 import anime from "animejs/lib/anime.es.js";
 import ItemInfo from "@/components/ItemInfo.vue";
-import LootContainer from "@/components/LootContainer.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
-import Loot from "@/components/Loot.vue";
 import StripedPanel from "@/components/StripedPanel.vue";
 import StripedContent from "@/components/StripedContent.vue";
 import HintHandler from "@/components/HintHandler.vue";
@@ -161,9 +159,7 @@ export default {
   props: ["itemId"],
   components: {
     ItemInfo,
-    LootContainer,
     CustomButton,
-    Loot,
     StripedPanel,
     StripedContent,
     CraftingIngridient,

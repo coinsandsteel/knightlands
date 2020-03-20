@@ -43,6 +43,9 @@ const CraftingEnchant = () => import("./views/Crafting/Enchant/CraftingEnchant.v
 const Enchant = () => import("./views/Crafting/Enchant/Enchant.vue");
 const EnchantItem = () => import("./views/Crafting/Enchant/EnchantItem.vue");
 
+const Disenchant = () => import("./views/Crafting/Disenchant/Disenchant.vue");
+const CraftingDisenchant = () => import("./views/Crafting/Disenchant/CraftingDisenchant.vue");
+
 const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
 const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
@@ -148,6 +151,17 @@ const router = new Router({
               name: "enchant-item",
               component: EnchantItem,
               props: true
+            }
+          ]
+        },
+        {
+          path: "disenchant",
+          component: Disenchant,
+          children: [
+            {
+              path: "",
+              name: "crafting-disenchant",
+              component: CraftingDisenchant
             }
           ]
         },

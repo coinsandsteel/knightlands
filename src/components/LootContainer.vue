@@ -1,19 +1,28 @@
 <template>
-  <div>
-    <div class="flex flex-center inventory-container" :type="panel">
-      <div class="flex loot-container inventory-items">
-        <loot
-          v-for="(item, index) in items"
-          :item="item"
-          :key="index"
-          :inventory="inventory"
-          :hint="hint"
-          :selected="selected == item.id"
-          :class="lootClasses"
-          @hint="handleHint(item, index)"
-          v-bind="lootProps"
-        ></loot>
+  <div class="flex full-flex dummy-height">
+    <template v-if="items.length > 0">
+      <div v-bar class="width-100 height-100 dummy-height">
+        <div>
+          <div class="flex flex-center inventory-container">
+            <div class="flex loot-container inventory-items">
+              <loot
+                v-for="(item, index) in items"
+                :item="item"
+                :key="index"
+                :inventory="inventory"
+                :hint="hint"
+                :selected="selected == item.id"
+                :class="lootClasses"
+                @hint="handleHint(item, index)"
+                v-bind="lootProps"
+              ></loot>
+            </div>
+          </div>
+        </div>
       </div>
+    </template>
+    <div class="flex flex-center width-100 height-100" v-else>
+      <slot><div></div></slot>
     </div>
   </div>
 </template>
@@ -25,7 +34,7 @@ export default {
   components: {
     Loot
   },
-  data:()=>({
+  data: () => ({
     selected: null
   }),
   props: {
@@ -39,7 +48,7 @@ export default {
     hint: {
       type: Function
     },
-    panel : String,
+    panel: String,
     selectSlots: Boolean,
     lootProps: Object,
     lootClasses: String

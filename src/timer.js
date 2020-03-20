@@ -36,6 +36,10 @@ class Timer extends EventEmitter {
             return;
         }
 
+        if (force) {
+            clearTimeout(this._timerTimeout);
+        }
+
         this._update();
     }
 

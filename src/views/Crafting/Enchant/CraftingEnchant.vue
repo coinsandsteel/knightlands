@@ -1,13 +1,6 @@
 <template>
   <div class="padding-1 height-100 dummy-height">
-    <div class="flex full-flex dummy-height">
-      <div v-bar class="width-100 height-100 dummy-height" v-if="items.length > 0">
-        <LootContainer :items="items" @hint="openUnbind" :lootProps="{showUnbindLevels: true, showLevel: true}"></LootContainer>
-      </div>
-      <div class="flex flex-center width-100 height-100" v-else>
-        <span class="font-size-20">{{$t("enchant-list-empty-msg")}}</span>
-      </div>
-    </div>
+    <LootContainer :items="items" @hint="openUnbind" :lootProps="{showUnbindLevels: true, showLevel: true}"><span class="font-size-20">{{$t("enchant-list-empty-msg")}}</span></LootContainer>
   </div>
 </template>
 

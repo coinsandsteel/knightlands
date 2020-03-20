@@ -22,11 +22,7 @@
             <icon-with-value iconClass="icon-dkt">{{Math.floor(dkt*100)/100}}</icon-with-value>
           </div>
 
-          <div class="flex full-flex dummy-height" v-if="items.length > 0">
-            <div v-bar class="width-100">
-              <loot-container :items="items" :inventory="true" @hint="showHint"></loot-container>
-            </div>
-          </div>
+          <LootContainer :items="items" :inventory="true" @hint="showHint"></LootContainer>
         </div>
         <presale-chests v-if="currentTab == ChestsTab"></presale-chests>
         <Referrals v-if="currentTab == ReferralsTab"></Referrals>

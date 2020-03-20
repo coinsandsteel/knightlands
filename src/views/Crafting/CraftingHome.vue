@@ -10,6 +10,10 @@
         <MenuIcon icon="icon-craft" to="craft" :append="true">
           <span>{{$t("btn-crafting")}}</span>
         </MenuIcon>
+
+        <MenuIcon icon="icon-craft" to="disenchant" :append="true">
+          <span>{{$t("btn-disenchant")}}</span>
+        </MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
