@@ -115,6 +115,10 @@
           </transition>
         </div>
       </div>
+
+      <portal to="footer">
+        <CustomButton type="grey" @click="showItemFilter">{{$t("btn-filter")}}</CustomButton>
+      </portal>
     </template>
   </Promised>
 </template>
@@ -123,14 +127,11 @@
 import { Hooper, Slide } from "hooper";
 import "hooper/dist/hooper.css";
 
-import ItemFilterComponent from "@/components/ItemFilter.vue";
 import LootContainer from "@/components/LootContainer.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import AppSection from "@/AppSection";
 import CustomButton from "@/components/Button.vue";
 import { EquipmentSlots } from "@/../knightlands-shared/equipment_slot";
-// import EquipmentType from "@/../knightlands-shared/equipment_type";
-// import CharacterStats from "@/../knightlands-shared/character_stat.js";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CharacterStat from "@/../knightlands-shared/character_stat";
@@ -138,10 +139,8 @@ import ItemsReceived from "@/components/ItemsReceived.vue";
 import StatDetails from "./StatDetails.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import LootHint from "@/components/LootHint.vue";
+import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
 import CompareItems from "@/components/CompareItems.vue";
-import DoubleBuffer from "@/helpers/DoubleBuffer";
-
-const ItemFilter = CreateDialog(ItemFilterComponent);
 const ShowItems = CreateDialog(
   ItemsReceived,
   "items",
@@ -156,7 +155,7 @@ const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 const CompareItemsAction = "compare";
 
 export default {
-  mixins: [AppSection, HintHandler],
+  mixins: [AppSection, HintHandler, FilteredLootMixin],
   components: {
     Loot: () => import("@/components/Loot.vue"),
     LootContainer,
@@ -170,7 +169,6 @@ export default {
   },
   data() {
     return {
-      filteredItems: [],
       slots: {},
       itemsInSlots: this.$character.equipment,
       hintItems: [],
@@ -180,31 +178,7 @@ export default {
       showDetails: false
     };
   },
-  watch: {
-    items() {
-      this.updateItems();
-    }
-  },
-  created() {
-    this.filteredItemsBuffer = new DoubleBuffer(); 
-  },
-  mounted() {
-    this.updateItems();
-  },
-  activated() {
-    this.addFooter(CustomButton, {
-      cb: this.showItemFilter.bind(this),
-      caption: this.$t("btn-filter"),
-      type: "grey"
-    });
-  },
-  deactivated() {
-    this.removeFooter();
-  },
   computed: {
-    items() {
-      return this.$game.inventory.items;
-    },
     stats() {
       let stats = [];
       stats.push(CharacterStat.Health);
@@ -223,9 +197,6 @@ export default {
     },
     openDetails() {
       ShowDetails();
-    },
-    updateItems() {
-      this.filterItems(this.$store.getters.getItemFilters);
     },
     hasBonus(stat) {
       return !!this.$game.character.buffResolver.bonusStats[stat];
@@ -361,15 +332,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.hooper.updateWidth();
       });
-    },
-    async showItemFilter() {
-      let filters = await ItemFilter();
-      if (filters) {
-        this.filterItems(filters);
-      }
-    },
-    filterItems(filters) {
-      this.filteredItems = this.$game.inventory.filterItemsByType(filters, this.filteredItemsBuffer.get());
     },
     equipmentRow1() {
       return [

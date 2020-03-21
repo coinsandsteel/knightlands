@@ -11,7 +11,7 @@
                 :key="index"
                 :inventory="inventory"
                 :hint="hint"
-                :selected="selected == item.id"
+                :selected="selected[item.id]"
                 :class="lootClasses"
                 @hint="handleHint(item, index)"
                 v-bind="lootProps"
@@ -35,7 +35,7 @@ export default {
     Loot
   },
   data: () => ({
-    selected: null
+    selected: {}
   }),
   props: {
     items: {
@@ -50,15 +50,27 @@ export default {
     },
     panel: String,
     selectSlots: Boolean,
+    multiSelect: Boolean,
     lootProps: Object,
     lootClasses: String
   },
   methods: {
     handleHint(item, index) {
-      this.$emit("hint", item, index);
-
       if (this.selectSlots) {
-        this.selected = item.id;
+        if (this.multiSelect) {
+          if (this.selected[item.id]) {
+            this.$set(this.selected, item.id, false);
+          } else {
+            this.$set(this.selected, item.id, true);
+            this.$emit("selected", item, index);
+          }
+        } else {
+          this.$emit("hint", item, index);
+
+          this.selected = {
+            [item.id]: true
+          };
+        }
       }
     }
   }
