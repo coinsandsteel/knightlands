@@ -34,6 +34,7 @@ Vue.use(VueAgile);
 Vue.use(Vuebar);
 Vue.use(LoadScript);
 
+Vue.config.debug = true;
 Vue.config.productionTip = false;
 
 import router from "./router";

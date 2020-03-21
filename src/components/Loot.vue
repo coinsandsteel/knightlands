@@ -22,9 +22,8 @@
         <span class="star" :class="{active: itemData && itemData.breakLimit>=2}"></span>
       </div>
 
-      <div class="loot-quantity" :class="{'bottom': gacha}" v-else>
+      <div class="loot-quantity" :class="{'bottom': gacha}" v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))">
         <span
-          v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))"
           class="font-size-18 font-weight-700 digit-font font-outline bold"
         >{{count}}</span>
       </div>
@@ -40,7 +39,6 @@
 
 <script>
 const { EquipmentSlots } = require("@/../knightlands-shared/equipment_slot");
-import Stat from "@/../knightlands-shared/character_stat.js";
 
 let SlotPlaceholders = {};
 SlotPlaceholders[EquipmentSlots.MainHand] = "icon_slot_mainhand";
@@ -116,11 +114,13 @@ export default {
       return `slot-${this.$game.itemsDB.getRarity(this.itemData.template)}`;
     },
     count() {
-      if (!this.itemData) {
-        return 1;
+      let count = this.quantity || 1;
+      // prioritize explicit quantity
+      if (!this.quantity && this.itemData) {
+        return this.itemData.count || count;
       }
 
-      return this.itemData.count || 1;
+      return count;
     },
     equipped() {
       if (!this.itemData) {
@@ -139,7 +139,6 @@ export default {
           this.itemData = {
             template: this.item * 1,
             equipped: false,
-            count: this.quantity || template.quantity,
             level: 1
           };
         }

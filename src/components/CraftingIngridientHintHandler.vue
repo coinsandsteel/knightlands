@@ -15,7 +15,7 @@ export default {
         });
       }
 
-      let response = await this.showHint(item, buttons);
+      let response = await this.showHint(item, buttons, { actions: {} });
       if (response === true) {
         // go to ingridient item
         this.$router.push({

@@ -934,8 +934,14 @@ class Game {
         });
     }
 
-    async getCurrencyConversionRate() {
-        return await this._request(Operations.GetCurrencyConversionRate);
+    // Crafting
+
+    async disenchantItems(items) {
+        let response = await this._wrapOperation(Operations.DisenchantItems, {
+            items
+        });
+
+        return response.response;
     }
 
     async upgradeItem(itemId, materials, count) {
@@ -972,6 +978,23 @@ class Game {
         });
     }
 
+    async enchantItem(itemId, currency) {
+        let response = await this._wrapOperation(Operations.EnchantItem, {
+            itemId,
+            currency
+        });
+
+        return response.response;
+    }
+
+    async fetchEnchantingStatus(itemId) {
+        return await this._request(Operations.FetchEnchantingStatus, {
+            itemId
+        });
+    }
+
+    // Timers
+
     async fetchTimerRefillStatus(stat) {
         return await this._request(Operations.FetchRefillTimerStatus, {
             stat
@@ -983,6 +1006,8 @@ class Game {
             stat
         });
     }
+
+    // Chests
 
     async openChest(chest, iap, count) {
         let response = await this._wrapOperation(Operations.OpenChest, {
@@ -1005,20 +1030,7 @@ class Game {
         return response.response;
     }
 
-    async enchantItem(itemId, currency) {
-        let response = await this._wrapOperation(Operations.EnchantItem, {
-            itemId,
-            currency
-        });
-
-        return response.response;
-    }
-
-    async fetchEnchantingStatus(itemId) {
-        return await this._request(Operations.FetchEnchantingStatus, {
-            itemId
-        });
-    }
+    // Adventures
 
     async fetchAdventuresStatus() {
         return (await this._wrapOperation(Operations.FetchAdventuresStatus))
@@ -1048,11 +1060,15 @@ class Game {
         })).response;
     }
 
+    // Classes
+
     async selectClass(className) {
         return (await this._wrapOperation(Operations.ChangeClass, {
             class: className
         })).response;
     }
+
+    // Daily login
 
     async fetchDailyRewardStatus() {
         return (await this._wrapOperation(Operations.FetchDailyRewardStatus))
@@ -1071,6 +1087,8 @@ class Game {
     async collectDailyRefills() {
         return (await this._wrapOperation(Operations.CollectDailyRefills)).response;
     }
+
+    // Beast 
 
     async beastRegularBoost(count) {
         return (await this._wrapOperation(Operations.BeastRegularBoost, {
@@ -1099,10 +1117,18 @@ class Game {
             .response;
     }
 
+    // IAP
+
+    async getCurrencyConversionRate() {
+        return await this._request(Operations.GetCurrencyConversionRate);
+    }
+
     async cancelPurchase(id) {
         return (await this._wrapOperation(Operations.CancelPayment, { id }))
             .response;
     }
+
+    // Tower
 
     async fetchTowerFloors(page) {
         return (await this._wrapOperation(Operations.FetchTowerFloors, { page }))

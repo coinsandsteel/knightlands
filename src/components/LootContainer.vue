@@ -21,8 +21,10 @@
         </div>
       </div>
     </template>
-    <div class="flex flex-center width-100 height-100" v-else>
-      <slot><div></div></slot>
+    <div class="flex flex-center width-100 height-100 v-bar-fix" v-else>
+      <slot>
+        <div></div>
+      </slot>
     </div>
   </div>
 </template>
@@ -55,22 +57,23 @@ export default {
     lootClasses: String
   },
   methods: {
+    selectedItems() {
+      return this.selected;
+    },
     handleHint(item, index) {
-      if (this.selectSlots) {
-        if (this.multiSelect) {
-          if (this.selected[item.id]) {
-            this.$set(this.selected, item.id, false);
-          } else {
-            this.$set(this.selected, item.id, true);
-            this.$emit("selected", item, index);
-          }
+      if (this.selectSlots && this.multiSelect) {
+        if (this.selected[item.id]) {
+          this.$delete(this.selected, item.id);
         } else {
-          this.$emit("hint", item, index);
-
-          this.selected = {
-            [item.id]: true
-          };
+          this.$set(this.selected, item.id, true);
         }
+        this.$emit("selected", item, index, this.selected[item.id]);
+      } else {
+        this.$emit("hint", item, index);
+
+        this.selected = {
+          [item.id]: true
+        };
       }
     }
   }
@@ -117,6 +120,12 @@ export default {
 
   & > * {
     margin: @marginBetweenItems;
+  }
+}
+
+.v-bar-fix {
+  & > div {
+    overflow: auto !important;
   }
 }
 </style>

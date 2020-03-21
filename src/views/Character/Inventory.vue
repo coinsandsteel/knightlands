@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <portal to="footer">
+      <portal to="footer" :slim="true" v-if="isActive">
         <CustomButton type="grey" @click="showItemFilter">{{$t("btn-filter")}}</CustomButton>
       </portal>
     </template>

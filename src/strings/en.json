@@ -989,5 +989,11 @@
     "div-token-unfreeze-failed": "DKT unfreeze has been failed. Make sure you have enough bandwidth and energy for transaction.",
     "div-claim-failed": "Dividends weren't claimed. Try again later.",
     "payment-failed": "Payment has failed. Please try again later.",
-    "btn-disenchant": "Disenchant"
+    "btn-disenchant": "Disenchant",
+    "disenchant-results": "You will get:",
+    "window-disenchant-items": "Disenchant items",
+    "disenchant-no-materials": "Select items to break",
+    "unbind-no-items": "No items of same kind.",
+    "unbind-max-level": "Item reached maximum rank.",
+    "btn-dis-upgrade": "Convert Dust"
 }

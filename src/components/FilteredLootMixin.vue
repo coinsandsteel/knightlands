@@ -8,9 +8,12 @@ const ItemFilter = CreateDialog(ItemFilterComponent);
 
 export default {
   data: () => ({
-    filteredItems: []
+    filteredItems: [],
+    filtersStore: null
   }),
   created() {
+    this.filtersStore = this.$store.getters.getItemFilters;
+    this.commitCmd = "setItemFilters";
     this.filteredItemsBuffer = new DoubleBuffer();
   },
   mounted() {
@@ -28,10 +31,14 @@ export default {
   },
   methods: {
     updateItems() {
-      this.filterItems(this.$store.getters.getItemFilters);
+      this.filterItems(this.filtersStore);
     },
-    async showItemFilter() {
-      let filters = await ItemFilter();
+    async showItemFilter(options) {
+      options = options || {};
+      options.stateFilters = this.filtersStore;
+      options.commitCmd = this.commitCmd;
+
+      const filters = await ItemFilter(options);
       if (filters) {
         this.filterItems(filters);
       }

@@ -28,7 +28,8 @@
       <span class="margin-top-1 margin-bottom-1 title font-size-20">{{$t("unbind-materials")}}</span>
 
       <div class="flex flex-center full-flex width-100 dummy-height margin-bottom-2 upgrade-height-fix">
-        <div v-bar class="flex width-100 height-100 dummy-height">
+        <template v-if="unbindItems.length > 0 && !lockRest">
+          <div v-bar class="flex width-100 height-100 dummy-height">
           <div>
             <div class="flex width-100 flex-center dummy-height">
               <loot
@@ -45,6 +46,9 @@
             </div>
           </div>
         </div>
+        </template>
+        <span v-else-if="!lockRest" class="font-size-20">{{$t("unbind-no-items")}}</span>
+        <span v-else class="font-size-20 yellow-title">{{$t("unbind-max-level")}}</span>
       </div>
 
       <CustomButton type="yellow" :disabled="lockedTotal==0" @click="unbind">{{$t("btn-upgrade")}}</CustomButton>

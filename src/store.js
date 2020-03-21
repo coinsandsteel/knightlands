@@ -24,19 +24,21 @@ let filters = {
 
 let defaultFilters = {};
 for (let i in filters) {
+  if (i == "Equipment") {
+    // equipment is expanded with equipment slots instead
+    continue;
+  }
   defaultFilters[filters[i]] = true;
 }
 
-// equipment is expanded with equipment slots instead
-delete filters.Equipment;
-
-const FiltersVersion = 3;
+const FiltersVersion = 4;
 
 const store = new Vuex.Store({
   state: {
     itemFiltersVersion: 0,
     selectedQuestZone: undefined,
     itemFilters: defaultFilters,
+    disenchantFilters: defaultFilters,
     zoneStage: 0,
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
@@ -49,6 +51,11 @@ const store = new Vuex.Store({
     setItemFilters(state, filters) {
       for (let i in filters) {
         Vue.set(state.itemFilters, i, filters[i]);
+      }
+    },
+    setDisenchantingFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.disenchantFilters, i, filters[i]);
       }
     },
     setZoneStage(state, args) {
@@ -64,6 +71,13 @@ const store = new Vuex.Store({
     }
   },
   getters: {
+    disenchantFilters: state => {
+      if (state.itemFiltersVersion != FiltersVersion) {
+        state.itemFiltersVersion = FiltersVersion;
+        state.itemFilters = defaultFilters;
+      }
+      return state.disenchantFilters;
+    },
     getAvailableSwitchInCraftingList: state => listId => {
       return !!(state.craftingListOptions[listId] || {}).availableSwitch;
     },

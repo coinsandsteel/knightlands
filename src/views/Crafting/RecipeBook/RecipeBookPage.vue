@@ -12,7 +12,7 @@
 
 <script>
 import AppSection from "@/AppSection";
-import panzoom from "panzoom";
+// import panzoom from "panzoom";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
 import ItemToRecipe from "@/item_to_recipe";
 
@@ -33,7 +33,6 @@ export default {
     while (true) {
         let resultItem = this.$game.crafting.getResultItem(currentRecipe);
         const recipe = ItemToRecipe[resultItem];
-        console.log(`${resultItem}->${recipe}`);
         this.title = this.$game.itemsDB.getName(resultItem);
         if (recipe) {
             

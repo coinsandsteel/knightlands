@@ -109,7 +109,10 @@ export default {
     },
     hideMask: Boolean,
     buttons: Array,
-    showButtons: Boolean
+    showButtons: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     CustomButton,

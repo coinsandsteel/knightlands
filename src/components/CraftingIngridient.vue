@@ -51,13 +51,7 @@ export default {
       return this.ingridient.quantity;
     },
     notEnoughMaterials() {
-      if (this.ingridient.maxLevelRequired) {
-        return !this.$game.inventory.hasMaxLevelItemByTemplate(
-          this.ingridient.itemId
-        );
-      }
-
-      return this.requiredCount > this.currentCount;
+      return !this.$game.inventory.hasEnoughIngridient(this.ingridient);
     },
     currentCount() {
       return this.$game.inventory.getItemsCountByTemplate(

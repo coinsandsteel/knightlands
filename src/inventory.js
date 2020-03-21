@@ -82,10 +82,22 @@ class Inventory {
         return this.getItemsCountByTemplate(itemTemplate) >= quantity;
     }
 
+    hasEnoughIngridient(ingridient) {
+        if (ingridient.maxLevelRequired) {
+            return this.hasMaxLevelItemByTemplate(
+                ingridient.itemId
+            );
+        }
+
+        return ingridient.quantity <= this.getItemsCountByTemplate(
+            ingridient.itemId
+        );
+    }
+
     filterItemsByType(filters, buffer) {
         buffer = buffer || [];
         buffer.length = 0;
-        
+
         let i = 0;
         const length = this.items.length;
 
