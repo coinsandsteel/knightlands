@@ -16,7 +16,6 @@
 
 <script>
 import CustomButton from "@/components/Button.vue";
-import TowerMeta from "@/tower_meta";
 
 export default {
   props: ["trialType", "state"],

@@ -43,10 +43,7 @@
         type="grey"
         @click="showItemFilter({customFilter: customFilter})"
       >{{$t("btn-filter")}}</CustomButton>
-      <CustomButton
-        type="green"
-        @click="goToUpgrade"
-      >{{$t("btn-dis-upgrade")}}</CustomButton>
+      <CustomButton type="green" @click="goToUpgrade">{{$t("btn-dis-upgrade")}}</CustomButton>
     </portal>
   </div>
 </template>
@@ -62,9 +59,10 @@ import CustomButton from "@/components/Button.vue";
 import { EquipmentSlots } from "@/../knightlands-shared/equipment_slot";
 import DisenchantingMeta from "@/disenchanting_meta";
 import Loot from "@/components/Loot.vue";
+import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 
 export default {
-  mixins: [AppSection, PromptMixin, FilteredLootMixin],
+  mixins: [AppSection, PromptMixin, FilteredLootMixin, ShowItemsMixin],
   components: {
     LoadingScreen,
     LootContainer,
@@ -98,8 +96,24 @@ export default {
         payload[itemId] = 1;
       }
 
-      this.request = await this.$game.disenchantItems(payload);
-      await this.request;
+      try {
+        this.request = this.$game.disenchantItems(payload);
+        const items = await this.request;
+        this.predictedMaterials = {};
+        await this.showItems(items);
+      } catch {
+        this.showPrompt(
+          this.$t("prompt-snap-title"),
+          this.$t("prompt-snap-msg"),
+          [
+            {
+              type: "yellow",
+              title: "btn-ok",
+              response: true
+            }
+          ]
+        );
+      }
     },
     customFilter(key) {
       return this.equipmentLookup[key];
@@ -124,9 +138,9 @@ export default {
       }
     },
     goToUpgrade() {
-        this.$router.push({
-            name: "disenchant-upgrade"
-        });
+      this.$router.push({
+        name: "disenchant-convert"
+      });
     }
   }
 };

@@ -56,6 +56,11 @@ export default {
     lootProps: Object,
     lootClasses: String
   },
+  watch: {
+    items() {
+      this.selected = {};
+    }
+  },
   methods: {
     selectedItems() {
       return this.selected;

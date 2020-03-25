@@ -4,7 +4,7 @@
       <progress-bar :maxValue="maxStat" :hideMaxValue="true" v-model="barValue" :barType="color"></progress-bar>
     </div>
 
-    <div v-bar="{
+    <div class="width-100" v-bar="{
           preventParentScroll: true,
           scrollThrottle: 30,
       }">

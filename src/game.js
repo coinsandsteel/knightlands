@@ -936,6 +936,14 @@ class Game {
 
     // Crafting
 
+    async disenchantConvert(conversions) {
+        let response = await this._wrapOperation(Operations.DisenchantConvert, {
+            conversions
+        });
+
+        return response.response;
+    }
+
     async disenchantItems(items) {
         let response = await this._wrapOperation(Operations.DisenchantItems, {
             items

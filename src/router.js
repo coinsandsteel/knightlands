@@ -44,7 +44,7 @@ const Enchant = () => import("./views/Crafting/Enchant/Enchant.vue");
 const EnchantItem = () => import("./views/Crafting/Enchant/EnchantItem.vue");
 
 const Disenchant = () => import("./views/Crafting/Disenchant/Disenchant.vue");
-const DisenchantUpgrade = () => import("./views/Crafting/Disenchant/DisenchantUpgrade.vue");
+const DisenchantConvert = () => import("./views/Crafting/Disenchant/DisenchantConvert.vue");
 const CraftingDisenchant = () => import("./views/Crafting/Disenchant/CraftingDisenchant.vue");
 
 const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
@@ -64,11 +64,6 @@ const ForsakenTowerRoot = () => import("./views/ForsakenTower/ForsakenTowerRoot.
 const ForsakenTower = () => import("./views/ForsakenTower/ForsakenTower.vue");
 
 const DailyRewards = () => import("./views/DailyRewards/DailyRewards.vue");
-
-const TrialsRoot = () => import("./views/Trials/TrialsRoot.vue");
-const HonorTrials = () => import("./views/Trials/Trials.vue");
-const TrialsOfHonor = () => import("./views/Trials/Honor/TrialsOfHonor.vue");
-const HonorTrialsList = () => import("./views/Trials/Honor/TrialsList.vue");
 
 const Dividends = () => import("./views/Dividends/Dividends.vue");
 const Settings = () => import("./views/Settings/Settings.vue");
@@ -165,9 +160,9 @@ const router = new Router({
               component: CraftingDisenchant
             },
             {
-              path: "upgrade",
-              name: "disenchant-upgrade",
-              component: DisenchantUpgrade
+              path: "convert",
+              name: "disenchant-convert",
+              component: DisenchantConvert
             }
           ]
         },
@@ -266,21 +261,21 @@ const router = new Router({
     },
     {
       path: "/home/trials",
-      component: TrialsRoot,
+      component: () => import("./views/Trials/TrialsRoot.vue"),
       children: [
         {
           path: "",
-          component: HonorTrials
+          component: () => import("./views/Trials/Trials.vue")
         },
         {
           path: "honor",
           name: "trial-honor",
-          component: TrialsOfHonor,
+          component: () => import("./views/Trials/Honor/TrialsOfHonor.vue"),
           children: [
             {
               path: "",
               name: "trials-of-honor",
-              component: HonorTrialsList
+              component: () => import("./views/Trials/Honor/TrialsList.vue")
             }
           ]
         },
@@ -293,6 +288,18 @@ const router = new Router({
               path: "",
               name: "conjured-trials",
               component: () => import("./views/Trials/Conjured/TrialsList.vue")
+            }
+          ]
+        },
+        {
+          path: "decay",
+          name: "trial-decay",
+          component: () => import("./views/Trials/Decay/TrialsOfDecay.vue"),
+          children: [
+            {
+              path: "",
+              name: "trials-of-decay",
+              component: () => import("./views/Trials/Decay/TrialsList.vue")
             }
           ]
         }

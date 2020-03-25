@@ -28,7 +28,6 @@
 
 <script>
 import AppSection from "@/AppSection";
-import CustomButton from "@/components/Button.vue";
 import TrialFooter from "./TrialFooter.vue";
 import Cards from "./Cards/Cards.vue";
 import Errors from "@/../knightlands-shared/errors";
@@ -69,7 +68,7 @@ export default {
   },
   methods: {
     async purchaseAttempts() {
-      const reponse = await ShowPurchaseAttempts();
+      await ShowPurchaseAttempts();
     },
     async engageFight(trialId, stageId, fightIndex, callback) {
       this.request = this.$game.engageTrialFight(

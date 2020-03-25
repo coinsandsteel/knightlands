@@ -249,7 +249,6 @@ export default {
 
       try {
         this.divsInfo = await this.request;
-        console.log(this.divsInfo);
 
         this.unfreezeTimer.timeLeft =
           Number(this.divsInfo.state.depositTimestamp) +

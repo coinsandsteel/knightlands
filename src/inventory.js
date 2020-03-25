@@ -3,13 +3,26 @@ import throttle from "lodash.throttle";
 import ItemType from "@/../knightlands-shared/item_type";
 const ItemActions = require("@/../knightlands-shared/item_actions");
 
+const dummyItem = {
+    id: -1,
+    template: -1,
+    count: 0,
+    level: 1,
+    exp: 0,
+    equipped: false,
+    breakLimit: 0,
+    unique: false,
+    _dummyValue: 0
+};
+
 class Inventory {
     constructor(itemDB) {
         this._itemDB = itemDB;
         this._vm = new Vue({
             data: () => ({
                 items: [],
-                currencies: {}
+                currencies: {},
+                emptyItem: dummyItem
             })
         });
 
@@ -133,7 +146,8 @@ class Inventory {
     }
 
     getItem(itemId) {
-        return this._itemsById.get(itemId * 1);
+        let item = this._itemsById.get(itemId * 1);
+        return item ? item : this.emptyItem;
     }
 
     decreaseStackAndReturn(itemId, count = 1) {
@@ -161,11 +175,12 @@ class Inventory {
     // returns only first element
     getItemByTemplate(template) {
         let templates = this._getItemsByTemplate(template);
-        if (templates) {
-            return templates[0];
+        let item = this._vm.emptyItem;
+        if (templates && templates.length > 0) {
+            item = templates[0];
         }
 
-        return null;
+        return item;
     }
 
     getItemsByTemplate(templateId) {
@@ -176,8 +191,6 @@ class Inventory {
     _getItemsByTemplate(templateId) {
         return this._itemsBytemplate.get(templateId);
     }
-
-
 
     mergeData(inventoryChanges) {
         let {
@@ -286,6 +299,9 @@ class Inventory {
         this._itemsById.set(item.id, item);
         this._indexItemByTemplate(item);
         this._sort();
+
+        // notify empty item
+        this._vm.emptyItem = {...dummyItem};
     }
 
     _doSort() {

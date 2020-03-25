@@ -21,7 +21,7 @@ import CustomButton from "@/components/Button.vue";
 import TrialType from "@/../knightlands-shared/trial_type";
 import TrialBackgrounds from "./trialBackgrounds";
 
-const trials = [TrialType.Armour, TrialType.Weapon];
+const trials = [TrialType.Armour, TrialType.Weapon, TrialType.Accessory];
 
 export default {
   mixins: [AppSection],
@@ -43,6 +43,10 @@ export default {
 
         case TrialType.Weapon:
           name = "conjured-trials";
+          break;
+
+        case TrialType.Accessory:
+          name = "trials-of-decay";
           break;
       }
 
@@ -77,6 +81,10 @@ export default {
 
 .color-weapon {
   color: #ffe0a7;
+}
+
+.color-accessory {
+  color: #6adafc;
 }
 
 </style>
