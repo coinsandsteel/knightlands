@@ -1,17 +1,23 @@
 <template>
   <div class="padding-1 height-100 dummy-height">
-    <LootContainer :items="items" @hint="openUnbind" :lootProps="{showUnbindLevels: true, showLevel: true}"><span class="font-size-20">{{$t("enchant-list-empty-msg")}}</span></LootContainer>
+    <LootContainer
+      :items="items"
+      @hint="openUnbind"
+      :lootProps="{showUnbindLevels: true, showLevel: true}"
+    >
+      <span class="font-size-20">{{$t("enchant-list-empty-msg")}}</span>
+    </LootContainer>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
-import LootContainer from "@/components/LootContainer.vue"
+import LootContainer from "@/components/LootContainer.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 
 export default {
   mixins: [AppSection],
-  components: {LootContainer},
+  components: { LootContainer },
   created() {
     this.title = "window-enchant-items-list";
   },
@@ -45,7 +51,11 @@ export default {
           continue;
         }
 
-        if (!template.enchantable || item.enchant >= maxEnchant || filteredIds[item.id]) {
+        if (
+          !template.enchantable ||
+          item.enchant >= maxEnchant ||
+          filteredIds[item.id]
+        ) {
           continue;
         }
 
@@ -60,5 +70,5 @@ export default {
       this.$router.push({ name: "enchant-item", params: { itemId: item.id } });
     }
   }
-}
+};
 </script>

@@ -1,10 +1,6 @@
 <template>
   <div class="flex flex-center font-size-18 flex-no-wrap">
-    <div class="flex flex-center padding-1 panel-input height-100">
-      <span>{{$t("free-attemps", {attempts: freeTickets})}}</span>
-    </div>
-
-    <div class="flex flex-center padding-1 panel-input height-100">
+    <div class="flex flex-center padding-1 padding-left-3 padding-right-3 panel-input height-100">
       <div class="item-icon" :class="trialType"></div>
       <span>{{totalTickets}}</span>
       <span class="item-icon icon-plus margin-left-half" @click="$emit('purchaseAttempts')"></span>
@@ -26,10 +22,10 @@ export default {
     },
     totalTickets() {
       if (!this.state) {
-          return 0;
+          return this.freeTickets;
       }
 
-      return this.state.attempts;
+      return this.state.attempts + this.freeTickets;
     },
     freeTickets() {
       if (!this.state) {

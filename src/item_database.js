@@ -82,7 +82,22 @@ class ItemDatabase {
   }
 
   isWeapon(id) {
-    return this.getSlot(id) == EquipmentSlots.MainHand || this.getSlot(id) == EquipmentSlots.OffHand;
+    const slot = this.getSlot(id);
+    return slot == EquipmentSlots.MainHand || slot == EquipmentSlots.OffHand;
+  }
+
+  isAccessory(id) {
+    const slot = this.getSlot(id);
+    return slot == EquipmentSlots.Ring || slot == EquipmentSlots.Necklace;
+  }
+
+  isArmour(id) {
+    const slot = this.getSlot(id);
+    return slot == EquipmentSlots.Boots ||
+      slot == EquipmentSlots.Cape ||
+      slot == EquipmentSlots.Chest ||
+      slot == EquipmentSlots.Gloves ||
+      slot == EquipmentSlots.Helmet;
   }
 
   getEquipmentType(id) {

@@ -179,7 +179,6 @@ export default {
     this.fetchPaymentStatus();
     this.updateEnchantItemsList();
   },
-  deactivated() {},
   data: () => ({
     item: null,
     ingridients: [],
@@ -218,7 +217,21 @@ export default {
     stepData() {
       if (this.item) {
         let template = this.$game.itemsDB.getTemplate(this.item.template);
-        const steps = this.$game.itemsDB.isWeapon(this.item.template) ? EnchantingMeta.weapon : EnchantingMeta.armour;
+
+        const isWeapon = this.$game.itemsDB.isWeapon(this.item.template);
+        const isAccessory = this.$game.itemsDB.isAccessory(this.item.template)
+        const isArmour = this.$game.itemsDB.isArmour(this.item.template);
+
+        let steps = {};
+
+        if (isWeapon) {
+          steps = EnchantingMeta.weapon;
+        } else if (isAccessory) {
+          steps = EnchantingMeta.accessory;
+        } else if (isArmour) {
+          steps = EnchantingMeta.armour;
+        }
+
         return steps[template.rarity].steps[
           this.currentEnchantingLevel
         ];
@@ -298,26 +311,26 @@ export default {
     },
     notifyEnchantingFailed() {
       // failed
-          this.failed = true;
-          clearTimeout(this.failedTimeout);
-          this.failedTimeout = setTimeout(() => (this.failed = false), 2000);
+      this.failed = true;
+      clearTimeout(this.failedTimeout);
+      this.failedTimeout = setTimeout(() => (this.failed = false), 2000);
 
-          let timeline = anime({
-            targets: this.$refs.level,
-            translateX: [
-                { value: "-0.5rem" },
-                { value: "0.45rem" },
-                { value: "-0.4rem" },
-                { value: "0.35rem" },
-                { value: "-0.3rem" },
-                { value: "0.25rem" },
-                { value: "-0.2rem" },
-                { value: "0rem" }
-            ],
-            easing: 'easeOutExpo',
-            duration: 325,
-            loop: 1
-          });
+      anime({
+        targets: this.$refs.level,
+        translateX: [
+            { value: "-0.5rem" },
+            { value: "0.45rem" },
+            { value: "-0.4rem" },
+            { value: "0.35rem" },
+            { value: "-0.3rem" },
+            { value: "0.25rem" },
+            { value: "-0.2rem" },
+            { value: "0rem" }
+        ],
+        easing: 'easeOutExpo',
+        duration: 325,
+        loop: 1
+      });
     },
     updateEnchantItemsList() {
       this.ingridients.length = 0;
