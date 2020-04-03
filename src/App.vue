@@ -71,7 +71,7 @@
 
 <script>
 import StatusBar from "./components/StatusBar.vue";
-import { disableBodyScroll } from "body-scroll-lock";
+// import { disableBodyScroll } from "body-scroll-lock";
 import Game from "./game";
 import { Promise } from "q";
 import Vue from "vue";
@@ -183,7 +183,7 @@ export default {
     // fetch initial data
     this.$game.on(this.$game.SignUp, async () => {
       await this.$game.updateUserData();
-      
+
       this.loading = false;
       if (this.$route.name == "login") {
         this.$router.replace({ name: "character" });
@@ -328,6 +328,7 @@ export default {
     color: #281326;
     position: relative;
     background-color: #928691;
+    font-weight: 900;
   }
 }
 
@@ -485,11 +486,7 @@ export default {
   min-width: 35.625rem;
   margin: 0 auto;
   background: @backgroundMainColor;
-  background: linear-gradient(
-    0deg,
-    #371c35 0%,
-    #261034 100%
-  );
+  background: linear-gradient(0deg, #371c35 0%, #261034 100%);
   .mobile({min-width: unset; max-width: unset; width: 100%;});
   // .tablet({width: 60rem;});
   // .laptop_small({width: 60rem;});

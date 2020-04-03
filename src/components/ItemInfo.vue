@@ -11,6 +11,7 @@
       :class="{'offset-loot': !hideTitle}"
       :item="item"
       :interactible="false"
+      :quantity="quantity"
       v-bind="lootProps"
     ></loot>
 
@@ -76,7 +77,8 @@ export default {
     item: [Object, Number],
     hideTitle: Boolean,
     onlyStats: Boolean,
-    lootProps: Object
+    lootProps: Object,
+    quantity: Number
   },
   components: { Loot, ItemProperties },
   computed: {

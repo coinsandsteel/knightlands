@@ -61,8 +61,7 @@ export default {
     TrialStageListElement,
     TrialStage,
     Promised,
-    LoadingScreen,
-    ItemsReceived
+    LoadingScreen
   },
   data: () => ({
     request: null,

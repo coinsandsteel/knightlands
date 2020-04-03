@@ -35,7 +35,11 @@ export default {
     hideCount: Boolean,
     hintHandler: Function,
     hideCurrentCount: Boolean,
-    noLocking: Boolean
+    noLocking: Boolean,
+    quantity: {
+      type: Number,
+      default: 1
+    }
   },
   computed: {
     hintHandleFunction() {
@@ -44,11 +48,11 @@ export default {
     item() {
       return {
         template: this.ingridient.itemId,
-        count: this.currentCount
+        count: this.currentCount * this.quantity
       };
     },
     requiredCount() {
-      return this.ingridient.quantity;
+      return this.ingridient.quantity * this.quantity;
     },
     notEnoughMaterials() {
       return !this.$game.inventory.hasEnoughIngridient(this.ingridient);

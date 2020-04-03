@@ -113,7 +113,7 @@ export default {
 }
 
 .att-value {
-  width: 30%;
+  // width: 30%;
   // text-align: right;
 }
 
@@ -128,6 +128,7 @@ export default {
   background-repeat: no-repeat;
   width: 2rem;
   height: 2rem;
+  margin: 0 1rem;
 }
 
 .att-plus {

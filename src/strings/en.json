@@ -73,7 +73,7 @@
     "window-craft": "Craft Item",
     "magic_lonely_blossom_ring_desc": "This ring is made from a blossoming rose bush enchanted by a hex.",
     "ingridients": "Ingridients",
-    "btn-build": "Build",
+    "btn-build": "Build x{count}",
     "window-crafting": "Crafting",
     "window-upgrade-item": "Level item",
     "window-upgrade-items-list": "Choose item to level",
@@ -2760,5 +2760,8 @@
     "boss_skull_knight_xoer": "boss_skull_knight_xoer",
     "boss_blood_feral": "boss_blood_feral",
     "darkness_lord_knight": "darkness_lord_knight",
-    "window-trials-accessory": "Trials of Decay"
+    "window-trials-accessory": "Trials of Decay",
+    "btn-rankings": "Rankings",
+    "btn-tournaments": "Tournaments",
+    "tournament-title": "Tier {tier}"
 }

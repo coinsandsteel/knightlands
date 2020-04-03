@@ -5,47 +5,59 @@
         <LoadingScreen :loading="true" :opacity="0.7" v-show="isPending && isDelayOver"></LoadingScreen>
 
         <StripedPanel class="craft width-100" contentClasses="height-100" v-if="recipeId">
-          <ItemInfo :item="item" class="width-100"></ItemInfo>
+          <ItemInfo :item="item" :quantity="itemsToCraft" class="width-100"></ItemInfo>
 
           <div class="flex flex-column flex-items-center flex-end full-flex">
             <span class="title font-size-20 margin-top-3">{{$t("ingridients")}}</span>
 
             <StripedContent
-              classes="margin-top-3 margin-bottom-5 width-100"
+              classes="margin-top-3 margin-bottom-3 width-100"
               contentClasses="width-100 flex flex-space-evenly"
             >
-              <crafting-ingridient
+              <CraftingIngridient
                 v-for="ingridient in ingridients"
                 :key="`${ingridient.itemId}_${ingridientsKey}`"
                 :ingridient="ingridient"
                 :hintHandler="handleIngridientHint"
+                :quantity="itemsToCraft"
               />
             </StripedContent>
 
-            <div class="flex flex-center width-100 flex-space-evenly">
-              <CustomButton
-                :disabled="!canCraft() && $game.softCurrency >= recipe.softCurrencyFee"
-                type="yellow"
-                v-if="recipe.softCurrencyFee > 0"
-                @click="craftWithSoft()"
-              >
-                <div class="flex flex-center">
-                  <span class="margin-right-half">{{$t("btn-build")}}</span>
-                  <IconWithValue iconClass="icon-gold">{{recipe.softCurrencyFee}}</IconWithValue>
-                </div>
-              </CustomButton>
+            <div class="flex flex-column flex-center width-100 flex-space-evenly">
+              <NumericValue
+                class="margin-bottom-3"
+                :value="itemsToCraft"
+                :decreaseCondition="itemsToCraft > 1"
+                :increaseCondition="canCraftNext()"
+                @inc="craftMore"
+                @dec="craftLess"
+              ></NumericValue>
 
-              <CustomButton
-                :disabled="!canCraft() && $game.hardCurrency >= recipe.hardCurrencyFee"
-                type="grey"
-                v-if="recipe.hardCurrencyFee > 0"
-                @click="craftWithHard()"
-              >
-                <div class="flex flex-center">
-                  {{$t("btn-build")}}
-                  <IconWithValue iconClass="icon-premium">{{recipe.hardCurrencyFee}}</IconWithValue>
-                </div>
-              </CustomButton>
+              <div>
+                <CustomButton
+                  :disabled="!canCraft() && $game.softCurrency >= recipe.softCurrencyFee"
+                  type="yellow"
+                  v-if="recipe.softCurrencyFee > 0"
+                  @click="craftWithSoft()"
+                >
+                  <div class="flex flex-center">
+                    <span class="margin-right-half">{{$t("btn-build", { count: itemsToCraft })}}</span>
+                    <IconWithValue iconClass="icon-gold">{{softPrice}}</IconWithValue>
+                  </div>
+                </CustomButton>
+
+                <CustomButton
+                  :disabled="!canCraft() && $game.hardCurrency >= recipe.hardCurrencyFee"
+                  type="grey"
+                  v-if="recipe.hardCurrencyFee > 0"
+                  @click="craftWithHard()"
+                >
+                  <div class="flex flex-center">
+                    {{$t("btn-build", { count: itemsToCraft })}}
+                    <IconWithValue iconClass="icon-premium">{{hardPrice}}</IconWithValue>
+                  </div>
+                </CustomButton>
+              </div>
 
               <PaymentStatus v-if="recipe.iap" :request="fetchPayment" @pay="continuePurchase">
                 <CustomButton :disabled="!canCraft" type="green" @click="craftWithFiat()">
@@ -77,6 +89,7 @@ import PaymentHandler from "@/components/PaymentHandler.vue";
 import Events from "@/../knightlands-shared/events";
 import ItemCreatedPopup from "./ItemCreatedPopup.vue";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
+import NumericValue from "@/components/NumericValue.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -95,26 +108,31 @@ export default {
     PriceTag,
     Promised,
     LoadingScreen,
-    PaymentStatus
+    PaymentStatus,
+    NumericValue
   },
   data: () => ({
     fetchPayment: null,
     request: null,
     ready: false,
-    ingridientsKey: 0
+    ingridientsKey: 0,
+    itemsToCraft: 1
   }),
   created() {
     this.title = "window-craft";
     this.$options.useRouterBack = true;
     this.$options.paymentEvents.push(Events.CraftingStatus);
-    this.fetchPaymentStatus();
   },
   mounted() {
     this.ready = true;
   },
   watch: {
-    recipeId() {
-      this.fetchPaymentStatus();
+    recipeId: {
+      handler() {
+        this.itemsToCraft = 1;
+        this.fetchPaymentStatus();
+      },
+      immediate: true
     }
   },
   computed: {
@@ -126,18 +144,39 @@ export default {
     },
     ingridients() {
       return this.$game.crafting.getRecipeIngridients(this.recipeId);
+    },
+    softPrice() {
+      return this.recipe.softCurrencyFee * this.itemsToCraft;
+    },
+    hardPrice() {
+      return this.recipe.hardCurrencyFee * this.itemsToCraft;
     }
   },
   methods: {
-    canCraft() {
+    craftMore() {
+      this.itemsToCraft++;
+    },
+    craftLess() {
+      this.itemsToCraft--;
+    },
+    canCraftNext() {
+      return this.canCraft(true);
+    },
+    canCraft(next) {
       if (!this.ready) {
         return false;
       }
 
       let hasEnough = true;
+      let itemsToCraft = this.itemsToCraft;
+      if (next) {
+        itemsToCraft++;
+      }
 
       for (const ingridient of this.ingridients) {
-        if (!this.$game.inventory.hasEnoughIngridient(ingridient)) {
+        if (
+          !this.$game.inventory.hasEnoughIngridient(ingridient, itemsToCraft)
+        ) {
           hasEnough = false;
           break;
         }
@@ -147,7 +186,8 @@ export default {
     },
     async handlePaymentComplete(iap, item) {
       if (item) {
-        await ShowItemCreated(item.resultItem);
+        console.log(item)
+        await ShowItemCreated(item.recipe.resultItem, item.amount);
         this.ingridientsKey++;
       }
     },
@@ -164,7 +204,7 @@ export default {
       this.craft(CurrencyType.Fiat);
     },
     async craft(currency) {
-      this.request = this.$game.craftRecipe(this.recipeId, currency);
+      this.request = this.$game.craftRecipe(this.recipeId, currency, this.itemsToCraft);
 
       if (currency == CurrencyType.Fiat) {
         this.request = this.purchaseRequest(this.request);

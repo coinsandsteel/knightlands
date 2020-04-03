@@ -68,7 +68,9 @@ export default {
   },
   methods: {
     async purchaseAttempts() {
-      await ShowPurchaseAttempts();
+      await ShowPurchaseAttempts({
+        trialType: this.trialType
+      });
     },
     async engageFight(trialId, stageId, fightIndex, callback) {
       this.request = this.$game.engageTrialFight(

@@ -309,6 +309,36 @@ const router = new Router({
       }
     },
     {
+      path: "/home/rankings",
+      component: () => import("./views/Rankings/Rankings.vue"),
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          name: "rankings",
+          path: "",
+          component: () => import("./views/Rankings/RankingsMenu.vue"),
+        },
+        {
+          path: "tournaments",
+          component: () => import("./views/Rankings/Tournaments/Tournaments.vue"),
+          children: [
+            {
+              name: "tournaments",
+              path: "",
+              component: () => import("./views/Rankings/Tournaments/TournamentList.vue")
+            },
+            {
+              path: ":id",
+              name: "tournament",
+              component: () => import("./views/Rankings/Tournaments/Tournament.vue")
+            }
+          ]
+        }
+      ]
+    },
+    {
       path: "/home/gold",
       name: "gold-exchange",
       component: () => import("./views/GoldExchange/GoldExchange.vue"),

@@ -91,7 +91,7 @@ export default {
         });
       }
 
-      let response = await this.showHint(item, buttons);
+      let response = await this.showHint(item, buttons, {});
       if (response === true) {
         // go to ingridient item
         this.handleCraft(recipe.id);

@@ -1,10 +1,6 @@
 <template>
   <div class="flex flex-center font-size-18 flex-no-wrap">
     <div class="flex flex-center padding-1 panel-input height-100">
-      <span>{{$t("free-attemps", {attempts: freeTickets})}}</span>
-    </div>
-
-    <div class="flex flex-center padding-1 panel-input height-100">
       <span>{{$t(ticketItemName)}}</span>
       <div class="key-icon" :style="ticketIcon"></div>
       <span>{{totalTickets}}</span>
@@ -22,7 +18,10 @@ export default {
       return this.$game.itemsDB.getName(TowerMeta.ticketItem);
     },
     totalTickets() {
-      return this.$game.inventory.getItemsCountByTemplate(TowerMeta.ticketItem);
+      return (
+        this.$game.inventory.getItemsCountByTemplate(TowerMeta.ticketItem) +
+        this.freeTickets
+      );
     },
     freeTickets() {
       return this.$game.towerFreeAttempts();

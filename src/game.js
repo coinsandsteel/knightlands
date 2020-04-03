@@ -971,10 +971,11 @@ class Game {
         return response.response;
     }
 
-    async craftRecipe(recipeId, currency) {
+    async craftRecipe(recipeId, currency, amount) {
         let response = await this._wrapOperation(Operations.CraftItem, {
             recipeId,
-            currency
+            currency,
+            amount
         });
 
         return response.response;
@@ -1305,6 +1306,11 @@ class Game {
         return (await this._wrapOperation(Operations.SendDividendTokenWithdrawal, {
             tx
         })).response;
+    }
+
+    // Tournaments
+    async fetchTournaments() {
+        return (await this._wrapOperation(Operations.FetchTournaments)).response;
     }
 }
 

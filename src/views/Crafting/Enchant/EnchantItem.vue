@@ -110,7 +110,7 @@
               >
                 <div class="flex flex-column width-100">
                   <span
-                    class="margin-top-1 margin-bottom-1 rarity-rare font-outline font-size-20"
+                  class="margin-top-1 margin-bottom-1 rarity-rare font-outline font-size-20"
                   >{{$t("enchant-success-rate", {rate: 100})}}</span>
 
                   <div class="flex flex-center width-100 flex-space-evenly">

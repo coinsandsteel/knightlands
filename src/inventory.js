@@ -95,14 +95,15 @@ class Inventory {
         return this.getItemsCountByTemplate(itemTemplate) >= quantity;
     }
 
-    hasEnoughIngridient(ingridient) {
+    hasEnoughIngridient(ingridient, mul = 1) {
         if (ingridient.maxLevelRequired) {
             return this.hasMaxLevelItemByTemplate(
-                ingridient.itemId
+                ingridient.itemId,
+                mul
             );
         }
 
-        return ingridient.quantity <= this.getItemsCountByTemplate(
+        return ingridient.quantity * mul <= this.getItemsCountByTemplate(
             ingridient.itemId
         );
     }
@@ -234,7 +235,7 @@ class Inventory {
         return item ? item.count : 0;
     }
 
-    hasMaxLevelItemByTemplate(template) {
+    hasMaxLevelItemByTemplate(template, count = 1) {
         let maxLevel = this._itemDB.getMaxLevel(template, 2);
         let items = this._getItemsByTemplate(template);
 
@@ -243,6 +244,7 @@ class Inventory {
         }
 
         let i = 0;
+        let itemsFound = 0;
         const length = items.length;
         for (; i < length; ++i) {
             let item = items[i];
@@ -251,6 +253,10 @@ class Inventory {
             }
 
             if (item.level == maxLevel) {
+                itemsFound++;
+            }
+
+            if (itemsFound == count) {
                 return true;
             }
         }

@@ -22,13 +22,13 @@ export default {
         item,
         !item.equipped,
         item.equipped,
-        options.actions,
+        options.actions || {},
         buttons,
         showButtons
       );
     },
     async handleHint(item) {
-      return this.showHint(item, undefined, false);
+      return this.showHint(item, undefined, {});
     }
   }
 };

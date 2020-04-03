@@ -7,6 +7,10 @@
         <MenuIcon icon="icon-daily-quests" to="daily-quests" :append="true">
           {{$t("btn-daily-quests")}}
         </MenuIcon>
+
+        <MenuIcon icon="icon-daily-quests" to="rankings" :append="true">
+          {{$t("btn-rankings")}}
+        </MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
