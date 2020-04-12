@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import RaidsSummonListElement from "./RaidsSummonListElement.vue";
 
 export default {

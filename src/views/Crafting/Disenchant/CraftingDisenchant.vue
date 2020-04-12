@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
 import PromptMixin from "@/components/PromptMixin.vue";
 import LootContainer from "@/components/LootContainer.vue";

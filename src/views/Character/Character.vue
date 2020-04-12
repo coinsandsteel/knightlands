@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column">
     <div class="flex dummy-height flex-no-wrap full-flex flex-column">
-      <tabs :tabs="tabs" :router="true" :currentTab="currentTab" @onClick="switchTab" />
+      <tabs :tabs="tabs" :router="true" :currentTab="currentTab" @onClick="switchTab" :replace="true"/>
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 
 const InventoryTab = "character";
 const StatsTab = "character-training";
@@ -44,7 +44,6 @@ export default {
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
-      this.$router.replace({ name: newTab });
     }
   }
 };

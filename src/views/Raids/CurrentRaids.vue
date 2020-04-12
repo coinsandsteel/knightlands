@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection.js";
+import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import CurrentRaidElement from "./CurrentRaidElement.vue";
 import { Promised } from "vue-promised";

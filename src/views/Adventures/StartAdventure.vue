@@ -16,7 +16,7 @@
 
 <script>
 import Adventure from "./Adventure.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import RefreshButton from "./RefreshButton.vue";
 
 export default {

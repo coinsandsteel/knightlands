@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import TrialType from "@/../knightlands-shared/trial_type";
 import TrialBackgrounds from "./trialBackgrounds";

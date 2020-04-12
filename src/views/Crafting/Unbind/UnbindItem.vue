@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import anime from "animejs/lib/anime.es.js";
 import ItemInfo from "@/components/ItemInfo.vue";
 import LootContainer from "@/components/LootContainer.vue";

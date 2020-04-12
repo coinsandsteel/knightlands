@@ -75,7 +75,7 @@
 <script>
 import StripedContent from "@/components/StripedContent.vue";
 import StripedPanel from "@/components/StripedPanel.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";

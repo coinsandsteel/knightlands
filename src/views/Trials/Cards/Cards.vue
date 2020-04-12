@@ -39,7 +39,7 @@
 import "./style.less";
 import TrialsMeta from "@/trials_meta";
 import CardModifier from "./CardModifier.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";

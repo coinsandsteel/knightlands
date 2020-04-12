@@ -209,7 +209,7 @@
 <script>
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import CopyButton from "@/components/CopyButton.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";

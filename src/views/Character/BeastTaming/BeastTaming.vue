@@ -152,9 +152,8 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import Beasts from "@/beasts";
-import UiConstants from "@/ui_constants";
 import CharacterStats from "@/../knightlands-shared/character_stat.js";
 import PromisedButton from "@/components/PromisedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
@@ -171,7 +170,7 @@ const Events = require("@/../knightlands-shared/events");
 const MaxBoostSize = 50;
 
 export default {
-  mixins: [AppSection, PaymentHandler, PromptMixin],
+  mixins: [ActivityMixin, PaymentHandler, PromptMixin],
   components: {
     PromisedButton,
     IconWithValue,

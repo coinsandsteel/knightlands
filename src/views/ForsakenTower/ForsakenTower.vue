@@ -4,11 +4,11 @@
     <RecycleScroller
       v-show="!currentFloor"
       ref="scroller"
-      class="scroller"
+      class="width-100 height-100"
       :items="floors"
       :item-size="itemSize"
       key-field="_id"
-      v-slot="{ item, index }"
+      v-slot="{ item }"
       :emitUpdate="floors.length > 0"
       @update="scrollUpdated"
     >
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import FloorListElement from "./FloorListElement.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import TowerFooter from "./TowerFooter.vue";
@@ -178,10 +178,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.scroller {
-  width: 100%;
-  height: 100%;
-}
-</style>

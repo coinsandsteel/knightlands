@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import Tabs from "@/components/Tabs.vue";
 import TabHandler from "@/components/TabHandler.vue";
 import DailyLogin from "./DailyLogin.vue";

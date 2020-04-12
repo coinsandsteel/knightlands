@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import PointsMilestone from "./PointsMilestone.vue";
 import DailyQuestsMeta from "@/daily_quests";

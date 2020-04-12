@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import RecipeBookListElement from "./RecipeBookListElement.vue";
 import RecipeBookPages from "@/crafting_book";
 

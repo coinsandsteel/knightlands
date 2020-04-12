@@ -155,7 +155,7 @@ class Game {
     }
 
     hasWallet() {
-        return !!this._blockchainClient;
+        return this._blockchainClient.isInited();
     }
 
     get itemsDB() {
@@ -255,7 +255,7 @@ class Game {
             } else {
                 this._vm.walletReady = false;
             }
-        }, 100);
+        }, 500);
     }
 
     on(event, callback) {
@@ -874,9 +874,10 @@ class Game {
         });
     }
 
-    async useItem(itemId) {
+    async useItem(itemId, count) {
         let response = await this._wrapOperation(Operations.UseItem, {
-            itemId
+            itemId,
+            count
         });
         return response.response;
     }
@@ -1311,6 +1312,63 @@ class Game {
     // Tournaments
     async fetchTournaments() {
         return (await this._wrapOperation(Operations.FetchTournaments)).response;
+    }
+
+    async joinTournament(tournamentId) {
+        return (await this._wrapOperation(Operations.JoinTournament, { tournamentId })).response;
+    }
+
+    async claimTournamentRewards(tournamentId) {
+        return (await this._wrapOperation(Operations.ClaimTournamentRewards, { tournamentId })).response;
+    }
+
+    async fetchTournamentRankings(tournamentId, page) {
+        return (await this._wrapOperation(Operations.FetchTournamentRankings, { tournamentId, page })).response;
+    }
+
+    async getTournamentInfo(tournamentId) {
+        return (await this._wrapOperation(Operations.GetTournamentInfo, { tournamentId })).response;
+    }
+
+    async getFinishedTournaments() {
+        return (await this._wrapOperation(Operations.GetFinishedTournaments)).response;
+    }
+
+    async getTournamentRewards(tournamentId) {
+        return (await this._wrapOperation(Operations.GetTournamentRewards, { tournamentId })).response;
+    }
+
+    // Races
+    async fetchRaces() {
+        return (await this._wrapOperation(Operations.FetchRaces)).response;
+    }
+
+    async joinRace(raceId) {
+        return (await this._wrapOperation(Operations.JoinRace, { raceId })).response;
+    }
+
+    async claimRaceRewards(raceId) {
+        return (await this._wrapOperation(Operations.ClaimRaceRewards, { raceId })).response;
+    }
+
+    async fetchRaceRankings(raceId, page) {
+        return (await this._wrapOperation(Operations.FetchRaceRankings, { raceId, page })).response;
+    }
+
+    async getRaceInfo(raceId) {
+        return (await this._wrapOperation(Operations.GetRaceInfo, { raceId })).response;
+    }
+
+    async getFinishedRaces() {
+        return (await this._wrapOperation(Operations.GetFinishedRaces)).response;
+    }
+
+    async getRaceRewards(raceId) {
+        return (await this._wrapOperation(Operations.GetRaceRewards, { raceId })).response;
+    }
+
+    async getRaceShop() {
+        return (await this._wrapOperation(Operations.GetRaceShop)).response;
     }
 }
 

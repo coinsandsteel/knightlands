@@ -138,8 +138,8 @@ export default {
 
 .btn {
   padding: 0 1rem;
-  margin-left: 0 @btnFillExtrude;
-  margin-right: 0 @btnFillExtrude;
+  margin-left: @btnFillExtrude;
+  margin-right: @btnFillExtrude;
 
   position: relative;
   min-width: @width;

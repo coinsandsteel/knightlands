@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import TrialFooter from "./TrialFooter.vue";
 import Cards from "./Cards/Cards.vue";
 import Errors from "@/../knightlands-shared/errors";

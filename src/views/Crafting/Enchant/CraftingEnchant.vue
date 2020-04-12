@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import LootContainer from "@/components/LootContainer.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import RaidsMeta from "@/raids_meta.json";
 import RaidsSummonListElement from "./RaidsSummonListElement.vue";
 

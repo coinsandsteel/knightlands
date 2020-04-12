@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import StripedPanel from "@/components/StripedPanel.vue";
 import StripedContent from "@/components/StripedContent.vue";
 import IconWithValue from "@/components/IconWithValue.vue";

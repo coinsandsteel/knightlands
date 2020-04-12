@@ -12,7 +12,7 @@
 
 <script>
 import LootContainer from "@/components/LootContainer.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
 
 export default {

@@ -181,11 +181,6 @@ export default {
       return true;
     },
     async confirmAttributes() {
-      let totalGold = 0;
-      for (let i in this.upgradePrice) {
-        totalGold += this.upgradePrice[i];
-      }
-
       await this.$game.buyStats(this.purchasedAttributes);
 
       for (let i in this.purchasedAttributes) {

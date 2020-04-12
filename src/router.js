@@ -321,6 +321,11 @@ const router = new Router({
           component: () => import("./views/Rankings/RankingsMenu.vue"),
         },
         {
+          name: "leaderboards",
+          path: "leaderboards",
+          component: () => import("./views/Rankings/Leaderboards/Leaderboards.vue"),
+        },
+        {
           path: "tournaments",
           component: () => import("./views/Rankings/Tournaments/Tournaments.vue"),
           children: [
@@ -330,9 +335,72 @@ const router = new Router({
               component: () => import("./views/Rankings/Tournaments/TournamentList.vue")
             },
             {
+              name: "tournament-claim-rewards",
+              path: "rewards",
+              props: true,
+              component: () => import("./views/Rankings/Tournaments/TournamentsClaimRewards.vue")
+            },
+            {
               path: ":id",
               name: "tournament",
-              component: () => import("./views/Rankings/Tournaments/Tournament.vue")
+              props: true,
+              component: () => import("./views/Rankings/Tournaments/TournamentView.vue"),
+              children: [
+                {
+                  path: "ranks",
+                  name: "tournament-ranks",
+                  component: () => import("./views/Rankings/Tournaments/TournamentRanks.vue"),
+                  props: true
+                },
+                {
+                  path: "rewards",
+                  name: "tournament-rewards",
+                  component: () => import("./views/Rankings/Tournaments/TournamentRewards.vue"),
+                  props: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          path: "races",
+          component: () => import("./views/Rankings/Races/Races.vue"),
+          children: [
+            {
+              name: "races",
+              path: "",
+              component: () => import("./views/Rankings/Races/RacesList.vue")
+            },
+            {
+              name: "races-claim-rewards",
+              path: "rewards",
+              props: true,
+              component: () => import("./views/Rankings/Races/RacesClaimRewards.vue")
+            },
+            {
+              path: "r/:id",
+              name: "race",
+              props: true,
+              component: () => import("./views/Rankings/Races/RaceView.vue"),
+              children: [
+                {
+                  path: "ranks",
+                  name: "race-ranks",
+                  component: () => import("./views/Rankings/Races/RaceRanks.vue"),
+                  props: true
+                },
+                {
+                  path: "rewards",
+                  name: "race-rewards",
+                  component: () => import("./views/Rankings/Races/RaceRewards.vue"),
+                  props: true
+                }
+              ]
+            },
+            {
+              name: "race-shop",
+              path: "shop",
+              component: () => import("./views/Rankings/Races/RaceShop.vue")
             }
           ]
         }

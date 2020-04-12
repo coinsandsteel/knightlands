@@ -11,7 +11,7 @@
           <span>{{$t("btn-crafting")}}</span>
         </MenuIcon>
 
-        <MenuIcon icon="icon-craft" to="disenchant" :append="true">
+        <MenuIcon icon="icon-disenchant" to="disenchant" :append="true">
           <span>{{$t("btn-disenchant")}}</span>
         </MenuIcon>
       </MenuIconRow>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import SkewedButton from "@/components/SkewedButton.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";

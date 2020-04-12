@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Loot from "@/components/Loot.vue";
@@ -262,7 +262,7 @@ export default {
       if (upgradeMeta.experienceMaterials) {
         upgradeMeta.experienceMaterials.forEach(m => {
           let materialItem = this.$game.inventory.getItemByTemplate(m.itemId);
-          if (materialItem) {
+          if (materialItem.id != -1) {
             materials.push(materialItem);
           }
         });

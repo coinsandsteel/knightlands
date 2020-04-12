@@ -14,7 +14,7 @@ import EquipmentCrafting from "./EquipmentCrafting.vue";
 import ConsumablesCrafting from "./ConsumablesCrafting.vue";
 import MiscCrafting from "./MiscCrafting.vue";
 
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 
 const TabNames = {
   equipment: "EquipmentCrafting",

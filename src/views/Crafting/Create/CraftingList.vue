@@ -36,7 +36,7 @@ import TabHandler from "@/components/TabHandler.vue";
 import IconTabs from "./IconTabs.vue";
 import CraftingRecipeListElement from "./CraftingRecipeListElement.vue";
 import Toggle from "@/components/Toggle.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import HintHandler from "@/components/HintHandler.vue";
 

@@ -129,7 +129,7 @@ import "hooper/dist/hooper.css";
 
 import LootContainer from "@/components/LootContainer.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
-import AppSection from "@/AppSection";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import CustomButton from "@/components/Button.vue";
 import { EquipmentSlots } from "@/../knightlands-shared/equipment_slot";
 import { Promised } from "vue-promised";
@@ -155,7 +155,7 @@ const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 const CompareItemsAction = "compare";
 
 export default {
-  mixins: [AppSection, HintHandler, FilteredLootMixin],
+  mixins: [ActivityMixin, HintHandler, FilteredLootMixin],
   components: {
     Loot: () => import("@/components/Loot.vue"),
     LootContainer,
@@ -228,9 +228,6 @@ export default {
       let currentSlide = this.currentSlideIndex;
       let maxSlideIndex =
         (this.filteredItems.length < 3 ? this.filteredItems.length : 3) - 1;
-      // let direction = 1;
-      // let cs = index.currentSlide;
-      // let fs = index.slideFrom;
 
       if (typeof index == "object") {
         currentSlide = index.currentSlide;
@@ -239,7 +236,6 @@ export default {
           currentSlide = maxSlideIndex;
         } else if (currentSlide > maxSlideIndex) {
           currentSlide = 0;
-          // direction = -1;
         }
 
         // get item by slide
@@ -288,7 +284,7 @@ export default {
       const slot = this.$game.itemsDB.getSlot(item.template);
       await ShowCompareItems(this.itemsInSlots[slot], item);
     },
-    async handleItemAction(item, action) {
+    async handleItemAction(item, action, ...args) {
       this.showHintItems = false;
 
       switch (action) {
@@ -309,7 +305,8 @@ export default {
 
         case "open":
           {
-            this.request = this.$game.useItem(item.id);
+            let count = args[0] || 1;
+            this.request = this.$game.useItem(item.id, count);
             let items = await this.request;
             await ShowItems(items);
           }

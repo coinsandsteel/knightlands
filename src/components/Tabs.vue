@@ -9,6 +9,8 @@
         :to="tab.to"
         tag="div"
         :disabled="tab.disabled"
+        :append="append"
+        :replace="replace"
         @click="handleClick(tab.value)"
       >{{$t(tab.title)}}</router-link>
     </template>
@@ -72,7 +74,9 @@ export default {
       type: String,
       required: false,
       default: "disabled-tabs__active-line"
-    }
+    },
+    append: Boolean,
+    replace: Boolean
   },
   watch: {
     currentTab(newCurrentTab) {

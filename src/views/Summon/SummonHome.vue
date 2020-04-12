@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import SkewedButton from "@/components/SkewedButton.vue";
 import FreeChestsMarker from "@/components/Markers/FreeChestsMarker.vue";
 import MenuIcon from "@/components/MenuIcon.vue";

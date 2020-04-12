@@ -11,11 +11,10 @@
         <div
           class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-45 text-align-left"
         >
-          <span
-            v-for="stat in stats"
-            :key="stat"
-            class="margin-bottom-half"
-          >{{finalStats[stat]}} <span class="rarity-rare" v-if="bonusStats[stat] > 0">(+{{bonusStats[stat]}})</span></span>
+          <span v-for="stat in stats" :key="stat" class="margin-bottom-half">
+            {{finalStats[stat]}}
+            <span class="rarity-rare" v-if="bonusStats[stat] > 0">(+{{bonusStats[stat]}})</span>
+          </span>
         </div>
       </div>
     </template>

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import ChestsMeta from "@/chests_meta";
 import ChestElement from "./ChestElement.vue";
 import { Promised } from "vue-promised";

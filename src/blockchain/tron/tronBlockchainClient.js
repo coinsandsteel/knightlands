@@ -30,6 +30,10 @@ class TronBlockchainClient extends BlockchainClient {
         return this._tronWeb.defaultAddress.base58;
     }
 
+    isInited() {
+        return this._tronWasInited;
+    }
+
     isReady() {
         return this._tronWeb && this._tronWeb.ready;
     }
@@ -58,16 +62,21 @@ class TronBlockchainClient extends BlockchainClient {
             throw exc;
         }
 
+        this._tronWasInited = true;
+
         await this._initContracts();
     }
 
     async _initContracts() {
-        await new Promise((resolve, _) => {
+        await new Promise((resolve, reject) => {
+            let tries = 0;
             // is it possible that injection can be delayed?
             let interval = setInterval(() => {
                 if (this._tronWeb.ready) {
                     clearInterval(interval);
                     resolve();
+                } else if (tries++ > 2) {
+                    reject();
                 }
             }, 500);
         });

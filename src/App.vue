@@ -197,8 +197,8 @@ export default {
     this._blockchainClient = BlockchainFactory(this.$store.state.blockchain);
 
     try {
-      await this._blockchainClient.init();
       Vue.prototype.$game.blockchain = this._blockchainClient;
+      await this._blockchainClient.init();
 
       // wait for wallet to be unlocked
       await new Promise(resolve => {
@@ -223,8 +223,7 @@ export default {
           }
         }, 200);
       });
-    } catch {
-      // no wallet installed
+    } catch (e) {
       this.redirectToLogin();
     }
   },

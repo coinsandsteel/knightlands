@@ -1,24 +1,24 @@
+<script>
+import ActivityMixin from "@/components/ActivityMixin.vue";
+
 export default {
     props: ["parent"],
+    mixins: [ActivityMixin],
     useRouterBack: false,
     data: () => ({
         title: null,
-        footers: [],
-        isActive: false
+        footers: []
     }),
     created() {
         this._title = this.title;
     },
     mounted() {
-        this.isActive = true;
         this._notifyApp();
     },
     activated() {
-        this.isActive = true;
         this._notifyApp();
     },
     deactivated() {
-        this.isActive = false;
         this.removeFooter();    
     },
     destroyed() {
@@ -51,3 +51,4 @@ export default {
         }
     }
 }
+</script>

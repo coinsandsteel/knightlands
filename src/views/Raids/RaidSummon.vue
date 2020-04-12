@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import RaidsMeta from "@/raids_meta";
 import UiConstants from "@/ui_constants";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";

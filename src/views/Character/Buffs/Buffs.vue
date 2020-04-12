@@ -9,7 +9,7 @@
       @info="handleInfo"
     ></BuffSlot>
     </template>
-    <div class="flex flex-column flex-center width-100 height-100">
+    <div v-else class="flex flex-column flex-center width-100 height-100">
       <span class="font-size-22 margin-bottom-2">{{$t("buffs-empty")}}</span>
       <CustomButton type="yellow" @click="goToShop">{{$t("buff-now")}}</CustomButton>
     </div>
@@ -20,10 +20,10 @@
 const ItemType = require("@/../knightlands-shared/item_type");
 const ItemActions = require("@/../knightlands-shared/item_actions");
 
-import AppSection from "@/AppSection";
 import BuffSlot from "./BuffSlot.vue";
 import BuffInfo from "./BuffInfo.vue";
 import Inventory from "@/inventory";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import CustomButton from "@/components/Button.vue";
 
 import { create } from "vue-modal-dialogs";
@@ -31,7 +31,7 @@ import { create } from "vue-modal-dialogs";
 const ShowBuffInfo = create(BuffInfo, ...BuffInfo.props);
 
 export default {
-  mixins: [AppSection],
+  mixins: [ActivityMixin],
   components: { BuffSlot, CustomButton },
   data: () => ({
     buffs: []

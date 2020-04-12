@@ -50,7 +50,7 @@ import AdventureSlot from "./AdventureSlot.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import AdventuresMeta from "@/adventures_meta";
 import StartAdventure from "./StartAdventure.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 

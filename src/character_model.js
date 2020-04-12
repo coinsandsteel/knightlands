@@ -91,7 +91,7 @@ class CharacterModel {
     }
 
     applyBuff(buff) {
-        const currentBuff = this._vm.buffs.find(x=>x.template == buff.template);
+        const currentBuff = this._vm.buffs.find(x => x.template == buff.template);
         if (currentBuff) {
             currentBuff.applyTime = buff.applyTime;
         } else {
@@ -130,7 +130,7 @@ class CharacterModel {
     }
 
     _sortBuffs() {
-        this._vm.buffs.sort((a,b) => {
+        this._vm.buffs.sort((a, b) => {
             const sortingFactorA = a.template;
             const sortingFactorB = b.template;
 
@@ -177,7 +177,7 @@ class CharacterModel {
                 } else if (!root) {
                     this._vm.$delete(currentData, i);
                 }
-            } 
+            }
         }
     }
 
@@ -197,10 +197,10 @@ class CharacterModel {
                 } else if (!root) {
                     this._vm.$set(currentData, i, newField);
                 }
-            } 
+            }
             else if (!root && !currentData.hasOwnProperty(i)) {
                 this._vm.$set(currentData, i, newField);
-            } 
+            }
             else if (currentData[i] !== newField) {
                 currentData[i] = newField;
             }
@@ -244,7 +244,7 @@ class CharacterModel {
     }
 
     _scheduleTimer(stat) {
-        this._setTimerInterval(stat, this.timers[stat].regenTime - (this._game.now/1000 - this.timers[stat].lastRegenTime));
+        this._setTimerInterval(stat, this.timers[stat].regenTime - (this._game.now / 1000 - this.timers[stat].lastRegenTime));
     }
 
     _setTimerInterval(stat, interval) {
@@ -256,11 +256,11 @@ class CharacterModel {
         }
 
         clearTimeout(this.timers[stat].timeout);
-        
+
         // console.log(`timer ${stat} value ${this.timers[stat].value} interval ${interval}`);
         this.timers[stat].timeout = setTimeout(() => {
             let now = Math.floor(this._game.now / 1000);
-            let pointsRegened  = Math.round((now - this.timers[stat].lastRegenTime) / this.timers[stat].regenTime);
+            let pointsRegened = Math.round((now - this.timers[stat].lastRegenTime) / this.timers[stat].regenTime);
             this.timers[stat].value += pointsRegened;
             this.timers[stat].lastRegenTime = now;
             // console.log(`timer ${stat} has fired! New value ${this.timers[stat].value}`);

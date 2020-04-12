@@ -11,7 +11,7 @@
 
 <script>
 import CustomButton from "@/components/Button.vue";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import WelcomeGift from "./WelcomeGift.vue";
 import Prompt from "@/components/Prompt.vue";

@@ -139,7 +139,8 @@ export default {
           this.itemData = {
             template: this.item * 1,
             equipped: false,
-            level: 1
+            level: 1,
+            count: Math.floor((this.quantity || 1) * template.quantity * 100)/100
           };
         }
       } else {

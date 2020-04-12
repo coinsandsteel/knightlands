@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 // import panzoom from "panzoom";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
 import ItemToRecipe from "@/item_to_recipe";

@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 
 export default {
   components: { PromisedButton },
   mixins: [AppSection],
-  data: ()=>({
+  data: () => ({
     request: null
   }),
   created() {

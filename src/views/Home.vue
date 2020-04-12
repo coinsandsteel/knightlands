@@ -8,7 +8,7 @@
           {{$t("btn-daily-quests")}}
         </MenuIcon>
 
-        <MenuIcon icon="icon-daily-quests" to="rankings" :append="true">
+        <MenuIcon icon="icon-rankings" to="rankings" :append="true">
           {{$t("btn-rankings")}}
         </MenuIcon>
       </MenuIconRow>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import SkewedButton from "@/components/SkewedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";

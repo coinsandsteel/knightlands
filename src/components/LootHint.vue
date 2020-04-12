@@ -58,11 +58,28 @@
           @click="handleClose('unequip')"
         >{{$t('btn-unequip')}}</custom-button>
 
-        <CustomButton type="yellow" v-if="isBox" @click="handleClose('open')">{{$t('btn-open-box')}}</CustomButton>
+        <template v-if="isBox">
+          <CustomButton type="yellow" @click="handleClose('open')">{{$t('btn-open-box')}}</CustomButton>
+          <CustomButton
+            type="yellow"
+            @click="handleClose('open', Math.min(count, 9))"
+            v-if="count > 1 && count <= 9"
+          >{{$t('btn-open-boxes', {count: Math.min(count, 9)})}}</CustomButton>
+          <CustomButton
+            type="yellow"
+            @click="handleClose('open', 10)"
+            v-if="count >= 10"
+          >{{$t('btn-open-boxes', {count: 10})}}</CustomButton>
+          <CustomButton
+            type="yellow"
+            @click="handleClose('open', count)"
+            v-if="count >= 50"
+          >{{$t('btn-open-boxes', {count: count})}}</CustomButton>
+        </template>
 
         <CustomButton
-          type="yellow"
           v-else-if="isConsumable"
+          type="yellow"
           @click="handleClose('use')"
         >{{$t('btn-use-consumable')}}</CustomButton>
 
@@ -118,8 +135,7 @@ export default {
     CustomButton,
     ProgressBar,
     UserDialog,
-    ItemInfo,
-    Loot: () => import("./Loot.vue")
+    ItemInfo
   },
   computed: {
     isEquipment() {
@@ -157,25 +173,31 @@ export default {
     },
     stars() {
       return this.item.breakLimit;
+    },
+    count() {
+      return this.item.count;
     }
   },
   methods: {
     upgradeItem() {
       this.handleClose();
-      this.$router.push({ name: "unbind-item", params: { itemId: this.item.id } });
+      this.$router.push({
+        name: "unbind-item",
+        params: { itemId: this.item.id }
+      });
     },
-    handleLevelProgressClick() {    
+    handleLevelProgressClick() {
       this.handleClose();
       this.$router.push({
         name: "upgrade-item",
         params: { itemId: this.item.id }
       });
     },
-    handleClose(response) {
+    handleClose(response, ...args) {
       if (this.$close) {
-        this.$close(response);
+        this.$close(response, ...args);
       } else {
-        this.$emit("close", this.item, response);
+        this.$emit("close", this.item, response, ...args);
       }
     },
     statName(statId) {

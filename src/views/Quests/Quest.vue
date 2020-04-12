@@ -78,7 +78,7 @@
 <script>
 import QuestMissionElement from "./QuestMissionElement.vue";
 import Zones from "@/campaign_database";
-import AppSection from "@/AppSection";
+import AppSection from "@/AppSection.vue";
 import ZoneSelection from "./ZoneSelection.vue";
 import QuestMission from "./QuestMission.vue";
 import CustomButton from "@/components/Button.vue";
