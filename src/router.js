@@ -372,7 +372,7 @@ const router = new Router({
               component: () => import("./views/Rankings/Races/RacesList.vue")
             },
             {
-              name: "races-claim-rewards",
+              name: "race-claim-rewards",
               path: "rewards",
               props: true,
               component: () => import("./views/Rankings/Races/RacesClaimRewards.vue")

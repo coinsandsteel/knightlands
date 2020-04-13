@@ -116,7 +116,7 @@ export default {
     count() {
       let count = this.quantity || 1;
       // prioritize explicit quantity
-      if (!this.quantity && this.itemData) {
+      if (this.itemData) {
         return this.itemData.count || count;
       }
 

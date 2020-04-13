@@ -34,7 +34,7 @@ export default {
   },
   async mounted() {
     if (!this.race) {
-      this.request = this.$game.getFinishedrace();
+      this.request = this.$game.getFinishedRaces();
       this.localRaces = await this.request;
     } else {
       this.localRaces.push(...this.race);

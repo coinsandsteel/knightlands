@@ -6,9 +6,9 @@
           class="title font-size-22 font-weight-900 margin-bottom-1"
           v-html="$t('race-title', { tier, type: raceType, tierColor})"
         />
-        <div class="flex margin-bottom-1">
+        <div class="flex margin-bottom-1 panel-input padding-1">
           <span class="margin-right-half">{{$t("race-target")}}</span>
-          <span class="green-title font-weight-900">{{target}}</span>
+          <span class="green-yellow font-weight-900">{{target}}</span>
         </div>
         <div class="flex margin-bottom-1">
           <span class="margin-right-half">{{$t("race-target-m")}}</span>

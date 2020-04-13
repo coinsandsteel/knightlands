@@ -1370,6 +1370,10 @@ class Game {
     async getRaceShop() {
         return (await this._wrapOperation(Operations.GetRaceShop)).response;
     }
+
+    async purchaseFromRaceShop(lotId) {
+        return (await this._wrapOperation(Operations.PurchaseRaceShop, { lotId })).response;
+    }
 }
 
 export default Game;

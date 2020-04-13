@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-column flex-center margin-1 panel-dark padding-1">
         <Loot :item="item" :quantity="quantity" @hint="handleHint" />
-        <CustomButton type="grey">
+        <CustomButton type="grey" @click="$emit('purchase', item, price)">
             <IconWithValue iconClass="icon-race-token">{{price}}</IconWithValue>
         </CustomButton>
     </div>
