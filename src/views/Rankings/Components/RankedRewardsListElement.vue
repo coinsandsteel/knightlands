@@ -26,7 +26,7 @@ export default {
   mixins: [HintHandler],
   components: { Loot },
   computed: {
-    rankIcon() {
+  rankIcon() {
       if (this.rank < 4) {
         return `icon-rank${this.rank}`;
       }

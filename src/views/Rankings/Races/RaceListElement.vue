@@ -38,7 +38,7 @@
     <div class="flex flex-items-end">
       <CustomButton type="grey" @click="$emit('ranks')">{{$t("btn-ranks")}}</CustomButton>
       <CustomButton type="green" @click="$emit('rewards')">{{$t("btn-rewards")}}</CustomButton>
-      <CustomButton type="yellow" @click="$emit('join')" v-if="!currentRank">{{$t("btn-join")}}</CustomButton>
+      <CustomButton type="yellow" @click="$emit('join')" v-if="!currentRank" :disabled="cooldown > 0">{{$t("btn-join")}}</CustomButton>
     </div>
   </StripedPanel>
 </template>
@@ -53,10 +53,11 @@ import StripedContent from "@/components/StripedContent.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  props: ["race", "currentRank"],
+  props: ["race", "currentRank", "cooldown"],
   components: { CustomButton, StripedPanel, StripedContent, IconWithValue },
   data: () => ({
-    timer: new Timer(true)
+    timer: new Timer(true),
+    winnerCooldownTimer: new Timer(true)
   }),
   mounted() {
     this.timer.timeLeft =

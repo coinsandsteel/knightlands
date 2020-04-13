@@ -3,7 +3,11 @@
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-content">
         <LoadingScreen :loading="true" :opacity="0.7" v-show="isPending && isDelayOver"></LoadingScreen>
-
+        <div
+          class="font-size-20 panel-input pdding-1 margin-2"
+          v-if="cooldownTimer.timeLeft > 0"
+          v-html="$t('race-cooldown', {time: cooldownTimer.value})"
+        ></div>
         <div v-bar>
           <div>
             <RaceListElement
@@ -11,6 +15,7 @@
               :key="r.id"
               :race="r"
               :currentRank="joined(r) ? current : null"
+              :cooldown="cooldownTimer.timeLeft"
               @join="join(r)"
               @ranks="showRanks(r)"
               @rewards="showRewards(r)"
@@ -19,8 +24,12 @@
         </div>
 
         <portal to="footer" :slim="true" v-if="isActive">
-            <CustomButton type="yellow" @click="goToShop">{{$t("race-shop")}}</CustomButton>
-            <CustomButton type="green" @click="previewRewards" :disabled="finishedRaces.length == 0">{{$t("claim-rewards")}}</CustomButton>
+          <CustomButton type="yellow" @click="goToShop">{{$t("race-shop")}}</CustomButton>
+          <CustomButton
+            type="green"
+            @click="previewRewards"
+            :disabled="finishedRaces.length == 0"
+          >{{$t("claim-rewards")}}</CustomButton>
         </portal>
       </div>
     </template>
@@ -34,6 +43,7 @@ import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import RaceListElement from "./RaceListElement.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Timer from "@/timer";
 
 export default {
   mixins: [AppSection, PromptMixin],
@@ -49,7 +59,8 @@ export default {
     request: null,
     races: [],
     current: null,
-    finishedRaces: []
+    finishedRaces: [],
+    cooldownTimer: new Timer(true)
   }),
   methods: {
     previewRewards() {
@@ -69,9 +80,10 @@ export default {
       const info = await this.request;
       this.races = info.list;
       this.current = info.currentRace;
+      this.cooldownTimer.timeLeft = info.cooldown;
     },
     goToShop() {
-        this.$router.push({ name: "race-shop"});
+      this.$router.push({ name: "race-shop" });
     },
     joined(race) {
       if (!this.current) return false;

@@ -140,7 +140,7 @@ export default {
             template: this.item * 1,
             equipped: false,
             level: 1,
-            count: Math.floor((this.quantity || 1) * template.quantity * 100)/100
+            count: Math.floor((this.quantity || 1) * (template.quantity || 1) * 100)/100
           };
         }
       } else {

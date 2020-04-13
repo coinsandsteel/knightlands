@@ -2806,5 +2806,6 @@
     "race-rewards-m": "Rewards multiplier:",
     "race-predictions": "Next sprint multipliers:",
     "race-mult-hint": "Finish sprint as fast as you can to increase rewards for the next sprint!",
-    "race-shop-confirm": "Confirm purchase of <span class='rarity-{rarity}'>{item}</span> for {price}<span class='icon-race-token'></span>?"
+    "race-shop-confirm": "Confirm purchase of <span class='rarity-{rarity}'>{item}</span> for {price}<span class='icon-race-token'></span>?",
+    "race-cooldown": "You was a winner of the Royal Sprint. <br />To be eligable for the next Sprint please wait {time} more."
 }
