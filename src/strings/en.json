@@ -2807,5 +2807,12 @@
     "race-predictions": "Next sprint multipliers:",
     "race-mult-hint": "Finish sprint as fast as you can to increase rewards for the next sprint!",
     "race-shop-confirm": "Confirm purchase of <span class='rarity-{rarity}'>{item}</span> for {price}<span class='icon-race-token'></span>?",
-    "race-cooldown": "You was a winner of the Royal Sprint. <br />To be eligable for the next Sprint please wait {time} more."
+    "race-cooldown": "You was a winner of the Royal Sprint. <br />To be eligable for the next Sprint please wait {time} more.",
+    "btn-preview": "Preview",
+    "l-type-0": "Energy spent",
+    "l-type-1": "Stamina spent",
+    "l-type-2": "Damage dealt in raids",
+    "l-type-3": "Experience",
+    "l-type-4": "Gold collected",
+    "l-type-5": "DKT earned"
 }

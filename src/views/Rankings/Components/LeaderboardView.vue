@@ -88,6 +88,7 @@ export default {
       return this.currentRank.rank.id == id;
     },
     async fetchNextPage() {
+      
       if (this.fetchInProcess || this.fetchedAll) {
         return true;
       }

@@ -1374,6 +1374,15 @@ class Game {
     async purchaseFromRaceShop(lotId) {
         return (await this._wrapOperation(Operations.PurchaseRaceShop, { lotId })).response;
     }
+
+    // Leaderboards
+    async getLeaderboardRank(type) {
+        return (await this._wrapOperation(Operations.GetLeaderboardRank, { type })).response;
+    }
+
+    async getLeaderboardRankings(type, page) {
+        return (await this._wrapOperation(Operations.GetLeaderboardRankings, { type, page })).response;
+    }
 }
 
 export default Game;

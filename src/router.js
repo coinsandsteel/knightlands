@@ -318,12 +318,24 @@ const router = new Router({
         {
           name: "rankings",
           path: "",
-          component: () => import("./views/Rankings/RankingsMenu.vue"),
+          component: () => import("./views/Rankings/RankingsMenu.vue")
         },
         {
-          name: "leaderboards",
           path: "leaderboards",
           component: () => import("./views/Rankings/Leaderboards/Leaderboards.vue"),
+          children: [
+            {
+              name: "leaderboards",
+              path: "",
+              component: () => import("./views/Rankings/Leaderboards/LeaderboardsList.vue")
+            },
+            {
+              name: "leaderboard-view",
+              path: "view/:id",
+              component: () => import("./views/Rankings/Leaderboards/LeaderboardView.vue"),
+              props: true
+            }
+          ]
         },
         {
           path: "tournaments",
