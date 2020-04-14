@@ -28,8 +28,6 @@
       </div>
     </StripedContent>
 
-    
-
     <div class="flex flex-items-end">
       <CustomButton type="grey" @click="$emit('ranks')">{{$t("btn-ranks")}}</CustomButton>
       <CustomButton type="green" @click="$emit('rewards')">{{$t("btn-rewards")}}</CustomButton>
@@ -57,6 +55,14 @@ export default {
     this.timer.timeLeft =
       this.tournament.duration -
       (this.$game.nowSec - this.tournament.startTime);
+
+    this.listener = () => {
+      this.$emit("finished");
+    };
+    this.timer.on("finished", this.listener);
+  },
+  beforeDestroy() {
+    this.timer.off("finished", this.listener);
   },
   computed: {
     tournamentType() {

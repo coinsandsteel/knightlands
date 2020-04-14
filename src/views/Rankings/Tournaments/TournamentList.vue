@@ -14,6 +14,7 @@
               @join="join(t)"
               @ranks="showRanks(t)"
               @rewards="showRewards(t)"
+              @finished="fetchList"
             ></TournamentListElement>
           </div>
         </div>
