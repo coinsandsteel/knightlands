@@ -30,15 +30,17 @@
       <div class="flex flex-center font-size-22 margin-bottom-1" v-if="currentRank">
         <IconWithValue iconClass="icon-rankings">{{currentRank.rank.rank}}</IconWithValue>
       </div>
-        
-      
-      
     </StripedContent>
 
     <div class="flex flex-items-end">
       <CustomButton type="grey" @click="$emit('ranks')">{{$t("btn-ranks")}}</CustomButton>
       <CustomButton type="green" @click="$emit('rewards')">{{$t("btn-rewards")}}</CustomButton>
-      <CustomButton type="yellow" @click="$emit('join')" v-if="!currentRank" :disabled="cooldown > 0">{{$t("btn-join")}}</CustomButton>
+      <CustomButton
+        type="yellow"
+        @click="$emit('join')"
+        v-if="!currentRank"
+        :disabled="cooldown > 0"
+      >{{$t("btn-join")}}</CustomButton>
     </div>
   </StripedPanel>
 </template>
@@ -62,6 +64,13 @@ export default {
   mounted() {
     this.timer.timeLeft =
       this.race.config.duration - (this.$game.nowSec - this.race.startTime);
+    this.listener = () => {
+      this.$emit("finished");
+    };
+    this.timer.on("finished", this.listener);
+  },
+  beforeDestroy() {
+    this.timer.off("finished", this.listener);
   },
   computed: {
     tier() {
@@ -84,10 +93,10 @@ export default {
       return "rarity-legendary";
     },
     rewardsMultiplier() {
-        return Math.floor(this.race.rewardsMultiplier * 100)/100;
+      return Math.floor(this.race.rewardsMultiplier * 100) / 100;
     },
     targetMultiplier() {
-        return Math.floor(this.race.targetMultiplier * 100)/100;
+      return Math.floor(this.race.targetMultiplier * 100) / 100;
     },
     raceType() {
       let options = {};

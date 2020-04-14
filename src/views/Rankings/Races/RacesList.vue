@@ -19,6 +19,7 @@
               @join="join(r)"
               @ranks="showRanks(r)"
               @rewards="showRewards(r)"
+              @finished="fetchList"
             ></RaceListElement>
           </div>
         </div>
@@ -54,6 +55,11 @@ export default {
   mounted() {
     this.fetchList();
     this.fetchFinishedRaces();
+    this.listener = this.fetchList.bind(this);
+    this.cooldownTimer.on("finished", this.listener);
+  },
+  beforeDestroy() {
+    this.cooldownTimer.off("finsihed", this.listener);
   },
   data: () => ({
     request: null,
