@@ -4,7 +4,7 @@
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar v-if="$game.authenticated"></status-bar>
       <div class="flex">
-        <div class="flex flex-center section-name font-size-25">
+        <div class="flex flex-center section-name font-size-25" v-show="title">
           <span class="relative section-title">{{$t(title)}}</span>
           <div class="section-fill"></div>
         </div>
@@ -52,11 +52,11 @@
             <span class="menu-icon guild pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-guild")}}</span>
           </router-link>-->
-          <!-- 
-          <router-link  class="flex flex-center" to="/">
+          
+          <router-link  class="flex flex-center" to="/social/chat">
             <span class="menu-icon chat pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-chat")}}</span>
-          </router-link>-->
+          </router-link>
         </div>
       </div>
     </div>

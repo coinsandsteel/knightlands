@@ -3,7 +3,13 @@
     <div class="dummy-height">
       <div v-bar>
         <div ref="panel" class="flex">
-          <recipe-scheme v-for="(recipe, index) in recipes" :key="recipe" :hasNext="index+1 < recipes.length" :recipe="recipe" @hint="handleIngridientHint"></recipe-scheme>
+          <recipe-scheme
+            v-for="(recipe, index) in recipes"
+            :key="recipe"
+            :hasNext="index+1 < recipes.length"
+            :recipe="recipe"
+            @hint="handleIngridientHint"
+          ></recipe-scheme>
         </div>
       </div>
     </div>
@@ -12,7 +18,6 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-// import panzoom from "panzoom";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
 import ItemToRecipe from "@/item_to_recipe";
 
@@ -20,8 +25,8 @@ export default {
   mixins: [AppSection, CraftingIngridientHintHandler],
   components: {},
   props: ["recipeId"],
-  data:()=>({
-      recipes: []
+  data: () => ({
+    recipes: []
   }),
   created() {
     this.title = this.$game.itemsDB.getName(this.recipe.resultItem);
@@ -31,19 +36,16 @@ export default {
     let currentRecipe = this.recipeId;
 
     while (true) {
-        let resultItem = this.$game.crafting.getResultItem(currentRecipe);
-        const recipe = ItemToRecipe[resultItem];
-        this.title = this.$game.itemsDB.getName(resultItem);
-        if (recipe) {
-            
-            currentRecipe = recipe;
-            this.recipes.push(currentRecipe);
-        } else {
-            break;
-        }
+      let resultItem = this.$game.crafting.getResultItem(currentRecipe);
+      const recipe = ItemToRecipe[resultItem];
+      this.title = this.$game.itemsDB.getName(resultItem);
+      if (recipe) {
+        currentRecipe = recipe;
+        this.recipes.push(currentRecipe);
+      } else {
+        break;
+      }
     }
-
-    
 
     // this.$nextTick(() => {
     //   this.panzoom = panzoom(this.$refs.panel, {
@@ -76,6 +78,6 @@ export default {
 .recipe-page {
   overflow: hidden;
 
-//   background-color: #3d485a;
+  //   background-color: #3d485a;
 }
 </style>

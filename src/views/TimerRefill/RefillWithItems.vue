@@ -4,10 +4,13 @@
       <progress-bar :maxValue="maxStat" :hideMaxValue="true" v-model="barValue" :barType="color"></progress-bar>
     </div>
 
-    <div class="width-100" v-bar="{
+    <div
+      class="width-100"
+      v-bar="{
           preventParentScroll: true,
           scrollThrottle: 30,
-      }">
+      }"
+    >
       <div>
         <div class="flex flex-space-evenly width-100">
           <ItemSelector
@@ -16,14 +19,13 @@
             :key="item.id"
             :item="item"
             :predictedHp="barValue"
+            :maxStat="maxStat"
             @changed="handleItemSelected"
             @hint="handleHint"
           />
         </div>
       </div>
     </div>
-
-    
   </div>
 </template>
 
@@ -104,14 +106,16 @@ export default {
         id: item.id
       };
 
-      let baseValue = this.timer.value;
       let restoredValue = 0;
       for (let itemId in this.selectedItems) {
         // first relative bonuses
         const consumable = this.selectedItems[itemId];
         if (consumable.relative) {
           restoredValue +=
-            (this.$game.character.getMaxStat(consumable.stat) * consumable.value * consumable.count) / 100;
+            (this.$game.character.getMaxStat(consumable.stat) *
+              consumable.value *
+              consumable.count) /
+            100;
         }
       }
 

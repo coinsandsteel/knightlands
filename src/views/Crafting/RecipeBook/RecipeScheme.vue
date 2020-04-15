@@ -14,7 +14,7 @@
       :ingridient="{itemId:resultItem}"
       :gacha="true"
       :hintHandler="handleIngridientHint"
-      :hideCurrentCount="true"
+      :hideCount="true"
     ></CraftingIngridient>
     <div class="result-arrow" v-if="hasNext"></div>
   </div>

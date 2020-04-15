@@ -23,14 +23,14 @@ import NumericValue from "@/components/NumericValue.vue";
 import CharacterStat from "@/../knightlands-shared/character_stat";
 
 export default {
-  props: ["item", "predictedHp"],
+  props: ["item", "maxStat", "predictedHp"],
   components: { NumericValue, Loot },
   data: () => ({
     selected: 0
   }),
   methods: {
     canAdd() {
-      return this.selected < this.item.count && this.predictedHp < this.$game.character.getMaxStat(CharacterStat.Health);
+      return this.selected < this.item.count && this.predictedHp < this.maxStat;
     },
     handleHint(item) {
       this.$emit("hint", item);

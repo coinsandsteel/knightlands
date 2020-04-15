@@ -1,6 +1,8 @@
 <template>
-  <div class="flex flex-column">
-    <StripedPanel class="padding-top-2 margin-1">
+  <div class="screen-content">
+    <div v-bar>
+      <div>
+        <StripedPanel class="padding-top-2 margin-1">
       <span
         class="font-size-25 width-100 margin-bottom-3"
         v-html="$t('daily-quests-total-ap', {ap: $game.dailyQuests().points})"
@@ -152,6 +154,8 @@
           :disabled="!canClaimRewards"
           :promise="request"
         >{{$t("daily-quests-claim")}}</PromisedButton>
+      </div>
+    </div>
       </div>
     </div>
   </div>

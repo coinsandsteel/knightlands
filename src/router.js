@@ -419,6 +419,27 @@ const router = new Router({
       ]
     },
     {
+      path: "/social",
+      name: "social",
+      component: () => import("./views/Social/Social.vue"),
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          path: "chat",
+          component: () => import("./views/Social/Chat/Chat.vue"),
+          children: [
+            {
+              path: "",
+              name: "world-chat",
+              component: () => import("./views/Social/Chat/WorldChat.vue")
+            }
+          ]
+        }
+      ]
+    },
+    {
       path: "/home/gold",
       name: "gold-exchange",
       component: () => import("./views/GoldExchange/GoldExchange.vue"),

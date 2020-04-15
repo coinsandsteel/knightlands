@@ -52,7 +52,7 @@ export default {
       };
     },
     requiredCount() {
-      return this.ingridient.quantity * this.quantity;
+      return (this.ingridient.quantity || 1) * this.quantity;
     },
     notEnoughMaterials() {
       return !this.$game.inventory.hasEnoughIngridient(this.ingridient);

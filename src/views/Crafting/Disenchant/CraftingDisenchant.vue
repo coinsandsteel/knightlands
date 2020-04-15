@@ -19,7 +19,7 @@
           <template v-if="Object.keys(predictedMaterials).length > 0">
             <Loot
               v-for="(data, key) in predictedMaterials"
-              :key="key"
+              :key="`${key}_${data.count}`"
               :quantity="data.count"
               :item="data.template"
             ></Loot>
