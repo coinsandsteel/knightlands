@@ -1,8 +1,11 @@
 <template>
-  <router-link v-bind="$attrs" tag="div" class="flex-basis-30">
+  <router-link v-bind="$attrs" tag="div" class="flex-basis-30" :class="{'pointer-events-none': locked}">
     <div class="flex flex-column flex-center pointer relative">
       <span :class="icon" class="icon-menu relative">
         <slot name="marker"></slot>
+        <span class="overlay absolute-stretch" v-if="locked">
+          <span class="font-size-20 font-weight-900">Lvl: {{levelRequired}}</span>
+        </span>
       </span>
       <span class="font-size-20 capitalize">
         <slot></slot>
@@ -13,7 +16,14 @@
 
 <script>
 export default {
-  props: ["icon"]
+  props: ["icon", "levelRequired"],
+  computed: {
+    locked() {
+      if (!this.levelRequired) return false;
+
+      return this.levelRequired > this.$game.character.level;
+    }
+  }
 };
 </script>
 
@@ -21,5 +31,13 @@ export default {
 .icon-menu {
   width: 7rem;
   height: 7rem;
+}
+
+.overlay {
+  background-color: rgba(21, 19, 44, 0.5);
+
+  > span {
+    color: rgb(241, 76, 76);
+  }
 }
 </style>

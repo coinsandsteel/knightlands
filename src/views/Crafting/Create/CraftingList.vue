@@ -40,8 +40,6 @@ import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import HintHandler from "@/components/HintHandler.vue";
 
-const ItemType = require("@/../knightlands-shared/item_type");
-
 import { create } from "vue-modal-dialogs";
 import RecipeFilter from "./../RecipeFilter.vue";
 const ShowFilters = create(RecipeFilter, ...RecipeFilter.props);

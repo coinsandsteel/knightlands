@@ -4,20 +4,20 @@
       <span class="font-size-18 width-100 margin-bottom-3">{{$t('daily-login-desc')}}</span>
       <div class="full-flex dummy-height">
         <div class="width-100" v-bar>
-        <div class="dummy-height height-100">
-          <div class="flex width-100 dummy-height flex-space-evenly">
-            <DailyReward
-              v-for="(reward, index) in rewards"
-              :key="index"
-              :index="index"
-              :current="step == index"
-              :collected="isCollected(index)"
-              :reward="reward"
-              @hint="rewardHint"
-            ></DailyReward>
+          <div class="dummy-height height-100">
+            <div class="flex width-100 dummy-height flex-space-evenly">
+              <DailyReward
+                v-for="(reward, index) in rewards"
+                :key="index"
+                :index="index"
+                :current="step == index"
+                :collected="isCollected(index)"
+                :reward="reward"
+                @hint="rewardHint"
+              ></DailyReward>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
 
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import UserDialog from "@/components/UserDialog.vue";
 import DailyRewards from "@/daily_rewards";
 import DailyReward from "./DailyReward.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
@@ -47,7 +46,7 @@ const ShowItems = create(ItemsReceived, ...ItemsReceived.props);
 
 export default {
   mixins: [HintHandler],
-  components: { UserDialog, DailyReward, PromisedButton },
+  components: { DailyReward, PromisedButton },
   data: () => ({
     rewards: DailyRewards.rewards,
     request: null,
@@ -68,7 +67,7 @@ export default {
     rewardHint(reward) {
       this.handleHint({
         template: reward.itemId,
-        quantity: reward.minCount
+        count: reward.minCount
       });
     },
     async collect() {

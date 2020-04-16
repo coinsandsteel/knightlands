@@ -40,7 +40,7 @@ import HintHandler from "@/components/HintHandler.vue";
 export default {
   props: ["stat"],
   mixins: [HintHandler],
-  components: { ItemSelector, ProgressBar, HintHandler },
+  components: { ItemSelector, ProgressBar },
   data: () => ({
     items: [],
     restoredValue: 0
@@ -67,6 +67,7 @@ export default {
         case CharacterStats.Stamina:
           return "yellow";
       }
+      return "";
     }
   },
   methods: {

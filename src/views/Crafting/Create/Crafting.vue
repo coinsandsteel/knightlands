@@ -17,9 +17,9 @@ import MiscCrafting from "./MiscCrafting.vue";
 import AppSection from "@/AppSection.vue";
 
 const TabNames = {
-  equipment: "EquipmentCrafting",
-  consumables: "ConsumablesCrafting",
-  misc: "MiscCrafting"
+  equipment: "equipmentCrafting",
+  consumables: "consumablesCrafting",
+  misc: "miscCrafting"
 };
 
 export default {

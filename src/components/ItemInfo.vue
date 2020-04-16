@@ -62,7 +62,6 @@
 </template>
 
 <script>
-const ItemActions = require("@/../knightlands-shared/item_actions");
 import ItemProperties from "@/components/ItemProperties.vue";
 import Loot from "@/components/Loot.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
@@ -70,7 +69,6 @@ const {
   EquipmentSlots,
   getSlot
 } = require("@/../knightlands-shared/equipment_slot");
-import RaidsMeta from "@/raids_meta";
 
 export default {
   props: {
