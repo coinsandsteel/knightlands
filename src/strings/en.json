@@ -2814,5 +2814,7 @@
     "l-type-2": "Damage dealt in raids",
     "l-type-3": "Experience",
     "l-type-4": "Gold collected",
-    "l-type-5": "DKT earned"
+    "l-type-5": "DKT earned",
+    "raid-diff": "Select Difficulty",
+    "raid-essences": "Required Essences"
 }

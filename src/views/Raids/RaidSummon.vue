@@ -1,9 +1,11 @@
 <template>
-  <div class="flex flex-column flex-start relative">
-    <boss-view v-if="raid" :raidTemplateId="raid"></boss-view>
+  <div class="screen-content flex-start relative">
+    <div v-bar>
+      <div>
+        <boss-view v-if="raid" :raidTemplateId="raid"></boss-view>
 
     <StripedPanel class="margin-1" contentClasses="flex-center">
-      <span class="font-size-20 title margin-bottom-3">Select Difficulty</span>
+      <span class="font-size-20 title margin-bottom-3">{{$t("raid-diff")}}</span>
 
       <StripedContent
         classes="width-100 margin-bottom-3"
@@ -27,7 +29,7 @@
       </div>
 
       <div class="margin-top-3" v-if="$game.load">
-        <span class="font-size-20 title margin-bottom">Required Essences</span>
+        <span class="font-size-20 title margin-bottom">{{$t("raid-essences")}}</span>
         <div class="flex flex-center margin-top-1">
           <crafting-ingridient
             v-for="(essence) in requiredEssences"
@@ -74,6 +76,8 @@
         @close="showInfo = false"
       ></RaidInfo>
     </keep-alive>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -61,8 +61,6 @@ import { create as CreateDialog } from "vue-modal-dialogs";
 
 const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "hideButtons");
 
-const DktSpread = 0.3;
-
 export default {
   components: { UserDialog, Loot, IconWithValue },
   props: ["raidTemplateId", "stage", "currentDamage", "dktFactor"],
