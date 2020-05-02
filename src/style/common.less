@@ -92,6 +92,10 @@
     font-size: .9375rem * @fontSizeFactor;
 }
 
+.font-size-15 {
+    font-size: .9375rem * @fontSizeFactor;
+}
+
 .font-size-18 {
     font-size: 1.25rem * @fontSizeFactor;
 }
@@ -115,6 +119,18 @@
 .font-size-4 {
     font-size: 4rem * @fontSizeFactor;
 }
+
+.font-size(@counter) when (@counter > 0) {
+    .font-size((@counter - 1)); // next iteration
+
+    @c: @counter/10 * @fontSizeFactor;
+
+    .font-size-@{counter} {
+        font-size:~'@{c}rem';
+    }
+}
+
+// .font-size(35);
 
 h1 {
     font-size: 4rem * @fontSizeFactor;
@@ -385,6 +401,19 @@ h1 {
     bottom: 0 !important;
 }
 
+.screen-background {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+    image-rendering: pixelated;
+    position: absolute !important;
+    top: -4rem !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: -5rem !important;
+}
+
 .z-index-1 {
     z-index: 1;
 }
@@ -404,12 +433,17 @@ h1 {
     background-image: url("../assets/ui/icon_star_empty.png");
     background-repeat: no-repeat;
     background-size: contain;
-    width: 20px;
-    height: 20px;
+    width: @iconSize;
+    height: @iconSize;
     transition: all 0.2s ease;
 
     &.active {
         background-image: url("../assets/ui/icon_star.png");
+    }
+
+    &.small {
+        width: @iconSize * 0.75;
+        height: @iconSize * 0.75;
     }
 }
 
@@ -424,8 +458,8 @@ h1 {
     display: inline-block;
 
     &.huge {
-        width: @iconSize * 1.8;
-        height: @iconSize * 1.8;
+        width: @iconSize * 2;
+        height: @iconSize * 2;
     }
 
     &.big {
@@ -854,7 +888,8 @@ h1 {
 }
 
 .absolute {
-    position: absolute;;
+    position: absolute;
+    ;
 }
 
 .overlay-title {
@@ -978,17 +1013,17 @@ h1 {
 }
 
 // vuebar default style
-.vb > .vb-dragger {
+.vb>.vb-dragger {
     z-index: 5;
     width: 12px;
     right: 0;
 }
 
-.vb > .vb-dragger > .vb-dragger-styler {
+.vb>.vb-dragger>.vb-dragger-styler {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    -webkit-transform: rotate3d(0,0,0,0);
-    transform: rotate3d(0,0,0,0);
+    -webkit-transform: rotate3d(0, 0, 0, 0);
+    transform: rotate3d(0, 0, 0, 0);
     -webkit-transition:
         background-color 100ms ease-out,
         margin 100ms ease-out,
@@ -997,30 +1032,30 @@ h1 {
         background-color 100ms ease-out,
         margin 100ms ease-out,
         height 100ms ease-out;
-    background-color: rgba(48, 121, 244,.1);
+    background-color: rgba(48, 121, 244, .1);
     margin: 5px 5px 5px 0;
     border-radius: 20px;
     height: calc(100% - 10px);
     display: block;
 }
 
-.vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
+.vb.vb-scrolling-phantom>.vb-dragger>.vb-dragger-styler {
     background-color: #928691;
 }
 
-.vb > .vb-dragger:hover > .vb-dragger-styler {
-    background-color: #928691;
-    margin: 0px;
-    height: 100%;
-}
-
-.vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
+.vb>.vb-dragger:hover>.vb-dragger-styler {
     background-color: #928691;
     margin: 0px;
     height: 100%;
 }
 
-.vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
+.vb.vb-dragging>.vb-dragger>.vb-dragger-styler {
+    background-color: #928691;
+    margin: 0px;
+    height: 100%;
+}
+
+.vb.vb-dragging-phantom>.vb-dragger>.vb-dragger-styler {
     background-color: #928691;
 }
 

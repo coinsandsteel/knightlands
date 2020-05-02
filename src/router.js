@@ -71,7 +71,7 @@ const Settings = () => import("./views/Settings/Settings.vue");
 const router = new Router({
   routes: [
     {
-      path: "/crafting",
+      path: "/castle/crafting",
       name: "",
       component: CraftingRoot,
       meta: {
@@ -454,6 +454,52 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: "/castle",
+      name: "castle",
+      component: () => import("./views/Castle/Castle.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/castle/army",
+      name: "",
+      component: () => import("./views/Army/ArmyRoot.vue"),
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          path: "",
+          name: "army",
+          component: () => import("./views/Army/ArmyMenu.vue")
+        },
+        {
+          path: "composition",
+          name: "army-composition",
+          component: () => import("./views/Army/ArmyComposition.vue")
+        },
+        {
+          path: "legion/:type",
+          name: "legion",
+          component: () => import("./views/Army/EditLegion.vue"),
+          props: true
+        },
+        {
+          path: "edit-legion/:legion/:type/:slotId",
+          name: "edit-legion",
+          component: () => import("./views/Army/EditLegionSlot.vue"),
+          props: true
+        },
+        {
+          path: "equipment/:type",
+          name: "unit-equipment",
+          component: () => import("./views/Army/UnitEquipment.vue"),
+          props: true
+        }
+      ]
     },
     {
       path: "/link/:token/:user",

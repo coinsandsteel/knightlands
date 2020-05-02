@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-column flex-end flex-items-center relative">
-    <div class="home-art"></div>
+    <div class="home-art screen-background"></div>
 
     <div class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5">
       <MenuIconRow>
@@ -70,8 +70,6 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import SkewedButton from "@/components/SkewedButton.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
 import CheckinMarker from "@/components/Markers/CheckinMarker.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
@@ -81,8 +79,6 @@ export default {
   name: "home",
   mixins: [AppSection],
   components: {
-    SkewedButton,
-    IconWithValue,
     AdventuresMarker,
     CheckinMarker,
     MenuIcon,
@@ -101,17 +97,7 @@ export default {
 
 <style lang="less" scoped>
 .home-art {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-image: url("../assets/ui/background_home.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 100%;
-  height: 50vh;
-  z-index: 0;
+  background-image: url("../assets/backgrounds/town.png");
 }
 </style>
 

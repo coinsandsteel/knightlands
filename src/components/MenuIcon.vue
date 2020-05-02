@@ -7,8 +7,10 @@
           <span class="font-size-20 font-weight-900">Lvl: {{levelRequired}}</span>
         </span>
       </span>
-      <span class="font-size-20 capitalize">
+      <span class="title-holder">
+        <span class="font-size-20 capitalize">
         <slot></slot>
+      </span>
       </span>
     </div>
   </router-link>
@@ -39,5 +41,11 @@ export default {
   > span {
     color: rgb(241, 76, 76);
   }
+}
+
+.title-holder {
+  padding: 0.5rem;
+  background-color: rgba(21, 19, 44, 0.8);
+  border-radius: 3px;
 }
 </style>

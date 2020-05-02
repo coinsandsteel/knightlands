@@ -17,6 +17,8 @@ import DisconnectCodes from "@/../knightlands-shared/disconnectCodes";
 import Classes from "@/classes";
 import TrialCardsResolver from "@/../knightlands-shared/trial_cards_resolver";
 import TrialsMeta from "@/trials_meta";
+import ArmyDB from "@/army/armyDB";
+import Army from "@/army/army";
 
 class Game {
     constructor(store) {
@@ -29,6 +31,8 @@ class Game {
         this.WalletChanged = "wallet_changed";
         this.$store = store;
         this._items = new ItemDatabase();
+        this._armyDb = new ArmyDB();
+        this._army = new Army(this._armyDb);
         this._expTable = PlayerExpTable;
         this._requestInProgress = false;
 
@@ -160,6 +164,14 @@ class Game {
 
     get itemsDB() {
         return this._items;
+    }
+
+    get armyDB() {
+        return this._armyDb;
+    }
+
+    get army() {
+        return this._army;
     }
 
     get crafting() {

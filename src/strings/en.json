@@ -2816,5 +2816,9 @@
     "l-type-4": "Gold collected",
     "l-type-5": "DKT earned",
     "raid-diff": "Select Difficulty",
-    "raid-essences": "Required Essences"
+    "raid-essences": "Required Essences",
+    "menu-castle": "Castle",
+    "window-title-army-compose": "Formation",
+    "legion-n": "Legion {n}",
+    "unit-lvl": "Lv. {lvl}"
 }

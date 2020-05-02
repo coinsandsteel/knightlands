@@ -38,9 +38,9 @@
             <span class="menu-title">{{$t("menu-character")}}</span>
           </router-link>
 
-          <router-link class="flex flex-center" to="/crafting">
+          <router-link class="flex flex-center" to="/castle">
             <span class="menu-icon crafting pointer-events-none"></span>
-            <span class="menu-title">{{$t("menu-crafting")}}</span>
+            <span class="menu-title">{{$t("menu-castle")}}</span>
           </router-link>
 
           <router-link class="flex flex-center" to="/summon">
@@ -277,6 +277,7 @@ export default {
 
 <style lang="less">
 @import "./style/common.less";
+@import "./views/Army/army.less";
 </style>
 
 <style lang="scss">
@@ -304,7 +305,7 @@ export default {
 @sectionPaddingTop: 0.4rem;
 
 .section-name {
-  margin: 0 0 1rem 0;
+  margin: 0;
 
   & > .section-fill {
     width: @sectionPaddingRight;
@@ -484,8 +485,8 @@ export default {
   height: 100%;
   min-width: 35.625rem;
   margin: 0 auto;
-  background: @backgroundMainColor;
-  background: linear-gradient(0deg, #371c35 0%, #261034 100%);
+  // background: @backgroundMainColor;
+  // background: linear-gradient(0deg, #371c35 0%, #261034 100%);
   .mobile({min-width: unset; max-width: unset; width: 100%;});
   // .tablet({width: 60rem;});
   // .laptop_small({width: 60rem;});
@@ -508,7 +509,7 @@ html {
   line-height: 1.2;
   box-sizing: border-box;
 
-  .mobile({font-size: 8px;});
+  .mobile({font-size: 7px;});
   .tablet({font-size: 8px;});
   .laptop_small({font-size: 8px;});
   .laptop({font-size: 8px;});

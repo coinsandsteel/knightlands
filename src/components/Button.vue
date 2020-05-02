@@ -1,7 +1,7 @@
 <template>
   <div
     class="btn relative"
-    :class="[btnType, {disabled:disabled||locked}, {lockPressed: lockPressed}, {selected: selected}, {'mini': mini}, {skewed: skewed}, btnClass]"
+    :class="[btnType, {disabled:disabled||locked}, {lockPressed: lockPressed}, {selected: selected}, {'mini': mini}, {skewed: skewed}, btnClass, {'big': big}]"
     :style="sizeStyle"
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
@@ -41,6 +41,7 @@ export default {
     mini: Boolean,
     skewed: Boolean,
     btnClass: String,
+    big: Boolean,
     fontClass: {
       type: String,
       default: "font-size-20"
@@ -121,7 +122,7 @@ export default {
 }
 
 @btnFillExtrude: 3px;
-@btnFillExtrudeSkewed: 2rem;
+@btnFillExtrudeSkewed: 3rem;
 
 .btn-fill {
   height: 100%;
@@ -150,6 +151,10 @@ export default {
   color: #4e3948;
   height: 5rem;
 
+  &.big {
+    height: 8rem;
+  }
+
   &.mini {
     min-width: unset;
   }
@@ -157,7 +162,7 @@ export default {
   &.skewed {
     margin-left: @btnFillExtrudeSkewed;
     margin-right: @btnFillExtrudeSkewed;
-    height: 6rem;
+    height: 8rem;
   }
 }
 
