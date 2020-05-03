@@ -17,6 +17,10 @@ class ItemDatabase {
     this._itemStatResolver = new ItemStatResolver(Meta.statConversions, Meta.itemPower, Meta.itemPowerSlotFactors, Meta.charmItemPower);
   }
 
+  get itemStatResolver() {
+    return this._itemStatResolver;
+  }
+
   getPower(stats) {
     return this._itemStatResolver.inverseStats(stats);
   }

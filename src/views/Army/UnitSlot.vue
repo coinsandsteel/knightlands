@@ -1,6 +1,6 @@
 <template>
   <div
-    class="root panel-dark margin-right-1 margin-bottom-half flex flex-column flex-no-wrap font-size-18 flex-center"
+    class="root panel-dark flex flex-column flex-no-wrap font-size-18 flex-center"
     @click="$emit('click')"
   >
     <div class="bg width-100 height-100" :class="{'empty': !unit}" :style="unitImage"></div>
@@ -37,7 +37,7 @@ export default {
 }
 
 .root {
-  width: 30%;
-  height: 15rem;
+//   width: 30%;
+//   height: 15rem;
 }
 </style>

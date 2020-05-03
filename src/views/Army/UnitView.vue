@@ -1,5 +1,5 @@
 <template>
-  <div class="width-100 relative flex unit-view-container">
+  <div class="width-100 relative flex flex-end unit-view-container">
     <template v-if="unit">
       <div class="bg" :class="element"></div>
 
@@ -7,7 +7,10 @@
       <UnitTitle class="width-100 unit-title" :unit="unit" />
 
       <!-- Unit -->
-      <div class="flex flex-column flex-full flex-space-between padding-top-5 font-size-18">
+      <div
+        class="flex flex-column flex-full flex-space-between padding-top-5 font-size-18"
+        v-if="!showAbilities"
+      >
         <div class="flex flex-center flex-column">
           <div class="padding-half panel-input unit-view-param center">
             <UnitStars :stars="stars" size="big" />
@@ -19,32 +22,77 @@
         </div>
 
         <div class="flex flex-column">
-          <SkewedButton type="green" class="margin-bottom-half">Equipment</SkewedButton>
-          <SkewedButton type="purple" class="margin-bottom-half">Abilities</SkewedButton>
+          <SkewedButton
+            type="green"
+            class="margin-bottom-half"
+            @click="goToEquipment"
+            v-if="showEquipment"
+          >{{$t("unit-equipment")}}</SkewedButton>
+          <SkewedButton
+            type="purple"
+            class="margin-bottom-half"
+            @click="showAbilities = true"
+          >{{$t("unit-abilities")}}</SkewedButton>
         </div>
+      </div>
+
+      <div
+        class="panel-input flex flex-column absolute-stretch flex-space-evenly padding-top-5 font-size-20"
+        v-else-if="unit && showAbilities"
+      >
+        <span class="close-btn" @click="showAbilities = false"></span>
+        <div
+          class="flex flex-center"
+          v-for="ability in abilities"
+          :key="ability.id"
+          v-html="getAbilityDesc(ability)"
+        ></div>
       </div>
 
       <div class="width-60 flex flex-items-end flex-center padding-bottom-1">
         <img class="unit-image" :src="$game.armyDB.getIcon(unit)" />
       </div>
     </template>
-    <div v-else>
-        EMPTY
-    </div>
+    <div v-else>EMPTY</div>
   </div>
 </template>
 
 <script>
-import Ui from "@/ui_constants";
 import UnitTitle from "./UnitTitle.vue";
 import UnitGetter from "./UnitGetterMixin.vue";
 import UnitStars from "./UnitStars.vue";
 import SkewedButton from "@/components/SkewedButton.vue";
 
+import ArmyUnitTypes from "@/army_unit_types";
+
 export default {
-  props: ["unit"],
+  props: ["unit", "showEquipment"],
   mixins: [UnitGetter],
-  components: { UnitTitle, UnitStars, SkewedButton }
+  components: { UnitTitle, UnitStars, SkewedButton },
+  data: () => ({
+    showAbilities: false
+  }),
+  methods: {
+    getAbilityDesc(ability) {
+      const levelValue = this.$game.armyDB.getAbilityLevelValue(
+        this.unit,
+        ability.id
+      );
+
+      const localisationParams = { ...levelValue, ...ability };
+      if (ability.unitType) {
+        localisationParams.unitType = this.$t(ArmyUnitTypes[ability.unitType]);
+      }
+
+      return this.$t(ability.type, localisationParams);
+    },
+    goToEquipment() {
+      this.$router.push({
+        name: "unit-equipment",
+        params: { unitId: this.unit.id }
+      });
+    }
+  }
 };
 </script>
 

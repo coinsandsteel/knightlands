@@ -38,16 +38,22 @@ export default {
       return "";
     },
     name() {
-        if (this.unit) {
+      if (this.unit) {
         return this.$game.armyDB.getName(this.unit);
       }
       return "";
     },
     weaponType() {
-        if (this.unit) {
+      if (this.unit) {
         return this.$game.armyDB.getWeaponType(this.unit);
       }
       return "";
+    },
+    abilities() {
+      if (this.unit) {
+        return this.$game.armyDB.getAbilities(this.unit);
+      }
+      return [];
     }
   }
 };

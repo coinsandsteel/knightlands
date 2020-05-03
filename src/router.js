@@ -494,7 +494,7 @@ const router = new Router({
           props: true
         },
         {
-          path: "equipment/:type",
+          path: "equipment/:unitId",
           name: "unit-equipment",
           component: () => import("./views/Army/UnitEquipment.vue"),
           props: true

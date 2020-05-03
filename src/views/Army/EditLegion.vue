@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content">
-    <div class="flex">
+    <div class="width-100 legion-grid center">
       <UnitSlot
         v-for="slot in slots"
         :key="slot.id"
@@ -49,3 +49,16 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+
+.legion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 26rem;
+  justify-items: stretch;
+  column-gap: 1rem;
+  row-gap: 1rem;
+}
+
+</style>

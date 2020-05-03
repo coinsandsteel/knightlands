@@ -1,8 +1,13 @@
 import armyAbilities from "@/army_abilities";
 import generals from "@/generals";
 import troops from "@/troops";
+import AbilityResolver from "@/../knightlands-shared/ability_resolver";
 
 export default class ArmyDB {
+    constructor(statResolver) {
+        this._abilityResolver = new AbilityResolver(armyAbilities, statResolver);
+    }
+
     getTemplate(id, troop) {
         if (typeof id == "object") {
             troop = id.troop;
@@ -45,5 +50,18 @@ export default class ArmyDB {
     getWeaponType(unit) {
         const template = this.getTemplate(unit);
         return template.weaponType;
+    }
+
+    getAbilityLevelValue(unit, abilityId) {
+        return this._abilityResolver.getAbilityLevelValue(this.getStars(unit), abilityId, unit.troop);
+    }
+
+    getAbilities(unit) {
+        const abilities = [];
+        const abilitiesRecords = unit.troop ? armyAbilities.generals : armyAbilities.generals;
+        for (const abilityId of unit.abilities) {
+            abilities.push(abilitiesRecords[abilityId]);
+        }
+        return abilities;
     }
 }

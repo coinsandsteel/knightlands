@@ -6,7 +6,7 @@ export default {
             template: 3,
             promotions: 0,
             level: 1,
-            abilities: [382, 150, 400]
+            abilities: [382, 304, 309]
         },
         2: {
             troop: true,
@@ -14,7 +14,7 @@ export default {
             template: 10,
             promotions: 0,
             level: 40,
-            abilities: [382, 150, 400]
+            abilities: [382, 304, 309]
         },
         3: {
             troop: true,
@@ -22,7 +22,7 @@ export default {
             template: 163,
             promotions: 0,
             level: 80,
-            abilities: [382, 150, 400]
+            abilities: [382, 304, 309]
         },
         4: {
             troop: true,
@@ -30,7 +30,7 @@ export default {
             template: 150,
             promotions: 0,
             level: 145,
-            abilities: [382, 150, 400]
+            abilities: [382, 304, 309]
         },
         5: {
             troop: true,
@@ -38,7 +38,7 @@ export default {
             template: 198,
             promotions: 0,
             level: 250,
-            abilities: [382, 150, 400]
+            abilities: [382, 304, 309]
         }
     },
 

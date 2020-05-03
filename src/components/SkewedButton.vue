@@ -1,5 +1,5 @@
 <template>
-  <CustomButton v-bind="$attrs" :skewed="true" btnClass="skewed-btn">
+  <CustomButton v-bind="$attrs" :skewed="true" btnClass="skewed-btn" @click="$emit('click')">
     <div class="flex flex-center flex-start flex-no-wrap">
       <span :class="$attrs.icon" class="huge icon-skewed"></span>
       <span class="white-space-no-wrap">

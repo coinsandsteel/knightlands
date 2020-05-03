@@ -31,7 +31,7 @@ class Game {
         this.WalletChanged = "wallet_changed";
         this.$store = store;
         this._items = new ItemDatabase();
-        this._armyDb = new ArmyDB();
+        this._armyDb = new ArmyDB(this._items.itemStatResolver);
         this._army = new Army(this._armyDb);
         this._expTable = PlayerExpTable;
         this._requestInProgress = false;
