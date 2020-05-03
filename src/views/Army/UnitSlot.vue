@@ -4,7 +4,7 @@
     @click="$emit('click')"
   >
     <div class="bg width-100 height-100" :class="{'empty': !unit}" :style="unitImage"></div>
-    <UnitStars :stars="stars" />
+    <UnitStars :stars="stars" size="small" />
     <span>{{$t(unitType)}}</span>
     <div class="flex flex-items-center flex-no-wrap" v-if="unit">
       <span class="icon-water"></span>

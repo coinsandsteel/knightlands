@@ -3,27 +3,34 @@
     <UnitView :unit="unit" />
     <div class="flex-full relative">
       <div class="bg" :class="element"></div>
+      <UnitInventory :isTroops="isTroops" :selectedUnit="unit" @unitSelect="selectUnit" />
     </div>
+
+    <portal to="footer" v-if="isActive"></portal>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection";
 import UnitView from "./UnitView.vue";
+import UnitInventory from "./UnitInventory.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, PromptMixin],
   props: ["legion", "slotId", "type"],
-  components: { UnitView },
+  components: { UnitView, UnitInventory },
   data: () => ({
     unit: null
   }),
   created() {
-    this.title = "1";
+    this.$options.useRouterBack = true;
+    this.title = "";
   },
   async mounted() {
     await this.$game.army.load();
     this.load();
+    this.originalUnit = this.unit;
   },
   watch: {
     legion() {
@@ -43,15 +50,54 @@ export default {
       }
 
       return null;
+    },
+    isTroops() {
+      return this.type == "troops";
     }
   },
   methods: {
     load() {
-      const slots = this.$game.army.getSlots(
-        this.legion,
-        this.type == "troops"
-      );
+      const slots = this.$game.army.getSlots(this.legion, this.isTroops);
       this.unit = slots[this.slotId].unit;
+    },
+    selectUnit(unit) {
+      // set as active unit in slot
+      this.$game.army.setInSlot(this.legion, this.slotId, unit);
+      this.unit = unit;
+    },
+    handleBackButton() {
+      if (this.unit != this.originalUnit) {
+        this.saveAndExit();
+        return true;
+      }
+
+      this.$router.back();
+      return true;
+    },
+    async saveAndExit() {
+      let confirmation = await this.showPrompt(
+        this.$t("legion-slot-change-title"),
+        this.$t("legion-slot-change-desc"),
+        [
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]
+      );
+
+      if (confirmation === true) {
+        
+      }
+
+      this.originalUnit = this.unit;
+      this.$app.handleBackButton();
     }
   }
 };

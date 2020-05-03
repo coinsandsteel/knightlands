@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <portal to="footer">
+    <portal to="footer" v-if="isActive">
       <CustomButton type="grey" @click="editGenerals">{{$t("edit-generals")}}</CustomButton>
       <CustomButton type="grey" @click="editTroops">{{$t("edit-troops")}}</CustomButton>
     </portal>
@@ -45,8 +45,6 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
-import Loot from "@/components/Loot.vue";
-import Unit from "./Unit.vue";
 import UnitSlot from "./UnitSlot.vue";
 
 export default {
@@ -54,9 +52,7 @@ export default {
   data: () => ({}),
   components: {
     CustomButton,
-    Unit,
-    UnitSlot,
-    Loot
+    UnitSlot
   },
   created() {
     this.title = this.$t("window-title-army-compose");

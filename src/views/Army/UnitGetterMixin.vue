@@ -36,6 +36,18 @@ export default {
         return this.$game.armyDB.getUnitType(this.unit);
       }
       return "";
+    },
+    name() {
+        if (this.unit) {
+        return this.$game.armyDB.getName(this.unit);
+      }
+      return "";
+    },
+    weaponType() {
+        if (this.unit) {
+        return this.$game.armyDB.getWeaponType(this.unit);
+      }
+      return "";
     }
   }
 };

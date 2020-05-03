@@ -292,6 +292,10 @@ h1 {
     margin-bottom: 0.5rem;
 }
 
+.padding-half {
+    padding: 0.5rem;
+}
+
 .padding-right-half {
     padding-right: 0.5rem;
 }
@@ -430,6 +434,7 @@ h1 {
 @iconSize: 2.5rem;
 
 .star {
+    .pixelated();
     background-image: url("../assets/ui/icon_star_empty.png");
     background-repeat: no-repeat;
     background-size: contain;
@@ -444,6 +449,11 @@ h1 {
     &.small {
         width: @iconSize * 0.75;
         height: @iconSize * 0.75;
+    }
+
+    &.big {
+        width: @iconSize * 1.25;
+        height: @iconSize * 1.25;
     }
 }
 
@@ -465,6 +475,11 @@ h1 {
     &.big {
         width: @iconSize * 1.5;
         height: @iconSize * 1.5;
+    }
+
+    &.medium {
+        width: @iconSize * 1.18;
+        height: @iconSize * 1.18;
     }
 
     &.small {
@@ -768,6 +783,26 @@ h1 {
 
 .icon-person {
     .icon("tabbar_character_selected");
+}
+
+.icon-axe {
+    .icon("icon_axe");
+}
+
+.icon-sword {
+    .icon("icon_sword");
+}
+
+.icon-bow {
+    .icon("icon_bow");
+}
+
+.icon-spear {
+    .icon("icon_spear");
+}
+
+.icon-wand {
+    .icon("icon_wand");
 }
 
 .vb {

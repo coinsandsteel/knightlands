@@ -36,4 +36,14 @@ export default class ArmyDB {
         const template = this.getTemplate(unit);
         return template.unitType;
     }
+
+    getName(unit) {
+        const template = this.getTemplate(unit);
+        return template.name;
+    }
+
+    getWeaponType(unit) {
+        const template = this.getTemplate(unit);
+        return template.weaponType;
+    }
 }

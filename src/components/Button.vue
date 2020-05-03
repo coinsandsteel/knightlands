@@ -122,7 +122,7 @@ export default {
 }
 
 @btnFillExtrude: 3px;
-@btnFillExtrudeSkewed: 3rem;
+@btnFillExtrudeSkewed: 1.6rem;
 
 .btn-fill {
   height: 100%;
@@ -162,7 +162,6 @@ export default {
   &.skewed {
     margin-left: @btnFillExtrudeSkewed;
     margin-right: @btnFillExtrudeSkewed;
-    height: 8rem;
   }
 }
 

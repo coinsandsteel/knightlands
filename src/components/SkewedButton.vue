@@ -1,7 +1,7 @@
 <template>
-  <CustomButton v-bind="props" :skewed="true" btnClass="skewed-btn">
+  <CustomButton v-bind="$attrs" :skewed="true" btnClass="skewed-btn">
     <div class="flex flex-center flex-start flex-no-wrap">
-      <span :class="props.icon" class="huge icon-skewed"></span>
+      <span :class="$attrs.icon" class="huge icon-skewed"></span>
       <span class="white-space-no-wrap">
         <slot></slot>
       </span>
@@ -13,7 +13,6 @@
 import CustomButton from "@/components/Button.vue";
 
 export default {
-  props: ["props"],
   components: { CustomButton }
 };
 </script>

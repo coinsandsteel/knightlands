@@ -25,6 +25,7 @@ export default {
   components: { UnitSlot },
   created() {
     this.title = `windows-legion-${this.type}`;
+    this.$options.useRouterBack = true;
   },
   async mounted() {
     await this.$game.army.load();
