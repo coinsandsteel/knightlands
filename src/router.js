@@ -224,6 +224,23 @@ const router = new Router({
               component: ShopHome
             }
           ]
+        },
+        {
+          path: "army",
+          component: () => import("./views/Summon/Army/ArmySummonRoot.vue"),
+          children: [
+            {
+              path: "",
+              name: "army-summon-menu",
+              component: () => import("./views/Summon/Army/ArmySummonMenu.vue")
+            },
+            {
+              path: "circle/:type",
+              name: "army-summon",
+              component: () => import("./views/Summon/Army/ArmySummonCircle.vue"),
+              props: true
+            }
+          ]
         }
       ]
     },
@@ -546,7 +563,7 @@ const router = new Router({
       },
       children: [
         {
-          path: "inventory",
+          path: "",
           name: "character",
           component: CharacterInventory
         },

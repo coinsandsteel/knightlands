@@ -2,7 +2,7 @@
   <nav class="tabs flex flex-no-wrap" :class="wrapperClass">
     <template v-if="router">
       <router-link
-        class="tabs__item font-size-20"
+        class="tabs__item"
         v-for="tab in tabs"
         :ref="tab.value"
         :key="tab.title"
@@ -11,12 +11,13 @@
         :disabled="tab.disabled"
         :append="append"
         :replace="replace"
+        exact
         @click="handleClick(tab.value)"
       >{{$t(tab.title)}}</router-link>
     </template>
     <template v-else>
       <div
-        class="tabs__item font-size-20"
+        class="tabs__item"
         v-for="tab in tabs"
         :ref="tab.value"
         :key="tab.title"
@@ -117,8 +118,8 @@ export default {
   justify-content: flex-start;
   width: 100%;
   position: relative;
-  padding: 0 1rem 0 1rem;
-  border-bottom: 1px solid #515e6f;
+  padding: 0.5rem 1rem 0 1rem;
+  background-color: #112C47;
 
   * > {
     margin: 0 2px 0 2px;
@@ -128,13 +129,13 @@ export default {
     color: #fbffff;
     border-image: url("../assets/ui/tab_selected.png") round;
     .border();
-    background-color: #585f73;
   }
 }
 
 .border() {
-  border-image-slice: 22 7 fill;
-  border-image-width: 4px;
+  border-image-slice: 43 22 27 23 fill;
+  border-image-width: 20px 10px 20px 10px;
+  border-image-repeat: round stretch;
   border-style: solid;
 }
 
@@ -143,23 +144,22 @@ export default {
   color: #8c9093;
   text-decoration: none;
   border: none;
-  background-color: transparent;
   cursor: pointer;
   transition: all 0.25s;
-  border-width: 1px;
+  font-size: 1.5rem;
+  font-weight: 900;
 
-  border-image: url("../assets/ui/tab.png") round;
-  background-color: #323c4f;
+  border-image: url("../assets/ui/tab.png");
   .border();
-  padding: 0.4rem 1rem 0.4rem 1rem;
-  text-transform: capitalize;
+
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  text-transform: uppercase;
 }
 
 .tabs__item_active {
   color: #fbffff;
   border-image: url("../assets/ui/tab_selected.png") round;
   .border();
-  background-color: #585f73;
 }
 
 .tabs__item:hover {
@@ -178,15 +178,6 @@ export default {
 .tabs__item:last-child {
   margin-right: 0;
 }
-
-// .tabs__active-line {
-//   position: absolute;
-//   bottom: 0;
-//   left: 0;
-//   height: 2px;
-//   background-color: #b8cbc9;
-//   transition: transform 0.4s ease, width 0.4s ease;
-// }
 </style>
 
 

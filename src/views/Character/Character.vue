@@ -1,7 +1,14 @@
 <template>
   <div class="flex flex-column">
+    <div class="screen-background"></div>
     <div class="flex dummy-height flex-no-wrap full-flex flex-column">
-      <tabs :tabs="tabs" :router="true" :currentTab="currentTab" @onClick="switchTab" :replace="true"/>
+      <tabs
+        :tabs="tabs"
+        :router="true"
+        :currentTab="currentTab"
+        @onClick="switchTab"
+        :replace="true"
+      />
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
@@ -25,10 +32,14 @@ export default {
   data() {
     return {
       tabs: [
-        { title: "inventory", value: InventoryTab, to: "/character/inventory" },
-        { title: "training", value: StatsTab, to: "/character/training" },
-        { title: "buffs", value: BuffsTab, to: "/character/buffs" },
-        { title: "beast", value: BeastsTab, to: "/character/beast" }
+        { title: "inventory", value: InventoryTab, to: { name: "character" } },
+        {
+          title: "training",
+          value: StatsTab,
+          to: { name: "character-training" }
+        },
+        { title: "buffs", value: BuffsTab, to: { name: "character-buffs" } },
+        { title: "beast", value: BeastsTab, to: { name: "character-beast" } }
       ],
       currentTab: InventoryTab,
       InventoryTab: InventoryTab,

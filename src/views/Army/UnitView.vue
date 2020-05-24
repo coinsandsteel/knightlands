@@ -1,5 +1,5 @@
 <template>
-  <div class="width-100 relative flex flex-end unit-view-container">
+  <div class="width-100 relative flex flex-end unit-view-container flex-no-wrap">
     <template v-if="unit">
       <div class="bg" :class="element"></div>
 
@@ -49,7 +49,7 @@
         ></div>
       </div>
 
-      <div class="width-60 flex flex-items-end flex-center padding-bottom-1">
+      <div class="width-60 flex flex-items-end flex-center padding-top-3 height-100">
         <img class="unit-image" :src="$game.armyDB.getIcon(unit)" />
       </div>
     </template>
@@ -120,11 +120,6 @@ export default {
 }
 
 .unit-image {
-  background-position: 50% 90%;
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: auto;
-  width: auto;
   max-width: 100%;
   max-height: 100%;
 }

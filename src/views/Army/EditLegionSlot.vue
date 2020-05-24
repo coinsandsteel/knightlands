@@ -1,7 +1,7 @@
 <template>
   <div class="screen-content">
-    <UnitView :unit="unit" />
-    <div class="flex-full relative">
+    <UnitView :unit="unit" :showEquipment="true" />
+    <div class="flex-full relative dummy-height">
       <div class="bg" :class="element"></div>
       <UnitInventory :isTroops="isTroops" :selectedUnit="unit" @unitSelect="selectUnit" />
     </div>
@@ -93,7 +93,6 @@ export default {
       );
 
       if (confirmation === true) {
-        
       }
 
       this.originalUnit = this.unit;

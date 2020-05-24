@@ -54,10 +54,10 @@ export default {
 
 .legion-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 33%);
   grid-auto-rows: 26rem;
   justify-items: stretch;
-  column-gap: 1rem;
+  column-gap: 0.5%;
   row-gap: 1rem;
 }
 

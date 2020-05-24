@@ -141,7 +141,7 @@ export default {
 <style lang="less" scoped>
 .status-bar {
   height: 7rem;
-  background-color: #333e52;
+  background-color: #23354D;
   border-bottom: 0.25rem solid #928690;
   padding-left: 1rem;
 }

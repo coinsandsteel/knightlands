@@ -14,7 +14,7 @@ export default {
   components: { UnitView },
   created() {
     this.title = "";
-    this.$options.userRouterBack = true;
+    this.$options.useRouterBack = true;
   },
   data: () => ({
     unit: null

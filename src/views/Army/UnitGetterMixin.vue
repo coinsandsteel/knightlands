@@ -1,5 +1,6 @@
 <script>
 import UiConstants from "@/ui_constants";
+import ArmyUnitTypes from "@/army_unit_types";
 
 export default {
   computed: {
@@ -24,16 +25,17 @@ export default {
     },
     unitImage() {
       if (this.unit) {
-        return UiConstants.backgroundImage(
-          this.$game.armyDB.getIcon(this.unit)
-        );
+        return UiConstants.backgroundImage(this.unitIcon);
       }
 
       return "";
     },
+    unitIcon() {
+      return this.$game.armyDB.getIcon(this.unit);
+    },
     unitType() {
       if (this.unit) {
-        return this.$game.armyDB.getUnitType(this.unit);
+        return ArmyUnitTypes[this.$game.armyDB.getUnitType(this.unit)];
       }
       return "";
     },

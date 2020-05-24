@@ -173,6 +173,11 @@ h1 {
     }
 }
 
+.grid-center-self {
+    align-self: center;
+    justify-self: center;
+}
+
 .flex(12);
 
 .flex-no-wrap {
@@ -416,6 +421,7 @@ h1 {
     left: 0 !important;
     right: 0 !important;
     bottom: -5rem !important;
+    background-color: #245178;
 }
 
 .z-index-1 {
@@ -434,7 +440,6 @@ h1 {
 @iconSize: 2.5rem;
 
 .star {
-    .pixelated();
     background-image: url("../assets/ui/icon_star_empty.png");
     background-repeat: no-repeat;
     background-size: contain;
@@ -447,13 +452,45 @@ h1 {
     }
 
     &.small {
+        background-image: url("../assets/ui/troops_mini_star1.png");
         width: @iconSize * 0.75;
         height: @iconSize * 0.75;
+
+        &.active {
+            background-image: url("../assets/ui/troops_mini_star.png");
+        }
     }
 
     &.big {
         width: @iconSize * 1.25;
         height: @iconSize * 1.25;
+    }
+}
+
+.weapon-badge {
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: @iconSize;
+    height: @iconSize;
+
+    &.axe {
+        background-image: url("../assets/ui/troops_mini_weapon_axe.png");
+    }
+
+    &.sword {
+        background-image: url("../assets/ui/troops_mini_weapon_sword.png");
+    }
+
+    &.bow {
+        background-image: url("../assets/ui/troops_mini_weapon_bow.png");
+    }
+
+    &.wand {
+        background-image: url("../assets/ui/troops_mini_weapon_wand.png");
+    }
+
+    &.spear {
+        background-image: url("../assets/ui/troops_mini_weapon_spear.png");
     }
 }
 
@@ -785,26 +822,6 @@ h1 {
     .icon("tabbar_character_selected");
 }
 
-.icon-axe {
-    .icon("icon_axe");
-}
-
-.icon-sword {
-    .icon("icon_sword");
-}
-
-.icon-bow {
-    .icon("icon_bow");
-}
-
-.icon-spear {
-    .icon("icon_spear");
-}
-
-.icon-wand {
-    .icon("icon_wand");
-}
-
 .vb {
     height: 100%;
 }
@@ -936,16 +953,6 @@ h1 {
 }
 
 .align-self-center {
-    align-self: center;
-}
-
-.title {
-    border-image: url("../assets/ui/title.png") round;
-    border-image-slice: 25 30 fill;
-    border-image-width: 2rem;
-    border-width: 1px;
-    border-style: solid;
-    padding: 0rem 2rem;
     align-self: center;
 }
 

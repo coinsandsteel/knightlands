@@ -1,28 +1,24 @@
 <template>
   <div class="screen-content">
-    <div class="screen-background army-bg panel-input"></div>
+    <div class="screen-background"></div>
 
-    <div class="flex flex-items-end flex-space-between margin-bottom-half panel-input padding-1">
-      <span class="font-size-20">{{$t("legion-n", {n: 1})}}</span>
-      <div class="flex flex-center">
-        <span class="margin-right-1 font-size-15">{{$t("damage")}}</span>
-        <span class="font-size-20 font-weight-900">999999</span>
-      </div>
-    </div>
+    <LegionSelector class="margin-bottom-half" />
 
     <div class="dummy-height flex-full">
       <div class="width-100 height-100 dummy-height" v-bar>
-        <div class="flex flex-column padding-1">
+        <div class="flex flex-column">
           <div class="flex flex-column">
-            <span class="font-size-18 margin-bottom-1 title">{{$t("generals")}}</span>
-            <div class="flex flex-center width-100">
+            <Title class="margin-bottom-1" :title="$t('generals')" />
+
+            <div class="units-grid width-100">
               <UnitSlot />
               <UnitSlot :empty="true" />
               <UnitSlot :empty="true" />
             </div>
 
-            <span class="font-size-18 margin-bottom-1 margin-top-1 title">{{$t("troops")}}</span>
-            <div class="flex flex-center width-100">
+            <Title class="margin-bottom-1 margin-top-1" :title="$t('troops')" />
+
+            <div class="units-grid width-100">
               <UnitSlot />
               <UnitSlot />
               <UnitSlot />
@@ -46,13 +42,17 @@
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import UnitSlot from "./UnitSlot.vue";
+import Title from "@/components/Title.vue";
+import LegionSelector from "./LegionSelector.vue";
 
 export default {
   mixins: [AppSection],
   data: () => ({}),
   components: {
     CustomButton,
-    UnitSlot
+    UnitSlot,
+    Title,
+    LegionSelector
   },
   created() {
     this.title = this.$t("window-title-army-compose");
@@ -69,7 +69,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.army-bg {
-  background-image: url("../../assets/backgrounds/castle_blur.png");
+.units-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
+  grid-auto-rows: 26rem;
+  justify-items: stretch;
+  column-gap: 0.5%;
+  row-gap: 1rem;
 }
 </style>

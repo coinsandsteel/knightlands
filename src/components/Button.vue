@@ -5,7 +5,7 @@
     :style="sizeStyle"
     @click="()=>{$emit('click'); if (cb) cb();}"
   >
-    <div class="btn-fill" :class="{skewed: skewed}"></div>
+    <!-- <div class="btn-fill" :class="{skewed: skewed}"></div> -->
     <div class="btn-content flex flex-center font-weight-700 flex-no-wrap" :class="fontClass">
       <slot>{{$t(caption)}}</slot>
     </div>
@@ -71,16 +71,19 @@ export default {
 @fontSize: 1.6rem;
 
 .pressed(@name) {
-  & > .btn-fill {
-    background: url("../assets/ui/buttons/@{name}_active1.png"),
-      url("../assets/ui/buttons/@{name}_active3.png");
-    background-size: contain, contain;
-    background-repeat: no-repeat, no-repeat;
-    background-position: left, right;
-  }
+  // & > .btn-fill {
+  //   background: url("../assets/ui/buttons/@{name}_active1.png"),
+  //     url("../assets/ui/buttons/@{name}_active3.png");
+  //   background-size: contain, contain;
+  //   background-repeat: no-repeat, no-repeat;
+  //   background-position: left, right;
+  // }
 
-  background: repeat-x center url("../assets/ui/buttons/@{name}_active2.png");
-  background-size: 100% 100%;
+  border-image-source: url("../assets/ui/@{name}_active.png");
+  border-image-slice: 35 36 45 36 fill;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: round round;
 
   & > .btn-content {
     transform: translateY(0.1rem);
@@ -88,20 +91,20 @@ export default {
 }
 
 .selected(@name) {
-  & > .btn-fill {
-    background: url("../assets/ui/buttons/@{name}_selected1.png"),
-      url("../assets/ui/buttons/@{name}_selected3.png");
-    background-size: contain, contain;
-    background-repeat: no-repeat, no-repeat;
-    background-position: left, right;
-  }
+  // & > .btn-fill {
+  //   background: url("../assets/ui/buttons/@{name}_selected1.png"),
+  //     url("../assets/ui/buttons/@{name}_selected3.png");
+  //   background-size: contain, contain;
+  //   background-repeat: no-repeat, no-repeat;
+  //   background-position: left, right;
+  // }
 
-  background: repeat-x center url("../assets/ui/buttons/@{name}_selected2.png");
-  background-size: 100% 100%;
+  // background: repeat-x center url("../assets/ui/buttons/@{name}_selected2.png");
+  // background-size: 100% 100%;
 
-  & > .btn-content {
-    transform: translateY(0.1rem);
-  }
+  // & > .btn-content {
+  //   transform: translateY(0.1rem);
+  // }
 }
 
 .btn-bg(@name) {
@@ -109,16 +112,19 @@ export default {
     .pressed(@name);
   }
 
-  & > .btn-fill {
-    background: url("../assets/ui/buttons/@{name}1.png"),
-      url("../assets/ui/buttons/@{name}3.png");
-    background-size: contain, contain;
-    background-repeat: no-repeat, no-repeat;
-    background-position: left, right;
-  }
+  // & > .btn-fill {
+  //   background: url("../assets/ui/buttons/@{name}1.png"),
+  //     url("../assets/ui/buttons/@{name}3.png");
+  //   background-size: contain, contain;
+  //   background-repeat: no-repeat, no-repeat;
+  //   background-position: left, right;
+  // }
 
-  background: repeat-x center url("../assets/ui/buttons/@{name}2.png");
-  background-size: 100% 100%;
+  border-image-source: url("../assets/ui/@{name}.png");
+  border-image-slice: 35 36 45 36 fill;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: round round;
 }
 
 @btnFillExtrude: 3px;
@@ -201,21 +207,21 @@ export default {
   }
 }
 
-.red-skewed {
-  .btn-bg("skewed_button_red");
-}
+// .red-skewed {
+//   .btn-bg("skewed_button_red");
+// }
 
-.grey-skewed {
-  .btn-bg("skewed_button_blue");
-}
+// .grey-skewed {
+//   .btn-bg("skewed_button_blue");
+// }
 
-.green-skewed {
-  .btn-bg("skewed_button_green");
-}
+// .green-skewed {
+//   .btn-bg("skewed_button_green");
+// }
 
-.purple-skewed {
-  .btn-bg("skewed_button_purple");
-}
+// .purple-skewed {
+//   .btn-bg("skewed_button_purple");
+// }
 
 .blue {
   .btn-bg("button_blue");
@@ -254,7 +260,6 @@ export default {
 }
 
 .btn-content {
-  transform: translateY(-0.15rem);
   height: 100%;
 }
 </style>

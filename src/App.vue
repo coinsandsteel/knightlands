@@ -33,7 +33,7 @@
             <span class="menu-title">{{$t("menu-home")}}</span>
           </router-link>
 
-          <router-link class="flex flex-center" to="/character/inventory">
+          <router-link class="flex flex-center" to="/character">
             <span class="menu-icon character pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-character")}}</span>
           </router-link>
@@ -205,22 +205,22 @@ export default {
         let tries = 0;
         let interval;
         interval = setInterval(() => {
-          if (tries++ > 10) {
-            // redirect to login page
-            if (this.$route.matched.some(record => record.meta.requiresAuth)) {
-              if (!this.$game.authenticated) {
-                this.redirectToLogin();
-              }
-            }
-            this.loading = false;
-            clearInterval(interval);
-            return;
-          }
+          // if (tries++ > 10) {
+          //   // redirect to login page
+          //   if (this.$route.matched.some(record => record.meta.requiresAuth)) {
+          //     if (!this.$game.authenticated) {
+          //       this.redirectToLogin();
+          //     }
+          //   }
+          //   this.loading = false;
+          //   clearInterval(interval);
+          //   return;
+          // }
 
-          if (this.$game.walletReady()) {
+          // if (this.$game.walletReady()) {
             clearInterval(interval);
             this.$game.connect();
-          }
+          // }
         }, 200);
       });
     } catch (e) {
@@ -376,7 +376,8 @@ export default {
 
 .root-menu {
   justify-content: space-between;
-  background-color: #403f48;
+  background-image: url("./assets/ui/tab_menu_bg.png");
+  background-size: 100% 100%;
 }
 
 #nav {
@@ -389,12 +390,7 @@ export default {
     height: 100%;
     width: calc(100% - 30px);
     text-align: center;
-    background-color: #6b6f82;
     position: relative;
-
-    &:hover {
-      background-color: #502d46;
-    }
 
     .menu-title {
       font-size: 1.5rem;
@@ -418,28 +414,26 @@ export default {
     }
 
     .home {
-      background-image: url("./assets/ui/tabbar_home_selected.png");
+      background-image: url("./assets/ui/tabbar_home.png");
     }
 
     .crafting {
-      background-image: url("./assets/ui/tabbar_craft_selected.png");
+      background-image: url("./assets/ui/tabbar_castle.png");
     }
 
     .character {
-      background-image: url("./assets/ui/tabbar_character_selected.png");
+      background-image: url("./assets/ui/tabbar_character.png");
     }
 
     .shop {
-      background-image: url("./assets/ui/tabbar_shop_selected.png");
+      background-image: url("./assets/ui/tabbar_shop.png");
     }
 
     .chat {
-      background-image: url("./assets/ui/tabbar_chat_selected.png");
+      background-image: url("./assets/ui/tabbar_chat.png");
     }
 
     &.router-link-active {
-      background-color: #3f3e51;
-
       .menu-title {
         transition-delay: 0.2s;
         opacity: 1;
@@ -450,25 +444,8 @@ export default {
         z-index: 2;
       }
 
-      .home {
-        background-image: url("./assets/ui/tabbar_home_selected.png");
-      }
-
-      .crafting {
-        background-image: url("./assets/ui/tabbar_craft_selected.png");
-      }
-
-      .character {
-        background-image: url("./assets/ui/tabbar_character_selected.png");
-      }
-
-      .shop {
-        background-image: url("./assets/ui/tabbar_shop_selected.png");
-      }
-
-      .chat {
-        background-image: url("./assets/ui/tabbar_chat_selected.png");
-      }
+      background-image: url("./assets/ui/tabbar_selected.png");
+      background-size: 100% 100%;
     }
   }
 }

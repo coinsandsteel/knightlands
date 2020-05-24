@@ -1,6 +1,5 @@
 import armyAbilities from "@/army_abilities";
-import generals from "@/generals";
-import troops from "@/troops";
+import armyUnits from "@/army_units";
 import AbilityResolver from "@/../knightlands-shared/ability_resolver";
 
 export default class ArmyDB {
@@ -8,17 +7,12 @@ export default class ArmyDB {
         this._abilityResolver = new AbilityResolver(armyAbilities, statResolver);
     }
 
-    getTemplate(id, troop) {
+    getTemplate(id) {
         if (typeof id == "object") {
-            troop = id.troop;
             id = id.template;
         }
 
-        if (troop) {
-            return troops[id];
-        } else {
-            return generals[id];
-        }
+        return armyUnits[id];
     }
 
     getIcon(unit) {
