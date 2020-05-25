@@ -515,6 +515,39 @@ const router = new Router({
           name: "unit-equipment",
           component: () => import("./views/Army/UnitEquipment.vue"),
           props: true
+        },
+        {
+          path: "edit-unit",
+          component: () => import("./views/Army/Unit/ArmyUnitRoot.vue"),
+          children: [
+            {
+              path: "",
+              name: "edit-unit",
+              component: () => import("./views/Army/Unit/ArmyUnitSelect.vue"),
+            },
+            {
+              path: "unit/:unitId",
+              props: true,
+              component: () => import("./views/Army/Unit/ArmyUnit.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "unit-level",
+                  component: () => import("./views/Army/Unit/UnitLevelUp.vue")
+                },
+                {
+                  path: "equip",
+                  name: "unit-equip",
+                  component: () => import("./views/Army/Unit/UnitEquipment.vue")
+                },
+                {
+                  path: "promo",
+                  name: "unit-promo",
+                  component: () => import("./views/Army/Unit/UnitPromotion.vue")
+                }
+              ]
+            }
+          ]
         }
       ]
     },

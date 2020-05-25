@@ -22,17 +22,23 @@
         </div>
 
         <div class="flex flex-column">
-          <SkewedButton
+          <CustomButton
             type="green"
             class="margin-bottom-half"
             @click="goToEquipment"
             v-if="showEquipment"
-          >{{$t("unit-equipment")}}</SkewedButton>
-          <SkewedButton
+          >{{$t("unit-equipment")}}</CustomButton>
+          <CustomButton
             type="purple"
             class="margin-bottom-half"
             @click="showAbilities = true"
-          >{{$t("unit-abilities")}}</SkewedButton>
+          >{{$t("unit-abilities")}}</CustomButton>
+          <CustomButton
+            type="yellow"
+            class="margin-bottom-half"
+            @click="$emit('select', unit)"
+            v-if="showSelect"
+          >{{$t("unit-edit")}}</CustomButton>
         </div>
       </div>
 
@@ -62,13 +68,14 @@ import UnitTitle from "./UnitTitle.vue";
 import UnitGetter from "./UnitGetterMixin.vue";
 import UnitStars from "./UnitStars.vue";
 import SkewedButton from "@/components/SkewedButton.vue";
+import CustomButton from "@/components/Button.vue";
 
 import ArmyUnitTypes from "@/army_unit_types";
 
 export default {
-  props: ["unit", "showEquipment"],
+  props: ["unit", "showEquipment", "showSelect"],
   mixins: [UnitGetter],
-  components: { UnitTitle, UnitStars, SkewedButton },
+  components: { UnitTitle, UnitStars, SkewedButton, CustomButton },
   data: () => ({
     showAbilities: false
   }),

@@ -16,9 +16,9 @@
         </router-link>
       </CustomButton>
       <CustomButton type="yellow" width="30rem" class="margin-bottom-1 shift-left-2" :big="true">
-        <router-link tag="div" class="flex width-100 flex-justify-start flex-items-center" :to="{ name: 'crafting' }">
+        <router-link tag="div" class="flex width-100 flex-justify-start flex-items-center" :to="{ name: 'edit-unit' }">
           <span class="icon-craft huge"></span>
-          <span class="flex-1">Level Up</span>
+          <span class="flex-1">Edit Units</span>
         </router-link>
       </CustomButton>
       <CustomButton type="yellow" width="30rem" class="margin-bottom-1 shift-left-2" :big="true">
@@ -51,14 +51,6 @@ export default {
 .art {
   background-image: url("../../assets/backgrounds/castle_blur.png");
 }
-
-// .shift-left-1 {
-//     transform: translateX(-2.5rem);
-// }
-
-// .shift-left-2 {
-//     transform: translateX(-5rem);
-// }
 
 .shift-buttons {
   padding-bottom: 20%;

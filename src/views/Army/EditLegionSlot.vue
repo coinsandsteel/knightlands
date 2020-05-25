@@ -2,7 +2,7 @@
   <div class="screen-content">
     <UnitView :unit="unit" :showEquipment="true" />
     <div class="flex-full relative dummy-height">
-      <div class="bg" :class="element"></div>
+      <div class="element-background" :class="element"></div>
       <UnitInventory :isTroops="isTroops" :selectedUnit="unit" @unitSelect="selectUnit" />
     </div>
 
@@ -101,48 +101,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.bg {
-  position: absolute !important;
-  top: 0rem !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: -5rem !important;
-
-  &.water {
-    background: rgba(38, 123, 143, 1);
-    background: linear-gradient(
-      180deg,
-      rgba(32, 15, 32, 1) 0%,
-      rgba(38, 123, 143, 1) 100%
-    );
-  }
-
-  &.earth {
-    background: rgb(79, 43, 32, 1);
-    background: linear-gradient(
-      180deg,
-      rgba(32, 15, 32, 1) 0%,
-      rgba(79, 43, 32, 1) 100%
-    );
-  }
-  &.darkness {
-    background: rgb(108, 29, 143, 1);
-    background: linear-gradient(
-      180deg,
-      rgba(32, 15, 32, 1) 0%,
-      rgba(108, 29, 143, 1) 100%
-    );
-  }
-  &.light {
-    background: rgb(143, 104, 54, 1);
-    background: linear-gradient(
-      180deg,
-      rgba(32, 15, 32, 1) 0%,
-      rgba(143, 104, 54, 1) 100%
-    );
-  }
-}
-</style>
-

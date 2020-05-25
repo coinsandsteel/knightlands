@@ -30,12 +30,6 @@
         @click="handleClick(tab.value)"
       >{{$t(tab.title)}}</div>
     </template>
-
-    <!-- <div
-      class="tabs__active-line"
-      :class="lineClass"
-      :style="{ width: `${activeLineWidth}px`, transform: `translateX(${activeLineOffset}px)` }"
-    />-->
   </nav>
 </template>
 
@@ -140,6 +134,7 @@ export default {
 }
 
 .tabs__item {
+  flex: 1;
   display: inline-block;
   color: #8c9093;
   text-decoration: none;

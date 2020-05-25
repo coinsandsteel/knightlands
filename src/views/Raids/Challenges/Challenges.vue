@@ -45,8 +45,6 @@ export default {
     }
 
     this.currentTab = this.tabs[0].value;
-
-    console.log(this.currentTab);
   },
   methods: {
     switchTab(newTab) {}

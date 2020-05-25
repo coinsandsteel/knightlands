@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <loading-screen :loading="loading"></loading-screen>
+    <!-- <loading-screen :loading="loading"></loading-screen> -->
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar v-if="$game.authenticated"></status-bar>
       <div class="flex">
@@ -52,8 +52,8 @@
             <span class="menu-icon guild pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-guild")}}</span>
           </router-link>-->
-          
-          <router-link  class="flex flex-center" to="/social/chat">
+
+          <router-link class="flex flex-center" to="/social/chat">
             <span class="menu-icon chat pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-chat")}}</span>
           </router-link>
@@ -218,8 +218,8 @@ export default {
           // }
 
           // if (this.$game.walletReady()) {
-            clearInterval(interval);
-            this.$game.connect();
+          clearInterval(interval);
+          this.$game.connect();
           // }
         }, 200);
       });
@@ -376,8 +376,6 @@ export default {
 
 .root-menu {
   justify-content: space-between;
-  background-image: url("./assets/ui/tab_menu_bg.png");
-  background-size: 100% 100%;
 }
 
 #nav {
@@ -433,7 +431,12 @@ export default {
       background-image: url("./assets/ui/tabbar_chat.png");
     }
 
+    background-image: url("./assets/ui/tabbar_bg.png");
+    background-size: 100% 100%;
+
     &.router-link-active {
+      background-image: unset;
+
       .menu-title {
         transition-delay: 0.2s;
         opacity: 1;
@@ -444,8 +447,11 @@ export default {
         z-index: 2;
       }
 
-      background-image: url("./assets/ui/tabbar_selected.png");
-      background-size: 100% 100%;
+      border-image-source: url("./assets/ui/tabbar_selected.png");
+      border-image-slice: 60 59 27 59 fill;
+      border-image-width: 20px 20px 20px 20px;
+      border-image-outset: 0px 0px 0px 0px;
+      border-image-repeat: stretch stretch;
     }
   }
 }
