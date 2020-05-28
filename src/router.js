@@ -80,6 +80,7 @@ const router = new Router({
       children: [
         {
           path: "",
+          name: "blacksmith",
           component: CraftingHome
         },
         {

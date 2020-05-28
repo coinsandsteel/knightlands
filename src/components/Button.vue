@@ -80,10 +80,6 @@ export default {
   // }
 
   border-image-source: url("../assets/ui/@{name}_active.png");
-  border-image-slice: 35 36 45 36 fill;
-  border-image-width: 20px 20px 20px 20px;
-  border-image-outset: 0px 0px 0px 0px;
-  border-image-repeat: round round;
 
   & > .btn-content {
     transform: translateY(0.1rem);
@@ -121,7 +117,7 @@ export default {
   // }
 
   border-image-source: url("../assets/ui/@{name}.png");
-  border-image-slice: 35 36 45 36 fill;
+  border-image-slice: 50 70 50 70 fill;
   border-image-width: 20px 20px 20px 20px;
   border-image-outset: 0px 0px 0px 0px;
   border-image-repeat: round round;

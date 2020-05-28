@@ -3,8 +3,8 @@
     <div class="element-background" :class="element"></div>
     <UnitView :unit="unit" />
     <Tabs :router="true" :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-    <keep-alive>
-        <router-view></router-view>
+    <keep-alive v-if="unit">
+        <router-view :unit="unit"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -31,8 +31,8 @@ export default {
     unit: null,
     tabs: [
       { title: "level-up", to: { name: "unit-level" } },
-      { title: "equipment", to: { name: "unit-promo" } },
-      { title: "promotoion", to: { name: "unit-equip" } }
+      { title: "equipment", to: { name: "unit-equip" } },
+      { title: "promotoion", to: { name: "unit-promo" } }
     ],
     currentTab: "level-up"
   }),

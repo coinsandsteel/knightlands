@@ -1,21 +1,20 @@
 <template>
   <div class="flex flex-column flex-no-wrap relative item-info-container">
-    <span
-      class="title font-size-20 margin-bottom-1"
+    <Title
+      class="margin-bottom-1"
       :class="`rarity-${template.rarity}`"
       v-if="!hideTitle"
-    >{{$t(template.caption)}}</span>
-
-    <loot
-      class="loot-icon hintFix margin-left-1"
-      :class="{'offset-loot': !hideTitle}"
-      :item="item"
-      :interactible="false"
-      :quantity="quantity"
-      v-bind="lootProps"
-    ></loot>
+    >{{$t(template.caption)}}</Title>
 
     <div class="flex flex-center font-size-20">
+      <loot
+        class="hintFix margin-right-1"
+        :class="{'offset-loot': !hideTitle}"
+        :item="item"
+        :interactible="false"
+        :quantity="quantity"
+        v-bind="lootProps"
+      ></loot>
       <span :class="{'margin-right-1': !hasElement}">{{type}}</span>
       <div v-if="hasElement" :class="elementIcon" class="big"></div>
       <slot name="afterType"></slot>
@@ -46,8 +45,7 @@
 
     <slot name="afterStats"></slot>
 
-    <ItemProperties v-if="!onlyStats" :item="item">
-    </ItemProperties>
+    <ItemProperties v-if="!onlyStats" :item="item"></ItemProperties>
 
     <span
       class="loot-desc desc-font font-size-20 margin-bottom-1"
@@ -65,6 +63,7 @@
 import ItemProperties from "@/components/ItemProperties.vue";
 import Loot from "@/components/Loot.vue";
 const ItemType = require("@/../knightlands-shared/item_type");
+import Title from "@/components/Title.vue";
 const {
   EquipmentSlots,
   getSlot
@@ -78,7 +77,7 @@ export default {
     lootProps: Object,
     quantity: Number
   },
-  components: { Loot, ItemProperties },
+  components: { Loot, ItemProperties, Title },
   computed: {
     isOffHand() {
       if (this.template.type != ItemType.Equipment) {

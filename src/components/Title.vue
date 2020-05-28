@@ -1,8 +1,12 @@
 <template>
-  <div class="width-100 flex flex-center">
+  <div
+    class="width-100 flex flex-center"
+    :class="{'stackTop': stackTop, 'stackBottom': stackBottom}"
+  >
     <div class="flex-full title-side"></div>
     <span class="font-size-22 capitalize title flex flex-center">
-        <span>{{title}}</span>
+      <span>{{title}}</span>
+      <slot></slot>
     </span>
     <div class="flex-full title-side"></div>
   </div>
@@ -10,11 +14,13 @@
 
 <script>
 export default {
-  props: ["title"]
+  props: ["title", "stackTop", "stackBottom"]
 };
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../style/common.less";
+
 .title {
   border-image-source: url("../assets/ui/title.png");
   border-image-slice: 38 30 38 30 fill;
@@ -24,12 +30,22 @@ export default {
   border-style: solid;
   padding: 0rem 2rem;
   align-self: center;
-  height: 32px;
+  height: @TitleHeight;
 }
 
 .title-side {
   background-image: url("../assets/ui/title1.png");
-  height: 14px;
+  height: @TitleSideHeight;
   background-size: 100% 100%;
+}
+
+.stackTop {
+  margin-top: -(@TitleHeight - @TitleSideHeight)/2;
+  z-index: 100;
+}
+
+.stackBottom {
+  margin-bottom: -(@TitleHeight - @TitleSideHeight)/2;
+  z-index: 100;
 }
 </style>

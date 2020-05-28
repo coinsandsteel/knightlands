@@ -421,7 +421,51 @@ h1 {
     left: 0 !important;
     right: 0 !important;
     bottom: -5rem !important;
-    background: #245178;
+    background-color: #245178;
+}
+
+.success-font {
+    color: #E6FA00;
+}
+
+@TitleHeight: 32px;
+@TitleSideHeight: 14px;
+@ReferenceFontSize: 8px;
+
+.color-panel() {
+    width: 100%;
+    padding: 2rem 0 2rem 0;
+
+
+    @remVal: ((@TitleHeight - @TitleSideHeight)/2)/@ReferenceFontSize;
+
+    &.stacked-bottom {
+        padding: 2rem 0 (2rem + @remVal) 0;
+    }
+
+    &.stacked-top {
+        padding: (2rem + @remVal) 0 2rem 0;
+    }
+}
+
+.color-panel-1 {
+    .color-panel();
+    background-color: #193F5F;
+}
+
+.color-panel-2 {
+    .color-panel();
+    background-color: #2E7285;
+}
+
+.color-panel-3 {
+    .color-panel();
+    background-color: #00AC21;
+}
+
+.color-panel-4 {
+    .color-panel();
+    background-color: #3D4A6A;
 }
 
 .element-background {
@@ -431,7 +475,7 @@ h1 {
     right: 0 !important;
     bottom: -10rem !important;
     z-index: -1;
-    background: #245178;
+    background-color: #245178;
   
     &.water {
       background: rgba(38, 123, 143, 1);

@@ -16,7 +16,7 @@
         </router-link>
       </CustomButton>
       <CustomButton type="yellow" width="30rem" class="margin-bottom-1 shift-left-2" :big="true">
-        <router-link tag="div" class="flex width-100 flex-justify-start flex-items-center" :to="{ name: 'crafting' }">
+        <router-link tag="div" class="flex width-100 flex-justify-start flex-items-center" :to="{ name: 'blacksmith' }">
           <span class="icon-craft huge"></span>
           <span class="flex-1">{{$t('menu-blacksmith')}}</span>
         </router-link>

@@ -1,16 +1,17 @@
 <template>
-  <div class="padding-1 flex flex-column flex-justify-center dummy-height">
+  <div class="screen-content">
     <Promised :promise="request">
-      <template v-slot:combined="{ isPending, isDelayOver, data }">
+      <template v-slot:combined="{ isPending, isDelayOver }">
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+        <div class="screen-background"></div>
 
-        <StripedPanel class="dummy-height flex flex-center flex-column" v-if="item">
+        <div class="dummy-height flex flex-center flex-column" v-if="item">
           <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}" class="width-100">
             <template v-slot:beforeStats>
               <div ref="level">
                 <div class="flex flex-center margin-top-1 font-size-20">
-                  <span
-                    class="flex flex-center flex-start margin-bottom-half"
+                  <div
+                    class="color-panel-1 flex flex-center padding-1"
                     v-if="canEnchant"
                     
                   >
@@ -20,7 +21,7 @@
                       class="margin-left-half margin-right-half right-arrow"
                     ></span>
                     <span class="green-title">{{(item.enchant || 0) + 1}}</span>
-                  </span>
+                  </div>
                   <span class="flex flex-center flex-start margin-bottom-half" v-else>
                     <span class="rarity-mythical margin-right-half">{{$t("enchanting-maxed-out")}}</span>
                     <span>{{item.enchant}}</span>
@@ -31,7 +32,7 @@
 
             <template v-slot:stats v-if="canEnchant">
               <div
-                class="margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
+                class="color-panel-2 stacked-bottom flex flex-center font-size-20 flex-space-evenly"
               >
                 <div class="flex width-40 flex-column flex-item-end text-align-right">
                   <div
@@ -56,11 +57,12 @@
           </ItemInfo>
 
           <template v-if="canEnchant">
-            <span
-              class="margin-top-1 margin-bottom-1 title font-size-20"
-            >{{$t("enchant-materials")}}</span>
+            <Title
+              class="margin-bottom-1"
+              :stackTop="true"
+            >{{$t("enchant-materials")}}</Title>
 
-            <StripedContent
+            <div
               classes="margin-top-2 margin-bottom-2"
               contentClasses="width-100 flex flex-space-evenly"
               stripeHeight="10rem"
@@ -71,7 +73,7 @@
                 :ingridient="ingridient"
                 :hintHandler="showHint"
               />
-            </StripedContent>
+            </div>
 
             <template v-if="!paymentInProcess">
               <transition name="fade" mode="out-in">
@@ -95,22 +97,19 @@
               </CustomButton>
             </div>
 
-            <StripedContent
-              classes="margin-top-3 margin-bottom-5"
-              contentClasses="width-100 flex flex-space-evenly"
-              stripeHeight="13rem"
-              color="#2c5c40"
+            <div
+              class="margin-top-3 margin-bottom-5 color-panel-3"
               v-if="stepData.successRate < 100"
             >
               <PaymentStatus
                 ref="paymentStatus"
                 :request="fetchPayment"
                 @pay="continuePurchase"
-                class="width-100"
+                class="width-100 flex flex-space-evenly"
               >
                 <div class="flex flex-column width-100">
                   <span
-                  class="margin-top-1 margin-bottom-1 rarity-rare font-outline font-size-20"
+                  class="margin-top-1 margin-bottom-1 success-font font-outline font-size-20"
                   >{{$t("enchant-success-rate", {rate: 100})}}</span>
 
                   <div class="flex flex-center width-100 flex-space-evenly">
@@ -126,9 +125,9 @@
                   </div>
                 </div>
               </PaymentStatus>
-            </StripedContent>
+            </div>
           </template>
-        </StripedPanel>
+        </div>
       </template>
     </Promised>
   </div>
@@ -151,6 +150,8 @@ import LoadingScreen from "@/components/LoadingScreen.vue";
 import CurrencyType from "@/../knightlands-shared/currency_type";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
+import Title from "@/components/Title.vue";
+
 const EnchantingMeta = require("@/enchanting_meta.json");
 const Events = require("@/../knightlands-shared/events");
 
@@ -167,7 +168,8 @@ export default {
     PriceTag,
     Promised,
     LoadingScreen,
-    PaymentStatus
+    PaymentStatus,
+    Title
   },
   created() {
     this.title = "window-enchant-item";
