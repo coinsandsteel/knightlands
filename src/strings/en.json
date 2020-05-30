@@ -2823,6 +2823,8 @@
     "unit-lvl": "Lv. {lvl}",
     "king_slime": "King Slime",
     "unit-remove": "Remove",
+    "unit-max-lv": "Max Lv. {lvl}",
+    "unit-dmg": "Damage {dmg}",
     "legion-slot-change-title": "Confirm unit change",
     "legion-slot-change-desc": "Do you want to save changes?",
     "increasedDamageWhenElementMatch": "{damage}% Increased <span class='icon-unit-{element} big'></span> troops damage",

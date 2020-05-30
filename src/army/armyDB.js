@@ -1,5 +1,7 @@
 import armyAbilities from "@/army_abilities";
 import armyUnits from "@/army_units";
+import troopsMeta from "@/troops_meta";
+import generalsMeta from "@/generals_meta";
 import AbilityResolver from "@/../knightlands-shared/ability_resolver";
 
 export default class ArmyDB {
@@ -57,5 +59,25 @@ export default class ArmyDB {
             abilities.push(abilitiesRecords[abilityId]);
         }
         return abilities;
+    }
+
+    getMaxLevel(unit, next) {
+        let meta = unit.troop ? troopsMeta.fusionMeta : generalsMeta.fusionMeta;
+        let stars = this.getStars(unit) + (next ? 1 : 0);
+        let record = meta.maxLevelByStars.find(x => x.stars == stars);
+        if (record) {
+            return record.maxLevel;
+        }
+
+        return meta.maxLevelByStars.find(x => x.stars == stars - 1).maxLevel;
+    }
+
+    getDamage(unit, next) {
+        let meta = unit.troop ? troopsMeta.leveling : generalsMeta.leveling;
+        let level = unit.level;
+        if (next) {
+            level++;
+        }
+        return meta.levelingSteps[level - 1].power;
     }
 }

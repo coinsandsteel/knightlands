@@ -1,38 +1,71 @@
 <template>
   <div class="screen-content">
-    <div class="color-panel-3 stats-grid font-size-18">
+    <div class="color-panel-2 stats-grid font-size-18">
       <span class="left">Damage 9999</span>
       <span class="right-arrow"></span>
       <span class="right">Damage 99999</span>
 
-      <span class="left">Lv 9999</span>
+      <span class="left">{{$t("unit-max-lv", { lvl: maxLevel })}}</span>
       <span class="right-arrow"></span>
-      <span class="right">Lv 99999</span>
+      <span class="right">{{$t("unit-max-lv", { lvl: nextMaxLevel })}}</span>
 
       <UnitStars :stars="stars" class="left"></UnitStars>
       <span class="right-arrow"></span>
       <UnitStars :stars="starsNext" class="right"></UnitStars>
     </div>
 
-    <div class="color-panel-4">
-        
+    <div class="color-panel-2 flex flex-center">
+      <UnitIngridient
+        v-for="(ingr, idx) in ingridients"
+        :key="idx"
+        :ingridient="ingr"
+        :unit="unit"
+      />
     </div>
+
+    <HorizontalItemQuantity
+      class="padding-top-2"
+      :items="[{item: soulsItem, quantity: soulsRequired}]"
+    >
+      <CustomButton type="green" class="width-30" @click="promote">Promote</CustomButton>
+    </HorizontalItemQuantity>
   </div>
 </template>
 
 <script>
-import UnitItem from "../UnitItem.vue";
+import UnitIngridient from "./UnitIngridient.vue";
 import UnitStars from "../UnitStars.vue";
 import UnitGetterMixin from "../UnitGetterMixin.vue";
-
+import HorizontalItemQuantity from "@/components/HorizontalItemQuantity.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
+import CustomButton from "@/components/Button.vue";
 import TroopsMeta from "@/troops_meta";
 import GeneralsMeta from "@/generals_meta";
+import ArmyMeta from "@/army_meta";
 
 export default {
-  mixins: [UnitGetterMixin],
+  mixins: [UnitGetterMixin, PromptMixin],
   props: ["unit"],
-  data: () => ({}),
-  components: { UnitStars, UnitItem },
+  data: () => ({
+    ingridients: []
+  }),
+  components: {
+    UnitStars,
+    UnitIngridient,
+    HorizontalItemQuantity,
+    CustomButton
+  },
+  watch: {
+    unit: {
+      immediate: true,
+      handler() {
+        let recipe = this.recipe;
+        for (const ingrd of recipe.ingridients) {
+          this.ingridients.push({ ...ingrd });
+        }
+      }
+    }
+  },
   computed: {
     starsNext() {
       if (this.stars < 10) {
@@ -41,14 +74,45 @@ export default {
 
       return this.stars;
     },
-    recipe() {
-      let meta = GeneralsMeta.fusionMeta;
+    meta() {
+      let meta = GeneralsMeta;
       if (this.unit.troop) {
-        meta = TroopsMeta.fusionMeta;
+        meta = TroopsMeta;
       }
-
-      let template = meta.templates.find(t => t.stars == this.stars);
+      return meta.fusionMeta;
+    },
+    recipe() {
+      let template = this.meta.templates.find(t => t.stars == this.stars + 1);
       return template;
+    },
+    soulsItem() {
+      return ArmyMeta.soulsItem;
+    },
+    soulsRequired() {
+      return this.recipe.price;
+    }
+  },
+  methods: {
+    async promote() {
+      let confirmation = await this.showPrompt(
+        this.$t("promo-title"),
+        this.$t("promo-desc"),
+        [
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]
+      );
+
+      if (confirmation === true) {
+      }
     }
   }
 };

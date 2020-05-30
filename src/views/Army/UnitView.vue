@@ -11,7 +11,7 @@
         class="flex flex-column flex-full flex-space-between padding-top-5 font-size-18"
         v-if="!showAbilities"
       >
-        <div class="flex flex-center flex-column">
+        <div class="flex flex-center flex-column padding-left-3">
           <div class="padding-half panel-input unit-view-param center">
             <UnitStars :stars="stars" size="big" />
           </div>
@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div class="flex flex-column">
+        <div class="flex flex-column padding-left-3">
           <CustomButton
             type="green"
             class="margin-bottom-half"
@@ -29,7 +29,7 @@
             v-if="showEquipment"
           >{{$t("unit-equipment")}}</CustomButton>
           <CustomButton
-            type="purple"
+            type="red"
             class="margin-bottom-half"
             @click="showAbilities = true"
           >{{$t("unit-abilities")}}</CustomButton>
@@ -119,7 +119,7 @@ export default {
 }
 
 .unit-view-container {
-  height: 30rem;
+  height: 25vh;
 }
 
 .unit-view-param {

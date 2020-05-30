@@ -1,10 +1,10 @@
 <template>
-  <div class>
+  <div class="zone-grid">
+    <span class="zone-nav flex flex-center" @click="goToPrev" :class="{hidden: currentZone == 1}">
+      <div class="nav-arrow left"></div>
+    </span>
+
     <div class="zone-scene">
-      <span class="zone-nav flex flex-center" @click="goToPrev" :class="{hidden: currentZone == 1}">
-        <div class="nav-arrow left"></div>
-      </span>
-      
       <agile
         ref="zonesList"
         :dots="false"
@@ -18,17 +18,17 @@
           <div class="font-size-30 overlay-title font-outline">{{$t(getZoneName(zone._id))}}</div>
         </div>
       </agile>
-
-      <span
-        class="zone-nav flex flex-center"
-        @click="goToNext"
-        :class="{hidden: currentZone == zones.length}"
-      >
-        <div class="nav-arrow"></div>
-      </span>
     </div>
 
-    <div class="zone-breacrumbs digit-font font-size-20 flex flex-center flex-nowrap">
+    <span
+      class="zone-nav right flex flex-center"
+      @click="goToNext"
+      :class="{hidden: currentZone == zones.length}"
+    >
+      <div class="nav-arrow"></div>
+    </span>
+
+    <div class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap">
       <div :class="{hidden: currentZone == 1}" class="zone-id-dots left" @click="goToPrev"></div>
       <div
         :class="{hidden: currentZone == 1}"
@@ -104,6 +104,18 @@ export default {
 
 <style lang="less" scoped>
 @zoneIdSize: 2.5rem;
+@dotsWidth: 3rem;
+@dotsHeight: @dotsWidth * 0.1891;
+@breadcrumbsHeight: @zoneIdSize * 0.8;
+
+.zone-grid {
+  display: grid;
+  grid-template-columns: 5rem 1fr 5rem;
+  grid-template-rows: 1fr @breadcrumbsHeight;
+  height: 25vh;
+  justify-content: center;
+}
+
 .zone-id {
   background-image: url("../../assets/ui/level_number_border.png");
   background-size: cover;
@@ -113,25 +125,29 @@ export default {
   line-height: @zoneIdSize;
 
   &.small {
-    width: @zoneIdSize * 0.8;
-    height: @zoneIdSize * 0.8;
+    width: @breadcrumbsHeight;
+    height: @breadcrumbsHeight;
     opacity: 0.4;
-    line-height: @zoneIdSize * 0.8;
+    line-height: @breadcrumbsHeight;
   }
 }
 
-@dotsWidth: 3rem;
 .zone-id-dots {
   background-image: url("../../assets/ui/level_number_crumbs.png");
   background-size: cover;
   background-position: center;
   width: @dotsWidth;
-  height: @dotsWidth * 0.1891;
+  height: @dotsHeight;
 }
 
 .zone-breacrumbs {
   margin: 0.2rem 0 0.4rem 0;
   padding: 0 0.2rem 0 0.2rem;
+
+  z-index: 40;
+
+  grid-row: 2;
+  grid-column: 2;
 
   * > {
     margin: 0 0.2rem 0 0.2rem;
@@ -139,15 +155,13 @@ export default {
 }
 
 .zone-scene {
-  height: 16vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  grid-row: 1;
+  grid-column: ~"1/4";
+  overflow: hidden;
 }
 
 .agile {
-  width: 80%;
+  width: 100%;
   height: 100%;
 }
 
@@ -158,16 +172,20 @@ export default {
   .element {
     margin-bottom: 5px;
     height: 100px;
-
-    &:hover {
-      cursor: pointer;
-    }
+    cursor: pointer;
   }
 }
 
 .zone-nav {
   cursor: pointer;
-  height: 14rem;
+  height: 100%;
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 1;
+
+  &.right {
+    grid-column: 3;
+  }
 }
 
 .hidden {

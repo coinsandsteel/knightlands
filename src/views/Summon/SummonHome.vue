@@ -13,20 +13,22 @@
 
         <MenuIcon icon="icon-shop" to="shop" :append="true">{{$t("btn-shop")}}</MenuIcon>
       </MenuIconRow>
+
+      <CustomButton type="green" @click="goTo('army-summon-menu')">Summon Gates</CustomButton>
     </div>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
-import SkewedButton from "@/components/SkewedButton.vue";
+import CustomButton from "@/components/Button.vue";
 import FreeChestsMarker from "@/components/Markers/FreeChestsMarker.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 
 export default {
   mixins: [AppSection],
-  components: { SkewedButton, FreeChestsMarker, MenuIcon, MenuIconRow },
+  components: { FreeChestsMarker, MenuIcon, MenuIconRow, CustomButton },
   created() {
     this.title = this.$t("window-title-summon");
   },

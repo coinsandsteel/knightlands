@@ -1,69 +1,68 @@
 <template>
-  <div class="mission-element panel">
-    <div class="left-column flex flex-column flex-center flex-5 margin-right-1">
-      <div class="mission-title width-100 title flex flex-center font-size-18 enemy-title-font">
-        <span>{{$t(missionName)}}</span>
+  <div class="mission-element flex flex-column flex-no-wrap flex-items-center">
+    <Title :stackTop="true" :stackBottom="true">{{$t(missionName)}}</Title>
+    <div class="width-100 height-100 flex color-panel-2 stacked-bottom stacked-top">
+      <div class="left-column flex flex-column flex-center flex-5 margin-right-1">
+        <div class="mission-image" :style="enemyImage"></div>
+
+        <progress-bar
+          class="mission-progress"
+          ref="progress"
+          :percentMode="true"
+          :maxValue="progress.max"
+          :value="progress.current"
+          valueClass="white-font font-outline"
+          valuePosition="top"
+          height="0.5rem"
+          barType="yellow"
+          :thresholds="thresholds"
+        ></progress-bar>
       </div>
 
-      <div class="mission-image pixelated margin-top-2" :style="enemyImage"></div>
-
-      <progress-bar
-        class="mission-progress"
-        ref="progress"
-        :percentMode="true"
-        :maxValue="progress.max"
-        :value="progress.current"
-        valueClass="white-font font-outline"
-        valuePosition="top"
-        height="0.5rem"
-        barType="yellow"
-        :thresholds="thresholds"
-      ></progress-bar>
-    </div>
-
-    <div class="flex-5 font-size-18 right-column flex-column flex-item-center">
-      <div class="info flex margin-top-small">
-        <div class="flex-3 flex flex-column flex-items-start">
-          <div class="margin-bottom-small yellow-title margin-bottom-half">Rewards</div>
-          <div class="list digit-font font-outline">
-            <icon-with-value
-              class="flex-start"
-              iconClass="icon-exp icon-size-mini"
-              :value="quest.exp"
-              valueClass="info-font"
-            ></icon-with-value>
-            <icon-with-value
-              class="flex-start"
-              iconClass="icon-gold icon-size-mini"
-              :value="`${quest.goldMin}-${quest.goldMax}`"
-              valueClass="info-font"
-            ></icon-with-value>
+      <div class="flex-5 font-size-18 right-column flex-column flex-item-center">
+        <div class="info flex margin-top-small">
+          <div class="flex-3 flex flex-column flex-items-start">
+            <div class="margin-bottom-small yellow-title margin-bottom-half">Rewards</div>
+            <div class="list digit-font font-outline">
+              <icon-with-value
+                class="flex-start"
+                iconClass="icon-exp icon-size-mini"
+                :value="quest.exp"
+                valueClass="info-font"
+              ></icon-with-value>
+              <icon-with-value
+                class="flex-start"
+                iconClass="icon-gold icon-size-mini"
+                :value="`${quest.goldMin}-${quest.goldMax}`"
+                valueClass="info-font"
+              ></icon-with-value>
+            </div>
+          </div>
+          <div class="flex-1 flex flex-column flex-items-start" v-show="quest.energy > 0">
+            <div class="margin-bottom-small blue-title margin-bottom-half">Cost</div>
+            <div class="list digit-font font-outline">
+              <icon-with-value
+                iconClass="icon-energy icon-size-mini"
+                :value="quest.energy"
+                valueClass="info-font"
+              ></icon-with-value>
+            </div>
           </div>
         </div>
-        <div class="flex-1  flex flex-column flex-items-start" v-show="quest.energy > 0">
-          <div class="margin-bottom-small blue-title margin-bottom-half">Cost</div>
-          <div class="list digit-font font-outline">
-            <icon-with-value
-              iconClass="icon-energy icon-size-mini"
-              :value="quest.energy"
-              valueClass="info-font"
-            ></icon-with-value>
-          </div>
+
+        <div class="grey-title font-size-20 flex-basis-50" v-if="!isBossUnlocked">
+          <div class="center-transform-vertical font-outline">Kill previous enemies</div>
         </div>
-      </div>
 
-      <div class="grey-title font-size-20 flex-basis-50" v-if="!isBossUnlocked">
-        <div class="center-transform-vertical font-outline">Kill previous enemies</div>
-      </div>
+        <div
+          class="green-title font-size-30 flex-basis-50"
+          v-else-if="progress.current >= progress.max"
+        >
+          <div class="center-transform-vertical font-outline">Complete</div>
+        </div>
 
-      <div
-        class="green-title font-size-30 flex-basis-50"
-        v-else-if="progress.current >= progress.max"
-      >
-        <div class="center-transform-vertical font-outline">Complete</div>
+        <custom-button size="small" v-else @click="$emit('engage')">Engage</custom-button>
       </div>
-
-      <custom-button size="small" v-else @click="$emit('engage')">Engage</custom-button>
     </div>
   </div>
 </template>
@@ -74,12 +73,14 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import UiConstants from "@/ui_constants";
 import Zones from "@/campaign_database";
+import Title from "@/components/Title.vue";
 
 export default {
   components: {
     ProgressBar,
     IconWithValue,
-    CustomButton
+    CustomButton,
+    Title
   },
   props: {
     zone: {
@@ -141,7 +142,7 @@ export default {
 <style lang="less" scoped>
 @import (reference) "../../style/common.less";
 
-@panelHeight: 12.875rem;
+@panelHeight: 24rem;
 
 .mission-progress {
   width: 90% !important;
@@ -155,11 +156,7 @@ export default {
 }
 
 .mission-element {
-  width: 100%;
   height: @panelHeight;
-  display: flex;
-  box-sizing: border-box;
-  margin-bottom: 1vh;
   padding-bottom: 0.1rem;
 
   .left-column {

@@ -1,5 +1,6 @@
 <template>
   <div class="quest-content">
+    <div class="screen-background"></div>
     <div v-show="!zone" v-bar>
       <div>
         <div class="quest-list">
@@ -11,7 +12,7 @@
             :to="{ path: zone._id+'', append: true }"
           >
             <div class="zone-picture">
-              <img class="pixelated" :src="getZoneImage(zone._id)" />
+              <img :src="getZoneImage(zone._id)" />
               <div class="font-size-30 overlay-title font-outline">{{$t(getZoneName(zone._id))}}</div>
             </div>
           </router-link>
@@ -40,6 +41,7 @@
                 :value="zone"
                 v-if="zones.length > 0"
                 @zoneChanged="handleZoneChanged"
+                class="margin-bottom-2"
               ></zone-selection>
 
               <div class="quest-list center">
@@ -252,8 +254,7 @@ export default {
 
 .quest-list {
   position: relative;
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
 
   .elements {
     display: flex;

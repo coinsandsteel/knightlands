@@ -2,9 +2,14 @@
   <div class="screen-content">
     <div class="element-background" :class="element"></div>
     <UnitView :unit="unit" />
-    <Tabs :router="true" :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+    <Tabs
+      :replace="true"
+      :router="true"
+      :tabs="tabs"
+      :currentTab="currentTab"
+    />
     <keep-alive v-if="unit">
-        <router-view :unit="unit"></router-view>
+      <router-view :unit="unit"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -20,7 +25,7 @@ export default {
   props: ["unitId"],
   components: { Tabs, UnitView },
   created() {
-    this.title = "window-edit-unit";
+    this.title = "";
     this.$options.useRouterBack = true;
   },
   async mounted() {
@@ -39,11 +44,6 @@ export default {
   watch: {
     unitId() {
       this.unit = this.$game.army.getUnit(this.unitId);
-    }
-  },
-  methods: {
-    switchTab(tab) {
-      this.currentTab = tab;
     }
   }
 };

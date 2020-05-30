@@ -436,7 +436,6 @@ h1 {
     width: 100%;
     padding: 2rem 0 2rem 0;
 
-
     @remVal: ((@TitleHeight - @TitleSideHeight)/2)/@ReferenceFontSize;
 
     &.stacked-bottom {
@@ -445,6 +444,10 @@ h1 {
 
     &.stacked-top {
         padding: (2rem + @remVal) 0 2rem 0;
+    }
+
+    &.no-padding {
+        padding: 0;
     }
 }
 

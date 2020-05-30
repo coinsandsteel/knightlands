@@ -21,7 +21,7 @@
         :centerMode="true"
         :speed="300"
         :infinite="false"
-        class="pixelated quest-enemies width-100"
+        class="quest-enemies width-100"
         @afterChange="handleEnemyChanged($event)"
       >
         <div

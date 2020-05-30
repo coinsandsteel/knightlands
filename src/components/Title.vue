@@ -1,6 +1,6 @@
 <template>
   <div
-    class="width-100 flex flex-center"
+    class="width-100 flex flex-center relative"
     :class="{'stackTop': stackTop, 'stackBottom': stackBottom}"
   >
     <div class="flex-full title-side"></div>

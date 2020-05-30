@@ -23,6 +23,18 @@ export default {
       }
       return 0;
     },
+    maxLevel() {
+      if (this.unit) {
+        return this.$game.armyDB.getMaxLevel(this.unit);
+      }
+      return 0;
+    },
+    nextMaxLevel() {
+      if (this.unit) {
+        return this.$game.armyDB.getMaxLevel(this.unit, true);
+      }
+      return 0;
+    },
     unitImage() {
       if (this.unit) {
         return UiConstants.backgroundImage(this.unitIcon);
@@ -56,6 +68,20 @@ export default {
         return this.$game.armyDB.getAbilities(this.unit);
       }
       return [];
+    },
+    damage() {
+      if (this.unit) {
+        return this.$game.armyDB.getDamage(this.unit);
+      }
+
+      return 0;
+    },
+    nextDamage() {
+      if (this.unit) {
+        return this.$game.armyDB.getDamage(this.unit, true);
+      }
+
+      return 0;
     }
   }
 };
