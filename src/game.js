@@ -1395,6 +1395,11 @@ class Game {
     async getLeaderboardRankings(type, page) {
         return (await this._wrapOperation(Operations.GetLeaderboardRankings, { type, page })).response;
     }
+
+    // Armies
+    async getArmySummonInfo() {
+        return (await this._wrapOperation(Operations.GetArmySummonInfo)).response;
+    }
 }
 
 export default Game;
