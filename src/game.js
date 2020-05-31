@@ -1400,6 +1400,14 @@ class Game {
     async getArmySummonInfo() {
         return (await this._wrapOperation(Operations.GetArmySummonInfo)).response;
     }
+
+    async summonUnits(iap, summonType, count) {
+        return (await this._wrapOperation(Operations.SummonArmyUnit, { iap, summonType, count })).response;
+    }
+
+    async fetchArmySummonStatus() {
+        return (await this._wrapOperation(Operations.FetchArmySummonStatus)).response;
+    }
 }
 
 export default Game;
