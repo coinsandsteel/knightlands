@@ -3,11 +3,9 @@
     <!-- <loading-screen :loading="loading"></loading-screen> -->
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar v-if="$game.authenticated"></status-bar>
-      <div class="flex">
-        <div class="flex flex-center section-name font-size-25" v-show="title">
-          <span class="relative section-title">{{$t(title)}}</span>
-          <div class="section-fill"></div>
-        </div>
+      <div class="flex flex-items-start section-name font-size-25" v-show="title">
+        <span class="relative section-title">{{$t(title)}}</span>
+        <div class="section-fill"></div>
       </div>
 
       <keep-alive exclude="gold-exchange">
@@ -308,13 +306,15 @@ export default {
 @sectionPaddingTop: 0.4rem;
 
 .section-name {
+  background-color: #112C47;
+  width: 100%;
   margin: 0;
 
   & > .section-fill {
     width: @sectionPaddingRight;
     height: calc(100%);
 
-    background: url("./assets/ui/title_bg3.png");
+    background: url("./assets/ui/title_bg.png");
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;
@@ -330,7 +330,7 @@ export default {
     padding-left: 1.2rem;
     color: #281326;
     position: relative;
-    background-color: #928691;
+    background-color: #798e9e;
     font-weight: 900;
   }
 }

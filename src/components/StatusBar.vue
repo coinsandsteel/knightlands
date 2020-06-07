@@ -142,7 +142,7 @@ export default {
 .status-bar {
   height: 7rem;
   background-color: #23354D;
-  border-bottom: 0.25rem solid #928690;
+  // border-bottom: 0.25rem solid #928690;
   padding-left: 1rem;
 }
 
