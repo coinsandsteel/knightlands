@@ -1,5 +1,5 @@
 <template>
-<div class="height-100" @click="show">
+<div class="height-100">
   <div class="screen-background"></div>
   <div class="height-100" v-bar>
     <div class="flex-full dummy-height">

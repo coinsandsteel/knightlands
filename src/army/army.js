@@ -12,7 +12,8 @@ const dummyUnit = {
 };
 
 export default class Army {
-    constructor(armyDb) {
+    constructor(game, armyDb) {
+        this._game = game;
         this._armyDb = armyDb;
         this._vm = new Vue({
             data: () => ({
@@ -74,11 +75,13 @@ export default class Army {
             return;
         }
 
+        let army = await this._game.getArmy();
+
         this._loaded = true;
 
-        this._vm.units = ArmyMock.units;
+        this._vm.units = army.units;
 
-        this._vm.legions = ArmyMock.legions;
+        this._vm.legions = army.legions || {};
 
         for (const unit of Object.values(this._vm.units)) {
             if (unit.troop) {

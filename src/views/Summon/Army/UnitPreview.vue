@@ -1,66 +1,76 @@
 <template>
-  <div v-bar>
-    <div class="dummy-height" @click="show">
-      <div class="height-100 flex flex-column flex-no-wrap">
-        <div class="element-background" :class="element"></div>
+  <Promised class="height-100" :promise="waitForImage">
+    <template v-slot:combined="{ isPending, isDelayOver }">
+      <loading-screen :loading="isPending && isDelayOver" :opacity="0.4"></loading-screen>
+      <div v-bar>
+        <div class="dummy-height">
+          <div class="height-100 flex flex-column flex-no-wrap">
+            <div class="element-background" :class="element"></div>
 
-        <div class="width-100 flex flex-center padding-2 height-45">
-          <img class="unit-image" :src="$game.armyDB.getIcon(unit)" />
-        </div>
+            <div class="width-100 flex flex-center padding-2 height-45">
+              <img class="unit-image" :src="$game.armyDB.getIcon(unit)" @load="handleImageLoaded" />
+            </div>
 
-        <Flipper
-          class="unit-preview-title width-100 margin-bottom-2"
-          :flipKey="flipId"
-          :spring="{
+            <Flipper
+              class="unit-preview-title width-100 margin-bottom-2"
+              :flipKey="flipId"
+              :spring="{
             stiffness: 400,
             damping: 40
         }"
-          :staggerConfig="{
+              :staggerConfig="{
             ability: {
                 speed: 1
             }
         }"
-        >
-          <Flipped flipId="title" opacity translate>
-            <span
-              class="preview-title font-size-30 font-weight-900"
-              :class="{'show': showAnimation}"
-            >{{name}}</span>
-          </Flipped>
+            >
+              <Flipped flipId="title" opacity translate>
+                <span
+                  class="preview-title font-size-30 font-weight-900"
+                  :class="{'show': showAnimation}"
+                >{{name}}</span>
+              </Flipped>
 
-          <Flipped flipId="flag" opacity translate>
-            <Flag
-              class="flag"
-              :class="{'show': showAnimation}"
-              :weaponType="weaponType"
-              :element="element"
-            ></Flag>
-          </Flipped>
-          <UnitStars ref="stars" class="stars" :stars="stars" size="big"></UnitStars>
-        </Flipper>
+              <Flipped flipId="flag" opacity translate>
+                <Flag
+                  class="flag"
+                  :class="{'show': showAnimation}"
+                  :weaponType="weaponType"
+                  :element="element"
+                ></Flag>
+              </Flipped>
+              <UnitStars ref="stars" class="stars" :stars="stars" size="big"></UnitStars>
+            </Flipper>
 
-        <Flipper
-          :flipKey="flipId"
-          :spring="{
-            stiffness: 400,
-            damping: 40
-        }"
-          class="full-flex font-size-22 preview-abilities relative"
-        >
-          <div class="bg absolute-stretch flex flex-column">
-            <div class="pattern"></div>
-            <div class="fade"></div>
+            <Flipper
+              :flipKey="flipId"
+              :spring="{
+                stiffness: 400,
+                damping: 40
+              }"
+              class="full-flex font-size-22 preview-abilities relative"
+            >
+              <div class="bg absolute-stretch flex flex-column">
+                <div class="pattern"></div>
+                <div class="fade"></div>
+              </div>
+
+              <Flipped
+                stagger="ability"
+                :flipId="a.id.toString()"
+                v-for="a in abilities"
+                :key="a.id"
+              >
+                <div class="ability-panel width-100" :class="{'show': showAnimation}">
+                  <span v-html="getAbilityDesc(a)"></span>
+                </div>
+              </Flipped>
+            </Flipper>
           </div>
-
-          <Flipped stagger="ability" :flipId="a.id.toString()" v-for="a in abilities" :key="a.id">
-            <div class="ability-panel width-100" :class="{'show': showAnimation}">
-              <span v-html="getAbilityDesc(a)"></span>
-            </div>
-          </Flipped>
-        </Flipper>
+        </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </Promised>
 </template>
 
 <script>
@@ -69,29 +79,54 @@ import UnitStars from "../../Army/UnitStars.vue";
 import Flag from "../../Army/Flag.vue";
 import anime from "animejs/lib/anime.es.js";
 import { Flipper, Flipped } from "vue-flip-toolkit";
+import { Promised } from "vue-promised";
+import LoadingScreen from "@/components/LoadingScreen.vue";
+
+const UnitImageSelector = ".unit-image";
 
 export default {
   mixins: [UnitGetter],
   props: ["unit"],
-  components: { UnitStars, Flag, Flipped, Flipper },
+  components: { UnitStars, Flag, Flipped, Flipper, LoadingScreen, Promised },
   data: () => ({
     showAnimation: false,
-    flipId: 0
+    flipId: 0,
+    waitForImage: null
   }),
   watch: {
     unit: {
       immediate: true,
       handler() {
-        this.show();
+        this.$nextTick(() => {
+          this.$refs.stars.hide();
+          this.showAnimation = false;
+          anime.remove(UnitImageSelector);
+          anime.set(UnitImageSelector, { opacity: 0 });
+
+          this.waitForImage = new Promise((resolve, reject) => {
+            this.resolve = resolve;
+
+            this.resolveTimeout = setTimeout(() => {
+              this.resolveTimeout = null;
+              resolve();
+              this.animate();
+            }, 2000);
+          });
+        });
       }
     }
   },
   methods: {
-    show() {
-      this.showAnimation = false;
-      this.$nextTick(() => {
-        this.animate();
-      });
+    handleImageLoaded(p) {
+      if (!this.resolveTimeout) {
+        return;
+      }
+
+      clearTimeout(this.resolveTimeout);
+      this.resolveTimeout = null;
+
+      this.resolve();
+      this.animate();
     },
     async animate() {
       this.showAnimation = true;
@@ -107,7 +142,7 @@ export default {
       });
 
       timeline.add({
-        targets: ".unit-image",
+        targets: UnitImageSelector,
         opacity: {
           value: [0, 1]
         },

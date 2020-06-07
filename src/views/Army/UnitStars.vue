@@ -15,9 +15,12 @@ export default {
     }
   },
   methods: {
-    async show(duration) {
+    hide() {
       anime.remove(".star");
       anime.set(".star", { opacity: 0, scale: 0 });
+    },
+    async show(duration) {
+      this.hide();
 
       anime({
         targets: ".star",

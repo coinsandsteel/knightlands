@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content">
-    <div class="color-panel-2 stats-grid font-size-18">
+    <div class="color-panel-2 stats-grid font-size-20">
       <span class="left">Damage 9999</span>
       <span class="right-arrow"></span>
       <span class="right">Damage 99999</span>
@@ -21,20 +21,19 @@
         :ingridient="ingr"
         :unit="unit"
       />
-      <UnitIngridient
-        v-for="(ingr, idx) in ingridients"
-        :key="idx"
-        :ingridient="ingr"
-        :unit="unit"
-      />
     </div>
 
     <HorizontalItemQuantity
+    v-if="canPromote"
       class="padding-top-2"
       :items="[{item: soulsItem, quantity: soulsRequired}]"
     >
       <CustomButton type="green" class="width-30" @click="promote">Promote</CustomButton>
     </HorizontalItemQuantity>
+
+    <div class="flex flex-center" v-else>
+      <span class="rarity-mythical font-size-22">{{$t('unit-lvl-req', { level: maxLevel })}}</span>
+    </div>
   </div>
 </template>
 
@@ -73,6 +72,9 @@ export default {
     }
   },
   computed: {
+    canPromote() {
+      return this.level == this.maxLevel;
+    },
     starsNext() {
       if (this.stars < 10) {
         return this.stars + 1;

@@ -32,7 +32,7 @@ class Game {
         this.$store = store;
         this._items = new ItemDatabase();
         this._armyDb = new ArmyDB(this._items.itemStatResolver);
-        this._army = new Army(this._armyDb);
+        this._army = new Army(this, this._armyDb);
         this._expTable = PlayerExpTable;
         this._requestInProgress = false;
 
@@ -1402,6 +1402,10 @@ class Game {
     }
 
     // Armies
+    async getArmy() {
+        return (await this._wrapOperation(Operations.GetArmy)).response;
+    }
+
     async getArmySummonInfo() {
         return (await this._wrapOperation(Operations.GetArmySummonInfo)).response;
     }

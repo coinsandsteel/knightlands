@@ -26,13 +26,7 @@ export default {
   components: { UnitItem },
   computed: {
     units() {
-      return this.$game.army
-        .getUnits(this.isTroops)
-        .concat(this.$game.army.getUnits(this.isTroops))
-        .concat(this.$game.army.getUnits(this.isTroops))
-        .concat(this.$game.army.getUnits(this.isTroops))
-        .concat(this.$game.army.getUnits(this.isTroops))
-        .concat(this.$game.army.getUnits(this.isTroops));
+      return this.$game.army.getUnits(this.isTroops);
     }
   }
 };
