@@ -281,6 +281,10 @@ h1 {
     flex-basis: 100%;
 }
 
+.margin-half {
+    margin: 0.5rem;
+}
+
 .margin-right-half {
     margin-right: 0.5rem;
 }
@@ -356,6 +360,10 @@ h1 {
             1px -1px #210028,
             -1px -1px #210028;
     }
+}
+
+.text-center {
+    vertical-align: middle;
 }
 
 .font-shadow {
@@ -479,41 +487,42 @@ h1 {
     bottom: -10rem !important;
     z-index: -1;
     background-color: #245178;
-  
+
     &.water {
-      background: rgba(38, 123, 143, 1);
-      background: linear-gradient(
-        180deg,
-        rgba(32, 15, 32, 1) 0%,
-        rgba(38, 123, 143, 1) 100%
-      );
+        background: rgba(38, 123, 143, 1);
+        background: linear-gradient(180deg,
+                rgba(32, 15, 32, 1) 0%,
+                rgba(38, 123, 143, 1) 100%);
     }
-  
+
     &.earth {
-      background: rgb(79, 43, 32, 1);
-      background: linear-gradient(
-        180deg,
-        rgba(32, 15, 32, 1) 0%,
-        rgba(79, 43, 32, 1) 100%
-      );
+        background: rgb(79, 43, 32, 1);
+        background: linear-gradient(180deg,
+                rgba(32, 15, 32, 1) 0%,
+                rgba(79, 43, 32, 1) 100%);
     }
+
     &.darkness {
-      background: rgb(108, 29, 143, 1);
-      background: linear-gradient(
-        180deg,
-        rgba(32, 15, 32, 1) 0%,
-        rgba(108, 29, 143, 1) 100%
-      );
+        background: rgb(108, 29, 143, 1);
+        background: linear-gradient(180deg,
+                rgba(32, 15, 32, 1) 0%,
+                rgba(108, 29, 143, 1) 100%);
     }
+
     &.light {
-      background: rgb(143, 104, 54, 1);
-      background: linear-gradient(
-        180deg,
-        rgba(32, 15, 32, 1) 0%,
-        rgba(143, 104, 54, 1) 100%
-      );
+        background: rgb(143, 104, 54, 1);
+        background: linear-gradient(180deg,
+                rgba(32, 15, 32, 1) 0%,
+                rgba(143, 104, 54, 1) 100%);
     }
-  }
+
+    &.physical {
+        background: rgb(143, 104, 54, 1);
+        background: linear-gradient(180deg,
+                rgba(32, 15, 32, 1) 0%,
+                rgba(164, 175, 204, 1) 100%);
+    }
+}
 
 .z-index-1 {
     z-index: 1;
@@ -536,7 +545,6 @@ h1 {
     background-size: contain;
     width: @iconSize;
     height: @iconSize;
-    transition: all 0.2s ease;
 
     &.active {
         background-image: url("../assets/ui/icon_star.png");
@@ -546,6 +554,16 @@ h1 {
         background-image: url("../assets/ui/troops_mini_star1.png");
         width: @iconSize * 0.75;
         height: @iconSize * 0.75;
+
+        &.active {
+            background-image: url("../assets/ui/troops_mini_star.png");
+        }
+    }
+
+    &.mini {
+        background-image: url("../assets/ui/troops_mini_star1.png");
+        width: @iconSize * 0.65;
+        height: @iconSize * 0.65;
 
         &.active {
             background-image: url("../assets/ui/troops_mini_star.png");
@@ -939,12 +957,12 @@ h1 {
     background-color: #343e52;
 }
 
-.panel-light {
+.panel-popup {
     border-image: url("../assets/ui/popup_bg.png") round;
-    border-image-slice: 11 fill;
-    border-image-width: 0.6rem;
-    border-style: solid;
-    background-color: #585975;
+    border-image-slice: 30 30 30 30 fill;
+    border-image-width: 20px 20px 20px 20px;
+    border-image-outset: 0px 0px 0px 0px;
+    border-image-repeat: stretch stretch;
 }
 
 .panel-dark {
@@ -1051,11 +1069,11 @@ h1 {
     background-image: url("../assets/ui/button_close.png");
     background-repeat: no-repeat;
     background-size: contain;
-    width: 2.6875rem;
-    height: 2.6875rem;
+    width: 4rem;
+    height: 4rem;
     position: absolute;
-    right: 1rem;
-    top: 1rem;
+    right: 2rem;
+    top: 2rem;
     cursor: pointer;
     z-index: 1;
 }

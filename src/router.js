@@ -236,9 +236,9 @@ const router = new Router({
               component: () => import("./views/Summon/Army/ArmySummonMenu.vue")
             },
             {
-              path: "circle/:type",
+              path: "gate",
               name: "army-summon",
-              component: () => import("./views/Summon/Army/ArmySummonCircle.vue"),
+              component: () => import("./views/Summon/Army/ArmySummonGate.vue"),
               props: true
             }
           ]

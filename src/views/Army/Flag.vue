@@ -1,5 +1,5 @@
 <template>
-  <div class="relative item-badge-grid">
+  <div class="item-badge-grid">
     <div class="element-flag" :class="element"></div>
     <span :class="`weapon-badge ${weaponType}`" class="flag-badge grid-center-self"></span>
   </div>
@@ -47,6 +47,10 @@ export default {
 
   &.water {
     background-image: url("/images/ui/troops_mini_ribbon_water.png");
+  }
+
+  &.physical {
+    background-image: url("/images/ui/troops_mini_ribbon_physical.png");
   }
 }
 </style>

@@ -661,7 +661,7 @@
     "objects_wbishop": "",
     "objects_wtower": "",
     "objects_wqueen": "",
-    "clockwork": "",
+    "clockwork": "clockwork",
     "clockwork_king": "",
     "clockwork_mini_c": "",
     "clockwork_knight_b": "",
@@ -2832,6 +2832,7 @@
     "unit-summon-item": "Summon <span class='item-icon' style='{icon}'></span> x{count}",
     "legion-slot-change-title": "Confirm unit change",
     "legion-slot-change-desc": "Do you want to save changes?",
+    "free-summon-timer": "Free summon in {timer}",
     "increasedDamageWhenElementMatch": "{damage}% Increased <span class='icon-unit-{element} big'></span> troops damage",
     "increasedDamageWhenWeaponMatch": "{damage}% Increased <span class='icon-{weapon} big'></span> troops damage",
     "increasedDamageWhenTypeMatch": "{damage}% Increased {unitType} troops damage",
@@ -2861,5 +2862,7 @@
     "extraDamagePerGeneralUnitTypeOwned": "extraDamagePerGeneralUnitTypeOwned",
     "extraDamagePerTroopUnitTypeOwned": "extraDamagePerTroopUnitTypeOwned",
     "extraDamagePerGeneralStarsOwned": "extraDamagePerGeneralStarsOwned",
-    "extraDamagePerTroopStarsOwned": "extraDamagePerTroopStarsOwned"
+    "extraDamagePerTroopStarsOwned": "extraDamagePerTroopStarsOwned",
+    "extraDamagePerTroopTypeUsed": "Extra <span class='rarity-mythical'>{value}</span> damage per <span class='rarity-epic'>{unitType}</span> troop in legion",
+    "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% damage when at least <span class='rarity-epic'>{unitCount} {unitType}</span> troops in legion"
 }

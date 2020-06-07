@@ -15,7 +15,10 @@
                 <ArmySummonElement
                   :info="basicSummon"
                   :summonType="ArmySummonType.Normal"
-                  @freeSummon="freeSummon"
+                  :fetchRequest="fetchRequest"
+                  @summon="summon"
+                  @purchaseSummon="purchaseSummon"
+                  @continuePurchase="continuePurchase"
                 />
               </div>
             </div>
@@ -25,7 +28,14 @@
               <div class="side-grid">
                 <img src="../../../assets/backgrounds/advanced_summon.png" />
 
-                <ArmySummonElement :info="advancedSummon" :summonType="ArmySummonType.Advanced" />
+                <ArmySummonElement
+                  :info="advancedSummon"
+                  :summonType="ArmySummonType.Advanced"
+                  :fetchRequest="fetchRequest"
+                  @summon="summon"
+                  @purchaseSummon="purchaseSummon"
+                  @continuePurchase="continuePurchase"
+                />
               </div>
             </div>
           </div>
@@ -43,38 +53,46 @@ import Title from "@/components/Title.vue";
 import ArmySummonMeta from "@/army_summon_meta";
 import ArmySummonType from "@/../knightlands-shared/army_summon_type";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-
-const BasicSummon = "basic";
-const AdvancedSummon = "advanced";
+import PaymentHandler from "@/components/PaymentHandler.vue";
+import Events from "@/../knightlands-shared/events";
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, PaymentHandler],
   created() {
     this.title = "army-gate";
+    this.$options.paymentEvents = [Events.UnitSummoned];
   },
   components: { Title, ArmySummonElement, Promised, LoadingScreen },
   data: () => ({
     ArmySummonType,
-    tabs: [
-      { title: "basic-summon", value: BasicSummon },
-      { title: "advanced-summon", value: AdvancedSummon }
-    ],
-    currentTab: BasicSummon,
     basicSummon: {},
     advancedSummon: {},
-    request: null
+    request: null,
+    fetchRequest: null
   }),
   mounted() {
     this.update();
+    this.fetchPaymentStatus();
   },
   methods: {
-    switchTab(tab) {
-      this.currentTab = tab;
+    async fetchPaymentStatus() {
+      console.log("fetchPaymentStatus")
+      this.fetchRequest = this.$game.fetchArmySummonStatus();
+      const r = await this.fetchRequest;
+      console.log(r)
     },
-    async freeSummon(summonType) {
-      this.request = this.$game.summonUnits(null, summonType);
+    async purchaseSummon(summonType, iap) {
+      console.log(iap)
+      this.request = this.$game.summonUnits(iap, summonType);
+      this.purchaseRequest(this.request);
+    },
+    async summon(summonType, count) {
+      console.log(summonType, count)
+      this.request = this.$game.summonUnits(null, summonType, count);
+
       let results = await this.request;
-      console.log(results);
+      this.showSummoning(results);
+      this.update();
     },
     async update() {
       this.basicSummon = { meta: ArmySummonMeta.normalSummon, lastSummon: 0 };
@@ -84,19 +102,24 @@ export default {
       };
 
       const info = await this.$game.getArmySummonInfo();
-      console.log(info);
       if (info) {
         this.$set(
           this.basicSummon,
           "lastSummon",
-          info.lastSummon[ArmySummonType.Normal]
+          info.lastSummon[ArmySummonType.Normal] || 0
         );
         this.$set(
           this.advancedSummon,
           "lastSummon",
-          info.lastSummon[ArmySummonType.Advanced]
+          info.lastSummon[ArmySummonType.Advanced] || 0
         );
       }
+    },
+    handlePaymentComplete(iap, context) {
+      this.showSummoning(context);
+    },
+    showSummoning(units) {
+      this.$router.push({ name: "army-summon", params: { units } })
     }
   }
 };

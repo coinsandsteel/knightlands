@@ -1,63 +1,68 @@
 <template>
   <div class="flex flex-column flex-end padding-bottom-2">
-    <PromisedButton
-      v-if="freeSummonTimer.timeLeft <= 0"
-      type="yellow"
-      @click="freeSummon"
-    >{{ $t("free-summon") }}</PromisedButton>
-
-    <CustomButton
-      type="yellow"
-      v-else-if="summonType == ArmySummonType.Normal"
-      @click="showPopup"
-    >{{$t("basic-summon")}}</CustomButton>
-    <CustomButton type="yellow" v-else @click="showPopup">{{$t("advanced-summon")}}</CustomButton>
+    <FreeSummon :info="info" @summon="summon(1)">
+      <CustomButton
+        type="yellow"
+        v-if="summonType == ArmySummonType.Normal"
+        @click="showPopup"
+      >{{$t("basic-summon")}}</CustomButton>
+      <CustomButton type="yellow" v-else @click="showPopup">{{$t("advanced-summon")}}</CustomButton>
+    </FreeSummon>
   </div>
 </template>
 
 <script>
-import PromisedButton from "@/components/PromisedButton.vue";
 import CustomButton from "@/components/Button.vue";
 import ArmySummonType from "@/../knightlands-shared/army_summon_type";
-import Timer from "@/timer";
+import FreeSummon from "./FreeSummon.vue";
 
 import ArmySummonPopup from "./ArmySummonPopup.vue";
 import { create } from "vue-modal-dialogs";
-const SummonPopup = create(ArmySummonPopup, "info", "summonType");
+const SummonPopup = create(
+  ArmySummonPopup,
+  "info",
+  "summonType",
+  "fetchRequest",
+  "summonCb",
+  "purchaseSummonCb",
+  "continuePurchaseCb"
+);
 
 export default {
-  props: ["info", "summonType"],
-  components: { CustomButton, PromisedButton },
+  props: ["info", "summonType", "fetchRequest"],
+  components: { CustomButton, FreeSummon },
   data: () => ({
-    ArmySummonType,
-    freeSummonTimer: new Timer(true)
+    ArmySummonType
   }),
   watch: {
-    info: {
-      immediate: true,
-      handler() {
-        this.update();
+    fetchRequest() {
+      if (this.popup) {
+        this.popup.fetchRequest = this.fetchRequest;
       }
     }
   },
   methods: {
-    update() {
-      if (!this.info.meta) {
-        return;
-      }
-
-      if (this.info.meta.freeOpens > 0) {
-        let resetCycle = 86400000 / this.info.meta.freeOpens;
-        let timeUntilNextFreeOpening = this.$game.now - this.info.lastSummon;
-        this.freeSummonTimer.timeLeft =
-          (resetCycle - timeUntilNextFreeOpening) / 1000;
-      }
+    async showPopup() {
+      let popup = SummonPopup(
+        this.info,
+        this.summonType,
+        this.fetchRequest,
+        this.summon,
+        this.purchaseSummon,
+        this.continuePurchase
+      );
+      
+      this.popup = await popup.getInstance();
     },
-    showPopup() {
-      SummonPopup(this.info, this.summonType);
+    summon(count) {
+      this.$emit("summon", this.summonType, count);
     },
-    freeSummon() {
-      this.$emit("freeSummon", this.summonType);
+    purchaseSummon(iap) {
+      console.log(iap);
+      this.$emit("purchaseSummon", this.summonType, iap);
+    },
+    continuePurchase(payload) {
+      this.$emit("continuePurchase", payload);
     }
   }
 };

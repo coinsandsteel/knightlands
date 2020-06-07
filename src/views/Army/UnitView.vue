@@ -67,32 +67,16 @@
 import UnitTitle from "./UnitTitle.vue";
 import UnitGetter from "./UnitGetterMixin.vue";
 import UnitStars from "./UnitStars.vue";
-import SkewedButton from "@/components/SkewedButton.vue";
 import CustomButton from "@/components/Button.vue";
-
-import ArmyUnitTypes from "@/army_unit_types";
 
 export default {
   props: ["unit", "showEquipment", "showSelect"],
   mixins: [UnitGetter],
-  components: { UnitTitle, UnitStars, SkewedButton, CustomButton },
+  components: { UnitTitle, UnitStars, CustomButton },
   data: () => ({
     showAbilities: false
   }),
   methods: {
-    getAbilityDesc(ability) {
-      const levelValue = this.$game.armyDB.getAbilityLevelValue(
-        this.unit,
-        ability.id
-      );
-
-      const localisationParams = { ...levelValue, ...ability };
-      if (ability.unitType) {
-        localisationParams.unitType = this.$t(ArmyUnitTypes[ability.unitType]);
-      }
-
-      return this.$t(ability.type, localisationParams);
-    },
     goToEquipment() {
       this.$router.push({
         name: "unit-equipment",

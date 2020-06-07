@@ -11,7 +11,7 @@
                 :key="index"
                 :inventory="inventory"
                 :hint="hint"
-                :selected="selected[item.id]"
+                :selected="selected[item.id] || selectedItem == item.id"
                 :class="lootClasses"
                 @hint="handleHint(item, index)"
                 v-bind="lootProps"
@@ -54,7 +54,8 @@ export default {
     selectSlots: Boolean,
     multiSelect: Boolean,
     lootProps: Object,
-    lootClasses: String
+    lootClasses: String,
+    selectedItem: Number
   },
   watch: {
     items() {

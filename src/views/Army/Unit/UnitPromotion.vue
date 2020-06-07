@@ -21,6 +21,12 @@
         :ingridient="ingr"
         :unit="unit"
       />
+      <UnitIngridient
+        v-for="(ingr, idx) in ingridients"
+        :key="idx"
+        :ingridient="ingr"
+        :unit="unit"
+      />
     </div>
 
     <HorizontalItemQuantity

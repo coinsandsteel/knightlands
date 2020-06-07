@@ -92,6 +92,7 @@ class Game {
         this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
         this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
         this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
+        this._socket.on(Events.UnitSummoned, this._handleArmySummoned.bind(this));
         this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
         this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
         this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
@@ -473,6 +474,10 @@ class Game {
 
     _handleChestOpened(data) {
         this._vm.$emit(Events.ChestOpened, data);
+    }
+
+    _handleArmySummoned(data) {
+        this._vm.$emit(Events.UnitSummoned, data);
     }
 
     _handleItemEnchanted(data) {

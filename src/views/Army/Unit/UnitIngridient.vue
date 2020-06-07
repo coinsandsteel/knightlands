@@ -1,5 +1,5 @@
 <template>
-  <div class="outer unit-ingr relative margin-right-1" @click="$emit('click', unit)">
+  <div class="outer unit-ingr relative margin-right-half" @click="$emit('click', unit)">
     <div class="inner" v-if="unit && ingridient">
       <div v-if="ingridient.copy" class="bg absolute-stretch" :style="unitImage"></div>
       <div v-else class="bg absolute-stretch unit-bg-any"></div>
@@ -7,8 +7,8 @@
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-ingr-content"
       >
         <div class="unit-ingr-shadow absolute-stretch"></div>
-        <UnitStars class="stars width-100 relative" :stars="ingridient.stars" size="small" />
-        <span v-if="targetElement" :class="`icon-unit-${targetElement}`"></span>
+        <UnitStars class="stars width-100 relative" :stars="ingridient.stars" size="mini" />
+        <Flag :element="element" />
 
         <span
           class="width-100 font-size-18 font-weight-900 unit-ingr-lvl center-transform"
@@ -21,6 +21,7 @@
 <script>
 import UnitGetter from "./../UnitGetterMixin.vue";
 import UnitStars from "./../UnitStars.vue";
+import Flag from "../Flag.vue";
 
 export default {
   props: ["unit", "ingridient"],
@@ -28,7 +29,7 @@ export default {
     current: 0
   }),
   mixins: [UnitGetter],
-  components: { UnitStars },
+  components: { UnitStars, Flag },
   computed: {
     targetElement() {
       if (this.ingridient.sameElement) {
@@ -47,17 +48,18 @@ export default {
 <style lang="less" scoped>
 .unit-ingr-content {
   display: grid;
-  grid-template-columns: 30% 1fr;
+  grid-template-columns: 25% 1fr;
   grid-template-rows: 20% 1fr 20%;
   align-items: stretch;
 
   & .item-badge-grid {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: ~"1/3";
+    justify-self: start;
   }
 
   & .stars {
-    grid-column: ~"1/3";
+    grid-column: ~"2/3";
     grid-row: 1;
   }
 }
@@ -93,8 +95,8 @@ export default {
 }
 
 .unit-ingr {
-  height: 10rem;
-  width: 10rem;
+  height: 12rem;
+  width: 12rem;
 
   background-image: url("../../../assets/ui/troops_mini_bg.png");
   background-repeat: no-repeat;

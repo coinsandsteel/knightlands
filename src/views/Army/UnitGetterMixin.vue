@@ -83,6 +83,21 @@ export default {
 
       return 0;
     }
+  },
+  methods: {
+    getAbilityDesc(ability) {
+      const levelValue = this.$game.armyDB.getAbilityLevelValue(
+        this.unit,
+        ability.id
+      );
+
+      const localisationParams = { value: levelValue, ...ability };
+      if (ability.unitType) {
+        localisationParams.unitType = this.$t(ArmyUnitTypes[ability.unitType]);
+      }
+
+      return this.$t(ability.type, localisationParams);
+    }
   }
 };
 </script>

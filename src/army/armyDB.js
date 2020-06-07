@@ -54,7 +54,7 @@ export default class ArmyDB {
 
     getAbilities(unit) {
         const abilities = [];
-        const abilitiesRecords = unit.troop ? armyAbilities.generals : armyAbilities.generals;
+        const abilitiesRecords = unit.troop ? armyAbilities.troops : armyAbilities.generals;
         for (const abilityId of unit.abilities) {
             abilities.push(abilitiesRecords[abilityId]);
         }

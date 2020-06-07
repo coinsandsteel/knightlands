@@ -15,6 +15,7 @@
       </keep-alive>
 
       <div class="footer flex-item-center">
+        <div class="bg"></div>
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
         <portal-target class="footer-container flex flex-end width-100" name="footer"></portal-target>
         <div class="footer-container flex flex-end full-flex">
@@ -288,6 +289,8 @@ export default {
 <style lang="less" scoped>
 @import (reference) "./style/common.less";
 
+@footerColor: #245178;
+
 .overlay {
   position: absolute;
   top: 0;
@@ -367,6 +370,20 @@ export default {
   justify-content: flex-start;
   align-items: center;
   padding: 0 1rem @footerBottomPadding 1rem;
+  background-color: @footerColor;
+  
+  & > * {
+    position: relative;
+  }
+
+  & .bg {
+    position: absolute;
+    top: -2rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+  }
 }
 
 .content {
@@ -376,6 +393,7 @@ export default {
 
 .root-menu {
   justify-content: space-between;
+  background-color: @footerColor;
 }
 
 #nav {
@@ -529,6 +547,7 @@ a:visited {
 }
 
 .footer-container {
+  height: 100%;
   * > {
     margin-right: 0.3rem;
   }

@@ -1,5 +1,9 @@
 <template>
-  <div class="flex mask-hidden flex-center width-100 height-100" @click.self="handleClose" :class="{'mask': !hideMask}">
+  <div
+    class="flex mask-hidden flex-center width-100 height-100"
+    @click.self="handleClose"
+    :class="{'mask': !hideMask}"
+  >
     <div class="content flex-no-wrap flex flex-column flex center" :class="[type, contentClass]">
       <div
         class="margin-top-3 flex flex-center font-size-25 font-weight-700 margin-bottom-2 font-outline"
@@ -10,15 +14,18 @@
       </div>
 
       <div v-if="!hideCloseBtn" class="close-btn" @click="handleClose"></div>
-      
+
       <div v-if="disableScroll">
         <slot name="content"></slot>
       </div>
 
-      <div v-bar="{
+      <div
+        v-bar="{
           preventParentScroll: true,
           scrollThrottle: 30
-      }" v-else>
+      }"
+        v-else
+      >
         <div class="scrollable-content">
           <slot name="content"></slot>
         </div>
@@ -39,7 +46,7 @@ export default {
     hideCloseBtn: Boolean,
     type: {
       type: String,
-      default: "panel-light"
+      default: "panel-popup"
     },
     contentClass: String,
     hideMask: Boolean,
@@ -72,8 +79,8 @@ export default {
 
 .content {
   position: relative;
-  padding-top: 1rem;
-  width: 90%;
+  padding: 2rem 1.1rem 1rem 1.1rem;
+  width: 95%;
 }
 
 .footer {
