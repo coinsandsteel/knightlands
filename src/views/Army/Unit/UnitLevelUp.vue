@@ -10,8 +10,8 @@
       <span class="right">{{$t("unit-lvl", { lvl: level + 1 })}}</span>
     </div>
 
-    <HorizontalItemQuantity class="padding-top-2" :items="levelingItems">
-      <CustomButton type="green" class="width-30" @click="levelUp">{{$t("unit-lvl-up")}}</CustomButton>
+    <HorizontalItemQuantity ref="ingridients" class="padding-top-2" :items="levelingItems">
+      <CustomButton :disabled="!enoughIngridients" type="green" class="width-30" @click="levelUp">{{$t("unit-lvl-up")}}</CustomButton>
     </HorizontalItemQuantity>
   </div>
 </template>
@@ -27,10 +27,20 @@ import GeneralsMeta from "@/generals_meta";
 export default {
   mixins: [UnitGetterMixin, PromptMixin],
   props: ["unit"],
-  data: () => ({}),
+  data: () => ({
+    enoughIngridients: true
+  }),
   components: {
     HorizontalItemQuantity,
     CustomButton
+  },
+  watch: {
+    unit: {
+      immediate: true,
+      handler() {
+        this.updateEnoughIngridients();
+      }
+    }
   },
   computed: {
     meta() {
@@ -62,6 +72,14 @@ export default {
     async levelUp() {
       const newUnitData = await this.$game.levelUpUnit(this.unit.id);
       this.$game.army.getUnit(this.unit.id).level = newUnitData.level;
+      this.updateEnoughIngridients();
+    },
+    updateEnoughIngridients() {
+      if (!this.$refs.ingridients) {
+        this.enoughIngridients = false;
+      } else {
+        this.enoughIngridients = this.$refs.ingridients.enoughItems;
+      }
     }
   }
 };

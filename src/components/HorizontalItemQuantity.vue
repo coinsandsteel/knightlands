@@ -21,6 +21,17 @@ export default {
     notEnoughItems(template, quantity) {
       return !this.$game.inventory.hasItemByTemplate(template, quantity);
     }
+  },
+  computed: {
+    enoughItems() {
+      for (const item of this.items) {
+        if (this.notEnoughItems(item.item, item.quantity)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
   }
 };
 </script>
