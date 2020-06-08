@@ -11,7 +11,7 @@
     </div>
 
     <HorizontalItemQuantity class="padding-top-2" :items="levelingItems">
-      <CustomButton type="green" class="width-30" @click="levelUp">Level Up</CustomButton>
+      <CustomButton type="green" class="width-30" @click="levelUp">{{$t("unit-lvl-up")}}</CustomButton>
     </HorizontalItemQuantity>
   </div>
 </template>
@@ -60,7 +60,8 @@ export default {
   },
   methods: {
     async levelUp() {
-        
+      const newUnitData = await this.$game.levelUpUnit(this.unit.id);
+      this.$game.army.getUnit(this.unit.id).level = newUnitData.level;
     }
   }
 };

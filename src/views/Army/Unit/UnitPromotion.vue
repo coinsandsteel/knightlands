@@ -31,8 +31,8 @@
       <CustomButton type="green" class="width-30" @click="promote">Promote</CustomButton>
     </HorizontalItemQuantity>
 
-    <div class="flex flex-center" v-else>
-      <span class="rarity-mythical font-size-22">{{$t('unit-lvl-req', { level: maxLevel })}}</span>
+    <div class="flex flex-center margin-top-2" v-else>
+      <span class="rarity-mythical font-size-25">{{$t('unit-lvl-req', { level: maxLevel })}}</span>
     </div>
   </div>
 </template>

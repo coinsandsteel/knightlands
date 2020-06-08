@@ -103,7 +103,7 @@ class ItemDatabase {
       slot == EquipmentSlots.Gloves ||
       slot == EquipmentSlots.Helmet;
   }
-
+  
   getEquipmentType(id) {
     return ItemTemplates[id].equipmentType;
   }

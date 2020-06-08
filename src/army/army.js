@@ -76,19 +76,23 @@ export default class Army {
         }
 
         let army = await this._game.getArmy();
-
         this._loaded = true;
 
-        this._vm.units = army.units;
+        const unitsDict = {};
+        let i = 0;
+        const length = army.units.length;
+        for (; i < length; ++i) {
+            const unit = army.units[i];
+            unitsDict[unit.id] = unit;
 
-        this._vm.legions = army.legions || {};
-
-        for (const unit of Object.values(this._vm.units)) {
             if (unit.troop) {
                 this._vm.troops.push(unit);
             } else {
                 this._vm.generals.push(unit);
             }
         }
+
+        this._vm.units = unitsDict;
+        this._vm.legions = army.legions || {};
     }
 }

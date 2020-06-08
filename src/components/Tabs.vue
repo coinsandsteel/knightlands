@@ -65,44 +65,17 @@ export default {
       required: false,
       default: "disabled-tabs__item_active"
     },
-    lineClass: {
-      type: String,
-      required: false,
-      default: "disabled-tabs__active-line"
-    },
     append: Boolean,
     replace: Boolean
   },
-  watch: {
-    currentTab(newCurrentTab) {
-      if (this.newTab === newCurrentTab) return;
-      this.moveActiveLine(newCurrentTab);
-    },
-    updated() {
-      this.moveActiveLine(this.currentTab);
-    }
-  },
   data: () => ({
-    activeLineWidth: 0,
-    activeLineOffset: 0,
     newTab: ""
   }),
   methods: {
     handleClick(value) {
       this.$emit("onClick", value);
-      this.moveActiveLine(value);
       this.newTab = value;
-    },
-    moveActiveLine(newValue) {
-      // if (!this.currentTab) return;
-      // const element = this.$refs[newValue][0];
-      // if (!element) return;
-      // this.activeLineWidth = element.clientWidth;
-      // this.activeLineOffset = element.offsetLeft;
     }
-  },
-  mounted() {
-    this.moveActiveLine(this.currentTab);
   }
 };
 </script>

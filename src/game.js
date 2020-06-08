@@ -1417,6 +1417,10 @@ class Game {
     async fetchArmySummonStatus() {
         return (await this._wrapOperation(Operations.FetchArmySummonStatus)).response;
     }
+
+    async levelUpUnit(unitId) {
+        return (await this._wrapOperation(Operations.LevelUpArmyUnit, { unitId })).response;
+    }
 }
 
 export default Game;

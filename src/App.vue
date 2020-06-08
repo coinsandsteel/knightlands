@@ -325,8 +325,6 @@ export default {
     pointer-events: none;
 
     min-width: 20rem;
-    // padding-top: @sectionPaddingTop;
-    // padding-right: @sectionPaddingRight;
     padding-left: 1.2rem;
     color: #281326;
     position: relative;
@@ -352,7 +350,6 @@ export default {
   width: @backButtonWidth;
   height: @backButtonHeight;
   // .mobile({width: @backButtonWidth/2; height: @backButtonHeight / 2});
-  bottom: @footerBottomPadding;
   left: 1.2rem;
   background: url("./assets/ui/button_back.png") no-repeat;
   background-size: contain;
@@ -369,20 +366,11 @@ export default {
   position: relative;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 1rem @footerBottomPadding 1rem;
   background-color: @footerColor;
+  padding-bottom: @footerBottomPadding;
   
   & > * {
     position: relative;
-  }
-
-  & .bg {
-    position: absolute;
-    top: -2rem;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: -1;
   }
 }
 

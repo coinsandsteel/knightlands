@@ -2834,6 +2834,7 @@
     "legion-slot-change-desc": "Do you want to save changes?",
     "free-summon-timer": "Free summon in {timer}",
     "unit-lvl-req": "Level required: {level}",
+    "unit-lvl-up": "Level Up",
     "increasedDamageWhenElementMatch": "{damage}% Increased <span class='icon-unit-{element} big'></span> troops damage",
     "increasedDamageWhenWeaponMatch": "{damage}% Increased <span class='icon-{weapon} big'></span> troops damage",
     "increasedDamageWhenTypeMatch": "{damage}% Increased {unitType} troops damage",

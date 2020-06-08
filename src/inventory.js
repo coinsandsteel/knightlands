@@ -86,6 +86,15 @@ class Inventory {
         }
     }
 
+    hasItemByTemplate(itemTemplate, quantity) {
+        const template = this._itemDB.getTemplate(itemTemplate);
+        if (template.type == ItemType.Currency) {
+            return this.getCurrency(template.currencyType) >= quantity;
+        }
+
+        return this.getItemsCountByTemplate(itemTemplate) >= quantity;
+    }
+
     hasItem(itemId, quantity) {
         let item = this.getItem(itemId);
         return item && item.count >= quantity;
@@ -103,9 +112,7 @@ class Inventory {
             );
         }
 
-        return ingridient.quantity * mul <= this.getItemsCountByTemplate(
-            ingridient.itemId
-        );
+        return this.hasItemByTemplate(ingridient.itemId, ingridient.quantity * mul);
     }
 
     filterItemsByType(filters, buffer) {
