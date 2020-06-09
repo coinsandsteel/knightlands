@@ -1,9 +1,12 @@
 <template>
   <div
-    class="root padding-half flex flex-column flex-no-wrap font-size-18 flex-center"
+    class="root padding-half font-size-18 relative"
     @click="$emit('click')"
   >
-    <div class="bg width-100 height-100" :class="{'empty': !unit}" :style="unitImage"></div>
+    <div class="bg width-100 height-100" :style="unitImage"></div>
+    <div class="absolute-stretch flex flex-center" v-if="!unit">
+      <div class="empty" ></div>
+    </div>
     <UnitStars class="stars" :stars="stars" size="small" />
     <Flag class="item-badge-grid" :weaponType="weaponType" :element="element" />
     <span class="unit-type font-size-20">{{$t(unitType)}}</span>
@@ -66,10 +69,16 @@ export default {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+  }
 
-    &.empty {
-      background-image: url("../../assets/ui/button_plus_status_bar.png");
-    }
+  & .empty {
+    background-image: url("../../assets/ui/button_plus_training_camp.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    width: 6rem;
+    height: 6rem;
   }
 }
 </style>
