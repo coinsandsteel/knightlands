@@ -7,9 +7,9 @@
       <ArmySummonResults :units="computedUnits"></ArmySummonResults>
     </template>
 
-    <portal to="footer">
+    <portal to="footer" v-if="isActive">
       <div class="flex flex-center width-100 height-100">
-        <span class="font-size-20 uppercase font-weight-900">TAP TO CONTINUE</span>
+        <span class="font-size-20 uppercase font-weight-900">{{$t("continue_from_gacha")}}</span>
       </div>
     </portal>
   </div>

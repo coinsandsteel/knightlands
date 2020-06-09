@@ -117,6 +117,7 @@
       </div>
 
       <portal to="footer" :slim="true" v-if="isActive">
+        <CustomButton type="yellow" @click="goToCraft">{{$t("btn-craft")}}</CustomButton>
         <CustomButton type="grey" @click="showItemFilter">{{$t("btn-filter")}}</CustomButton>
       </portal>
     </template>
@@ -192,6 +193,9 @@ export default {
     }
   },
   methods: {
+    goToCraft() {
+      this.$router.push({ name: "blacksmith" });
+    },
     totalPower() {
       return this.$game.itemsDB.getPower(this.$game.character.maxStats);
     },

@@ -16,8 +16,8 @@
             <UnitStars :stars="stars" size="big" />
           </div>
           <div class="margin-top-1 padding-half panel-input flex flex-center unit-view-param">
-            <span class="font-size-18 margin-right-1">Damage:</span>
-            <span class="font-size-22 font-weight-900">99999</span>
+            <span class="font-size-22 margin-right-1">Damage:</span>
+            <span class="font-size-22 font-weight-900">{{damage}}</span>
           </div>
         </div>
 

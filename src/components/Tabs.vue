@@ -2,7 +2,7 @@
   <nav class="tabs flex flex-no-wrap" :class="wrapperClass">
     <template v-if="router">
       <router-link
-        class="tabs__item"
+        class="tabs__item white-space-no-wrap"
         v-for="tab in tabs"
         :ref="tab.value"
         :key="tab.title"
@@ -17,7 +17,7 @@
     </template>
     <template v-else>
       <div
-        class="tabs__item"
+        class="tabs__item white-space-no-wrap"
         v-for="tab in tabs"
         :ref="tab.value"
         :key="tab.title"

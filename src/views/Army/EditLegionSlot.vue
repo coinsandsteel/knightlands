@@ -3,7 +3,7 @@
     <UnitView :unit="unit" :showEquipment="true" />
     <div class="flex-full relative dummy-height">
       <div class="element-background" :class="element"></div>
-      <UnitInventory :isTroops="isTroops" :selectedUnit="unit" @unitSelect="selectUnit" />
+      <UnitInventory :units="units" :selectedUnit="unit" @unitSelect="selectUnit" />
     </div>
 
     <portal to="footer" v-if="isActive"></portal>
@@ -27,9 +27,7 @@ export default {
     this.$options.useRouterBack = true;
     this.title = "";
   },
-  async mounted() {
-    await this.$game.army.load();
-    this.load();
+  mounted() {
     this.originalUnit = this.unit;
   },
   watch: {
@@ -51,8 +49,8 @@ export default {
 
       return null;
     },
-    isTroops() {
-      return this.type == "troops";
+    units() {
+      return this.$game.army.getUnits(this.type == "troops");
     }
   },
   methods: {

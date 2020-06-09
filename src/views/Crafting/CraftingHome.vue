@@ -35,15 +35,15 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import SkewedButton from "@/components/SkewedButton.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 
 export default {
   mixins: [AppSection],
-  components: { SkewedButton, MenuIcon, MenuIconRow },
+  components: { MenuIcon, MenuIconRow },
   created() {
     this.title = this.$t("window-title-crafting");
+    this.$options.useRouterBack = true;
   },
   methods: {
     goTo(route) {
