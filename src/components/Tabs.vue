@@ -109,7 +109,7 @@ export default {
 .tabs__item {
   flex: 1;
   display: inline-block;
-  color: #8c9093;
+  color: #61a3b3;
   text-decoration: none;
   border: none;
   cursor: pointer;

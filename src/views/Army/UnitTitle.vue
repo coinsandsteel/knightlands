@@ -4,7 +4,7 @@
       <div class="title-tip margin-left-2" :class="element"></div>
       <div class="title-body flex-full flex" :class="element">
         <span class="title-icon" :class="`icon-unit-${element}`"></span>
-        <span class="title-icon" :class="`icon-${weaponType}`"></span>
+        <span class="title-icon" :class="`icon-unit-${weaponType}`"></span>
         <div class="title-text-container flex flex-center font-size-22 font-outline font-weight-900">
             <span class="title-level margin-right-1">{{$t("unit-lvl", { lvl: level })}}</span>
             <span>{{$t(name)}}</span>

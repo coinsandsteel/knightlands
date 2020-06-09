@@ -22,7 +22,7 @@ let filters = {
   ...EquipmentSlots
 };
 
-let defaultFilters = {};
+const defaultFilters = {};
 for (let i in filters) {
   if (i == "Equipment") {
     // equipment is expanded with equipment slots instead
@@ -31,13 +31,20 @@ for (let i in filters) {
   defaultFilters[filters[i]] = true;
 }
 
-const FiltersVersion = 4;
+const defaultUnitFilters = {};
+for (let i = 1; i <= 10; ++i) {
+  defaultUnitFilters[i] = true;
+}
+
+const FiltersVersion = 6;
 
 const store = new Vuex.Store({
   state: {
     itemFiltersVersion: 0,
+    unitFiltersVersion: 0,
     selectedQuestZone: undefined,
     itemFilters: defaultFilters,
+    unitFilters: defaultUnitFilters,
     disenchantFilters: defaultFilters,
     zoneStage: 0,
     blockchain: Blockchains.Tron,
@@ -51,6 +58,11 @@ const store = new Vuex.Store({
     setItemFilters(state, filters) {
       for (let i in filters) {
         Vue.set(state.itemFilters, i, filters[i]);
+      }
+    },
+    setUnitFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.unitFilters, i, filters[i]);
       }
     },
     setDisenchantingFilters(state, filters) {
@@ -90,6 +102,13 @@ const store = new Vuex.Store({
         state.itemFilters = defaultFilters;
       }
       return state.itemFilters;
+    },
+    getUnitFilters: state => {
+      if (state.unitFiltersVersion != FiltersVersion) {
+        state.unitFiltersVersion = FiltersVersion;
+        state.unitFilters = defaultUnitFilters;
+      }
+      return state.unitFilters;
     },
     getZoneStage: state  => {
       return state.zoneStage;

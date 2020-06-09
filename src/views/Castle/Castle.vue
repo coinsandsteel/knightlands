@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-column flex-end flex-items-center relative">
-    <div class="home-art screen-background"></div>
+    <div class="screen-background"></div>
 
     <div class="flex flex-column width-100 flex-items-center flex-space-evenly shift-buttons">
-      <CustomButton type="grey" :big="true" width="30rem" class="margin-bottom-1" :disabled="true">
+      <!-- <CustomButton type="grey" :big="true" width="30rem" class="margin-bottom-1" :disabled="true">
         <div class="flex width-100 flex-justify-start flex-items-center">
           <span class="icon-tower huge"></span>
           <span class="flex-1">Castle Grounds</span>
@@ -20,12 +20,21 @@
           <span class="icon-craft huge"></span>
           <span class="flex-1">{{$t('menu-blacksmith')}}</span>
         </router-link>
-      </CustomButton>
+      </CustomButton>-->
+
+      <MenuIcon icon="icon-units" :to="{name: 'edit-unit'}" :append="true">Units</MenuIcon>
+
+      <MenuIcon icon="icon-legion" :to="{name: 'army-composition'}" :append="true">Legions</MenuIcon>
+
+      <MenuIcon icon="icon-banishment" to="" :append="true">Banishment</MenuIcon>
+
+      <MenuIcon icon="icon-ability-transfer" to="" :append="true">Ability Transfer</MenuIcon>
     </div>
   </div>
 </template>
 
 <script>
+import MenuIcon from "@/components/MenuIcon.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 
@@ -33,7 +42,8 @@ export default {
   name: "castle",
   mixins: [AppSection],
   components: {
-    CustomButton
+    CustomButton,
+    MenuIcon
   },
   created() {
     this.title = this.$t("window-title-castle");
@@ -55,7 +65,7 @@ export default {
 // }
 
 .shift-buttons {
-    padding-bottom: 20%;
+  padding-bottom: 20%;
 }
 </style>
 

@@ -1,7 +1,7 @@
 <template>
   <user-dialog title="filter" @close="$close(computedFilters)">
     <template v-slot:content>
-      <div class="flex width-100 padding-1 flex-space-evenly margin-top-3 font-size-25">
+      <div class="font-size-25 flex width-100 flex-column padding-1 margin-top-3">
         <p-check
           style="p-default p-curve p-thick"
           class="checkbox margin-bottom-1"
@@ -10,16 +10,16 @@
           :checked="allFiltersState()"
           v-model="allFilters"
         >{{$t("all-filters")}}</p-check>
-
-        <p-check
-          v-for="(_, filter) in computedFilters"
-          :key="filter"
-          class="checkbox margin-bottom-1"
-          style="p-default p-curve p-thick"
-          name="check"
-          color="warning"
-          v-model="computedFilters[filter]"
-        >{{$t(filter)}}</p-check>
+        <div class="flex width-100 flex-space-evenly">
+          <p-check
+            v-for="(_, filter) in computedFilters"
+            :key="filter"
+            class="checkbox margin-bottom-1"
+            name="check"
+            color="warning"
+            v-model="computedFilters[filter]"
+          >{{$t(localisedFilter(filter))}}</p-check>
+        </div>
       </div>
     </template>
   </user-dialog>
@@ -30,7 +30,7 @@ import UserDialog from "./UserDialog.vue";
 
 export default {
   components: { UserDialog },
-  props: ["customFilter", "stateFilters", "commitCmd"],
+  props: ["customFilter", "stateFilters", "commitCmd", "filterLocalisation"],
   data() {
     return {
       allFilters: true,
@@ -69,6 +69,13 @@ export default {
     }
   },
   methods: {
+    localisedFilter(filter) {
+      if (this.filterLocalisation) {
+        return this.$t(this.filterLocalisation, { filter });
+      }
+
+      return this.$t(filter);
+    },
     allFiltersState() {
       // if all filters except 'All' are unchecked - uncheck All too
       let uncheckAll = true;

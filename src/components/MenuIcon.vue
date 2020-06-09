@@ -44,8 +44,10 @@ export default {
 }
 
 .title-holder {
+  margin-top: 0.5rem;
   padding: 0.5rem;
   background-color: rgba(21, 19, 44, 0.8);
   border-radius: 3px;
+  min-width: 14rem;
 }
 </style>

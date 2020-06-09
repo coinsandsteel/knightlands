@@ -33,6 +33,23 @@ export default class Army {
         return this._vm.legions[legionIndex];
     }
 
+    filterUnits(troops, filters, buffer) {
+        buffer = buffer || [];
+        buffer.length = 0;
+
+        const units = this.getUnits(troops);
+        let i = 0; 
+        const length = units.length;
+        for (; i < length; ++i) {
+            const unit = units[i];
+            if (filters[this._armyDb.getStars(unit)]) {
+                buffer.push(unit);
+            }
+        }
+
+        return buffer;
+    }
+
     getUnits(troops) {
         if (troops) {
             return this._vm.troops;
@@ -72,7 +89,7 @@ export default class Army {
 
     async load() {
         if (this._loaded) {
-            return;
+            return false;
         }
 
         let army = await this._game.getArmy();
@@ -94,5 +111,7 @@ export default class Army {
 
         this._vm.units = unitsDict;
         this._vm.legions = army.legions || {};
+
+        return true;
     }
 }

@@ -56,6 +56,7 @@ export default {
   },
   created() {
     this.title = this.$t("window-title-army-compose");
+    this.$options.useRouterBack = true;
   },
   methods: {
     editGenerals() {

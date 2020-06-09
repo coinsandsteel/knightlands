@@ -8,8 +8,7 @@ const ItemFilter = CreateDialog(ItemFilterComponent);
 
 export default {
   data: () => ({
-    filteredItems: [],
-    filtersStore: null
+    filteredItems: []
   }),
   created() {
     this.filtersStore = this.$store.getters.getItemFilters;

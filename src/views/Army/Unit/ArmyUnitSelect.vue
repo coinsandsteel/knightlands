@@ -1,20 +1,23 @@
 <template>
-  <Promised class="screen-content" :promised="request">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <LoadingScreen :loading="isPending && isDelayOver" />
-      <div class="element-background" :class="element"></div>
-      <UnitView :unit="unit" :showSelect="true" @select="editUnit" />
-      <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+  <div class="screen-content">
+    <div class="element-background" :class="element"></div>
+    <UnitView :unit="unit" :showSelect="true" @select="editUnit" />
+    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
 
-      <div class="flex-full relative dummy-height">
-        <UnitInventory
-          :isTroops="currentTab == Troops"
-          :selectedUnit="unit"
-          @unitSelect="selectUnit"
-        />
-      </div>
-    </template>
-  </Promised>
+    <div class="flex-full relative dummy-height">
+      <UnitInventory
+        :units="filteredUnits"
+        :selectedUnit="unit"
+        @unitSelect="selectUnit"
+      />
+    </div>
+
+    <portal to="footer">
+      <CustomButton type="grey" @click="showUnitFilters">
+        Filters
+      </CustomButton>
+    </portal>
+  </div>
 </template>
 
 <script>
@@ -22,26 +25,32 @@ import AppSection from "@/AppSection";
 import UnitInventory from "../UnitInventory.vue";
 import Tabs from "@/components/Tabs.vue";
 import UnitView from "../UnitView.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
+import CustomButton from "@/components/Button.vue";
+
+import DoubleBuffer from "@/helpers/DoubleBuffer";
+import ItemFilterComponent from "@/components/ItemFilter.vue";
+import { create as CreateDialog } from "vue-modal-dialogs";
+
+const ItemFilter = CreateDialog(ItemFilterComponent);
 
 const Troops = "troops";
 const Generals = "generals";
 
 export default {
   mixins: [AppSection],
-  components: { UnitInventory, Tabs, UnitView, Promised, LoadingScreen },
+  components: { UnitInventory, Tabs, UnitView, CustomButton },
   created() {
     this.title = "window-select-unit";
+    this.$options.useRouterBack = true;
+    this.filteredUnitsBuffer = new DoubleBuffer();
+    this.filtersStore = this.$store.getters.getUnitFilters;
   },
-  async mounted() {
-    this.request = this.$game.army.load();
-    await this.request;
+  mounted() {
+    this.filterUnits();
   },
   data: () => ({
-    request: null,
     unit: null,
-    Troops,
+    filteredUnits: [],
     tabs: [
       { title: Troops, value: Troops },
       {
@@ -69,6 +78,28 @@ export default {
     },
     editUnit(unit) {
       this.$router.push({ name: "unit-level", params: { unitId: unit.id } });
+    },
+    async showUnitFilters() {
+      const filters = await ItemFilter({
+        stateFilters: this.filtersStore,
+        commitCmd: "setUnitFilters",
+        filterLocalisation: "unit-s-filter"
+      });
+
+      if (filters) {
+        this.filterUnits();
+      }
+    },
+    filterUnits() {
+      this.filteredUnits = this.$game.army.filterUnits(
+        this.currentTab == Troops, 
+        this.filtersStore,
+        this.filteredUnitsBuffer.get()
+      );
+
+      this.filteredUnits.sort((x, y)=>{
+        return this.$game.armyDB.getStars(y) - this.$game.armyDB.getStars(x);
+      });
     }
   }
 };

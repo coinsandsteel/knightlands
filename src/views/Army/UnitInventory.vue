@@ -22,13 +22,8 @@
 import UnitItem from "./UnitItem.vue";
 
 export default {
-  props: ["isTroops", "selectedUnit"],
-  components: { UnitItem },
-  computed: {
-    units() {
-      return this.$game.army.getUnits(this.isTroops);
-    }
-  }
+  props: ["units", "selectedUnit"],
+  components: { UnitItem }
 };
 </script>
 

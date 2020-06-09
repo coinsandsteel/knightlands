@@ -489,11 +489,11 @@ const router = new Router({
         requiresAuth: true
       },
       children: [
-        {
-          path: "",
-          name: "army",
-          component: () => import("./views/Army/ArmyMenu.vue")
-        },
+        // {
+        //   path: "",
+        //   name: "army",
+        //   component: () => import("./views/Army/ArmyMenu.vue")
+        // },
         {
           path: "composition",
           name: "army-composition",
