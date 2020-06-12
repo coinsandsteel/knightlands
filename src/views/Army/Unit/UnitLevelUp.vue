@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content" v-if="unit">
-    <div class="color-panel-2 stats-grid font-size-18">
+    <div class="color-panel-2 stats-grid font-size-20">
       <span class="left">{{$t("unit-dmg", { dmg: damage })}}</span>
       <span class="right-arrow"></span>
       <span class="right">{{$t("unit-dmg", { dmg: nextDamage })}}</span>

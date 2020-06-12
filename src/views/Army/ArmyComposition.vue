@@ -2,7 +2,7 @@
   <div class="screen-content">
     <div class="screen-background"></div>
 
-    <LegionSelector class="margin-bottom-half" />
+    <LegionSelector class="margin-bottom-half" @legionChange="onLegionChanged" />
 
     <div class="dummy-height flex-full">
       <div class="width-100 height-100 dummy-height" v-bar>
@@ -11,20 +11,23 @@
             <Title class="margin-bottom-1" :title="$t('generals')" />
 
             <div class="units-grid width-100">
-              <UnitSlot />
-              <UnitSlot :empty="true" />
-              <UnitSlot :empty="true" />
+              <UnitSlot
+                v-for="slot in generals"
+                :key="slot.id"
+                :unit="slot.unit"
+                @click="goToSlot(slot)"
+              />
             </div>
 
             <Title class="margin-bottom-1 margin-top-1" :title="$t('troops')" />
 
             <div class="units-grid width-100">
-              <UnitSlot />
-              <UnitSlot />
-              <UnitSlot />
-              <UnitSlot />
-              <UnitSlot />
-              <UnitSlot />
+              <UnitSlot
+                v-for="slot in troops"
+                :key="slot.id"
+                :unit="slot.unit"
+                @click="goToSlot(slot)"
+              />
             </div>
           </div>
         </div>
@@ -47,7 +50,9 @@ import LegionSelector from "./LegionSelector.vue";
 
 export default {
   mixins: [AppSection],
-  data: () => ({}),
+  data: () => ({
+    legionIndex: 0
+  }),
   components: {
     CustomButton,
     UnitSlot,
@@ -58,12 +63,33 @@ export default {
     this.title = this.$t("window-title-army-compose");
     this.$options.useRouterBack = true;
   },
+  computed: {
+    generals() {
+      return this.$game.army.getSlots(this.legionIndex, false);
+    },
+    troops() {
+      return this.$game.army.getSlots(this.legionIndex, true);
+    }
+  },
   methods: {
+    onLegionChanged(index) {
+      this.legionIndex = index;
+    },
     editGenerals() {
       this.$router.push({ name: "legion", params: { type: "generals" } });
     },
     editTroops() {
       this.$router.push({ name: "legion", params: { type: "troops" } });
+    },
+    goToSlot(slot) {
+      this.$router.push({
+        name: "edit-legion",
+        params: { 
+          legion: this.legionIndex, 
+          slotId: slot.id, 
+          type: slot.troop ? "troops" : "generals"
+        }
+      });
     }
   }
 };

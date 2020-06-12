@@ -163,7 +163,6 @@ export default {
     LootHint,
     Hooper,
     Slide,
-    // ItemInfo: () => import("@/components/ItemInfo.vue"),
     Promised,
     LoadingScreen,
     CustomButton

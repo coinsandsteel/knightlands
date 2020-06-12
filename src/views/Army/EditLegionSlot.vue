@@ -1,13 +1,16 @@
 <template>
-  <div class="screen-content">
-    <UnitView :unit="unit" :showEquipment="true" />
-    <div class="flex-full relative dummy-height">
-      <div class="element-background" :class="element"></div>
-      <UnitInventory :units="units" :selectedUnit="unit" @unitSelect="selectUnit" />
-    </div>
+  <Promised :promised="request" class="screen-content">
+    <template v-slot:combined="{isPending, isDelayOver }">
+      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+      <UnitView :unit="unit" :showEquipment="true" />
+      <div class="flex-full relative dummy-height">
+        <div class="element-background" :class="element"></div>
+        <UnitInventory :units="units" :selectedUnit="unit" @unitSelect="selectUnit" />
+      </div>
+    </template>
 
     <portal to="footer" v-if="isActive"></portal>
-  </div>
+  </Promised>
 </template>
 
 <script>
@@ -15,13 +18,17 @@ import AppSection from "@/AppSection";
 import UnitView from "./UnitView.vue";
 import UnitInventory from "./UnitInventory.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import { Promised } from "vue-promised";
+import LoadingScreen from "@/components/LoadingScreen.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [AppSection, PromptMixin],
+  mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   props: ["legion", "slotId", "type"],
-  components: { UnitView, UnitInventory },
+  components: { UnitView, UnitInventory, LoadingScreen, Promised },
   data: () => ({
-    unit: null
+    unit: null,
+    request: null
   }),
   created() {
     this.$options.useRouterBack = true;
@@ -31,14 +38,23 @@ export default {
     this.originalUnit = this.unit;
   },
   watch: {
-    legion() {
-      this.load();
+    legion: {
+      immediate: true,
+      handler() {
+        this.load();
+      }
     },
-    slotId() {
-      this.load();
+    slotId: {
+      immediate: true,
+      handler() {
+        this.load();
+      }
     },
-    type() {
-      this.load();
+    type: {
+      immediate: true,
+      handler() {
+        this.load();
+      }
     }
   },
   computed: {
@@ -51,12 +67,15 @@ export default {
     },
     units() {
       return this.$game.army.getUnits(this.type == "troops");
+    },
+    isTroops() {
+      return this.type == "troops";
     }
   },
   methods: {
     load() {
       const slots = this.$game.army.getSlots(this.legion, this.isTroops);
-      this.unit = slots[this.slotId].unit;
+      this.unit = slots.find(s => s.id == this.slotId).unit;
     },
     selectUnit(unit) {
       // set as active unit in slot
@@ -90,10 +109,19 @@ export default {
         ]
       );
 
-      if (confirmation === true) {
+      if (confirmation === false) {
+        this.$game.army.setInSlot(this.legion, this.slotId, this.originalUnit);
+        this.unit = this.originalUnit;
+      } else {
+        this.request = this.$game.setLegionSlot(
+          this.legion,
+          this.slotId,
+          this.unit.id
+        );
+        await this.performRequest(this.request);
+        this.originalUnit = this.unit;
       }
 
-      this.originalUnit = this.unit;
       this.$app.handleBackButton();
     }
   }

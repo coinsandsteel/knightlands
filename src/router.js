@@ -512,12 +512,6 @@ const router = new Router({
           props: true
         },
         {
-          path: "equipment/:unitId",
-          name: "unit-equipment",
-          component: () => import("./views/Army/UnitEquipment.vue"),
-          props: true
-        },
-        {
           path: "edit-unit",
           component: () => import("./views/Army/Unit/ArmyUnitRoot.vue"),
           children: [

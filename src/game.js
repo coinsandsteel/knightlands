@@ -31,7 +31,7 @@ class Game {
         this.WalletChanged = "wallet_changed";
         this.$store = store;
         this._items = new ItemDatabase();
-        this._armyDb = new ArmyDB(this._items.itemStatResolver);
+        this._armyDb = new ArmyDB(this._items, this._items.itemStatResolver);
         this._army = new Army(this, this._armyDb);
         this._expTable = PlayerExpTable;
         this._requestInProgress = false;
@@ -97,6 +97,7 @@ class Game {
         this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
         this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
         this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
+        this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
         this._socket.on(
             Events.TrialAttemptsPurchased,
             this._handleTrialAttemptsPurchase.bind(this)
@@ -408,6 +409,10 @@ class Game {
     // EVENTS
     _handleInventoryUpdate(data) {
         this._inventory.mergeData(data);
+    }
+
+    _handleUnitUpdate(data) {
+        this._army.updateUnit(data.unit);
     }
 
     _handleBuffApplied(data) {
@@ -1420,6 +1425,18 @@ class Game {
 
     async levelUpUnit(unitId) {
         return (await this._wrapOperation(Operations.LevelUpArmyUnit, { unitId })).response;
+    }
+
+    async setLegionSlot(legionIndex, slotId, unitId) {
+        return (await this._wrapOperation(Operations.SetLegionSlot, { legionIndex, slotId, unitId })).response;
+    }
+
+    async unitEquipItem(unitId, itemId) {
+        return (await this._wrapOperation(Operations.UnitEquipItem, { unitId, itemId })).response;
+    }
+
+    async unitUnequipItem(unitId, slotId) {
+        return (await this._wrapOperation(Operations.UnitUnequipItem, { unitId, slotId })).response;
     }
 }
 

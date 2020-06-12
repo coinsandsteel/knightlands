@@ -5,8 +5,17 @@ import generalsMeta from "@/generals_meta";
 import AbilityResolver from "@/../knightlands-shared/ability_resolver";
 
 export default class ArmyDB {
-    constructor(statResolver) {
+    constructor(itemsDB, statResolver) {
+        this._itemsDB = itemsDB;
         this._abilityResolver = new AbilityResolver(armyAbilities, statResolver);
+    }
+
+    get abilityResolver() {
+        return this._abilityResolver;
+    }
+
+    getTemplates() {
+        return armyUnits;
     }
 
     getTemplate(id) {
@@ -78,6 +87,16 @@ export default class ArmyDB {
         if (next) {
             level++;
         }
-        return meta.levelingSteps[level - 1].power;
+        
+        let totalDamage = meta.levelingSteps[level - 1].power;
+        for (const itemId in unit.items) {
+            const item = unit.items[itemId];
+            if (item) {
+                const stats = this._itemsDB.getStats(item.template);
+                totalDamage += stats.attack;
+            }
+        }
+
+        return totalDamage;
     }
 }

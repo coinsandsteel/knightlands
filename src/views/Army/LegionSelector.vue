@@ -1,16 +1,51 @@
 <template>
   <div class="bg flex flex-center width-100">
-    <div class="width-80 flex flex-space-between">
-      <span class="nav-arrow left"></span>
-      <span class="font-size-20">{{$t("legion-n", {n: 1})}}</span>
+    <div class="width-80 flex flex-space-between flex-items-center">
+      <span class="nav-arrow left" @click="goToPreviousLegion"></span>
+      <span class="font-size-20">{{$t("legion-n", {n: this.legionIndex + 1})}}</span>
       <div class="flex flex-center">
-        <span class="margin-right-1 font-size-15">{{$t("damage")}}</span>
-        <span class="font-size-20 font-weight-900">999999</span>
+        <span class="margin-right-1 font-size-18">{{$t("damage")}}</span>
+        <span class="font-size-20 font-weight-900">{{damage}}</span>
       </div>
-      <span class="nav-arrow"></span>
+      <span class="nav-arrow" @click="goToNextLegion"></span>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    legionIndex: 0
+  }),
+  computed: {
+    damage() {
+      return this.$game.army.getLegionDamage(this.legionIndex);
+    },
+    totalLegions() {
+      return this.$game.army.totalLegions();
+    }
+  },
+  methods: {
+    goToPreviousLegion() {
+      this.legionIndex--;
+      this.wrapAndEmitLegionChanged();
+    },
+    goToNextLegion() {
+      this.legionIndex++;
+      this.wrapAndEmitLegionChanged();
+    },
+    wrapAndEmitLegionChanged() {
+      if (this.legionIndex < 0) {
+        this.legionIndex = this.totalLegions - 1;
+      } else if (this.legionIndex == this.totalLegions) {
+        this.legionIndex = 0;
+      }
+
+      this.$emit("legionChange", this.legionIndex);
+    }
+  }
+};
+</script>
 
 <style scoped>
 .bg {

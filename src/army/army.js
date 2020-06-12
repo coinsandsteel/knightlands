@@ -1,8 +1,10 @@
 
-import ArmyMock from "./ArmyMock";
+import LegionResolver from "../../knightlands-shared/legion_resolver";
 import ArmyMeta from "@/army_meta";
 import Vue from "vue";
 import throttle from "lodash.throttle";
+import troopsMeta from "@/troops_meta";
+import generalsMeta from "@/generals_meta";
 
 const dummyUnit = {
     id: -1,
@@ -14,6 +16,11 @@ const dummyUnit = {
 export default class Army {
     constructor(game, armyDb) {
         this._game = game;
+        this._legionResolver = new LegionResolver(
+            armyDb.abilityResolver,
+            troopsMeta,
+            generalsMeta
+        );
         this._armyDb = armyDb;
         this._vm = new Vue({
             data: () => ({
@@ -24,6 +31,18 @@ export default class Army {
                 emptyUnit: dummyUnit
             })
         });
+    }
+
+    totalLegions() {
+        return this._vm.legions.length;
+    }
+
+    getLegionDamage(legionIndex) {
+        return this._legionResolver.getDamage(
+            this.getLegion(legionIndex),
+            this._vm.units,
+            this._armyDb.getTemplates()
+        )
     }
 
     getLegion(legionIndex) {
@@ -72,7 +91,7 @@ export default class Army {
         // collect unit in slot
         for (let i = 0; i < slots.length; ++i) {
             // get unit in legion
-            slots[i].unit = this.getUnit(legion.units[i]);
+            slots[i].unit = this.getUnit(legion.units[slots[i].id]);
         }
 
         return slots;
@@ -84,6 +103,17 @@ export default class Army {
             this._vm.$delete(legion.units, slotId);
         } else {
             this._vm.$set(legion.units, slotId, unit.id);
+        }
+    }
+
+    updateUnit(unit) {
+        const currentUnit = this._vm.units[unit.id];
+        if (!currentUnit) {
+            this._vm.$set(this._vm.units, unit.id, unit);
+        } else {
+            for(const prop in unit) {
+                this._vm.$set(currentUnit, prop, unit[prop]);
+            }
         }
     }
 

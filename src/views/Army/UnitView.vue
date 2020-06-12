@@ -59,7 +59,9 @@
         <img class="unit-image" :src="$game.armyDB.getIcon(unit)" />
       </div>
     </template>
-    <div v-else>EMPTY</div>
+    <div v-else>
+      <div class="bg" :class="element"></div>
+    </div>
   </div>
 </template>
 
@@ -79,7 +81,7 @@ export default {
   methods: {
     goToEquipment() {
       this.$router.push({
-        name: "unit-equipment",
+        name: "unit-equip",
         params: { unitId: this.unit.id }
       });
     }

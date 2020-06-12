@@ -10,7 +10,6 @@
                 :item="item"
                 :key="index"
                 :inventory="inventory"
-                :hint="hint"
                 :selected="selected[item.id] || selectedItem == item.id"
                 :class="lootClasses"
                 @hint="handleHint(item, index)"
@@ -47,10 +46,6 @@ export default {
       type: Boolean,
       default: false
     },
-    hint: {
-      type: Function
-    },
-    panel: String,
     selectSlots: Boolean,
     multiSelect: Boolean,
     lootProps: Object,
