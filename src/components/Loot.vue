@@ -6,7 +6,7 @@
   >
     <div class="inner-border">
       <img :class="{'locked': locked}" class="icon" :src="icon()" slot="reference" />
-      <div :class="[{'loot-equipped':(inventory && equipped)}, {'selected': selected}]"></div>
+      <div :class="[{'selected': selected}]"></div>
       <!-- <div class="slot-border" :class="rarity"></div> -->
     </div>
 
@@ -121,13 +121,6 @@ export default {
       }
 
       return count;
-    },
-    equipped() {
-      if (!this.itemData) {
-        return false;
-      }
-
-      return !!this.itemData.equipped;
     }
   },
   methods: {

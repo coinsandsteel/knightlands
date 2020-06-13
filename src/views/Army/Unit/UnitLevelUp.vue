@@ -1,46 +1,57 @@
 <template>
   <div class="screen-content" v-if="unit">
     <div class="color-panel-2 stats-grid font-size-20">
-      <span class="left">{{$t("unit-dmg", { dmg: damage })}}</span>
+      <IconWithValue iconClass="icon-damage" class="left">{{damage}}</IconWithValue>
       <span class="right-arrow"></span>
-      <span class="right">{{$t("unit-dmg", { dmg: nextDamage })}}</span>
+      <span class="right rarity-mythical" v-if="isMaxLevel">{{$t("max-lv")}}</span>
+      <IconWithValue iconClass="icon-damage" class="right" v-else>{{nextDamage}}</IconWithValue>
 
       <span class="left">{{$t("unit-lvl", { lvl: level })}}</span>
       <span class="right-arrow"></span>
-      <span class="right">{{$t("unit-lvl", { lvl: level + 1 })}}</span>
+      <span class="right rarity-mythical" v-if="isMaxLevel">{{$t("max-lv")}}</span>
+      <span class="right" v-else>{{$t("unit-lvl", { lvl: level + 1 })}}</span>
     </div>
 
-    <HorizontalItemQuantity ref="ingridients" class="padding-top-2" :items="levelingItems">
-      <CustomButton :disabled="!enoughIngridients" type="green" class="width-30" @click="levelUp">{{$t("unit-lvl-up")}}</CustomButton>
-    </HorizontalItemQuantity>
+    <div class="flex flex-column full-flex flex-center">
+      <CraftingIngridient :ingridient="levelItem" ref="levelIngridient" />
+
+      <CustomButton
+        class="margin-top-1"
+        :disabled="!canLevel()"
+        type="green"
+        @click="levelUp"
+      >
+        <div class="flex flex-center">
+          <span class="margin-right-half">{{$t("unit-lvl-up")}}</span>
+          <IconWithValue iconClass="icon-gold">{{goldPrice}}</IconWithValue>
+        </div>
+      </CustomButton>
+    </div>
   </div>
 </template>
 
 <script>
 import UnitGetterMixin from "../UnitGetterMixin.vue";
-import HorizontalItemQuantity from "@/components/HorizontalItemQuantity.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CustomButton from "@/components/Button.vue";
 import TroopsMeta from "@/troops_meta";
 import GeneralsMeta from "@/generals_meta";
+import IconWithValue from "@/components/IconWithValue.vue";
+import CraftingIngridient from "@/components/CraftingIngridient.vue";
 
 export default {
   mixins: [UnitGetterMixin, PromptMixin],
   props: ["unit"],
   data: () => ({
-    enoughIngridients: true
+    ready: false
   }),
   components: {
-    HorizontalItemQuantity,
-    CustomButton
+    CustomButton,
+    IconWithValue,
+    CraftingIngridient
   },
-  watch: {
-    unit: {
-      immediate: true,
-      handler() {
-        this.updateEnoughIngridients();
-      }
-    }
+  mounted() {
+    this.ready = true;
   },
   computed: {
     meta() {
@@ -51,17 +62,20 @@ export default {
       return meta;
     },
     isMaxLevel() {
-      return this.level <= this.maxLevel;
+      return this.level >= this.maxLevel;
     },
-    levelingItems() {
-      let items = [];
+    resources() {
+      return [this.meta.essenceItem, this.meta.goldItem];
+    },
+    goldPrice() {
+      return this.meta.leveling.levelingSteps[this.level - 1].gold;
+    },
+    levelItem() {
       let levelRecord = this.meta.leveling.levelingSteps[this.level - 1];
-      items.push({
-        item: this.meta.essenceItem,
+      return {
+        itemId: this.meta.essenceItem,
         quantity: levelRecord.essence
-      });
-      items.push({ item: this.meta.goldItem, quantity: levelRecord.gold });
-      return items;
+      };
     },
     nextPower() {
       let levelRecord = this.meta.leveling.levelingSteps[this.level - 1];
@@ -69,17 +83,20 @@ export default {
     }
   },
   methods: {
-    async levelUp() {
-      const newUnitData = await this.$game.levelUpUnit(this.unit.id);
-      this.$game.army.getUnit(this.unit.id).level = newUnitData.level;
-      this.updateEnoughIngridients();
-    },
-    updateEnoughIngridients() {
-      if (!this.$refs.ingridients) {
-        this.enoughIngridients = false;
-      } else {
-        this.enoughIngridients = this.$refs.ingridients.enoughItems;
+    canLevel() {
+      if (!this.ready) {
+        return false;
       }
+      if (this.isMaxLevel) {
+        return false;
+      }
+      return (
+        !this.$refs.levelIngridient.notEnoughMaterials &&
+        this.$game.softCurrency >= this.goldPrice
+      );
+    },
+    async levelUp() {
+      await this.$game.levelUpUnit(this.unit.id);
     }
   }
 };

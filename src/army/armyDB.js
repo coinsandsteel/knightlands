@@ -81,14 +81,15 @@ export default class ArmyDB {
         return meta.maxLevelByStars.find(x => x.stars == stars - 1).maxLevel;
     }
 
-    getDamage(unit, next) {
-        let meta = unit.troop ? troopsMeta.leveling : generalsMeta.leveling;
+    getDamage(unit, nextLevel, nextStar) {
+        let meta = unit.troop ? troopsMeta : generalsMeta;
         let level = unit.level;
-        if (next) {
+        let stars = this.getStars(unit) + (nextStar ? 1 : 0);
+        if (nextLevel) {
             level++;
         }
         
-        let totalDamage = meta.levelingSteps[level - 1].power;
+        let totalDamage = meta.leveling.levelingSteps[level - 1].power;
         for (const itemId in unit.items) {
             const item = unit.items[itemId];
             if (item) {
@@ -97,6 +98,11 @@ export default class ArmyDB {
             }
         }
 
-        return totalDamage;
+        let record = meta.fusionMeta.maxLevelByStars.find(x => x.stars == stars);
+        if (!record) {
+            record = meta.fusionMeta.maxLevelByStars.find(x => x.stars == stars - 1);
+        }
+
+        return totalDamage + record.power;
     }
 }

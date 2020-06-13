@@ -1,5 +1,5 @@
 <template>
-  <div class="outer unit-ingr relative margin-right-half" @click="$emit('click', unit)">
+  <div class="outer unit-ingr relative margin-right-half" @click="$emit('click')">
     <div class="inner" v-if="unit && ingridient">
       <div v-if="ingridient.copy" class="bg absolute-stretch" :style="unitImage"></div>
       <div v-else class="bg absolute-stretch unit-bg-any"></div>
@@ -7,7 +7,7 @@
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-ingr-content"
       >
         <div class="unit-ingr-shadow absolute-stretch"></div>
-        <UnitStars class="stars width-100 relative" :stars="ingridient.stars" size="mini" />
+        <UnitStars class="stars relative" :stars="ingridient.stars" size="mini" />
         <Flag :element="element" />
 
         <span
@@ -24,10 +24,7 @@ import UnitStars from "./../UnitStars.vue";
 import Flag from "../Flag.vue";
 
 export default {
-  props: ["unit", "ingridient"],
-  data: () => ({
-    current: 0
-  }),
+  props: ["unit", "ingridient", "current"],
   mixins: [UnitGetter],
   components: { UnitStars, Flag },
   computed: {
@@ -61,6 +58,7 @@ export default {
   & .stars {
     grid-column: ~"2/3";
     grid-row: 1;
+    justify-self: start;
   }
 }
 
@@ -95,8 +93,8 @@ export default {
 }
 
 .unit-ingr {
-  height: 12rem;
-  width: 12rem;
+  height: 8rem;
+  width: 8rem;
 
   background-image: url("../../../assets/ui/troops_mini_bg.png");
   background-repeat: no-repeat;
@@ -112,7 +110,7 @@ export default {
 }
 
 .unit-bg-any {
-  background-image: url("../../../assets/ui/troops_mini_bg_add.png");
+  background-image: url("../../../assets/ui/troops_any_unit.png");
   background-repeat: no-repeat;
   background-size: cover;
 }

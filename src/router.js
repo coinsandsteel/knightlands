@@ -514,6 +514,9 @@ const router = new Router({
         {
           path: "edit-unit",
           component: () => import("./views/Army/Unit/ArmyUnitRoot.vue"),
+          meta: {
+            noTopBar: false
+          },
           children: [
             {
               path: "",

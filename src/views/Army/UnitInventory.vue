@@ -3,14 +3,14 @@
     <div class="flex-full dummy-height">
       <div class="padding-half">
         <div class="width-100 flex">
-          <!-- <UnitItem @click="$emit('unitSelect', null)" /> -->
           <UnitItem
             class="width-20"
             v-for="unit in units"
             :key="unit.id"
             :unit="unit"
             :active="unit == selectedUnit"
-            @click="$emit('unitSelect', unit)"
+            :selected="selectedSlots[unit.id]"
+            @click="toggleSlot(unit)"
           />
         </div>
       </div>
@@ -22,8 +22,28 @@
 import UnitItem from "./UnitItem.vue";
 
 export default {
-  props: ["units", "selectedUnit"],
-  components: { UnitItem }
+  props: ["units", "multiSelect", "selectedUnit"],
+  components: { UnitItem },
+  data: () => ({
+    selectedSlots: {}
+  }),
+  methods: {
+    toggleSlot(unit) {
+      if (this.selectedSlots[unit.id]) {
+        this.$delete(this.selectedSlots, unit.id);
+        this.$emit("toggle", unit.id, false);
+        return;
+      }
+
+      if (!this.multiSelect) {
+        this.$emit("unitSelect", unit);
+        return;
+      }
+
+      this.$set(this.selectedSlots, unit.id, true);
+      this.$emit("toggle", unit.id, true);
+    }
+  }
 };
 </script>
 

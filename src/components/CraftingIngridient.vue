@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-column flex-center">
     <loot
       :locked="!noLocking && notEnoughMaterials"
       :item="item"

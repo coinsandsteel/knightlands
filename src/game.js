@@ -98,6 +98,7 @@ class Game {
         this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
         this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
         this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
+        this._socket.on(Events.UnitsRemoved, this._handleUnitsRemoved.bind(this));
         this._socket.on(
             Events.TrialAttemptsPurchased,
             this._handleTrialAttemptsPurchase.bind(this)
@@ -412,7 +413,16 @@ class Game {
     }
 
     _handleUnitUpdate(data) {
-        this._army.updateUnit(data.unit);
+        this._army.updateUnit(data);
+    }
+
+    _handleArmySummoned(data) {
+        this._vm.$emit(Events.UnitSummoned, data);
+        this._army.addUnits(data);
+    }
+
+    _handleUnitsRemoved(data) {
+        this._army.removeUnits(data);
     }
 
     _handleBuffApplied(data) {
@@ -479,10 +489,6 @@ class Game {
 
     _handleChestOpened(data) {
         this._vm.$emit(Events.ChestOpened, data);
-    }
-
-    _handleArmySummoned(data) {
-        this._vm.$emit(Events.UnitSummoned, data);
     }
 
     _handleItemEnchanted(data) {
@@ -1437,6 +1443,10 @@ class Game {
 
     async unitUnequipItem(unitId, slotId) {
         return (await this._wrapOperation(Operations.UnitUnequipItem, { unitId, slotId })).response;
+    }
+
+    async promoteUnit(unitId, units) {
+        return (await this._wrapOperation(Operations.UnitPromo, { unitId, units })).response;
     }
 }
 

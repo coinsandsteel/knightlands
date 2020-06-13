@@ -17,22 +17,24 @@
           ></loot>
         </div>
 
-        <div class="margin-top-1 width-100 flex flex-center" v-if="unit.items[selectedSlot]">
-          <CustomButton type="grey" @click="viewSelectedSlot">{{$t("btn-view")}}</CustomButton>
-          <CustomButton
-            type="yellow"
-            @click="unequipSelectedSlot"
-          >{{$t("btn-unequip")}}</CustomButton>
-        </div>
+        <CustomButton class="margin-top-1" type="grey" @click="viewSelectedSlot" :disabled="!unit.items[selectedSlot]">{{$t("btn-view")}}</CustomButton>
       </div>
 
       <LootContainer :items="filteredItems" :inventory="true" @hint="_handleHint"></LootContainer>
+
+      <ScrollableItemHint
+          ref="scrollHint"
+          :items="hintItems"
+          @action="handleItemAction"
+          :getHintButtons="getHintButtons"
+        ></ScrollableItemHint>
     </template>
   </Promised>
 </template>
 
 <script>
 import Loot from "@/components/Loot.vue";
+import ScrollableItemHint from "@/components/ScrollableItemHint.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import LootContainer from "@/components/LootContainer.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
@@ -48,11 +50,12 @@ const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 export default {
   props: ["unit"],
   mixins: [HintHandler, NetworkRequestErrorMixin],
-  components: { Loot, LootContainer, Promised, LoadingScreen, CustomButton },
+  components: { Loot, LootContainer, Promised, LoadingScreen, CustomButton, ScrollableItemHint },
   data: () => ({
     selectedSlot: -1,
     filteredItems: [],
-    request: null
+    request: null,
+    equippedHint: true
   }),
   computed: {
     equipmentSlots() {
@@ -71,6 +74,17 @@ export default {
     },
     items() {
       return this.$game.inventory.items;
+    },
+    hintItems() {
+      if (this.equippedHint) {
+        let items = [];
+        for (let i in this.unit.items) {
+          items.push(this.unit.items[i]);
+        }
+        return items;
+      } else {
+        return this.filteredItems;
+      }
     }
   },
   watch: {
@@ -80,7 +94,11 @@ export default {
   },
   methods: {
     viewSelectedSlot() {
-      this._handleHint(this.unit.items[this.selectedSlot]);
+      this.equippedHint = true;
+      let item = this.unit.items[this.selectedSlot];
+      this.$nextTick(()=>{
+        this._handleHint(item, this.hintItems.findIndex(x => x == item));
+      });
     },
     unequipSelectedSlot() {
       this.request = this.performRequest(
@@ -94,19 +112,8 @@ export default {
         this.filteredItems
       );
     },
-    async _handleHint(item) {
-      let buttons;
-      if (this.unit.items[this.selectedSlot] && !item.equipped) {
-        buttons = [
-          {
-            title: "btn-compare",
-            response: "compare",
-            type: "grey"
-          }
-        ];
-      }
-
-      let action = await this.showHint(item, buttons);
+    async handleItemAction(item, action, ...args) {
+      this.equippedHint = false;
       if (action === "equip") {
         this.request = this.performRequest(
           this.$game.unitEquipItem(this.unit.id, item.id)
@@ -121,6 +128,26 @@ export default {
       } else if (action == "compare") {
         ShowCompareItems(this.unit.items[this.selectedSlot], item);
       }
+    },
+    getHintButtons({ item }) {
+      let buttons;
+      if (!this.equippedHint && this.unit.items[this.selectedSlot] && !item.equipped) {
+        buttons = [
+          {
+            title: "btn-compare",
+            response: "compare",
+            type: "grey"
+          }
+        ];
+      }
+      return buttons;
+    },
+    async _handleHint(item, index) {
+      if (!item) {
+        return;
+      }
+
+      this.$refs.scrollHint.showHint(index);
     }
   }
 };

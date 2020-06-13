@@ -20,7 +20,7 @@ export default {
   props: ["unitId"],
   components: { Tabs, UnitView },
   created() {
-    this.title = "";
+    this.title = "window-edit-unit";
     this.$options.useRouterBack = true;
   },
   mounted() {

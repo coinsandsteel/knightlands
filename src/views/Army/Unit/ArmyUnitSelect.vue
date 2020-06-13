@@ -98,10 +98,6 @@ export default {
         this.filteredUnitsBuffer.get()
       );
 
-      this.filteredUnits.sort((x, y)=>{
-        return this.$game.armyDB.getStars(y) - this.$game.armyDB.getStars(x);
-      });
-
       if (this.filteredUnits.length > 0) {
         this.selectUnit(this.filteredUnits[0]);
       }

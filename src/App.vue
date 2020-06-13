@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <loading-screen :loading="loading"></loading-screen> -->
     <div class="content-wrap flex flex-column flex-no-wrap">
-      <status-bar v-if="$game.authenticated"></status-bar>
+      <status-bar v-if="$game.authenticated" v-show="!hideTopBar"></status-bar>
       <div class="flex flex-items-start section-name font-size-25" v-show="title">
         <span class="relative section-title">{{$t(title)}}</span>
         <div class="section-fill"></div>
@@ -95,7 +95,8 @@ export default {
       loading: true,
       ready: false,
       footers: [],
-      footerProps: []
+      footerProps: [],
+      hideTopBar: false
     };
   },
   sectionBackButton: null,
@@ -144,8 +145,13 @@ export default {
       await ShowLevelUp();
     });
 
-    // check if the page requires authentication
-    this.$router.beforeEach(async (to, from, next) => {
+    this.$router.beforeResolve((to, from, next)=>{
+      this.hideTopBar = to.matched.some(record => record.meta.noTopBar);
+      next();
+    });
+
+    // check metas
+    this.$router.beforeEach((to, from, next) => {
       if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!this.$game.authenticated) {
           next({

@@ -5,9 +5,15 @@
 </template>
 
 <script>
+import AppSection from "@/AppSection.vue";
 import DiscordChat from "./DiscordChat.vue";
 
 export default {
-  components: { DiscordChat }
+  mixins: [AppSection],
+  components: { DiscordChat },
+  created() {
+    this.title = "window-world-chat";
+    this.$options.useRouterBack = true;
+  }
 };
 </script>

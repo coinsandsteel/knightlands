@@ -11,7 +11,7 @@ export default {
       try {
         await request;
       } catch (exc) {
-        await this.showPrompt(
+        this.showPrompt(
           this.$t("request-error-title"),
           this.$t("request-desc"),
           [

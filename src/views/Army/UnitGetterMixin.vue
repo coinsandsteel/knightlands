@@ -82,6 +82,13 @@ export default {
       }
 
       return 0;
+    },
+    nextPromotionDamage() {
+      if (this.unit) {
+        return this.$game.armyDB.getDamage(this.unit, false, true);
+      }
+
+      return 0;
     }
   },
   methods: {

@@ -5,7 +5,7 @@
       <span
         class="panel-input padding-1 margin-right-1 font-size-18"
         :class="{'rarity-mythical': notEnoughItems(item.item, item.quantity)}"
-      >{{item.quantity}}</span>
+      >{{currentCount(item.item)}}/{{item.quantity}}</span>
     </div>
     <slot></slot>
   </div>
@@ -20,6 +20,9 @@ export default {
   methods: {
     notEnoughItems(template, quantity) {
       return !this.$game.inventory.hasItemByTemplate(template, quantity);
+    },
+    currentCount(itemId) {
+      return this.$game.inventory.getItemsCountByTemplate(itemId);
     }
   },
   computed: {

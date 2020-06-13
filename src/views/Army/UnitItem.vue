@@ -1,9 +1,12 @@
 <template>
   <div class="outer unit-item relative" @click="$emit('click', unit)">
-    <div class="inner">
+    <div class="inner relative">
       <template v-if="unit">
         <div class="bg absolute-stretch" :style="unitImage"></div>
-        <div class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content">
+        <div class="selected" v-show="selected"></div>
+        <div
+          class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
+        >
           <div class="unit-item-shadow absolute-stretch"></div>
           <UnitStars class="stars width-100 relative" :stars="stars" size="small" />
           <Flag :weaponType="weaponType" :element="element" />
@@ -25,13 +28,24 @@ import UnitStars from "./UnitStars.vue";
 import Flag from "./Flag.vue";
 
 export default {
-  props: ["unit"],
+  props: ["unit", "selected"],
   mixins: [UnitGetter],
   components: { UnitStars, Flag }
 };
 </script>
 
 <style lang="less" scoped>
+.selected {
+  background-image: url("../../assets/ui/slot_selected.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .unit-item-content {
   display: grid;
   grid-template-columns: 30% 1fr;

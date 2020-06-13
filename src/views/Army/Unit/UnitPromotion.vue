@@ -1,79 +1,123 @@
 <template>
-  <div class="screen-content">
-    <div class="color-panel-2 stats-grid font-size-20">
-      <span class="left">Damage 9999</span>
-      <span class="right-arrow"></span>
-      <span class="right">Damage 99999</span>
+  <Promised class="screen-content" :promise="request">
+    <template v-slot:combined="{isPending, isDelayOver}">
+      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+      <div v-bar>
+        <div class="dummy-height">
+          <div class="color-panel-2 stats-grid font-size-20">
+            <IconWithValue iconClass="icon-damage" class="left">{{damage}}</IconWithValue>
+            <span class="right-arrow"></span>
+            <IconWithValue iconClass="icon-damage" class="right">{{nextPromotionDamage}}</IconWithValue>
 
-      <span class="left">{{$t("unit-max-lv", { lvl: maxLevel })}}</span>
-      <span class="right-arrow"></span>
-      <span class="right">{{$t("unit-max-lv", { lvl: nextMaxLevel })}}</span>
+            <span class="left">{{$t("unit-max-lv", { lvl: maxLevel })}}</span>
+            <span class="right-arrow"></span>
+            <span class="right">{{$t("unit-max-lv", { lvl: nextMaxLevel })}}</span>
 
-      <UnitStars :stars="stars" class="left"></UnitStars>
-      <span class="right-arrow"></span>
-      <UnitStars :stars="starsNext" class="right"></UnitStars>
-    </div>
+            <UnitStars :stars="stars" class="left"></UnitStars>
+            <span class="right-arrow"></span>
+            <UnitStars :stars="starsNext" class="right"></UnitStars>
+          </div>
 
-    <div class="color-panel-2 flex flex-center">
-      <UnitIngridient
-        v-for="(ingr, idx) in ingridients"
-        :key="idx"
-        :ingridient="ingr"
-        :unit="unit"
-      />
-    </div>
+          <div class="margin-top-1 flex flex-center">
+            <UnitIngridient
+              v-for="(ingr, idx) in ingridients"
+              :key="idx"
+              :ingridient="ingr"
+              :unit="unit"
+              :current="getCurrent(ingr.id)"
+              @click="selectUnits(unit, ingr)"
+            />
+          </div>
 
-    <HorizontalItemQuantity
-    v-if="canPromote"
-      class="padding-top-2"
-      :items="[{item: soulsItem, quantity: soulsRequired}]"
-    >
-      <CustomButton type="green" class="width-30" @click="promote">Promote</CustomButton>
-    </HorizontalItemQuantity>
+          <div class="flex flex-center" v-if="readyToPromote">
+            <CraftingIngridient class="padding-top-2" :ingridient="soulsIngridient" />
 
-    <div class="flex flex-center margin-top-2" v-else>
-      <span class="rarity-mythical font-size-25">{{$t('unit-lvl-req', { level: maxLevel })}}</span>
-    </div>
-  </div>
+            <CustomButton
+              type="yellow"
+              class="width-30"
+              @click="promote"
+              :disabled="!canPromote"
+            >{{$t("btn-promote")}}</CustomButton>
+          </div>
+
+          <div class="flex flex-center margin-top-2" v-else>
+            <span class="rarity-mythical font-size-25">{{$t('unit-lvl-req', { level: maxLevel })}}</span>
+          </div>
+        </div>
+      </div>
+    </template>
+  </Promised>
 </template>
 
 <script>
+import { Promised } from "vue-promised";
 import UnitIngridient from "./UnitIngridient.vue";
 import UnitStars from "../UnitStars.vue";
 import UnitGetterMixin from "../UnitGetterMixin.vue";
-import HorizontalItemQuantity from "@/components/HorizontalItemQuantity.vue";
+import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CustomButton from "@/components/Button.vue";
 import TroopsMeta from "@/troops_meta";
 import GeneralsMeta from "@/generals_meta";
 import ArmyMeta from "@/army_meta";
+import IconWithValue from "@/components/IconWithValue.vue";
+import LoadingScreen from "@/components/LoadingScreen.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+
+import { create as createDialog } from "vue-modal-dialogs";
+import ArmyIngridientSelector from "./ArmyIngridientSelector.vue";
+
+const UnitSelector = createDialog(
+  ArmyIngridientSelector,
+  "unit",
+  "ingridient",
+  "usedUnits"
+);
 
 export default {
-  mixins: [UnitGetterMixin, PromptMixin],
+  mixins: [UnitGetterMixin, PromptMixin, NetworkRequestErrorMixin],
   props: ["unit"],
   data: () => ({
-    ingridients: []
+    ingridients: [],
+    request: null,
+    unitsPerIngridient: {},
+    selectedUnits: {}
   }),
   components: {
     UnitStars,
     UnitIngridient,
-    HorizontalItemQuantity,
-    CustomButton
+    CraftingIngridient,
+    CustomButton,
+    IconWithValue,
+    Promised,
+    LoadingScreen
   },
   watch: {
     unit: {
       immediate: true,
       handler() {
         let recipe = this.recipe;
+        this.ingridients = [];
+
         for (const ingrd of recipe.ingridients) {
           this.ingridients.push({ ...ingrd });
         }
+
+        this.selectedUnits = {};
+        this.unitsPerIngridient = {};
       }
     }
   },
   computed: {
     canPromote() {
-      return this.level == this.maxLevel;
+      for (const ingr of this.ingridients) {
+        const units = this.selectedUnits[ingr.id];
+        if (!units || units.length != ingr.amount) {
+          return false;
+        }
+      }
+
+      return this.$game.inventory.hasEnoughIngridient(this.soulsIngridient);
     },
     starsNext() {
       if (this.stars < 10) {
@@ -98,9 +142,43 @@ export default {
     },
     soulsRequired() {
       return this.recipe.price;
+    },
+    readyToPromote() {
+      return this.level == this.maxLevel;
+    },
+    soulsIngridient() {
+      return { itemId: this.soulsItem, quantity: this.soulsRequired };
     }
   },
   methods: {
+    clearSelectedUnits(ingridient) {
+      const units = this.unitsPerIngridient[ingridient.id];
+      if (!units) {
+        return;
+      }
+      for (const unitId of units) {
+        this.$delete(this.selectedUnits, unitId);
+      }
+    },
+    getCurrent(ingrId) {
+      if (!this.unitsPerIngridient[ingrId]) {
+        return 0;
+      }
+      return this.unitsPerIngridient[ingrId].length;
+    },
+    async selectUnits(unit, ingridient) {
+      this.clearSelectedUnits(ingridient);
+      this.$delete(this.unitsPerIngridient, ingridient.id);
+
+      const units = await UnitSelector(unit, ingridient, this.selectedUnits);
+
+      if (units) {
+        this.$set(this.unitsPerIngridient, ingridient.id, units);
+        for (const unitId of units) {
+          this.$set(this.selectedUnits, unitId, unitId);
+        }
+      }
+    },
     async promote() {
       let confirmation = await this.showPrompt(
         this.$t("promo-title"),
@@ -120,6 +198,15 @@ export default {
       );
 
       if (confirmation === true) {
+        this.request = this.performRequest(
+          this.$game.promoteUnit(this.unit.id, this.unitsPerIngridient)
+        );
+
+        try {
+          await this.request;
+          this.unitsPerIngridient = {};
+          this.selectedUnits = {};
+        } catch {}
       }
     }
   }

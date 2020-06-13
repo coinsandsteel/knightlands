@@ -5,7 +5,7 @@
   >
     <div class="bg width-100 height-100" :style="unitImage"></div>
     <div class="absolute-stretch flex flex-center" v-if="!unit">
-      <div class="empty" ></div>
+      <div class="empty"></div>
     </div>
     <UnitStars class="stars" :stars="stars" size="small" />
     <Flag class="item-badge-grid" :weaponType="weaponType" :element="element" />

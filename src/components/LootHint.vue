@@ -46,13 +46,13 @@
       <div class="flex width-100 flex-space-evenly" v-if="showButtons">
         <custom-button
           type="yellow"
-          v-if="actions.equip && equip && isEquipment"
+          v-if="actions.equip && !item.equipped && isEquipment"
           class="common-btn center"
           @click="handleClose('equip')"
         >{{$t('btn-equip')}}</custom-button>
 
         <custom-button
-          v-if="actions.equip && unequip && isEquipment"
+          v-if="actions.equip && item.equipped && isEquipment"
           type="grey"
           class="common-btn center"
           @click="handleClose('unequip')"

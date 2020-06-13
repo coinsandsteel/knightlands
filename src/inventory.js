@@ -87,11 +87,6 @@ class Inventory {
     }
 
     hasItemByTemplate(itemTemplate, quantity) {
-        const template = this._itemDB.getTemplate(itemTemplate);
-        if (template.type == ItemType.Currency) {
-            return this.getCurrency(template.currencyType) >= quantity;
-        }
-
         return this.getItemsCountByTemplate(itemTemplate) >= quantity;
     }
 
@@ -272,6 +267,11 @@ class Inventory {
     }
 
     getItemsCountByTemplate(templateId) {
+        const template = this._itemDB.getTemplate(templateId);
+        if (template.type == ItemType.Currency) {
+            return this.getCurrency(template.currencyType);
+        }
+
         let totalCount = 0;
         let items = this._getItemsByTemplate(templateId);
 

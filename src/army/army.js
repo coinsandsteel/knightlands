@@ -31,6 +31,7 @@ export default class Army {
                 emptyUnit: dummyUnit
             })
         });
+        this._sort = throttle(this._doSort.bind(this), 0, { leading: false });
     }
 
     totalLegions() {
@@ -45,6 +46,48 @@ export default class Army {
         )
     }
 
+    filterIngridientUnits(referenceUnit, ingridient, selectedUnits) {
+        let buffer = [];
+        buffer.length = 0;
+
+        const units = this.getUnits(referenceUnit.troop);
+        const refElement = this._armyDb.getElement(referenceUnit);
+        let i = 0;
+        const length = units.length;
+        for (; i < length; ++i) {
+            const unit = units[i];
+            if (selectedUnits[unit.id]) {
+                continue;
+            }
+
+            if (unit == referenceUnit) {
+                continue;
+            }
+
+            if (ingridient.copy) {
+                if (unit.template != referenceUnit.template) {
+                    continue;
+                }
+            }
+
+            if (ingridient.stars) {
+                if (this._armyDb.getStars(unit) != ingridient.stars) {
+                    continue;
+                }
+            }
+
+            if (ingridient.sameElement) {
+                if (this._armyDb.getElement(unit) != refElement) {
+                    continue;
+                }
+            }
+
+            buffer.push(unit);
+        }
+
+        return buffer;
+    }
+
     getLegion(legionIndex) {
         if (legionIndex < 0 || legionIndex >= this._vm.legions.length) {
             return null;
@@ -57,7 +100,7 @@ export default class Army {
         buffer.length = 0;
 
         const units = this.getUnits(troops);
-        let i = 0; 
+        let i = 0;
         const length = units.length;
         for (; i < length; ++i) {
             const unit = units[i];
@@ -111,10 +154,43 @@ export default class Army {
         if (!currentUnit) {
             this._vm.$set(this._vm.units, unit.id, unit);
         } else {
-            for(const prop in unit) {
+            for (const prop in unit) {
                 this._vm.$set(currentUnit, prop, unit[prop]);
             }
         }
+        this._sort(unit.troop);
+    }
+
+    addUnits(units) {
+        for (const unit of units) {
+            if (unit.troop) {
+                this._vm.troops.push(unit);
+            } else {
+                this._vm.generals.push(unit);
+            }
+            this._vm.$set(this._vm.units, unit.id, unit);
+        }
+
+        this._doSort(true);
+        this._doSort(false);
+    }
+
+    removeUnits(ids) {
+        for (const id of ids) {
+            const unit = this._vm.units[id];
+            let units = this._vm.generals;
+            if (unit.troop) {
+                units = this._vm.troops;
+            }
+            this._vm.$delete(this._vm.units, id);
+
+            const lastUnit = units[units.length - 1];
+            units[unit.idx] = lastUnit;
+            lastUnit.idx = unit.idx;
+        }
+
+        this._doSort(true);
+        this._doSort(false);
     }
 
     async load() {
@@ -133,15 +209,29 @@ export default class Army {
             unitsDict[unit.id] = unit;
 
             if (unit.troop) {
-                this._vm.troops.push(unit);
+                unit.idx = this._vm.troops.push(unit) - 1;
             } else {
-                this._vm.generals.push(unit);
+                unit.idx = this._vm.generals.push(unit) - 1;
             }
         }
 
         this._vm.units = unitsDict;
         this._vm.legions = army.legions || {};
 
+        this._doSort(true);
+        this._doSort(false);
+
         return true;
+    }
+
+    _doSort(troops) {
+        const units = troops ? this._vm.troops : this._vm.generals;
+        units.sort((x, y) => {
+            let diff = this._armyDb.getStars(y) - this._armyDb.getStars(x);
+            if (diff === 0) {
+                return y.template - x.template;
+            }
+            return diff;
+        });
     }
 }

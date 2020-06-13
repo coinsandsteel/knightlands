@@ -2836,6 +2836,7 @@
     "unit-lvl-req": "Level required: {level}",
     "unit-lvl-up": "Level Up",
     "unit-s-filter": "{filter} Stars",
+    "max-lv": "Max Lv",
     "increasedDamageWhenElementMatch": "{damage}% Increased <span class='icon-unit-{element} big'></span> troops damage",
     "increasedDamageWhenWeaponMatch": "{damage}% Increased <span class='icon-{weapon} big'></span> troops damage",
     "increasedDamageWhenTypeMatch": "{damage}% Increased {unitType} troops damage",

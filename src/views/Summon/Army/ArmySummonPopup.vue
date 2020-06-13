@@ -8,7 +8,7 @@
 
       <FreeSummon :info="info"></FreeSummon>
 
-      <div class="width-60 center">
+      <div class="width-70 center">
         <template v-if="hasTicket">
           <PromisedButton class="margin-top-1" type="yellow" @click="singleSummon">
             <div
@@ -24,7 +24,7 @@
             v-if="batchSize > 1"
           >
             <div
-              class="flex flex-center"
+              class="flex flex-center flex-no-wrap"
               v-html="$t('unit-summon-item', {count: batchSize, icon: ticketIcon})"
             ></div>
           </PromisedButton>
@@ -60,7 +60,7 @@
               type="yellow"
               @click="purchaseSummon(iap.iap)"
             >
-              <div class="flex flex-center">
+              <div class="flex flex-center flex-no-wrap">
                 <span>{{$t('unit-summon', { count: iap.count })}}</span>
                 <PriceTag :dark="true" :iap="iap.iap" />
               </div>
