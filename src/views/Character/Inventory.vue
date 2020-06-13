@@ -81,39 +81,12 @@
         <LootContainer :items="filteredItems" :inventory="true" @hint="_showHint"></LootContainer>
 
         <!-- Loot hints -->
-        <div v-show="showHintItems">
-          <transition>
-            <div
-              class="items-bg-mask relative flex flex-center"
-              @click.self="showHintItems = false"
-            >
-              <Hooper
-                ref="hooper"
-                style="height: 100%"
-                :infiniteScroll="true"
-                :autoPlay="false"
-                @slide="updateHintItems"
-              >
-                <slide v-for="(item, index) in hintItems" :key="index">
-                  <LootHint
-                    :item="item.item"
-                    :equip="!item.equipped"
-                    :unequip="item.equipped"
-                    :hideMask="true"
-                    :showButtons="true"
-                    :buttons="getHintButtons(item)"
-                    @close="handleItemAction"
-                  ></LootHint>
-                </slide>
-              </Hooper>
-
-              <div class="flex flex-center flex-space-between absolute-stretch pointer-events-none">
-                <div class="nav-arrow left"></div>
-                <div class="nav-arrow"></div>
-              </div>
-            </div>
-          </transition>
-        </div>
+        <ScrollableItemHint
+          ref="scrollHint"
+          :items="filteredItems"
+          @action="handleItemAction"
+          :getHintButtons="getHintButtons"
+        ></ScrollableItemHint>
       </div>
 
       <portal to="footer" :slim="true" v-if="isActive">
@@ -125,9 +98,6 @@
 </template>
 
 <script>
-import { Hooper, Slide } from "hooper";
-import "hooper/dist/hooper.css";
-
 import LootContainer from "@/components/LootContainer.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import ActivityMixin from "@/components/ActivityMixin.vue";
@@ -139,8 +109,8 @@ import CharacterStat from "@/../knightlands-shared/character_stat";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import StatDetails from "./StatDetails.vue";
 import HintHandler from "@/components/HintHandler.vue";
-import LootHint from "@/components/LootHint.vue";
 import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
+import ScrollableItemHint from "@/components/ScrollableItemHint.vue";
 import CompareItems from "@/components/CompareItems.vue";
 const ShowItems = CreateDialog(
   ItemsReceived,
@@ -160,9 +130,7 @@ export default {
   components: {
     Loot: () => import("@/components/Loot.vue"),
     LootContainer,
-    LootHint,
-    Hooper,
-    Slide,
+    ScrollableItemHint,
     Promised,
     LoadingScreen,
     CustomButton
@@ -171,9 +139,7 @@ export default {
     return {
       slots: {},
       itemsInSlots: this.$character.equipment,
-      hintItems: [],
       showHintItems: false,
-      currentSlideIndex: 0,
       request: null,
       showDetails: false
     };
@@ -325,13 +291,7 @@ export default {
         return;
       }
 
-      this.updateHintItems(index);
-
-      this.showHintItems = true;
-
-      this.$nextTick(() => {
-        this.$refs.hooper.updateWidth();
-      });
+      this.$refs.scrollHint.showHint(index);
     },
     equipmentRow1() {
       return [
@@ -362,16 +322,6 @@ export default {
 
 .attribute {
   margin-left: 1rem;
-}
-
-.items-bg-mask {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.616);
-  z-index: 900;
 }
 
 .heroImage {

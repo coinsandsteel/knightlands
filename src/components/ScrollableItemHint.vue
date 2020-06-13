@@ -1,32 +1,34 @@
 <template>
-  <transition>
-    <div class="items-bg-mask relative flex flex-center" @click.self="showHintItems = false">
-      <Hooper
-        ref="hooper"
-        style="height: 100%"
-        :infiniteScroll="true"
-        :autoPlay="false"
-        @slide="updateHintItems"
-      >
-        <slide v-for="(item, index) in hintItems" :key="index">
-          <LootHint
-            :item="item.item"
-            :equip="!item.equipped"
-            :unequip="item.equipped"
-            :hideMask="true"
-            :showButtons="true"
-            :buttons="getHintButtons(item)"
-            @close="handleItemAction"
-          ></LootHint>
-        </slide>
-      </Hooper>
+  <div v-show="showHintItems">
+    <transition>
+      <div class="items-bg-mask relative flex flex-center" @click.self="showHintItems = false">
+        <Hooper
+          ref="hooper"
+          style="height: 100%"
+          :infiniteScroll="true"
+          :autoPlay="false"
+          @slide="updateHintItems"
+        >
+          <slide v-for="(item, index) in hintItems" :key="index">
+            <LootHint
+              :item="item.item"
+              :equip="!item.equipped"
+              :unequip="item.equipped"
+              :hideMask="true"
+              :showButtons="true"
+              :buttons="getHintButtons(item)"
+              @close="handleItemAction"
+            ></LootHint>
+          </slide>
+        </Hooper>
 
-      <div class="flex flex-center flex-space-between absolute-stretch pointer-events-none">
-        <div class="nav-arrow left"></div>
-        <div class="nav-arrow"></div>
+        <div class="flex flex-center flex-space-between absolute-stretch pointer-events-none">
+          <div class="nav-arrow left"></div>
+          <div class="nav-arrow"></div>
+        </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -35,16 +37,32 @@ import "hooper/dist/hooper.css";
 import LootHint from "@/components/LootHint.vue";
 
 export default {
+  props: ["items", "getHintButtons"],
+  data: () => ({
+    currentSlideIndex: 0,
+    hintItems: [],
+    showHintItems: false
+  }),
   components: {
     LootHint,
     Hooper,
     Slide
   },
   methods: {
+    showHint(index) {
+      this.updateHintItems(index);
+      this.showHintItems = true;
+      this.$nextTick(() => {
+        this.$refs.hooper.updateWidth();
+      });
+    },
+    handleItemAction(item, action, ...args) {
+      this.showHintItems = false;
+      this.$emit("action", item, action, ...args);
+    },
     updateHintItems(index) {
       let currentSlide = this.currentSlideIndex;
-      let maxSlideIndex =
-        (this.filteredItems.length < 3 ? this.filteredItems.length : 3) - 1;
+      let maxSlideIndex = (this.items.length < 3 ? this.items.length : 3) - 1;
 
       if (typeof index == "object") {
         currentSlide = index.currentSlide;
@@ -77,13 +95,13 @@ export default {
         // find index of corresponding item
         let hintItemIndex = index + i;
         if (hintItemIndex < 0) {
-          hintItemIndex = this.filteredItems.length - 1;
-        } else if (hintItemIndex == this.filteredItems.length) {
+          hintItemIndex = this.items.length - 1;
+        } else if (hintItemIndex == this.items.length) {
           hintItemIndex = 0;
         }
 
         this.$set(this.hintItems, offsetSlideIndex, {
-          item: this.filteredItems[hintItemIndex],
+          item: this.items[hintItemIndex],
           index: hintItemIndex,
           slide: offsetSlideIndex
         });
@@ -92,3 +110,15 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.items-bg-mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.616);
+  z-index: 900;
+}
+</style>
