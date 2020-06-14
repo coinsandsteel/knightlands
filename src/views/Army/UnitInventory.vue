@@ -28,20 +28,26 @@ export default {
     selectedSlots: {}
   }),
   methods: {
+    resetSelection() {
+      this.selectedSlots = {};
+    },
     toggleSlot(unit) {
       if (this.selectedSlots[unit.id]) {
         this.$delete(this.selectedSlots, unit.id);
-        this.$emit("toggle", unit.id, false);
+        this.$emit("toggle", unit, false);
         return;
       }
 
       if (!this.multiSelect) {
+        this.selectedSlots = {
+          [unit.id]: true
+        };
         this.$emit("unitSelect", unit);
         return;
       }
 
       this.$set(this.selectedSlots, unit.id, true);
-      this.$emit("toggle", unit.id, true);
+      this.$emit("toggle", unit, true);
     }
   }
 };

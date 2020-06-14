@@ -94,7 +94,9 @@ export default class ArmyDB {
             const item = unit.items[itemId];
             if (item) {
                 const stats = this._itemsDB.getStats(item.template);
-                totalDamage += stats.attack;
+                if (stats.attack) {
+                    totalDamage += stats.attack;
+                }
             }
         }
 

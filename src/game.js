@@ -1448,6 +1448,10 @@ class Game {
     async promoteUnit(unitId, units) {
         return (await this._wrapOperation(Operations.UnitPromo, { unitId, units })).response;
     }
+
+    async banishUnits(units) {
+        return (await this._wrapOperation(Operations.UnitBanishment, { units })).response;
+    }
 }
 
 export default Game;

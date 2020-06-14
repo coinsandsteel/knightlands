@@ -489,11 +489,6 @@ const router = new Router({
         requiresAuth: true
       },
       children: [
-        // {
-        //   path: "",
-        //   name: "army",
-        //   component: () => import("./views/Army/ArmyMenu.vue")
-        // },
         {
           path: "composition",
           name: "army-composition",
@@ -544,6 +539,20 @@ const router = new Router({
                   component: () => import("./views/Army/Unit/UnitPromotion.vue")
                 }
               ]
+            }
+          ]
+        },
+        {
+          meta: {
+            noTopBar: true
+          },
+          path: "banishment",
+          component: () => import("./views/Army/Banishment/BanishmentRoot.vue"),
+          children: [
+            {
+              path: "",
+              name: "banishment",
+              component: () => import("./views/Army/Banishment/Banishment.vue")
             }
           ]
         }

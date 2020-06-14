@@ -37,3 +37,12 @@ export default {
   }
 };
 </script>
+
+
+<style lang="less" scoped>
+.star {
+  &.mini {
+    margin-left: -0.5rem;
+  }
+}
+</style>

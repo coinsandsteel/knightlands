@@ -15,7 +15,7 @@
           >{{$t("unit-lvl", {lvl: level})}}</span>
         </div>
       </template>
-      <div class="flex flex-center width-100 height-100" v-else>
+      <div class="flex flex-center width-100 height-100" v-else-if="!empty">
         <span class="font-size-22">{{$t("unit-remove")}}</span>
       </div>
     </div>
@@ -28,7 +28,7 @@ import UnitStars from "./UnitStars.vue";
 import Flag from "./Flag.vue";
 
 export default {
-  props: ["unit", "selected"],
+  props: ["unit", "selected", "empty"],
   mixins: [UnitGetter],
   components: { UnitStars, Flag }
 };

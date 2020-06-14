@@ -26,9 +26,9 @@
 
       <MenuIcon icon="icon-legion" :to="{name: 'army-composition'}" :append="true">Legions</MenuIcon>
 
-      <MenuIcon icon="icon-banishment" to="" :append="true">Banishment</MenuIcon>
+      <MenuIcon icon="icon-banishment" :to="{name: 'banishment'}" :append="true">Banishment</MenuIcon>
 
-      <MenuIcon icon="icon-ability-transfer" to="" :append="true">Ability Transfer</MenuIcon>
+      <MenuIcon icon="icon-ability-transfer" to :append="true">Ability Transfer</MenuIcon>
     </div>
   </div>
 </template>

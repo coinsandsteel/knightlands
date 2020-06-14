@@ -164,9 +164,9 @@ export default class Army {
     addUnits(units) {
         for (const unit of units) {
             if (unit.troop) {
-                this._vm.troops.push(unit);
+                unit.idx = this._vm.troops.push(unit) - 1;
             } else {
-                this._vm.generals.push(unit);
+                unit.idx = this._vm.generals.push(unit) - 1;
             }
             this._vm.$set(this._vm.units, unit.id, unit);
         }
@@ -178,6 +178,10 @@ export default class Army {
     removeUnits(ids) {
         for (const id of ids) {
             const unit = this._vm.units[id];
+            if (!unit) {
+                continue;
+            }
+            
             let units = this._vm.generals;
             if (unit.troop) {
                 units = this._vm.troops;
@@ -187,6 +191,7 @@ export default class Army {
             const lastUnit = units[units.length - 1];
             units[unit.idx] = lastUnit;
             lastUnit.idx = unit.idx;
+            units.splice(unit.idx, 1);
         }
 
         this._doSort(true);
@@ -233,5 +238,11 @@ export default class Army {
             }
             return diff;
         });
+
+        let i = 0;
+        const l = units.length;
+        for (; i < l; ++i) {
+            units[i].idx = i;
+        }
     }
 }

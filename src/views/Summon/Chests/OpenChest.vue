@@ -41,7 +41,7 @@
                 inverseFlipId="lootId"
                 translate
               >
-                <loot :gacha="true" :item="drop.item" :quantity="drop.quantity" @hint="showHint"></loot>
+                <loot :gacha="true" :item="drop.item" :quantity="drop.quantity" @hint="handleHint"></loot>
               </Flipped>
             </div>
           </Flipped>
@@ -71,15 +71,10 @@ import Loot from "@/components/Loot.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
-import Config from "@/config";
 import { Flipper, Flipped } from "vue-flip-toolkit";
 import anime from "animejs/lib/anime.es.js";
 import SpinePlayer from "@/components/SpinePlayer.vue";
-
-import LootHint from "@/components/LootHint.vue";
-import { create as CreateDialog } from "vue-modal-dialogs";
-const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
-
+import HintHandler from "@/components/HintHandler.vue";
 import ChestsMeta from "@/chests_meta";
 
 const ChestSkeletons = {
@@ -89,7 +84,7 @@ const ChestSkeletons = {
 };
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, HintHandler],
   props: ["chest", "items", "count"],
   data: () => ({
     loot: [],
@@ -163,13 +158,6 @@ export default {
       this.$nextTick(() => {
         this.startGacha();
       });
-    },
-    async showHint(item) {
-      if (!item) {
-        return;
-      }
-
-      await Hint(item, false, false);
     },
     isHidden() {
       return (prev, current) => {

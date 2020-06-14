@@ -22,10 +22,12 @@
         <span class="star" :class="{active: itemData && itemData.breakLimit>=2}"></span>
       </div>
 
-      <div class="loot-quantity" :class="{'bottom': gacha}" v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))">
-        <span
-          class="font-size-18 font-weight-700 digit-font font-outline bold"
-        >{{count}}</span>
+      <div
+        class="loot-quantity"
+        :class="{'bottom': gacha}"
+        v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))"
+      >
+        <span class="font-size-18 font-weight-700 digit-font font-outline bold">{{count}}</span>
       </div>
 
       <div v-if="showLevel && itemData && itemData.level > 1" class="item-level">
@@ -74,7 +76,10 @@ export default {
       type: Boolean,
       default: false
     },
-    quantity: Number,
+    quantity: {
+      type: Number,
+      default: 1
+    },
     size: {
       type: String,
       default: ""
@@ -114,10 +119,10 @@ export default {
       return `slot-${this.$game.itemsDB.getRarity(this.itemData.template)}`;
     },
     count() {
-      let count = this.quantity || 1;
+      let count = this.quantity;
       // prioritize explicit quantity
       if (this.itemData) {
-        return this.itemData.count || count;
+        return count || this.itemData.count;
       }
 
       return count;
@@ -133,7 +138,7 @@ export default {
             template: this.item * 1,
             equipped: false,
             level: 1,
-            count: Math.floor((this.quantity || 1) * (template.quantity || 1) * 100)/100
+            count: Math.floor(this.quantity * (template.quantity || 1) * 100) / 100
           };
         }
       } else {

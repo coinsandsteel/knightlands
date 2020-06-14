@@ -12,7 +12,7 @@
       <span class="right" v-else>{{$t("unit-lvl", { lvl: level + 1 })}}</span>
     </div>
 
-    <div class="flex flex-column full-flex flex-center">
+    <div class="flex flex-column margin-top-1 width-100 flex-center">
       <CraftingIngridient :ingridient="levelItem" ref="levelIngridient" />
 
       <CustomButton
