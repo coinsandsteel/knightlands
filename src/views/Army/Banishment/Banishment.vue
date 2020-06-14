@@ -180,6 +180,9 @@ export default {
         });
         this.$refs.units.resetSelection();
         this.selectedUnits = [];
+        for (const i in this.refundedItems) {
+            this.refundedItems[i].quantity = 0;
+        }
       }
     },
     autofill() {
@@ -188,7 +191,12 @@ export default {
         if (this.maxSelected) {
           break;
         }
-        this.toggleUnitSelect(this.filteredUnits[i], true);
+        const unit = this.filteredUnits[i];
+        const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
+        if (idx != -1) {
+            continue;
+        }
+        this.$refs.units.toggleSlot(unit);
       }
     }
   }
