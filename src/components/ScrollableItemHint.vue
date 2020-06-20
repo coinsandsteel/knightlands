@@ -35,6 +35,7 @@
 import { Hooper, Slide } from "hooper";
 import "hooper/dist/hooper.css";
 import LootHint from "@/components/LootHint.vue";
+import DoubleBuffer from "@/helpers/DoubleBuffer";
 
 export default {
   props: ["items", "getHintButtons"],
@@ -48,8 +49,15 @@ export default {
     Hooper,
     Slide
   },
+  created() {
+    this._buffer = new DoubleBuffer();
+  },
   methods: {
     showHint(index) {
+      let _hintItems = this._buffer.get();
+      _hintItems.length = 0;
+      this.hintItems = _hintItems;
+
       this.updateHintItems(index);
       this.showHintItems = true;
       this.$nextTick(() => {

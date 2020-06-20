@@ -5,7 +5,13 @@
       <UnitView :unit="unit" :showEquipment="true" />
       <div class="flex-full relative dummy-height">
         <div class="element-background" :class="element"></div>
-        <UnitInventory :units="units" :selectedUnit="unit" @unitSelect="selectUnit" />
+        <UnitInventory
+          :remove="true"
+          :units="units"
+          @removed="handleUnitRemove"
+          :selectedUnit="unit"
+          @unitSelect="selectUnit"
+        />
       </div>
     </template>
 
@@ -28,7 +34,8 @@ export default {
   components: { UnitView, UnitInventory, LoadingScreen, Promised },
   data: () => ({
     unit: null,
-    request: null
+    request: null,
+    units: []
   }),
   created() {
     this.$options.useRouterBack = true;
@@ -65,9 +72,6 @@ export default {
 
       return null;
     },
-    units() {
-      return this.$game.army.getUnits(this.type == "troops");
-    },
     isTroops() {
       return this.type == "troops";
     }
@@ -76,11 +80,24 @@ export default {
     load() {
       const slots = this.$game.army.getSlots(this.legion, this.isTroops);
       this.unit = slots.find(s => s.id == this.slotId).unit;
+
+      const legion = this.$game.army.getLegion(this.legion);
+      const exceptUnits = {};
+      for (const slotId in legion.units) {
+        if (legion.units[slotId]) {
+          exceptUnits[legion.units[slotId]] = true;
+        }
+      }
+      this.units = this.$game.army.getUnitsExcept(this.isTroops, exceptUnits);
     },
     selectUnit(unit) {
       // set as active unit in slot
       this.$game.army.setInSlot(this.legion, this.slotId, unit);
       this.unit = unit;
+    },
+    handleUnitRemove() {
+      this.$game.army.setInSlot(this.legion, this.slotId, null);
+      this.unit = null;
     },
     handleBackButton() {
       if (this.unit != this.originalUnit) {
@@ -116,7 +133,7 @@ export default {
         this.request = this.$game.setLegionSlot(
           this.legion,
           this.slotId,
-          this.unit.id
+          this.unit ? this.unit.id : 0
         );
         await this.performRequest(this.request);
         this.originalUnit = this.unit;

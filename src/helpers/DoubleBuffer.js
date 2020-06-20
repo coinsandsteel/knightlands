@@ -5,7 +5,7 @@ class DoubleBuffer {
     }
 
     get() {
-        this._buffers[this._index++ % 2];
+       return this._buffers[this._index++ % 2];
     }
 }
 

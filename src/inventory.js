@@ -135,7 +135,7 @@ class Inventory {
             if (
                 filters[this._itemDB.getItemType(template)] ||
                 (templateData.type == ItemType.Equipment &&
-                    filters[this._itemDB.getSlot(template)])
+                    filters[this._itemDB.getSlot(template)] && !item.equipped)
             ) {
                 buffer.push(item);
             }

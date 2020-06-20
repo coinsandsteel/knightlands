@@ -13,11 +13,10 @@
       >
         <div class="flex flex-center flex-column padding-left-3">
           <div class="padding-half panel-input unit-view-param center">
-            <UnitStars :stars="stars" size="big" />
+            <UnitStars :stars="stars" size="small" />
           </div>
-          <div class="margin-top-1 padding-half panel-input flex flex-center unit-view-param">
-            <span class="font-size-22 margin-right-1">Damage:</span>
-            <span class="font-size-22 font-weight-900">{{damage}}</span>
+          <div class="margin-top-1 padding-half panel-input flex flex-center unit-view-param font-size-22">
+            <IconWithValue iconClass="icon-damage">{{damage}}</IconWithValue>
           </div>
         </div>
 
@@ -70,11 +69,12 @@ import UnitTitle from "./UnitTitle.vue";
 import UnitGetter from "./UnitGetterMixin.vue";
 import UnitStars from "./UnitStars.vue";
 import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["unit", "showEquipment", "showSelect"],
   mixins: [UnitGetter],
-  components: { UnitTitle, UnitStars, CustomButton },
+  components: { UnitTitle, UnitStars, CustomButton, IconWithValue },
   data: () => ({
     showAbilities: false
   }),
@@ -109,7 +109,7 @@ export default {
 }
 
 .unit-view-param {
-  width: 18rem;
+  min-width: 14rem;
 }
 
 .unit-image {

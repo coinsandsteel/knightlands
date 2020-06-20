@@ -25,7 +25,12 @@
       </div>
 
       <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-      <UnitInventory ref="units" :units="filteredUnits" :multiSelect="!maxSelected" @toggle="toggleUnitSelect" />
+      <UnitInventory
+        ref="units"
+        :units="filteredUnits"
+        :multiSelect="!maxSelected"
+        @toggle="toggleUnitSelect"
+      />
 
       <portal to="footer" v-if="isActive">
         <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{$t("btn-banish")}}</CustomButton>
@@ -110,6 +115,35 @@ export default {
       return this.maxUnits == this.selectedUnits.length;
     }
   },
+  watch: {
+    selectedUnits() {
+      for (const key in this.refundedItems) {
+        this.refundedItems[key].quantity = 0;
+      }
+
+      for (const unit of this.selectedUnits) {
+        this.refundedItems.gold.quantity += Math.floor(
+          unit.gold * ArmyMeta.refund.gold
+        );
+        this.refundedItems.souls.quantity += Math.floor(
+          unit.souls * ArmyMeta.refund.souls
+        );
+
+        if (unit.troop) {
+          this.refundedItems.troopEssence.quantity += Math.floor(
+            unit.essence * ArmyMeta.refund.troopEssence
+          );
+        } else {
+          this.refundedItems.generalEssence.quantity += Math.floor(
+            unit.essence * ArmyMeta.refund.generalEssence
+          );
+        }
+
+        this.refundedItems.souls.quantity +=
+          ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];
+      }
+    }
+  },
   methods: {
     getSelectedUnit(idx) {
       if (this.selectedUnits.length > idx - 1) {
@@ -140,33 +174,12 @@ export default {
       );
     },
     toggleUnitSelect(unit, isSelected) {
-      let sign = 1;
       if (isSelected) {
         this.selectedUnits.push(unit);
       } else {
         const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
         this.selectedUnits.splice(idx, 1);
-        sign = -1;
       }
-
-      this.refundedItems.gold.quantity += Math.floor(
-        sign * unit.gold * ArmyMeta.refund.gold
-      );
-      this.refundedItems.souls.quantity += Math.floor(
-        sign * unit.souls * ArmyMeta.refund.souls
-      );
-      if (unit.troop) {
-        this.refundedItems.troopEssence.quantity += Math.floor(
-          sign * unit.essence * ArmyMeta.refund.troopEssence
-        );
-      } else {
-        this.refundedItems.generalEssence.quantity += Math.floor(
-          sign * unit.essence * ArmyMeta.refund.generalEssence
-        );
-      }
-
-      this.refundedItems.souls.quantity +=
-        sign * ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];
     },
     async banish() {
       this.request = this.performRequest(
@@ -181,7 +194,7 @@ export default {
         this.$refs.units.resetSelection();
         this.selectedUnits = [];
         for (const i in this.refundedItems) {
-            this.refundedItems[i].quantity = 0;
+          this.refundedItems[i].quantity = 0;
         }
       }
     },
@@ -194,7 +207,7 @@ export default {
         const unit = this.filteredUnits[i];
         const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
         if (idx != -1) {
-            continue;
+          continue;
         }
         this.$refs.units.toggleSlot(unit);
       }

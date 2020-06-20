@@ -3,6 +3,7 @@
     <div class="flex-full dummy-height">
       <div class="padding-half">
         <div class="width-100 flex">
+          <UnitItem class="width-20" v-if="remove" @click="handleRemove" :empty="false" />
           <UnitItem
             class="width-20"
             v-for="unit in units"
@@ -22,7 +23,7 @@
 import UnitItem from "./UnitItem.vue";
 
 export default {
-  props: ["units", "multiSelect", "selectedUnit"],
+  props: ["units", "multiSelect", "selectedUnit", "remove"],
   components: { UnitItem },
   data: () => ({
     selectedSlots: {}
@@ -48,6 +49,10 @@ export default {
 
       this.$set(this.selectedSlots, unit.id, true);
       this.$emit("toggle", unit, true);
+    },
+    handleRemove() {
+      this.selectedSlots = {};
+      this.$emit('removed');
     }
   }
 };

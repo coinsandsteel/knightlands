@@ -17,17 +17,22 @@
           ></loot>
         </div>
 
-        <CustomButton class="margin-top-1" type="grey" @click="viewSelectedSlot" :disabled="!unit.items[selectedSlot]">{{$t("btn-view")}}</CustomButton>
+        <CustomButton
+          class="margin-top-1"
+          type="grey"
+          @click="viewSelectedSlot"
+          :disabled="!unit.items[selectedSlot]"
+        >{{$t("btn-view")}}</CustomButton>
       </div>
 
       <LootContainer :items="filteredItems" :inventory="true" @hint="_handleHint"></LootContainer>
 
       <ScrollableItemHint
-          ref="scrollHint"
-          :items="hintItems"
-          @action="handleItemAction"
-          :getHintButtons="getHintButtons"
-        ></ScrollableItemHint>
+        ref="scrollHint"
+        :items="hintItems"
+        @action="handleItemAction"
+        :getHintButtons="getHintButtons"
+      ></ScrollableItemHint>
     </template>
   </Promised>
 </template>
@@ -50,7 +55,14 @@ const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 export default {
   props: ["unit"],
   mixins: [HintHandler, NetworkRequestErrorMixin],
-  components: { Loot, LootContainer, Promised, LoadingScreen, CustomButton, ScrollableItemHint },
+  components: {
+    Loot,
+    LootContainer,
+    Promised,
+    LoadingScreen,
+    CustomButton,
+    ScrollableItemHint
+  },
   data: () => ({
     selectedSlot: -1,
     filteredItems: [],
@@ -96,8 +108,11 @@ export default {
     viewSelectedSlot() {
       this.equippedHint = true;
       let item = this.unit.items[this.selectedSlot];
-      this.$nextTick(()=>{
-        this._handleHint(item, this.hintItems.findIndex(x => x == item));
+      this.$nextTick(() => {
+        this._handleHint(
+          item,
+          this.hintItems.findIndex(x => x == item)
+        );
       });
     },
     unequipSelectedSlot() {
@@ -106,6 +121,7 @@ export default {
       );
     },
     handleSlotSelection(slot) {
+      this.equippedHint = false;
       this.selectedSlot = slot;
       this.filteredItems = this.$game.inventory.filterItemsByType(
         { [slot]: true },
@@ -113,7 +129,6 @@ export default {
       );
     },
     async handleItemAction(item, action, ...args) {
-      this.equippedHint = false;
       if (action === "equip") {
         this.request = this.performRequest(
           this.$game.unitEquipItem(this.unit.id, item.id)
@@ -131,7 +146,11 @@ export default {
     },
     getHintButtons({ item }) {
       let buttons;
-      if (!this.equippedHint && this.unit.items[this.selectedSlot] && !item.equipped) {
+      if (
+        !this.equippedHint &&
+        this.unit.items[this.selectedSlot] &&
+        !item.equipped
+      ) {
         buttons = [
           {
             title: "btn-compare",

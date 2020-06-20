@@ -112,6 +112,22 @@ export default class Army {
         return buffer;
     }
 
+    getUnitsExcept(troops, exceptUnits) {
+        const units = this.getUnits(troops);
+        const filteredUnits = new Array(units.length);
+        let index = 0;
+        const length = units.length;
+        let i = 0;
+        for (; i < length; ++i) {
+            if (exceptUnits[units[i].id]) {
+                continue;
+            }
+            filteredUnits[index++] = units[i];
+        }
+        filteredUnits.length = index;
+        return filteredUnits;
+    }
+
     getUnits(troops) {
         if (troops) {
             return this._vm.troops;

@@ -37,7 +37,6 @@ export default {
       return this.selectedUnits.length >= this.ingridient.amount;
     },
     units() {
-        console.log(this.usedUnits)
       // filter units based on ingridient
       return this.$game.army.filterIngridientUnits(
         this.unit,

@@ -156,8 +156,8 @@ export default {
       if (!units) {
         return;
       }
-      for (const unitId of units) {
-        this.$delete(this.selectedUnits, unitId);
+      for (const unit of units) {
+        this.$delete(this.selectedUnits, unit.id);
       }
     },
     getCurrent(ingrId) {
@@ -174,8 +174,8 @@ export default {
 
       if (units) {
         this.$set(this.unitsPerIngridient, ingridient.id, units);
-        for (const unitId of units) {
-          this.$set(this.selectedUnits, unitId, unitId);
+        for (const unit of units) {
+          this.$set(this.selectedUnits, unit.id, unit);
         }
       }
     },
