@@ -1,16 +1,15 @@
 <template>
-  <div
-    class="root padding-half font-size-18 relative"
-    @click="$emit('click')"
-  >
-    <div class="bg width-100 height-100" :style="unitImage"></div>
-    <div class="absolute-stretch flex flex-center" v-if="!unit">
-      <div class="empty"></div>
+  <div class="outer" @click="$emit('click')">
+    <div class="inner root font-size-18 relative">
+      <div class="bg width-100 height-100" :style="unitImage"></div>
+      <div class="absolute-stretch flex flex-center" v-if="!unit">
+        <div class="empty"></div>
+      </div>
+      <UnitStars class="stars" :stars="stars" size="small" />
+      <Flag class="item-badge-grid" :weaponType="weaponType" :element="element" />
+      <span class="unit-type font-size-20">{{$t(unitType)}}</span>
+      <span class="unit-level font-size-20">{{$t("unit-lvl", {lvl: level})}}</span>
     </div>
-    <UnitStars class="stars" :stars="stars" size="small" />
-    <Flag class="item-badge-grid" :weaponType="weaponType" :element="element" />
-    <span class="unit-type font-size-20">{{$t(unitType)}}</span>
-    <span class="unit-level font-size-20">{{$t("unit-lvl", {lvl: level})}}</span>
   </div>
 </template>
 
@@ -27,6 +26,34 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.outer {
+  position: relative;
+  // padding-top: 75%;
+
+  // &:after {
+  //   display: block;
+  //   content: "";
+  //   // width: 100%;
+  //   // padding-top: (4 / 3) * 100%;
+  //   height: 15rem;
+  // }
+
+  &:before {
+    content: "";
+    width: 100%;
+    display: inline-block;
+    padding-bottom: calc(100% / (16 / 9));
+  }
+
+  & > .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .root {
   background-repeat: no-repeat;
   background-size: 100% 100%;

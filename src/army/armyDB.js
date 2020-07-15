@@ -61,6 +61,11 @@ export default class ArmyDB {
         return this._abilityResolver.getAbilityLevelValue(this.getStars(unit), abilityId, unit.troop);
     }
 
+    getAbility(id, troop) {
+        const abilitiesRecords = troop ? armyAbilities.troops : armyAbilities.generals;
+        return abilitiesRecords[id];
+    }
+
     getAbilities(unit) {
         const abilities = [];
         const abilitiesRecords = unit.troop ? armyAbilities.troops : armyAbilities.generals;

@@ -37,7 +37,7 @@
             class="margin-bottom-half"
             @click="$emit('select', unit)"
             v-if="showSelect"
-          >{{$t("unit-edit")}}</CustomButton>
+          >{{$t("unit-select")}}</CustomButton>
         </div>
       </div>
 

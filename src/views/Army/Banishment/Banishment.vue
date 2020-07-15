@@ -191,11 +191,14 @@ export default {
         this.$nextTick(() => {
           this.filterUnits();
         });
-        this.$refs.units.resetSelection();
-        this.selectedUnits = [];
-        for (const i in this.refundedItems) {
-          this.refundedItems[i].quantity = 0;
-        }
+        this.reset();
+      }
+    },
+    reset() {
+      this.$refs.units.resetSelection();
+      this.selectedUnits = [];
+      for (const i in this.refundedItems) {
+        this.refundedItems[i].quantity = 0;
       }
     },
     autofill() {
@@ -204,11 +207,13 @@ export default {
         if (this.maxSelected) {
           break;
         }
+
         const unit = this.filteredUnits[i];
         const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
         if (idx != -1) {
           continue;
         }
+
         this.$refs.units.toggleSlot(unit);
       }
     }

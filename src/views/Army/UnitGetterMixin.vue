@@ -92,9 +92,9 @@ export default {
     }
   },
   methods: {
-    getAbilityDesc(ability) {
+    getAbilityDesc(ability, overrideUnit) {
       const levelValue = this.$game.armyDB.getAbilityLevelValue(
-        this.unit,
+        this.unit || overrideUnit,
         ability.id
       );
 

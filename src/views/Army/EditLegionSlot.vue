@@ -88,7 +88,10 @@ export default {
           exceptUnits[legion.units[slotId]] = true;
         }
       }
-      this.units = this.$game.army.getUnitsExcept(this.isTroops, exceptUnits);
+      this.units = this.$game.army.getUnitsWithFilter(
+        this.isTroops,
+        x => !exceptUnits[x.id]
+      );
     },
     selectUnit(unit) {
       // set as active unit in slot

@@ -69,16 +69,14 @@ const Dividends = () => import("./views/Dividends/Dividends.vue");
 const Settings = () => import("./views/Settings/Settings.vue");
 
 const router = new Router({
-  routes: [
-    {
+  routes: [{
       path: "/castle/crafting",
       name: "",
       component: CraftingRoot,
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
+      children: [{
           path: "",
           name: "blacksmith",
           component: CraftingHome
@@ -86,8 +84,7 @@ const router = new Router({
         {
           path: "craft",
           component: Create,
-          children: [
-            {
+          children: [{
               path: "",
               name: "crafting",
               component: Crafting
@@ -103,8 +100,7 @@ const router = new Router({
         {
           path: "level",
           component: Upgrade,
-          children: [
-            {
+          children: [{
               path: "",
               name: "crafting-upgrade",
               component: CraftingUpgrade
@@ -120,8 +116,7 @@ const router = new Router({
         {
           path: "upgrade",
           component: Unbind,
-          children: [
-            {
+          children: [{
               path: "",
               name: "crafting-unbind",
               component: CraftingUnbind
@@ -137,8 +132,7 @@ const router = new Router({
         {
           path: "enchant",
           component: Enchant,
-          children: [
-            {
+          children: [{
               path: "",
               name: "crafting-enchant",
               component: CraftingEnchant
@@ -154,8 +148,7 @@ const router = new Router({
         {
           path: "disenchant",
           component: Disenchant,
-          children: [
-            {
+          children: [{
               path: "",
               name: "crafting-disenchant",
               component: CraftingDisenchant
@@ -170,8 +163,7 @@ const router = new Router({
         {
           path: "recipes",
           component: RecipeBookRoot,
-          children: [
-            {
+          children: [{
               path: "",
               name: "recipe-book",
               component: RecipeBook
@@ -192,8 +184,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
+      children: [{
           path: "",
           name: "summon",
           component: SummonHome
@@ -201,8 +192,7 @@ const router = new Router({
         {
           path: "chests",
           component: ChestsRoot,
-          children: [
-            {
+          children: [{
               path: "",
               name: "chests",
               component: ChooseChest
@@ -218,19 +208,16 @@ const router = new Router({
         {
           path: "shop",
           component: ShopRoot,
-          children: [
-            {
-              path: "",
-              name: "shop",
-              component: ShopHome
-            }
-          ]
+          children: [{
+            path: "",
+            name: "shop",
+            component: ShopHome
+          }]
         },
         {
           path: "army",
           component: () => import("./views/Summon/Army/ArmySummonRoot.vue"),
-          children: [
-            {
+          children: [{
               path: "",
               name: "army-summon-menu",
               component: () => import("./views/Summon/Army/ArmySummonMenu.vue")
@@ -252,13 +239,11 @@ const router = new Router({
     {
       path: "/home/adventures",
       component: AdventuresRoot,
-      children: [
-        {
-          path: "",
-          name: "adventures",
-          component: Adventures
-        }
-      ],
+      children: [{
+        path: "",
+        name: "adventures",
+        component: Adventures
+      }],
       meta: {
         requiresAuth: true
       }
@@ -266,13 +251,11 @@ const router = new Router({
     {
       path: "/home/onyx-tower",
       component: ForsakenTowerRoot,
-      children: [
-        {
-          path: "",
-          name: "onyx-tower",
-          component: ForsakenTower
-        }
-      ],
+      children: [{
+        path: "",
+        name: "onyx-tower",
+        component: ForsakenTower
+      }],
       meta: {
         requiresAuth: true
       }
@@ -280,8 +263,7 @@ const router = new Router({
     {
       path: "/home/trials",
       component: () => import("./views/Trials/TrialsRoot.vue"),
-      children: [
-        {
+      children: [{
           path: "",
           component: () => import("./views/Trials/Trials.vue")
         },
@@ -289,37 +271,31 @@ const router = new Router({
           path: "honor",
           name: "trial-honor",
           component: () => import("./views/Trials/Honor/TrialsOfHonor.vue"),
-          children: [
-            {
-              path: "",
-              name: "trials-of-honor",
-              component: () => import("./views/Trials/Honor/TrialsList.vue")
-            }
-          ]
+          children: [{
+            path: "",
+            name: "trials-of-honor",
+            component: () => import("./views/Trials/Honor/TrialsList.vue")
+          }]
         },
         {
           path: "conjured",
           name: "trial-conjured",
           component: () => import("./views/Trials/Conjured/ConjuredTrials.vue"),
-          children: [
-            {
-              path: "",
-              name: "conjured-trials",
-              component: () => import("./views/Trials/Conjured/TrialsList.vue")
-            }
-          ]
+          children: [{
+            path: "",
+            name: "conjured-trials",
+            component: () => import("./views/Trials/Conjured/TrialsList.vue")
+          }]
         },
         {
           path: "decay",
           name: "trial-decay",
           component: () => import("./views/Trials/Decay/TrialsOfDecay.vue"),
-          children: [
-            {
-              path: "",
-              name: "trials-of-decay",
-              component: () => import("./views/Trials/Decay/TrialsList.vue")
-            }
-          ]
+          children: [{
+            path: "",
+            name: "trials-of-decay",
+            component: () => import("./views/Trials/Decay/TrialsList.vue")
+          }]
         }
       ],
       meta: {
@@ -332,8 +308,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
+      children: [{
           name: "rankings",
           path: "",
           component: () => import("./views/Rankings/RankingsMenu.vue")
@@ -341,8 +316,7 @@ const router = new Router({
         {
           path: "leaderboards",
           component: () => import("./views/Rankings/Leaderboards/Leaderboards.vue"),
-          children: [
-            {
+          children: [{
               name: "leaderboards",
               path: "",
               component: () => import("./views/Rankings/Leaderboards/LeaderboardsList.vue")
@@ -358,8 +332,7 @@ const router = new Router({
         {
           path: "tournaments",
           component: () => import("./views/Rankings/Tournaments/Tournaments.vue"),
-          children: [
-            {
+          children: [{
               name: "tournaments",
               path: "",
               component: () => import("./views/Rankings/Tournaments/TournamentList.vue")
@@ -375,8 +348,7 @@ const router = new Router({
               name: "tournament",
               props: true,
               component: () => import("./views/Rankings/Tournaments/TournamentView.vue"),
-              children: [
-                {
+              children: [{
                   path: "ranks",
                   name: "tournament-ranks",
                   component: () => import("./views/Rankings/Tournaments/TournamentRanks.vue"),
@@ -395,8 +367,7 @@ const router = new Router({
         {
           path: "races",
           component: () => import("./views/Rankings/Races/Races.vue"),
-          children: [
-            {
+          children: [{
               name: "races",
               path: "",
               component: () => import("./views/Rankings/Races/RacesList.vue")
@@ -412,8 +383,7 @@ const router = new Router({
               name: "race",
               props: true,
               component: () => import("./views/Rankings/Races/RaceView.vue"),
-              children: [
-                {
+              children: [{
                   path: "ranks",
                   name: "race-ranks",
                   component: () => import("./views/Rankings/Races/RaceRanks.vue"),
@@ -443,19 +413,15 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
-          path: "chat",
-          component: () => import("./views/Social/Chat/Chat.vue"),
-          children: [
-            {
-              path: "",
-              name: "world-chat",
-              component: () => import("./views/Social/Chat/WorldChat.vue")
-            }
-          ]
-        }
-      ]
+      children: [{
+        path: "chat",
+        component: () => import("./views/Social/Chat/Chat.vue"),
+        children: [{
+          path: "",
+          name: "world-chat",
+          component: () => import("./views/Social/Chat/WorldChat.vue")
+        }]
+      }]
     },
     {
       path: "/home/gold",
@@ -488,8 +454,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
+      children: [{
           path: "composition",
           name: "army-composition",
           component: () => import("./views/Army/ArmyComposition.vue")
@@ -512,8 +477,7 @@ const router = new Router({
           meta: {
             noTopBar: false
           },
-          children: [
-            {
+          children: [{
               path: "",
               name: "edit-unit",
               component: () => import("./views/Army/Unit/ArmyUnitSelect.vue"),
@@ -522,8 +486,7 @@ const router = new Router({
               path: "unit/:unitId",
               props: true,
               component: () => import("./views/Army/Unit/ArmyUnit.vue"),
-              children: [
-                {
+              children: [{
                   path: "",
                   name: "unit-level",
                   component: () => import("./views/Army/Unit/UnitLevelUp.vue")
@@ -548,11 +511,29 @@ const router = new Router({
           },
           path: "banishment",
           component: () => import("./views/Army/Banishment/BanishmentRoot.vue"),
-          children: [
-            {
+          children: [{
+            path: "",
+            name: "banishment",
+            component: () => import("./views/Army/Banishment/Banishment.vue")
+          }]
+        },
+        {
+          meta: {
+            noTopBar: true
+          },
+          path: "ability-transfer",
+          component: () => import("./views/Army/AbilityTransfer/AbilityTransferRoot.vue"),
+          children: [{
               path: "",
-              name: "banishment",
-              component: () => import("./views/Army/Banishment/Banishment.vue")
+              name: "ability-transfer",
+              component: () => import("./views/Army/AbilityTransfer/AbilityTransfer.vue"),
+              props: true
+            },
+            {
+              path: "select/:from",
+              name: "ability-transfer-select",
+              component: () => import("./views/Army/AbilityTransfer/AbilityTransferSelectUnit.vue"),
+              props: true
             }
           ]
         }
@@ -601,8 +582,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
+      children: [{
           path: "",
           name: "character",
           component: CharacterInventory
@@ -639,8 +619,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
+      children: [{
           path: "view/:raid",
           props: true,
           name: "view-raid",
@@ -649,8 +628,7 @@ const router = new Router({
         {
           path: "summon",
           component: RaidSummoning,
-          children: [
-            {
+          children: [{
               path: ":raid",
               props: true,
               name: "summon-raid",

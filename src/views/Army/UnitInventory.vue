@@ -33,7 +33,7 @@ export default {
       this.selectedSlots = {};
     },
     toggleSlot(unit) {
-      if (this.selectedSlots[unit.id]) {
+      if (this.multiSelect && this.selectedSlots[unit.id]) {
         this.$delete(this.selectedSlots, unit.id);
         this.$emit("toggle", unit, false);
         return;
@@ -52,7 +52,7 @@ export default {
     },
     handleRemove() {
       this.selectedSlots = {};
-      this.$emit('removed');
+      this.$emit("removed");
     }
   }
 };

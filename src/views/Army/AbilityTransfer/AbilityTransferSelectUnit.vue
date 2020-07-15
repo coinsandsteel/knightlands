@@ -1,8 +1,8 @@
 <template>
   <div class="screen-content">
     <div class="element-background" :class="element"></div>
-    <UnitView :unit="unit" :showSelect="true" @select="editUnit" />
-    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+    <UnitView :unit="unit" :showSelect="true" @select="handleUnitSelect" />
+    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" v-show="!hideTabs" />
 
     <div class="flex-full relative dummy-height">
       <UnitInventory
@@ -14,9 +14,7 @@
     </div>
 
     <portal to="footer">
-      <CustomButton type="grey" @click="showUnitFilters">
-        {{$t("btn-filters")}}
-      </CustomButton>
+      <CustomButton type="grey" @click="showUnitFilters">{{ $t("btn-filters") }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -39,6 +37,7 @@ const Generals = "generals";
 
 export default {
   mixins: [AppSection],
+  props: ["from", "excludeUnit"],
   components: { UnitInventory, Tabs, UnitView, CustomButton },
   created() {
     this.title = "window-select-unit";
@@ -48,6 +47,13 @@ export default {
   },
   mounted() {
     this.filterUnits();
+  },
+  watch: {
+    excludeUnit() {
+      this.unit = null;
+      this.$refs.inventory.resetSelection();
+      this.filterUnits();
+    }
   },
   data: () => ({
     unit: null,
@@ -62,6 +68,9 @@ export default {
     currentTab: Troops
   }),
   computed: {
+    hideTabs() {
+      return !!this.excludeUnit;
+    },
     element() {
       if (this.unit) {
         return this.$game.armyDB.getElement(this.unit);
@@ -78,8 +87,14 @@ export default {
     selectUnit(unit) {
       this.unit = unit;
     },
-    editUnit(unit) {
-      this.$router.push({ name: "unit-level", params: { unitId: unit.id } });
+    handleUnitSelect(unit) {
+      if (this.from) {
+        this.$emit("selectFrom", unit);
+      } else {
+        this.$emit("selectTo", unit);
+      }
+
+      this.$router.back();
     },
     async showUnitFilters() {
       const filters = await ItemFilter({
@@ -93,10 +108,16 @@ export default {
       }
     },
     filterUnits() {
-      this.filteredUnits = this.$game.army.filterUnits(
-        this.currentTab == Troops, 
-        this.filtersStore,
-        this.filteredUnitsBuffer.get()
+      this.filteredUnits = this.$game.army.getUnitsWithFilter(
+        this.currentTab == Troops,
+        x => {
+          return (
+            (!this.excludeUnit &&
+              this.filtersStore[this.$game.armyDB.getStars(x)]) ||
+            (x.template == this.excludeUnit.template &&
+              x.id != this.excludeUnit.id)
+          );
+        }
       );
 
       if (this.filteredUnits.length > 0) {

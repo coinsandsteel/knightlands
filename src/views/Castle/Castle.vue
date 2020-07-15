@@ -3,32 +3,17 @@
     <div class="screen-background"></div>
 
     <div class="flex flex-column width-100 flex-items-center flex-space-evenly shift-buttons">
-      <!-- <CustomButton type="grey" :big="true" width="30rem" class="margin-bottom-1" :disabled="true">
-        <div class="flex width-100 flex-justify-start flex-items-center">
-          <span class="icon-tower huge"></span>
-          <span class="flex-1">Castle Grounds</span>
-        </div>
-      </CustomButton>
-      <CustomButton type="red" :big="true" width="30rem" class="margin-bottom-1 shift-left-1">
-        <router-link tag="div" class="flex width-100 flex-justify-start flex-items-center" :to="{ name: 'army' }">
-          <span class="icon-tower huge"></span>
-          <span class="flex-1">{{$t('menu-army')}}</span>
-        </router-link>
-      </CustomButton>
-      <CustomButton type="yellow" width="30rem" class="margin-bottom-1 shift-left-2" :big="true">
-        <router-link tag="div" class="flex width-100 flex-justify-start flex-items-center" :to="{ name: 'blacksmith' }">
-          <span class="icon-craft huge"></span>
-          <span class="flex-1">{{$t('menu-blacksmith')}}</span>
-        </router-link>
-      </CustomButton>-->
-
       <MenuIcon icon="icon-units" :to="{name: 'edit-unit'}" :append="true">Units</MenuIcon>
 
       <MenuIcon icon="icon-legion" :to="{name: 'army-composition'}" :append="true">Legions</MenuIcon>
 
       <MenuIcon icon="icon-banishment" :to="{name: 'banishment'}" :append="true">Banishment</MenuIcon>
 
-      <MenuIcon icon="icon-ability-transfer" to :append="true">Ability Transfer</MenuIcon>
+      <MenuIcon
+        icon="icon-ability-transfer"
+        :to="{name: 'ability-transfer'}"
+        :append="true"
+      >Ability Transfer</MenuIcon>
     </div>
   </div>
 </template>
