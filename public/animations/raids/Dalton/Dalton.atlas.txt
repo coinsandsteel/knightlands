@@ -1,0 +1,62 @@
+
+Dalton.png
+size: 917,278
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 214 copy
+  rotate: true
+  xy: 769, 83
+  size: 193, 146
+  orig: 193, 191
+  offset: 0, 0
+  index: -1
+Layer 793
+  rotate: false
+  xy: 362, 31
+  size: 189, 245
+  orig: 189, 245
+  offset: 0, 0
+  index: -1
+Layer 794
+  rotate: false
+  xy: 83, 9
+  size: 277, 267
+  orig: 277, 267
+  offset: 0, 0
+  index: -1
+Layer 795
+  rotate: false
+  xy: 362, 3
+  size: 314, 26
+  orig: 316, 28
+  offset: 1, 1
+  index: -1
+Layer 796
+  rotate: false
+  xy: 855, 19
+  size: 56, 62
+  orig: 138, 147
+  offset: 82, 81
+  index: -1
+Layer 798
+  rotate: true
+  xy: 769, 19
+  size: 62, 84
+  orig: 64, 86
+  offset: 1, 1
+  index: -1
+Layer 799
+  rotate: false
+  xy: 2, 2
+  size: 79, 274
+  orig: 82, 274
+  offset: 3, 0
+  index: -1
+Layer 800
+  rotate: true
+  xy: 553, 32
+  size: 244, 214
+  orig: 244, 214
+  offset: 0, 0
+  index: -1

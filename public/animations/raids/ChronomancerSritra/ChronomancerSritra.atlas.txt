@@ -1,0 +1,62 @@
+
+ChronomancerSritra.png
+size: 683,89
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: false
+  xy: 508, 74
+  size: 136, 13
+  orig: 138, 15
+  offset: 1, 1
+  index: -1
+Group 150 copy
+  rotate: true
+  xy: 2, 7
+  size: 80, 233
+  orig: 119, 233
+  offset: 11, 0
+  index: -1
+Layer 1011
+  rotate: true
+  xy: 410, 6
+  size: 81, 96
+  orig: 81, 96
+  offset: 0, 0
+  index: -1
+Layer 1012
+  rotate: false
+  xy: 586, 10
+  size: 41, 62
+  orig: 41, 62
+  offset: 0, 0
+  index: -1
+Layer 1013
+  rotate: false
+  xy: 508, 43
+  size: 76, 29
+  orig: 76, 29
+  offset: 0, 0
+  index: -1
+Layer 1015
+  rotate: false
+  xy: 646, 5
+  size: 35, 82
+  orig: 35, 82
+  offset: 0, 0
+  index: -1
+Layer 1016
+  rotate: true
+  xy: 508, 4
+  size: 37, 68
+  orig: 37, 68
+  offset: 0, 0
+  index: -1
+Layer 1017
+  rotate: true
+  xy: 237, 2
+  size: 85, 171
+  orig: 87, 173
+  offset: 1, 1
+  index: -1

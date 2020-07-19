@@ -1,0 +1,90 @@
+
+Sobek.png
+size: 589,1105
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BodyFix
+  rotate: true
+  xy: 326, 545
+  size: 242, 261
+  orig: 242, 261
+  offset: 0, 0
+  index: -1
+Ellipse 1
+  rotate: false
+  xy: 2, 1075
+  size: 546, 28
+  orig: 548, 30
+  offset: 1, 1
+  index: -1
+Layer 1 copy 4
+  rotate: false
+  xy: 326, 2
+  size: 198, 183
+  orig: 203, 183
+  offset: 5, 0
+  index: -1
+Layer 744
+  rotate: true
+  xy: 2, 152
+  size: 743, 322
+  orig: 743, 322
+  offset: 0, 0
+  index: -1
+Layer 745
+  rotate: false
+  xy: 2, 897
+  size: 421, 176
+  orig: 421, 176
+  offset: 0, 0
+  index: -1
+Layer 746
+  rotate: false
+  xy: 2, 16
+  size: 139, 134
+  orig: 141, 136
+  offset: 1, 1
+  index: -1
+Layer 747
+  rotate: false
+  xy: 425, 789
+  size: 153, 110
+  orig: 155, 112
+  offset: 1, 1
+  index: -1
+Layer 748
+  rotate: false
+  xy: 326, 403
+  size: 244, 140
+  orig: 244, 140
+  offset: 0, 0
+  index: -1
+Layer 749
+  rotate: false
+  xy: 425, 901
+  size: 160, 172
+  orig: 169, 174
+  offset: 1, 1
+  index: -1
+Layer 751
+  rotate: true
+  xy: 326, 795
+  size: 100, 91
+  orig: 102, 93
+  offset: 1, 1
+  index: -1
+Layer 752
+  rotate: true
+  xy: 143, 30
+  size: 120, 132
+  orig: 122, 135
+  offset: 1, 1
+  index: -1
+Layer 753
+  rotate: true
+  xy: 326, 187
+  size: 214, 234
+  orig: 216, 236
+  offset: 1, 1
+  index: -1

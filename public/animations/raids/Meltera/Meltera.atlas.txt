@@ -1,0 +1,132 @@
+
+Meltera.png
+size: 330,1996
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: true
+  xy: 283, 1421
+  size: 573, 44
+  orig: 575, 46
+  offset: 1, 1
+  index: -1
+Layer 24 copy
+  rotate: false
+  xy: 236, 1222
+  size: 83, 99
+  orig: 98, 116
+  offset: 1, 1
+  index: -1
+Layer 28 copy
+  rotate: false
+  xy: 2, 809
+  size: 200, 126
+  orig: 202, 155
+  offset: 1, 28
+  index: -1
+Layer 313
+  rotate: false
+  xy: 2, 1828
+  size: 279, 166
+  orig: 281, 168
+  offset: 1, 1
+  index: -1
+Layer 314
+  rotate: false
+  xy: 2, 155
+  size: 175, 145
+  orig: 177, 147
+  offset: 1, 1
+  index: -1
+Layer 315
+  rotate: false
+  xy: 204, 658
+  size: 119, 177
+  orig: 121, 179
+  offset: 1, 1
+  index: -1
+Layer 316
+  rotate: true
+  xy: 2, 302
+  size: 369, 184
+  orig: 369, 184
+  offset: 0, 0
+  index: -1
+Layer 317
+  rotate: false
+  xy: 2, 673
+  size: 198, 134
+  orig: 198, 134
+  offset: 0, 0
+  index: -1
+Layer 318
+  rotate: true
+  xy: 2, 1130
+  size: 191, 232
+  orig: 191, 232
+  offset: 0, 0
+  index: -1
+Layer 319
+  rotate: false
+  xy: 2, 1323
+  size: 243, 144
+  orig: 245, 146
+  offset: 1, 1
+  index: -1
+Layer 320
+  rotate: true
+  xy: 188, 92
+  size: 400, 132
+  orig: 400, 132
+  offset: 0, 0
+  index: -1
+Layer 321
+  rotate: true
+  xy: 2, 937
+  size: 191, 206
+  orig: 193, 208
+  offset: 1, 1
+  index: -1
+Layer 322
+  rotate: true
+  xy: 210, 983
+  size: 145, 117
+  orig: 147, 119
+  offset: 1, 1
+  index: -1
+Layer 323
+  rotate: false
+  xy: 2, 1469
+  size: 270, 357
+  orig: 270, 357
+  offset: 0, 0
+  index: -1
+Layer 324
+  rotate: true
+  xy: 247, 1372
+  size: 47, 68
+  orig: 49, 70
+  offset: 1, 1
+  index: -1
+Layer 325
+  rotate: true
+  xy: 210, 837
+  size: 144, 107
+  orig: 146, 109
+  offset: 1, 1
+  index: -1
+Layer 326
+  rotate: true
+  xy: 188, 494
+  size: 162, 140
+  orig: 164, 142
+  offset: 1, 1
+  index: -1
+Layer 327
+  rotate: true
+  xy: 2, 2
+  size: 151, 174
+  orig: 153, 176
+  offset: 1, 1
+  index: -1

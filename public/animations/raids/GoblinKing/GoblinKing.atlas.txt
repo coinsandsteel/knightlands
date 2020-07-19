@@ -1,0 +1,34 @@
+
+GoblinKing.png
+size: 459,320
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Group 202
+  rotate: true
+  xy: 2, 36
+  size: 282, 359
+  orig: 282, 359
+  offset: 0, 0
+  index: -1
+Layer 769
+  rotate: false
+  xy: 2, 2
+  size: 309, 32
+  orig: 311, 34
+  offset: 1, 1
+  index: -1
+Layer 770
+  rotate: false
+  xy: 363, 67
+  size: 88, 74
+  orig: 90, 76
+  offset: 1, 1
+  index: -1
+Layer 771
+  rotate: true
+  xy: 363, 143
+  size: 175, 94
+  orig: 177, 96
+  offset: 1, 1
+  index: -1

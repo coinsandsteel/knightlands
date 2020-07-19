@@ -1,0 +1,118 @@
+
+GodWarriorIshtar.png
+size: 938,206
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 6
+  rotate: false
+  xy: 449, 2
+  size: 194, 16
+  orig: 196, 18
+  offset: 1, 1
+  index: -1
+Gauntlet R 1
+  rotate: true
+  xy: 813, 6
+  size: 25, 34
+  orig: 27, 36
+  offset: 1, 1
+  index: -1
+Layer 580
+  rotate: true
+  xy: 501, 82
+  size: 122, 154
+  orig: 124, 156
+  offset: 1, 1
+  index: -1
+Layer 581
+  rotate: false
+  xy: 803, 99
+  size: 83, 105
+  orig: 85, 107
+  offset: 1, 1
+  index: -1
+arm L 1
+  rotate: false
+  xy: 888, 159
+  size: 31, 45
+  orig: 36, 47
+  offset: 1, 1
+  index: -1
+arm r
+  rotate: true
+  xy: 888, 118
+  size: 39, 34
+  orig: 67, 57
+  offset: 1, 22
+  index: -1
+gauntlet r
+  rotate: true
+  xy: 635, 24
+  size: 56, 44
+  orig: 58, 46
+  offset: 1, 1
+  index: -1
+hair back
+  rotate: false
+  xy: 2, 10
+  size: 244, 194
+  orig: 244, 194
+  offset: 0, 0
+  index: -1
+hand r
+  rotate: false
+  xy: 645, 4
+  size: 27, 18
+  orig: 50, 22
+  offset: 1, 1
+  index: -1
+head
+  rotate: true
+  xy: 583, 27
+  size: 53, 50
+  orig: 55, 53
+  offset: 1, 2
+  index: -1
+legback
+  rotate: true
+  xy: 449, 20
+  size: 43, 132
+  orig: 43, 132
+  offset: 0, 0
+  index: -1
+main body
+  rotate: true
+  xy: 248, 9
+  size: 54, 199
+  orig: 54, 199
+  offset: 0, 0
+  index: -1
+skirt L
+  rotate: true
+  xy: 681, 2
+  size: 80, 130
+  orig: 84, 132
+  offset: 1, 1
+  index: -1
+skirt R
+  rotate: true
+  xy: 657, 84
+  size: 120, 144
+  orig: 122, 146
+  offset: 1, 1
+  index: -1
+skirt back
+  rotate: true
+  xy: 813, 33
+  size: 64, 123
+  orig: 66, 125
+  offset: 1, 1
+  index: -1
+sword
+  rotate: false
+  xy: 248, 65
+  size: 251, 139
+  orig: 253, 141
+  offset: 1, 1
+  index: -1

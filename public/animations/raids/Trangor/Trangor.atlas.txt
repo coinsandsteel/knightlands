@@ -1,0 +1,62 @@
+
+Trangor.png
+size: 443,266
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: false
+  xy: 125, 244
+  size: 305, 20
+  orig: 307, 22
+  offset: 1, 1
+  index: -1
+Layer 12 copy
+  rotate: false
+  xy: 202, 14
+  size: 72, 84
+  orig: 74, 86
+  offset: 1, 1
+  index: -1
+Layer 7 copy
+  rotate: false
+  xy: 377, 101
+  size: 64, 141
+  orig: 66, 143
+  offset: 1, 1
+  index: -1
+Layer 934
+  rotate: false
+  xy: 125, 2
+  size: 75, 96
+  orig: 75, 96
+  offset: 0, 0
+  index: -1
+Layer 935
+  rotate: false
+  xy: 2, 13
+  size: 121, 251
+  orig: 123, 253
+  offset: 1, 1
+  index: -1
+Layer 936
+  rotate: true
+  xy: 125, 100
+  size: 142, 250
+  orig: 142, 256
+  offset: 0, 6
+  index: -1
+Layer 938
+  rotate: false
+  xy: 377, 31
+  size: 56, 68
+  orig: 58, 70
+  offset: 1, 1
+  index: -1
+Layer 939
+  rotate: true
+  xy: 276, 45
+  size: 53, 69
+  orig: 55, 71
+  offset: 1, 1
+  index: -1

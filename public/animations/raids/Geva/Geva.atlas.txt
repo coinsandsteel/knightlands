@@ -1,0 +1,97 @@
+
+Geva.png
+size: 1141,201
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 7
+  rotate: false
+  xy: 266, 4
+  size: 206, 20
+  orig: 208, 22
+  offset: 1, 1
+  index: -1
+Group 277
+  rotate: true
+  xy: 2, 9
+  size: 91, 262
+  orig: 93, 264
+  offset: 1, 1
+  index: -1
+Layer 100
+  rotate: false
+  xy: 954, 58
+  size: 16, 20
+  orig: 18, 22
+  offset: 1, 1
+  index: -1
+Layer 166 copy
+  rotate: true
+  xy: 530, 136
+  size: 63, 258
+  orig: 63, 258
+  offset: 0, 0
+  index: -1
+Layer 93
+  rotate: true
+  xy: 988, 58
+  size: 141, 151
+  orig: 141, 151
+  offset: 0, 0
+  index: -1
+Layer 94
+  rotate: true
+  xy: 790, 80
+  size: 119, 196
+  orig: 119, 196
+  offset: 0, 0
+  index: -1
+Layer 95
+  rotate: true
+  xy: 266, 26
+  size: 74, 168
+  orig: 74, 168
+  offset: 0, 0
+  index: -1
+Layer 96
+  rotate: true
+  xy: 954, 3
+  size: 53, 149
+  orig: 53, 149
+  offset: 0, 0
+  index: -1
+Layer 97
+  rotate: false
+  xy: 972, 63
+  size: 14, 15
+  orig: 16, 17
+  offset: 1, 1
+  index: -1
+Layer 98
+  rotate: false
+  xy: 728, 11
+  size: 57, 123
+  orig: 57, 123
+  offset: 0, 0
+  index: -1
+Layer 99
+  rotate: true
+  xy: 787, 10
+  size: 68, 165
+  orig: 68, 165
+  offset: 0, 0
+  index: -1
+Portal
+  rotate: true
+  xy: 530, 2
+  size: 132, 196
+  orig: 132, 196
+  offset: 0, 0
+  index: -1
+Tentacle
+  rotate: false
+  xy: 2, 102
+  size: 526, 97
+  orig: 526, 97
+  offset: 0, 0
+  index: -1

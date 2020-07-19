@@ -1,0 +1,48 @@
+
+ShaccadDestroyer.png
+size: 2179,1023
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Group 61 copy 9
+  rotate: true
+  xy: 217, 149
+  size: 85, 64
+  orig: 85, 64
+  offset: 0, 0
+  index: -1
+Layer 12 copy
+  rotate: true
+  xy: 2, 236
+  size: 785, 712
+  orig: 785, 712
+  offset: 0, 0
+  index: -1
+Layer 820
+  rotate: false
+  xy: 2, 2
+  size: 213, 232
+  orig: 213, 232
+  offset: 0, 0
+  index: -1
+Layer 822
+  rotate: true
+  xy: 716, 112
+  size: 909, 559
+  orig: 909, 559
+  offset: 0, 0
+  index: -1
+Layer 823
+  rotate: true
+  xy: 1791, 20
+  size: 1001, 386
+  orig: 1001, 386
+  offset: 0, 0
+  index: -1
+Layer 824
+  rotate: true
+  xy: 1277, 117
+  size: 904, 512
+  orig: 904, 512
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,48 @@
+
+Ydro.png
+size: 440,1267
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: true
+  xy: 401, 225
+  size: 473, 37
+  orig: 475, 39
+  offset: 1, 1
+  index: -1
+Group 254 copy 2
+  rotate: false
+  xy: 2, 155
+  size: 397, 543
+  orig: 397, 543
+  offset: 0, 0
+  index: -1
+Group 255
+  rotate: true
+  xy: 2, 700
+  size: 565, 408
+  orig: 565, 408
+  offset: 0, 0
+  index: -1
+Group 257
+  rotate: false
+  xy: 360, 37
+  size: 63, 116
+  orig: 63, 116
+  offset: 0, 0
+  index: -1
+Layer 81
+  rotate: true
+  xy: 253, 73
+  size: 80, 105
+  orig: 82, 107
+  offset: 1, 1
+  index: -1
+Layer 82
+  rotate: true
+  xy: 2, 2
+  size: 151, 249
+  orig: 153, 251
+  offset: 1, 1
+  index: -1

@@ -1,0 +1,76 @@
+
+ScarletWyrm.png
+size: 2109,397
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Arm Left
+  rotate: false
+  xy: 1909, 6
+  size: 182, 162
+  orig: 182, 162
+  offset: 0, 0
+  index: -1
+Ellipse 7
+  rotate: false
+  xy: 615, 2
+  size: 327, 26
+  orig: 329, 28
+  offset: 1, 1
+  index: -1
+Layer 276 copy
+  rotate: true
+  xy: 1909, 170
+  size: 225, 198
+  orig: 225, 198
+  offset: 0, 0
+  index: -1
+Layer 93
+  rotate: false
+  xy: 615, 30
+  size: 540, 365
+  orig: 540, 365
+  offset: 0, 0
+  index: -1
+Layer 94
+  rotate: true
+  xy: 1361, 67
+  size: 328, 405
+  orig: 328, 405
+  offset: 0, 0
+  index: -1
+Layer 95
+  rotate: false
+  xy: 2, 7
+  size: 185, 388
+  orig: 185, 388
+  offset: 0, 0
+  index: -1
+Layer 96
+  rotate: true
+  xy: 1361, 20
+  size: 45, 91
+  orig: 47, 93
+  offset: 1, 1
+  index: -1
+arm right
+  rotate: false
+  xy: 1768, 125
+  size: 139, 270
+  orig: 139, 270
+  offset: 0, 0
+  index: -1
+wing r
+  rotate: false
+  xy: 189, 8
+  size: 424, 387
+  orig: 424, 387
+  offset: 0, 0
+  index: -1
+wingL
+  rotate: false
+  xy: 1157, 35
+  size: 202, 360
+  orig: 202, 360
+  offset: 0, 0
+  index: -1

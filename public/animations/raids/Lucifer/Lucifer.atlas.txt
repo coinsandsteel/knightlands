@@ -1,0 +1,139 @@
+
+Lucifer.png
+size: 572,890
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bow
+  rotate: true
+  xy: 2, 326
+  size: 264, 388
+  orig: 264, 392
+  offset: 0, 2
+  index: -1
+Ellipse 1
+  rotate: true
+  xy: 543, 591
+  size: 158, 13
+  orig: 160, 15
+  offset: 1, 1
+  index: -1
+Katana
+  rotate: false
+  xy: 449, 407
+  size: 119, 131
+  orig: 119, 131
+  offset: 0, 0
+  index: -1
+Layer 21
+  rotate: true
+  xy: 307, 26
+  size: 298, 263
+  orig: 298, 263
+  offset: 0, 0
+  index: -1
+Layer 22
+  rotate: false
+  xy: 430, 329
+  size: 78, 76
+  orig: 86, 85
+  offset: 5, 5
+  index: -1
+Layer 23
+  rotate: true
+  xy: 392, 387
+  size: 31, 36
+  orig: 33, 38
+  offset: 1, 1
+  index: -1
+Layer 24
+  rotate: true
+  xy: 392, 456
+  size: 45, 51
+  orig: 47, 57
+  offset: 1, 5
+  index: -1
+Layer 25
+  rotate: false
+  xy: 558, 866
+  size: 12, 22
+  orig: 14, 24
+  offset: 1, 1
+  index: -1
+Layer 26
+  rotate: true
+  xy: 460, 816
+  size: 35, 92
+  orig: 37, 99
+  offset: 1, 1
+  index: -1
+Layer 26 copy
+  rotate: false
+  xy: 543, 751
+  size: 27, 39
+  orig: 29, 60
+  offset: 1, 1
+  index: -1
+Layer 27
+  rotate: false
+  xy: 460, 540
+  size: 81, 274
+  orig: 81, 274
+  offset: 0, 0
+  index: -1
+Layer 28
+  rotate: true
+  xy: 392, 420
+  size: 34, 43
+  orig: 37, 45
+  offset: 1, 1
+  index: -1
+Layer 29
+  rotate: true
+  xy: 392, 503
+  size: 40, 55
+  orig: 40, 55
+  offset: 0, 0
+  index: -1
+Layer 30
+  rotate: true
+  xy: 392, 545
+  size: 45, 58
+  orig: 45, 60
+  offset: 0, 2
+  index: -1
+Layer 30 copy
+  rotate: false
+  xy: 554, 792
+  size: 15, 24
+  orig: 17, 26
+  offset: 1, 1
+  index: -1
+Layer 31
+  rotate: false
+  xy: 554, 818
+  size: 15, 33
+  orig: 18, 35
+  offset: 2, 1
+  index: -1
+Layer 32 copy
+  rotate: true
+  xy: 460, 853
+  size: 35, 96
+  orig: 40, 163
+  offset: 5, 55
+  index: -1
+Layer 37 copy
+  rotate: true
+  xy: 2, 592
+  size: 296, 456
+  orig: 296, 456
+  offset: 0, 0
+  index: -1
+Spear
+  rotate: false
+  xy: 2, 2
+  size: 303, 322
+  orig: 303, 322
+  offset: 0, 0
+  index: -1

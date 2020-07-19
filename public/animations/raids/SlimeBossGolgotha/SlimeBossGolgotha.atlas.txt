@@ -1,0 +1,34 @@
+
+SlimeBossGolgotha.png
+size: 2080,455
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 3
+  rotate: false
+  xy: 871, 411
+  size: 1061, 42
+  orig: 1063, 44
+  offset: 1, 1
+  index: -1
+Layer 10
+  rotate: false
+  xy: 1638, 28
+  size: 440, 381
+  orig: 440, 381
+  offset: 0, 0
+  index: -1
+Layer 8
+  rotate: false
+  xy: 871, 120
+  size: 765, 289
+  orig: 765, 289
+  offset: 0, 0
+  index: -1
+Layer 9
+  rotate: false
+  xy: 2, 2
+  size: 867, 451
+  orig: 867, 451
+  offset: 0, 0
+  index: -1

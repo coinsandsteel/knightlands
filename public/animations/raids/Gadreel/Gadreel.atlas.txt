@@ -1,0 +1,55 @@
+
+Gadreel.png
+size: 825,250
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 18
+  rotate: false
+  xy: 2, 20
+  size: 281, 19
+  orig: 283, 21
+  offset: 1, 1
+  index: -1
+Group 232 copy
+  rotate: true
+  xy: 473, 112
+  size: 136, 275
+  orig: 138, 277
+  offset: 1, 1
+  index: -1
+Layer 766
+  rotate: false
+  xy: 299, 5
+  size: 172, 243
+  orig: 172, 243
+  offset: 0, 0
+  index: -1
+Layer 767
+  rotate: true
+  xy: 2, 41
+  size: 207, 295
+  orig: 207, 295
+  offset: 0, 0
+  index: -1
+Layer 768
+  rotate: false
+  xy: 758, 13
+  size: 65, 110
+  orig: 65, 110
+  offset: 0, 0
+  index: -1
+Layer 769
+  rotate: true
+  xy: 473, 2
+  size: 108, 283
+  orig: 119, 283
+  offset: 1, 0
+  index: -1
+Layer 770
+  rotate: false
+  xy: 750, 125
+  size: 71, 123
+  orig: 71, 123
+  offset: 0, 0
+  index: -1

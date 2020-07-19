@@ -1,0 +1,111 @@
+
+Harbinger.png
+size: 1041,1151
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+282flip
+  rotate: true
+  xy: 726, 636
+  size: 164, 296
+  orig: 164, 296
+  offset: 0, 0
+  index: -1
+Group 3 copy
+  rotate: true
+  xy: 787, 420
+  size: 48, 63
+  orig: 50, 65
+  offset: 1, 1
+  index: -1
+Layer 280
+  rotate: false
+  xy: 592, 413
+  size: 126, 85
+  orig: 128, 87
+  offset: 1, 1
+  index: -1
+Layer 281
+  rotate: true
+  xy: 592, 34
+  size: 139, 173
+  orig: 141, 175
+  offset: 1, 1
+  index: -1
+Layer 282
+  rotate: false
+  xy: 930, 276
+  size: 102, 192
+  orig: 102, 192
+  offset: 0, 0
+  index: -1
+Layer 283
+  rotate: false
+  xy: 720, 414
+  size: 65, 54
+  orig: 65, 54
+  offset: 0, 0
+  index: -1
+Layer 284
+  rotate: false
+  xy: 726, 802
+  size: 313, 347
+  orig: 313, 347
+  offset: 0, 0
+  index: -1
+Layer 285
+  rotate: true
+  xy: 726, 470
+  size: 164, 296
+  orig: 164, 296
+  offset: 0, 0
+  index: -1
+Layer 286
+  rotate: false
+  xy: 921, 172
+  size: 112, 102
+  orig: 112, 102
+  offset: 0, 0
+  index: -1
+Layer 287
+  rotate: true
+  xy: 767, 79
+  size: 94, 95
+  orig: 96, 97
+  offset: 1, 1
+  index: -1
+Layer 288
+  rotate: false
+  xy: 852, 426
+  size: 26, 42
+  orig: 28, 44
+  offset: 1, 1
+  index: -1
+Layer 289
+  rotate: true
+  xy: 2, 2
+  size: 496, 588
+  orig: 496, 588
+  offset: 0, 0
+  index: -1
+coffin
+  rotate: false
+  xy: 592, 175
+  size: 327, 197
+  orig: 329, 199
+  offset: 1, 1
+  index: -1
+shasdow
+  rotate: false
+  xy: 592, 374
+  size: 336, 37
+  orig: 338, 39
+  offset: 1, 1
+  index: -1
+smear
+  rotate: false
+  xy: 2, 500
+  size: 722, 649
+  orig: 723, 656
+  offset: 1, 7
+  index: -1

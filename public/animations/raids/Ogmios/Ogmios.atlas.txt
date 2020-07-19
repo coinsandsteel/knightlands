@@ -1,0 +1,83 @@
+
+Ogmios.png
+size: 1057,540
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 6
+  rotate: false
+  xy: 505, 2
+  size: 550, 37
+  orig: 552, 39
+  offset: 1, 1
+  index: -1
+Layer 1021
+  rotate: true
+  xy: 2, 108
+  size: 430, 226
+  orig: 430, 226
+  offset: 0, 0
+  index: -1
+Layer 1022
+  rotate: false
+  xy: 505, 41
+  size: 126, 138
+  orig: 128, 140
+  offset: 1, 1
+  index: -1
+Layer 1023
+  rotate: true
+  xy: 2, 14
+  size: 92, 135
+  orig: 94, 137
+  offset: 1, 1
+  index: -1
+Layer 1024
+  rotate: false
+  xy: 366, 3
+  size: 137, 162
+  orig: 139, 164
+  offset: 1, 1
+  index: -1
+Layer 1025
+  rotate: false
+  xy: 139, 15
+  size: 225, 91
+  orig: 227, 93
+  offset: 1, 1
+  index: -1
+Layer 1026
+  rotate: false
+  xy: 633, 43
+  size: 115, 136
+  orig: 117, 138
+  offset: 1, 1
+  index: -1
+Layer 1027
+  rotate: true
+  xy: 795, 268
+  size: 270, 229
+  orig: 272, 231
+  offset: 1, 1
+  index: -1
+Layer 1028
+  rotate: false
+  xy: 230, 167
+  size: 246, 371
+  orig: 246, 371
+  offset: 0, 0
+  index: -1
+Layer 1029
+  rotate: false
+  xy: 478, 181
+  size: 315, 357
+  orig: 315, 357
+  offset: 0, 0
+  index: -1
+Layer 1030
+  rotate: true
+  xy: 795, 69
+  size: 197, 245
+  orig: 197, 245
+  offset: 0, 0
+  index: -1

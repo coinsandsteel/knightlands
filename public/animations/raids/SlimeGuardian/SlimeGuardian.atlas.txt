@@ -1,0 +1,62 @@
+
+SlimeGuardian.png
+size: 225,1027
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 20
+  rotate: true
+  xy: 2, 554
+  size: 471, 28
+  orig: 473, 30
+  offset: 1, 1
+  index: -1
+Layer 197 copy
+  rotate: false
+  xy: 115, 102
+  size: 83, 140
+  orig: 85, 142
+  offset: 1, 1
+  index: -1
+Layer 756
+  rotate: false
+  xy: 32, 751
+  size: 184, 274
+  orig: 199, 282
+  offset: 0, 0
+  index: -1
+Layer 757
+  rotate: false
+  xy: 112, 2
+  size: 78, 98
+  orig: 110, 118
+  offset: 1, 1
+  index: -1
+Layer 758
+  rotate: false
+  xy: 2, 8
+  size: 108, 99
+  orig: 110, 101
+  offset: 1, 1
+  index: -1
+Layer 759
+  rotate: false
+  xy: 32, 529
+  size: 191, 220
+  orig: 191, 220
+  offset: 0, 0
+  index: -1
+Layer 761
+  rotate: false
+  xy: 2, 109
+  size: 111, 133
+  orig: 114, 135
+  offset: 2, 1
+  index: -1
+Layer 762
+  rotate: false
+  xy: 2, 244
+  size: 205, 283
+  orig: 205, 283
+  offset: 0, 0
+  index: -1

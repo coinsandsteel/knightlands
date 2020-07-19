@@ -1,0 +1,83 @@
+
+Ravus.png
+size: 284,1083
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 6
+  rotate: true
+  xy: 245, 299
+  size: 513, 28
+  orig: 515, 30
+  offset: 1, 1
+  index: -1
+Group 272 copy
+  rotate: false
+  xy: 2, 578
+  size: 241, 234
+  orig: 249, 281
+  offset: 8, 47
+  index: -1
+Group 273
+  rotate: true
+  xy: 2, 432
+  size: 144, 205
+  orig: 144, 205
+  offset: 0, 0
+  index: -1
+Layer 32
+  rotate: false
+  xy: 2, 814
+  size: 273, 267
+  orig: 273, 267
+  offset: 0, 0
+  index: -1
+Layer 33
+  rotate: false
+  xy: 131, 200
+  size: 104, 103
+  orig: 104, 103
+  offset: 0, 0
+  index: -1
+Layer 34
+  rotate: true
+  xy: 209, 498
+  size: 78, 28
+  orig: 81, 31
+  offset: 1, 1
+  index: -1
+Layer 35
+  rotate: true
+  xy: 131, 32
+  size: 166, 151
+  orig: 166, 151
+  offset: 0, 0
+  index: -1
+Layer 36
+  rotate: false
+  xy: 143, 325
+  size: 90, 36
+  orig: 92, 38
+  offset: 1, 1
+  index: -1
+Layer 37
+  rotate: true
+  xy: 143, 363
+  size: 67, 77
+  orig: 67, 77
+  offset: 0, 0
+  index: -1
+Layer 38
+  rotate: true
+  xy: 2, 305
+  size: 125, 139
+  orig: 127, 141
+  offset: 1, 1
+  index: -1
+Layer 39
+  rotate: false
+  xy: 2, 2
+  size: 127, 295
+  orig: 129, 297
+  offset: 1, 1
+  index: -1

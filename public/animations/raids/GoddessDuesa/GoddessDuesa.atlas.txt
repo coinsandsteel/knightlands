@@ -1,0 +1,62 @@
+
+GoddessDuesa.png
+size: 664,355
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: false
+  xy: 350, 38
+  size: 200, 16
+  orig: 202, 18
+  offset: 1, 1
+  index: -1
+Layer 10
+  rotate: false
+  xy: 559, 44
+  size: 103, 309
+  orig: 103, 309
+  offset: 0, 0
+  index: -1
+Layer 11
+  rotate: true
+  xy: 456, 11
+  size: 25, 39
+  orig: 27, 41
+  offset: 1, 1
+  index: -1
+Layer 12
+  rotate: true
+  xy: 350, 6
+  size: 30, 54
+  orig: 32, 56
+  offset: 1, 1
+  index: -1
+Layer 16 copy
+  rotate: true
+  xy: 406, 2
+  size: 34, 48
+  orig: 41, 74
+  offset: 4, 3
+  index: -1
+Layer 7
+  rotate: false
+  xy: 350, 56
+  size: 207, 297
+  orig: 207, 297
+  offset: 0, 0
+  index: -1
+Layer 8
+  rotate: false
+  xy: 2, 4
+  size: 346, 349
+  orig: 346, 349
+  offset: 0, 0
+  index: -1
+Layer 9
+  rotate: true
+  xy: 497, 15
+  size: 21, 40
+  orig: 23, 42
+  offset: 1, 1
+  index: -1

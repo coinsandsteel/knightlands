@@ -1,0 +1,104 @@
+
+Absolution.png
+size: 1848,272
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Arm Left
+  rotate: true
+  xy: 908, 40
+  size: 230, 327
+  orig: 230, 342
+  offset: 0, 15
+  index: -1
+Arm Right
+  rotate: false
+  xy: 2, 2
+  size: 185, 268
+  orig: 185, 268
+  offset: 0, 0
+  index: -1
+Body
+  rotate: false
+  xy: 327, 12
+  size: 315, 258
+  orig: 315, 258
+  offset: 0, 0
+  index: -1
+Ellipse 1
+  rotate: false
+  xy: 763, 17
+  size: 622, 20
+  orig: 624, 22
+  offset: 1, 1
+  index: -1
+LEgBack2
+  rotate: true
+  xy: 1630, 17
+  size: 105, 212
+  orig: 105, 212
+  offset: 0, 0
+  index: -1
+LegBack1
+  rotate: true
+  xy: 1630, 124
+  size: 146, 216
+  orig: 146, 216
+  offset: 0, 0
+  index: -1
+LegBack3
+  rotate: false
+  xy: 1237, 44
+  size: 83, 226
+  orig: 83, 226
+  offset: 0, 0
+  index: -1
+LegBack4
+  rotate: false
+  xy: 1576, 52
+  size: 52, 218
+  orig: 52, 218
+  offset: 0, 0
+  index: -1
+LegFront!
+  rotate: false
+  xy: 644, 18
+  size: 117, 252
+  orig: 117, 252
+  offset: 0, 0
+  index: -1
+LegFront2
+  rotate: false
+  xy: 763, 39
+  size: 143, 231
+  orig: 143, 231
+  offset: 0, 0
+  index: -1
+LegFront3
+  rotate: false
+  xy: 1322, 49
+  size: 105, 221
+  orig: 105, 221
+  offset: 0, 0
+  index: -1
+LegFront4
+  rotate: false
+  xy: 1429, 51
+  size: 145, 219
+  orig: 145, 219
+  offset: 0, 0
+  index: -1
+STinger
+  rotate: true
+  xy: 1387, 9
+  size: 38, 49
+  orig: 40, 51
+  offset: 1, 1
+  index: -1
+Tail
+  rotate: false
+  xy: 189, 7
+  size: 136, 263
+  orig: 136, 263
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,139 @@
+
+ClockworkQueen.png
+size: 786,271
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 12
+  rotate: false
+  xy: 461, 166
+  size: 269, 19
+  orig: 271, 21
+  offset: 1, 1
+  index: -1
+Group 289
+  rotate: false
+  xy: 637, 6
+  size: 85, 158
+  orig: 85, 158
+  offset: 0, 0
+  index: -1
+Group 290
+  rotate: false
+  xy: 337, 4
+  size: 32, 136
+  orig: 34, 138
+  offset: 1, 1
+  index: -1
+Group 292
+  rotate: true
+  xy: 274, 32
+  size: 28, 58
+  orig: 30, 60
+  offset: 1, 1
+  index: -1
+Group 293
+  rotate: true
+  xy: 189, 7
+  size: 66, 29
+  orig: 68, 31
+  offset: 1, 1
+  index: -1
+Group 294
+  rotate: true
+  xy: 724, 9
+  size: 79, 44
+  orig: 81, 46
+  offset: 1, 1
+  index: -1
+Group 295
+  rotate: true
+  xy: 220, 23
+  size: 37, 52
+  orig: 39, 54
+  offset: 1, 1
+  index: -1
+Group 296
+  rotate: true
+  xy: 461, 187
+  size: 82, 319
+  orig: 84, 321
+  offset: 1, 1
+  index: -1
+Group 297
+  rotate: true
+  xy: 234, 142
+  size: 127, 225
+  orig: 127, 225
+  offset: 0, 0
+  index: -1
+Group 298
+  rotate: true
+  xy: 371, 14
+  size: 126, 41
+  orig: 128, 43
+  offset: 1, 1
+  index: -1
+Group 299
+  rotate: true
+  xy: 116, 24
+  size: 49, 71
+  orig: 51, 73
+  offset: 1, 1
+  index: -1
+Group 300
+  rotate: false
+  xy: 2, 16
+  size: 112, 57
+  orig: 114, 59
+  offset: 1, 1
+  index: -1
+Group 303
+  rotate: false
+  xy: 2, 75
+  size: 230, 194
+  orig: 230, 194
+  offset: 0, 0
+  index: -1
+Layer 1
+  rotate: true
+  xy: 461, 39
+  size: 125, 174
+  orig: 125, 174
+  offset: 0, 0
+  index: -1
+Layer 2
+  rotate: false
+  xy: 414, 2
+  size: 78, 35
+  orig: 80, 37
+  offset: 1, 1
+  index: -1
+Layer 3
+  rotate: true
+  xy: 234, 62
+  size: 78, 101
+  orig: 80, 103
+  offset: 1, 1
+  index: -1
+Layer 4
+  rotate: false
+  xy: 732, 90
+  size: 52, 95
+  orig: 54, 97
+  offset: 1, 1
+  index: -1
+Layer 5
+  rotate: true
+  xy: 494, 4
+  size: 33, 121
+  orig: 35, 123
+  offset: 1, 1
+  index: -1
+Layer 6
+  rotate: false
+  xy: 414, 41
+  size: 41, 99
+  orig: 43, 101
+  offset: 1, 1
+  index: -1

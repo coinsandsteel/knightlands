@@ -1,0 +1,90 @@
+
+Dragorians.png
+size: 246,977
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 13
+  rotate: true
+  xy: 217, 602
+  size: 373, 27
+  orig: 375, 29
+  offset: 1, 1
+  index: -1
+Group 62
+  rotate: false
+  xy: 209, 509
+  size: 34, 91
+  orig: 36, 93
+  offset: 1, 1
+  index: -1
+Group 63
+  rotate: false
+  xy: 209, 427
+  size: 25, 80
+  orig: 27, 82
+  offset: 1, 1
+  index: -1
+Layer 723
+  rotate: false
+  xy: 2, 710
+  size: 213, 265
+  orig: 213, 265
+  offset: 0, 0
+  index: -1
+Layer 724
+  rotate: false
+  xy: 2, 220
+  size: 159, 220
+  orig: 159, 220
+  offset: 0, 0
+  index: -1
+Layer 725
+  rotate: false
+  xy: 2, 94
+  size: 236, 124
+  orig: 236, 124
+  offset: 0, 0
+  index: -1
+Layer 727
+  rotate: true
+  xy: 2, 442
+  size: 266, 205
+  orig: 266, 205
+  offset: 0, 0
+  index: -1
+Layer 729
+  rotate: true
+  xy: 163, 237
+  size: 47, 54
+  orig: 49, 56
+  offset: 1, 1
+  index: -1
+Layer 730
+  rotate: false
+  xy: 2, 2
+  size: 128, 90
+  orig: 128, 90
+  offset: 0, 0
+  index: -1
+arm Left Bot
+  rotate: false
+  xy: 163, 349
+  size: 37, 91
+  orig: 69, 113
+  offset: 18, 8
+  index: -1
+arm left Attack
+  rotate: false
+  xy: 132, 5
+  size: 97, 87
+  orig: 97, 87
+  offset: 0, 0
+  index: -1
+arm left top
+  rotate: false
+  xy: 163, 286
+  size: 61, 61
+  orig: 96, 89
+  offset: 18, 10
+  index: -1

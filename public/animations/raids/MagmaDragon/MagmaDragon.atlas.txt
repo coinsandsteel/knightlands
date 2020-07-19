@@ -1,0 +1,97 @@
+
+MagmaDragon.png
+size: 2147,453
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: false
+  xy: 635, 4
+  size: 724, 27
+  orig: 726, 29
+  offset: 1, 1
+  index: -1
+L Wing
+  rotate: false
+  xy: 1590, 243
+  size: 305, 208
+  orig: 305, 208
+  offset: 0, 0
+  index: -1
+Layer 4 copy
+  rotate: false
+  xy: 1964, 21
+  size: 181, 273
+  orig: 181, 273
+  offset: 0, 0
+  index: -1
+Layer 503
+  rotate: false
+  xy: 635, 177
+  size: 670, 274
+  orig: 670, 274
+  offset: 0, 0
+  index: -1
+Layer 507
+  rotate: true
+  xy: 945, 44
+  size: 131, 255
+  orig: 131, 255
+  offset: 0, 0
+  index: -1
+Layer 509
+  rotate: true
+  xy: 1693, 15
+  size: 226, 269
+  orig: 226, 269
+  offset: 0, 0
+  index: -1
+Layer 510
+  rotate: true
+  xy: 2034, 383
+  size: 68, 86
+  orig: 68, 86
+  offset: 0, 0
+  index: -1
+Layer 511
+  rotate: true
+  xy: 1202, 37
+  size: 138, 220
+  orig: 215, 270
+  offset: 77, 50
+  index: -1
+Layer 512
+  rotate: true
+  xy: 1424, 7
+  size: 195, 267
+  orig: 195, 267
+  offset: 0, 0
+  index: -1
+Layer 513
+  rotate: true
+  xy: 635, 33
+  size: 142, 308
+  orig: 142, 308
+  offset: 0, 0
+  index: -1
+R Wing
+  rotate: true
+  xy: 2, 2
+  size: 449, 631
+  orig: 461, 631
+  offset: 12, 0
+  index: -1
+body
+  rotate: false
+  xy: 1307, 204
+  size: 281, 247
+  orig: 281, 247
+  offset: 0, 0
+  index: -1
+ihorn
+  rotate: false
+  xy: 1897, 296
+  size: 135, 155
+  orig: 215, 270
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,202 @@
+
+Virgel.png
+size: 419,800
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Arm R Slash Pre
+  rotate: true
+  xy: 342, 40
+  size: 52, 55
+  orig: 52, 55
+  offset: 0, 0
+  index: -1
+ArmCast
+  rotate: true
+  xy: 94, 2
+  size: 51, 85
+  orig: 128, 128
+  offset: 37, 20
+  index: -1
+BodySlashFull
+  rotate: false
+  xy: 2, 414
+  size: 232, 207
+  orig: 232, 207
+  offset: 0, 0
+  index: -1
+BodySlashPre
+  rotate: false
+  xy: 236, 288
+  size: 179, 206
+  orig: 179, 206
+  offset: 0, 0
+  index: -1
+Ellipse 31
+  rotate: false
+  xy: 2, 298
+  size: 200, 11
+  orig: 202, 13
+  offset: 1, 1
+  index: -1
+Layer 855
+  rotate: false
+  xy: 320, 496
+  size: 95, 91
+  orig: 95, 91
+  offset: 0, 0
+  index: -1
+LcapeSlashPre
+  rotate: false
+  xy: 141, 229
+  size: 57, 67
+  orig: 57, 67
+  offset: 0, 0
+  index: -1
+SWordB
+  rotate: true
+  xy: 230, 234
+  size: 52, 137
+  orig: 54, 139
+  offset: 1, 1
+  index: -1
+SWordD
+  rotate: true
+  xy: 230, 180
+  size: 52, 137
+  orig: 54, 139
+  offset: 1, 1
+  index: -1
+SlashB
+  rotate: false
+  xy: 2, 623
+  size: 255, 45
+  orig: 257, 47
+  offset: 1, 1
+  index: -1
+SlashC
+  rotate: true
+  xy: 204, 198
+  size: 111, 24
+  orig: 113, 26
+  offset: 1, 1
+  index: -1
+SwordA
+  rotate: true
+  xy: 2, 244
+  size: 52, 137
+  orig: 54, 139
+  offset: 1, 1
+  index: -1
+SwordC
+  rotate: true
+  xy: 2, 190
+  size: 52, 137
+  orig: 54, 139
+  offset: 1, 1
+  index: -1
+SwordL
+  rotate: true
+  xy: 327, 675
+  size: 123, 90
+  orig: 126, 92
+  offset: 2, 1
+  index: -1
+SwordR
+  rotate: true
+  xy: 113, 55
+  size: 99, 109
+  orig: 101, 111
+  offset: 1, 1
+  index: -1
+SwordR copy
+  rotate: true
+  xy: 2, 88
+  size: 100, 109
+  orig: 102, 111
+  offset: 1, 1
+  index: -1
+arm L SlashPre
+  rotate: false
+  xy: 369, 253
+  size: 47, 33
+  orig: 49, 35
+  offset: 1, 1
+  index: -1
+arm R
+  rotate: true
+  xy: 141, 156
+  size: 40, 87
+  orig: 40, 87
+  offset: 0, 0
+  index: -1
+armidleL
+  rotate: false
+  xy: 369, 174
+  size: 45, 77
+  orig: 45, 77
+  offset: 0, 0
+  index: -1
+armswordL
+  rotate: true
+  xy: 259, 556
+  size: 112, 59
+  orig: 112, 59
+  offset: 0, 0
+  index: -1
+armswordslashR
+  rotate: false
+  xy: 224, 40
+  size: 86, 36
+  orig: 86, 36
+  offset: 0, 0
+  index: -1
+bodyIdle
+  rotate: true
+  xy: 2, 311
+  size: 101, 225
+  orig: 239, 225
+  offset: 122, 0
+  index: -1
+capeLIDle
+  rotate: false
+  xy: 342, 94
+  size: 71, 78
+  orig: 71, 78
+  offset: 0, 0
+  index: -1
+capeSlashACTIVE
+  rotate: true
+  xy: 327, 589
+  size: 84, 90
+  orig: 87, 90
+  offset: 0, 0
+  index: -1
+capeSlashPre
+  rotate: false
+  xy: 2, 2
+  size: 90, 84
+  orig: 90, 87
+  offset: 0, 3
+  index: -1
+capeslashBack
+  rotate: false
+  xy: 236, 501
+  size: 82, 53
+  orig: 82, 53
+  offset: 0, 0
+  index: -1
+slashA
+  rotate: false
+  xy: 2, 670
+  size: 323, 128
+  orig: 325, 130
+  offset: 1, 1
+  index: -1
+swordsheathA
+  rotate: true
+  xy: 230, 78
+  size: 100, 110
+  orig: 102, 112
+  offset: 1, 1
+  index: -1

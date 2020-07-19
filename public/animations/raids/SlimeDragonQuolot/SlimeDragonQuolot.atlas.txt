@@ -1,0 +1,62 @@
+
+SlimeDragonQuolot.png
+size: 2697,477
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 2
+  rotate: false
+  xy: 577, 10
+  size: 947, 50
+  orig: 947, 50
+  offset: 0, 0
+  index: -1
+Layer 1
+  rotate: false
+  xy: 1946, 302
+  size: 649, 173
+  orig: 649, 173
+  offset: 0, 0
+  index: -1
+Layer 2
+  rotate: false
+  xy: 2201, 46
+  size: 494, 254
+  orig: 494, 254
+  offset: 0, 0
+  index: -1
+Layer 3
+  rotate: true
+  xy: 1946, 33
+  size: 267, 253
+  orig: 267, 253
+  offset: 0, 0
+  index: -1
+Layer 4
+  rotate: true
+  xy: 1076, 96
+  size: 379, 574
+  orig: 379, 574
+  offset: 0, 0
+  index: -1
+Layer 5
+  rotate: false
+  xy: 2, 2
+  size: 573, 473
+  orig: 573, 473
+  offset: 0, 0
+  index: -1
+Layer 6
+  rotate: false
+  xy: 577, 62
+  size: 497, 413
+  orig: 497, 413
+  offset: 0, 0
+  index: -1
+Layer 7
+  rotate: false
+  xy: 1652, 108
+  size: 292, 367
+  orig: 292, 367
+  offset: 0, 0
+  index: -1

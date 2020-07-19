@@ -1,0 +1,132 @@
+
+Cthulhu.png
+size: 1862,366
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Head
+  rotate: false
+  xy: 1609, 194
+  size: 149, 170
+  orig: 149, 170
+  offset: 0, 0
+  index: -1
+Left Wing
+  rotate: true
+  xy: 447, 60
+  size: 304, 371
+  orig: 304, 371
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 986, 120
+  size: 210, 244
+  orig: 210, 244
+  offset: 0, 0
+  index: -1
+left arm
+  rotate: true
+  xy: 1582, 15
+  size: 125, 178
+  orig: 125, 178
+  offset: 0, 0
+  index: -1
+left arm cast
+  rotate: true
+  xy: 1217, 2
+  size: 137, 191
+  orig: 137, 191
+  offset: 0, 0
+  index: -1
+left leg
+  rotate: true
+  xy: 1760, 242
+  size: 122, 100
+  orig: 124, 102
+  offset: 1, 1
+  index: -1
+leftarmphys
+  rotate: true
+  xy: 1410, 5
+  size: 134, 170
+  orig: 134, 170
+  offset: 0, 0
+  index: -1
+right arm
+  rotate: false
+  xy: 1415, 142
+  size: 192, 222
+  orig: 192, 222
+  offset: 0, 0
+  index: -1
+right leg
+  rotate: true
+  xy: 1085, 13
+  size: 105, 130
+  orig: 107, 132
+  offset: 1, 1
+  index: -1
+right wing
+  rotate: true
+  xy: 2, 10
+  size: 354, 443
+  orig: 354, 443
+  offset: 0, 0
+  index: -1
+rightarmcast
+  rotate: false
+  xy: 1198, 141
+  size: 215, 223
+  orig: 215, 223
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 447, 2
+  size: 397, 22
+  orig: 399, 24
+  offset: 1, 1
+  index: -1
+tail
+  rotate: true
+  xy: 820, 71
+  size: 293, 164
+  orig: 293, 165
+  offset: 0, 1
+  index: -1
+tentacleA
+  rotate: true
+  xy: 447, 26
+  size: 32, 62
+  orig: 32, 62
+  offset: 0, 0
+  index: -1
+tentacleB
+  rotate: true
+  xy: 846, 8
+  size: 61, 106
+  orig: 61, 107
+  offset: 0, 1
+  index: -1
+tentacleC
+  rotate: false
+  xy: 1762, 53
+  size: 76, 90
+  orig: 76, 90
+  offset: 0, 0
+  index: -1
+tentacleD
+  rotate: false
+  xy: 986, 3
+  size: 97, 115
+  orig: 97, 115
+  offset: 0, 0
+  index: -1
+tentacleE
+  rotate: true
+  xy: 1760, 145
+  size: 95, 90
+  orig: 95, 90
+  offset: 0, 0
+  index: -1

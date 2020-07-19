@@ -1,0 +1,62 @@
+
+Wolfbull.png
+size: 1310,266
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: false
+  xy: 704, 226
+  size: 567, 38
+  orig: 569, 40
+  offset: 1, 1
+  index: -1
+Layer 1
+  rotate: false
+  xy: 1174, 29
+  size: 134, 195
+  orig: 142, 201
+  offset: 0, 0
+  index: -1
+Layer 2
+  rotate: false
+  xy: 310, 11
+  size: 232, 253
+  orig: 232, 257
+  offset: 0, 4
+  index: -1
+Layer 3
+  rotate: false
+  xy: 704, 2
+  size: 84, 222
+  orig: 84, 222
+  offset: 0, 0
+  index: -1
+Layer 4
+  rotate: true
+  xy: 1005, 13
+  size: 211, 167
+  orig: 211, 167
+  offset: 0, 0
+  index: -1
+Layer 5
+  rotate: false
+  xy: 544, 20
+  size: 158, 244
+  orig: 158, 249
+  offset: 0, 0
+  index: -1
+Layer 5 copy
+  rotate: false
+  xy: 2, 4
+  size: 306, 260
+  orig: 453, 275
+  offset: 147, 0
+  index: -1
+Layer 6
+  rotate: false
+  xy: 790, 7
+  size: 213, 217
+  orig: 213, 220
+  offset: 0, 0
+  index: -1

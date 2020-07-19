@@ -1,0 +1,83 @@
+
+EarthHorse.png
+size: 1130,398
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 6
+  rotate: false
+  xy: 448, 368
+  size: 680, 28
+  orig: 682, 30
+  offset: 1, 1
+  index: -1
+Layer 101
+  rotate: false
+  xy: 904, 8
+  size: 207, 255
+  orig: 207, 255
+  offset: 0, 0
+  index: -1
+Layer 102
+  rotate: false
+  xy: 552, 37
+  size: 49, 25
+  orig: 51, 27
+  offset: 1, 1
+  index: -1
+Layer 103
+  rotate: false
+  xy: 506, 6
+  size: 46, 26
+  orig: 48, 28
+  offset: 1, 1
+  index: -1
+Layer 104
+  rotate: false
+  xy: 2, 2
+  size: 444, 394
+  orig: 444, 394
+  offset: 0, 0
+  index: -1
+Layer 105
+  rotate: true
+  xy: 603, 14
+  size: 48, 299
+  orig: 50, 301
+  offset: 1, 1
+  index: -1
+Layer 106
+  rotate: false
+  xy: 552, 64
+  size: 185, 302
+  orig: 185, 302
+  offset: 0, 0
+  index: -1
+Layer 107
+  rotate: false
+  xy: 448, 6
+  size: 56, 26
+  orig: 58, 28
+  offset: 1, 1
+  index: -1
+Layer 156 copy
+  rotate: false
+  xy: 739, 65
+  size: 105, 301
+  orig: 105, 301
+  offset: 0, 0
+  index: -1
+Layer 157 copy
+  rotate: false
+  xy: 448, 34
+  size: 102, 332
+  orig: 102, 332
+  offset: 0, 0
+  index: -1
+Layer 161 copy
+  rotate: true
+  xy: 846, 265
+  size: 101, 275
+  orig: 101, 275
+  offset: 0, 0
+  index: -1

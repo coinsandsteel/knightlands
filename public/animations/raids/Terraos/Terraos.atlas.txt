@@ -1,0 +1,90 @@
+
+Terraos.png
+size: 580,976
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 7
+  rotate: false
+  xy: 2, 801
+  size: 458, 31
+  orig: 460, 33
+  offset: 1, 1
+  index: -1
+Layer 299
+  rotate: false
+  xy: 293, 8
+  size: 268, 243
+  orig: 268, 243
+  offset: 0, 0
+  index: -1
+Layer 300
+  rotate: false
+  xy: 2, 504
+  size: 380, 295
+  orig: 384, 295
+  offset: 4, 0
+  index: -1
+Layer 301
+  rotate: false
+  xy: 2, 834
+  size: 476, 140
+  orig: 476, 140
+  offset: 0, 0
+  index: -1
+Layer 302
+  rotate: false
+  xy: 293, 253
+  size: 273, 245
+  orig: 273, 245
+  offset: 0, 0
+  index: -1
+Layer 303
+  rotate: false
+  xy: 384, 500
+  size: 170, 145
+  orig: 170, 145
+  offset: 0, 0
+  index: -1
+Layer 304
+  rotate: true
+  xy: 464, 647
+  size: 138, 105
+  orig: 140, 107
+  offset: 1, 1
+  index: -1
+Layer 305
+  rotate: false
+  xy: 480, 787
+  size: 95, 136
+  orig: 97, 138
+  offset: 1, 1
+  index: -1
+Layer 306
+  rotate: true
+  xy: 480, 925
+  size: 49, 98
+  orig: 51, 100
+  offset: 1, 1
+  index: -1
+Layer 307
+  rotate: false
+  xy: 384, 675
+  size: 78, 124
+  orig: 80, 126
+  offset: 1, 1
+  index: -1
+Layer 308
+  rotate: true
+  xy: 2, 233
+  size: 269, 289
+  orig: 269, 289
+  offset: 0, 0
+  index: -1
+Layer 41 copy 2
+  rotate: true
+  xy: 2, 2
+  size: 229, 231
+  orig: 229, 231
+  offset: 0, 0
+  index: -1

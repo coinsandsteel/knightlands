@@ -1,0 +1,97 @@
+
+FatherTime.png
+size: 1065,307
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 4
+  rotate: false
+  xy: 442, 282
+  size: 503, 23
+  orig: 505, 25
+  offset: 1, 1
+  index: -1
+Group 414
+  rotate: false
+  xy: 947, 103
+  size: 116, 202
+  orig: 118, 204
+  offset: 1, 1
+  index: -1
+Layer 47
+  rotate: false
+  xy: 442, 44
+  size: 163, 84
+  orig: 165, 86
+  offset: 1, 1
+  index: -1
+Layer 48
+  rotate: true
+  xy: 623, 70
+  size: 106, 175
+  orig: 108, 177
+  offset: 1, 1
+  index: -1
+Layer 49
+  rotate: false
+  xy: 623, 178
+  size: 219, 102
+  orig: 221, 104
+  offset: 1, 1
+  index: -1
+Layer 50
+  rotate: true
+  xy: 442, 130
+  size: 150, 179
+  orig: 152, 181
+  offset: 1, 1
+  index: -1
+Layer 51
+  rotate: true
+  xy: 607, 8
+  size: 60, 135
+  orig: 60, 135
+  offset: 0, 0
+  index: -1
+Layer 52
+  rotate: false
+  xy: 844, 126
+  size: 91, 154
+  orig: 91, 154
+  offset: 0, 0
+  index: -1
+Layer 53
+  rotate: false
+  xy: 800, 138
+  size: 37, 38
+  orig: 39, 40
+  offset: 1, 1
+  index: -1
+Layer 54
+  rotate: true
+  xy: 946, 21
+  size: 80, 100
+  orig: 80, 100
+  offset: 0, 0
+  index: -1
+Layer 55
+  rotate: true
+  xy: 2, 13
+  size: 292, 438
+  orig: 292, 438
+  offset: 0, 0
+  index: -1
+Layer 56
+  rotate: true
+  xy: 800, 13
+  size: 111, 144
+  orig: 119, 144
+  offset: 0, 0
+  index: -1
+Layer 57
+  rotate: false
+  xy: 744, 2
+  size: 46, 66
+  orig: 48, 68
+  offset: 1, 1
+  index: -1

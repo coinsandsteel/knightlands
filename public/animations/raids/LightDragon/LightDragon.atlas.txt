@@ -1,0 +1,97 @@
+
+LightDragon.png
+size: 946,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 3
+  rotate: true
+  xy: 878, 453
+  size: 569, 31
+  orig: 571, 33
+  offset: 1, 1
+  index: -1
+Left Wing
+  rotate: true
+  xy: 2, 185
+  size: 405, 408
+  orig: 405, 408
+  offset: 0, 0
+  index: -1
+Right Wing
+  rotate: false
+  xy: 2, 592
+  size: 536, 430
+  orig: 536, 430
+  offset: 0, 0
+  index: -1
+back plate
+  rotate: true
+  xy: 911, 1006
+  size: 16, 21
+  orig: 18, 23
+  offset: 1, 1
+  index: -1
+body
+  rotate: false
+  xy: 412, 248
+  size: 119, 342
+  orig: 119, 342
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 831, 246
+  size: 113, 134
+  orig: 115, 136
+  offset: 1, 1
+  index: -1
+left Leg
+  rotate: false
+  xy: 412, 83
+  size: 97, 163
+  orig: 97, 163
+  offset: 0, 0
+  index: -1
+left arm
+  rotate: true
+  xy: 220, 40
+  size: 143, 161
+  orig: 143, 161
+  offset: 0, 0
+  index: -1
+left hand
+  rotate: true
+  xy: 878, 416
+  size: 35, 39
+  orig: 37, 41
+  offset: 1, 1
+  index: -1
+neck
+  rotate: false
+  xy: 831, 70
+  size: 86, 174
+  orig: 88, 176
+  offset: 1, 1
+  index: -1
+right arm
+  rotate: true
+  xy: 2, 15
+  size: 168, 216
+  orig: 168, 216
+  offset: 0, 0
+  index: -1
+sword copy
+  rotate: true
+  xy: 540, 382
+  size: 640, 336
+  orig: 640, 336
+  offset: 0, 0
+  index: -1
+tail
+  rotate: true
+  xy: 533, 2
+  size: 378, 296
+  orig: 378, 296
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,132 @@
+
+DEKnight.png
+size: 449,270
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 3
+  rotate: false
+  xy: 58, 3
+  size: 170, 12
+  orig: 172, 14
+  offset: 1, 1
+  index: -1
+Layer 1000
+  rotate: true
+  xy: 317, 107
+  size: 53, 89
+  orig: 56, 91
+  offset: 1, 1
+  index: -1
+Layer 1001
+  rotate: true
+  xy: 413, 235
+  size: 33, 28
+  orig: 35, 29
+  offset: 0, 0
+  index: -1
+Layer 1002
+  rotate: false
+  xy: 312, 9
+  size: 82, 91
+  orig: 82, 91
+  offset: 0, 0
+  index: -1
+Layer 1003
+  rotate: true
+  xy: 58, 17
+  size: 58, 48
+  orig: 60, 50
+  offset: 1, 1
+  index: -1
+Layer 1004
+  rotate: true
+  xy: 191, 20
+  size: 76, 119
+  orig: 78, 121
+  offset: 1, 1
+  index: -1
+Layer 1005
+  rotate: true
+  xy: 203, 102
+  size: 46, 112
+  orig: 48, 114
+  offset: 1, 1
+  index: -1
+Layer 1006
+  rotate: false
+  xy: 289, 162
+  size: 44, 106
+  orig: 44, 106
+  offset: 0, 0
+  index: -1
+Layer 1007
+  rotate: false
+  xy: 2, 2
+  size: 54, 73
+  orig: 56, 75
+  offset: 1, 1
+  index: -1
+Layer 990
+  rotate: false
+  xy: 335, 188
+  size: 76, 80
+  orig: 79, 82
+  offset: 1, 1
+  index: -1
+Layer 991
+  rotate: true
+  xy: 86, 98
+  size: 170, 115
+  orig: 173, 117
+  offset: 1, 1
+  index: -1
+Layer 993
+  rotate: false
+  xy: 203, 150
+  size: 84, 118
+  orig: 86, 120
+  offset: 1, 1
+  index: -1
+Layer 994
+  rotate: false
+  xy: 2, 77
+  size: 82, 191
+  orig: 84, 193
+  offset: 1, 1
+  index: -1
+Layer 995
+  rotate: false
+  xy: 408, 111
+  size: 39, 75
+  orig: 40, 76
+  offset: 1, 0
+  index: -1
+Layer 996
+  rotate: false
+  xy: 108, 17
+  size: 36, 79
+  orig: 36, 79
+  offset: 0, 0
+  index: -1
+Layer 997
+  rotate: false
+  xy: 335, 169
+  size: 36, 17
+  orig: 38, 19
+  offset: 1, 1
+  index: -1
+Layer 998
+  rotate: false
+  xy: 396, 19
+  size: 41, 86
+  orig: 41, 131
+  offset: 0, 0
+  index: -1
+Layer 999
+  rotate: false
+  xy: 146, 19
+  size: 43, 77
+  orig: 45, 79
+  offset: 1, 1
+  index: -1

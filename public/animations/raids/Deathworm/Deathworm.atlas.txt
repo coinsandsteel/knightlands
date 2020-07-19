@@ -1,0 +1,48 @@
+
+Deathworm.png
+size: 668,473
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 28
+  rotate: false
+  xy: 2, 428
+  size: 664, 43
+  orig: 666, 45
+  offset: 1, 1
+  index: -1
+Group 472 copy 2
+  rotate: true
+  xy: 2, 2
+  size: 424, 549
+  orig: 440, 549
+  offset: 16, 0
+  index: -1
+Layer 76
+  rotate: true
+  xy: 553, 309
+  size: 31, 24
+  orig: 33, 26
+  offset: 1, 1
+  index: -1
+Layer 77
+  rotate: false
+  xy: 553, 378
+  size: 34, 48
+  orig: 36, 50
+  offset: 1, 1
+  index: -1
+Layer 78
+  rotate: false
+  xy: 553, 259
+  size: 19, 48
+  orig: 21, 50
+  offset: 1, 1
+  index: -1
+Layer 79
+  rotate: false
+  xy: 553, 342
+  size: 30, 34
+  orig: 32, 36
+  offset: 1, 1
+  index: -1

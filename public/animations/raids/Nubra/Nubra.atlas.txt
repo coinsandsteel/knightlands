@@ -1,0 +1,97 @@
+
+Nubra.png
+size: 822,947
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 12
+  rotate: true
+  xy: 2, 43
+  size: 902, 83
+  orig: 904, 85
+  offset: 1, 1
+  index: -1
+Group 416
+  rotate: false
+  xy: 359, 2
+  size: 212, 199
+  orig: 212, 199
+  offset: 0, 0
+  index: -1
+Layer 36
+  rotate: false
+  xy: 703, 765
+  size: 114, 180
+  orig: 114, 180
+  offset: 0, 0
+  index: -1
+Layer 37
+  rotate: false
+  xy: 573, 28
+  size: 165, 206
+  orig: 165, 206
+  offset: 0, 0
+  index: -1
+Layer 38
+  rotate: false
+  xy: 87, 719
+  size: 332, 226
+  orig: 332, 226
+  offset: 0, 0
+  index: -1
+Layer 39
+  rotate: true
+  xy: 87, 13
+  size: 188, 270
+  orig: 188, 270
+  offset: 0, 0
+  index: -1
+Layer 40
+  rotate: true
+  xy: 370, 466
+  size: 221, 249
+  orig: 234, 249
+  offset: 0, 0
+  index: -1
+Layer 41
+  rotate: false
+  xy: 87, 461
+  size: 281, 256
+  orig: 283, 258
+  offset: 1, 1
+  index: -1
+Layer 42
+  rotate: true
+  xy: 621, 432
+  size: 255, 193
+  orig: 257, 195
+  offset: 1, 1
+  index: -1
+Layer 43
+  rotate: false
+  xy: 87, 203
+  size: 280, 256
+  orig: 282, 258
+  offset: 1, 1
+  index: -1
+Layer 44
+  rotate: true
+  xy: 369, 203
+  size: 256, 193
+  orig: 258, 195
+  offset: 1, 1
+  index: -1
+Layer 45
+  rotate: false
+  xy: 421, 689
+  size: 280, 256
+  orig: 282, 258
+  offset: 1, 1
+  index: -1
+Layer 46
+  rotate: false
+  xy: 564, 236
+  size: 256, 194
+  orig: 258, 196
+  offset: 1, 1
+  index: -1

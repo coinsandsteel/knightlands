@@ -1,0 +1,377 @@
+
+RoyalGuardsmen.png
+size: 1420,175
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ARM l
+  rotate: false
+  xy: 566, 4
+  size: 49, 54
+  orig: 51, 56
+  offset: 1, 1
+  index: -1
+ARM lax
+  rotate: false
+  xy: 464, 3
+  size: 49, 55
+  orig: 51, 61
+  offset: 1, 5
+  index: -1
+ARM lsp
+  rotate: false
+  xy: 515, 3
+  size: 49, 55
+  orig: 51, 61
+  offset: 1, 5
+  index: -1
+Ellipse 4
+  rotate: false
+  xy: 67, 7
+  size: 295, 21
+  orig: 297, 23
+  offset: 1, 1
+  index: -1
+Ellipse 4ax
+  rotate: false
+  xy: 67, 7
+  size: 295, 21
+  orig: 297, 23
+  offset: 1, 1
+  index: -1
+Ellipse 4sp
+  rotate: false
+  xy: 67, 7
+  size: 295, 21
+  orig: 297, 23
+  offset: 1, 1
+  index: -1
+Foot
+  rotate: false
+  xy: 1129, 3
+  size: 29, 20
+  orig: 31, 22
+  offset: 1, 1
+  index: -1
+Footax
+  rotate: true
+  xy: 1208, 4
+  size: 29, 20
+  orig: 31, 22
+  offset: 1, 1
+  index: -1
+Footsp
+  rotate: false
+  xy: 279, 32
+  size: 28, 21
+  orig: 30, 23
+  offset: 1, 1
+  index: -1
+HAND
+  rotate: true
+  xy: 2, 5
+  size: 23, 20
+  orig: 25, 22
+  offset: 1, 1
+  index: -1
+HANDax
+  rotate: true
+  xy: 24, 5
+  size: 23, 20
+  orig: 25, 22
+  offset: 1, 1
+  index: -1
+HANDsp
+  rotate: true
+  xy: 46, 5
+  size: 23, 19
+  orig: 25, 21
+  offset: 1, 1
+  index: -1
+LegA1
+  rotate: false
+  xy: 952, 78
+  size: 45, 95
+  orig: 47, 97
+  offset: 1, 1
+  index: -1
+LegA1ax
+  rotate: false
+  xy: 903, 77
+  size: 47, 96
+  orig: 47, 96
+  offset: 0, 0
+  index: -1
+LegA1sp
+  rotate: false
+  xy: 999, 78
+  size: 45, 95
+  orig: 47, 97
+  offset: 1, 1
+  index: -1
+LegA2
+  rotate: false
+  xy: 596, 61
+  size: 52, 112
+  orig: 54, 114
+  offset: 1, 1
+  index: -1
+LegA2ax
+  rotate: false
+  xy: 398, 59
+  size: 54, 114
+  orig: 54, 114
+  offset: 0, 0
+  index: -1
+LegA2sp
+  rotate: false
+  xy: 454, 60
+  size: 52, 113
+  orig: 54, 115
+  offset: 1, 1
+  index: -1
+Legb1
+  rotate: false
+  xy: 1081, 79
+  size: 32, 94
+  orig: 34, 96
+  offset: 1, 1
+  index: -1
+Legb1ax
+  rotate: false
+  xy: 867, 76
+  size: 34, 97
+  orig: 34, 97
+  offset: 0, 0
+  index: -1
+Legb1sp
+  rotate: false
+  xy: 1046, 79
+  size: 33, 94
+  orig: 35, 96
+  offset: 1, 1
+  index: -1
+Legb2
+  rotate: false
+  xy: 508, 60
+  size: 42, 113
+  orig: 44, 115
+  offset: 1, 1
+  index: -1
+Legb2ax
+  rotate: false
+  xy: 650, 61
+  size: 42, 112
+  orig: 44, 114
+  offset: 1, 1
+  index: -1
+Legb2sp
+  rotate: false
+  xy: 552, 60
+  size: 42, 113
+  orig: 44, 115
+  offset: 1, 1
+  index: -1
+arm right a
+  rotate: true
+  xy: 364, 4
+  size: 49, 98
+  orig: 51, 100
+  offset: 1, 1
+  index: -1
+arm right aax
+  rotate: false
+  xy: 765, 75
+  size: 49, 98
+  orig: 51, 100
+  offset: 1, 1
+  index: -1
+arm right asp
+  rotate: false
+  xy: 816, 75
+  size: 49, 98
+  orig: 51, 100
+  offset: 1, 1
+  index: -1
+arm right b
+  rotate: true
+  xy: 1154, 35
+  size: 47, 82
+  orig: 50, 84
+  offset: 2, 1
+  index: -1
+arm right bax
+  rotate: false
+  xy: 1370, 91
+  size: 48, 82
+  orig: 50, 84
+  offset: 1, 1
+  index: -1
+arm right bsp
+  rotate: false
+  xy: 1370, 6
+  size: 47, 83
+  orig: 49, 85
+  offset: 1, 1
+  index: -1
+armla
+  rotate: false
+  xy: 882, 21
+  size: 47, 53
+  orig: 49, 55
+  offset: 1, 1
+  index: -1
+armlaax
+  rotate: false
+  xy: 1021, 24
+  size: 47, 52
+  orig: 49, 54
+  offset: 1, 1
+  index: -1
+armlasp
+  rotate: false
+  xy: 931, 22
+  size: 46, 53
+  orig: 48, 55
+  offset: 1, 1
+  index: -1
+arrow
+  rotate: false
+  xy: 882, 2
+  size: 97, 17
+  orig: 99, 19
+  offset: 1, 1
+  index: -1
+axeax
+  rotate: true
+  xy: 279, 55
+  size: 118, 117
+  orig: 120, 119
+  offset: 1, 1
+  index: -1
+body
+  rotate: true
+  xy: 617, 2
+  size: 57, 86
+  orig: 57, 86
+  offset: 0, 0
+  index: -1
+bodyax
+  rotate: true
+  xy: 794, 16
+  size: 57, 86
+  orig: 57, 86
+  offset: 0, 0
+  index: -1
+bodysp
+  rotate: true
+  xy: 705, 15
+  size: 58, 87
+  orig: 58, 87
+  offset: 0, 0
+  index: -1
+bow
+  rotate: false
+  xy: 2, 30
+  size: 275, 143
+  orig: 275, 143
+  offset: 0, 0
+  index: -1
+footb
+  rotate: false
+  xy: 1230, 5
+  size: 45, 28
+  orig: 47, 30
+  offset: 1, 1
+  index: -1
+footbax
+  rotate: true
+  xy: 1238, 37
+  size: 45, 28
+  orig: 47, 30
+  offset: 1, 1
+  index: -1
+footbspo
+  rotate: false
+  xy: 1160, 4
+  size: 46, 29
+  orig: 48, 31
+  offset: 1, 1
+  index: -1
+head
+  rotate: true
+  xy: 1308, 4
+  size: 38, 41
+  orig: 40, 43
+  offset: 1, 1
+  index: -1
+headax
+  rotate: false
+  xy: 1268, 40
+  size: 38, 42
+  orig: 40, 44
+  offset: 1, 1
+  index: -1
+headsp
+  rotate: true
+  xy: 1308, 44
+  size: 38, 42
+  orig: 40, 44
+  offset: 1, 1
+  index: -1
+loweertb
+  rotate: true
+  xy: 309, 33
+  size: 20, 52
+  orig: 22, 54
+  offset: 1, 1
+  index: -1
+loweertbax
+  rotate: true
+  xy: 1021, 2
+  size: 20, 52
+  orig: 22, 54
+  offset: 1, 1
+  index: -1
+loweertbsp
+  rotate: true
+  xy: 1075, 3
+  size: 20, 52
+  orig: 22, 54
+  offset: 1, 1
+  index: -1
+lowert
+  rotate: false
+  xy: 979, 23
+  size: 40, 53
+  orig: 42, 55
+  offset: 1, 1
+  index: -1
+lowertax
+  rotate: false
+  xy: 1070, 25
+  size: 40, 52
+  orig: 42, 55
+  offset: 1, 1
+  index: -1
+lowertsp
+  rotate: false
+  xy: 1112, 25
+  size: 40, 52
+  orig: 42, 54
+  offset: 1, 1
+  index: -1
+quiver
+  rotate: true
+  xy: 694, 75
+  size: 98, 69
+  orig: 100, 71
+  offset: 1, 1
+  index: -1
+spearsp
+  rotate: false
+  xy: 1115, 84
+  size: 253, 89
+  orig: 255, 91
+  offset: 1, 1
+  index: -1

@@ -1,0 +1,90 @@
+
+Medusa.png
+size: 798,197
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 3
+  rotate: false
+  xy: 2, 2
+  size: 286, 13
+  orig: 288, 15
+  offset: 1, 1
+  index: -1
+Layer 65 copy
+  rotate: true
+  xy: 727, 29
+  size: 22, 27
+  orig: 24, 29
+  offset: 1, 1
+  index: -1
+Layer 83
+  rotate: false
+  xy: 594, 8
+  size: 45, 14
+  orig: 47, 31
+  offset: 1, 16
+  index: -1
+Layer 84
+  rotate: false
+  xy: 594, 66
+  size: 140, 129
+  orig: 140, 129
+  offset: 0, 0
+  index: -1
+Layer 85
+  rotate: true
+  xy: 736, 53
+  size: 63, 45
+  orig: 63, 45
+  offset: 0, 0
+  index: -1
+Layer 86
+  rotate: true
+  xy: 681, 30
+  size: 34, 44
+  orig: 36, 46
+  offset: 1, 1
+  index: -1
+Layer 87
+  rotate: false
+  xy: 736, 118
+  size: 60, 77
+  orig: 60, 77
+  offset: 0, 0
+  index: -1
+Layer 88
+  rotate: true
+  xy: 310, 6
+  size: 189, 282
+  orig: 189, 284
+  offset: 0, 2
+  index: -1
+Layer 89
+  rotate: false
+  xy: 641, 2
+  size: 36, 20
+  orig: 36, 20
+  offset: 0, 0
+  index: -1
+Layer 90
+  rotate: false
+  xy: 756, 24
+  size: 27, 27
+  orig: 27, 27
+  offset: 0, 0
+  index: -1
+Layer 91
+  rotate: true
+  xy: 2, 17
+  size: 178, 306
+  orig: 178, 306
+  offset: 0, 0
+  index: -1
+Layer 92
+  rotate: true
+  xy: 594, 24
+  size: 40, 85
+  orig: 40, 85
+  offset: 0, 0
+  index: -1

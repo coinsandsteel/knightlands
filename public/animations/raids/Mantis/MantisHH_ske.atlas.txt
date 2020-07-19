@@ -1,0 +1,125 @@
+
+MantisHH_ske.png
+size: 1274,533
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 23
+  rotate: false
+  xy: 548, 503
+  size: 719, 28
+  orig: 721, 30
+  offset: 1, 1
+  index: -1
+Layer 177 copy 3
+  rotate: false
+  xy: 2, 2
+  size: 544, 529
+  orig: 544, 556
+  offset: 0, 24
+  index: -1
+Layer 56
+  rotate: true
+  xy: 798, 180
+  size: 129, 122
+  orig: 131, 124
+  offset: 1, 1
+  index: -1
+Layer 57
+  rotate: true
+  xy: 966, 10
+  size: 175, 115
+  orig: 177, 117
+  offset: 1, 1
+  index: -1
+Layer 58
+  rotate: true
+  xy: 681, 10
+  size: 158, 283
+  orig: 160, 285
+  offset: 1, 1
+  index: -1
+Layer 59
+  rotate: false
+  xy: 548, 6
+  size: 131, 162
+  orig: 133, 164
+  offset: 1, 1
+  index: -1
+Layer 60
+  rotate: false
+  xy: 1255, 420
+  size: 14, 81
+  orig: 14, 81
+  offset: 0, 0
+  index: -1
+Layer 61
+  rotate: false
+  xy: 1083, 14
+  size: 54, 113
+  orig: 54, 113
+  offset: 0, 0
+  index: -1
+Layer 62
+  rotate: true
+  xy: 1083, 217
+  size: 97, 189
+  orig: 99, 191
+  offset: 1, 1
+  index: -1
+Layer 63
+  rotate: true
+  xy: 548, 170
+  size: 331, 248
+  orig: 333, 250
+  offset: 1, 1
+  index: -1
+Layer 64
+  rotate: true
+  xy: 1161, 334
+  size: 55, 80
+  orig: 57, 82
+  offset: 1, 1
+  index: -1
+Layer 65
+  rotate: true
+  xy: 1101, 322
+  size: 67, 58
+  orig: 69, 60
+  offset: 1, 1
+  index: -1
+Layer 66
+  rotate: false
+  xy: 1083, 129
+  size: 142, 86
+  orig: 142, 86
+  offset: 0, 0
+  index: -1
+Layer 67
+  rotate: true
+  xy: 922, 187
+  size: 122, 142
+  orig: 124, 144
+  offset: 1, 1
+  index: -1
+Layer 68
+  rotate: false
+  xy: 956, 316
+  size: 143, 73
+  orig: 145, 75
+  offset: 1, 1
+  index: -1
+Layer 69
+  rotate: false
+  xy: 966, 391
+  size: 287, 110
+  orig: 289, 112
+  offset: 1, 1
+  index: -1
+Layer 70
+  rotate: true
+  xy: 798, 311
+  size: 190, 156
+  orig: 192, 158
+  offset: 1, 1
+  index: -1

@@ -1,0 +1,139 @@
+
+Nage.png
+size: 983,1039
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 1
+  rotate: true
+  xy: 2, 207
+  size: 830, 40
+  orig: 832, 42
+  offset: 1, 1
+  index: -1
+Group 245
+  rotate: false
+  xy: 2, 10
+  size: 242, 195
+  orig: 242, 195
+  offset: 0, 0
+  index: -1
+Layer 235 copy
+  rotate: false
+  xy: 44, 520
+  size: 693, 517
+  orig: 693, 526
+  offset: 0, 9
+  index: -1
+Layer 243 copy
+  rotate: false
+  xy: 748, 352
+  size: 121, 167
+  orig: 174, 169
+  offset: 53, 2
+  index: -1
+Layer 245 copy
+  rotate: true
+  xy: 44, 352
+  size: 166, 164
+  orig: 166, 164
+  offset: 0, 0
+  index: -1
+Layer 247 copy
+  rotate: true
+  xy: 210, 358
+  size: 67, 25
+  orig: 69, 27
+  offset: 1, 1
+  index: -1
+Layer 56
+  rotate: false
+  xy: 246, 2
+  size: 655, 151
+  orig: 655, 151
+  offset: 0, 0
+  index: -1
+Layer 57
+  rotate: false
+  xy: 748, 255
+  size: 168, 95
+  orig: 180, 97
+  offset: 0, 0
+  index: -1
+Layer 58
+  rotate: false
+  xy: 739, 699
+  size: 242, 338
+  orig: 242, 338
+  offset: 0, 0
+  index: -1
+Layer 59
+  rotate: false
+  xy: 246, 155
+  size: 500, 363
+  orig: 500, 395
+  offset: 0, 32
+  index: -1
+Layer 60
+  rotate: true
+  xy: 44, 227
+  size: 123, 127
+  orig: 123, 127
+  offset: 0, 0
+  index: -1
+Layer 61
+  rotate: false
+  xy: 173, 211
+  size: 64, 139
+  orig: 64, 139
+  offset: 0, 0
+  index: -1
+Layer 62
+  rotate: true
+  xy: 210, 427
+  size: 91, 34
+  orig: 99, 36
+  offset: 7, 1
+  index: -1
+Layer 63
+  rotate: true
+  xy: 739, 521
+  size: 53, 106
+  orig: 53, 106
+  offset: 0, 0
+  index: -1
+Layer 64
+  rotate: true
+  xy: 847, 542
+  size: 32, 92
+  orig: 32, 92
+  offset: 0, 0
+  index: -1
+Layer 65
+  rotate: false
+  xy: 871, 396
+  size: 64, 144
+  orig: 64, 144
+  offset: 0, 0
+  index: -1
+Layer 66
+  rotate: true
+  xy: 739, 576
+  size: 121, 231
+  orig: 121, 231
+  offset: 0, 0
+  index: -1
+Layer 67
+  rotate: false
+  xy: 871, 362
+  size: 76, 32
+  orig: 84, 34
+  offset: 7, 1
+  index: -1
+Layer 68
+  rotate: true
+  xy: 937, 451
+  size: 89, 29
+  orig: 91, 31
+  offset: 1, 1
+  index: -1

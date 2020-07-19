@@ -1,0 +1,62 @@
+
+Azrafel.png
+size: 250,493
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Arm Left
+  rotate: true
+  xy: 119, 223
+  size: 50, 112
+  orig: 50, 112
+  offset: 0, 0
+  index: -1
+Arm right
+  rotate: false
+  xy: 162, 105
+  size: 47, 116
+  orig: 47, 116
+  offset: 0, 0
+  index: -1
+Ellipse 2
+  rotate: false
+  xy: 2, 2
+  size: 245, 25
+  orig: 247, 27
+  offset: 1, 1
+  index: -1
+Layer 35
+  rotate: true
+  xy: 2, 29
+  size: 159, 158
+  orig: 159, 158
+  offset: 0, 0
+  index: -1
+Layer 36
+  rotate: false
+  xy: 119, 374
+  size: 125, 117
+  orig: 125, 119
+  offset: 0, 0
+  index: -1
+Layer 37
+  rotate: false
+  xy: 2, 190
+  size: 115, 301
+  orig: 115, 301
+  offset: 0, 0
+  index: -1
+Left Cape
+  rotate: true
+  xy: 162, 48
+  size: 55, 86
+  orig: 55, 86
+  offset: 0, 0
+  index: -1
+Right Cape
+  rotate: true
+  xy: 119, 275
+  size: 97, 117
+  orig: 97, 117
+  offset: 0, 0
+  index: -1

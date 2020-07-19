@@ -1,0 +1,111 @@
+
+DreamSlime.png
+size: 334,844
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Hammer
+  rotate: true
+  xy: 2, 464
+  size: 201, 296
+  orig: 203, 298
+  offset: 1, 1
+  index: -1
+Palette
+  rotate: false
+  xy: 214, 20
+  size: 60, 46
+  orig: 62, 48
+  offset: 1, 1
+  index: -1
+Stroke B
+  rotate: true
+  xy: 2, 80
+  size: 76, 120
+  orig: 78, 122
+  offset: 1, 1
+  index: -1
+Stroke C
+  rotate: true
+  xy: 2, 158
+  size: 79, 198
+  orig: 84, 200
+  offset: 1, 1
+  index: -1
+attack
+  rotate: false
+  xy: 124, 80
+  size: 104, 76
+  orig: 104, 76
+  offset: 0, 0
+  index: -1
+beret tip
+  rotate: false
+  xy: 300, 646
+  size: 19, 19
+  orig: 88, 34
+  offset: 69, 15
+  index: -1
+brush
+  rotate: true
+  xy: 233, 389
+  size: 73, 92
+  orig: 75, 94
+  offset: 1, 1
+  index: -1
+damage
+  rotate: false
+  xy: 2, 2
+  size: 104, 76
+  orig: 104, 76
+  offset: 0, 0
+  index: -1
+default Body
+  rotate: false
+  xy: 108, 2
+  size: 104, 76
+  orig: 104, 76
+  offset: 0, 0
+  index: -1
+paintdrops
+  rotate: true
+  xy: 2, 239
+  size: 223, 229
+  orig: 226, 231
+  offset: 2, 1
+  index: -1
+pebody
+  rotate: false
+  xy: 230, 68
+  size: 102, 74
+  orig: 104, 76
+  offset: 1, 1
+  index: -1
+shadow
+  rotate: true
+  xy: 300, 493
+  size: 151, 14
+  orig: 153, 16
+  offset: 1, 1
+  index: -1
+strokeA
+  rotate: true
+  xy: 233, 248
+  size: 139, 89
+  orig: 142, 92
+  offset: 1, 2
+  index: -1
+sword
+  rotate: true
+  xy: 2, 667
+  size: 175, 328
+  orig: 177, 330
+  offset: 1, 1
+  index: -1
+whiteout
+  rotate: true
+  xy: 233, 144
+  size: 102, 86
+  orig: 104, 88
+  offset: 1, 1
+  index: -1

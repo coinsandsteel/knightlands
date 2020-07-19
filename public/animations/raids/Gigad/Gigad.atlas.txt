@@ -1,0 +1,83 @@
+
+Gigad.png
+size: 307,1420
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 2
+  rotate: true
+  xy: 275, 280
+  size: 859, 30
+  orig: 861, 32
+  offset: 1, 1
+  index: -1
+Layer 243 copy 2
+  rotate: true
+  xy: 2, 220
+  size: 147, 217
+  orig: 147, 224
+  offset: 0, 7
+  index: -1
+Layer 245 copy
+  rotate: true
+  xy: 2, 369
+  size: 201, 239
+  orig: 201, 239
+  offset: 0, 0
+  index: -1
+Layer 48
+  rotate: false
+  xy: 221, 138
+  size: 71, 140
+  orig: 71, 140
+  offset: 0, 0
+  index: -1
+Layer 49
+  rotate: true
+  xy: 2, 572
+  size: 567, 271
+  orig: 567, 271
+  offset: 0, 0
+  index: -1
+Layer 50
+  rotate: true
+  xy: 243, 470
+  size: 100, 30
+  orig: 102, 32
+  offset: 1, 1
+  index: -1
+Layer 51
+  rotate: true
+  xy: 2, 1141
+  size: 277, 290
+  orig: 277, 290
+  offset: 0, 0
+  index: -1
+Layer 52
+  rotate: true
+  xy: 243, 357
+  size: 111, 28
+  orig: 113, 30
+  offset: 1, 1
+  index: -1
+Layer 53
+  rotate: true
+  xy: 2, 2
+  size: 59, 162
+  orig: 59, 162
+  offset: 0, 0
+  index: -1
+Layer 54
+  rotate: false
+  xy: 209, 31
+  size: 69, 105
+  orig: 71, 107
+  offset: 1, 1
+  index: -1
+Layer 55
+  rotate: false
+  xy: 2, 63
+  size: 205, 155
+  orig: 207, 157
+  offset: 1, 1
+  index: -1

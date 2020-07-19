@@ -1,0 +1,83 @@
+
+Valdrekk.png
+size: 1695,780
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 5
+  rotate: false
+  xy: 2, 46
+  size: 645, 23
+  orig: 647, 25
+  offset: 1, 1
+  index: -1
+Layer 1034
+  rotate: false
+  xy: 867, 193
+  size: 389, 585
+  orig: 389, 585
+  offset: 0, 0
+  index: -1
+Layer 1035
+  rotate: true
+  xy: 203, 112
+  size: 666, 662
+  orig: 666, 663
+  offset: 0, 1
+  index: -1
+Layer 1036
+  rotate: true
+  xy: 2, 71
+  size: 707, 199
+  orig: 707, 216
+  offset: 0, 0
+  index: -1
+Layer 1037
+  rotate: true
+  xy: 1045, 19
+  size: 172, 260
+  orig: 172, 260
+  offset: 0, 0
+  index: -1
+Layer 1038
+  rotate: true
+  xy: 1477, 350
+  size: 154, 198
+  orig: 154, 198
+  offset: 0, 0
+  index: -1
+Layer 1039
+  rotate: true
+  xy: 649, 15
+  size: 95, 121
+  orig: 97, 123
+  offset: 1, 1
+  index: -1
+Layer 1041
+  rotate: true
+  xy: 867, 7
+  size: 184, 176
+  orig: 210, 179
+  offset: 25, 2
+  index: -1
+Layer 1042
+  rotate: true
+  xy: 1258, 239
+  size: 265, 217
+  orig: 265, 220
+  offset: 0, 0
+  index: -1
+Layer 1043
+  rotate: true
+  xy: 1307, 2
+  size: 235, 330
+  orig: 235, 330
+  offset: 0, 0
+  index: -1
+Layer 169 copy 2
+  rotate: false
+  xy: 1258, 506
+  size: 435, 272
+  orig: 476, 278
+  offset: 41, 0
+  index: -1

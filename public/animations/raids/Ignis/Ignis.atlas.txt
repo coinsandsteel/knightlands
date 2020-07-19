@@ -1,0 +1,48 @@
+
+Ignis.png
+size: 676,546
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 310
+  rotate: false
+  xy: 2, 23
+  size: 505, 52
+  orig: 507, 54
+  offset: 1, 1
+  index: -1
+Layer 311
+  rotate: false
+  xy: 303, 111
+  size: 371, 274
+  orig: 371, 280
+  offset: 0, 0
+  index: -1
+Layer 312
+  rotate: true
+  xy: 303, 399
+  size: 145, 141
+  orig: 146, 145
+  offset: 0, 3
+  index: -1
+Layer 313
+  rotate: true
+  xy: 509, 2
+  size: 107, 127
+  orig: 111, 133
+  offset: 1, 1
+  index: -1
+Layer 76 copy
+  rotate: false
+  xy: 2, 77
+  size: 299, 467
+  orig: 311, 473
+  offset: 2, 2
+  index: -1
+Layer 77 copy
+  rotate: true
+  xy: 509, 387
+  size: 157, 160
+  orig: 157, 215
+  offset: 0, 55
+  index: -1

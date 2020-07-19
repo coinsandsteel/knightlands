@@ -1,0 +1,76 @@
+
+VoidollMistress_ske.png
+size: 1110,197
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 27
+  rotate: false
+  xy: 466, 13
+  size: 279, 24
+  orig: 281, 26
+  offset: 1, 1
+  index: -1
+Group 467 copy
+  rotate: false
+  xy: 747, 5
+  size: 71, 54
+  orig: 71, 54
+  offset: 0, 0
+  index: -1
+Group 468 copy
+  rotate: false
+  xy: 466, 39
+  size: 147, 156
+  orig: 147, 156
+  offset: 0, 0
+  index: -1
+Layer 248 copy
+  rotate: true
+  xy: 902, 10
+  size: 75, 203
+  orig: 75, 203
+  offset: 0, 0
+  index: -1
+Layer 249 copy
+  rotate: true
+  xy: 615, 61
+  size: 134, 245
+  orig: 134, 245
+  offset: 0, 0
+  index: -1
+Layer 71
+  rotate: true
+  xy: 250, 5
+  size: 190, 214
+  orig: 190, 214
+  offset: 0, 0
+  index: -1
+Layer 72
+  rotate: true
+  xy: 862, 87
+  size: 108, 196
+  orig: 108, 196
+  offset: 0, 0
+  index: -1
+Layer 73
+  rotate: false
+  xy: 1060, 121
+  size: 48, 74
+  orig: 48, 74
+  offset: 0, 0
+  index: -1
+Layer 74
+  rotate: true
+  xy: 2, 2
+  size: 193, 246
+  orig: 193, 246
+  offset: 0, 0
+  index: -1
+Layer 75
+  rotate: true
+  xy: 820, 6
+  size: 53, 80
+  orig: 53, 80
+  offset: 0, 0
+  index: -1
