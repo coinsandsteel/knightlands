@@ -120,7 +120,6 @@ export default {
   },
   computed: {
     showContent() {
-      return true;
       if (this.$route.meta.skipReady) {
         return !this.loading;
       }
