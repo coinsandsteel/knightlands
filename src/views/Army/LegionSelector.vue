@@ -19,7 +19,7 @@ export default {
   }),
   computed: {
     damage() {
-      return this.$game.army.getLegionDamage(this.legionIndex);
+      return this.$game.army.getLegionDamage(this.legionIndex).totalDamageOutput;
     },
     totalLegions() {
       return this.$game.army.totalLegions();

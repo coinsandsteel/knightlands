@@ -1,10 +1,12 @@
 
-import LegionResolver from "../../knightlands-shared/legion_resolver";
 import ArmyMeta from "@/army_meta";
 import Vue from "vue";
 import throttle from "lodash.throttle";
-import troopsMeta from "@/troops_meta";
-import generalsMeta from "@/generals_meta";
+import ArmyAbilities from "@/army_abilities";
+import ArmyResolver from "@/../knightlands-shared/army_resolver";
+import armyUnits from "@/army_units";
+import TroopsMeta from "@/troops_meta";
+import GeneralsMeta from "@/generals_meta";
 
 const dummyUnit = {
     id: -1,
@@ -14,14 +16,11 @@ const dummyUnit = {
 };
 
 export default class Army {
-    constructor(game, armyDb) {
+    constructor(game, itemsResolver, armyDb) {
         this._game = game;
-        this._legionResolver = new LegionResolver(
-            armyDb.abilityResolver,
-            troopsMeta,
-            generalsMeta
-        );
         this._armyDb = armyDb;
+        this._armyResolver = new ArmyResolver(ArmyAbilities, itemsResolver, armyUnits, TroopsMeta, GeneralsMeta);
+        this._unitsIndex = this._armyResolver.buildUnitsIndex({});
         this._vm = new Vue({
             data: () => ({
                 units: {},
@@ -38,12 +37,30 @@ export default class Army {
         return this._vm.legions.length;
     }
 
+    getStars(unit) {
+        return this._armyResolver.getStars(unit);
+    }
+
+    estimateDamage(unit) {
+        return this._armyResolver.estimateDamage(unit, this._unitsIndex).unitsDamageOutput[unit.id];
+    }
+
+    getDamage(params) {
+        return this._armyResolver.getDamage(...params);
+    }
+
+    getAbilityLevelValue(unit, abilityId) {
+        return this._armyResolver.getAbilityLevelValue(unit, abilityId);
+    }
+
     getLegionDamage(legionIndex) {
-        return this._legionResolver.getDamage(
-            this.getLegion(legionIndex),
-            this._vm.units,
-            this._armyDb.getTemplates()
-        )
+        const legion = this.getLegion(legionIndex);
+        const units = {};
+        for (let slotId in legion.units) {
+            const unitId = legion.units[slotId];
+            units[unitId] = this.getUnit(unitId);
+        }
+        return this._armyResolver.estimateDamageOutput(units, this._unitsIndex);
     }
 
     filterIngridientUnits(referenceUnit, ingridient, selectedUnits) {
@@ -71,7 +88,7 @@ export default class Army {
             }
 
             if (ingridient.stars) {
-                if (this._armyDb.getStars(unit) != ingridient.stars) {
+                if (this.getStars(unit) != ingridient.stars) {
                     continue;
                 }
             }
@@ -104,7 +121,7 @@ export default class Army {
         const length = units.length;
         for (; i < length; ++i) {
             const unit = units[i];
-            if (filters[this._armyDb.getStars(unit)]) {
+            if (filters[this.getStars(unit)]) {
                 buffer.push(unit);
             }
         }
@@ -238,6 +255,8 @@ export default class Army {
         this._vm.units = unitsDict;
         this._vm.legions = army.legions || {};
 
+        this._unitsIndex.update(unitsDict);
+
         this._doSort(true);
         this._doSort(false);
 
@@ -247,7 +266,7 @@ export default class Army {
     _doSort(troops) {
         const units = troops ? this._vm.troops : this._vm.generals;
         units.sort((x, y) => {
-            let diff = this._armyDb.getStars(y) - this._armyDb.getStars(x);
+            let diff = this.getStars(y) - this.getStars(x);
             if (diff === 0) {
                 return y.template - x.template;
             }

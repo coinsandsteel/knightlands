@@ -32,7 +32,7 @@ class Game {
         this.$store = store;
         this._items = new ItemDatabase();
         this._armyDb = new ArmyDB(this._items, this._items.itemStatResolver);
-        this._army = new Army(this, this._armyDb);
+        this._army = new Army(this, this._items.itemStatResolver, this._armyDb);
         this._expTable = PlayerExpTable;
         this._requestInProgress = false;
 

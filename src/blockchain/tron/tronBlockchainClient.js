@@ -64,7 +64,7 @@ class TronBlockchainClient extends BlockchainClient {
 
         this._tronWasInited = true;
 
-        await this._initContracts();
+        // await this._initContracts();
     }
 
     async _initContracts() {

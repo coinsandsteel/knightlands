@@ -6,7 +6,7 @@ export default {
   computed: {
     stars() {
       if (this.unit) {
-        return this.$game.armyDB.getStars(this.unit);
+        return this.$game.army.getStars(this.unit);
       }
 
       return 0;
@@ -69,16 +69,23 @@ export default {
       }
       return [];
     },
+    estimatedDamage() {
+      if (this.unit) {
+        return this.$game.army.estimateDamage(this.unit);
+      }
+
+      return 0;
+    },
     damage() {
       if (this.unit) {
-        return this.$game.armyDB.getDamage(this.unit);
+        return this.$game.army.getDamage(this.unit);
       }
 
       return 0;
     },
     nextDamage() {
       if (this.unit) {
-        return this.$game.armyDB.getDamage(this.unit, true);
+        return this.$game.army.getDamage(this.unit, true);
       }
 
       return 0;
@@ -93,7 +100,7 @@ export default {
   },
   methods: {
     getAbilityDesc(ability, overrideUnit) {
-      const levelValue = this.$game.armyDB.getAbilityLevelValue(
+      const levelValue = this.$game.army.getAbilityLevelValue(
         this.unit || overrideUnit,
         ability.id
       );
@@ -101,6 +108,18 @@ export default {
       const localisationParams = { value: levelValue, ...ability };
       if (ability.unitType) {
         localisationParams.unitType = this.$t(ArmyUnitTypes[ability.unitType]);
+      }
+
+      if (ability.troop) {
+        localisationParams.name = this.$game.armyDB.getTemplate(
+          ability.troop
+        ).name;
+      } else {
+        if (ability.general) {
+          localisationParams.name = this.$game.armyDB.getTemplate(
+            ability.general
+          ).name;
+        }
       }
 
       return this.$t(ability.type, localisationParams);

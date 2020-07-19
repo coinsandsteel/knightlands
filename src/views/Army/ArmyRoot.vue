@@ -19,6 +19,7 @@ export default {
   }),
   async mounted() {
     this.request = this.$game.army.load();
+    await this.request;
   }
 };
 </script>

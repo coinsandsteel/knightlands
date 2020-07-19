@@ -16,7 +16,7 @@
             <UnitStars :stars="stars" size="small" />
           </div>
           <div class="margin-top-1 padding-half panel-input flex flex-center unit-view-param font-size-22">
-            <IconWithValue iconClass="icon-damage">{{damage}}</IconWithValue>
+            <IconWithValue iconClass="icon-damage">{{estimatedDamage}}</IconWithValue>
           </div>
         </div>
 
