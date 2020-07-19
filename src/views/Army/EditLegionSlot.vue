@@ -80,18 +80,23 @@ export default {
     load() {
       const slots = this.$game.army.getSlots(this.legion, this.isTroops);
       this.unit = slots.find(s => s.id == this.slotId).unit;
-
+    
       const legion = this.$game.army.getLegion(this.legion);
       const exceptUnits = {};
+      const exceptTemplates = {};
       for (const slotId in legion.units) {
-        if (legion.units[slotId]) {
-          exceptUnits[legion.units[slotId]] = true;
+        const unitId = legion.units[slotId];
+        if (unitId) {
+          exceptUnits[unitId] = true;
+
+          const template = this.$game.army.getUnit(unitId).template;
+          exceptTemplates[template] = true;
         }
       }
-      this.units = this.$game.army.getUnitsWithFilter(
-        this.isTroops,
-        x => !exceptUnits[x.id]
-      );
+
+      this.units = this.$game.army.getUnitsWithFilter(this.isTroops, x => {
+        return !exceptUnits[x.id] && !exceptTemplates[x.template];
+      });
     },
     selectUnit(unit) {
       // set as active unit in slot
