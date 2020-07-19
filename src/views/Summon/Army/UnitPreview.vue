@@ -58,8 +58,8 @@
               <Flipped
                 stagger="ability"
                 :flipId="a.id.toString()"
-                v-for="a in abilities"
-                :key="a.id"
+                v-for="(a, idx) in abilities"
+                :key="idx"
               >
                 <div class="ability-panel width-100" :class="{'show': showAnimation}">
                   <span v-html="getAbilityDesc(a)"></span>

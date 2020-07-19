@@ -6,7 +6,7 @@
           <UnitItem class="width-20" v-if="remove" @click="handleRemove" :empty="false" />
           <UnitItem
             class="width-20"
-            v-for="unit in units"
+            v-for="unit in filteredUnits"
             :key="unit.id"
             :unit="unit"
             :active="unit == selectedUnit"
@@ -16,18 +16,42 @@
         </div>
       </div>
     </div>
+
+    <portal to="footer" v-if="isActive">
+      <CustomButton type="grey" @click="showUnitFilters">
+        {{$t("btn-filters")}}
+      </CustomButton>
+    </portal>
   </div>
 </template>
 
 <script>
+import CustomButton from "@/components/Button.vue";
 import UnitItem from "./UnitItem.vue";
+import DoubleBuffer from "@/helpers/DoubleBuffer";
+import ItemFilterComponent from "@/components/ItemFilter.vue";
+import { create as CreateDialog } from "vue-modal-dialogs";
+const ItemFilter = CreateDialog(ItemFilterComponent);
+import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
   props: ["units", "multiSelect", "selectedUnit", "remove"],
-  components: { UnitItem },
+  components: { UnitItem, CustomButton },
+  mixins: [ActivityMixin],
   data: () => ({
-    selectedSlots: {}
+    selectedSlots: {},
+    filteredUnits: []
   }),
+  created() {
+    this.filteredUnitsBuffer = new DoubleBuffer();
+    this.filtersStore = this.$store.getters.getUnitFilters;
+    this.filterUnits();
+  },
+  watch: {
+    units() {
+      this.filterUnits();
+    }
+  },
   methods: {
     resetSelection() {
       this.selectedSlots = {};
@@ -53,6 +77,28 @@ export default {
     handleRemove() {
       this.selectedSlots = {};
       this.$emit("removed");
+    },
+    async showUnitFilters() {
+      const filters = await ItemFilter({
+        stateFilters: this.filtersStore,
+        commitCmd: "setUnitFilters",
+        filterLocalisation: "unit-s-filter"
+      });
+
+      if (filters) {
+        this.filterUnits();
+      }
+    },
+    filterUnits() {
+      this.filteredUnits = this.$game.army.filterProvidedUnits(
+        this.units,
+        this.filtersStore,
+        this.filteredUnitsBuffer.get()
+      );
+
+      if (this.filteredUnits.length > 0) {
+        this.toggleSlot(this.filteredUnits[0]);
+      }
     }
   }
 };

@@ -45,8 +45,8 @@ export default class Army {
         return this._armyResolver.estimateDamage(unit, this._unitsIndex).unitsDamageOutput[unit.id];
     }
 
-    getDamage(params) {
-        return this._armyResolver.getDamage(...params);
+    getDamage(unit) {
+        return this._armyResolver.getDamage(unit);
     }
 
     getAbilityLevelValue(unit, abilityId) {
@@ -110,6 +110,22 @@ export default class Army {
             return null;
         }
         return this._vm.legions[legionIndex];
+    }
+
+    filterProvidedUnits(units, filters, buffer) {
+        buffer = buffer || [];
+        buffer.length = 0;
+
+        let i = 0;
+        const length = units.length;
+        for (; i < length; ++i) {
+            const unit = units[i];
+            if (filters[this.getStars(unit)]) {
+                buffer.push(unit);
+            }
+        }
+
+        return buffer;
     }
 
     filterUnits(troops, filters, buffer) {

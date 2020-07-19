@@ -2872,5 +2872,6 @@
     "extraDamagePerTroopStarsOwned": "extraDamagePerTroopStarsOwned",
     "increasedDamageWhenTroopUsed": "+<span class='rarity-mythical'>{value}</span>% when <span class='rarity-epic'>{name}</span> is in legion.",
     "extraDamagePerTroopTypeUsed": "Extra <span class='rarity-mythical'>{value}</span> damage per <span class='rarity-epic'>{unitType}</span> troop in legion",
-    "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% damage when at least <span class='rarity-epic'>{unitCount} {unitType}</span> troops in legion"
+    "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% damage when at least <span class='rarity-epic'>{unitCount} {unitType}</span> troops in legion",
+    "extraDamage": "Extra <span class='rarity-mythical'>{value}</span> damage"
 }
