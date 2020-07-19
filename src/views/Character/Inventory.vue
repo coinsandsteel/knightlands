@@ -2,7 +2,7 @@
   <Promised class="tab-content dummy-height flex flex-column full-flex" :promise="request">
     <template v-slot:combined="{isPending, isDelayOver}">
       <loading-screen :loading="true" v-show="isDelayOver && isPending"></loading-screen>
-
+      <AnimatedBackground></AnimatedBackground>
       <div class="tab-content dummy-height flex flex-column full-flex">
         <!-- Equipment + quick stats overview -->
         <div class="equipment-container flex flex-space-evenly">
@@ -112,6 +112,7 @@ import HintHandler from "@/components/HintHandler.vue";
 import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
 import ScrollableItemHint from "@/components/ScrollableItemHint.vue";
 import CompareItems from "@/components/CompareItems.vue";
+import AnimatedBackground from "@/components/AnimatedBackground.vue";
 const ShowItems = CreateDialog(
   ItemsReceived,
   "items",
@@ -133,7 +134,8 @@ export default {
     ScrollableItemHint,
     Promised,
     LoadingScreen,
-    CustomButton
+    CustomButton,
+    AnimatedBackground
   },
   data() {
     return {

@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-column flex-end flex-items-center relative">
     <div class="screen-background"></div>
+    <AnimatedBackground></AnimatedBackground>
 
     <div class="flex flex-column width-100 flex-items-center flex-space-evenly shift-buttons">
       <MenuIcon icon="icon-units" :to="{name: 'edit-unit'}" :append="true">Units</MenuIcon>
@@ -22,13 +23,15 @@
 import MenuIcon from "@/components/MenuIcon.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
+import AnimatedBackground from "@/components/AnimatedBackground.vue";
 
 export default {
   name: "castle",
   mixins: [AppSection],
   components: {
     CustomButton,
-    MenuIcon
+    MenuIcon,
+    AnimatedBackground
   },
   created() {
     this.title = this.$t("window-title-castle");
