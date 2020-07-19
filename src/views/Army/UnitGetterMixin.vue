@@ -1,6 +1,7 @@
 <script>
 import UiConstants from "@/ui_constants";
 import ArmyUnitTypes from "@/army_unit_types";
+import RaidsMeta from "@/raids_meta";
 
 export default {
   computed: {
@@ -108,6 +109,15 @@ export default {
       const localisationParams = { value: levelValue, ...ability };
       if (ability.unitType) {
         localisationParams.unitType = this.$t(ArmyUnitTypes[ability.unitType]);
+      }
+
+      if (ability.stars) {
+        // create stars html
+        localisationParams.stars = `<div class="flex flex-no-wrap flex-item-center"><div class="star active small"></div><span class="digit-font">${ability.stars}</span></div>`;
+      }
+
+      if (ability.raid) {
+        localisationParams.raid = this.$t(RaidsMeta[ability.raid].name);
       }
 
       if (ability.troop) {

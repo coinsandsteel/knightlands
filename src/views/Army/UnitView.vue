@@ -42,14 +42,14 @@
       </div>
 
       <div
-        class="panel-input flex flex-column absolute-stretch flex-space-evenly padding-top-5 font-size-20"
+        class="overlay-color flex flex-column absolute-stretch flex-space-evenly font-size-20"
         v-else-if="unit && showAbilities"
+        @click="showAbilities = false"
       >
-        <span class="close-btn" @click="showAbilities = false"></span>
         <div
           class="flex flex-center"
-          v-for="ability in abilities"
-          :key="ability.id"
+          v-for="(ability, idx) in abilities"
+          :key="idx"
           v-html="getAbilityDesc(ability)"
         ></div>
       </div>

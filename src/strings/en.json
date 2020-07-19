@@ -2857,7 +2857,6 @@
     "increasedDamageWhenEnoughElements": "increasedDamageWhenEnoughElements",
     "extraDamageWhenEnoughElements": "extraDamageWhenEnoughElements",
     "increasedDamageVsRaid": "increasedDamageVsRaid",
-    "extraDamageVsRaid": "extraDamageVsRaid",
     "increasedDamageVsRaidElement": "increasedDamageVsRaidElement",
     "extraDamageVsRaidElement": "extraDamageVsRaidElement",
     "chanceToRestoreStamina": "chanceToRestoreStamina",
@@ -2870,8 +2869,11 @@
     "extraDamagePerTroopUnitTypeOwned": "extraDamagePerTroopUnitTypeOwned",
     "extraDamagePerGeneralStarsOwned": "extraDamagePerGeneralStarsOwned",
     "extraDamagePerTroopStarsOwned": "extraDamagePerTroopStarsOwned",
-    "increasedDamageWhenTroopUsed": "+<span class='rarity-mythical'>{value}</span>% when <span class='rarity-epic'>{name}</span> is in legion.",
-    "extraDamagePerTroopTypeUsed": "Extra <span class='rarity-mythical'>{value}</span> damage per <span class='rarity-epic'>{unitType}</span> troop in legion",
+    "increasedDamageWhenTroopUsed": "+<span class='rarity-mythical'>{value}</span>% when <span class='rarity-epic'>{name}</span> is in legion",
+    "extraDamagePerTroopTypeUsed": "+<span class='rarity-mythical'>{value}</span> damage per <span class='rarity-epic'>{unitType}</span> troop in legion",
     "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% damage when at least <span class='rarity-epic'>{unitCount} {unitType}</span> troops in legion",
-    "extraDamage": "Extra <span class='rarity-mythical'>{value}</span> damage"
+    "extraDamage": "+<span class='rarity-mythical'>{value}</span> damage",
+    "extraDamagePerGeneralTypeOwned": "+<span class='rarity-mythical'>{value}</span> damage for each <span class='rarity-epic'>{unitType}</span> general {stars} or higher in reserve",
+    "extraDamageVsRaid": "+<span class='rarity-mythical'>{value}</span> damage against <span class='rarity-rare'>{raid}</span>",
+    "increasedDamagePerGeneralTypeUsed": "+<span class='rarity-mythical'>{value}</span>% damage per <span class='rarity-epic'>{unitType}</span> general in legion"
 }

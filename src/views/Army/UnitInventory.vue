@@ -9,7 +9,7 @@
             v-for="unit in filteredUnits"
             :key="unit.id"
             :unit="unit"
-            :active="unit == selectedUnit"
+            :active="unit.id == selectedUnit.id"
             :selected="selectedSlots[unit.id]"
             @click="toggleSlot(unit)"
           />
@@ -18,9 +18,7 @@
     </div>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="grey" @click="showUnitFilters">
-        {{$t("btn-filters")}}
-      </CustomButton>
+      <CustomButton type="grey" @click="showUnitFilters">{{$t("btn-filters")}}</CustomButton>
     </portal>
   </div>
 </template>
@@ -50,6 +48,12 @@ export default {
   watch: {
     units() {
       this.filterUnits();
+    },
+    selectedUnit: {
+      immediate: true,
+      handler() {
+        this.toggleSlot(this.selectedUnit);
+      }
     }
   },
   methods: {
@@ -57,6 +61,10 @@ export default {
       this.selectedSlots = {};
     },
     toggleSlot(unit) {
+      if (!unit) {
+        return;
+      }
+
       if (this.multiSelect && this.selectedSlots[unit.id]) {
         this.$delete(this.selectedSlots, unit.id);
         this.$emit("toggle", unit, false);
@@ -96,7 +104,7 @@ export default {
         this.filteredUnitsBuffer.get()
       );
 
-      if (this.filteredUnits.length > 0) {
+      if (!this.selectedUnit && this.filteredUnits.length > 0) {
         this.toggleSlot(this.filteredUnits[0]);
       }
     }

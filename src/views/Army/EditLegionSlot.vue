@@ -41,9 +41,6 @@ export default {
     this.$options.useRouterBack = true;
     this.title = "";
   },
-  mounted() {
-    this.originalUnit = this.unit;
-  },
   watch: {
     legion: {
       immediate: true,
@@ -79,18 +76,27 @@ export default {
   methods: {
     load() {
       const slots = this.$game.army.getSlots(this.legion, this.isTroops);
-      this.unit = slots.find(s => s.id == this.slotId).unit;
+      let unit = slots.find(s => s.id == this.slotId).unit;
+
+      if (!this.unit) {
+        this.originalUnit = unit;
+      }
+
+      this.unit = unit;
     
       const legion = this.$game.army.getLegion(this.legion);
       const exceptUnits = {};
       const exceptTemplates = {};
       for (const slotId in legion.units) {
         const unitId = legion.units[slotId];
-        if (unitId) {
+        
+        if (!this.unit || unitId != this.unit.id) {
           exceptUnits[unitId] = true;
 
           const template = this.$game.army.getUnit(unitId).template;
-          exceptTemplates[template] = true;
+          if (!this.unit || template != this.unit.template) {
+            exceptTemplates[template] = true;
+          }
         }
       }
 
