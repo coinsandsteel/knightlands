@@ -1,0 +1,62 @@
+
+Edmund.png
+size: 648,103
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ellipse 515
+  rotate: false
+  xy: 319, 11
+  size: 205, 13
+  orig: 207, 15
+  offset: 1, 1
+  index: -1
+Group 105 copy 9
+  rotate: true
+  xy: 81, 7
+  size: 94, 151
+  orig: 156, 170
+  offset: 62, 19
+  index: -1
+Group 106 copy
+  rotate: true
+  xy: 2, 2
+  size: 99, 77
+  orig: 101, 79
+  offset: 1, 1
+  index: -1
+Layer 870
+  rotate: false
+  xy: 234, 7
+  size: 83, 94
+  orig: 83, 95
+  offset: 0, 0
+  index: -1
+Layer 871
+  rotate: false
+  xy: 319, 26
+  size: 62, 75
+  orig: 62, 75
+  offset: 0, 0
+  index: -1
+Layer 873
+  rotate: true
+  xy: 383, 33
+  size: 68, 119
+  orig: 68, 119
+  offset: 0, 0
+  index: -1
+Layer 874
+  rotate: true
+  xy: 526, 60
+  size: 41, 120
+  orig: 41, 120
+  offset: 0, 0
+  index: -1
+Layer 876
+  rotate: true
+  xy: 526, 3
+  size: 55, 110
+  orig: 55, 110
+  offset: 0, 0
+  index: -1

@@ -43,6 +43,9 @@ export default {
     ],
     currentTab: Troops
   }),
+  mounted() {
+    this.switchTab(this.currentTab);
+  },
   computed: {
     element() {
       if (this.unit) {

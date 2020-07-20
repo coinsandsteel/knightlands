@@ -10,9 +10,9 @@ export default {};
 </script>
 
 <style lang="less" scoped>
-@sizeScale: 25%;
-@scrollX: 320px * 0.25;
-@scrollY: 320px * 0.25;
+@sizeScale: 40%;
+@scrollX: 320px * 0.4;
+@scrollY: 320px * 0.4;
 @duration: 40s;
 
 .layer() {
