@@ -1,5 +1,5 @@
 <template>
-  <user-dialog :compact="true" @close="$emit('close')">
+  <user-dialog :compact="true" @close="$close">
     <template v-slot:content>
       <div class="flex flex-center flex-column flex-space-between">
         <div

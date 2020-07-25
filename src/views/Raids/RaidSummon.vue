@@ -1,10 +1,10 @@
 <template>
   <div class="screen-content flex-start relative">
+    <div class="screen-background"></div>
     <div v-bar>
       <div>
-        <div class="screen-background"></div>
         <boss-view v-if="raid" :raidTemplateId="raid"></boss-view>
-        <div class="width-100 flex flex-space-evenly">
+        <div class="width-100 flex flex-space-evenly margin-bottom-1">
           <span class="font-size-25 font-weight-900">{{$t("unit-lvl", { lvl: level })}}</span>
           <IconWithValue
             iconClass="icon-health"
@@ -18,7 +18,7 @@
         <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
         <div class="margin-1">
           <div class="flex flex-space-evenly width-100">
-            <custom-button type="grey" class="raid-mid-btn" @click="showRewards=true">
+            <custom-button type="grey" class="raid-mid-btn" @click="showRewards">
               <icon-with-value
                 valueClass="font-size-20 btn-fix"
                 iconClass="icon-loot"
@@ -60,26 +60,6 @@
             </CustomButton>
           </PaymentStatus>
         </div>
-
-            <keep-alive>
-      <Rewards
-        v-if="showRewards"
-        :raidTemplateId="raid"
-        :isFreeRaid="isFreeRaid"
-        :currentDamage="0"
-        :dktFactor="dktFactor"
-        @close="showRewards=false"
-      ></Rewards>
-
-      <!-- <RaidInfo
-        v-if="showInfo"
-        :raidTemplateId="raid"
-        :stage="selectedStage"
-        :weakness="weakness"
-        :dktFactor="dktFactor"
-        @close="showInfo = false"
-      ></RaidInfo> -->
-    </keep-alive>
       </div>
     </div>
   </div>
@@ -150,7 +130,6 @@ export default {
       raidStatusRequest: null,
       fetchPayment: null,
       listener: undefined,
-      showRewards: false,
       raidStatus: {},
       currentTab: PayedRaid,
       tabs: [
@@ -222,9 +201,9 @@ export default {
     }
   },
   methods: {
-    // showRewards() {
-    //   ShowRewards(this.raid, this.isFreeRaid, 0, this.dktFactor);
-    // },
+    showRewards() {
+      ShowRewards(this.raid, this.isFreeRaid, 0, this.dktFactor);
+    },
     showInfo() {
       ShowRaidInfo(this.raid, this.isFreeRaid, this.weakness, this.dktFactor);
     },
@@ -247,18 +226,7 @@ export default {
       console.log(this.raidStatus);
     },
     async confirmSummon() {
-      let result = await ShowPrompt(
-        `Are you sure?`,
-        `Selected difficulty: ${UiConstants.stageNames[this.selectedStage]}`,
-        [
-          { type: "green", title: "Ok", response: true },
-          { type: "red", title: "Cancel", response: false }
-        ]
-      );
-
-      if (result === true) {
-        this.request = this.purchaseRequest(this.$game.summonRaid(this.raid));
-      }
+      this.request = this.purchaseRequest(this.$game.summonRaid(this.raid));
     }
   }
 };

@@ -4,34 +4,29 @@
     @click.self="handleClose"
     :class="{'mask': !hideMask}"
   >
-    <div class="content flex-no-wrap flex flex-column flex center" :class="[type, contentClass]">
-      <div
-        class="margin-top-3 flex flex-center font-size-25 font-weight-700 margin-bottom-2 font-outline"
-        :class="[titleClass, {compact:compact, 'title':compact}]"
-        v-if="title"
-      >
-        <span>{{$t(title)}}</span>
-      </div>
-
-      <div v-if="!hideCloseBtn" class="close-btn" @click="handleClose"></div>
-
-      <div v-if="disableScroll">
-        <slot name="content"></slot>
-      </div>
-
-      <div
-        v-bar="{
-          preventParentScroll: true,
+    <div class="width-95" v-bar="{
           scrollThrottle: 30
-      }"
-        v-else
-      >
-        <div class="scrollable-content">
-          <slot name="content"></slot>
+      }">
+      <div>
+        <div class="content flex-no-wrap flex-column flex center" :class="[type, contentClass]">
+          <div
+            class="margin-top-3 flex flex-center font-size-25 font-weight-700 margin-bottom-2 font-outline"
+            :class="[titleClass, {compact:compact, 'title':compact}]"
+            v-if="title"
+          >
+            <span>{{$t(title)}}</span>
+          </div>
+
+          <div v-if="!hideCloseBtn" class="close-btn" @click="handleClose"></div>
+
+          <div>
+            <slot name="content"></slot>
+          </div>
+
+          <div v-show="hasFooterSlot" class="flex flex-center footer">
+            <slot name="footer"></slot>
+          </div>
         </div>
-      </div>
-      <div class="flex flex-center footer">
-        <slot name="footer"></slot>
       </div>
     </div>
   </div>
@@ -60,6 +55,11 @@ export default {
         this.$emit("close");
       }
     }
+  },
+  computed: {
+    hasFooterSlot() {
+      return !!this.$slots["footer"];
+    }
   }
 };
 </script>
@@ -75,13 +75,12 @@ export default {
   right: 0;
   background-color: rgba(0, 0, 0, 0.555);
   z-index: 900;
+  overflow: hidden auto;
 }
 
 .content {
   position: relative;
   padding: 2rem 1.1rem 1rem 1.1rem;
-  width: 95%;
-  max-height: 100%;
 }
 
 .footer {
@@ -89,8 +88,8 @@ export default {
   margin-bottom: 1rem;
 }
 
-// .scrollable-content {
-//   max-height: 80vh;
-// }
+.scrollable-content {
+  // max-height: 90%;
+}
 </style>
 

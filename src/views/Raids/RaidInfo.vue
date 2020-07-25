@@ -1,5 +1,5 @@
 <template>
-  <UserDialog :title="$t(title)" @close="$close" type="panel-light" :disableScroll="true">
+  <UserDialog @close="$close">
     <template v-slot:content>
       <div>
         <div class="title font-size-18 margin-bottom-1 font-weight-700 rarity-mythical">
@@ -70,9 +70,6 @@ export default {
     },
     meta() {
       return RaidsMeta[this.raidTemplateId];
-    },
-    title() {
-      return this.meta.name;
     }
   }
 };
