@@ -1,5 +1,5 @@
 <template>
-  <UserDialog :title="$t(title)" @close="$emit('close')" type="panel-light" :disableScroll="true">
+  <UserDialog :title="$t(title)" @close="$close" type="panel-light" :disableScroll="true">
     <template v-slot:content>
       <div>
         <div class="title font-size-18 margin-bottom-1 font-weight-700 rarity-mythical">
@@ -53,7 +53,7 @@ import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  props: ["raidTemplateId", "stage", "weakness", "dktFactor"],
+  props: ["raidTemplateId", "isFreeRaid", "weakness", "dktFactor"],
   components: { UserDialog, IconWithValue },
   data: () => ({
     untilNextWeakness: new Timer(true)

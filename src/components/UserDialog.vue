@@ -81,6 +81,7 @@ export default {
   position: relative;
   padding: 2rem 1.1rem 1rem 1.1rem;
   width: 95%;
+  max-height: 100%;
 }
 
 .footer {
@@ -88,8 +89,8 @@ export default {
   margin-bottom: 1rem;
 }
 
-.scrollable-content {
-  max-height: 80vh;
-}
+// .scrollable-content {
+//   max-height: 80vh;
+// }
 </style>
 

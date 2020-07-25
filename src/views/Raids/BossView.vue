@@ -3,9 +3,9 @@
     <div class="relative boss-image height-100 width-100" :style="zoneBackground">
       <div ref="image" class="relative raid-boss-image" :style="enemyImage"></div>
 
-      <div
-        class="font-size-30 relative enemy-title-font raid-summon-title font-outline font-weight-700"
-      >{{$t(name)}}</div>
+      <Title
+        titleClass="font-size-30 relative font-weight-700 enemy-title-font raid-summon-title font-outline "
+      >{{$t(name)}}</Title>
       <div
         v-if="timer"
         class="font-size-20 relative enemy-title-font raid-summon-title font-outline font-weight-700"
@@ -37,10 +37,11 @@ import RaidsMeta from "@/raids_meta";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Timer from "@/timer.js";
 import Campaign from "@/campaign_database";
+import Title from "@/components/Title.vue";
 
 export default {
   props: ["raidTemplateId", "progress", "timeLeft", "defeat"],
-  components: { ProgressBar },
+  components: { ProgressBar, Title },
   data: () => ({
     thresholds: UiConstants.progressThresholds,
     timer: null

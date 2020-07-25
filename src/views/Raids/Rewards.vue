@@ -33,7 +33,7 @@
               ></loot>
             </div>
 
-            <div class="flex flex-center compact width-100 font-size-18 margin-top-1 margin-bottom-1">{{$t("raid-possible-loot")}}</div>
+            <!-- <div class="flex flex-center compact width-100 font-size-18 margin-top-1 margin-bottom-1">{{$t("raid-possible-loot")}}</div>
 
             <div class="flex flex-center reward-loot">
               <loot
@@ -43,7 +43,7 @@
                 :gacha="true"
                 @hint="showHint"
               ></loot>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -63,37 +63,38 @@ const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "hideButtons");
 
 export default {
   components: { UserDialog, Loot, IconWithValue },
-  props: ["raidTemplateId", "stage", "currentDamage", "dktFactor"],
+  props: ["raidTemplateId", "isFreeRaid", "currentDamage", "dktFactor"],
   computed: {
     meta() {
       return RaidsMeta[this.raidTemplateId];
     },
-    stageData() {
-      return this.meta.stages[this.stage];
+    data() {
+      console.log(this.meta.data)
+      return this.isFreeRaid ? this.meta.soloData : this.meta.data;
     },
     loot() {
-      return this.stageData.loot;
+      return this.isFreeRaid ? this.data.freeLoot : this.data.paidLoot;
     }
   },
   methods: {
     getMinDkt(threshold) {
       return (
         Math.floor(
-          this.stageData.minDkt * threshold.dktReward * this.dktFactor
-        ) / 100
+          this.data.minDkt * threshold.dktReward * this.dktFactor * 10000
+        ) / 10000
       );
     },
     getMaxDkt(threshold) {
       return (
         Math.floor(
-          this.stageData.maxDkt * threshold.dktReward * this.dktFactor
-        ) / 100
+          this.data.maxDkt * threshold.dktReward * this.dktFactor * 10000
+        ) / 10000
       );
     },
     getDamage(threshold) {
       return Math.floor(
-        (this.stageData.health * threshold.relativeThreshold) /
-          this.stageData.maxSlots
+        (this.data.health * threshold.relativeThreshold) /
+          this.data.maxSlots
       );
     },
     tierUnlocked(threshold) {
@@ -125,7 +126,7 @@ export default {
         return;
       }
 
-      let action = await Hint(item, !item.equipped, item.equipped, true);
+      await Hint(item, !item.equipped, item.equipped, true);
     }
   }
 };

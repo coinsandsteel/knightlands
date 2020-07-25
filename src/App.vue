@@ -502,7 +502,7 @@ html {
   font-family: "Brandon", sans-serif;
   font-size: 8px;
   line-height: 1.2;
-  box-sizing: border-box;
+  box-sizing: content-box;
 
   .mobile({font-size: 7px;});
   .tablet({font-size: 8px;});

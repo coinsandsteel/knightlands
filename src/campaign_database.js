@@ -15,7 +15,7 @@ export default {
         return `/images/enemies/${(ZonesMeta[zoneId] || {}).questsId[questIndex].image}.png`;
     },
     getRaidImage(raid) {
-        return `/images/enemies/${(RaidsMeta[raid] || {}).icon}.png`;
+        return `/images/raids/${(RaidsMeta[raid] || {}).icon}.png`;
     },
     getRaidBackground(raid) {
         return `/images/raids/${(RaidsMeta[raid] || {}).zoneImage}.jpg`;

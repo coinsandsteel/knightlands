@@ -949,17 +949,15 @@ class Game {
         })).response;
     }
 
-    async fetchRaidSummonStatus(raid, stage) {
+    async fetchRaidSummonStatus(raid) {
         return await this._request(Operations.FetchRaidSummonStatus, {
-            raid,
-            stage
+            raid
         });
     }
 
-    async summonRaid(raid, stage) {
+    async summonRaid(raid) {
         return await this._request(Operations.SummonRaid, {
-            raid,
-            stage
+            raid
         });
     }
 

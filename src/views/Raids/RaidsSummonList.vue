@@ -1,7 +1,10 @@
 <template>
-  <div v-bar>
-    <div class="summon-list">
-      <raids-summon-list-element v-for="(raid, raidId) in raids" :key="raidId" :raid="raidId" />
+  <div>
+    <div class="screen-background"></div>
+    <div v-bar>
+      <div>
+        <raids-summon-list-element v-for="(raid, raidId) in raids" :key="raidId" :raid="raidId" />
+      </div>
     </div>
   </div>
 </template>
@@ -25,13 +28,5 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.summon-list {
-  * > {
-    margin: 1rem 1rem;
-  }
-}
-</style>
 
 
