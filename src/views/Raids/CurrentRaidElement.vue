@@ -1,10 +1,10 @@
 <template>
-  <div class="full-flex panel current-raid-cell">
-    <span class="current-raid-name max-width-90 center-transform title font-size-18 enemy-title-font">{{$t(name)}}</span>
+  <div class="full-flex color-panel-2 current-raid-cell">
+    <Title class="font-size-18 enemy-title-font">{{$t(name)}}</Title>
 
     <div class="flex full-flex width-100 height-100">
       <div class="flex-basis-50 relative">
-        <div class="current-raid-image pixelated" :style="raidImage"></div>
+        <div class="current-raid-image" :style="raidImage"></div>
 
         <progress-bar
           v-if="!raidData.finished"
@@ -21,8 +21,8 @@
       </div>
 
       <div class="flex-basis-50 flex flex-column flex-item-center flex-end" v-if="!finished">
-        <span class="font-size-18">
-          {{$t("time-left")}}:
+        <span class="font-size-18 span-whitespace">
+          {{$t("time-left")}}
           <span class="enemy-title-font">{{timer.value}}</span>
         </span>
         <custom-button class="margin-top-half" type="grey" @click="viewRaid">{{$t("continue")}}</custom-button>
@@ -39,6 +39,7 @@
 const RaidsMeta = require("@/raids_meta.json");
 import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
+import Title from "@/components/Title.vue";
 import Timer from "@/timer.js";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
@@ -50,7 +51,7 @@ const ShowReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
 
 export default {
   props: ["raidData"],
-  components: { CustomButton, ProgressBar },
+  components: { CustomButton, ProgressBar, Title },
   data: () => ({
     timer: new Timer(true),
     thresholds: UiConstants.progressThresholds
@@ -67,6 +68,9 @@ export default {
     meta() {
       return RaidsMeta[this.raidData.raidTemplateId] || {};
     },
+    data() {
+      return this.raidData.isFree ? this.meta.soloData : this.meta.data;
+    },
     name() {
       return this.meta.name;
     },
@@ -81,7 +85,7 @@ export default {
     progress() {
       return {
         current: this.raidData.bossState.health,
-        max: this.meta.stages[this.raidData.stage].health
+        max: this.data.health
       };
     }
   },
@@ -109,14 +113,8 @@ export default {
 @panelHeight: 12.875rem;
 
 .current-raid-cell {
-  height: @panelHeight;
+  // height: @panelHeight;
   position: relative;
-}
-
-.current-raid-name {
-  position: absolute;
-  top: 0;
-  z-index: 1;
 }
 
 .current-raid-image {

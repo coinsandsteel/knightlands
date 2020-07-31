@@ -1,7 +1,8 @@
 <template>
   <Promised :promise="request" :pendingDelay="200">
     <template v-slot:combined="{ isPending, isDelayOver }">
-      <div>
+      <div class="screen-content">
+        <div class="screen-background"></div>
         <loading-screen :loading="true" :opacity="0.4" v-show="isDelayOver && isPending"></loading-screen>
 
         <div v-bar v-if="raids.length > 0">
@@ -20,6 +21,10 @@
           <CustomButton type="yellow" @click="summonRaid">{{$t("raid-summon-now")}}</CustomButton>
         </div>
       </div>
+
+      <portal to="footer" v-if="isActive">
+        <CustomButton type="yellow" @click="summonRaid">{{$t("btn-summon")}}</CustomButton>
+      </portal>
     </template>
   </Promised>
 </template>
@@ -48,7 +53,6 @@ export default {
   activated() {
     // refresh raids list
     this.fetchRaids();
-    this.toggleFooter();
   },
   methods: {
     async fetchRaids() {
@@ -56,17 +60,12 @@ export default {
 
       try {
         this.raids = await this.request;
-      } catch {}
+      } catch (e) {
+        console.error(e);
+      }
     },
     summonRaid() {
       this.$router.push({ name: "raids-for-summon" });
-    },
-    toggleFooter() {
-      this.addFooter(CustomButton, {
-        cb: this.summonRaid.bind(this),
-        caption: "Summon",
-        type: "yellow"
-      });
     },
     handleRaidClaimed(raidIndex) {
       this.raids.splice(raidIndex, 1);
@@ -77,10 +76,6 @@ export default {
 
 <style lang="less" scoped>
 .current-raids-list {
-  > * {
-    margin: 1rem 1rem 1rem 1rem;
-  }
-
   min-height: 0;
 }
 </style>

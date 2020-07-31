@@ -8,9 +8,7 @@
         </span>
       </span>
       <span class="title-holder">
-        <span class="font-size-20 capitalize">
-        <slot></slot>
-      </span>
+        <span class="font-size-20 capitalize"><slot></slot></span>
       </span>
     </div>
   </router-link>
@@ -49,5 +47,9 @@ export default {
   background-color: rgba(21, 19, 44, 0.8);
   border-radius: 3px;
   min-width: 14rem;
+
+  * > {
+    white-space: normal !important;
+  }
 }
 </style>

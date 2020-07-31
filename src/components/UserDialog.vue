@@ -4,7 +4,7 @@
     @click.self="handleClose"
     :class="{'mask': !hideMask}"
   >
-    <div class="width-95" v-bar="{
+    <div class="width-100" v-bar="{
           scrollThrottle: 30
       }">
       <div>

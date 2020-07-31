@@ -4,27 +4,17 @@
 
     <div class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5">
       <MenuIconRow>
-        <MenuIcon icon="icon-daily-quests" to="daily-quests" :append="true">
-          {{$t("btn-daily-quests")}}
-        </MenuIcon>
+        <MenuIcon icon="icon-daily-quests" to="daily-quests" :append="true">{{$t("btn-daily-quests")}}</MenuIcon>
 
-        <MenuIcon icon="icon-rankings" to="rankings" :append="true">
-          {{$t("btn-rankings")}}
-        </MenuIcon>
+        <MenuIcon icon="icon-rankings" to="rankings" :append="true">{{$t("btn-rankings")}}</MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
-        <MenuIcon icon="icon-quests" to="quest" :append="true">
-          {{$t("btn-quests")}}
-        </MenuIcon>
+        <MenuIcon icon="icon-quests" to="quest" :append="true">{{$t("btn-quests")}}</MenuIcon>
 
-        <MenuIcon icon="icon-raids" to="raids" :append="true">
-          {{$t("btn-raids")}}
-        </MenuIcon>
+        <MenuIcon icon="icon-raids" to="raids" :append="true">{{$t("btn-raids")}}</MenuIcon>
 
-        <MenuIcon icon="icon-trials" to="trials" :append="true">
-          {{$t("btn-trials")}}
-        </MenuIcon>
+        <MenuIcon icon="icon-trials" to="trials" :append="true">{{$t("btn-trials")}}</MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
@@ -32,9 +22,7 @@
           {{$t("btn-goldExchange")}}
         </MenuIcon>
 
-        <MenuIcon icon="icon-tower" to="onyx-tower" :append="true">
-          {{$t("btn-tower")}}
-        </MenuIcon>
+        <MenuIcon icon="icon-tower" to="onyx-tower" :append="true">{{$t("btn-tower")}}</MenuIcon>
 
         <MenuIcon icon="icon-adventures" to="adventures" :append="true">
           {{$t("btn-adventures")}}

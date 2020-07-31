@@ -140,8 +140,6 @@ import ItemInfo from "@/components/ItemInfo.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
-import StripedPanel from "@/components/StripedPanel.vue";
-import StripedContent from "@/components/StripedContent.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import PriceTag from "@/components/PriceTag.vue";
@@ -161,8 +159,6 @@ export default {
   components: {
     ItemInfo,
     CustomButton,
-    StripedPanel,
-    StripedContent,
     CraftingIngridient,
     IconWithValue,
     PriceTag,

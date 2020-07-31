@@ -955,9 +955,10 @@ class Game {
         });
     }
 
-    async summonRaid(raid) {
+    async summonRaid(raid, free) {
         return await this._request(Operations.SummonRaid, {
-            raid
+            raid,
+            free
         });
     }
 

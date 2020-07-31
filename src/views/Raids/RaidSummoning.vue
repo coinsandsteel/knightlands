@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection.vue";
-import RaidsSummonListElement from "./RaidsSummonListElement.vue";
 
 export default {
   name: "raid-summoning"

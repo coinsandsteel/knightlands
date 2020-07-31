@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     async _handlePaymentComplete(data) {
-      if (data.iap != this.iap) {
+      if (data.iap != this._internalIap) {
         return;
       }
 
@@ -54,7 +54,7 @@ export default {
     },
     async purchase(signature, price, iap, paymentId, nonce, timestamp) {
       await this.fetchPaymentStatus(iap);
-      this.iap = iap;
+      this._internalIap = iap;
       try {
         console.log("purchase....");
         await this.$game.purchaseIAP(

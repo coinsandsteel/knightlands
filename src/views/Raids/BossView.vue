@@ -1,5 +1,6 @@
 <template>
   <div class="pixelated relative flex flex-column boss-view flex-center flex-no-wrap">
+    <div class="screen-background"></div>
     <div class="relative boss-image height-100 width-100" :style="zoneBackground">
       <div ref="image" class="relative raid-boss-image" :style="enemyImage"></div>
 

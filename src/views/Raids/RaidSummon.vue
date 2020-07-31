@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content flex-start relative">
     <div class="screen-background"></div>
+    <AnimatedBackgroundUnits></AnimatedBackgroundUnits>
     <div v-bar>
       <div>
         <boss-view v-if="raid" :raidTemplateId="raid"></boss-view>
@@ -69,6 +70,7 @@
 import AppSection from "@/AppSection.vue";
 import RaidsMeta from "@/raids_meta";
 import UiConstants from "@/ui_constants";
+import AnimatedBackgroundUnits from "@/components/AnimatedBackgroundUnits.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
 import PriceTag from "@/components/PriceTag.vue";
@@ -106,12 +108,13 @@ export default {
     PaymentStatus,
     IconWithValue,
     Tabs,
-    Rewards
+    AnimatedBackgroundUnits
   },
   created() {
     this.title = "Summon Raid";
     this.listener = this.fetchSummonStatus.bind(this);
     this.$game.on(Events.RaidSummonStatus, this.listener);
+    this.$options.paymentEvents = [Events.RaidSummonStatus];
     this._fetchSummonStatus = throttle(this.fetchSummonStatus.bind(this), 500, {
       leading: false
     });
@@ -119,11 +122,9 @@ export default {
   destroyed() {
     this.$game.off(Events.RaidSummonStatus, this.listener);
   },
-  mounted() {
-    this._fetchSummonStatus();
-  },
   activated() {
     this._fetchSummonStatus();
+    this.fetchPaymentStatus();
   },
   data() {
     return {
@@ -144,6 +145,7 @@ export default {
   watch: {
     raid() {
       this._fetchSummonStatus();
+      this.fetchPaymentStatus();
     }
   },
   computed: {
@@ -223,7 +225,6 @@ export default {
     },
     async fetchSummonStatus() {
       this.raidStatus = await this.$game.fetchRaidSummonStatus(this.raid);
-      console.log(this.raidStatus);
     },
     async confirmSummon() {
       this.request = this.purchaseRequest(this.$game.summonRaid(this.raid));
