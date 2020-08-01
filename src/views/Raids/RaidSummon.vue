@@ -14,7 +14,7 @@
             @previous="goToPrevious"
           >
             <div class="height-100 flex flex-items-end">
-              <div class="width-100 flex flex-space-evenly overlay-color">
+              <div class="width-100 flex flex-space-evenly overlay-color padding-1">
                 <span class="font-size-25 font-weight-900">{{$t("unit-lvl", { lvl: raidLevel })}}</span>
                 <IconWithValue
                   iconClass="icon-health"
