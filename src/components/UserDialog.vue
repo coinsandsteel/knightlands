@@ -2,6 +2,7 @@
   <div
     class="flex mask-hidden flex-center width-100 height-100"
     @click.self="handleClose"
+    v-on="$listeners"
     :class="{'mask': !hideMask}"
   >
     <div class="width-100" v-bar="{
@@ -51,6 +52,8 @@ export default {
     handleClose() {
       if (this.$close) {
         this.$close();
+      } else if (this.$parent.$close) {
+        this.$parent.$close();
       } else {
         this.$emit("close");
       }

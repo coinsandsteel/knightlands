@@ -9853,6 +9853,11 @@ vue2-collapse@^1.0.15:
   resolved "https://registry.yarnpkg.com/vue2-collapse/-/vue2-collapse-1.0.15.tgz#d80c242f7ba2f5c70515e00dfcfc298f5137cbea"
   integrity sha512-XLzUxkYKVZqmHRSdirgqXyUYeytsAKNJSjP1dLcVtEIhgP4xUHSbzU7ycuQm/egRgjMCsDzILv5wr0uhS9cXvQ==
 
+vue2-touch-events@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/vue2-touch-events/-/vue2-touch-events-2.2.1.tgz#fe29846a3dfc44e166f198077fa8edc898465242"
+  integrity sha512-tdAWuPhFWm2C4nuTRYDb1LtP2288LVDUXgGDAtQgYcMgF9K/Igns0r61NYgPHrRxN548U4wUdYgIDy4+XCxu2w==
+
 vue@^2.5.17, vue@^2.6.10, vue@^2.6.8:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"

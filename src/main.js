@@ -20,6 +20,9 @@ import VueVirtualScroller from "vue-virtual-scroller";
 import RecipeScheme from "@/views/Crafting/RecipeBook/RecipeScheme.vue";
 Vue.component("recipe-scheme", RecipeScheme);
 
+import Vue2TouchEvents from "vue2-touch-events";
+
+Vue.use(Vue2TouchEvents);
 Vue.use(VueVirtualScroller);
 Vue.use(PortalVue);
 Vue.use(vuexI18n.plugin, store);

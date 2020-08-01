@@ -1,203 +1,165 @@
 <template>
-  <Promised class="flex flex-column flex-start relative" :promise="request" :pendingDelay="200">
+  <Promised class="screen-content" :promise="request" :pendingDelay="200">
     <template v-slot:combined="{ isPending, isDelayOver, data }">
-      <div>
-        <loading-screen :loading="true" v-show="isDelayOver && (isPending || !raidData)"></loading-screen>
+     <div>
+       <div class="screen-background"></div>
+       <loading-screen :loading="true" v-show="isDelayOver && (isPending || !raidData)"></loading-screen>
+        <div v-bar>
+        <div>
+          <template v-if="raidData">
+            <boss-view
+              class="margin-bottom-2"
+              ref="bossView"
+              :progress="raidProgress"
+              :raidTemplateId="raidData.raidTemplateId"
+              :timeLeft="timeLeft"
+            >
+              <DamageText
+                v-for="(damage) in playerDamages"
+                :key="damage.id"
+                :crit="damage.crit"
+              >{{damage.damage}}</DamageText>
 
-        <template v-if="raidData">
-          <boss-view
-            class="margin-bottom-2"
-            ref="bossView"
-            :progress="raidProgress"
-            :raidTemplateId="raidData.raidTemplateId"
-            :timeLeft="timeLeft"
-          >
-            <DamageText
-              v-for="(damage) in playerDamages"
-              :key="damage.id"
-              :crit="damage.crit"
-            >{{damage.damage}}</DamageText>
+              <DamageLog :log="lastDamages" v-if="showLog"></DamageLog>
+            </boss-view>
 
-            <DamageLog :log="lastDamages"></DamageLog>
-          </boss-view>
+            <!--COMBAT VIEW-->
+            <div v-if="participant">
+              <!-- <div classes="margin-top-3">
+                <div class="flex flex-column flex-center font-size-20 white-font font-outline">
+                  <span
+                    class="yellow-title white-space-wide margin-bottom-2"
+                  >{{$t("loot-tier", {tier: currentLootTier})}}</span>
+                </div>
 
-          <div class="flex flex-center font-size-20 margin-bottom-1">
-            <IconWithValue iconClass="icon-user">
-              <span class="font-size-20 white-space-wide">{{slots}}/{{maxSlots}}</span>
-            </IconWithValue>
-            <span>{{$t("slots-avaialble")}}</span>
-          </div>
+                <ProgressBar
+                  v-model="lootProgress.current"
+                  :maxValue="lootProgress.max"
+                  :compact="false"
+                  :hideMaxValue="lootProgress.current >= lootProgress.max"
+                ></ProgressBar>
+              </div> -->
 
-          <!--COMBAT VIEW-->
-          <striped-panel v-if="participant">
-            <div class="title font-size-20 font-weight-700 rarity-mythical">
-              <span class="white-space">{{$t("dkt-bonus")}}</span>
-              <span>x{{dktBonus}}</span>
+              
             </div>
 
-            <striped-content
-              classes="margin-top-3"
-              stripeHeight="8rem"
-              contentClasses="width-100 flex flex-center"
-            >
-              <div class="flex flex-column flex-center font-size-20 white-font font-outline">
-                <span
-                  class="yellow-title white-space-wide margin-bottom-2"
-                >{{$t("loot-tier", {tier: currentLootTier})}}</span>
-              </div>
-              <ProgressBar
-                v-model="lootProgress.current"
-                :maxValue="lootProgress.max"
-                :compact="false"
-                :hideMaxValue="lootProgress.current >= lootProgress.max"
-              ></ProgressBar>
-            </striped-content>
-
+            <!--RAID WON-->
             <div
-              class="flex flex-center width-100 margin-top-3 margin-bottom-3 flex-space-around full-flex"
+              contentClasses="flex-center"
+              v-else-if="raidData && raidData.finished && raidData.defeat"
             >
-              <custom-button type="grey" class="raid-mid-btn" @click="showChallenges = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-challenge"
-                >{{$t("challenges")}}</icon-with-value>
-              </custom-button>
-
-              <custom-button type="grey" class="raid-mid-btn" @click="showRewards = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-loot"
-                >{{$t("rewards")}}</icon-with-value>
-              </custom-button>
-
-              <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-info dark"
-                >{{$t("raid-info")}}</icon-with-value>
-              </custom-button>
-            </div>
-
-            <div class="flex flex-center flex-space-evenly">
-              <AttackButton :promise="request" :mini="true" @click="attack(1)">x1</AttackButton>
-              <AttackButton :promise="request" :mini="true" @click="attack(5)">x5</AttackButton>
-              <AttackButton :promise="request" :mini="true" @click="attack(10)">x10</AttackButton>
-              <AttackButton :promise="request" :mini="true" :locked="true" @click="attack(20)">x20</AttackButton>
-              <AttackButton :promise="request" :mini="true" :locked="true" @click="attack(50)">x50</AttackButton>
-            </div>
-          </striped-panel>
-
-          <!--RAID WON-->
-          <striped-panel
-            contentClasses="flex-center"
-            v-else-if="raidData && raidData.finished && raidData.defeat"
-          >
-            <striped-content
-              stripeHeight="5rem"
-              class="width-100 margin-top-2 margin-bottom-2"
-              contentClasses="width-100 flex flex-center"
-            >
-              <span
-                class="flex font-size-25 font-weight-700 flex-center width-100 flex-space-around full-flex"
-              >{{$t("raid-victory")}}</span>
-            </striped-content>
-
-            <custom-button class="raid-mid-btn" @click="claimReward">
-              <span>{{$t("claim-reward")}}</span>
-            </custom-button>
-          </striped-panel>
-
-          <!--RAID LOST-->
-          <striped-panel
-            contentClasses="flex-center"
-            v-else-if="raidData && raidData.finished && !raidData.defeat"
-          >
-            <striped-content
-              stripeHeight="5rem"
-              class="width-100 margin-top-2 margin-bottom-2"
-              contentClasses="width-100 flex flex-center"
-            >
-              <span
-                class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
-              >{{$t("raid-lose", {boss: bossName})}}</span>
-            </striped-content>
-          </striped-panel>
-
-          <!--NOT IN RAID YET-->
-          <striped-panel contentClasses="flex-center" v-else>
-            <div class="title font-size-20 font-weight-700 rarity-mythical">
-              <span class="white-space">{{$t("dkt-bonus")}}</span>
-              <span>x{{dktBonus}}</span>
-            </div>
-
-            <div
-              class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
-            >
-              <custom-button type="grey" class="raid-mid-btn" @click="showChallenges = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-challenge"
-                >{{$t("challenges")}}</icon-with-value>
-              </custom-button>
-
-              <custom-button type="grey" class="raid-mid-btn" @click="showRewards = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-loot"
-                >{{$t("rewards")}}</icon-with-value>
-              </custom-button>
-
-              <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-info dark"
-                >{{$t("raid-info")}}</icon-with-value>
-              </custom-button>
-            </div>
-
-            <PaymentStatus :request="statusRequest" @pay="continuePurchase">
-              <PromisedButton
-                :promise="purchasePromise"
-                width="16rem"
-                type="yellow"
-                @click="join"
+              <div
+                stripeHeight="5rem"
+                class="width-100 margin-top-2 margin-bottom-2"
+                contentClasses="width-100 flex flex-center"
               >
-                <span class="margin-right-half">{{$t("join")}}</span>
-                <PriceTag :dark="true" :iap="stageData.joinIap"></PriceTag>
-              </PromisedButton>
-            </PaymentStatus>
-          </striped-panel>
+                <span
+                  class="flex font-size-25 font-weight-700 flex-center width-100 flex-space-around full-flex"
+                >{{$t("raid-victory")}}</span>
+              </div>
 
-          <keep-alive>
-            <Rewards
-              v-if="showRewards"
-              :raidTemplateId="raidData.raidTemplateId"
-              :stage="raidData.stage"
-              :currentDamage="currentDamage"
-              :dktFactor="raidData.dktFactor"
-              @close="showRewards=false"
-            ></Rewards>
+              <custom-button class="raid-mid-btn" @click="claimReward">
+                <span>{{$t("claim-reward")}}</span>
+              </custom-button>
+            </div>
 
-            <Challenges
-              v-if="showChallenges"
-              :challenges="raidData.challenges"
-              :raidData="raidData"
-            ></Challenges>
+            <!--RAID LOST-->
+            <div
+              contentClasses="flex-center"
+              v-else-if="raidData && raidData.finished && !raidData.defeat"
+            >
+              <div
+                stripeHeight="5rem"
+                class="width-100 margin-top-2 margin-bottom-2"
+                contentClasses="width-100 flex flex-center"
+              >
+                <span
+                  class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
+                >{{$t("raid-lose", {boss: bossName})}}</span>
+              </div>
+            </div>
 
-            <RaidInfo
-              v-if="showInfo"
-              :raidTemplateId="raidData.raidTemplateId"
-              :stage="raidData.stage"
-              :weakness="raidData.weakness"
-              :dktFactor="raidData.dktFactor"
-              @close="showInfo = false"
-            ></RaidInfo>
-          </keep-alive>
-        </template>
+            <!--NOT IN RAID YET-->
+            <div contentClasses="flex-center" v-else>
+              <div class="title font-size-20 font-weight-700 rarity-mythical">
+                <span class="white-space">{{$t("dkt-bonus")}}</span>
+                <span>{{dktBonus}}</span>
+              </div>
+
+              <div
+                class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
+              >
+                <custom-button v-if="hasChallenges" type="grey" class="raid-mid-btn" @click="showChallenges = true">
+                  <icon-with-value
+                    valueClass="font-size-20 btn-fix"
+                    iconClass="icon-challenge"
+                  >{{$t("challenges")}}</icon-with-value>
+                </custom-button>
+
+                <custom-button type="grey" class="raid-mid-btn" @click="showRewards = true">
+                  <icon-with-value
+                    valueClass="font-size-20 btn-fix"
+                    iconClass="icon-loot"
+                  >{{$t("rewards")}}</icon-with-value>
+                </custom-button>
+
+                <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
+                  <icon-with-value
+                    valueClass="font-size-20 btn-fix"
+                    iconClass="icon-info dark"
+                  >{{$t("raid-info")}}</icon-with-value>
+                </custom-button>
+              </div>
+
+              <PaymentStatus :request="statusRequest" @pay="continuePurchase">
+                <PromisedButton
+                  :promise="purchasePromise"
+                  width="16rem"
+                  type="yellow"
+                  @click="join"
+                >
+                  <span class="margin-right-half">{{$t("join")}}</span>
+                  <PriceTag :dark="true" :iap="data.joinIap"></PriceTag>
+                </PromisedButton>
+              </PaymentStatus>
+            </div>
+
+            <keep-alive>
+              <Rewards
+                v-if="showRewards"
+                :raidTemplateId="raidData.raidTemplateId"
+                :isFreeRaid="raidData.isFree"
+                :currentDamage="currentDamage"
+                :dktFactor="raidData.dktFactor"
+                @close="showRewards = false"
+              ></Rewards>
+
+              <Challenges
+                v-if="showChallenges"
+                :challenges="raidData.challenges"
+                :raidData="raidData"
+              ></Challenges>
+
+              <RaidInfo
+                v-if="showInfo"
+                :raidTemplateId="raidData.raidTemplateId"
+                :isFreeRaid="raidData.isFree"
+                :weakness="raidData.weakness"
+                :dktFactor="raidData.dktFactor"
+                @close="showInfo = false"
+              ></RaidInfo>
+            </keep-alive>
+          </template>
+        </div>
       </div>
+     </div>
+
+      <portal to="footer" v-if="isActive">
+        <CopyButton :data="href" caption="btn-share"></CopyButton>
+      </portal>
     </template>
 
-    <template v-slot:rejected="error">
+    <template v-slot:rejected>
       <div class="full-flex flex flex-center">
         <p class="font-size-20 font-error">{{$t("unknown-error-msg")}}</p>
         <custom-button @click="getRaid">{{$t("try-again")}}</custom-button>
@@ -215,9 +177,6 @@ import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import RaidsMeta from "@/raids_meta";
 import BossView from "./BossView.vue";
-import StripedPanel from "@/components/StripedPanel.vue";
-import StripedContent from "@/components/StripedContent.vue";
-import DifficultySelector from "@/components/DifficultySelector.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import DamageLog from "./DamageLog.vue";
@@ -233,6 +192,10 @@ import PriceTag from "@/components/PriceTag.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
 import RaidInfo from "./RaidInfo.vue";
+
+const ShowRewards = CreateDialog(Rewards, "raidTemplateId", "isFreeRaid", "currentDamage", "dktFactor");
+const ShowRaidInfo = CreateDialog(RaidInfo, "raidTemplateId", "isFreeRaid", "weakness", "dktFactor");
+
 import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
 
@@ -248,7 +211,7 @@ const ShowResourceRefill = CreateDialog(
 
 const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
 
-const ShowReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
+const ShowClaimedReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
 
 export default {
   name: "raid",
@@ -257,14 +220,12 @@ export default {
     Promised,
     CustomButton,
     BossView,
-    StripedPanel,
-    StripedContent,
-    DifficultySelector,
     IconWithValue,
     Rewards,
     ProgressBar,
     DamageLog,
     DamageText,
+    CopyButton,
     Challenges,
     PaymentStatus,
     PromisedButton,
@@ -303,11 +264,6 @@ export default {
   async activated() {
     await this.getRaid();
 
-    this.addFooter(CopyButton, {
-      caption: "btn-share",
-      data: window.location.href
-    });
-
     if (!this.participant) {
       this.fetchPaymentStatus();
     }
@@ -324,11 +280,18 @@ export default {
     }
   },
   computed: {
+    hasChallenges() {
+      // return Object.keys(this.raidData.challenges).length > 0;
+      return false;
+    },
+    href() {
+      return window.location.href;
+    },
     slots() {
       return this.raidData.busySlots;
     },
     maxSlots() {
-      return this.meta.stages[this.raidData.stage].maxSlots;
+      return this.data.maxSlots;
     },
     meta() {
       if (!this.raidData) {
@@ -336,8 +299,8 @@ export default {
       }
       return RaidsMeta[this.raidData.raidTemplateId] || {};
     },
-    stageData() {
-      return this.meta.stages[this.raidData.stage];
+    data() {
+      return this.raidData.isFree ? this.meta.soloData : this.meta.data;
     },
     participant() {
       if (!this.raidData) {
@@ -360,22 +323,20 @@ export default {
     bossName() {
       return this.$t(this.meta.name);
     },
+    loot() {
+      return this.raidData.isFree ? this.data.freeLoot : this.data.paidLoot;
+    },
     currentLootTier() {
-      let raidStage = this.meta.stages[this.raidData.stage];
+      let data = this.data;
       let i = 0;
-      const length = raidStage.loot.damageThresholds.length;
-
-      this.lootProgress.current = this.raidData.currentDamage;
+      const length = this.loot.damageThresholds.length;
 
       for (; i < length; ++i) {
-        let damageThreshold = raidStage.loot.damageThresholds[i];
-
+        let damageThreshold = this.loot.damageThresholds[i];
         let damageRequired =
-          (raidStage.health * damageThreshold.relativeThreshold) /
-          raidStage.maxSlots;
+          (data.health * damageThreshold.relativeThreshold) / data.maxSlots;
 
         if (damageRequired > this.raidData.currentDamage) {
-          this.lootProgress.max = Math.floor(damageRequired);
           break;
         }
       }
@@ -384,6 +345,22 @@ export default {
     }
   },
   methods: {
+    // showRewards() {
+    //   this.lootProgress.current = this.raidData.currentDamage;
+
+    //   let i = 0;
+    //   const length = this.loot.damageThresholds.length;
+    //   let damageRequired = 0;
+
+    //   for (; i < length; ++i) {
+    //     if (damageRequired > this.raidData.currentDamage) {
+    //       this.lootProgress.max = Math.floor(damageRequired);
+    //       break;
+    //     }
+    //   }
+
+    //   ShowRewards(this.raidData.raidTemplateId, this.raidData.isFree, this.currentDamage, this.dktFactor);
+    // },
     fetchPaymentStatus() {
       this.statusRequest = this.$game.fetchRaidJoinStatus(this.raid);
     },
@@ -396,7 +373,7 @@ export default {
     },
     async claimReward() {
       let rewards = await this.$game.claimRaidLoot(this.raid);
-      await ShowReward(rewards.response, this.raidData.raidTemplateId);
+      await ShowClaimedReward(rewards.response, this.raidData.raidTemplateId);
       this.handleBackButton();
     },
     subscribeToRaid() {
@@ -429,7 +406,7 @@ export default {
       try {
         this.raidData = await this.request;
         this.raidProgress.current = this.raidData.bossState.health;
-        this.raidProgress.max = this.stageData.health;
+        this.raidProgress.max = this.data.health;
         this.lastDamages = this.raidData.damageLog;
 
         // if raid is not finished - try to listen

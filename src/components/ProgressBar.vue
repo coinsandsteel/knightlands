@@ -67,8 +67,8 @@ export default {
     valueClass: { default: "" },
     iconClass: { type: String },
     hideMaxValue: { type: Boolean },
-    value: { type: Number, default: 0 },
-    value2: { type: Number, default: 0 },
+    value: { type: [Number, String], default: 0 },
+    value2: { type: [Number, String], default: 0 },
     timer: { type: Object },
     valuePosition: { type: String, default: Inside },
     plusButton: { type: String }, // possible values are grey, green, empty

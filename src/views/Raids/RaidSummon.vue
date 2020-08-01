@@ -4,19 +4,28 @@
     <AnimatedBackgroundUnits></AnimatedBackgroundUnits>
     <div v-bar>
       <div>
-        <boss-view v-if="raid" :raidTemplateId="raid"></boss-view>
+        <boss-view
+          v-if="raid"
+          :raidTemplateId="raid"
+          :navigation="true"
+          @next="goToNext"
+          @previous="goToPrevious"
+        ></boss-view>
+
         <div class="width-100 flex flex-space-evenly margin-bottom-1">
           <span class="font-size-25 font-weight-900">{{$t("unit-lvl", { lvl: level })}}</span>
           <IconWithValue
             iconClass="icon-health"
             valueClass="font-size-25 font-weight-900"
-          >{{health}}</IconWithValue>
+          >{{raidMaxHealth}}</IconWithValue>
           <IconWithValue
             iconClass="icon-damage"
             valueClass="font-size-25 font-weight-900"
-          >{{damage}}</IconWithValue>
+          >{{raidAttack}}</IconWithValue>
         </div>
+
         <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+
         <div class="margin-1">
           <div class="flex flex-space-evenly width-100">
             <custom-button type="grey" class="raid-mid-btn" @click="showRewards">
@@ -35,7 +44,6 @@
           </div>
 
           <div class="margin-top-3" v-if="$game.load">
-            <!-- <span class="font-size-20 title margin-bottom">{{$t("raid-essences")}}</span> -->
             <div class="flex flex-center margin-top-1">
               <crafting-ingridient
                 v-for="essence in requiredEssences"
@@ -46,19 +54,29 @@
           </div>
 
           <div class="margin-top-2 flex flex-column flex-center" v-if="isFreeRaid">
+            <span
+              v-if="!levelRequirementMet"
+              class="font-error font-size-18"
+            >{{$t("not-enough-level")}}</span>
             <CustomButton type="yellow" @click="confirmSummon">{{$t("btn-summon")}}</CustomButton>
           </div>
 
           <PaymentStatus
             v-else
-            class="margin-top-2 flex flex-column flex-center"
+            class="margin-top-2"
             :request="fetchPayment"
             @pay="continuePurchase"
           >
-            <CustomButton :disabled="!canSummon" type="yellow" @click="confirmSummon">
-              <span>{{$t("btn-summon")}}</span>
-              <price-tag :iap="iap" :dark="true"></price-tag>
-            </CustomButton>
+            <div class="flex flex-column flex-center">
+              <span
+                v-if="!levelRequirementMet"
+                class="font-error font-size-18"
+              >{{$t("not-enough-level")}}</span>
+              <CustomButton :disabled="!canSummon" type="yellow" @click="confirmSummon">
+                <span>{{$t("btn-summon")}}</span>
+                <price-tag :iap="iap" :dark="true"></price-tag>
+              </CustomButton>
+            </div>
           </PaymentStatus>
         </div>
       </div>
@@ -67,9 +85,8 @@
 </template>
 
 <script>
-import AppSection from "@/AppSection.vue";
 import RaidsMeta from "@/raids_meta";
-import UiConstants from "@/ui_constants";
+import AppSection from "@/AppSection.vue";
 import AnimatedBackgroundUnits from "@/components/AnimatedBackgroundUnits.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
@@ -83,12 +100,25 @@ import RaidInfo from "./RaidInfo.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import throttle from "lodash.throttle";
+import RaidGetterMixin from "./RaidGetterMixin.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 
 const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
-const ShowRewards = CreateDialog(Rewards, "raidTemplateId", "isFreeRaid", "currentDamage", "dktFactor");
-const ShowRaidInfo = CreateDialog(RaidInfo, "raidTemplateId", "isFreeRaid", "weakness", "dktFactor");
+const ShowRewards = CreateDialog(
+  Rewards,
+  "raidTemplateId",
+  "isFreeRaid",
+  "currentDamage",
+  "dktFactor"
+);
+const ShowRaidInfo = CreateDialog(
+  RaidInfo,
+  "raidTemplateId",
+  "isFreeRaid",
+  "weakness",
+  "dktFactor"
+);
 
 import Tabs from "@/components/Tabs.vue";
 const FreeRaid = "free_raid";
@@ -96,7 +126,7 @@ const PayedRaid = "paid_raid";
 
 export default {
   name: "raid-summon",
-  mixins: [AppSection, PaymentHandler],
+  mixins: [AppSection, PaymentHandler, RaidGetterMixin],
   props: {
     raid: [String, Number]
   },
@@ -155,54 +185,34 @@ export default {
     dktFactor() {
       return this.raidStatus.dktFactor;
     },
-    health() {
-      return this.data.health;
-    },
-    damage() {
-      return this.data.damage;
-    },
-    level() {
-      return this.meta.level;
-    },
-    meta() {
-      return RaidsMeta[this.raid];
-    },
     isFreeRaid() {
       return this.currentTab == FreeRaid;
     },
-    data() {
-      return this.isFreeRaid ? this.meta.soloData : this.meta.data;
-    },
-    name() {
-      return (this.meta || {}).name;
-    },
     iap() {
-      return this.data.iap;
-    },
-    enemyImage() {
-      if (!this.meta) return "";
-      return `background-image: url("${UiConstants.enemyImage(
-        this.meta.icon
-      )}");`;
-    },
-    requiredEssences() {
-      if (!this.data) {
-        return [];
-      }
-
-      return this.$game.crafting.getRecipeIngridients(this.data.summonRecipe);
-    },
-    canSummon() {
-      if (!this.data) {
-        return false;
-      }
-
-      return this.$game.crafting.hasEnoughResourcesForRecipe(
-        this.data.summonRecipe
-      );
+      return this.raidData.iap;
     }
   },
   methods: {
+    goToNext() {
+      let newRaidId = this.raid + 1;
+      if (RaidsMeta.max < newRaidId) {
+        newRaidId = RaidsMeta.min;
+      }
+      this.$router.replace({
+        name: "summon-raid",
+        params: { raid: newRaidId }
+      });
+    },
+    goToPrevious() {
+      let newRaidId = this.raid - 1;
+      if (RaidsMeta.min > newRaidId) {
+        newRaidId = RaidsMeta.max;
+      }
+      this.$router.replace({
+        name: "summon-raid",
+        params: { raid: newRaidId }
+      });
+    },
     showRewards() {
       ShowRewards(this.raid, this.isFreeRaid, 0, this.dktFactor);
     },

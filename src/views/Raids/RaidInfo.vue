@@ -1,5 +1,5 @@
 <template>
-  <UserDialog @close="$close">
+  <UserDialog v-on="$listeners">
     <template v-slot:content>
       <div>
         <div class="title font-size-18 margin-bottom-1 font-weight-700 rarity-mythical">

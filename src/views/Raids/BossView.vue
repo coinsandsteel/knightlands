@@ -1,20 +1,31 @@
 <template>
-  <div class="pixelated relative flex flex-column boss-view flex-center flex-no-wrap">
-    <div class="screen-background"></div>
-    <div class="relative boss-image height-100 width-100" :style="zoneBackground">
-      <div ref="image" class="relative raid-boss-image" :style="enemyImage"></div>
+  <div class="relative flex flex-column boss-view flex-center flex-no-wrap">
+    <div class="boss-image absolute-stretch" :style="zoneBackground"></div>
 
-      <Title
-        titleClass="font-size-30 relative font-weight-700 enemy-title-font raid-summon-title font-outline "
-      >{{$t(name)}}</Title>
-      <div
-        v-if="timer"
-        class="font-size-20 relative enemy-title-font raid-summon-title font-outline font-weight-700"
-      >{{timer.value}}</div>
+    <Title
+      class="flex-1"
+      titleClass="font-size-30 relative font-weight-700 enemy-title-font raid-summon-title font-outline "
+    >{{$t(name)}}</Title>
 
-      <div class="inner-content">
-        <slot></slot>
-      </div>
+    <div
+      ref="image"
+      class="flex flex-items-end flex-center relative unit-image"
+      v-touch:swipe="swipeHandler"
+    >
+      <img :src="enemyImage" class="pointer-events-none" />
+
+      <div class="nav-arrow left" @click="emitPrevious"></div>
+      <div class="nav-arrow" @click="emitNext"></div>
+    </div>
+
+    
+    <div
+      v-if="timer"
+      class="font-size-20 relative enemy-title-font raid-summon-title font-outline font-weight-700"
+    >{{timer.value}}</div>
+
+    <div class="inner-content pointer-events-none">
+      <slot></slot>
     </div>
 
     <progress-bar
@@ -22,7 +33,7 @@
       v-model="progress.current"
       :maxValue="progress.max"
       height="0.75rem"
-      width="80%"
+      width="90%"
       valuePosition="top"
       barType="yellow"
       valueClass="white-font font-outline font-size-20"
@@ -41,7 +52,7 @@ import Campaign from "@/campaign_database";
 import Title from "@/components/Title.vue";
 
 export default {
-  props: ["raidTemplateId", "progress", "timeLeft", "defeat"],
+  props: ["raidTemplateId", "progress", "timeLeft", "defeat", "navigation"],
   components: { ProgressBar, Title },
   data: () => ({
     thresholds: UiConstants.progressThresholds,
@@ -62,6 +73,19 @@ export default {
         this.timer.timeLeft = this.timeLeft;
         this.timer.update();
       }
+    },
+    emitNext() {
+      this.$emit("next");
+    },
+    emitPrevious() {
+      this.$emit("previous");
+    },
+    swipeHandler(direction) {
+      if (direction == "left") {
+        this.emitNext();
+      } else if (direction == "right") {
+        this.emitPrevious();
+      }
     }
   },
   computed: {
@@ -69,9 +93,7 @@ export default {
       return RaidsMeta[this.raidTemplateId] || {};
     },
     enemyImage() {
-      return UiConstants.backgroundImage(
-        Campaign.getRaidImage(this.raidTemplateId)
-      );
+      return Campaign.getRaidImage(this.raidTemplateId);
     },
     zoneBackground() {
       return UiConstants.backgroundImage(
@@ -100,6 +122,34 @@ export default {
 
   .quest-nav:last-child {
     padding-right: 1rem;
+  }
+}
+
+.unit-image {
+  height: 80%;
+  width: 100%;
+
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: 1fr 5rem 1fr;
+  grid-template-columns: 5rem 1fr 5rem;
+
+  > img {
+    max-width: 100%;
+    max-height: 100%;
+
+    grid-row: ~"1/4";
+    grid-column: ~"1/4";
+  }
+
+  > .nav-arrow {
+    grid-row: ~"2";
+    grid-column: ~"3";
+
+    &.left {
+      grid-column: ~"1";
+    }
   }
 }
 

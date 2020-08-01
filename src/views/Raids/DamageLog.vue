@@ -20,21 +20,15 @@
         </IconWithValue>
       </div>
     </div>
-
-    <custom-button v-show="!showLog" type="red" class="white-space-wide" @click="showLog=true">
-      <IconWithValue iconClass="icon-attack">{{$t("combat-log")}}</IconWithValue>
-    </custom-button>
   </div>
 </template>
 
 <script>
-import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["log"],
-  components: { CustomButton, IconWithValue },
-  data: () => ({ showLog: false }),
+  components: { IconWithValue },
   created() {
     this.lastLogId = -1;
     this.newLogs = [];

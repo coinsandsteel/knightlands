@@ -69,7 +69,7 @@ const ShowHint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
 
 export default {
   props: ["raidData", "data"],
-  components: { IconWithValue, RaidsMeta, Loot, LootHint, HighscoreLine },
+  components: { IconWithValue, Loot, HighscoreLine },
   computed: {
     raidStage() {
       return RaidsMeta[this.raidData.raidTemplateId].stages[

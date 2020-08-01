@@ -1,5 +1,5 @@
 <template>
-  <user-dialog :compact="true" @close="$close">
+  <user-dialog :compact="true" v-on="$listeners">
     <template v-slot:content>
       <div class="flex flex-center flex-column flex-space-between">
         <div
@@ -69,7 +69,6 @@ export default {
       return RaidsMeta[this.raidTemplateId];
     },
     data() {
-      console.log(this.meta.data)
       return this.isFreeRaid ? this.meta.soloData : this.meta.data;
     },
     loot() {
