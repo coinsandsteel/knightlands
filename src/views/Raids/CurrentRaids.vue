@@ -3,14 +3,14 @@
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-content">
         <div class="screen-background"></div>
-        <loading-screen :loading="true" :opacity="0.4" v-show="isDelayOver && isPending"></loading-screen>
+        <loading-screen :loading="isPending && isDelayOver"></loading-screen>
 
         <div v-bar v-if="raids.length > 0">
           <div class="flex flex-column current-raids-list">
             <current-raid-element
-              v-for="(raidData, index) in raids"
-              :key="raidData.id"
-              :raidData="raidData"
+              v-for="(raidState, index) in raids"
+              :key="raidState.id"
+              :raidState="raidState"
               @claimed="handleRaidClaimed(index)"
             ></current-raid-element>
           </div>

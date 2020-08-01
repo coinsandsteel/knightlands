@@ -2,7 +2,7 @@
   <Promised :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-content">
-        <LoadingScreen :loading="true" :opacity="0.7" v-show="isPending && isDelayOver"></LoadingScreen>
+        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
         <div v-bar>
           <div>
@@ -20,7 +20,11 @@
         </div>
 
         <portal to="footer" :slim="true" v-if="isActive">
-          <CustomButton type="green" @click="previewRewards" :disabled="finishedTournaments.length == 0">{{$t("claim-rewards")}}</CustomButton>
+          <CustomButton
+            type="green"
+            @click="previewRewards"
+            :disabled="finishedTournaments.length == 0"
+          >{{$t("claim-rewards")}}</CustomButton>
         </portal>
       </div>
     </template>

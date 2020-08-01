@@ -1,11 +1,8 @@
 <template>
   <Promised :pendingDelay="200" class="flex flex-column flex-item-center" :promise="request">
     <!-- Use the "pending" slot to display a loading message -->
-    <template v-slot:pending>
-      <loading-screen :loading="true" :opacity="0.4"></loading-screen>
-    </template>
-    <!-- The default scoped slot will be used as the result -->
-    <template v-slot="data">
+    <template v-slot:combined="{ isPending, isDelayOver }">
+      <loading-screen :loading="isDelayOver && isPending"></loading-screen>
       <div class="flex flex-column flex-item-center panel chests-content">
         <span class="flex flex-center font-size-25 margin-bottom-5 title">Select chest</span>
         <div class="flex flex-column relative width-100">

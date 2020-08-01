@@ -1,7 +1,7 @@
 <template>
   <Promised class="tab-content dummy-height flex flex-column full-flex" :promise="request">
     <template v-slot:combined="{isPending, isDelayOver}">
-      <loading-screen :loading="true" v-show="isDelayOver && isPending"></loading-screen>
+      <loading-screen :loading="isDelayOver && isPending"></loading-screen>
       <AnimatedBackground></AnimatedBackground>
       <div class="tab-content dummy-height flex flex-column full-flex">
         <!-- Equipment + quick stats overview -->

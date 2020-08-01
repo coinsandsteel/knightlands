@@ -1,6 +1,6 @@
 <template>
   <div class="full-flex color-panel-2 current-raid-cell">
-    <Title class="font-size-18 enemy-title-font">{{$t(name)}}</Title>
+    <Title class="font-size-18 enemy-title-font">{{$t(raidName)}}</Title>
 
     <div class="flex full-flex width-100 height-100">
       <div class="flex-basis-50 relative">
@@ -47,45 +47,40 @@ import ClaimedReward from "./ClaimedReward.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Campaign from "@/campaign_database";
 
+import RaidGetterMixin from "./RaidGetterMixin.vue";
+
 const ShowReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
 
 export default {
-  props: ["raidData"],
+  props: ["raidState"],
+  mixins: [RaidGetterMixin],
   components: { CustomButton, ProgressBar, Title },
   data: () => ({
     timer: new Timer(true),
-    thresholds: UiConstants.progressThresholds
+    thresholds: UiConstants.progressThresholds,
+    raid: -1
   }),
   mounted() {
     this.updateTimerValue();
+    this.raid = this.raidState.raidTemplateId;
   },
   watch: {
     raidData() {
       this.updateTimerValue();
+      this.raid = this.raidState.raidTemplateId;
     }
   },
   computed: {
-    meta() {
-      return RaidsMeta[this.raidData.raidTemplateId] || {};
-    },
-    data() {
-      return this.raidData.isFree ? this.meta.soloData : this.meta.data;
-    },
-    name() {
-      return this.meta.name;
-    },
     finished() {
-      return this.raidData.finished;
+      return this.raidState.finished;
     },
-    raidImage() {
-      return UiConstants.backgroundImage(
-        Campaign.getRaidImage(this.raidData.raidTemplateId)
-      );
+    isFreeRaid() {
+      return this.raidState.isFree;
     },
     progress() {
       return {
-        current: this.raidData.bossState.health,
-        max: this.data.health
+        current: this.raidState.bossState.health,
+        max: this.raidMaxHealth
       };
     }
   },
@@ -97,12 +92,12 @@ export default {
       });
     },
     updateTimerValue() {
-      this.timer.timeLeft = this.raidData.timeLeft;
+      this.timer.timeLeft = this.raidState.timeLeft;
       this.timer.update();
     },
     async claimReward() {
-      let rewards = await this.$game.claimRaidLoot(this.raidData.id);
-      await ShowReward(rewards.response, this.raidData.raidTemplateId);
+      let rewards = await this.$game.claimRaidLoot(this.raidState.id);
+      await ShowReward(rewards.response, this.raid);
       this.$emit("claimed");
     }
   }

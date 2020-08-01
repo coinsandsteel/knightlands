@@ -1,7 +1,7 @@
 <template>
   <Promised :promise="request" tag="div">
     <template v-slot:combined="{ isPending, isDelayOver, error, data }">
-      <LoadingScreen :opacity="1" :loading="isPending && isDelayOver"></LoadingScreen>
+      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
       <router-view v-if="data && !error"></router-view>
     </template>

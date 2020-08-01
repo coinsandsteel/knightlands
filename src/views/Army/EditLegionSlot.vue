@@ -1,6 +1,6 @@
 <template>
   <Promised :promised="request" class="screen-content">
-    <template v-slot:combined="{isPending, isDelayOver }">
+    <template v-slot:combined="{ isPending, isDelayOver }">
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
       <UnitView :unit="unit" :showEquipment="true" />
       <div class="flex-full relative dummy-height">
@@ -83,13 +83,13 @@ export default {
       }
 
       this.unit = unit;
-    
+
       const legion = this.$game.army.getLegion(this.legion);
       const exceptUnits = {};
       const exceptTemplates = {};
       for (const slotId in legion.units) {
         const unitId = legion.units[slotId];
-        
+
         if (!this.unit || unitId != this.unit.id) {
           exceptUnits[unitId] = true;
 

@@ -14,10 +14,8 @@
       </div>-->
 
       <Promised :promise="request">
-        <template v-slot:pending>
-          <loading-screen :loading="true" :opacity="0.4"></loading-screen>
-        </template>
-        <template v-slot="data">
+        <template v-slot:combined="{ isPending, isDelayOver }">
+          <loading-screen :loading="isPending && isDelayOver"></loading-screen>
           <div class="chests-content panel flex flex-center flex-center flex-column">
             <span class="font-size-25 margin-bottom-5 title">Select chest to open</span>
             <div class="flex flex-center flex-column relative width-100">

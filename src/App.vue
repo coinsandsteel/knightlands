@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <loading-screen :loading="loading"></loading-screen> -->
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar v-if="$game.authenticated" v-show="!hideTopBar"></status-bar>
       <div class="flex flex-items-start section-name font-size-25" v-show="title">
@@ -64,6 +63,8 @@
 
     <RaidStatusNotification />
 
+    <LoadingNotification />
+
     <dialogs-wrapper></dialogs-wrapper>
   </div>
 </template>
@@ -76,6 +77,7 @@ import { Promise } from "q";
 import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
+import LoadingNotification from "./components/Notifications/LoadingNotification.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 
 import { create } from "vue-modal-dialogs";
@@ -87,7 +89,7 @@ import SelectClass from "@/views/SelectClass/SelectClass.vue";
 const ShowSelectClass = create(SelectClass);
 
 export default {
-  components: { StatusBar, RaidStatusNotification, LoadingScreen },
+  components: { StatusBar, RaidStatusNotification, LoadingScreen, LoadingNotification },
   data() {
     return {
       showBackMenu: false,
@@ -145,7 +147,7 @@ export default {
       await ShowLevelUp();
     });
 
-    this.$router.beforeResolve((to, from, next)=>{
+    this.$router.beforeResolve((to, from, next) => {
       this.hideTopBar = to.matched.some(record => record.meta.noTopBar);
       next();
     });
@@ -312,7 +314,7 @@ export default {
 @sectionPaddingTop: 0.4rem;
 
 .section-name {
-  background-color: #112C47;
+  background-color: #112c47;
   width: 100%;
   margin: 0;
 
@@ -374,7 +376,7 @@ export default {
   align-items: center;
   background-color: @footerColor;
   padding-bottom: @footerBottomPadding;
-  
+
   & > * {
     position: relative;
   }

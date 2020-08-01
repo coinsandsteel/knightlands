@@ -6,10 +6,8 @@
 
     <div class="close-btn" @click="goBack"></div>
     <Promised :promise="request">
-      <template v-slot:pending>
-        <loading-screen :loading="true" :opacity="0.4"></loading-screen>
-      </template>
-      <template class="flex-full" v-slot="data">
+      <template class="flex-full" v-slot:combined="{ isPending }">
+        <loading-screen :loading="isPending"></loading-screen>
         <Flipper :flipKey="lootFlipKey">
           <h1
             class="chest-title font-weight-700"

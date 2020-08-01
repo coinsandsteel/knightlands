@@ -3,7 +3,7 @@
     <template v-slot:combined="{ isPending, isDelayOver, data }">
      <div>
        <div class="screen-background"></div>
-       <loading-screen :loading="true" v-show="isDelayOver && (isPending || !raidData)"></loading-screen>
+       <loading-screen :loading="isDelayOver && (isPending || !raidData)"></loading-screen>
         <div v-bar>
         <div>
           <template v-if="raidData">

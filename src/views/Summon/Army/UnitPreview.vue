@@ -1,7 +1,7 @@
 <template>
   <Promised class="height-100" :promise="waitForImage">
     <template v-slot:combined="{ isPending, isDelayOver }">
-      <loading-screen :loading="isPending && isDelayOver" :opacity="0.4"></loading-screen>
+      <loading-screen :loading="isPending && isDelayOver"></loading-screen>
       <div v-bar>
         <div class="dummy-height">
           <div class="height-100 flex flex-column flex-no-wrap">

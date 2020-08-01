@@ -1,87 +1,92 @@
 <template>
-  <div class="screen-content flex-start relative">
-    <div class="screen-background"></div>
-    <AnimatedBackgroundUnits></AnimatedBackgroundUnits>
-    <div v-bar>
-      <div>
-        <boss-view
-          v-if="raid"
-          :raidTemplateId="raid"
-          :navigation="true"
-          @next="goToNext"
-          @previous="goToPrevious"
-        ></boss-view>
-
-        <div class="width-100 flex flex-space-evenly margin-bottom-1">
-          <span class="font-size-25 font-weight-900">{{$t("unit-lvl", { lvl: level })}}</span>
-          <IconWithValue
-            iconClass="icon-health"
-            valueClass="font-size-25 font-weight-900"
-          >{{raidMaxHealth}}</IconWithValue>
-          <IconWithValue
-            iconClass="icon-damage"
-            valueClass="font-size-25 font-weight-900"
-          >{{raidAttack}}</IconWithValue>
-        </div>
-
-        <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-
-        <div class="margin-1">
-          <div class="flex flex-space-evenly width-100">
-            <custom-button type="grey" class="raid-mid-btn" @click="showRewards">
-              <icon-with-value
-                valueClass="font-size-20 btn-fix"
-                iconClass="icon-loot"
-              >{{$t("rewards")}}</icon-with-value>
-            </custom-button>
-
-            <custom-button type="grey" class="raid-mid-btn" @click="showInfo">
-              <icon-with-value
-                valueClass="font-size-20 btn-fix"
-                iconClass="icon-info dark"
-              >{{$t("raid-info")}}</icon-with-value>
-            </custom-button>
-          </div>
-
-          <div class="margin-top-3" v-if="$game.load">
-            <div class="flex flex-center margin-top-1">
-              <crafting-ingridient
-                v-for="essence in requiredEssences"
-                :key="essence.itemId"
-                :ingridient="essence"
-              />
-            </div>
-          </div>
-
-          <div class="margin-top-2 flex flex-column flex-center" v-if="isFreeRaid">
-            <span
-              v-if="!levelRequirementMet"
-              class="font-error font-size-18"
-            >{{$t("not-enough-level")}}</span>
-            <CustomButton type="yellow" @click="confirmSummon">{{$t("btn-summon")}}</CustomButton>
-          </div>
-
-          <PaymentStatus
-            v-else
-            class="margin-top-2"
-            :request="fetchPayment"
-            @pay="continuePurchase"
+  <Promised class="screen-content flex-start relative" :promise="raidStatusRequest">
+    <template v-slot:combined="{ isPending, isDelayOver, data }">
+      <loading-screen :loading="isPending"></loading-screen>
+      <div class="screen-background"></div>
+      <AnimatedBackgroundUnits></AnimatedBackgroundUnits>
+      <div v-bar v-if="data">
+        <div>
+          <boss-view
+            v-if="raid"
+            :raidTemplateId="raid"
+            :navigation="true"
+            @next="goToNext"
+            @previous="goToPrevious"
           >
-            <div class="flex flex-column flex-center">
+            <div class="height-100 flex flex-items-end">
+              <div class="width-100 flex flex-space-evenly overlay-color">
+                <span class="font-size-25 font-weight-900">{{$t("unit-lvl", { lvl: raidLevel })}}</span>
+                <IconWithValue
+                  iconClass="icon-health"
+                  valueClass="font-size-25 font-weight-900"
+                >{{raidMaxHealth}}</IconWithValue>
+                <IconWithValue
+                  iconClass="icon-damage"
+                  valueClass="font-size-25 font-weight-900"
+                >{{raidAttack}}</IconWithValue>
+              </div>
+            </div>
+          </boss-view>
+
+          <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+
+          <div class="margin-1">
+            <div class="flex flex-space-evenly width-100">
+              <custom-button type="grey" class="raid-mid-btn" @click="showRewards">
+                <icon-with-value
+                  valueClass="font-size-20 btn-fix"
+                  iconClass="icon-loot"
+                >{{$t("rewards")}}</icon-with-value>
+              </custom-button>
+
+              <custom-button type="grey" class="raid-mid-btn" @click="showInfo">
+                <icon-with-value
+                  valueClass="font-size-20 btn-fix"
+                  iconClass="icon-info dark"
+                >{{$t("raid-info")}}</icon-with-value>
+              </custom-button>
+            </div>
+
+            <div class="margin-top-3" v-if="$game.load">
+              <div class="flex flex-center margin-top-1">
+                <crafting-ingridient
+                  v-for="essence in requiredEssences"
+                  :key="essence.itemId"
+                  :ingridient="essence"
+                />
+              </div>
+            </div>
+
+            <div class="margin-top-2 flex flex-column flex-center" v-if="isFreeRaid">
               <span
                 v-if="!levelRequirementMet"
                 class="font-error font-size-18"
               >{{$t("not-enough-level")}}</span>
-              <CustomButton :disabled="!canSummon" type="yellow" @click="confirmSummon">
-                <span>{{$t("btn-summon")}}</span>
-                <price-tag :iap="iap" :dark="true"></price-tag>
-              </CustomButton>
+              <CustomButton type="yellow" @click="confirmSummon">{{$t("btn-summon")}}</CustomButton>
             </div>
-          </PaymentStatus>
+
+            <PaymentStatus
+              v-else
+              class="margin-top-2"
+              :request="fetchPayment"
+              @pay="continuePurchase"
+            >
+              <div class="flex flex-column flex-center">
+                <span
+                  v-if="!levelRequirementMet"
+                  class="font-error font-size-18"
+                >{{$t("not-enough-level")}}</span>
+                <CustomButton :disabled="!canSummon" type="yellow" @click="confirmSummon">
+                  <span>{{$t("btn-summon")}}</span>
+                  <price-tag :iap="iap" :dark="true"></price-tag>
+                </CustomButton>
+              </div>
+            </PaymentStatus>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </Promised>
 </template>
 
 <script>
@@ -101,6 +106,9 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import throttle from "lodash.throttle";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
+import LoadingScreen from "@/components/LoadingScreen.vue";
+
+import { Promised } from "vue-promised";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 
@@ -131,6 +139,8 @@ export default {
     raid: [String, Number]
   },
   components: {
+    LoadingScreen,
+    Promised,
     CraftingIngridient,
     CustomButton,
     PriceTag,
@@ -152,7 +162,7 @@ export default {
   destroyed() {
     this.$game.off(Events.RaidSummonStatus, this.listener);
   },
-  activated() {
+  mounted() {
     this._fetchSummonStatus();
     this.fetchPaymentStatus();
   },
@@ -194,7 +204,7 @@ export default {
   },
   methods: {
     goToNext() {
-      let newRaidId = this.raid + 1;
+      let newRaidId = this.raid * 1 + 1;
       if (RaidsMeta.max < newRaidId) {
         newRaidId = RaidsMeta.min;
       }
@@ -204,7 +214,7 @@ export default {
       });
     },
     goToPrevious() {
-      let newRaidId = this.raid - 1;
+      let newRaidId = this.raid * 1 - 1;
       if (RaidsMeta.min > newRaidId) {
         newRaidId = RaidsMeta.max;
       }
@@ -234,7 +244,8 @@ export default {
       this.fetchPayment = this.$game.fetchRaidSummonStatus(this.raid);
     },
     async fetchSummonStatus() {
-      this.raidStatus = await this.$game.fetchRaidSummonStatus(this.raid);
+      this.raidStatusRequest = this.$game.fetchRaidSummonStatus(this.raid);
+      this.raidStatus = await this.raidStatusRequest;
     },
     async confirmSummon() {
       this.request = this.purchaseRequest(this.$game.summonRaid(this.raid));

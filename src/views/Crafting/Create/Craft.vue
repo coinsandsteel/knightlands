@@ -1,8 +1,8 @@
 <template>
   <Promised :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver, data }">
+    <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="flex flex-column padding-1 flex-center">
-        <LoadingScreen :loading="true" :opacity="0.7" v-show="isPending && isDelayOver"></LoadingScreen>
+        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
         <StripedPanel class="craft width-100" contentClasses="height-100" v-if="recipeId">
           <ItemInfo :item="item" :quantity="itemsToCraft" class="width-100"></ItemInfo>
@@ -186,7 +186,7 @@ export default {
     },
     async handlePaymentComplete(iap, item) {
       if (item) {
-        console.log(item)
+        console.log(item);
         await ShowItemCreated(item.recipe.resultItem, item.amount);
         this.ingridientsKey++;
       }
@@ -204,7 +204,11 @@ export default {
       this.craft(CurrencyType.Fiat);
     },
     async craft(currency) {
-      this.request = this.$game.craftRecipe(this.recipeId, currency, this.itemsToCraft);
+      this.request = this.$game.craftRecipe(
+        this.recipeId,
+        currency,
+        this.itemsToCraft
+      );
 
       if (currency == CurrencyType.Fiat) {
         this.request = this.purchaseRequest(this.request);

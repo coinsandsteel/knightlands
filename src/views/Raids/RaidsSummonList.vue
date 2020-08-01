@@ -14,6 +14,10 @@ import AppSection from "@/AppSection.vue";
 import RaidsMeta from "@/raids_meta.json";
 import RaidsSummonListElement from "./RaidsSummonListElement.vue";
 
+const RaidListData = { ...RaidsMeta };
+delete RaidListData.min;
+delete RaidListData.max;
+
 export default {
   name: "raids-for-summon",
   mixins: [AppSection],
@@ -23,7 +27,7 @@ export default {
   },
   data() {
     return {
-      raids: RaidsMeta
+      raids: RaidListData
     };
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <Promised :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver, data }">
-      <LoadingScreen  :loading="isPending && isDelayOver"></LoadingScreen>
+    <template v-slot:combined="{ isPending, isDelayOver }">
+      <LoadingScreen  :loading="isPending && isDelayOver" />
 
       <div v-bar>
         <div class="flex flex-center">

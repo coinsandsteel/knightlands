@@ -1,10 +1,7 @@
 <template>
   <Promised :pendingDelay="200" :promise="request">
-    <template v-slot:pending>
-      <loading-screen :loading="true" :opacity="0.4"></loading-screen>
-    </template>
-
-    <template v-slot="data">
+    <template v-slot:combined="{ isPending, isDelayOver }">
+      <loading-screen :loading="isPending && isDelayOver"></loading-screen>
       <div
         class="flex margin-left-1 margin-right-1 min-height-30 flex-column panel flex-items-center"
       >

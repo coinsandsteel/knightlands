@@ -1,7 +1,7 @@
 <template>
   <Promised class="dummy-height flex width-100 height-100" :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver, data }">
-      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+    <template v-slot:combined="{ isPending, isDelayOver }">
+      <LoadingScreen :loading="isPending && isDelayOver" />
 
       <keep-alive>
         <div class="width-100" v-bar v-if="!selectedStage">

@@ -8,13 +8,17 @@ export default {
     raidAttack() {
       return this.raidData.attack;
     },
-    level() {
+    raidLevel() {
       return this.raidMeta.level;
     },
     raidMeta() {
       return RaidsMeta[this.raid];
     },
     raidData() {
+      if (!this.raidMeta) {
+        return {};
+      }
+
       return this.isFreeRaid ? this.raidMeta.soloData : this.raidMeta.data;
     },
     requiredEssences() {
@@ -27,7 +31,7 @@ export default {
       );
     },
     levelRequirementMet() {
-      return this.$game.character.level >= this.level;
+      return this.$game.character.level >= this.raidLevel;
     },
     canSummon() {
       if (!this.raidData) {
@@ -47,9 +51,7 @@ export default {
       return (this.raidMeta || {}).name;
     },
     raidImage() {
-      return UiConstants.backgroundImage(
-        Campaign.getRaidImage(this.raid)
-      );
+      return UiConstants.backgroundImage(Campaign.getRaidImage(this.raid));
     }
   }
 };

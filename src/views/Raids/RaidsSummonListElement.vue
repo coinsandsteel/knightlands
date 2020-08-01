@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-column flex-no-wrap raid-summon-element color-panel-2">
-    <Title titleClass="font-weight-700 enemy-title-font">{{$t(raidName)}}</Title>
+    <Title titleClass="font-weight-700 enemy-title-font">{{$t(raidName)}} {{$t("unit-lvl", { lvl: raidLevel })}}</Title>
     <div class="flex full-flex">
       <div class="flex-basis-50 boss-image" :style="raidImage">
         <!-- <div class="title font-size-20 enemy-title-font">{{$t(meta.name)}}</div> -->

@@ -1,7 +1,7 @@
 <template>
   <div class="padding-1 height-100">
     <Promised class="screen-content" :promise="request">
-      <template v-slot:combined="{ isPending, isDelayOver, data }">
+      <template v-slot:combined="{ isPending, isDelayOver }">
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
         <LootContainer

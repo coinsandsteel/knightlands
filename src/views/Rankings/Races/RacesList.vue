@@ -2,7 +2,7 @@
   <Promised :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-content">
-        <LoadingScreen :loading="true" :opacity="0.7" v-show="isPending && isDelayOver"></LoadingScreen>
+        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
         <div
           class="font-size-20 panel-input pdding-1 margin-2"
           v-if="cooldownTimer.timeLeft > 0"

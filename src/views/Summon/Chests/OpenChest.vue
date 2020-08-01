@@ -16,50 +16,55 @@
 
     <div class="close-btn" @click="handleBackButton"></div>
     <Promised :promise="request">
-      <template v-slot:pending>
-        <loading-screen :loading="true" :opacity="0.4"></loading-screen>
-      </template>
-      <template class="flex-full" v-slot="data">
-        <Flipper :flipKey="lootFlipKey">
-          <!-- <h1
+      <template class="flex-full" v-slot:combined="{ isDelayOver, isPending, error }">
+        <loading-screen :loading="isDelayOver && isPending"></loading-screen>
+
+        <template v-if="error">
+          <div class="full-flex flex flex-center">
+            <p class="font-size-20 font-error">Unexpected error.</p>
+            <custom-button @click="openGacha">Try again</custom-button>
+          </div>
+        </template>
+        <template v-else>
+          <Flipper :flipKey="lootFlipKey">
+            <!-- <h1
             class="chest-title font-weight-700"
             :class="[{'show': showLoot},`chest-${chest}`]"
-          >{{$t(chest)}}</h1>-->
+            >{{$t(chest)}}</h1>-->
 
-          <Flipped flipId="lootId" stagger="lootCard" :shouldFlip="isHidden()">
-            <div
-              id="loot-container"
-              class="flex flex-center gacha-loot"
-              :class="{'expanded': showLoot}"
-            >
-              <Flipped
-                stagger="lootCard"
-                :shouldFlip="isHidden()"
-                v-for="drop in loot"
-                :key="drop.item"
-                :flipId="`${drop.item}`"
-                inverseFlipId="lootId"
-                translate
+            <Flipped flipId="lootId" stagger="lootCard" :shouldFlip="isHidden()">
+              <div
+                id="loot-container"
+                class="flex flex-center gacha-loot"
+                :class="{'expanded': showLoot}"
               >
-                <loot :gacha="true" :item="drop.item" :quantity="drop.quantity" @hint="handleHint"></loot>
-              </Flipped>
-            </div>
-          </Flipped>
-        </Flipper>
+                <Flipped
+                  stagger="lootCard"
+                  :shouldFlip="isHidden()"
+                  v-for="drop in loot"
+                  :key="drop.item"
+                  :flipId="`${drop.item}`"
+                  inverseFlipId="lootId"
+                  translate
+                >
+                  <loot
+                    :gacha="true"
+                    :item="drop.item"
+                    :quantity="drop.quantity"
+                    @hint="handleHint"
+                  ></loot>
+                </Flipped>
+              </div>
+            </Flipped>
+          </Flipper>
 
-        <div @click="handleContinue" class="continueButton"></div>
+          <div @click="handleContinue" class="continueButton"></div>
 
-        <div class="gacha-continue pointer pointer-events-none" :class="{'show': showContinue}">
-          <!-- <span class="font-size-30 font-weight-700" v-if="hasMoreChests">{{$t("open_next")}}</span> -->
-          <span class="font-size-30 font-weight-700">{{$t("continue_from_gacha")}}</span>
-        </div>
-      </template>
-
-      <template v-slot:rejected="error">
-        <div class="full-flex flex flex-center">
-          <p class="font-size-20 font-error">Unexpected error.</p>
-          <custom-button @click="openGacha">Try again</custom-button>
-        </div>
+          <div class="gacha-continue pointer pointer-events-none" :class="{'show': showContinue}">
+            <!-- <span class="font-size-30 font-weight-700" v-if="hasMoreChests">{{$t("open_next")}}</span> -->
+            <span class="font-size-30 font-weight-700">{{$t("continue_from_gacha")}}</span>
+          </div>
+        </template>
       </template>
     </Promised>
   </div>
@@ -126,13 +131,12 @@ export default {
     startGacha() {
       if (this.items) {
         this.loot = this.items;
-        
+
         if (this.showContinue) {
           this.request = this.openNext();
         } else {
           this.request = this.startOpening();
         }
-
       } else if (this.$refs.animation.isReady()) {
         if (this.showContinue) {
           this.openNext();

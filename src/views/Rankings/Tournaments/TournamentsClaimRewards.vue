@@ -2,7 +2,7 @@
   <Promised :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-content">
-        <LoadingScreen :loading="true" :opacity="0.7" v-show="isPending && isDelayOver"></LoadingScreen>
+        <LoadingScreen :loading="isPending && isDelayOver" />
         <TournamentsRewardListElement
           v-for="t in localTournaments"
           :key="t._id"
