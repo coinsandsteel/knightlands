@@ -2,9 +2,10 @@
   <div id="app">
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar v-if="$game.authenticated" v-show="!hideTopBar"></status-bar>
-      <div class="flex flex-items-start section-name font-size-25" v-show="title">
-        <span class="relative section-title">{{$t(title)}}</span>
-        <div class="section-fill"></div>
+      <div class="flex flex-center section-name flex-no-wrap" v-show="title">
+        <div class="section-decor"></div>
+        <div class="section-title font-size-20">{{$t(title)}}</div>
+        <div class="section-decor right"></div>
       </div>
 
       <keep-alive exclude="gold-exchange">
@@ -89,7 +90,12 @@ import SelectClass from "@/views/SelectClass/SelectClass.vue";
 const ShowSelectClass = create(SelectClass);
 
 export default {
-  components: { StatusBar, RaidStatusNotification, LoadingScreen, LoadingNotification },
+  components: {
+    StatusBar,
+    RaidStatusNotification,
+    LoadingScreen,
+    LoadingNotification
+  },
   data() {
     return {
       showBackMenu: false,
@@ -314,30 +320,42 @@ export default {
 @sectionPaddingTop: 0.4rem;
 
 .section-name {
+  pointer-events: none;
   background-color: #112c47;
-  width: 100%;
+  width: 200%;
+  transform: translateX(-50%);
+  right: -50%;
+  position: relative;
   margin: 0;
 
-  & > .section-fill {
-    width: @sectionPaddingRight;
-    height: calc(100%);
-
-    background: url("./assets/ui/title_bg.png");
+  & > .section-decor {
+    background-image: url("./assets/ui/title_decor.png");
+    height: 100%;
+    width: 6rem;
     background-size: contain;
-    background-position: left;
+    background-position: center;
     background-repeat: no-repeat;
+
+    &.right {
+      background-image: url("./assets/ui/title_decor.png");
+      transform: scaleX(-1);
+    }
   }
 
   & > .section-title {
-    text-align: left;
-    pointer-events: none;
-
-    min-width: 20rem;
-    padding-left: 1.2rem;
-    color: #281326;
-    position: relative;
-    background-color: #798e9e;
+    text-transform: uppercase;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: rgb(134, 144, 157);
+    background-image: linear-gradient(
+      0deg,
+      rgba(134, 144, 157, 1) 0%,
+      rgba(245, 246, 247, 1) 100%
+    );
     font-weight: 900;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="height-100 width-100 relative absolute-stretch">
+  <div class="height-100 width-100 relative absolute-stretch pointer-events-none">
     <!-- <div class="layer1"></div> -->
     <div class="layer2"></div>
   </div>

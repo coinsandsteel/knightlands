@@ -1,5 +1,5 @@
 <template>
-  <div class="height-100 width-100 relative absolute-stretch">
+  <div class="height-100 width-100 relative absolute-stretch pointer-events-none">
     <div class="layer1"></div>
     <div class="layer2"></div>
   </div>
@@ -31,7 +31,7 @@
 .layer2 {
   .layer();
   background-image: url("../assets/ui/bg/Pattern2.png");
-  animation: scroll2 @duration/2 linear infinite;
+  animation: scroll2 @duration / 2 linear infinite;
 }
 
 @keyframes scroll1 {

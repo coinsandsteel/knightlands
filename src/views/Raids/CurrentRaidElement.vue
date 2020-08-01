@@ -1,10 +1,10 @@
 <template>
-  <div class="full-flex color-panel-2 current-raid-cell">
-    <Title class="font-size-18 enemy-title-font">{{$t(raidName)}}</Title>
+  <div class="color-panel-2 current-raid-cell flex flex-column">
+    <Title titleClass="font-weight-700 enemy-title-font">{{$t(raidName)}} {{$t("unit-lvl", { lvl: raidLevel })}}</Title>
 
-    <div class="flex full-flex width-100 height-100">
-      <div class="flex-basis-50 relative">
-        <div class="current-raid-image" :style="raidImage"></div>
+    <div class="flex full-flex width-100">
+      <div class="flex-basis-50 relative flex flex-column flex-no-wrap">
+        <div class="current-raid-image full-flex" :style="raidImage"></div>
 
         <progress-bar
           v-if="!raidData.finished"
@@ -21,7 +21,7 @@
       </div>
 
       <div class="flex-basis-50 flex flex-column flex-item-center flex-end" v-if="!finished">
-        <span class="font-size-18 span-whitespace">
+        <span class="font-size-20 span-whitespace">
           {{$t("time-left")}}
           <span class="enemy-title-font">{{timer.value}}</span>
         </span>
@@ -36,7 +36,6 @@
 </template>
 
 <script>
-const RaidsMeta = require("@/raids_meta.json");
 import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
 import Title from "@/components/Title.vue";
@@ -45,7 +44,6 @@ import Timer from "@/timer.js";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import ClaimedReward from "./ClaimedReward.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
-import Campaign from "@/campaign_database";
 
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 
@@ -88,7 +86,7 @@ export default {
     viewRaid() {
       this.$router.push({
         name: "view-raid",
-        params: { raid: this.raidData.id }
+        params: { raid: this.raidState.id }
       });
     },
     updateTimerValue() {
@@ -105,26 +103,25 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@panelHeight: 12.875rem;
+@panelHeight: 24rem;
 
 .current-raid-cell {
-  // height: @panelHeight;
+  height: @panelHeight;
   position: relative;
 }
 
 .current-raid-image {
   white-space: nowrap;
   width: 100%;
-  height: 100%;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
 }
 
-.raid-progress {
-  position: absolute;
-  bottom: 0;
-}
+// .raid-progress {
+//   position: absolute;
+//   bottom: 0;
+// }
 </style>
 
 
