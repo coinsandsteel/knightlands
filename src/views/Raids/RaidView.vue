@@ -1,31 +1,35 @@
 <template>
   <Promised class="screen-content" :promise="request" :pendingDelay="200">
     <template v-slot:combined="{ isPending, isDelayOver, data }">
-     <div>
-       <div class="screen-background"></div>
-       <loading-screen :loading="isDelayOver && (isPending || !raidData)"></loading-screen>
-        <div v-bar>
-        <div>
-          <template v-if="raidData">
-            <boss-view
-              class="margin-bottom-2"
-              ref="bossView"
-              :progress="raidProgress"
-              :raidTemplateId="raidData.raidTemplateId"
-              :timeLeft="timeLeft"
-            >
+      <div class="screen-background"></div>
+      <loading-screen :loading="isDelayOver && (isPending || !raidState)"></loading-screen>
+      <div class="flex flex-column flex-no-wrap height-100">
+        <template v-if="raidState">
+          <boss-view
+            ref="bossView"
+            class="margin-bottom-1"
+            :progress="raidProgress"
+            :raidTemplateId="raidState.raidTemplateId"
+            :timeLeft="timeLeft"
+          >
+            <template v-slot:view>
+              <BossAnimation :raid="raid" ref="bossAnimation" />
+            </template>
+            
+            <template v-slot:overlay>
               <DamageText
                 v-for="(damage) in playerDamages"
                 :key="damage.id"
                 :crit="damage.crit"
               >{{damage.damage}}</DamageText>
 
-              <DamageLog :log="lastDamages" v-if="showLog"></DamageLog>
-            </boss-view>
+              <DamageLog :log="lastDamages" v-show="showLog" @close="showLog = false"></DamageLog>
+            </template>
+          </boss-view>
 
-            <!--COMBAT VIEW-->
-            <div v-if="participant">
-              <!-- <div classes="margin-top-3">
+          <!--COMBAT VIEW-->
+          <div class="raid-controls full-flex width-100" v-if="participant">
+            <!-- <div class="margin-top-3">
                 <div class="flex flex-column flex-center font-size-20 white-font font-outline">
                   <span
                     class="yellow-title white-space-wide margin-bottom-2"
@@ -38,121 +42,119 @@
                   :compact="false"
                   :hideMaxValue="lootProgress.current >= lootProgress.max"
                 ></ProgressBar>
-              </div> -->
+            </div>-->
+            <RaidAttackPanel class="attack"
+              @attack="handleAttack"
+            />
 
-              
+            <RaidArmy class="raid-army margin-top-1" :legionIndex="0" />
+
+            <RaidOptions class="raid-btns" 
+              @log="handleShowLogs"
+              @rewards="handleShowRewards"
+              @info="handleShowInfo"
+              @legion="selectLegion"
+              @chart="handleShowChart"
+            />
+          </div>
+
+          <!--RAID WON-->
+          <div
+            contentClasses="flex-center"
+            v-else-if="raidState && raidState.finished && raidState.defeat"
+          >
+            <div class="width-100 margin-top-2 margin-bottom-2">
+              <span
+                class="flex font-size-25 font-weight-700 flex-center width-100 flex-space-around full-flex"
+              >{{$t("raid-victory")}}</span>
             </div>
 
-            <!--RAID WON-->
-            <div
-              contentClasses="flex-center"
-              v-else-if="raidData && raidData.finished && raidData.defeat"
-            >
-              <div
-                stripeHeight="5rem"
-                class="width-100 margin-top-2 margin-bottom-2"
-                contentClasses="width-100 flex flex-center"
-              >
-                <span
-                  class="flex font-size-25 font-weight-700 flex-center width-100 flex-space-around full-flex"
-                >{{$t("raid-victory")}}</span>
-              </div>
+            <custom-button class="raid-mid-btn" @click="claimReward">
+              <span>{{$t("claim-reward")}}</span>
+            </custom-button>
+          </div>
 
-              <custom-button class="raid-mid-btn" @click="claimReward">
-                <span>{{$t("claim-reward")}}</span>
+          <!--RAID LOST-->
+          <div class="flex-center" v-else-if="raidState && raidState.finished && !raidState.defeat">
+            <div class="width-100 margin-top-2 margin-bottom-2">
+              <span
+                class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
+              >{{$t("raid-lose", {boss: bossName})}}</span>
+            </div>
+          </div>
+
+          <!--NOT IN RAID YET-->
+          <div contentClasses="flex-center" v-else>
+            <div class="title font-size-20 font-weight-700 rarity-mythical">
+              <span class="white-space">{{$t("dkt-bonus")}}</span>
+              <span>{{dktBonus}}</span>
+            </div>
+
+            <div
+              class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
+            >
+              <custom-button
+                v-if="hasChallenges"
+                type="grey"
+                class="raid-mid-btn"
+                @click="showChallenges = true"
+              >
+                <icon-with-value
+                  valueClass="font-size-20 btn-fix"
+                  iconClass="icon-challenge"
+                >{{$t("challenges")}}</icon-with-value>
+              </custom-button>
+
+              <custom-button type="grey" class="raid-mid-btn" @click="showRewards = true">
+                <icon-with-value
+                  valueClass="font-size-20 btn-fix"
+                  iconClass="icon-loot"
+                >{{$t("rewards")}}</icon-with-value>
+              </custom-button>
+
+              <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
+                <icon-with-value
+                  valueClass="font-size-20 btn-fix"
+                  iconClass="icon-info dark"
+                >{{$t("raid-info")}}</icon-with-value>
               </custom-button>
             </div>
 
-            <!--RAID LOST-->
-            <div
-              contentClasses="flex-center"
-              v-else-if="raidData && raidData.finished && !raidData.defeat"
-            >
-              <div
-                stripeHeight="5rem"
-                class="width-100 margin-top-2 margin-bottom-2"
-                contentClasses="width-100 flex flex-center"
-              >
-                <span
-                  class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
-                >{{$t("raid-lose", {boss: bossName})}}</span>
-              </div>
-            </div>
+            <PaymentStatus :request="statusRequest" @pay="continuePurchase">
+              <PromisedButton :promise="purchasePromise" width="16rem" type="yellow" @click="join">
+                <span class="margin-right-half">{{$t("join")}}</span>
+                <PriceTag :dark="true" :iap="data.joinIap"></PriceTag>
+              </PromisedButton>
+            </PaymentStatus>
+          </div>
 
-            <!--NOT IN RAID YET-->
-            <div contentClasses="flex-center" v-else>
-              <div class="title font-size-20 font-weight-700 rarity-mythical">
-                <span class="white-space">{{$t("dkt-bonus")}}</span>
-                <span>{{dktBonus}}</span>
-              </div>
+          <keep-alive>
+            <Rewards
+              v-if="showRewards"
+              :raidTemplateId="raidState.raidTemplateId"
+              :isFreeRaid="raidState.isFree"
+              :currentDamage="currentDamage"
+              :dktFactor="raidState.dktFactor"
+              @close="showRewards = false"
+            ></Rewards>
 
-              <div
-                class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
-              >
-                <custom-button v-if="hasChallenges" type="grey" class="raid-mid-btn" @click="showChallenges = true">
-                  <icon-with-value
-                    valueClass="font-size-20 btn-fix"
-                    iconClass="icon-challenge"
-                  >{{$t("challenges")}}</icon-with-value>
-                </custom-button>
+            <Challenges
+              v-if="showChallenges"
+              :challenges="raidState.challenges"
+              :raidState="raidState"
+            ></Challenges>
 
-                <custom-button type="grey" class="raid-mid-btn" @click="showRewards = true">
-                  <icon-with-value
-                    valueClass="font-size-20 btn-fix"
-                    iconClass="icon-loot"
-                  >{{$t("rewards")}}</icon-with-value>
-                </custom-button>
-
-                <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
-                  <icon-with-value
-                    valueClass="font-size-20 btn-fix"
-                    iconClass="icon-info dark"
-                  >{{$t("raid-info")}}</icon-with-value>
-                </custom-button>
-              </div>
-
-              <PaymentStatus :request="statusRequest" @pay="continuePurchase">
-                <PromisedButton
-                  :promise="purchasePromise"
-                  width="16rem"
-                  type="yellow"
-                  @click="join"
-                >
-                  <span class="margin-right-half">{{$t("join")}}</span>
-                  <PriceTag :dark="true" :iap="data.joinIap"></PriceTag>
-                </PromisedButton>
-              </PaymentStatus>
-            </div>
-
-            <keep-alive>
-              <Rewards
-                v-if="showRewards"
-                :raidTemplateId="raidData.raidTemplateId"
-                :isFreeRaid="raidData.isFree"
-                :currentDamage="currentDamage"
-                :dktFactor="raidData.dktFactor"
-                @close="showRewards = false"
-              ></Rewards>
-
-              <Challenges
-                v-if="showChallenges"
-                :challenges="raidData.challenges"
-                :raidData="raidData"
-              ></Challenges>
-
-              <RaidInfo
-                v-if="showInfo"
-                :raidTemplateId="raidData.raidTemplateId"
-                :isFreeRaid="raidData.isFree"
-                :weakness="raidData.weakness"
-                :dktFactor="raidData.dktFactor"
-                @close="showInfo = false"
-              ></RaidInfo>
-            </keep-alive>
-          </template>
-        </div>
+            <RaidInfo
+              v-if="showInfo"
+              :raidTemplateId="raidState.raidTemplateId"
+              :isFreeRaid="raidState.isFree"
+              :weakness="raidState.weakness"
+              :dktFactor="raidState.dktFactor"
+              @close="showInfo = false"
+            ></RaidInfo>
+          </keep-alive>
+        </template>
       </div>
-     </div>
 
       <portal to="footer" v-if="isActive">
         <CopyButton :data="href" caption="btn-share"></CopyButton>
@@ -186,15 +188,31 @@ import Errors from "@/../knightlands-shared/errors";
 import Prompt from "@/components/Prompt.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
-import AttackButton from "@/components/AttackButton.vue";
 import PriceTag from "@/components/PriceTag.vue";
+import RaidGetterMixin from "./RaidGetterMixin.vue";
+import RaidArmy from "./Army/RaidArmy.vue";
+import RaidOptions from "./RaidOptions.vue";
+import RaidAttackPanel from "./RaidAttackPanel.vue";
+import BossAnimation from "./BossAnimation.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
 import RaidInfo from "./RaidInfo.vue";
 
-const ShowRewards = CreateDialog(Rewards, "raidTemplateId", "isFreeRaid", "currentDamage", "dktFactor");
-const ShowRaidInfo = CreateDialog(RaidInfo, "raidTemplateId", "isFreeRaid", "weakness", "dktFactor");
+const ShowRewards = CreateDialog(
+  Rewards,
+  "raidTemplateId",
+  "isFreeRaid",
+  "currentDamage",
+  "dktFactor"
+);
+const ShowRaidInfo = CreateDialog(
+  RaidInfo,
+  "raidTemplateId",
+  "isFreeRaid",
+  "weakness",
+  "dktFactor"
+);
 
 import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
@@ -222,7 +240,6 @@ export default {
     BossView,
     IconWithValue,
     Rewards,
-    ProgressBar,
     DamageLog,
     DamageText,
     CopyButton,
@@ -231,19 +248,24 @@ export default {
     PromisedButton,
     PriceTag,
     RaidInfo,
-    AttackButton
+    BossAnimation,
+    RaidArmy,
+    RaidOptions,
+    RaidAttackPanel
   },
   channel: undefined,
-  mixins: [AppSection, PaymentHandler],
-  props: ["raid"],
+  mixins: [AppSection, PaymentHandler, RaidGetterMixin],
+  props: ["raidId"],
   data: () => ({
     statusRequest: null,
     purchasePromise: null,
     showRewards: false,
+    showLog: false,
     showChallenges: false,
     showInfo: false,
-    raidData: null,
+    raidState: null,
     request: null,
+    attackCount: 1,
     raidProgress: {
       current: 1,
       max: 1
@@ -262,11 +284,7 @@ export default {
     this.damageLogId = 0;
   },
   async activated() {
-    await this.getRaid();
-
-    if (!this.participant) {
-      this.fetchPaymentStatus();
-    }
+    this.init();
   },
   deactivated() {
     this.unsubscribe();
@@ -275,68 +293,53 @@ export default {
     this.unsubscribe();
   },
   watch: {
-    raid() {
-      this.getRaid();
+    raidId() {
+      this.init();
     }
   },
   computed: {
     hasChallenges() {
-      // return Object.keys(this.raidData.challenges).length > 0;
+      // return Object.keys(this.raidState.challenges).length > 0;
       return false;
     },
     href() {
       return window.location.href;
     },
     slots() {
-      return this.raidData.busySlots;
+      return this.raidState.busySlots;
     },
     maxSlots() {
-      return this.data.maxSlots;
-    },
-    meta() {
-      if (!this.raidData) {
-        return {};
-      }
-      return RaidsMeta[this.raidData.raidTemplateId] || {};
-    },
-    data() {
-      return this.raidData.isFree ? this.meta.soloData : this.meta.data;
+      return this.raidData.maxSlots;
     },
     participant() {
-      if (!this.raidData) {
+      if (!this.raidState) {
         return false;
       }
 
       return (
-        this.raidData.currentDamage !== undefined && !this.raidData.finished
+        this.raidState.currentDamage !== undefined && !this.raidState.finished
       );
     },
     currentDamage() {
-      return this.raidData.currentDamage;
+      return this.raidState.currentDamage;
     },
     dktBonus() {
-      return Math.floor(this.raidData.dktFactor * 100) / 100;
+      return Math.floor(this.raidState.dktFactor * 100) / 100;
     },
     timeLeft() {
-      return this.raidData.finished ? 0 : this.raidData.timeLeft;
-    },
-    bossName() {
-      return this.$t(this.meta.name);
-    },
-    loot() {
-      return this.raidData.isFree ? this.data.freeLoot : this.data.paidLoot;
+      return this.raidState.finished ? 0 : this.raidState.timeLeft;
     },
     currentLootTier() {
       let data = this.data;
       let i = 0;
-      const length = this.loot.damageThresholds.length;
+      const length = this.raidLoot.damageThresholds.length;
 
       for (; i < length; ++i) {
-        let damageThreshold = this.loot.damageThresholds[i];
+        let damageThreshold = this.raidLoot.damageThresholds[i];
         let damageRequired =
           (data.health * damageThreshold.relativeThreshold) / data.maxSlots;
 
-        if (damageRequired > this.raidData.currentDamage) {
+        if (damageRequired > this.raidState.currentDamage) {
           break;
         }
       }
@@ -345,40 +348,59 @@ export default {
     }
   },
   methods: {
-    // showRewards() {
-    //   this.lootProgress.current = this.raidData.currentDamage;
+    async init() {
+      await this.getRaid();
 
-    //   let i = 0;
-    //   const length = this.loot.damageThresholds.length;
-    //   let damageRequired = 0;
+      if (!this.participant) {
+        this.fetchPaymentStatus();
+      }
+    },
+    selectLegion() {
+      this.showSelectLegion = true;
+    },
+    handleShowChart() {
 
-    //   for (; i < length; ++i) {
-    //     if (damageRequired > this.raidData.currentDamage) {
-    //       this.lootProgress.max = Math.floor(damageRequired);
-    //       break;
-    //     }
-    //   }
+    },
+    handleShowInfo() {
+      
+    },
+    handleShowLogs() {
+      this.showLog = true;
+    },
+    handleShowRewards() {
+      this.lootProgress.current = this.raidState.currentDamage;
 
-    //   ShowRewards(this.raidData.raidTemplateId, this.raidData.isFree, this.currentDamage, this.dktFactor);
-    // },
+      let i = 0;
+      const length = this.loot.damageThresholds.length;
+      let damageRequired = 0;
+
+      for (; i < length; ++i) {
+        if (damageRequired > this.raidState.currentDamage) {
+          this.lootProgress.max = Math.floor(damageRequired);
+          break;
+        }
+      }
+
+      ShowRewards(this.raidState.raidTemplateId, this.raidState.isFree, this.currentDamage, this.dktFactor);
+    },
     fetchPaymentStatus() {
-      this.statusRequest = this.$game.fetchRaidJoinStatus(this.raid);
+      this.statusRequest = this.$game.fetchRaidJoinStatus(this.raidId);
     },
     async handlePaymentComplete(iap, context) {
       await this.getRaid();
     },
     async join() {
-      this.purchasePromise = this.$game.joinRaid(this.raid);
+      this.purchasePromise = this.$game.joinRaid(this.raidId);
       await this.purchaseRequest(this.purchasePromise);
     },
     async claimReward() {
-      let rewards = await this.$game.claimRaidLoot(this.raid);
-      await ShowClaimedReward(rewards.response, this.raidData.raidTemplateId);
+      let rewards = await this.$game.claimRaidLoot(this.raidId);
+      await ShowClaimedReward(rewards.response, this.raidState.raidTemplateId);
       this.handleBackButton();
     },
     subscribeToRaid() {
       this.unsubscribe();
-      this.channel = this.$game.createChannel(`raid/${this.raid}`);
+      this.channel = this.$game.createChannel(`raid/${this.raidId}`);
       this.channel.watch(this._handleEvents.bind(this));
     },
     unsubscribe() {
@@ -397,28 +419,29 @@ export default {
       return true;
     },
     async getRaid() {
-      if (!this.raid) {
+      if (!this.raidId) {
         return;
       }
 
-      this.request = this.$game.fetchRaid(this.raid);
+      this.request = this.$game.fetchRaid(this.raidId);
 
       try {
-        this.raidData = await this.request;
-        this.raidProgress.current = this.raidData.bossState.health;
-        this.raidProgress.max = this.data.health;
-        this.lastDamages = this.raidData.damageLog;
+        this.raidState = await this.request;
+        this.raid = this.raidState.raidTemplateId;
+        this.raidProgress.current = this.raidState.bossState.health;
+        this.raidProgress.max = this.raidMaxHealth;
+        this.lastDamages = this.raidState.damageLog;
 
         // if raid is not finished - try to listen
-        if (!this.raidData.finished) {
+        if (!this.raidState.finished) {
           this.subscribeToRaid();
         }
       } catch (exc) {
         console.error(exc);
       }
     },
-    async attack(hits) {
-      this.request = this.$game.attackRaidBoss(this.raid, hits);
+    async handleAttack(hits) {
+      this.request = this.$game.attackRaidBoss(this.raidId, hits);
 
       try {
         await this.request;
@@ -461,23 +484,23 @@ export default {
       }
     },
     _handleChallengeUpdate(data) {
-      this.raidData.challenges[data.type] = data.data;
+      this.raidState.challenges[data.type] = data.data;
     },
     _handleRaidDamage(data) {
       this.raidProgress.current = data.bossHp;
 
       if (data.by == this.$game.account) {
         // increase current damage
-        this.raidData.currentDamage += data.damage;
+        this.raidState.currentDamage += data.damage;
       }
 
       this._handlePlayerDamage(data.damage, data.crit, data.hits);
     },
     _handleRaidFinished(data) {
-      this.raidData.finished = true;
+      this.raidState.finished = true;
 
       if (data.defeat) {
-        this.raidData.defeat = true;
+        this.raidState.defeat = true;
       }
     },
     _handlePlayerDamage(damage, crit, hits) {
@@ -564,6 +587,28 @@ export default {
 
 .raid-mid-btn {
   width: 15rem;
+}
+
+.raid-controls {
+  display: grid;
+  grid-template-columns: 8rem 1fr 8rem;
+  grid-template-rows: 5rem 1fr;
+
+  > .raid-army {
+    grid-row: 2;
+    grid-column: 2;
+  }
+
+  > .attack {
+    grid-row: 1;
+    grid-column: ~"1/4";
+  }
+
+  > .raid-btns {
+    grid-row: ~"1/3";
+    grid-column: 3;
+    place-self: stretch;
+  }
 }
 </style>
 

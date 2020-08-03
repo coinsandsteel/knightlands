@@ -1,9 +1,9 @@
 <template>
-  <notifications group="raid" position="top center">
+  <notifications group="raid" position="top" width="100%">
     <template v-slot:body="props">
-      <div class="flex flex-column flex-center panel-light" @click="props.close">
+      <div class="flex flex-column flex-center color-panel-2" @click="props.close">
         <div
-          class="title font-size-20 margin-bottom-2"
+          class="title font-size-25 font-weight-900 font-outline margin-bottom-2"
         >{{props.item.data.success ? "Raid Summoning Succeed" : "Raid Summoning Failed"}}</div>
         <custom-button
           v-if="props.item.data.success"

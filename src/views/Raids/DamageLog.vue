@@ -2,10 +2,8 @@
   <div class="flex flex-column flex-items-end flex-end width-100 height-100 flex-start">
     <div
       class="mask width-100 height-100 flex flex-column flex-no-wrap flex-items-center flex-end"
-      v-show="showLog"
-      @click="showLog = false"
     >
-      <div class="close-btn" @click="showLog = false"></div>
+      <div class="close-btn" @click="$emit('close')"></div>
 
       <div
         class="font-size-15 damage-line font-weight-700 flex flex-start"

@@ -1,75 +1,68 @@
 
 Hundred.png
-size: 190,805
+size: 469,301
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Ellipse 1
-  rotate: true
-  xy: 148, 441
-  size: 362, 39
-  orig: 364, 41
-  offset: 1, 1
-  index: -1
 Layer 10 copy
   rotate: true
-  xy: 2, 67
+  xy: 2, 11
   size: 72, 166
   orig: 72, 166
   offset: 0, 0
   index: -1
 Layer 295
-  rotate: false
-  xy: 90, 6
+  rotate: true
+  xy: 408, 33
   size: 81, 59
   orig: 83, 61
   offset: 1, 1
   index: -1
 Layer 296
-  rotate: false
-  xy: 2, 2
+  rotate: true
+  xy: 343, 28
   size: 86, 63
   orig: 88, 65
   offset: 1, 1
   index: -1
 Layer 297
   rotate: false
-  xy: 2, 404
+  xy: 300, 116
   size: 138, 183
   orig: 138, 183
   offset: 0, 0
   index: -1
 Layer 6 copy
   rotate: false
-  xy: 2, 589
+  xy: 2, 85
   size: 144, 214
   orig: 144, 214
   offset: 0, 0
   index: -1
 Layer 298
   rotate: false
-  xy: 2, 589
+  xy: 2, 85
   size: 144, 214
   orig: 144, 214
   offset: 0, 0
   index: -1
 Layer 7 copy
-  rotate: true
-  xy: 2, 252
+  rotate: false
+  xy: 148, 113
   size: 150, 186
   orig: 150, 186
   offset: 0, 0
   index: -1
 Layer 294
-  rotate: true
-  xy: 2, 252
+  rotate: false
+  xy: 148, 113
   size: 150, 186
   orig: 150, 186
   offset: 0, 0
   index: -1
 Layer 9 copy
   rotate: true
-  xy: 2, 141
+  xy: 170, 2
   size: 109, 171
   orig: 109, 176
   offset: 0, 5

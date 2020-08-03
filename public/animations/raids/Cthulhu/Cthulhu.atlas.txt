@@ -1,131 +1,124 @@
 
 Cthulhu.png
-size: 1862,366
+size: 634,1057
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Head
-  rotate: false
-  xy: 1609, 194
+  rotate: true
+  xy: 447, 779
   size: 149, 170
   orig: 149, 170
   offset: 0, 0
   index: -1
 Left Wing
   rotate: true
-  xy: 447, 60
+  xy: 2, 395
   size: 304, 371
   orig: 304, 371
   offset: 0, 0
   index: -1
 body
-  rotate: false
-  xy: 986, 120
+  rotate: true
+  xy: 375, 413
   size: 210, 244
   orig: 210, 244
   offset: 0, 0
   index: -1
 left arm
   rotate: true
-  xy: 1582, 15
+  xy: 447, 930
   size: 125, 178
   orig: 125, 178
   offset: 0, 0
   index: -1
 left arm cast
-  rotate: true
-  xy: 1217, 2
+  rotate: false
+  xy: 2, 202
   size: 137, 191
   orig: 137, 191
   offset: 0, 0
   index: -1
 left leg
-  rotate: true
-  xy: 1760, 242
+  rotate: false
+  xy: 238, 186
   size: 122, 100
   orig: 124, 102
   offset: 1, 1
   index: -1
 leftarmphys
   rotate: true
-  xy: 1410, 5
+  xy: 447, 643
   size: 134, 170
   orig: 134, 170
   offset: 0, 0
   index: -1
 right arm
-  rotate: false
-  xy: 1415, 142
+  rotate: true
+  xy: 2, 2
   size: 192, 222
   orig: 192, 222
   offset: 0, 0
   index: -1
 right leg
   rotate: true
-  xy: 1085, 13
+  xy: 226, 288
   size: 105, 130
   orig: 107, 132
   offset: 1, 1
   index: -1
 right wing
   rotate: true
-  xy: 2, 10
+  xy: 2, 701
   size: 354, 443
   orig: 354, 443
   offset: 0, 0
   index: -1
 rightarmcast
-  rotate: false
-  xy: 1198, 141
+  rotate: true
+  xy: 375, 196
   size: 215, 223
   orig: 215, 223
   offset: 0, 0
   index: -1
-shadow
-  rotate: false
-  xy: 447, 2
-  size: 397, 22
-  orig: 399, 24
-  offset: 1, 1
-  index: -1
 tail
-  rotate: true
-  xy: 820, 71
+  rotate: false
+  xy: 226, 20
   size: 293, 164
   orig: 293, 165
   offset: 0, 1
   index: -1
 tentacleA
-  rotate: true
-  xy: 447, 26
+  rotate: false
+  xy: 600, 349
   size: 32, 62
   orig: 32, 62
   offset: 0, 0
   index: -1
 tentacleB
   rotate: true
-  xy: 846, 8
+  xy: 521, 133
   size: 61, 106
   orig: 61, 107
   offset: 0, 1
   index: -1
 tentacleC
   rotate: false
-  xy: 1762, 53
-  size: 76, 90
+  xy: 375, 625
+  size: 68, 74
   orig: 76, 90
   offset: 0, 0
   index: -1
 tentacleD
   rotate: false
-  xy: 986, 3
+  xy: 521, 16
   size: 97, 115
   orig: 97, 115
   offset: 0, 0
   index: -1
 tentacleE
-  rotate: true
-  xy: 1760, 145
+  rotate: false
+  xy: 141, 196
   size: 95, 90
   orig: 95, 90
   offset: 0, 0

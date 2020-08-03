@@ -1,5 +1,5 @@
 <template>
-  <span></span>
+  <span class="absolute-stretch pointer-events-none"></span>
 </template>
 
 <script>
@@ -10,6 +10,18 @@ export default {
       type: Number,
       default: 0.4
     }
+  },
+  deactivated() {
+    this.$notify({
+      group: "loading",
+      clean: true
+    });
+  },
+  beforeDestroy() {
+    this.$notify({
+      group: "loading",
+      clean: true
+    });
   },
   watch: {
     loading: {

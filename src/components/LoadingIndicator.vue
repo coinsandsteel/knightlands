@@ -30,9 +30,6 @@ export default {
       type: String,
       default: "#fde648"
     }
-  },
-  activated() {
-      this.showAnimated();
   }
 };
 </script>

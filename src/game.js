@@ -461,6 +461,7 @@ class Game {
     }
 
     _handleRaidStatus(data) {
+        console.log('raid summoned', data);
         const { iap, reason, context } = data;
 
         Vue.notify({
@@ -470,7 +471,7 @@ class Game {
                 context,
                 success: reason ? false : true
             },
-            duration: 2000
+            duration: 4000
         });
 
         this._vm.$emit(Events.RaidSummonStatus, data);

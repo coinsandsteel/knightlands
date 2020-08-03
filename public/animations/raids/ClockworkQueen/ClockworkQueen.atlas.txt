@@ -1,138 +1,131 @@
 
 ClockworkQueen.png
-size: 786,271
+size: 956,217
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Ellipse 12
-  rotate: false
-  xy: 461, 166
-  size: 269, 19
-  orig: 271, 21
-  offset: 1, 1
-  index: -1
 Group 289
   rotate: false
-  xy: 637, 6
+  xy: 361, 57
   size: 85, 158
   orig: 85, 158
   offset: 0, 0
   index: -1
 Group 290
   rotate: false
-  xy: 337, 4
+  xy: 448, 79
   size: 32, 136
   orig: 34, 138
   offset: 1, 1
   index: -1
 Group 292
-  rotate: true
-  xy: 274, 32
+  rotate: false
+  xy: 926, 157
   size: 28, 58
   orig: 30, 60
   offset: 1, 1
   index: -1
 Group 293
-  rotate: true
-  xy: 189, 7
+  rotate: false
+  xy: 880, 2
   size: 66, 29
   orig: 68, 31
   offset: 1, 1
   index: -1
 Group 294
   rotate: true
-  xy: 724, 9
+  xy: 880, 33
   size: 79, 44
   orig: 81, 46
   offset: 1, 1
   index: -1
 Group 295
   rotate: true
-  xy: 220, 23
+  xy: 234, 2
   size: 37, 52
   orig: 39, 54
   offset: 1, 1
   index: -1
 Group 296
   rotate: true
-  xy: 461, 187
+  xy: 516, 4
   size: 82, 319
   orig: 84, 321
   offset: 1, 1
   index: -1
 Group 297
   rotate: true
-  xy: 234, 142
+  xy: 482, 88
   size: 127, 225
   orig: 127, 225
   offset: 0, 0
   index: -1
 Group 298
   rotate: true
-  xy: 371, 14
+  xy: 709, 89
   size: 126, 41
   orig: 128, 43
   offset: 1, 1
   index: -1
 Group 299
-  rotate: true
-  xy: 116, 24
+  rotate: false
+  xy: 465, 6
   size: 49, 71
   orig: 51, 73
   offset: 1, 1
   index: -1
 Group 300
-  rotate: false
-  xy: 2, 16
+  rotate: true
+  xy: 787, 103
   size: 112, 57
   orig: 114, 59
   offset: 1, 1
   index: -1
 Group 303
   rotate: false
-  xy: 2, 75
+  xy: 2, 21
   size: 230, 194
   orig: 230, 194
   offset: 0, 0
   index: -1
 Layer 1
-  rotate: true
-  xy: 461, 39
+  rotate: false
+  xy: 234, 41
   size: 125, 174
   orig: 125, 174
   offset: 0, 0
   index: -1
 Layer 2
   rotate: false
-  xy: 414, 2
+  xy: 288, 4
   size: 78, 35
   orig: 80, 37
   offset: 1, 1
   index: -1
 Layer 3
-  rotate: true
-  xy: 234, 62
+  rotate: false
+  xy: 846, 114
   size: 78, 101
   orig: 80, 103
   offset: 1, 1
   index: -1
 Layer 4
-  rotate: false
-  xy: 732, 90
+  rotate: true
+  xy: 368, 3
   size: 52, 95
   orig: 54, 97
   offset: 1, 1
   index: -1
 Layer 5
-  rotate: true
-  xy: 494, 4
+  rotate: false
+  xy: 752, 94
   size: 33, 121
   orig: 35, 123
   offset: 1, 1
   index: -1
 Layer 6
   rotate: false
-  xy: 414, 41
+  xy: 837, 2
   size: 41, 99
   orig: 43, 101
   offset: 1, 1

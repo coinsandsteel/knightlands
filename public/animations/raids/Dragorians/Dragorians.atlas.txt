@@ -1,89 +1,82 @@
 
 Dragorians.png
-size: 246,977
+size: 277,812
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Ellipse 13
-  rotate: true
-  xy: 217, 602
-  size: 373, 27
-  orig: 375, 29
-  offset: 1, 1
-  index: -1
 Group 62
   rotate: false
-  xy: 209, 509
+  xy: 224, 215
   size: 34, 91
   orig: 36, 93
   offset: 1, 1
   index: -1
 Group 63
   rotate: false
-  xy: 209, 427
+  xy: 217, 84
   size: 25, 80
   orig: 27, 82
   offset: 1, 1
   index: -1
 Layer 723
-  rotate: false
-  xy: 2, 710
-  size: 213, 265
+  rotate: true
+  xy: 2, 401
+  size: 202, 265
   orig: 213, 265
-  offset: 0, 0
+  offset: 11, 0
   index: -1
 Layer 724
-  rotate: false
-  xy: 2, 220
+  rotate: true
+  xy: 2, 240
   size: 159, 220
   orig: 159, 220
   offset: 0, 0
   index: -1
 Layer 725
-  rotate: false
-  xy: 2, 94
-  size: 236, 124
+  rotate: true
+  xy: 2, 2
+  size: 236, 121
   orig: 236, 124
   offset: 0, 0
   index: -1
 Layer 727
-  rotate: true
-  xy: 2, 442
+  rotate: false
+  xy: 2, 605
   size: 266, 205
   orig: 266, 205
   offset: 0, 0
   index: -1
 Layer 729
   rotate: true
-  xy: 163, 237
+  xy: 217, 166
   size: 47, 54
   orig: 49, 56
   offset: 1, 1
   index: -1
 Layer 730
-  rotate: false
-  xy: 2, 2
+  rotate: true
+  xy: 125, 110
   size: 128, 90
   orig: 128, 90
   offset: 0, 0
   index: -1
 arm Left Bot
   rotate: false
-  xy: 163, 349
+  xy: 224, 308
   size: 37, 91
   orig: 69, 113
   offset: 18, 8
   index: -1
 arm left Attack
-  rotate: false
-  xy: 132, 5
+  rotate: true
+  xy: 125, 11
   size: 97, 87
   orig: 97, 87
   offset: 0, 0
   index: -1
 arm left top
   rotate: false
-  xy: 163, 286
+  xy: 214, 21
   size: 61, 61
   orig: 96, 89
   offset: 18, 10

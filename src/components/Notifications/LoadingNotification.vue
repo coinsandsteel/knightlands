@@ -10,7 +10,6 @@
     </notifications>
 </template>
 
-
 <style lang="less" scoped>
 .bg-color {
   position: absolute;

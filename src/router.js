@@ -620,7 +620,7 @@ const router = new Router({
         requiresAuth: true
       },
       children: [{
-          path: "view/:raid",
+          path: "view/:raidId",
           props: true,
           name: "view-raid",
           component: RaidView
@@ -629,6 +629,12 @@ const router = new Router({
           path: "summon",
           component: RaidSummoning,
           children: [{
+              name: "select-legion",
+              path: "legion/:redirect",
+              props: true,
+              component: () => import("./views/Army/SelectLegion.vue")
+            },
+            {
               path: ":raid",
               props: true,
               name: "summon-raid",

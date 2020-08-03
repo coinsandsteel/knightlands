@@ -14,9 +14,18 @@
 
 <script>
 export default {
+  props: ["legion"],
   data: () => ({
     legionIndex: 0
   }),
+  watch: {
+    legion: {
+      immediate: true,
+      handler() {
+        this.legionIndex = this.legion;
+      }
+    }
+  },
   computed: {
     damage() {
       return this.$game.army.getLegionDamage(this.legionIndex).totalDamageOutput;

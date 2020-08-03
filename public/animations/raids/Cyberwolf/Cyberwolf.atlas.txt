@@ -1,89 +1,82 @@
 
 Cyberwolf.png
-size: 1272,150
+size: 621,282
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Ellipse 19
-  rotate: false
-  xy: 2, 123
-  size: 468, 25
-  orig: 470, 27
-  offset: 1, 1
-  index: -1
 Group 237 copy
   rotate: true
-  xy: 472, 3
+  xy: 2, 135
   size: 145, 230
   orig: 147, 233
   offset: 1, 2
   index: -1
 Layer 205 copy 2
   rotate: true
-  xy: 1234, 2
+  xy: 564, 95
   size: 71, 36
   orig: 73, 38
   offset: 1, 1
   index: -1
 Layer 775
-  rotate: true
-  xy: 1145, 3
+  rotate: false
+  xy: 549, 2
   size: 70, 87
   orig: 72, 89
   offset: 1, 1
   index: -1
 Layer 776
   rotate: false
-  xy: 193, 17
+  xy: 234, 38
   size: 128, 104
   orig: 130, 107
   offset: 1, 1
   index: -1
 Layer 777
   rotate: true
-  xy: 1145, 75
+  xy: 449, 16
   size: 73, 98
   orig: 105, 105
   offset: 31, 6
   index: -1
 Layer 779
-  rotate: true
-  xy: 2, 9
+  rotate: false
+  xy: 450, 91
   size: 112, 189
   orig: 114, 191
   offset: 1, 1
   index: -1
 Layer 780
   rotate: true
-  xy: 704, 12
+  xy: 234, 144
   size: 136, 214
   orig: 136, 214
   offset: 0, 0
   index: -1
 Layer 781
-  rotate: true
-  xy: 323, 26
+  rotate: false
+  xy: 135, 12
   size: 95, 121
   orig: 97, 123
   offset: 1, 1
   index: -1
 Layer 782
-  rotate: false
-  xy: 920, 17
+  rotate: true
+  xy: 2, 36
   size: 97, 131
   orig: 99, 133
   offset: 1, 1
   index: -1
 Layer 783
-  rotate: false
-  xy: 1019, 14
+  rotate: true
+  xy: 564, 168
   size: 112, 49
   orig: 114, 51
   offset: 1, 1
   index: -1
 Layer 784
-  rotate: false
-  xy: 1019, 65
+  rotate: true
+  xy: 364, 18
   size: 124, 83
   orig: 126, 85
   offset: 1, 1

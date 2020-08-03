@@ -1,54 +1,47 @@
 
 MysticalAlchemistKalmulon.png
-size: 417,134
+size: 451,116
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Ellipse 20
-  rotate: false
-  xy: 2, 2
-  size: 242, 16
-  orig: 244, 18
-  offset: 1, 1
-  index: -1
 Group 345
-  rotate: false
-  xy: 322, 85
+  rotate: true
+  xy: 373, 21
   size: 93, 47
   orig: 93, 47
   offset: 0, 0
   index: -1
 Group 346 copy 7
   rotate: true
-  xy: 2, 20
+  xy: 2, 2
   size: 112, 267
   orig: 114, 267
   offset: 0, 0
   index: -1
 Layer 18
   rotate: false
-  xy: 379, 12
+  xy: 422, 37
   size: 21, 20
   orig: 23, 22
   offset: 1, 1
   index: -1
 Layer 19
-  rotate: true
-  xy: 322, 5
+  rotate: false
+  xy: 422, 59
   size: 27, 55
   orig: 29, 57
   offset: 1, 1
   index: -1
 Layer 20
   rotate: false
-  xy: 271, 24
+  xy: 271, 6
   size: 49, 108
   orig: 49, 108
   offset: 0, 0
   index: -1
 Layer 90 copy 2
-  rotate: true
-  xy: 322, 34
+  rotate: false
+  xy: 322, 22
   size: 49, 92
   orig: 51, 92
   offset: 2, 0

@@ -49,7 +49,8 @@ const store = new Vuex.Store({
     zoneStage: 0,
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
-    recipeFilters: {}
+    recipeFilters: {},
+    selectedLegion: 0
   },
   mutations: {
     setQuestZone(state, zoneId) {
@@ -80,9 +81,15 @@ const store = new Vuex.Store({
     },
     setRecipeFilters(state, args) {
       Vue.set(state.recipeFilters, args.id, args.filters);
+    },
+    setSelectedLegion(state, legionIndex) {
+      state.selectedLegion = legionIndex;
     }
   },
   getters: {
+    selectedLegion: state => {
+      return state.selectedLegion + 1;
+    },
     disenchantFilters: state => {
       if (state.itemFiltersVersion != FiltersVersion) {
         state.itemFiltersVersion = FiltersVersion;

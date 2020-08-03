@@ -8,25 +8,51 @@
 import spine from "@/spine.js";
 
 export default {
-  props: ["skeletonFile", "skeletonName", "atlas", "atlasImage", "translateY"],
+  props: {
+    skeletonFile: String,
+    skeletonName: String,
+    atlas: String,
+    atlasImage: String,
+    translateY: {
+      type: Number,
+      default: 1.0
+    },
+    folder: String,
+    binary: Boolean
+  },
   created() {
     this.lastFrameTime = Date.now() / 1000;
   },
-  data: ()=>({
+  data: () => ({
     ready: false
   }),
   mounted() {
     this.$nextTick(() => {
       this.canvas = this.$refs.canvas;
       this.context = this.canvas.getContext("2d");
+      spine.canvas.SkeletonRenderer.useTriangleRendering = true;
       this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
       // enable the triangle renderer, supports meshes, but may produce artifacts in some browsers
-      this.skeletonRenderer.triangleRendering = false;
+      this.skeletonRenderer.triangleRendering = true;
 
       this.assetManager = new spine.canvas.AssetManager();
-      this.assetManager.loadText(`animations/${this.skeletonFile}.json`);
-      this.assetManager.loadText(`animations/${this.atlas}.atlas.txt`);
-      this.assetManager.loadTexture(`animations/${this.atlasImage}.png`);
+
+      if (this.binary) {
+        this.assetManager.loadBinary(
+          `animations/${this.wrapInFolder(this.skeletonFile)}.skel.bytes`
+        );
+      } else {
+        this.assetManager.loadText(
+          `animations/${this.wrapInFolder(this.skeletonFile)}.json`
+        );
+      }
+
+      this.assetManager.loadText(
+        `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
+      );
+      this.assetManager.loadTexture(
+        `animations/${this.wrapInFolder(this.atlasImage)}.png`
+      );
 
       requestAnimationFrame(this.load.bind(this));
     });
@@ -34,7 +60,9 @@ export default {
   watch: {
     skeletonFile() {
       if (this.assetManager && this.skeletonFile) {
-        this.assetManager.loadText(`animations/${this.skeletonFile}.json`);
+        this.assetManager.loadText(
+          `animations/${this.wrapInFolder(this.skeletonFile)}.json`
+        );
       }
     },
     skeletonName() {
@@ -46,6 +74,9 @@ export default {
     }
   },
   methods: {
+    wrapInFolder(file) {
+      return this.folder ? `${this.folder}/${file}` : file;
+    },
     isReady() {
       return this.ready;
     },
@@ -73,21 +104,34 @@ export default {
       // Load the texture atlas using name.atlas and name.png from the AssetManager.
       // The function passed to TextureAtlas is used to resolve relative paths.
       let atlas = new spine.TextureAtlas(
-        this.assetManager.get(`animations/${this.atlas}.atlas.txt`),
+        this.assetManager.get(
+          `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
+        ),
         path => {
-          return this.assetManager.get("animations/" + path);
+          return this.assetManager.get("animations/" + this.wrapInFolder(path));
         }
       );
 
       // Create a AtlasAttachmentLoader, which is specific to the WebGL backend.
       let atlasLoader = new spine.AtlasAttachmentLoader(atlas);
 
-      // Create a SkeletonJson instance for parsing the .json file.
-      var skeletonJson = new spine.SkeletonJson(atlasLoader);
       // Set the scale to apply during parsing, parse the file, and create a new skeleton.
-      var skeletonData = skeletonJson.readSkeletonData(
-        this.assetManager.get("animations/" + name + ".json")
+      console.log(
+        this.assetManager.get(`animations/${this.wrapInFolder(name)}.json`)
       );
+
+      let skeletonData;
+      if (this.binary) {
+        skeletonData = new spine.SkeletonBinary(atlasLoader).readSkeletonData(
+          this.assetManager.get(
+            `animations/${this.wrapInFolder(name)}.skel.bytes`
+          )
+        );
+      } else {
+        skeletonData = new spine.SkeletonJson(atlasLoader).readSkeletonData(
+          this.assetManager.get(`animations/${this.wrapInFolder(name)}.json`)
+        );
+      }
 
       var skeleton = new spine.Skeleton(skeletonData);
       skeleton.scaleY = -1;
@@ -139,10 +183,9 @@ export default {
 
       this.context.setTransform(1, 0, 0, 1, 0, 0);
       this.context.scale(1 / scale, 1 / scale);
-      this.context.translate(width / 2, height / 2);
+      this.context.translate(width / 2, height / 2 * this.translateY);
     },
     calculateBounds(skeleton) {
-      var data = skeleton.data;
       skeleton.setToSetupPose();
       skeleton.updateWorldTransform();
       var offset = new spine.Vector2();

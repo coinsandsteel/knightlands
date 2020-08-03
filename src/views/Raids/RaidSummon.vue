@@ -4,7 +4,7 @@
       <loading-screen :loading="isPending"></loading-screen>
       <div class="screen-background"></div>
       <AnimatedBackgroundUnits></AnimatedBackgroundUnits>
-      <div v-bar v-if="data">
+      <div v-bar>
         <div>
           <boss-view
             v-if="raid"
@@ -32,18 +32,12 @@
 
           <div class="margin-1">
             <div class="flex flex-space-evenly width-100">
-              <custom-button type="grey" class="raid-mid-btn" @click="showRewards">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-loot"
-                >{{$t("rewards")}}</icon-with-value>
+              <custom-button type="grey" @click="showRewards">
+                <span class="icon-loot"></span>
               </custom-button>
 
-              <custom-button type="grey" class="raid-mid-btn" @click="showInfo">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-info dark"
-                >{{$t("raid-info")}}</icon-with-value>
+              <custom-button type="grey" @click="showInfo">
+                <span class="icon-info dark"></span>
               </custom-button>
             </div>
 
@@ -107,7 +101,6 @@ import PaymentHandler from "@/components/PaymentHandler.vue";
 import throttle from "lodash.throttle";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-
 import { Promised } from "vue-promised";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
@@ -151,16 +144,11 @@ export default {
     AnimatedBackgroundUnits
   },
   created() {
-    this.title = "Summon Raid";
-    this.listener = this.fetchSummonStatus.bind(this);
-    this.$game.on(Events.RaidSummonStatus, this.listener);
+    this.title = "window-summon-raid";
     this.$options.paymentEvents = [Events.RaidSummonStatus];
     this._fetchSummonStatus = throttle(this.fetchSummonStatus.bind(this), 500, {
       leading: false
     });
-  },
-  destroyed() {
-    this.$game.off(Events.RaidSummonStatus, this.listener);
   },
   mounted() {
     this._fetchSummonStatus();

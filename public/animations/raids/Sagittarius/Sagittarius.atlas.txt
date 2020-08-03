@@ -1,103 +1,96 @@
 
 Sagittarius.png
-size: 670,519
+size: 951,353
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Ellipse 13
-  rotate: false
-  xy: 2, 2
-  size: 348, 35
-  orig: 350, 37
-  offset: 1, 1
-  index: -1
 Group 420
-  rotate: true
-  xy: 2, 39
+  rotate: false
+  xy: 375, 49
   size: 131, 302
   orig: 131, 302
   offset: 0, 0
   index: -1
 Group 421
   rotate: true
-  xy: 502, 89
+  xy: 491, 23
   size: 24, 138
   orig: 26, 140
   offset: 1, 1
   index: -1
 Layer 58
   rotate: false
-  xy: 2, 172
+  xy: 2, 6
   size: 371, 345
   orig: 371, 345
   offset: 0, 0
   index: -1
 Layer 59
   rotate: false
-  xy: 375, 254
-  size: 235, 263
+  xy: 647, 88
+  size: 199, 263
   orig: 235, 263
   offset: 0, 0
   index: -1
 Layer 60
   rotate: false
-  xy: 502, 13
+  xy: 847, 12
   size: 88, 74
   orig: 88, 74
   offset: 0, 0
   index: -1
 Layer 61
-  rotate: false
-  xy: 612, 282
+  rotate: true
+  xy: 848, 151
   size: 50, 92
   orig: 52, 94
   offset: 1, 1
   index: -1
 Layer 62
-  rotate: true
-  xy: 352, 10
-  size: 103, 148
+  rotate: false
+  xy: 848, 203
+  size: 101, 148
   orig: 103, 148
-  offset: 0, 0
+  offset: 2, 0
   index: -1
 Layer 63
-  rotate: false
-  xy: 612, 376
+  rotate: true
+  xy: 631, 2
   size: 54, 141
   orig: 56, 143
   offset: 1, 1
   index: -1
 Layer 64
   rotate: true
-  xy: 343, 127
+  xy: 375, 4
   size: 43, 27
   orig: 45, 29
   offset: 1, 1
   index: -1
 Layer 65
-  rotate: true
-  xy: 306, 85
+  rotate: false
+  xy: 404, 12
   size: 85, 35
   orig: 87, 37
   offset: 1, 1
   index: -1
 Layer 66
   rotate: false
-  xy: 612, 259
+  xy: 647, 65
   size: 21, 21
   orig: 23, 23
   offset: 1, 1
   index: -1
 Layer 72 copy
-  rotate: true
-  xy: 375, 115
+  rotate: false
+  xy: 508, 58
   size: 137, 293
   orig: 212, 293
   offset: 0, 0
   index: -1
 Layer 76 copy
   rotate: true
-  xy: 592, 3
+  xy: 774, 2
   size: 84, 71
   orig: 85, 71
   offset: 1, 0

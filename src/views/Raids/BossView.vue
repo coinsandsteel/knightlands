@@ -2,29 +2,29 @@
   <div class="relative flex flex-column boss-view flex-center flex-no-wrap">
     <div class="boss-image absolute-stretch" :style="zoneBackground"></div>
 
-    <Title
-      class="flex-1 raid-summon-title"
-      titleClass="font-size-30 relative font-weight-700 enemy-title-font font-outline "
-    >{{$t(name)}}</Title>
+    <span
+      class="raid-summon-title font-size-30 relative font-weight-700 enemy-title-font font-outline"
+    >{{$t(name)}}</span>
 
-    <div
-      ref="image"
-      class="flex flex-center relative unit-image"
-      v-touch:swipe="swipeHandler"
-    >
-      <img :src="enemyImage" class="pointer-events-none" />
+    <div ref="image" class="flex flex-center relative unit-image" v-touch:swipe="swipeHandler">
+      <slot name="view"></slot>
+      <img :src="enemyImage" v-if="!hasViewSlot" />
     </div>
 
-    <div class="nav-arrow left" @click="emitPrevious"></div>
-    <div class="nav-arrow" @click="emitNext"></div>
-    
-    <div
+    <div v-if="navigation" class="nav-arrow left" @click="emitPrevious"></div>
+    <div v-if="navigation" class="nav-arrow" @click="emitNext"></div>
+
+    <!-- <div
       v-if="timer"
       class="font-size-20 relative enemy-title-font font-outline font-weight-700"
-    >{{timer.value}}</div>
+    >{{timer.value}}</div>-->
 
     <div class="inner-content pointer-events-none">
       <slot></slot>
+    </div>
+
+    <div class="inner-content pointer-events-none">
+      <slot name="overlay"></slot>
     </div>
 
     <progress-bar
@@ -48,11 +48,10 @@ import RaidsMeta from "@/raids_meta";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Timer from "@/timer.js";
 import Campaign from "@/campaign_database";
-import Title from "@/components/Title.vue";
 
 export default {
   props: ["raidTemplateId", "progress", "timeLeft", "defeat", "navigation"],
-  components: { ProgressBar, Title },
+  components: { ProgressBar },
   data: () => ({
     thresholds: UiConstants.progressThresholds,
     timer: null
@@ -88,6 +87,9 @@ export default {
     }
   },
   computed: {
+    hasViewSlot() {
+      return !!this.$slots["view"];
+    },
     meta() {
       return RaidsMeta[this.raidTemplateId] || {};
     },
@@ -107,9 +109,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../../style/common.less";
+
 .boss-view {
   width: 100%;
   height: 40vh;
+
+  .mobile({height: 35vh});
+
   justify-content: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -126,7 +133,7 @@ export default {
     grid-column: ~"1/4";
   }
 
-   > .unit-image {
+  > .unit-image {
     grid-row: ~"2/6";
     grid-column: ~"1/4";
 
@@ -136,10 +143,16 @@ export default {
   > .nav-arrow {
     grid-row: ~"2/5";
     grid-column: ~"3";
+    z-index: 1;
 
     &.left {
       grid-column: ~"1";
     }
+  }
+
+  > .boss-health {
+    grid-row: ~"7";
+    grid-column: ~"1/4";
   }
 }
 

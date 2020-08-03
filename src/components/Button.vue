@@ -67,7 +67,7 @@ export default {
 @import (reference) "../style/common.less";
 
 @height: 4.2125rem;
-@width: 10rem;
+@width: 5rem;
 @fontSize: 1.6rem;
 
 .pressed(@name) {

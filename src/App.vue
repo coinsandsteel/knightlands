@@ -79,7 +79,6 @@ import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
 import LoadingNotification from "./components/Notifications/LoadingNotification.vue";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -93,7 +92,6 @@ export default {
   components: {
     StatusBar,
     RaidStatusNotification,
-    LoadingScreen,
     LoadingNotification
   },
   data() {

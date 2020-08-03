@@ -248,7 +248,7 @@ export default class Army {
 
     async load() {
         if (this._loaded) {
-            return false;
+            return true;
         }
 
         let army = await this._game.getArmy();

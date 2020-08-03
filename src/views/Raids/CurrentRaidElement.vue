@@ -58,14 +58,13 @@ export default {
     thresholds: UiConstants.progressThresholds,
     raid: -1
   }),
-  mounted() {
-    this.updateTimerValue();
-    this.raid = this.raidState.raidTemplateId;
-  },
   watch: {
-    raidData() {
-      this.updateTimerValue();
-      this.raid = this.raidState.raidTemplateId;
+    raidData: {
+      immediate: true,
+      handler() {
+        this.updateTimerValue();
+        this.raid = this.raidState.raidTemplateId;
+      }
     }
   },
   computed: {
@@ -86,7 +85,7 @@ export default {
     viewRaid() {
       this.$router.push({
         name: "view-raid",
-        params: { raid: this.raidState.id }
+        params: { raidId: this.raidState.id }
       });
     },
     updateTimerValue() {

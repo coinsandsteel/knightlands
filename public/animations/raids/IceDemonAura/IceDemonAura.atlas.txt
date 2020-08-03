@@ -1,117 +1,110 @@
 
 IceDemonAura.png
-size: 836,222
+size: 763,221
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Ellipse 15
-  rotate: false
-  xy: 300, 2
-  size: 379, 27
-  orig: 381, 29
-  offset: 1, 1
-  index: -1
 Group 373
-  rotate: false
-  xy: 803, 122
+  rotate: true
+  xy: 643, 12
   size: 31, 37
   orig: 33, 39
   offset: 1, 1
   index: -1
 Layer 21
   rotate: false
-  xy: 300, 82
-  size: 292, 138
+  xy: 499, 81
+  size: 260, 138
   orig: 292, 138
-  offset: 0, 0
+  offset: 32, 0
   index: -1
 Layer 22
-  rotate: false
-  xy: 565, 51
+  rotate: true
+  xy: 580, 2
   size: 20, 29
   orig: 22, 31
   offset: 1, 1
   index: -1
 Layer 23
   rotate: true
-  xy: 594, 60
-  size: 160, 207
+  xy: 293, 59
+  size: 160, 204
   orig: 160, 210
   offset: 0, 0
   index: -1
 Layer 24
   rotate: true
-  xy: 506, 46
+  xy: 643, 45
   size: 34, 57
   orig: 36, 59
   offset: 1, 1
   index: -1
 Layer 25
   rotate: true
-  xy: 424, 37
+  xy: 417, 14
   size: 43, 80
   orig: 45, 82
   offset: 1, 1
   index: -1
 Layer 26
   rotate: false
-  xy: 803, 84
+  xy: 735, 43
   size: 26, 36
   orig: 28, 38
   offset: 1, 1
   index: -1
 Layer 27
   rotate: true
-  xy: 2, 5
-  size: 215, 296
+  xy: 2, 4
+  size: 215, 289
   orig: 215, 296
   offset: 0, 0
   index: -1
 Layer 28
   rotate: false
-  xy: 803, 161
+  xy: 702, 20
   size: 31, 59
   orig: 33, 61
   offset: 1, 1
   index: -1
 Layer 29
   rotate: true
-  xy: 300, 31
+  xy: 293, 8
   size: 49, 122
   orig: 49, 122
   offset: 0, 0
   index: -1
 Layer 30
   rotate: true
-  xy: 681, 2
+  xy: 499, 23
   size: 56, 79
   orig: 56, 79
   offset: 0, 0
   index: -1
 Layer 31
   rotate: true
-  xy: 803, 60
+  xy: 611, 19
   size: 3, 8
   orig: 5, 10
   offset: 1, 1
   index: -1
 Layer 32
-  rotate: true
-  xy: 813, 60
+  rotate: false
+  xy: 621, 16
   size: 3, 6
   orig: 5, 8
   offset: 1, 1
   index: -1
 Layer 33
   rotate: false
-  xy: 762, 3
+  xy: 580, 24
   size: 61, 55
   orig: 61, 55
   offset: 0, 0
   index: -1
 Layer 34
-  rotate: false
-  xy: 803, 65
+  rotate: true
+  xy: 682, 18
   size: 25, 17
   orig: 31, 19
   offset: 1, 1
