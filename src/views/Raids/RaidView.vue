@@ -2,7 +2,7 @@
   <Promised class="screen-content" :promise="request" :pendingDelay="200">
     <template v-slot:combined="{ isPending, isDelayOver, data }">
       <div class="screen-background"></div>
-      <loading-screen :loading="isDelayOver && (isPending || !raidState)"></loading-screen>
+      <loading-screen :loading="isDelayOver && isPending"></loading-screen>
       <div class="flex flex-column flex-no-wrap height-100">
         <template v-if="raidState">
           <boss-view
@@ -15,7 +15,7 @@
             <template v-slot:view>
               <BossAnimation :raid="raid" ref="bossAnimation" />
             </template>
-            
+
             <template v-slot:overlay>
               <DamageText
                 v-for="(damage) in playerDamages"
@@ -43,13 +43,12 @@
                   :hideMaxValue="lootProgress.current >= lootProgress.max"
                 ></ProgressBar>
             </div>-->
-            <RaidAttackPanel class="attack"
-              @attack="handleAttack"
-            />
+            <RaidAttackPanel class="attack" @attack="handleAttack" />
 
             <RaidArmy class="raid-army margin-top-1" :legionIndex="0" />
 
-            <RaidOptions class="raid-btns" 
+            <RaidOptions
+              class="raid-btns"
               @log="handleShowLogs"
               @rewards="handleShowRewards"
               @info="handleShowInfo"
@@ -275,7 +274,8 @@ export default {
     lootProgress: {
       current: 1,
       max: 1
-    }
+    },
+    raid: 0
   }),
   created() {
     this.$options.paymentEvents = [Events.RaidJoinStatus];
@@ -345,6 +345,9 @@ export default {
       }
 
       return i;
+    },
+    isFreeRaid() {
+      return this.raidState.isFree;
     }
   },
   methods: {
@@ -358,12 +361,8 @@ export default {
     selectLegion() {
       this.showSelectLegion = true;
     },
-    handleShowChart() {
-
-    },
-    handleShowInfo() {
-      
-    },
+    handleShowChart() {},
+    handleShowInfo() {},
     handleShowLogs() {
       this.showLog = true;
     },
@@ -381,7 +380,12 @@ export default {
         }
       }
 
-      ShowRewards(this.raidState.raidTemplateId, this.raidState.isFree, this.currentDamage, this.dktFactor);
+      ShowRewards(
+        this.raidState.raidTemplateId,
+        this.raidState.isFree,
+        this.currentDamage,
+        this.dktFactor
+      );
     },
     fetchPaymentStatus() {
       this.statusRequest = this.$game.fetchRaidJoinStatus(this.raidId);
@@ -419,12 +423,12 @@ export default {
       return true;
     },
     async getRaid() {
-      if (!this.raidId) {
+      if (!this.raidId || this.raidFetchingInProcess) {
         return;
       }
 
       this.request = this.$game.fetchRaid(this.raidId);
-
+      this.raidFetchingInProcess = true;
       try {
         this.raidState = await this.request;
         this.raid = this.raidState.raidTemplateId;
@@ -438,6 +442,8 @@ export default {
         }
       } catch (exc) {
         console.error(exc);
+      } finally {
+        this.raidFetchingInProcess = false;
       }
     },
     async handleAttack(hits) {
