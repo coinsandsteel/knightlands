@@ -26,6 +26,56 @@ export default {
   data: () => ({
     ready: false
   }),
+  watch: {
+    skeletonFile: {
+      immediate: true,
+      handler() {
+        if (this.skeletonFile) {
+          if (this.binary) {
+            this._getAssetManager().loadBinary(
+              `animations/${this.wrapInFolder(this.skeletonFile)}.skel.bytes`
+            );
+          } else {
+            this._getAssetManager().loadText(
+              `animations/${this.wrapInFolder(this.skeletonFile)}.json`
+            );
+          }
+          this.scheduleLoad();
+        }
+      }
+    },
+    skeletonName: {
+      immediate: true,
+      handler() {
+        if (this.skeletonName) {
+          this.skeleton = null;
+          this.scheduleLoad();
+        }
+      }
+    },
+    atlas: {
+      immediate: true,
+      handler() {
+        if (this.atlas) {
+          this._getAssetManager().loadText(
+            `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
+          );
+          this.scheduleLoad();
+        }
+      }
+    },
+    atlasImage: {
+      immediate: true,
+      handler() {
+        if (this.atlasImage) {
+          this._getAssetManager().loadTexture(
+            `animations/${this.wrapInFolder(this.atlasImage)}.png`
+          );
+          this.scheduleLoad();
+        }
+      }
+    }
+  },
   mounted() {
     this.$nextTick(() => {
       this.canvas = this.$refs.canvas;
@@ -34,46 +84,24 @@ export default {
       this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
       // enable the triangle renderer, supports meshes, but may produce artifacts in some browsers
       this.skeletonRenderer.triangleRendering = true;
-
-      this.assetManager = new spine.canvas.AssetManager();
-
-      if (this.binary) {
-        this.assetManager.loadBinary(
-          `animations/${this.wrapInFolder(this.skeletonFile)}.skel.bytes`
-        );
-      } else {
-        this.assetManager.loadText(
-          `animations/${this.wrapInFolder(this.skeletonFile)}.json`
-        );
-      }
-
-      this.assetManager.loadText(
-        `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
-      );
-      this.assetManager.loadTexture(
-        `animations/${this.wrapInFolder(this.atlasImage)}.png`
-      );
-
-      requestAnimationFrame(this.load.bind(this));
+      this.scheduleLoad();
     });
   },
-  watch: {
-    skeletonFile() {
-      if (this.assetManager && this.skeletonFile) {
-        this.assetManager.loadText(
-          `animations/${this.wrapInFolder(this.skeletonFile)}.json`
-        );
-      }
-    },
-    skeletonName() {
-      if (this.skeletonName) {
-        this.skeleton = null;
-        this.ready = false;
-        requestAnimationFrame(this.load.bind(this));
-      }
-    }
-  },
   methods: {
+    _getAssetManager() {
+      if (!this.assetManager) {
+        this.assetManager = new spine.canvas.AssetManager();
+      }
+      return this.assetManager;
+    },
+    scheduleLoad() {
+      if (this._loadInterval) {
+        return;
+      }
+
+      this.ready = false;
+      this._loadInterval = setInterval(this.load.bind(this), 10);
+    },
     wrapInFolder(file) {
       return this.folder ? `${this.folder}/${file}` : file;
     },
@@ -95,8 +123,8 @@ export default {
         this.ready = true;
 
         requestAnimationFrame(this.render.bind(this));
-      } else {
-        requestAnimationFrame(this.load.bind(this));
+        clearInterval(this._loadInterval);
+        this._loadInterval = null;
       }
     },
     loadSkeleton(name, initialAnimation, skin) {
@@ -183,7 +211,7 @@ export default {
 
       this.context.setTransform(1, 0, 0, 1, 0, 0);
       this.context.scale(1 / scale, 1 / scale);
-      this.context.translate(width / 2, height / 2 * this.translateY);
+      this.context.translate(width / 2, (height / 2) * this.translateY);
     },
     calculateBounds(skeleton) {
       skeleton.setToSetupPose();
