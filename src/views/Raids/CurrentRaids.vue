@@ -5,7 +5,7 @@
         <div class="screen-background"></div>
         <loading-screen :loading="isPending && isDelayOver"></loading-screen>
 
-        <div v-bar v-if="raids.length > 0">
+        <div v-bar v-show="raids.length > 0">
           <div class="flex flex-column current-raids-list">
             <current-raid-element
               v-for="(raidState, index) in raids"
@@ -16,7 +16,7 @@
           </div>
         </div>
 
-        <div class="flex flex-column flex-center height-100 width-100" v-else>
+        <div class="flex flex-column flex-center height-100 width-100" v-show="raids.length == 0">
           <span class="font-size-22 margin-bottom-2">{{$t("raids-empty")}}</span>
           <CustomButton type="yellow" @click="summonRaid">{{$t("raid-summon-now")}}</CustomButton>
         </div>
