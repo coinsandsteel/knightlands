@@ -34,7 +34,7 @@ export default {
       return this.$game.character.level >= this.raidLevel;
     },
     raidLoot() {
-        return this.isFreeRaid ? this.raidData.freeLoot : this.raidData.paidLoot;
+      return this.isFreeRaid ? this.raidData.freeLoot : this.raidData.paidLoot;
     },
     canSummon() {
       if (!this.raidData) {

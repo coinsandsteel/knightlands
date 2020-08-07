@@ -144,10 +144,6 @@ export default {
       let atlasLoader = new spine.AtlasAttachmentLoader(atlas);
 
       // Set the scale to apply during parsing, parse the file, and create a new skeleton.
-      console.log(
-        this.assetManager.get(`animations/${this.wrapInFolder(name)}.json`)
-      );
-
       let skeletonData;
       if (this.binary) {
         skeletonData = new spine.SkeletonBinary(atlasLoader).readSkeletonData(

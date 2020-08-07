@@ -54,6 +54,7 @@
               @info="handleShowInfo"
               @legion="selectLegion"
               @chart="handleShowChart"
+              @challenges="handleShowChallenges"
             />
           </div>
 
@@ -128,29 +129,11 @@
           </div>
 
           <keep-alive>
-            <Rewards
-              v-if="showRewards"
-              :raidTemplateId="raidState.raidTemplateId"
-              :isFreeRaid="raidState.isFree"
-              :currentDamage="currentDamage"
-              :dktFactor="raidState.dktFactor"
-              @close="showRewards = false"
-            ></Rewards>
-
             <Challenges
               v-if="showChallenges"
               :challenges="raidState.challenges"
               :raidState="raidState"
             ></Challenges>
-
-            <RaidInfo
-              v-if="showInfo"
-              :raidTemplateId="raidState.raidTemplateId"
-              :isFreeRaid="raidState.isFree"
-              :weakness="raidState.weakness"
-              :dktFactor="raidState.dktFactor"
-              @close="showInfo = false"
-            ></RaidInfo>
           </keep-alive>
         </template>
       </div>
@@ -205,12 +188,19 @@ const ShowRewards = CreateDialog(
   "currentDamage",
   "dktFactor"
 );
+
 const ShowRaidInfo = CreateDialog(
   RaidInfo,
   "raidTemplateId",
   "isFreeRaid",
   "weakness",
   "dktFactor"
+);
+
+const ShowChallenges = CreateDialog(
+  Challenges,
+  "raidData",
+  "challenges"
 );
 
 import Challenges from "./Challenges/Challenges.vue";
@@ -238,7 +228,6 @@ export default {
     CustomButton,
     BossView,
     IconWithValue,
-    Rewards,
     DamageLog,
     DamageText,
     CopyButton,
@@ -246,7 +235,6 @@ export default {
     PaymentStatus,
     PromisedButton,
     PriceTag,
-    RaidInfo,
     BossAnimation,
     RaidArmy,
     RaidOptions,
@@ -362,15 +350,25 @@ export default {
       this.showSelectLegion = true;
     },
     handleShowChart() {},
-    handleShowInfo() {},
+    handleShowInfo() {
+      ShowRaidInfo(
+        this.raid,
+        this.isFreeRaid,
+        this.raidState.weakness,
+        this.raidState.dktFactor
+      );
+    },
     handleShowLogs() {
       this.showLog = true;
+    },
+    handleShowChallenges() {
+      // ShowChallenges(this.raidData, this.raidState.challenges);
     },
     handleShowRewards() {
       this.lootProgress.current = this.raidState.currentDamage;
 
       let i = 0;
-      const length = this.loot.damageThresholds.length;
+      const length = this.raidLoot.damageThresholds.length;
       let damageRequired = 0;
 
       for (; i < length; ++i) {
@@ -381,10 +379,10 @@ export default {
       }
 
       ShowRewards(
-        this.raidState.raidTemplateId,
-        this.raidState.isFree,
+        this.raid,
+        this.isFreeRaid,
         this.currentDamage,
-        this.dktFactor
+        this.raidState.dktFactor
       );
     },
     fetchPaymentStatus() {
