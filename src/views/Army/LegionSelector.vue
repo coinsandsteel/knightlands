@@ -22,7 +22,7 @@ export default {
     legion: {
       immediate: true,
       handler() {
-        this.legionIndex = this.legion;
+        this.legionIndex = this.legion || 0;
       }
     }
   },

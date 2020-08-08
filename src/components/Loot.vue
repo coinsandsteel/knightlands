@@ -78,7 +78,7 @@ export default {
     },
     quantity: {
       type: Number,
-      default: 1
+      default: -1
     },
     size: {
       type: String,
@@ -108,7 +108,7 @@ export default {
     this.updateItemData();
   },
   computed: {
-    itemKey() {
+  itemKey() {
       return !this.itemData ? "" : `${this.itemData.template}`;
     },
     rarity() {
@@ -121,8 +121,12 @@ export default {
     count() {
       let count = this.quantity;
       // prioritize explicit quantity
-      if (this.itemData) {
-        return count || this.itemData.count;
+      if (count == -1 && this.itemData) {
+        return this.itemData.count;
+      }
+
+      if (count == -1) {
+        count = 1;
       }
 
       return count;

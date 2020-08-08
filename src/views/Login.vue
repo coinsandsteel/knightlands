@@ -1,5 +1,6 @@
 <template>
   <div class="login-container flex flex-center">
+    <div class="screen-background"></div>
     <div class="font-size-20" v-if="!$game.hasWallet()">{{$t("no-wallet")}}</div>
     <div class="font-size-20" v-else-if="!$game.walletReady()">{{$t("unlock-wallet")}}</div>
     <PromisedButton :promise="request" size="big" v-else @click="signIn">{{$t("btn-signin")}}</PromisedButton>

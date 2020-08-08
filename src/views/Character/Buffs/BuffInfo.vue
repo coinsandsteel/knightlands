@@ -3,7 +3,10 @@
     <template v-slot:content>
       <ItemInfo :item="itemData">
         <template v-slot:stats>
-          <div v-if="timer.timeLeft > 0" class="flex width-100 flex-space-evenly font-size-20 green-title margin-top-2 margin-bottom-2">
+          <div
+            v-if="timer.timeLeft > 0"
+            class="flex width-100 flex-space-evenly font-size-20 green-title margin-top-2 margin-bottom-2"
+          >
             <span>{{$t("buff-timer-left")}}</span>
             <span>{{timer.value}}</span>
           </div>
@@ -43,14 +46,13 @@ export default {
   computed: {
     hasItem() {
       return (
-        !!this.item ||
-        !!this.$game.inventory.getItemByTemplate(this.buff.template)
+        this.item || this.$game.inventory.getItemByTemplate(this.buff.template).id != -1
       );
     },
     itemData() {
       let item =
         this.item || this.$game.inventory.getItemByTemplate(this.buff.template);
-      return item ? item : this.buff.template;
+      return item.id != -1 ? item : this.buff.template;
     }
   }
 };

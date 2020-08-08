@@ -21,7 +21,7 @@
       </div>
 
       <div class="flex-basis-50 flex flex-column flex-item-center flex-end" v-if="!finished">
-        <span class="font-size-20 span-whitespace">
+        <span class="font-size-20">
           {{$t("time-left")}}
           <span class="enemy-title-font">{{timer.value}}</span>
         </span>

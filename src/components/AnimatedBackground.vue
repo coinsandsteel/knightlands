@@ -7,9 +7,9 @@
 
 <style lang="less" scoped>
 @sizeScale: 40%;
-@scrollX: 320px;
-@scrollY: 320px;
-@duration: 5s;
+@scrollX: 320px * 0.4;
+@scrollY: 320px * 0.4;
+@duration: 25s;
 
 .layer() {
   background-repeat: repeat;
@@ -20,6 +20,7 @@
   bottom: -@scrollY;
   top: -@scrollY;
   z-index: -1;
+  background-size: @sizeScale, @sizeScale;
 }
 
 .layer1 {

@@ -2,12 +2,12 @@
   <div class="tab-content width-100 height-100 flex padding-2">
     <template v-if="buffs.length > 0">
       <BuffSlot
-      v-for="record in buffs"
-      :key="(record.buff || record.item).template"
-      :buff="record.buff"
-      :item="record.item"
-      @info="handleInfo"
-    ></BuffSlot>
+        v-for="record in buffs"
+        :key="(record.buff || record.item).template"
+        :buff="record.buff"
+        :item="record.item"
+        @info="handleInfo"
+      ></BuffSlot>
     </template>
     <div v-else class="flex flex-column flex-center width-100 height-100">
       <span class="font-size-22 margin-bottom-2">{{$t("buffs-empty")}}</span>
@@ -37,18 +37,18 @@ export default {
     buffs: []
   }),
   created() {
-    this.handleInventoryCallback = this.refreshBuffs.bind(this);
+    this._refreshBuffs = this.refreshBuffs.bind(this);
   },
   activated() {
     this.refreshBuffs();
-    this.$game.inventory.on(Inventory.Changed, this.handleInventoryCallback);
+    this.$game.inventory.on(Inventory.Changed, this._refreshBuffs);
   },
   deactivated() {
-    this.$game.inventory.off(Inventory.Changed, this.handleInventoryCallback);
+    this.$game.inventory.off(Inventory.Changed, this._refreshBuffs);
   },
   methods: {
     goToShop() {
-      this.$router.push({name: "shop"});
+      this.$router.push({ name: "shop" });
     },
     refreshBuffs() {
       const buffs = [];

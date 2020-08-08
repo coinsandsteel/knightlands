@@ -62,7 +62,7 @@ export default {
         return item.count;
       }
 
-      return "";
+      return 0;
     }
   },
   methods: {

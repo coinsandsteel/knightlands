@@ -93,7 +93,7 @@ export default {
     },
     nextPromotionDamage() {
       if (this.unit) {
-        return this.$game.armyDB.getDamage(this.unit, false, true);
+        return this.$game.army.getDamage(this.unit, false, true);
       }
 
       return 0;
