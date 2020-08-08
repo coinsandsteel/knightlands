@@ -896,10 +896,11 @@ class Game {
         });
     }
 
-    async attackRaidBoss(raidId, hits) {
+    async attackRaidBoss(raidId, hits, legionIndex) {
         await this._wrapOperation(Operations.AttackRaidBoss, {
             raidId,
-            hits
+            hits,
+            legionIndex
         });
     }
 

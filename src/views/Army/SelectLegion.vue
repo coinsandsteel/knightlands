@@ -54,6 +54,7 @@ export default {
   },
   created() {
     this.title = "window-legion-select";
+    this.$options.useRouterBack = true;
   },
   computed: {
     generals() {
@@ -64,19 +65,15 @@ export default {
     }
   },
   mounted() {
-    this.legionIndex = this.$store.getters.selectedLegion - 1;
+    this.legionIndex = this.$store.state.selectedLegion;
   },
   methods: {
     onLegionChanged(index) {
       this.legionIndex = index;
+      this.$store.commit("setSelectedLegion", this.legionIndex);
     },
     selectLegion() {
-      this.$store.commit("setSelectedLegion", this.legionIndex);
-      this.$emit("selectLegion", this.legionIndex);
-    },
-    handleBackButton() {
-      this.selectLegion();
-      return true;
+      this.handleBackButton();
     }
   }
 };

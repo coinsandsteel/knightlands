@@ -6,7 +6,7 @@
       class="raid-summon-title font-size-30 relative font-weight-700 enemy-title-font font-outline"
     >{{$t(name)}}</span>
 
-    <div ref="image" class="flex flex-center relative unit-image" v-touch:swipe="swipeHandler">
+    <div ref="image" class="flex flex-center relative unit-image">
       <slot name="view"></slot>
       <img :src="enemyImage" v-if="!hasViewSlot" />
     </div>
@@ -19,7 +19,7 @@
       class="font-size-20 relative enemy-title-font font-outline font-weight-700"
     >{{timer.value}}</div>-->
 
-    <div class="inner-content pointer-events-none">
+    <div class="inner-content" v-touch:swipe="swipeHandler">
       <slot></slot>
     </div>
 
@@ -98,7 +98,7 @@ export default {
     },
     zoneBackground() {
       return UiConstants.backgroundImage(
-        Campaign.getRaidBackground(this.raidTemplateId)
+        Campaign.getRaidBackground(50)
       );
     },
     name() {

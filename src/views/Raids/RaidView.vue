@@ -16,7 +16,7 @@
               <BossAnimation :raid="raid" ref="bossAnimation" />
             </template>
 
-            <template v-slot:overlay>
+            <template v-slot:default>
               <DamageText
                 v-for="(damage) in playerDamages"
                 :key="damage.id"
@@ -45,10 +45,21 @@
             </div>-->
             <RaidAttackPanel class="attack" @attack="handleAttack" />
 
-            <RaidArmy class="raid-army margin-top-1" :legionIndex="0" />
+            <RaidArmy class="raid-army margin-top-1" :legionIndex="$store.state.selectedLegion" />
 
             <RaidOptions
-              class="raid-btns"
+              class="raid-options-left"
+              :left="true"
+              @log="handleShowLogs"
+              @rewards="handleShowRewards"
+              @info="handleShowInfo"
+              @legion="selectLegion"
+              @chart="handleShowChart"
+              @challenges="handleShowChallenges"
+            />
+
+            <RaidOptions
+              class="raid-options-right"
               @log="handleShowLogs"
               @rewards="handleShowRewards"
               @info="handleShowInfo"
@@ -159,7 +170,6 @@ import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
-import RaidsMeta from "@/raids_meta";
 import BossView from "./BossView.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
@@ -197,11 +207,7 @@ const ShowRaidInfo = CreateDialog(
   "dktFactor"
 );
 
-const ShowChallenges = CreateDialog(
-  Challenges,
-  "raidData",
-  "challenges"
-);
+const ShowChallenges = CreateDialog(Challenges, "raidData", "challenges");
 
 import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
@@ -347,7 +353,7 @@ export default {
       }
     },
     selectLegion() {
-      this.showSelectLegion = true;
+      this.$router.push({ name: "select-legion" });
     },
     handleShowChart() {},
     handleShowInfo() {
@@ -445,7 +451,11 @@ export default {
       }
     },
     async handleAttack(hits) {
-      this.request = this.$game.attackRaidBoss(this.raidId, hits);
+      this.request = this.$game.attackRaidBoss(
+        this.raidId,
+        hits,
+        this.$store.state.selectedLegion
+      );
 
       try {
         await this.request;
@@ -608,7 +618,13 @@ export default {
     grid-column: ~"1/4";
   }
 
-  > .raid-btns {
+  > .raid-options-left {
+    grid-row: ~"1/3";
+    grid-column: 1;
+    place-self: stretch;
+  }
+
+  > .raid-options-right {
     grid-row: ~"1/3";
     grid-column: 3;
     place-self: stretch;

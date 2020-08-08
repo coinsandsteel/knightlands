@@ -19,7 +19,7 @@
         <span
               v-if="!levelRequirementMet"
               class="font-error font-size-18"
-            >{{$t("not-enough-level")}}</span>
+            >{{$t("no-raid-level", { level: raidLevel })}}</span>
         <custom-button type="yellow" @click="openSummon">{{$t("btn-summon-raid")}}</custom-button>
       </div>
     </div>

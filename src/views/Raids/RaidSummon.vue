@@ -55,7 +55,7 @@
               <span
                 v-if="!levelRequirementMet"
                 class="font-error font-size-18"
-              >{{$t("not-enough-level")}}</span>
+              >{{$t("no-raid-level", { level: raidLevel })}}</span>
               <CustomButton type="yellow" @click="confirmSummon">{{$t("btn-summon")}}</CustomButton>
             </div>
 
@@ -69,7 +69,7 @@
                 <span
                   v-if="!levelRequirementMet"
                   class="font-error font-size-18"
-                >{{$t("not-enough-level")}}</span>
+                >{{$t("no-raid-level", { level: raidLevel })}}</span>
                 <CustomButton :disabled="!canSummon" type="yellow" @click="confirmSummon">
                   <span>{{$t("btn-summon")}}</span>
                   <price-tag :iap="iap" :dark="true"></price-tag>
