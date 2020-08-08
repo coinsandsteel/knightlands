@@ -33,6 +33,12 @@
     }
 }
 
+.fourk_screen(@rules) {
+    @media only screen and (min-width: 2160px) {
+        @rules();
+    }
+}
+
 .big_retina(@rules) {
     @media only screen and (min-resolution: 3dppx) {
         @rules();

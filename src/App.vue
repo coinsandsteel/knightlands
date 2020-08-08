@@ -504,7 +504,8 @@ export default {
   // .tablet({width: 60rem;});
   // .laptop_small({width: 60rem;});
   // .laptop({width: 60rem;});
-  width: 60rem;
+  // width: 60rem;
+  width: 55vh;
 }
 
 .home-link {
@@ -526,6 +527,8 @@ html {
   .tablet({font-size: 8px;});
   .laptop_small({font-size: 8px;});
   .laptop({font-size: 8px;});
+  .laptop({font-size: 8px;});
+  .fourk_screen({font-size: 10px;});
 
   @media only screen and (max-width: 320px) {
     font-size: 7px;
