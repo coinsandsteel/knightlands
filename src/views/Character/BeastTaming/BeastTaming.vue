@@ -57,7 +57,7 @@
       </div>
 
       <div
-        class="panel flex flex-column margin-left-half margin-right-half padding-bottom-2 padding-top-1"
+        class="flex flex-column margin-left-half margin-right-half padding-bottom-2 padding-top-1"
         v-if="!isMax"
       >
         <span class="title font-size-22 margin-bottom-1">{{$t('regular-boost')}}</span>
@@ -93,7 +93,7 @@
         </span>
 
         <div class="width-100 flex flex-column flex-center" v-if="totalSouls() > 0">
-          <div class="flex flex-center panel-input padding-left-1 padding-right-1 font-size-18">
+          <div class="flex flex-center padding-left-1 padding-right-1 font-size-18">
             <span>{{$t(beastItemName)}}</span>
             <div class="item-icon" :style="ticketIcon"></div>
             <span>{{totalSouls()}}</span>

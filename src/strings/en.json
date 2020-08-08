@@ -761,7 +761,7 @@
     "btn-share": "Share",
     "copied": "Copied!",
     "join": "Join",
-    "character-level": "Character level: {level}",
+    "character-level": "Level: {level}",
     "btn-next-quest": "Next quest",
     "level-up-stat": "{stat} +{value}",
     "quest-complete": "Quest complete",
