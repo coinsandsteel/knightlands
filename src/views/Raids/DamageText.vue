@@ -8,8 +8,8 @@
 import anime from "animejs/lib/anime.es.js";
 
 const OffsetY = {
-  min: 5,
-  max: 10
+  min: 10,
+  max: 30
 };
 
 const OffsetX = {
@@ -32,14 +32,16 @@ export default {
       });
 
       timeline.add({
+        duration: 0
+      });
+
+      timeline.add({
         duration: 600,
         easing: easing,
         color: color,
         "font-size": `*=${FontSize}`,
         bottom: `+=${offsetY}%`,
-        left: `${offsetX}%`,
-        opacity: 1,
-        delay: anime.stagger(100)
+        opacity: 1
       });
 
       timeline.add({

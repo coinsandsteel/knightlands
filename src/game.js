@@ -99,6 +99,7 @@ class Game {
         this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
         this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
         this._socket.on(Events.UnitsRemoved, this._handleUnitsRemoved.bind(this));
+        this._socket.on(Events.RaidDamaged, this._handleRaidDamaged.bind(this));
         this._socket.on(
             Events.TrialAttemptsPurchased,
             this._handleTrialAttemptsPurchase.bind(this)
@@ -408,6 +409,10 @@ class Game {
     }
 
     // EVENTS
+    _handleRaidDamaged(data) {
+        this._vm.$emit(Events.RaidDamaged, data);
+    }
+
     _handleInventoryUpdate(data) {
         this._inventory.mergeData(data);
     }
@@ -813,6 +818,7 @@ class Game {
     }
 
     createChannel(name, waitForAuth = true) {
+        console.log('channel name: ', name)
         return this._socket.subscribe(name, {
             waitForAuth
         });

@@ -113,11 +113,14 @@ export default {
     },
     load() {
       if (!this.skeleton && this.assetManager.isLoadingComplete()) {
-        var data = this.loadSkeleton(this.skeletonName, "default");
+        const { skeleton, state, bounds } = this.loadSkeleton(
+          this.skeletonName,
+          "default"
+        );
 
-        this.skeleton = data.skeleton;
-        this.state = data.state;
-        this.bounds = data.bounds;
+        this.skeleton = skeleton;
+        this.state = state;
+        this.bounds = bounds;
 
         this.$emit("ready");
         this.ready = true;
@@ -164,10 +167,10 @@ export default {
       skeleton.setSkinByName(skin);
 
       // Create an AnimationState, and set the initial animation in looping mode.
-      var animationState = new spine.AnimationState(
-        new spine.AnimationStateData(skeleton.data)
-      );
+      let stateData = new spine.AnimationStateData(skeleton.data);
+      stateData.defaultMix = 0.25;
 
+      let animationState = new spine.AnimationState(stateData);
       //   animationState.addListener({
       //     event: (trackIndex, event) => {
       //       // spawn loot

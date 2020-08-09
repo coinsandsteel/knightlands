@@ -9,7 +9,7 @@
     :folder="`raids/${skeletonName}`"
     :binary="true"
     :translateY="2"
-    @ready="handleAnimationReady"
+    @ready="playIdle"
   />
 </template>
 
@@ -29,22 +29,37 @@ export default {
     }
   },
   methods: {
-    handleAnimationReady() {
+    playIdle() {
       let state = this.$refs.animation.getState();
-      state.setAnimation(0, RaidsMeta[this.raid].idleAnimation, true);
+      state.addAnimation(0, RaidsMeta[this.raid].idleAnimation, true, 0);
     },
-    playAttack() {
+    async playAttack() {
       let state = this.$refs.animation.getState();
 
       const animations = RaidsMeta[this.raid].attackAnimations;
       const index = Math.floor(Math.random() * animations.length);
-      state.setAnimation(0, animations[index], false);
-      state.addAnimation(0, RaidsMeta[this.raid].idleAnimation, true);
+      const attackAnimationName = animations[index];
+      state.setAnimation(0, attackAnimationName, false);
+
+      await new Promise(resolve => {
+        state.addListener({
+          complete: track => {
+            if (track.animation.name !== attackAnimationName) {
+              return;
+            }
+
+            state.clearListeners();
+            resolve();
+          }
+        });
+      });
+
+      this.playIdle();
     },
     playDamageTaken() {
       let state = this.$refs.animation.getState();
       state.setAnimation(0, RaidsMeta[this.raid].damagedAnimation, false);
-      state.addAnimation(0, RaidsMeta[this.raid].idleAnimation, true);
+      this.playIdle();
     }
   }
 };

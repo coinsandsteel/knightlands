@@ -43,9 +43,15 @@
                   :hideMaxValue="lootProgress.current >= lootProgress.max"
                 ></ProgressBar>
             </div>-->
-            <RaidAttackPanel class="attack" @attack="handleAttack" />
+            <RaidAttackPanel class="attack" @attack="handleAttack" :disabled="attackInProgress" />
 
-            <RaidArmy class="raid-army margin-top-1" :legionIndex="$store.state.selectedLegion" />
+            <RaidArmy
+              ref="army"
+              class="raid-army margin-top-1"
+              :legionIndex="$store.state.selectedLegion"
+              :attackPoint="bossViewCenter"
+              @damage="_handleArmyDamage"
+            />
 
             <RaidOptions
               class="raid-options-left"
@@ -250,6 +256,7 @@ export default {
   mixins: [AppSection, PaymentHandler, RaidGetterMixin],
   props: ["raidId"],
   data: () => ({
+    attackInProgress: false,
     statusRequest: null,
     purchasePromise: null,
     showRewards: false,
@@ -269,13 +276,15 @@ export default {
       current: 1,
       max: 1
     },
-    raid: 0
+    raid: 0,
+    bossViewCenter: 0
   }),
   created() {
     this.$options.paymentEvents = [Events.RaidJoinStatus];
     this.title = this.$t("raid-view");
     this.damageTextId = 0;
     this.damageLogId = 0;
+    this._attackDetailsHandler = this._handleRaidAttackDetails.bind(this);
   },
   async activated() {
     this.init();
@@ -351,6 +360,8 @@ export default {
       if (!this.participant) {
         this.fetchPaymentStatus();
       }
+
+      this.bossViewCenter = this.$refs.bossView.center;
     },
     selectLegion() {
       this.$router.push({ name: "select-legion" });
@@ -416,6 +427,7 @@ export default {
         this.channel.destroy();
         this.channel = null;
       }
+      this.$game.off(Events.RaidDamaged, this._attackDetailsHandler);
     },
     handleBackButton() {
       if (this.showChallenges) {
@@ -443,6 +455,7 @@ export default {
         // if raid is not finished - try to listen
         if (!this.raidState.finished) {
           this.subscribeToRaid();
+          this.$game.on(Events.RaidDamaged, this._attackDetailsHandler);
         }
       } catch (exc) {
         console.error(exc);
@@ -482,6 +495,41 @@ export default {
         this._handleAttackRaidError(error);
       }
     },
+    async _handleRaidAttackDetails(data) {
+      if (data.raid != this.raidId) {
+        return;
+      }
+
+      this.attackInProgress = true;
+
+      await this.$refs.bossAnimation.playAttack();
+      console.log(data);
+      this._handlePlayerDamage(data.player.damage, data.player.crit);
+
+      await this.$refs.army.playDamages(data.armyDamage);
+
+      const timeline = anime.timeline({
+        duration: 500
+      });
+
+      // timeline
+      //   .add({
+      //     targets: this.$refs.cards[this.chosenCard].$el,
+      //     translateY: -this.$el.offsetHeight,
+      //     easing: "easeInOutBack"
+      //   })
+      //   .add(
+      //     {
+      //       targets: this.$el,
+      //       opacity: 0
+      //     },
+      //     500
+      //   );
+
+      await timeline.finished;
+
+      this.attackInProgress = false;
+    },
     _handleEvents(data) {
       switch (data.event) {
         case Events.RaidDamaged:
@@ -501,14 +549,25 @@ export default {
       this.raidState.challenges[data.type] = data.data;
     },
     _handleRaidDamage(data) {
-      this.raidProgress.current = data.bossHp;
+      this.lastDamages.push({
+        by: data.by,
+        damage: data.damage,
+        id: this.damageLogId++,
+        hits: data.hits
+      });
+
+      if (this.lastDamages.length > 10) {
+        this.lastDamages.splice(0, 1);
+      }
 
       if (data.by == this.$game.account) {
         // increase current damage
         this.raidState.currentDamage += data.damage;
+        return;
       }
 
-      this._handlePlayerDamage(data.damage, data.crit, data.hits);
+      this.raidProgress.current = data.bossHp;
+      this._handlePlayerDamage(data.damage, data.crit);
     },
     _handleRaidFinished(data) {
       this.raidState.finished = true;
@@ -517,18 +576,11 @@ export default {
         this.raidState.defeat = true;
       }
     },
-    _handlePlayerDamage(damage, crit, hits) {
-      this.lastDamages.push({
-        by: this.$game.account,
-        damage,
-        id: this.damageLogId++,
-        hits: hits
-      });
-
-      if (this.lastDamages.length > 10) {
-        this.lastDamages.splice(0, 1);
-      }
-
+    _handleArmyDamage(damage) {
+      this.$refs.bossAnimation.playDamageTaken();
+      this.raidProgress.current -= damage;
+    },
+    _handlePlayerDamage(damage, crit) {
       this.playerDamages.push({
         damage: damage,
         crit: crit,
@@ -537,7 +589,7 @@ export default {
 
       setTimeout(() => {
         this.playerDamages.splice(0, 1);
-      }, 3000);
+      }, 1200);
 
       anime.remove(this.$refs.bossView.$refs.image);
 

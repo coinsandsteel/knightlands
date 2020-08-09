@@ -9,7 +9,12 @@
       @dec="attacks--"
     >
       <template v-slot:between>
-        <AttackButton width="20rem" type="red" @click="$emit('attack', attacks)">Attack: x{{attacks}}</AttackButton>
+        <AttackButton
+          width="20rem"
+          type="red"
+          @click="$emit('attack', attacks)"
+          :disabled="disabled"
+        >Attack: x{{attacks}}</AttackButton>
       </template>
     </NumericValue>
   </div>
@@ -21,6 +26,7 @@ import NumericValue from "@/components/NumericValue.vue";
 
 export default {
   components: { AttackButton, NumericValue },
+  props: ["disabled"],
   data: () => ({
     attacks: 1
   }),

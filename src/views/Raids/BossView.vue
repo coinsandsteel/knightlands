@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex flex-column boss-view flex-center flex-no-wrap">
-    <div class="boss-image absolute-stretch" :style="zoneBackground"></div>
+    <div ref="zoneView" class="boss-image absolute-stretch" :style="zoneBackground"></div>
 
     <span
       class="raid-summon-title font-size-30 relative font-weight-700 enemy-title-font font-outline"
@@ -19,14 +19,6 @@
       class="font-size-20 relative enemy-title-font font-outline font-weight-700"
     >{{timer.value}}</div>-->
 
-    <div class="inner-content" v-touch:swipe="swipeHandler">
-      <slot></slot>
-    </div>
-
-    <div class="inner-content pointer-events-none">
-      <slot name="overlay"></slot>
-    </div>
-
     <progress-bar
       v-if="progress"
       v-model="progress.current"
@@ -39,6 +31,14 @@
       :thresholds="thresholds"
       class="boss-health"
     ></progress-bar>
+
+    <div class="inner-content" v-touch:swipe="swipeHandler">
+      <slot></slot>
+    </div>
+
+    <div class="inner-content pointer-events-none">
+      <slot name="overlay"></slot>
+    </div>
   </div>
 </template>
 
@@ -97,12 +97,25 @@ export default {
       return Campaign.getRaidImage(this.raidTemplateId);
     },
     zoneBackground() {
-      return UiConstants.backgroundImage(
-        Campaign.getRaidBackground(50)
-      );
+      return UiConstants.backgroundImage(Campaign.getRaidBackground(50));
     },
     name() {
       return this.meta.name;
+    },
+    center() {
+      let el = this.$refs.zoneView;
+      const point = { x: 0, y: 0 };
+
+      while (el) {
+        point.x += el.offsetLeft;
+        point.y += el.offsetTop;
+        el = el.offsetParent;
+      }
+
+      el = this.$refs.zoneView;
+      point.x += el.offsetWidth / 2;
+      point.y += el.offsetHeight / 2;
+      return point;
     }
   }
 };
