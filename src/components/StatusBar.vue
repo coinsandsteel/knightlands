@@ -64,18 +64,25 @@
         <span class="status-bar-font digit-font">{{hardCurrency}}</span>
       </div>
     </div>
+
+    <portal to="overlay" ref="portal"></portal>
   </div>
 </template>
 
 <script>
+import UI from "@/ui_constants";
 import ProgressBar from "./ProgressBar.vue";
 import CharacterStats from "@/../knightlands-shared/character_stat.js";
 import TimerRefill from "@/views/TimerRefill/TimerRefill.vue";
+import AttractorMixin from "@/components/AttractorMixin.vue";
+import Vue from "vue";
+import AttractableResource from "@/components/AttractableResource.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
 const TimerRefillModal = CreateDialog(TimerRefill, ...TimerRefill.props);
 
 export default {
+  mixins: [AttractorMixin],
   data() {
     return {
       characterStats: CharacterStats,
@@ -87,8 +94,7 @@ export default {
     };
   },
   components: {
-    ProgressBar,
-    TimerRefill
+    ProgressBar
   },
   mounted() {
     this.$game.on("refill", stat => {
@@ -133,6 +139,25 @@ export default {
     },
     async refillTimer(stat) {
       await TimerRefillModal(stat);
+    },
+    showResourceGained(resourceName, at, resourceValue) {
+      const component = Vue.extend(AttractableResource);
+      const instance = new component({
+        propsData: {
+          value: resourceValue,
+          resourceName: resourceName
+        }
+      });
+      instance.$mount();
+      return this.attractToResource(instance, resourceName, at);
+    },
+    attractToResource(instance, resourceName, at) {
+      const offset = UI.offset(this.$refs[resourceName].$el);
+      const to = {
+        x: offset.left + offset.width / 2,
+        y: offset.top + offset.height / 2
+      };
+      return this.attract(instance, at, to);
     }
   }
 };
@@ -141,7 +166,7 @@ export default {
 <style lang="less" scoped>
 .status-bar {
   height: 7rem;
-  background-color: #23354D;
+  background-color: #23354d;
   // border-bottom: 0.25rem solid #928690;
   padding-left: 1rem;
 }

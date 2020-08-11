@@ -1,5 +1,5 @@
 <template>
-  <div ref="root" class="font-size-5 root font-outline digit-font">
+  <div class="font-size-5 root font-outline digit-font">
     <slot></slot>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
       const easing = this.crit ? "easeOutElastic" : "easeOutExpo";
 
       let timeline = anime.timeline({
-        targets: this.$refs.root
+        targets: this.$el
       });
 
       timeline.add({
@@ -41,6 +41,7 @@ export default {
         color: color,
         "font-size": `*=${FontSize}`,
         bottom: `+=${offsetY}%`,
+        left: `+=${offsetX}%`,
         opacity: 1
       });
 

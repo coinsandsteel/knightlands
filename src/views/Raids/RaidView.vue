@@ -192,6 +192,8 @@ import RaidArmy from "./Army/RaidArmy.vue";
 import RaidOptions from "./RaidOptions.vue";
 import RaidAttackPanel from "./RaidAttackPanel.vue";
 import BossAnimation from "./BossAnimation.vue";
+import BossDamageText from "./BossDamageText.vue";
+import Vue from "vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
@@ -502,11 +504,30 @@ export default {
 
       this.attackInProgress = true;
 
-      await this.$refs.bossAnimation.playAttack();
-      console.log(data);
-      this._handlePlayerDamage(data.player.damage, data.player.crit);
+      const bossDamageInstance = new (Vue.extend(BossDamageText))({
+        propsData: {
+          damage: data.bossDamage * -1
+        }
+      });
+      bossDamageInstance.$mount();
 
-      await this.$refs.army.playDamages(data.armyDamage);
+      await Promise.all([
+        this.$app
+          .getStatusBar()
+          .attractToResource(bossDamageInstance, "health", this.bossViewCenter),
+        this.$refs.bossAnimation.playAttack()
+      ]);
+
+      this._handlePlayerDamage(data.player.damage, data.player.crit);
+      this._handleArmyDamage(data.player.damage);
+
+      await this.$refs.army.play(
+        data.armyDamage, 
+        data.procs,
+        data.health,
+        data.energy,
+        data.stamina
+      );
 
       const timeline = anime.timeline({
         duration: 500

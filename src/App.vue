@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="content-wrap flex flex-column flex-no-wrap">
-      <status-bar v-if="$game.authenticated" v-show="!hideTopBar"></status-bar>
+      <status-bar v-if="$game.authenticated" v-show="!hideTopBar" ref="statusBar"></status-bar>
       <div class="flex flex-center section-name flex-no-wrap" v-show="title">
         <div class="section-decor"></div>
         <div class="section-title font-size-20">{{$t(title)}}</div>
@@ -60,7 +60,11 @@
       </div>
     </div>
 
-    <portal-target class="overlay" name="overlay"></portal-target>
+    <portal-target
+      class="pointer-events-none absolute-stretch text-align-left"
+      name="overlay"
+      id="overlay"
+    ></portal-target>
 
     <RaidStatusNotification />
 
@@ -239,6 +243,9 @@ export default {
     }
   },
   methods: {
+    getStatusBar() {
+      return this.$refs.statusBar;
+    },
     handleToggleDrawer() {
       this.$refs.drawerLayout.toggle();
     },
@@ -300,15 +307,6 @@ export default {
 @import (reference) "./style/common.less";
 
 @footerColor: #245178;
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-}
 
 .content-wrap {
   height: 100%;

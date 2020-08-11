@@ -42,7 +42,7 @@ export default {
     showDamage(damage) {
       this.damageDone = damage;
 
-      const FontSize = this.crit ? "4rem" : "3.5rem";
+      const FontSize = this.crit ? "4rem" : "*=3";
       const color = this.crit ? "#fdc64f" : "#ff3e3e";
       const easing = "easeOutElastic";
 

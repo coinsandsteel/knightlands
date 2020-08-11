@@ -22,8 +22,11 @@
           v-for="(damage, unitId) in damages"
           :key="unitId"
           :ref="`damage${unitId}`"
-          class="font-size-5 damage-text absolute font-outline font-weight-900"
-        >{{damage}}</div>
+          class="absolute font-outline font-weight-900 flex flex-column flex-center"
+        >
+          <span class="damage-text">{{damage}}</span>
+          <span class="damage-text proc" v-if="procs[unitId]">+{{procs[unitId]}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -32,9 +35,9 @@
 <script>
 import RaidArmySlot from "./RaidArmySlot.vue";
 import resize from "vue-resize-directive";
-import UI from "@/ui_constants";
-
+import Vue from "vue";
 import anime from "animejs/lib/anime.es.js";
+import UI from "@/ui_constants";
 
 export default {
   props: ["legionIndex", "attackPoint"],
@@ -43,16 +46,9 @@ export default {
     resize
   },
   data: () => ({
-    damages: {}
+    damages: {},
+    procs: {}
   }),
-  watch: {
-    legionIndex: {
-      immediate: true,
-      handler() {
-        this.reload();
-      }
-    }
-  },
   computed: {
     generals() {
       return this.$game.army.getSlots(this.legionIndex, false);
@@ -62,11 +58,15 @@ export default {
     }
   },
   methods: {
-    async playDamages(unitDamages) {
+    async play(unitDamages, procs, health, energy, stamina) {
       const slotTargets = [];
       const byVerticalPosition = [];
 
       for (const unitId in unitDamages) {
+        if (procs[unitId]) {
+          unitDamages[unitId] += procs[unitId];
+        }
+
         if (this.$refs[unitId]) {
           const slot = this.$refs[unitId][0];
           slotTargets.push(slot.$el);
@@ -94,6 +94,7 @@ export default {
 
       await slotsTimeline.finished;
 
+      this.procs = { ...procs };
       this.damages = { ...unitDamages };
 
       await new Promise(resolve => {
@@ -112,8 +113,7 @@ export default {
           targets: el
         });
 
-        timeline.add({
-          duration: 0,
+        anime.set(el, {
           opacity: 0,
           translateY:
             slotEl.offsetTop + slotEl.offsetHeight / 2 - el.offsetHeight / 2,
@@ -126,7 +126,8 @@ export default {
           easing: "easeOutElastic",
           // color: "#ff3e3e",
           // "font-size": "3.5rem",
-          opacity: 1
+          opacity: 1,
+          endDelay: 300
         });
 
         if (prevVerticalPos != slotEl.offsetTop) {
@@ -140,7 +141,7 @@ export default {
         timeline.add({
           duration: 500,
           easing: "easeOutExpo",
-          "font-size": "3rem",
+          // "font-size": "3rem",
           translateY: el.offsetTop - this.attackPoint.y,
           delay: delay,
           opacity: {
@@ -161,6 +162,10 @@ export default {
 
       await animationToWait.finished;
 
+      await this._playResources("health", health, byVerticalPosition);
+      await this._playResources("energy", energy, byVerticalPosition);
+      await this._playResources("stamina", health, byVerticalPosition);
+
       slotsTimeline = anime.timeline({
         targets: slotTargets
       });
@@ -171,6 +176,31 @@ export default {
         easing: "easeInOutBack"
       });
     },
+    async _playResources(resourceName, values, byVerticalPosition) {
+      let promises = [];
+
+      for (let record of byVerticalPosition) {
+        const { unitId, el: slotEl } = record;
+        const el = this.$refs[`damage${unitId}`][0];
+        if (!values[unitId]) {
+          continue;
+        }
+        const offset = UI.offset(slotEl);
+
+        promises.push(
+          this.$app.getStatusBar().showResourceGained(
+            resourceName,
+            {
+              x: offset.left + offset.width / 2 - el.offsetWidth / 2,
+              y: offset.top + offset.height / 2
+            },
+            values[unitId]
+          )
+        );
+      }
+
+      await Promise.all(promises);
+    },
     onResize() {
       // make it square
       let minDimension = Math.min(
@@ -180,8 +210,7 @@ export default {
 
       this.$refs.grid.style.width = minDimension + "px";
       this.$refs.grid.style.height = minDimension + "px";
-    },
-    reload() {}
+    }
   }
 };
 </script>
@@ -196,6 +225,11 @@ export default {
 
 .damage-text {
   font-size: 3.5rem;
+
+  &.proc {
+    color: #e08c5c;
+    font-size: 2.2rem;
+  }
 }
 
 // .outer {

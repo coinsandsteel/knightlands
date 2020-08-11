@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-center flex-no-wrap">
+  <div class="flex-inline flex-center flex-no-wrap">
     <span v-if="!flip" v-bind:class="iconClass" class="value-icon"></span>
     <div :class="valueClass">
       <slot>{{value}}</slot>
