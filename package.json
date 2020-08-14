@@ -9,24 +9,8 @@
         "build:client": "yarn --cwd ./packages/client build",
         "test:client": "yarn --cwd ./packages/client test"
     },
-    "eslintConfig": {
-      "root": true,
-      "env": {
-        "node": true
-      },
-      "extends": [
-        "plugin:vue/essential",
-        "@vue/prettier"
-      ],
-      "rules": {},
-      "parserOptions": {
-        "parser": "babel-eslint"
-      }
-    },
     "postcss": {
-      "plugins": {
-        "autoprefixer": {}
-      }
+      "plugins": {}
     },
     "browserslist": [
       "> 1%",
