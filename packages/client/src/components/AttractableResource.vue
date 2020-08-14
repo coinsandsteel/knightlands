@@ -34,6 +34,14 @@ export default {
         case "stamina":
           color = "#fbc722";
           break;
+
+        case "exp":
+          color = "#f5f5f7";
+          break;
+
+        case "softCurrency":
+          color = "#f4d363";
+          break;
       }
       return color;
     },
@@ -50,6 +58,14 @@ export default {
 
         case "stamina":
           icon = "icon-stamina";
+          break;
+
+        case "exp":
+          icon = "icon-exp";
+          break;
+
+        case "softCurrency":
+          icon = "icon-gold";
           break;
       }
       return icon;

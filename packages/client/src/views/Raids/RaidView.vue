@@ -158,6 +158,8 @@
       <portal to="footer" v-if="isActive">
         <CopyButton :data="href" caption="btn-share"></CopyButton>
       </portal>
+
+      <div ref="overlay" class="absolute-stretch pointer-events-none text-align-left"></div>
     </template>
 
     <template v-slot:rejected>
@@ -520,7 +522,24 @@ export default {
             bossDamageInstance,
             "health",
             this.bossViewCenter,
-            data.boss.damage * -1
+            data.boss.damage * -1,
+            this.$refs.overlay
+          ),
+        this.$app
+          .getStatusBar()
+          .showResourceGained(
+            "exp",
+            this.bossViewCenter,
+            data.exp,
+            this.$refs.overlay
+          ),
+        this.$app
+          .getStatusBar()
+          .showResourceGained(
+            "softCurrency",
+            this.bossViewCenter,
+            data.soft,
+            this.$refs.overlay
           ),
         this.$refs.bossAnimation.playAttack()
       ]);
@@ -533,7 +552,8 @@ export default {
         data.procs,
         data.health,
         data.energy,
-        data.stamina
+        data.stamina,
+        this.$refs.overlay
       );
 
       const timeline = anime.timeline({

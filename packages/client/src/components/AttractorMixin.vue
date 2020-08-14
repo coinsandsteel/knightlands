@@ -3,8 +3,10 @@ import anime from "animejs/lib/anime.es.js";
 
 export default {
   methods: {
-    async attract(attractable, at, to) {
-      const overlay = document.getElementById("overlay");
+    async attract(attractable, at, to, container) {
+      const overlay = container
+        ? container
+        : document.getElementById("overlay");
       const el = attractable.$el;
       overlay.appendChild(el);
 

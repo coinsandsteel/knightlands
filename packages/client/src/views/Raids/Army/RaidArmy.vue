@@ -58,7 +58,7 @@ export default {
     }
   },
   methods: {
-    async play(unitDamages, procs, health, energy, stamina) {
+    async play(unitDamages, procs, health, energy, stamina, container) {
       const slotTargets = [];
       const byVerticalPosition = [];
 
@@ -162,9 +162,9 @@ export default {
 
       await animationToWait.finished;
 
-      await this._playResources("health", health, byVerticalPosition);
-      await this._playResources("energy", energy, byVerticalPosition);
-      await this._playResources("stamina", health, byVerticalPosition);
+      await this._playResources("health", health, byVerticalPosition, container);
+      await this._playResources("energy", energy, byVerticalPosition, container);
+      await this._playResources("stamina", stamina, byVerticalPosition, container);
 
       slotsTimeline = anime.timeline({
         targets: slotTargets
@@ -176,7 +176,7 @@ export default {
         easing: "easeInOutBack"
       });
     },
-    async _playResources(resourceName, values, byVerticalPosition) {
+    async _playResources(resourceName, values, byVerticalPosition, container) {
       let promises = [];
 
       for (let record of byVerticalPosition) {
@@ -193,7 +193,8 @@ export default {
               x: offset.left + offset.width / 2 - el.offsetWidth / 2,
               y: offset.top + offset.height / 2
             },
-            values[unitId]
+            values[unitId],
+            container
           )
         );
       }

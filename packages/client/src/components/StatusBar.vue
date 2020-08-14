@@ -93,7 +93,12 @@ export default {
       staminaTimer: this.$game.character.timers[CharacterStats.Stamina],
       healthTimer: this.$game.character.timers[CharacterStats.Health],
       delayedResources: {
-        health: RESOURCE_NOT_DELAYED
+        health: RESOURCE_NOT_DELAYED,
+        stamina: RESOURCE_NOT_DELAYED,
+        energy: RESOURCE_NOT_DELAYED,
+        softCurrency: RESOURCE_NOT_DELAYED,
+        hardCurrency: RESOURCE_NOT_DELAYED,
+        exp: RESOURCE_NOT_DELAYED
       }
     };
   },
@@ -110,34 +115,52 @@ export default {
       return this.maxStats[CharacterStats.Health];
     },
     health() {
-      if (this.delayedResources.health != RESOURCE_NOT_DELAYED) {
-        return this.delayedResources.health;
-      }
-      return this.timers[CharacterStats.Health].value;
+      return this.getDelayedResourceValue(
+        "health",
+        this.timers[CharacterStats.Health].value
+      );
     },
     exp() {
-      return this.$game.character.exp;
+      return this.getDelayedResourceValue("exp", this.$game.character.exp);
     },
     energy() {
-      return this.timers[CharacterStats.Energy].value;
+      return this.getDelayedResourceValue(
+        "energy",
+        this.timers[CharacterStats.Energy].value
+      );
     },
     maxEnergy() {
       return this.maxStats[CharacterStats.Energy];
     },
     stamina() {
-      return this.timers[CharacterStats.Stamina].value;
+      return this.getDelayedResourceValue(
+        "stamina",
+        this.timers[CharacterStats.Stamina].value
+      );
     },
     maxStamina() {
       return this.maxStats[CharacterStats.Stamina];
     },
     softCurrency() {
-      return this.$game.softCurrency;
+      return this.getDelayedResourceValue(
+        "softCurrency",
+        this.$game.softCurrency
+      );
     },
     hardCurrency() {
-      return this.$game.hardCurrency;
+      return this.getDelayedResourceValue(
+        "hardCurrency",
+        this.$game.hardCurrency
+      );
     }
   },
   methods: {
+    getDelayedResourceValue(resourceName, recentValue) {
+      if (this.delayedResources[resourceName] != RESOURCE_NOT_DELAYED) {
+        return this.delayedResources[resourceName];
+      }
+      return recentValue;
+    },
     nextExperience() {
       return this.$game.getRequiredExperience(this.$game.character.level);
     },
@@ -149,10 +172,12 @@ export default {
     },
     setDelayResourceUpdate(delay) {
       for (const resourceName in this.delayedResources) {
-        this.delayedResources[resourceName] = delay ? this[resourceName] : RESOURCE_NOT_DELAYED;
+        this.delayedResources[resourceName] = delay
+          ? this[resourceName]
+          : RESOURCE_NOT_DELAYED;
       }
     },
-    async showResourceGained(resourceName, at, resourceValue) {
+    async showResourceGained(resourceName, at, resourceValue, container) {
       const component = Vue.extend(AttractableResource);
       const instance = new component({
         propsData: {
@@ -161,15 +186,31 @@ export default {
         }
       });
       instance.$mount();
-      await this.attractToResource(instance, resourceName, at, resourceValue);
+      await this.attractToResource(
+        instance,
+        resourceName,
+        at,
+        resourceValue,
+        container
+      );
     },
-    async attractToResource(instance, resourceName, at, resourceValue) {
-      const offset = UI.offset(this.$refs[resourceName].$el);
+    async attractToResource(
+      instance,
+      resourceName,
+      at,
+      resourceValue,
+      container
+    ) {
+      let el = this.$refs[resourceName].$el;
+      if (!el) {
+        el = this.$refs[resourceName];
+      }
+      const offset = UI.offset(el);
       const to = {
         x: offset.left + offset.width / 2,
         y: offset.top + offset.height / 2
       };
-      await this.attract(instance, at, to);
+      await this.attract(instance, at, to, container);
       this.delayedResources[resourceName] += resourceValue;
     }
   }
