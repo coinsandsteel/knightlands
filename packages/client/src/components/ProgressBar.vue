@@ -28,6 +28,7 @@
 
       <div class="bar" :style="barStyle()">
         <div v-if="!hideMainBar" class="progress" :class="progressType()" :style="fillStyle()"></div>
+        <div v-if="!hideMainBar" class="progress-delta" :style="deltaFillStyle()" :class="{show: valueChanged}"></div>
         <div v-if="value2 > 0" class="progress progress2" :class="barType2" :style="fillStyle2()"></div>
 
         <div
@@ -50,6 +51,7 @@
 
 <script>
 import Timer from "@/timer.js";
+import debounce from "lodash.debounce";
 
 const Inside = "inside";
 const Top = "top";
@@ -90,14 +92,27 @@ export default {
     return {
       timerValue: new Timer(),
       timerShowInterval: undefined,
-      showValue: true
+      showValue: true,
+      previousValue: 0
     };
   },
   mounted() {
     this.updateTimerValue();
     this.toggleTimer();
   },
+  created() {
+    this._removeBlink = debounce(
+      () => {
+        this.previousValue = this.value;
+      },
+      1000,
+      { leading: false, trailing: true }
+    );
+  },
   computed: {
+    valueChanged() {
+      return this.previousValue != this.value;
+    },
     isTop() {
       return this.valuePosition == Top;
     },
@@ -119,6 +134,13 @@ export default {
     }
   },
   watch: {
+    value: {
+      immediate: false,
+      handler(newValue, oldValue) {
+        this.previousValue = oldValue;
+        this._removeBlink();
+      }
+    },
     timer: {
       deep: true,
       handler() {
@@ -211,6 +233,15 @@ export default {
       return {
         height: this.height
       };
+    },
+    deltaFillStyle() {
+      let percentWidth = (this.previousValue / this.maxValue) * 100;
+      if (percentWidth > 100) {
+        percentWidth = 100;
+      }
+      return {
+        width: percentWidth + "%"
+      }
     }
   }
 };
@@ -238,6 +269,21 @@ export default {
         z-index: 1;
       }
 
+      .progress-delta {
+        z-index: -1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: #d7f1ff;
+        opacity: 0;
+
+        &.show {
+          animation: delta 1s linear;
+        }
+      }
+
       .progress2 {
         z-index: -1;
         position: absolute;
@@ -247,6 +293,18 @@ export default {
         right: 0;
       }
     }
+  }
+}
+
+@keyframes delta {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
