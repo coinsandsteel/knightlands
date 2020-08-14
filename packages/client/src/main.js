@@ -16,11 +16,10 @@ import VueResource from "vue-resource";
 import vuexI18n from "vuex-i18n";
 import PortalVue from "portal-vue";
 import VueVirtualScroller from "vue-virtual-scroller";
+import Vue2TouchEvents from "vue2-touch-events";
 
 import RecipeScheme from "@/views/Crafting/RecipeBook/RecipeScheme.vue";
 Vue.component("recipe-scheme", RecipeScheme);
-
-import Vue2TouchEvents from "vue2-touch-events";
 
 Vue.use(Vue2TouchEvents);
 Vue.use(VueVirtualScroller);

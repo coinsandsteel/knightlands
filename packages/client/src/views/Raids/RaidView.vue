@@ -25,6 +25,21 @@
 
               <DamageLog :log="lastDamages" v-show="showLog" @close="showLog = false"></DamageLog>
             </template>
+
+            <template v-slot:overlay>
+              <div class="height-100 width-100 impact-container">
+                <SpriteAnimator
+                  :id="'sprite'"
+                  :spritesheet="require('../../assets/fx/impact1/impact2.png')"
+                  :json="require('../../assets/fx/impact1/impact2.json')"
+                  :yoyo="false"
+                  :autoplay="false"
+                  :loops="1"
+                  :fps="30"
+                  ref="impact"
+                ></SpriteAnimator>
+              </div>
+            </template>
           </boss-view>
 
           <!--COMBAT VIEW-->
@@ -196,6 +211,7 @@ import RaidAttackPanel from "./RaidAttackPanel.vue";
 import BossAnimation from "./BossAnimation.vue";
 import BossDamageText from "./BossDamageText.vue";
 import Vue from "vue";
+import SpriteAnimator from "@/components/SpriteAnimator.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
@@ -254,7 +270,8 @@ export default {
     BossAnimation,
     RaidArmy,
     RaidOptions,
-    RaidAttackPanel
+    RaidAttackPanel,
+    SpriteAnimator
   },
   channel: undefined,
   mixins: [AppSection, PaymentHandler, RaidGetterMixin],
@@ -383,7 +400,7 @@ export default {
       this.showLog = true;
     },
     handleShowChallenges() {
-      // ShowChallenges(this.raidData, this.raidState.challenges);
+      ShowChallenges(this.raidData, this.raidState.challenges);
     },
     handleShowRewards() {
       this.lootProgress.current = this.raidState.currentDamage;
@@ -525,27 +542,31 @@ export default {
             data.boss.damage * -1,
             this.$refs.overlay
           ),
-        this.$app
-          .getStatusBar()
-          .showResourceGained(
-            "exp",
-            this.bossViewCenter,
-            data.exp,
-            this.$refs.overlay
-          ),
-        this.$app
-          .getStatusBar()
-          .showResourceGained(
-            "softCurrency",
-            this.bossViewCenter,
-            data.soft,
-            this.$refs.overlay
-          ),
         this.$refs.bossAnimation.playAttack()
       ]);
 
-      this._handlePlayerDamage(data.player.damage, data.player.crit);
+
+      this.$refs.impact.play();
       this._handleArmyDamage(data.player.damage);
+      await this._handlePlayerDamage(data.player.damage, data.player.crit);
+
+      await this.$app
+        .getStatusBar()
+        .showResourceGained(
+          "softCurrency",
+          this.bossViewCenter,
+          data.soft,
+          this.$refs.overlay
+        );
+
+      await this.$app
+        .getStatusBar()
+        .showResourceGained(
+          "exp",
+          this.bossViewCenter,
+          data.exp,
+          this.$refs.overlay
+        );
 
       await this.$refs.army.play(
         data.armyDamage,
@@ -629,7 +650,7 @@ export default {
       this.$refs.bossAnimation.playDamageTaken();
       this.raidProgress.current -= damage;
     },
-    _handlePlayerDamage(damage, crit) {
+    async _handlePlayerDamage(damage, crit) {
       this.playerDamages.push({
         damage: damage,
         crit: crit,
@@ -679,6 +700,8 @@ export default {
           duration: 100
         }
       });
+
+      await timeline.finished;
     },
     async _handleAttackRaidError(error) {
       switch (error) {
@@ -729,6 +752,12 @@ export default {
     grid-row: ~"1/3";
     grid-column: 3;
     place-self: stretch;
+  }
+}
+
+.impact-container {
+  &:nth-child(0) {
+    left: 30%;
   }
 }
 </style>
