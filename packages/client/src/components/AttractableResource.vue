@@ -3,7 +3,7 @@
     :iconClass="icon"
     :value="`${sign}${value}`"
     valueClass="font-weight-900 font-outline"
-    class="absolute"
+    class="absolute animation-hint"
   >
     <slot></slot>
   </IconWithValue>
@@ -95,3 +95,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.animation-hint {
+  will-change: transform, opacity, font-size;
+}
+</style>
