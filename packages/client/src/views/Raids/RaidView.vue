@@ -473,6 +473,8 @@ export default {
       );
 
       try {
+        this.$app.getStatusBar().setDelayResourceUpdate(true);
+
         await this.request;
 
         if (!this.$game.character.alive) {
@@ -506,7 +508,7 @@ export default {
 
       const bossDamageInstance = new (Vue.extend(BossDamageText))({
         propsData: {
-          damage: data.bossDamage * -1
+          damage: data.boss.damage * -1
         }
       });
       bossDamageInstance.$mount();
@@ -514,7 +516,12 @@ export default {
       await Promise.all([
         this.$app
           .getStatusBar()
-          .attractToResource(bossDamageInstance, "health", this.bossViewCenter),
+          .attractToResource(
+            bossDamageInstance,
+            "health",
+            this.bossViewCenter,
+            data.boss.damage * -1
+          ),
         this.$refs.bossAnimation.playAttack()
       ]);
 
@@ -522,7 +529,7 @@ export default {
       this._handleArmyDamage(data.player.damage);
 
       await this.$refs.army.play(
-        data.armyDamage, 
+        data.armyDamage,
         data.procs,
         data.health,
         data.energy,
@@ -549,6 +556,7 @@ export default {
 
       await timeline.finished;
 
+      this.$app.getStatusBar().setDelayResourceUpdate(false);
       this.attackInProgress = false;
     },
     _handleEvents(data) {

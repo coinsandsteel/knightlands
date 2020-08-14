@@ -186,7 +186,6 @@ export default {
           continue;
         }
         const offset = UI.offset(slotEl);
-
         promises.push(
           this.$app.getStatusBar().showResourceGained(
             resourceName,

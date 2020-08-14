@@ -53,13 +53,13 @@
       ></progress-bar>
     </div>
 
-    <div class="flex flex-column column">
+    <div class="flex flex-column column" ref="softCurrency">
       <div class="flex flex-no-wrap flex-item-center">
         <div class="icon-gold"></div>
         <span class="status-bar-font digit-font">{{softCurrency}}</span>
       </div>
 
-      <div class="flex flex-no-wrap flex-item-center">
+      <div class="flex flex-no-wrap flex-item-center" ref="hardCurrency">
         <div class="icon-premium"></div>
         <span class="status-bar-font digit-font">{{hardCurrency}}</span>
       </div>
@@ -80,6 +80,7 @@ import AttractableResource from "@/components/AttractableResource.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
 const TimerRefillModal = CreateDialog(TimerRefill, ...TimerRefill.props);
+const RESOURCE_NOT_DELAYED = -1;
 
 export default {
   mixins: [AttractorMixin],
@@ -90,7 +91,10 @@ export default {
       timers: this.$game.character.timers,
       energyTimer: this.$game.character.timers[CharacterStats.Energy],
       staminaTimer: this.$game.character.timers[CharacterStats.Stamina],
-      healthTimer: this.$game.character.timers[CharacterStats.Health]
+      healthTimer: this.$game.character.timers[CharacterStats.Health],
+      delayedResources: {
+        health: RESOURCE_NOT_DELAYED
+      }
     };
   },
   components: {
@@ -106,6 +110,9 @@ export default {
       return this.maxStats[CharacterStats.Health];
     },
     health() {
+      if (this.delayedResources.health != RESOURCE_NOT_DELAYED) {
+        return this.delayedResources.health;
+      }
       return this.timers[CharacterStats.Health].value;
     },
     exp() {
@@ -140,7 +147,12 @@ export default {
     async refillTimer(stat) {
       await TimerRefillModal(stat);
     },
-    showResourceGained(resourceName, at, resourceValue) {
+    setDelayResourceUpdate(delay) {
+      for (const resourceName in this.delayedResources) {
+        this.delayedResources[resourceName] = delay ? this[resourceName] : RESOURCE_NOT_DELAYED;
+      }
+    },
+    async showResourceGained(resourceName, at, resourceValue) {
       const component = Vue.extend(AttractableResource);
       const instance = new component({
         propsData: {
@@ -149,15 +161,16 @@ export default {
         }
       });
       instance.$mount();
-      return this.attractToResource(instance, resourceName, at);
+      await this.attractToResource(instance, resourceName, at, resourceValue);
     },
-    attractToResource(instance, resourceName, at) {
+    async attractToResource(instance, resourceName, at, resourceValue) {
       const offset = UI.offset(this.$refs[resourceName].$el);
       const to = {
         x: offset.left + offset.width / 2,
         y: offset.top + offset.height / 2
       };
-      return this.attract(instance, at, to);
+      await this.attract(instance, at, to);
+      this.delayedResources[resourceName] += resourceValue;
     }
   }
 };
