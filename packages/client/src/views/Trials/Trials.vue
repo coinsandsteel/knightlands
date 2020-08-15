@@ -18,7 +18,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
-import TrialType from "@/../knightlands-shared/trial_type";
+import TrialType from "@/../../knightlands-shared/trial_type";
 import TrialBackgrounds from "./trialBackgrounds";
 
 const trials = [TrialType.Armour, TrialType.Weapon, TrialType.Accessory];

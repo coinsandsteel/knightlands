@@ -29,7 +29,7 @@
 import CardInfo from "./CardInfo.vue";
 import CustomButton from "@/components/Button.vue";
 import TrialsMeta from "@/trials_meta";
-import TrailCardModifer from "@/../knightlands-shared/trial_card_modifiers";
+import TrailCardModifer from "@/../../knightlands-shared/trial_card_modifiers";
 
 export default {
   props: ["upgradeCost", "type"],

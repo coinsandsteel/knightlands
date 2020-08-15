@@ -10,8 +10,8 @@
 </template>
 
 <script>
-const ItemActions = require("@/../knightlands-shared/item_actions");
-import ItemProperties from "@/../knightlands-shared/item_properties";
+const ItemActions = require("@/../../knightlands-shared/item_actions");
+import ItemProperties from "@/../../knightlands-shared/item_properties";
 import RaidsMeta from "@/raids_meta";
 
 export default {

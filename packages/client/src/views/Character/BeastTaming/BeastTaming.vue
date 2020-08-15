@@ -154,7 +154,7 @@
 <script>
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Beasts from "@/beasts";
-import CharacterStats from "@/../knightlands-shared/character_stat.js";
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import PromisedButton from "@/components/PromisedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
@@ -165,7 +165,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
 import EnemyView from "@/components/EnemyView.vue";
 
-const Events = require("@/../knightlands-shared/events");
+const Events = require("@/../../knightlands-shared/events");
 
 const MaxBoostSize = 50;
 

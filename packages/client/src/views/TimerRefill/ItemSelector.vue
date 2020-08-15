@@ -20,7 +20,7 @@
 <script>
 import Loot from "@/components/Loot.vue";
 import NumericValue from "@/components/NumericValue.vue";
-import CharacterStat from "@/../knightlands-shared/character_stat";
+import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
   props: ["item", "maxStat", "predictedHp"],

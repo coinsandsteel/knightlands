@@ -24,7 +24,7 @@
 
 <script>
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
-import PaymentStatus from "@/../knightlands-shared/payment_status";
+import PaymentStatus from "@/../../knightlands-shared/payment_status";
 import CustomButton from "@/components/Button.vue";
 
 export default {

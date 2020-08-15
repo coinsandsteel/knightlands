@@ -56,7 +56,7 @@ import LootContainer from "@/components/LootContainer.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
 import CustomButton from "@/components/Button.vue";
-import { EquipmentSlots } from "@/../knightlands-shared/equipment_slot";
+import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 import DisenchantingMeta from "@/disenchanting_meta";
 import Loot from "@/components/Loot.vue";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";

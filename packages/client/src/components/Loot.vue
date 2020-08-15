@@ -40,7 +40,7 @@
 </template>
 
 <script>
-const { EquipmentSlots } = require("@/../knightlands-shared/equipment_slot");
+const { EquipmentSlots } = require("@/../../knightlands-shared/equipment_slot");
 
 let SlotPlaceholders = {};
 SlotPlaceholders[EquipmentSlots.MainHand] = "icon_slot_mainhand";

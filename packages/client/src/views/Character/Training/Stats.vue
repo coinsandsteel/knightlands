@@ -37,10 +37,10 @@
 </template>
 
 <script>
-import UpgradableCharacterStats from "@/../knightlands-shared/upgradable_character_stats";
+import UpgradableCharacterStats from "@/../../knightlands-shared/upgradable_character_stats";
 import CustomButton from "@/components/Button.vue";
-import TrainingCamp from "@/../knightlands-shared/training_camp";
-import { StatConversions } from "@/../knightlands-shared/character_stat.js";
+import TrainingCamp from "@/../../knightlands-shared/training_camp";
+import { StatConversions } from "@/../../knightlands-shared/character_stat.js";
 import NumericValue from "@/components/NumericValue.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import TrainingCampMeta from "@/training_camp";

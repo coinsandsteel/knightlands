@@ -1,5 +1,5 @@
 <script>
-const EquipmentType = require("@/../knightlands-shared/equipment_type");
+const EquipmentType = require("@/../../knightlands-shared/equipment_type");
 import CraftingList from "./CraftingList.vue";
 
 const CraftingRecipes = require("@/crafting_recipes_by_category");

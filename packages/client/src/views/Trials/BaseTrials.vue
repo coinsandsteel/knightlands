@@ -30,7 +30,7 @@
 import AppSection from "@/AppSection.vue";
 import TrialFooter from "./TrialFooter.vue";
 import Cards from "./Cards/Cards.vue";
-import Errors from "@/../knightlands-shared/errors";
+import Errors from "@/../../knightlands-shared/errors";
 import PromptMixin from "@/components/PromptMixin.vue";
 
 import PurchaseAttempts from "./PurchaseAttempts.vue";

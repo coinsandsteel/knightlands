@@ -72,7 +72,7 @@
 <script>
 import UI from "@/ui_constants";
 import ProgressBar from "./ProgressBar.vue";
-import CharacterStats from "@/../knightlands-shared/character_stat.js";
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import TimerRefill from "@/views/TimerRefill/TimerRefill.vue";
 import AttractorMixin from "@/components/AttractorMixin.vue";
 import Vue from "vue";

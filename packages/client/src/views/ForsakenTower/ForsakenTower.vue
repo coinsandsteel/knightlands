@@ -34,7 +34,7 @@ import HintHandler from "@/components/HintHandler.vue";
 import TowerFooter from "./TowerFooter.vue";
 import ForsakenTowerFloor from "./ForsakenTowerFloor.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
-import Errors from "@/../knightlands-shared/errors";
+import Errors from "@/../../knightlands-shared/errors";
 
 export default {
   mixins: [AppSection, HintHandler, PromptMixin],

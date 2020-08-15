@@ -4,7 +4,7 @@
 
 <script>
 const IAPs = require("@/iaps.json");
-import Blockchains from "@/../knightlands-shared/blockchains";
+import Blockchains from "@/../../knightlands-shared/blockchains";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {

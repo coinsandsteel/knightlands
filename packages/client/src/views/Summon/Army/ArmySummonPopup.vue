@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import ArmySummonType from "@/../knightlands-shared/army_summon_type";
+import ArmySummonType from "@/../../knightlands-shared/army_summon_type";
 import UserDialog from "@/components/UserDialog.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";

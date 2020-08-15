@@ -23,7 +23,7 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import CharacterStat from "@/../knightlands-shared/character_stat";
+import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
   components: { UserDialog },

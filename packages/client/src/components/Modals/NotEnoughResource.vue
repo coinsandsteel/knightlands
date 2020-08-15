@@ -11,7 +11,7 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import CharacterStats from "@/../knightlands-shared/character_stat";
+import CharacterStats from "@/../../knightlands-shared/character_stat";
 import CustomButton from "@/components/Button.vue";
 
 export default {

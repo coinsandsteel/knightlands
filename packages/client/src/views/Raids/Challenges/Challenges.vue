@@ -15,7 +15,7 @@
 <script>
 import Tabs from "@/components/Tabs.vue";
 import UserDialog from "@/components/UserDialog.vue";
-import RaidChallenge from "@/../knightlands-shared/raid_challenge";
+import RaidChallenge from "@/../../knightlands-shared/raid_challenge";
 import TopDamageDealers from "./TopDamageDealers.vue";
 
 const InventoryTab = "inventory";

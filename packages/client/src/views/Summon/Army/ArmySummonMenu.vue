@@ -51,10 +51,10 @@ import AppSection from "@/AppSection.vue";
 import ArmySummonElement from "./ArmySummonElement.vue";
 import Title from "@/components/Title.vue";
 import ArmySummonMeta from "@/army_summon_meta";
-import ArmySummonType from "@/../knightlands-shared/army_summon_type";
+import ArmySummonType from "@/../../knightlands-shared/army_summon_type";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
-import Events from "@/../knightlands-shared/events";
+import Events from "@/../../knightlands-shared/events";
 
 export default {
   mixins: [AppSection, PaymentHandler],

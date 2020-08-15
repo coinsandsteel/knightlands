@@ -93,7 +93,7 @@ import AppSection from "@/AppSection.vue";
 import GoldExchangeMeta from "@/goldExchange";
 import PriceTag from "@/components/PriceTag.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-const Events = require("@/../knightlands-shared/events");
+const Events = require("@/../../knightlands-shared/events");
 import Timer from "@/timer";
 
 export default {

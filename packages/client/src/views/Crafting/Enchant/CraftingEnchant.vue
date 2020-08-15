@@ -13,7 +13,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import LootContainer from "@/components/LootContainer.vue";
-const ItemType = require("@/../knightlands-shared/item_type");
+const ItemType = require("@/../../knightlands-shared/item_type");
 
 export default {
   mixins: [AppSection],

@@ -94,7 +94,7 @@ import Timer from "@/timer";
 import PriceTag from "@/components/PriceTag.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
-import Events from "@/../knightlands-shared/events";
+import Events from "@/../../knightlands-shared/events";
 import PromisedButton from "@/components/PromisedButton.vue";
 
 export default {

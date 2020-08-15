@@ -10,7 +10,7 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import TrialType from "@/../knightlands-shared/trial_type";
+import TrialType from "@/../../knightlands-shared/trial_type";
 import AttemptPurchaseElement from "./AttemptPurchaseElement.vue";
 
 const iapsByType = {};

@@ -172,7 +172,7 @@ import StripedPanel from "@/components/StripedPanel.vue";
 import StripedContent from "@/components/StripedContent.vue";
 import PriceTag from "@/components/PriceTag.vue";
 import CustomButton from "@/components/Button.vue";
-import DailyTaskType from "@/../knightlands-shared/daily_quest_type";
+import DailyTaskType from "@/../../knightlands-shared/daily_quest_type";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Timer from "@/timer";
 import ItemsReceived from "@/components/ItemsReceived.vue";

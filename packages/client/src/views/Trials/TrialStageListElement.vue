@@ -56,7 +56,7 @@
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Loot from "@/components/Loot.vue";
-import Elements from "@/../knightlands-shared/elements";
+import Elements from "@/../../knightlands-shared/elements";
 
 export default {
   props: ["index", "stage", "state", "locked", "inFight", "element"],

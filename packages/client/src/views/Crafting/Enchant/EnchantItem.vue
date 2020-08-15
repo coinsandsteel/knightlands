@@ -145,13 +145,13 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import PriceTag from "@/components/PriceTag.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-import CurrencyType from "@/../knightlands-shared/currency_type";
+import CurrencyType from "@/../../knightlands-shared/currency_type";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import Title from "@/components/Title.vue";
 
 const EnchantingMeta = require("@/enchanting_meta.json");
-const Events = require("@/../knightlands-shared/events");
+const Events = require("@/../../knightlands-shared/events");
 
 export default {
   mixins: [AppSection, PromptMixin, HintHandler, PaymentHandler],

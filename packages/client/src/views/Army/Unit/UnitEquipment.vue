@@ -46,7 +46,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
-import { EquipmentSlots } from "@/../knightlands-shared/equipment_slot";
+import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import CompareItems from "@/components/CompareItems.vue";

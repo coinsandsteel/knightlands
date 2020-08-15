@@ -12,7 +12,7 @@
 <script>
 import BaseTrial from "../BaseTrial.vue";
 import TrialsOfHonorMeta from "@/trials_of_honor";
-import TrialType from "@/../knightlands-shared/trial_type";
+import TrialType from "@/../../knightlands-shared/trial_type";
 
 export default {
   props: ["id", "mountCallback", "state", "trialIndex"],

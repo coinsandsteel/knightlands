@@ -83,7 +83,7 @@ import AttackButton from "@/components/AttackButton.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import CardSelector from "./Cards/CardSelector.vue";
-import TrialCardsEffect from "@/../knightlands-shared/trial_cards_effect";
+import TrialCardsEffect from "@/../../knightlands-shared/trial_cards_effect";
 import TrialsMeta from "@/trials_meta";
 
 export default {

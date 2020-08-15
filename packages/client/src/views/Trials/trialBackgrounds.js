@@ -1,4 +1,4 @@
-import TrialType from "@/../knightlands-shared/trial_type";
+import TrialType from "@/../../knightlands-shared/trial_type";
 
 const backgrounds = {};
 backgrounds[TrialType.Armour] = ["trials_of_honor_common.png", "trials_of_honor_rare.png", "trials_of_honor_epic.png", "trials_of_honor_legendary.png"];

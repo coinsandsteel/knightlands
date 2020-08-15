@@ -24,7 +24,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import RaceShopElement from "./RaceShopElement.vue";
-import CurrencyType from "@/../knightlands-shared/currency_type";
+import CurrencyType from "@/../../knightlands-shared/currency_type";
 import IconWithValue from "@/components/IconWithValue.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 

@@ -196,8 +196,8 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import DamageLog from "./DamageLog.vue";
 import ClaimedReward from "./ClaimedReward.vue";
-import CharacterStats from "@/../knightlands-shared/character_stat";
-import Errors from "@/../knightlands-shared/errors";
+import CharacterStats from "@/../../knightlands-shared/character_stat";
+import Errors from "@/../../knightlands-shared/errors";
 import Prompt from "@/components/Prompt.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
@@ -235,7 +235,7 @@ const ShowRaidInfo = CreateDialog(
 import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
 
-const Events = require("@/../knightlands-shared/events");
+const Events = require("@/../../knightlands-shared/events");
 
 import DamageText from "./DamageText.vue";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";

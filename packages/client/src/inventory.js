@@ -1,7 +1,7 @@
 import Vue from "vue";
 import throttle from "lodash.throttle";
-import ItemType from "@/../knightlands-shared/item_type";
-const ItemActions = require("@/../knightlands-shared/item_actions");
+import ItemType from "@/../../knightlands-shared/item_type";
+const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 const dummyItem = {
     id: -1,

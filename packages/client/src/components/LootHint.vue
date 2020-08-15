@@ -100,9 +100,9 @@ import CustomButton from "./Button.vue";
 import ProgressBar from "./ProgressBar.vue";
 import UserDialog from "./UserDialog.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
-const ItemType = require("@/../knightlands-shared/item_type");
-import Stat from "@/../knightlands-shared/character_stat";
-const ItemActions = require("@/../knightlands-shared/item_actions");
+const ItemType = require("@/../../knightlands-shared/item_type");
+import Stat from "@/../../knightlands-shared/character_stat";
+const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 // Button object
 // { type:"yellow", title, response }

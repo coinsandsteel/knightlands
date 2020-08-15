@@ -109,7 +109,7 @@ import StripedContent from "@/components/StripedContent.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Line3Element from "./Line3Element";
 import CustomButton from "@/components/Button.vue";
-import Events from "@/../knightlands-shared/events";
+import Events from "@/../../knightlands-shared/events";
 import PromptMixin from "@/components/PromptMixin.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";

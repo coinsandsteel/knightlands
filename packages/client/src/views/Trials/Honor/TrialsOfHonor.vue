@@ -11,7 +11,7 @@
 
 <script>
 import BaseTrials from "../BaseTrials.vue";
-import TrialType from "@/../knightlands-shared/trial_type";
+import TrialType from "@/../../knightlands-shared/trial_type";
 import TrialsList from "./TrialsList.vue";
 import Trial from "./Trial.vue";
 

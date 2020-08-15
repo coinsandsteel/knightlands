@@ -92,7 +92,7 @@ import CustomButton from "@/components/Button.vue";
 import PriceTag from "@/components/PriceTag.vue";
 import Prompt from "@/components/Prompt.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
-import Events from "@/../knightlands-shared/events";
+import Events from "@/../../knightlands-shared/events";
 import BossView from "./BossView.vue";
 import Rewards from "./Rewards.vue";
 import RaidInfo from "./RaidInfo.vue";

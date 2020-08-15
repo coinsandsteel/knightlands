@@ -124,8 +124,8 @@ import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 
-const Rarity = require("@/../knightlands-shared/rarity");
-const ItemType = require("@/../knightlands-shared/item_type");
+const Rarity = require("@/../../knightlands-shared/rarity");
+const ItemType = require("@/../../knightlands-shared/item_type");
 
 export default {
   mixins: [AppSection, PromptMixin],

@@ -3,7 +3,7 @@ import ArmyMeta from "@/army_meta";
 import Vue from "vue";
 import throttle from "lodash.throttle";
 import ArmyAbilities from "@/army_abilities";
-import ArmyResolver from "@/../knightlands-shared/army_resolver";
+import ArmyResolver from "@/../../knightlands-shared/army_resolver";
 import armyUnits from "@/army_units";
 import TroopsMeta from "@/troops_meta";
 import GeneralsMeta from "@/generals_meta";

@@ -1,4 +1,4 @@
-import Blockchains from "./../../knightlands-shared/blockchains.js";
+import Blockchains from "@/../../knightlands-shared/blockchains.js";
 
 import TronBlockchainClient from "./tron/tronBlockchainClient.js";
 

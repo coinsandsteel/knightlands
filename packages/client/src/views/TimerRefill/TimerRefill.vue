@@ -121,17 +121,17 @@
 import UserDialog from "@/components/UserDialog.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 import ButtonBar from "@/components/ButtonBar.vue";
-import CharacterStats from "@/../knightlands-shared/character_stat";
+import CharacterStats from "@/../../knightlands-shared/character_stat";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import PriceTag from "@/components/PriceTag.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
-import CharacterStat from "../../../knightlands-shared/character_stat";
+import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
 import RefillWithItems from "./RefillWithItems.vue";
-const Events = require("@/../knightlands-shared/events");
+const Events = require("@/../../knightlands-shared/events");
 
 const NonHealthMethods = ["pay", "shinies", "items"];
 const HealthMethods = ["gold", "items"];

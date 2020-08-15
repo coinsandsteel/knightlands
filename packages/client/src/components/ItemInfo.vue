@@ -62,12 +62,12 @@
 <script>
 import ItemProperties from "@/components/ItemProperties.vue";
 import Loot from "@/components/Loot.vue";
-const ItemType = require("@/../knightlands-shared/item_type");
+const ItemType = require("@/../../knightlands-shared/item_type");
 import Title from "@/components/Title.vue";
 const {
   EquipmentSlots,
   getSlot
-} = require("@/../knightlands-shared/equipment_slot");
+} = require("@/../../knightlands-shared/equipment_slot");
 
 export default {
   props: {

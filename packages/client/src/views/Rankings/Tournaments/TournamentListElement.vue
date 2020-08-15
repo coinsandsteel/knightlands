@@ -38,7 +38,7 @@
 
 <script>
 import CustomButton from "@/components/Button.vue";
-import RankingType from "@/../knightlands-shared/ranking_type";
+import RankingType from "@/../../knightlands-shared/ranking_type";
 import RaidsMeta from "@/raids_meta";
 import Timer from "@/timer";
 import StripedPanel from "@/components/StripedPanel.vue";

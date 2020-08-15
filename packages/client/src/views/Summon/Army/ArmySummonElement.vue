@@ -13,7 +13,7 @@
 
 <script>
 import CustomButton from "@/components/Button.vue";
-import ArmySummonType from "@/../knightlands-shared/army_summon_type";
+import ArmySummonType from "@/../../knightlands-shared/army_summon_type";
 import FreeSummon from "./FreeSummon.vue";
 
 import ArmySummonPopup from "./ArmySummonPopup.vue";

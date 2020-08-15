@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import CharacterStats from "@/../knightlands-shared/character_stat.js";
-const ItemType = require("@/../knightlands-shared/item_type");
-const ItemActions = require("@/../knightlands-shared/item_actions");
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
+const ItemType = require("@/../../knightlands-shared/item_type");
+const ItemActions = require("@/../../knightlands-shared/item_actions");
 import ItemSelector from "./ItemSelector.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import HintHandler from "@/components/HintHandler.vue";

@@ -44,7 +44,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import DisenchantingMeta from "@/disenchanting_meta";
 import CustomButton from "@/components/Button.vue";
-import Rarity from "@/../knightlands-shared/rarity";
+import Rarity from "@/../../knightlands-shared/rarity";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import Loot from "@/components/Loot.vue";

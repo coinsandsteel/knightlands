@@ -48,7 +48,7 @@ import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
-import Elements from "@/../knightlands-shared/elements";
+import Elements from "@/../../knightlands-shared/elements";
 
 import { create } from "vue-modal-dialogs";
 

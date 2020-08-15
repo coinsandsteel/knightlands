@@ -24,7 +24,7 @@ import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 import PriceTag from "@/components/PriceTag.vue";
-import Events from "@/../knightlands-shared/events";
+import Events from "@/../../knightlands-shared/events";
 
 export default {
   mixins: [PaymentHandler],

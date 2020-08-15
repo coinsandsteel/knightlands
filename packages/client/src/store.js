@@ -11,11 +11,11 @@ const vuexPersist = new VuexPersist({
 
 import {
   EquipmentSlots
-} from "@/../knightlands-shared/equipment_slot";
+} from "@/../../knightlands-shared/equipment_slot";
 
-import ItemType from "@/../knightlands-shared/item_type";
-import Blockchains from "@/../knightlands-shared/blockchains";
-const Rarity = require("@/../knightlands-shared/rarity");
+import ItemType from "@/../../knightlands-shared/item_type";
+import Blockchains from "@/../../knightlands-shared/blockchains";
+const Rarity = require("@/../../knightlands-shared/rarity");
 
 let filters = {
   ...ItemType,

@@ -1,7 +1,7 @@
 import Vue from "vue";
 
-import CharacterStats, { DefaultStats } from "../knightlands-shared/character_stat.js";
-import Buffs from "../knightlands-shared/buffs";
+import CharacterStats, { DefaultStats } from "@/../../knightlands-shared/character_stat.js";
+import Buffs from "@/../../knightlands-shared/buffs";
 
 class CharacterModel {
     constructor(socket, game) {
