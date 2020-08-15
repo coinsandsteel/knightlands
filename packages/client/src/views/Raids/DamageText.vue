@@ -1,5 +1,5 @@
 <template>
-  <div class="font-size-5 root font-outline digit-font">
+  <div class="font-size-5 root font-outline inline-block">
     <slot></slot>
   </div>
 </template>
@@ -18,9 +18,50 @@ const OffsetX = {
 };
 
 export default {
-  props: ["crit"],
+  props: ["crit", "local"],
   mounted() {
     this.$nextTick(() => {
+      if (this.local) {
+        this.playLocal();
+      } else {
+        this.playRemote();
+      }
+    });
+  },
+  methods: {
+    playRemote() {
+      const fontSize = this.crit ? "4rem" : "3rem";
+      const color = this.crit ? "#fdc64f" : "#fff";
+
+      let timeline = anime.timeline({
+        targets: this.$el
+      });
+
+      anime.set(this.$el, {
+        color,
+        top: "105%",
+        right: "-5%",
+        translateY: "-50%",
+        opacity: 1
+      });
+
+      timeline.add({
+        easing: "easeOutQuint",
+        duration: 600,
+        "font-size": fontSize,
+        right: "5%",
+        top: "50%"
+      });
+
+      timeline.add({
+        easing: "easeInSine",
+        duration: 2500,
+        "font-size": `3rem`,
+        top: "0%",
+        opacity: 0
+      });
+    },
+    playLocal() {
       const offsetY = OffsetY.min + Math.random() * (OffsetY.max - OffsetY.min);
       const offsetX = OffsetX.min + Math.random() * (OffsetX.max - OffsetX.min);
       const FontSize = this.crit ? 15 : 8;
@@ -49,7 +90,7 @@ export default {
         duration: 1000,
         opacity: 0
       });
-    });
+    }
   }
 };
 </script>
@@ -58,9 +99,6 @@ export default {
 .root {
   pointer-events: none;
   position: absolute;
-  bottom: 60%;
-  left: 0;
-  right: 0;
-  opacity: 0;
+  will-change: transform, opacity, font-size;
 }
 </style>

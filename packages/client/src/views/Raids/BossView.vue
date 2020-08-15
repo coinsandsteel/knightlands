@@ -181,7 +181,7 @@ export default {
 
 .boss-image {
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
   background-size: cover;
 }
 

@@ -657,7 +657,7 @@ export default {
 
       setTimeout(() => {
         this.playerDamages.splice(0, 1);
-      }, 1200);
+      }, 4000);
 
       anime.remove(this.$refs.bossView.$refs.image);
 
