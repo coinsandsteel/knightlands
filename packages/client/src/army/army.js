@@ -229,7 +229,7 @@ export default class Army {
             if (!unit) {
                 continue;
             }
-            
+
             let units = this._vm.generals;
             if (unit.troop) {
                 units = this._vm.troops;
@@ -252,25 +252,29 @@ export default class Army {
         }
 
         let army = await this._game.getArmy();
+
         this._loaded = true;
 
         const unitsDict = {};
-        let i = 0;
-        const length = army.units.length;
-        for (; i < length; ++i) {
-            const unit = army.units[i];
-            unitsDict[unit.id] = unit;
 
-            if (unit.troop) {
-                unit.idx = this._vm.troops.push(unit) - 1;
-            } else {
-                unit.idx = this._vm.generals.push(unit) - 1;
+        if (army) {
+            this._vm.legions = army.legions;
+
+            let i = 0;
+            const length = army.units.length;
+            for (; i < length; ++i) {
+                const unit = army.units[i];
+                unitsDict[unit.id] = unit;
+
+                if (unit.troop) {
+                    unit.idx = this._vm.troops.push(unit) - 1;
+                } else {
+                    unit.idx = this._vm.generals.push(unit) - 1;
+                }
             }
         }
 
         this._vm.units = unitsDict;
-        this._vm.legions = army.legions || {};
-
         this._unitsIndex.update(unitsDict);
 
         this._doSort(true);
