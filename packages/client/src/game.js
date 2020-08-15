@@ -343,7 +343,7 @@ class Game {
             iap,
             paymentId,
             price,
-            nonce, 
+            nonce,
             timestamp,
             signature
         );
@@ -462,21 +462,34 @@ class Game {
     }
 
     _handleRaidJoinStatus(data) {
+        const { iap, context } = data;
+
+        Vue.notify({
+            group: "raid",
+            data: {
+                join: true,
+                iap,
+                context,
+                success: true
+            },
+            duration: 5000
+        });
+
         this._vm.$emit(Events.RaidJoinStatus, data);
     }
 
     _handleRaidStatus(data) {
-        console.log('raid summoned', data);
         const { iap, reason, context } = data;
 
         Vue.notify({
             group: "raid",
             data: {
+                join: false,
                 iap,
                 context,
                 success: reason ? false : true
             },
-            duration: 4000
+            duration: 5000
         });
 
         this._vm.$emit(Events.RaidSummonStatus, data);
