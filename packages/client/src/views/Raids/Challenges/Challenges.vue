@@ -1,10 +1,11 @@
 <template>
   <div class="content">
+    <div class="screen-background"></div>
     <div class="height-100 flex-no-wrap flex flex-column flex center">
       <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab"></Tabs>
-      <div class="padding-2 height-100 flex-no-wrap flex flex-column flex center panel width-100">
+      <div class="padding-top-2 height-100 flex-no-wrap flex flex-column flex center width-100">
         <keep-alive>
-          <component :data="challenges[currentTab]" :raidData="raidData" :is="currentTab"></component>
+          <component :data="raidState.challenges[currentTab]" :raidState="raidState" :is="currentTab"></component>
         </keep-alive>
       </div>
     </div>
@@ -21,7 +22,7 @@ const InventoryTab = "inventory";
 const ChestsTab = "open-chests";
 
 export default {
-  props: ["raidData", "challenges"],
+  props: ["raidState"],
   components: { Tabs, TopDamageDealers, UserDialog },
   data: () => ({
     currentTab: "",
@@ -33,7 +34,7 @@ export default {
   mounted() {
     this.components = [];
 
-    for (let type in this.challenges) {
+    for (let type in this.raidState.challenges) {
       if (!type || type == "undefined") {
         continue;
       }
@@ -53,8 +54,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import (reference) "./../../../style/common.less";
-
 .content {
   position: absolute;
   left: 0;
@@ -62,8 +61,5 @@ export default {
   bottom: 0;
   top: 0;
   z-index: 10;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background-color: @backgroundMainColor;
 }
 </style>

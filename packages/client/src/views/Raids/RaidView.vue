@@ -3,7 +3,7 @@
     <template v-slot:combined="{ isPending, isDelayOver, data }">
       <div class="screen-background"></div>
       <loading-screen :loading="isDelayOver && isPending"></loading-screen>
-      <div class="flex flex-column flex-no-wrap height-100">
+      <div class="flex relative flex-column flex-no-wrap height-100">
         <template v-if="raidState">
           <boss-view
             ref="bossView"
@@ -170,7 +170,6 @@
           <keep-alive>
             <Challenges
               v-if="showChallenges"
-              :challenges="raidState.challenges"
               :raidState="raidState"
             ></Challenges>
           </keep-alive>
@@ -239,8 +238,6 @@ const ShowRaidInfo = CreateDialog(
   "weakness",
   "dktFactor"
 );
-
-const ShowChallenges = CreateDialog(Challenges, "raidData", "challenges");
 
 import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
@@ -407,7 +404,7 @@ export default {
       this.showLog = true;
     },
     handleShowChallenges() {
-      ShowChallenges(this.raidData, this.raidState.challenges);
+      this.showChallenges = true;
     },
     handleShowRewards() {
       this.lootProgress.current = this.raidState.currentDamage;

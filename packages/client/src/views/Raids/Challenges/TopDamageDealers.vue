@@ -1,23 +1,67 @@
 <template>
-  <div class="height-100 flex flex-column flex-no-wrap flex-items-center flex-end">
-    <div v-bar>
-      <div class>
-        <div class="font-size-18 margin-bottom-3">{{$t("TopDamageDealers-desc")}}</div>
+  <div class="height-100 flex flex-column flex-no-wrap flex-items-center">
+    <div class="width-100" v-bar>
+      <div class="width-100">
+        <Title class="font-size-18 margin-bottom-3">{{$t("rewards")}}</Title>
 
-        <div class="flex flex-column width-100">
-          <div v-for="(rewards, index) in rewardsPerPlace" :key="index">
+        <div class="flex width-100 font-size-20 padding-left-3 padding-bottom-2 padding-right-3">
+          <div class="flex-1 flex flex-column flex-items-start">
+            <div
+              class="flex flex-center padding-bottom-1"
+              v-for="(rewards, index) in rewardsPerPlace"
+              :key="index"
+            >
+              <span>#{{rewards.param1}}</span>
+              <span v-if="rewards.param2 > rewards.param1">-{{rewards.param2}}</span>
+            </div>
+          </div>
+
+          <div class="flex-1 flex flex-column flex-items-start">
+            <IconWithValue
+              v-for="(rewards, index) in rewardsPerPlace"
+              :key="index"
+              class="padding-bottom-1"
+              iconClass="icon-dkt"
+            >{{rewards.dkt}}</IconWithValue>
+          </div>
+
+          <div class="flex-1 flex flex-column flex-items-start">
+            <IconWithValue
+              v-for="(rewards, index) in rewardsPerPlace"
+              :key="index"
+              class="padding-bottom-1"
+              iconClass="icon-premium"
+            >{{rewards.hardCurrency}}</IconWithValue>
+          </div>
+
+          <div class="flex-1 flex flex-column flex-items-start">
+            <IconWithValue
+              v-for="(rewards, index) in rewardsPerPlace"
+              :key="index"
+              class="padding-bottom-1"
+              iconClass="icon-gold"
+            >{{rewards.softCurrency}}</IconWithValue>
+          </div>
+
+          <!-- <div v-for="(rewards, index) in rewardsPerPlace" :key="index">
             <div class="title digit-font flex flex-center width-100 flex-space-evenly">
-              <div class="flex flex-center font-size-20">
+              <div class="flex flex-center font-size-20 full-flex">
                 <span>{{rewards.param1}}</span>
                 <span v-if="rewards.param2 > rewards.param1">-{{rewards.param2}}</span>
               </div>
 
-              <IconWithValue v-if="rewards.dkt > 0" iconClass="icon-dkt">{{rewards.dkt}}</IconWithValue>
               <IconWithValue
+                class="full-flex"
+                v-if="rewards.dkt > 0"
+                iconClass="icon-dkt"
+              >{{rewards.dkt}}</IconWithValue>
+              <IconWithValue
+                class="full-flex"
                 v-if="rewards.hardCurrency > 0"
                 iconClass="icon-premium"
               >{{rewards.hardCurrency}}</IconWithValue>
               <IconWithValue
+                class="full-flex"
                 v-if="rewards.softCurrency > 0"
                 iconClass="icon-gold"
               >{{rewards.softCurrency}}</IconWithValue>
@@ -32,20 +76,22 @@
                 @hint="showHint"
               ></loot>
             </div>
-          </div>
+          </div>-->
         </div>
 
-        <h2 class="title width-100 font-size-20">{{$t("leaderboard")}}</h2>
+        <Title class="margin-bottom-2">{{$t("leaderboard")}}</Title>
 
-        <HighscoreLine
-          v-for="(record, index) in data"
-          :key="record.by"
-          :index="index"
-          :record="record"
-        ></HighscoreLine>
+        <div class="width-100 padding-left-3 padding-right-3">
+          <HighscoreLine
+            v-for="(record, index) in data"
+            :key="record.by"
+            :index="index"
+            :record="record"
+          ></HighscoreLine>
+        </div>
 
         <div
-          v-if="playerIndex==-1"
+          v-if="playerIndex === -1"
           class="flex flex-center flex-column margin-top-1 margin-bottom-2"
         >
           <span class="font-size-30 font-weight-700">...</span>
@@ -58,32 +104,49 @@
 
 <script>
 import HighscoreLine from "./../HighscoreLine.vue";
+import RaidGetterMixin from "../RaidGetterMixin.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import RaidChallenges from "@/../knightlands-shared/raid_challenge";
-import RaidsMeta from "@/raids_meta";
 import Loot from "@/components/Loot.vue";
 import LootHint from "@/components/LootHint.vue";
+import Title from "@/components/Title.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
 const ShowHint = CreateDialog(LootHint, "item", "equip", "unequip", "actions");
 
 export default {
-  props: ["raidData", "data"],
-  components: { IconWithValue, Loot, HighscoreLine },
+  props: ["raidState", "data"],
+  mixins: [RaidGetterMixin],
+  components: { IconWithValue, Loot, HighscoreLine, Title },
+  watch: {
+    raidState: {
+      immediate: true,
+      handler() {
+        this.raid = this.raidState.raidTemplateId;
+      }
+    }
+  },
   computed: {
-    raidStage() {
-      return RaidsMeta[this.raidData.raidTemplateId].stages[
-        this.raidData.stage
-      ];
+    totalRewardsPerPlace() {
+      let totalRewards = 0;
+      if (this.rewardsPerPlace) {
+        const rewards = this.rewardsPerPlace[0];
+        totalRewards = Object.keys(rewards).length;
+      }
+
+      return totalRewards;
+    },
+    isFreeRaid() {
+      return this.raidState.isFree;
     },
     rewardsPerPlace() {
-      let challenge = this.raidStage.challenges.find(
+      let challenge = this.raidData.challenges.find(
         x =>
           x.type.toUpperCase() == RaidChallenges.TopDamageDealers.toUpperCase()
       );
 
       if (!challenge) {
-        return {};
+        return undefined;
       }
 
       return challenge.rewards;
@@ -91,7 +154,7 @@ export default {
     playerRecord() {
       return {
         by: this.$game.account,
-        damageDone: this.raidData.currentDamage
+        damageDone: this.raidState.currentDamage
       };
     },
     playerIndex() {
