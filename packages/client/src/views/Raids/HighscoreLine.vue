@@ -1,12 +1,12 @@
 <template>
   <div
     :class="{local: local}"
-    class="font-size-18 width-100 margin-top-1 font-weight-700 flex flex-items-center flex-start"
+    class="font-size-18 margin-top-1 flex flex-center"
   >
     <span v-if="index >= 0" class="margin-right-1 width-5">{{index+1}}.</span>
-    <span class="margin-right-1 width-50 trim-text">{{record.by}}</span>
+    <span class="margin-right-1 width-60 trim-text">{{record.by}}</span>
 
-    <IconWithValue valueClass="digit-font" iconClass="icon-attack icon-size-mini">
+    <IconWithValue valueClass="digit-font font-weight-700" iconClass="icon-attack icon-size-mini">
       {{record.damageDone}}
       <span v-if="local">{{$t("highscore-you-mark")}}</span>
     </IconWithValue>

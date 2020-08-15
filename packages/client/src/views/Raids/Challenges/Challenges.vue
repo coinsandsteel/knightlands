@@ -28,9 +28,6 @@ export default {
     currentTab: "",
     tabs: []
   }),
-  computed: {
-    activeTab() {}
-  },
   mounted() {
     this.components = [];
 
@@ -48,7 +45,9 @@ export default {
     this.currentTab = this.tabs[0].value;
   },
   methods: {
-    switchTab(newTab) {}
+    switchTab(newTab) {
+      this.currentTab = newTab;
+    }
   }
 };
 </script>

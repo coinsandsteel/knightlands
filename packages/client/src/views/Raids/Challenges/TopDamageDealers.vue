@@ -16,7 +16,7 @@
             </div>
           </div>
 
-          <div class="flex-1 flex flex-column flex-items-start">
+          <div class="flex-1 flex flex-column flex-items-start" v-if="hasDkt">
             <IconWithValue
               v-for="(rewards, index) in rewardsPerPlace"
               :key="index"
@@ -83,6 +83,7 @@
 
         <div class="width-100 padding-left-3 padding-right-3">
           <HighscoreLine
+            class="width-100 flex-start"
             v-for="(record, index) in data"
             :key="record.by"
             :index="index"
@@ -92,7 +93,7 @@
 
         <div
           v-if="playerIndex === -1"
-          class="flex flex-center flex-column margin-top-1 margin-bottom-2"
+          class="flex flex-items-center flex-column margin-top-1 margin-bottom-2 padding-left-3 padding-right-3"
         >
           <span class="font-size-30 font-weight-700">...</span>
           <HighscoreLine :record="playerRecord" :index="playerIndex"></HighscoreLine>
@@ -127,6 +128,9 @@ export default {
     }
   },
   computed: {
+    hasDkt() {
+      return this.rewardsPerPlace[0].dkt > 0;
+    },
     totalRewardsPerPlace() {
       let totalRewards = 0;
       if (this.rewardsPerPlace) {
@@ -152,9 +156,11 @@ export default {
       return challenge.rewards;
     },
     playerRecord() {
+      const damage = this.raidState.participants[this.$game.account];
+
       return {
         by: this.$game.account,
-        damageDone: this.raidState.currentDamage
+        damageDone: damage || 0
       };
     },
     playerIndex() {
