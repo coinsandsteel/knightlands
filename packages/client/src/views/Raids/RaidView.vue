@@ -124,6 +124,13 @@
 
           <!--NOT IN RAID YET-->
           <div contentClasses="flex-center" v-else>
+            <div class="color-panel-2">
+              <span class="font-size-20">
+                {{$t("time-left")}}
+                <span class="enemy-title-font">{{timer.value}}</span>
+              </span>
+            </div>
+
             <div
               class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
             >
@@ -202,6 +209,7 @@ import BossAnimation from "./BossAnimation.vue";
 import BossDamageText from "./BossDamageText.vue";
 import Vue from "vue";
 import SpriteAnimator from "@/components/SpriteAnimator.vue";
+import Timer from "@/timer.js";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
@@ -286,7 +294,8 @@ export default {
       max: 1
     },
     raid: 0,
-    bossViewCenter: 0
+    bossViewCenter: 0,
+    timer: new Timer(true)
   }),
   created() {
     this.$options.paymentEvents = [Events.RaidJoinStatus];
@@ -460,6 +469,8 @@ export default {
         this.raidProgress.current = this.raidState.bossState.health;
         this.raidProgress.max = this.raidMaxHealth;
         this.lastDamages = this.raidState.damageLog;
+        this.timer.timeLeft = this.raidState.timeLeft;
+        this.timer.update();
 
         // if raid is not finished - try to listen
         if (!this.raidState.finished) {
