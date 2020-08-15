@@ -21,6 +21,7 @@
                 v-for="(damage) in playerDamages"
                 :key="damage.id"
                 :crit="damage.crit"
+                :local="damage.local"
               >{{damage.damage}}</DamageText>
 
               <DamageLog :log="lastDamages" v-show="showLog" @close="showLog = false"></DamageLog>
@@ -545,7 +546,11 @@ export default {
       ]);
 
       this._handleArmyDamage(data.player.damage);
-      await this._handlePlayerDamage(data.player.damage, data.player.crit);
+      await this._handlePlayerDamage(
+        data.player.damage,
+        data.player.crit,
+        true
+      );
 
       await this.$app
         .getStatusBar()
@@ -634,7 +639,7 @@ export default {
       }
 
       this.raidProgress.current = data.bossHp;
-      this._handlePlayerDamage(data.damage, data.crit);
+      this._handlePlayerDamage(data.damage, data.crit, false);
     },
     _handleRaidFinished(data) {
       this.raidState.finished = true;
@@ -648,8 +653,9 @@ export default {
       this.$refs.impact.play();
       this.raidProgress.current -= damage;
     },
-    async _handlePlayerDamage(damage, crit) {
+    async _handlePlayerDamage(damage, crit, local) {
       this.playerDamages.push({
+        local: local,
         damage: damage,
         crit: crit,
         id: this.damageTextId++
