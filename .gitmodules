@@ -1,0 +1,3 @@
+[submodule "packages/knightlands-shared"]
+	path = packages/knightlands-shared
+	url = git@github.com:coinsandsteel/knightlands-shared.git
