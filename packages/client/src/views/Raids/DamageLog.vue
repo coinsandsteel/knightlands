@@ -1,21 +1,23 @@
 <template>
   <div class="flex flex-column flex-items-end flex-end width-100 height-100 flex-start">
-    <div
-      class="mask width-100 height-100 flex flex-column flex-no-wrap flex-items-center flex-end"
-    >
+    <div class="mask width-100 height-100 flex flex-column flex-no-wrap flex-items-center flex-end">
       <div class="close-btn" @click="$emit('close')"></div>
 
-      <div
-        class="font-size-15 damage-line font-weight-700 flex flex-start"
-        v-for="(record) in log"
-        :key="record.id"
-        :class="{'new-line': record.new}"
-      >
-        <span class="damage">{{record.by}}</span>
-        <IconWithValue iconClass="icon-attack icon-size-mini">
-          <span class="margin-right-1">{{record.damage}}</span>
-          <span>(x{{record.hits}})</span>
-        </IconWithValue>
+      <div v-bar>
+        <div>
+          <div
+            class="font-size-15 margin-top-1 font-weight-700 flex flex-start width-100"
+            v-for="(record) in log"
+            :key="record.id"
+            :class="{'new-line': record.new}"
+          >
+            <span class="damage trim-text width-50">{{record.by}}</span>
+            <IconWithValue iconClass="icon-attack icon-size-mini">
+              <span class="margin-right-1">{{record.damage}}</span>
+              <span>(x{{record.hits}})</span>
+            </IconWithValue>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -65,10 +67,6 @@ export default {
   background-color: #000000c9;
   overflow: hidden;
   z-index: 1;
-}
-
-.damage-line {
-  margin-top: 1%;
 }
 
 .damage {
