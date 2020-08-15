@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content">
-    <div class="element-background" :class="element"></div>
+    <div class="screen-background"></div>
     <UnitView :unit="unit" :showSelect="true" @select="editUnit" />
     <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
 

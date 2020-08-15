@@ -1,6 +1,6 @@
 <template>
-  <div v-bar>
-    <div class="flex-full dummy-height">
+  <div class="height-100" v-bar>
+    <div class="flex-full">
       <div class="padding-half">
         <div class="width-100 flex">
           <UnitItem class="width-20" v-if="remove" @click="handleRemove" :empty="false" />

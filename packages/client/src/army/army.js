@@ -60,7 +60,7 @@ export default class Army {
             const unitId = legion.units[slotId];
             units[unitId] = this.getUnit(unitId);
         }
-        return this._armyResolver.estimateDamageOutput(units, this._unitsIndex);
+        return this._armyResolver.resolve(units, this._unitsIndex);
     }
 
     filterIngridientUnits(referenceUnit, ingridient, selectedUnits) {

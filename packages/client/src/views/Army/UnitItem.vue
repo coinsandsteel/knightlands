@@ -36,9 +36,9 @@ export default {
 
 <style lang="less" scoped>
 .selected {
-  background-image: url("../../assets/ui/slot_selected.png");
+  background-image: url("../../assets/ui/troops_mini_bg_selected.png");
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   position: absolute;
   top: 0;
   bottom: 0;
