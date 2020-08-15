@@ -12,7 +12,11 @@
             <span class="title-space tier-font">{{index+1}}</span>
             <span class="margin-title">{{getDamage(threshold)}}</span>
             <span class="title-space">{{$t("damage-short")}}</span>
-            <span v-show="tierUnlocked(threshold)" class="icon-mark small"></span>
+            <span
+              v-show="tierUnlocked(threshold)"
+              class="icon-mark small"
+              :class="{'not-last': tierIsNotLast(index)}"
+            ></span>
           </div>
 
           <div class="flex flex-center flex-column margin-bottom-2">
@@ -43,7 +47,7 @@
                 :gacha="true"
                 @hint="showHint"
               ></loot>
-            </div> -->
+            </div>-->
           </div>
         </div>
       </div>
@@ -92,12 +96,18 @@ export default {
     },
     getDamage(threshold) {
       return Math.floor(
-        (this.data.health * threshold.relativeThreshold) /
-          this.data.maxSlots
+        (this.data.health * threshold.relativeThreshold) / this.data.maxSlots
       );
     },
     tierUnlocked(threshold) {
       return this.getDamage(threshold) <= this.currentDamage;
+    },
+    tierIsNotLast(index) {
+      if (index == this.loot.damageThresholds.length - 1) {
+        return false;
+      }
+
+      return this.tierUnlocked(this.loot.damageThresholds[index + 1]);
     },
     extractItems(threshold) {
       let table = this.loot.lootTables[
@@ -146,5 +156,9 @@ export default {
 
 .tier-font {
   color: #fdc64f;
+}
+
+.not-last {
+  opacity: 0.4;
 }
 </style>
