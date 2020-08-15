@@ -124,54 +124,38 @@
 
           <!--NOT IN RAID YET-->
           <div contentClasses="flex-center" v-else>
-            <div class="title font-size-20 font-weight-700 rarity-mythical">
-              <span class="white-space">{{$t("dkt-bonus")}}</span>
-              <span>{{dktBonus}}</span>
-            </div>
-
             <div
               class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
             >
-              <custom-button
-                v-if="hasChallenges"
-                type="grey"
-                class="raid-mid-btn"
-                @click="showChallenges = true"
-              >
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-challenge"
-                >{{$t("challenges")}}</icon-with-value>
+              <custom-button v-if="hasChallenges" type="grey" @click="handleShowChallenges">
+                <span class="icon-challenge"></span>
               </custom-button>
 
-              <custom-button type="grey" class="raid-mid-btn" @click="showRewards = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-loot"
-                >{{$t("rewards")}}</icon-with-value>
+              <custom-button type="grey" @click="handleShowRewards">
+                <span class="icon-loot"></span>
               </custom-button>
 
-              <custom-button type="grey" class="raid-mid-btn" @click="showInfo = true">
-                <icon-with-value
-                  valueClass="font-size-20 btn-fix"
-                  iconClass="icon-info dark"
-                >{{$t("raid-info")}}</icon-with-value>
+              <custom-button type="grey" @click="handleShowInfo">
+                <span class="icon-info dark"></span>
               </custom-button>
+
+              <CustomButton type="grey" @click="$emit('chart')">
+                <span class="icon-chart"></span>
+              </CustomButton>
             </div>
 
             <PaymentStatus :request="statusRequest" @pay="continuePurchase">
               <PromisedButton :promise="purchasePromise" width="16rem" type="yellow" @click="join">
-                <span class="margin-right-half">{{$t("join")}}</span>
-                <PriceTag :dark="true" :iap="data.joinIap"></PriceTag>
+                <div class="flex flex-no-wrap">
+                  <span class="margin-right-half">{{$t("join")}}</span>
+                  <PriceTag :dark="true" :iap="raidData.iap"></PriceTag>
+                </div>
               </PromisedButton>
             </PaymentStatus>
           </div>
 
           <keep-alive>
-            <Challenges
-              v-if="showChallenges"
-              :raidState="raidState"
-            ></Challenges>
+            <Challenges v-if="showChallenges" :raidState="raidState"></Challenges>
           </keep-alive>
         </template>
       </div>
@@ -327,8 +311,8 @@ export default {
   },
   computed: {
     hasChallenges() {
-      // return Object.keys(this.raidState.challenges).length > 0;
-      return false;
+      if (!this.raidState) return false;
+      return Object.keys(this.raidState.challenges).length > 0;
     },
     href() {
       return window.location.href;
