@@ -1,7 +1,7 @@
 <template lang="html">
-  <div class="vue-sprite">
+  <div class="width-100 height-100">
     <canvas
-      :id='id'
+      :id="id"
       :width="width"
       :height="height"
       ref="vue-sprite-canvas"
@@ -10,29 +10,73 @@
 </template>
 
 <script>
+class SpriteResource {
+  constructor(sprite, atlas) {
+    this.spritesheet = sprite;
+    this.frameIndex = 0;
+
+    this.frames = atlas.frames.map(frame => {
+      return {
+        name: frame.filename,
+        x: frame.frame.x,
+        y: frame.frame.y,
+        w: frame.frame.w,
+        h: frame.frame.h
+      };
+    });
+
+    this.frames.sort((a, b) => a.filename < b.filename);
+    this.width = this.frames[0].w;
+    this.height = this.frames[0].h;
+    this.length = this.frames.length - 1;
+  }
+
+  async load() {
+    this.sprite = new Image();
+    this.sprite.src = this.spritesheet;
+    return new Promise(resolve => {
+      this.sprite.onload = () => {
+        resolve();
+      };
+    });
+  }
+}
+
+class Sprite {
+  constructor(resource) {
+    this.resource = resource;
+    this.reset();
+    this.x = 0;
+    this.y = 0;
+  }
+
+  reset() {
+    this.frameIndex = 0;
+  }
+
+  render(ctx) {
+    const index = Math.abs(this.frameIndex % this.resource.length);
+    const { x: fx, y: fy, w: fw, h: fh } = this.resource.frames[index];
+    ctx.drawImage(this.resource.sprite, fx, fy, fw, fh, this.x, this.y, fw, fh);
+    this.frameIndex++;
+    return this.frameIndex >= this.resource.length;;
+  }
+}
+
 export default {
   name: "v-sprite",
   props: {
     spritesheet: {
       required: true,
-      type: String,
-      default: ""
+      type: Array
     },
     json: {
       required: true,
-      type: Object
+      type: Array
     },
     fps: {
       type: Number,
       default: 30
-    },
-    autoplay: {
-      type: Boolean,
-      default: true
-    },
-    yoyo: {
-      type: Boolean,
-      default: false
     },
     id: {
       type: String,
@@ -41,133 +85,82 @@ export default {
     loops: {
       type: Number,
       default: 1
-    },
-    instances: {
-        type: Array
     }
   },
   data() {
     return {
-      frames: [],
-      visible: true,
-      length: 0,
-      frameIndex: 0,
-      currentIndex: 0,
       animationFrameID: null,
-      yoyodirection: 0,
       sprite: null,
       ctx: null,
-      height: 0,
-      width: 0,
       now: 0,
       then: 0,
-      loopsDone: 0
+      width: 0,
+      height: 0
     };
   },
-  computed: {
-    loopsFinished() {
-      return this.loops > 0 && this.loopsDone >= this.loops;
+  async mounted() {
+    this.sprites = [];
+    this.resources = [];
+    for (let i = 0; i < this.spritesheet.length; ++i) {
+      let res = new SpriteResource(this.spritesheet[i], this.json[i]);
+      this.resources.push(res);
     }
-  },
-  mounted() {
-    this.json.frames.forEach(frame => {
-      this.frames.push({
-        name: frame.filename,
-        x: frame.frame.x,
-        y: frame.frame.y,
-        w: frame.frame.w,
-        h: frame.frame.h
-      });
-    });
-    this.frames.sort((a, b) => a.filename < b.filename);
-    // find largest size
-    let maxWidth = -1,
-      maxHeight = -1;
-    for (const frame of this.frames) {
-      if (maxWidth < frame.w) {
-        maxWidth = frame.w;
-      }
 
-      if (maxHeight < frame.h) {
-        maxHeight = frame.h;
-      }
-    }
-    this.width = maxWidth;
-    this.height = maxHeight;
-    this.length = this.frames.length - 1;
-  },
-  created() {
-    this.$nextTick(() => {
-      this.sprite = new Image();
-      this.sprite.src = this.spritesheet;
-      this.sprite.onload = ({ target }) => {
-        this.init(target);
-      };
-    });
+    await Promise.all(this.resources.map(x => x.load()));
+
+    this.width = this.$el.offsetWidth;
+    this.height = this.$el.offsetHeight;
+    this.init();
   },
   methods: {
-    init(img) {
+    init() {
       this.ctx = this.$refs["vue-sprite-canvas"].getContext("2d");
-      this.autoplay && this.loop();
     },
     render() {
-      this.ctx && this.ctx.clearRect(0, 0, this.width, this.height);
-      if (
-        this.yoyo &&
-        this.currentIndex % this.length === 0 &&
-        this.currentIndex
-      ) {
-        this.yoyodirection = Number(!this.yoyodirection);
+      if (!this.ctx) {
+        return;
       }
-      const index = Math.abs(
-        (this.currentIndex % this.length) - this.length * this.yoyodirection
-      );
-
-      if (index < this.currentIndex) {
-        this.loopsDone++;
-        if (this.loopsFinished) {
-          return;
-        }
-      }
-
-      const { x, y, w, h } = this.frames[index];
-      this.ctx &&
-        this.ctx.drawImage(
-          this.sprite,
-          x,
-          y,
-          w,
-          h,
-          this.width / 2 - w / 2,
-          this.height / 2 - h / 2,
-          w,
-          h
-        );
+      this.ctx.clearRect(0, 0, this.width, this.height);
     },
     loop() {
       this.now = Date.now();
       const delta = this.now - this.then;
       if (delta > 1000 / this.fps) {
         this.then = this.now - (delta % (1000 / this.fps));
-        this.render();
-        this.currentIndex++;
 
-        if (this.loopsFinished) {
-          this.stop();
-          return;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        for (let i = 0; i < this.sprites.length; i++) {
+          const sprite = this.sprites[i];
+          if (sprite.render(this.ctx)) {
+            this.sprites.splice(i, 1);
+            i--;
+          }
         }
       }
 
-      this.animationFrameID = window.requestAnimationFrame(this.loop);
+      if (this.sprites.length > 0) {
+        this.animationFrameID = window.requestAnimationFrame(this.loop);
+      } else {
+        this.animationFrameID = undefined;
+      }
     },
     stop() {
       window.cancelAnimationFrame(this.animationFrameID);
-      this.currentIndex = 0;
+      this.animationFrameID = undefined;
+      this.sprites.length = 0;
     },
-    play(from) {
-      this.loopsDone = 0;
-      this.currentIndex = Number.isNaN(Number(from)) ? this.currentIndex : from;
-      this.loop();
+    play() {
+      let res = this.resources[
+        Math.floor(Math.random() * this.resources.length)
+      ];
+      let sprite = new Sprite(res);
+      // randomize position inside the canvas
+      sprite.x = Math.random() * (this.width - res.width);
+      sprite.y = Math.random() * (this.height - res.height);
+      this.sprites.push(sprite);
+      if (!this.animationFrameID) {
+        this.loop();
+      }
     }
   }
 };

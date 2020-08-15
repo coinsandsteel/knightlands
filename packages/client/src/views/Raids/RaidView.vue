@@ -30,12 +30,19 @@
               <div class="height-100 width-100 impact-container">
                 <SpriteAnimator
                   :id="'sprite'"
-                  :spritesheet="require('../../assets/fx/impact1/impact2.png')"
-                  :json="require('../../assets/fx/impact1/impact2.json')"
-                  :yoyo="false"
-                  :autoplay="false"
-                  :loops="1"
-                  :fps="30"
+                  :spritesheet="[
+                    require('../../assets/fx/impact1/impact1.png'),
+                    require('../../assets/fx/impact1/impact2.png'),
+                    require('../../assets/fx/impact1/exp7.png'),
+                    require('../../assets/fx/impact1/exp8.png')
+                  ]"
+                  :json="[
+                    require('../../assets/fx/impact1/impact1.json'),
+                    require('../../assets/fx/impact1/impact2.json'),
+                    require('../../assets/fx/impact1/exp7.json'),
+                    require('../../assets/fx/impact1/exp8.json')
+                  ]"
+                  :fps="24"
                   ref="impact"
                 ></SpriteAnimator>
               </div>
@@ -545,8 +552,6 @@ export default {
         this.$refs.bossAnimation.playAttack()
       ]);
 
-
-      this.$refs.impact.play();
       this._handleArmyDamage(data.player.damage);
       await this._handlePlayerDamage(data.player.damage, data.player.crit);
 
@@ -648,6 +653,7 @@ export default {
     },
     _handleArmyDamage(damage) {
       this.$refs.bossAnimation.playDamageTaken();
+      this.$refs.impact.play();
       this.raidProgress.current -= damage;
     },
     async _handlePlayerDamage(damage, crit) {
