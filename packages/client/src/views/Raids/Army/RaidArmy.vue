@@ -59,6 +59,10 @@ export default {
   },
   methods: {
     async play(unitDamages, procs, health, energy, stamina, container) {
+      if (Object.keys(unitDamages).length == 0) {
+        return;
+      }
+
       const slotTargets = [];
       const byVerticalPosition = [];
 

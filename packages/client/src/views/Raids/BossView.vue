@@ -103,19 +103,11 @@ export default {
       return this.meta.name;
     },
     center() {
-      let el = this.$refs.zoneView;
-      const point = { x: 0, y: 0 };
-
-      while (el) {
-        point.x += el.offsetLeft;
-        point.y += el.offsetTop;
-        el = el.offsetParent;
-      }
-
-      el = this.$refs.zoneView;
-      point.x += el.offsetWidth / 2;
-      point.y += el.offsetHeight / 2;
-      return point;
+      let offset = UiConstants.offset(this.$refs.zoneView);
+      return {
+        x: offset.width / 2,
+        y: offset.top + offset.height / 2
+      };
     }
   }
 };

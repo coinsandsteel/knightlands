@@ -155,7 +155,7 @@
               <PromisedButton :promise="purchasePromise" width="16rem" type="yellow" @click="join">
                 <div class="flex flex-no-wrap">
                   <span class="margin-right-half">{{$t("join")}}</span>
-                  <PriceTag :dark="true" :iap="raidData.iap"></PriceTag>
+                  <PriceTag :dark="true" :iap="raidData.joinIap"></PriceTag>
                 </div>
               </PromisedButton>
             </PaymentStatus>
@@ -522,6 +522,9 @@ export default {
         return;
       }
 
+      console.log(this.bossViewCenter)
+      console.log(this.$refs.overlay)
+
       this.attackInProgress = true;
 
       const bossDamageInstance = new (Vue.extend(BossDamageText))({
@@ -531,18 +534,18 @@ export default {
       });
       bossDamageInstance.$mount();
 
-      await Promise.all([
-        this.$app
-          .getStatusBar()
-          .attractToResource(
-            bossDamageInstance,
-            "health",
-            this.bossViewCenter,
-            data.boss.damage * -1,
-            this.$refs.overlay
-          ),
-        this.$refs.bossAnimation.playAttack()
-      ]);
+      // await Promise.all([
+      //   this.$app
+      //     .getStatusBar()
+      //     .attractToResource(
+      //       bossDamageInstance,
+      //       "health",
+      //       this.bossViewCenter,
+      //       data.boss.damage * -1,
+      //       this.$refs.overlay
+      //     ),
+      //   this.$refs.bossAnimation.playAttack()
+      // ]);
 
       this._handleArmyDamage(data.player.damage);
       await this._handlePlayerDamage(data.player.damage, data.player.crit);
