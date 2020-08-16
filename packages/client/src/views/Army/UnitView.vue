@@ -15,29 +15,28 @@
           <div class="padding-half panel-input unit-view-param center">
             <UnitStars :stars="stars" size="small" />
           </div>
-          <div class="margin-top-1 padding-half panel-input flex flex-center unit-view-param font-size-22">
+          <div
+            class="margin-top-1 margin-bottom-1 padding-half panel-input flex flex-center unit-view-param font-size-22"
+          >
             <IconWithValue iconClass="icon-damage">{{estimatedDamage}}</IconWithValue>
           </div>
-        </div>
 
-        <div class="flex flex-column padding-left-3">
-          <CustomButton
-            type="green"
-            class="margin-bottom-half"
-            @click="goToEquipment"
-            v-if="showEquipment"
-          >{{$t("unit-equipment")}}</CustomButton>
-          <CustomButton
-            type="red"
-            class="margin-bottom-half"
-            @click="showAbilities = true"
-          >{{$t("unit-abilities")}}</CustomButton>
-          <CustomButton
-            type="yellow"
-            class="margin-bottom-half"
-            @click="$emit('select', unit)"
-            v-if="showSelect"
-          >{{$t("unit-select")}}</CustomButton>
+          <div class="flex">
+            <CustomButton
+              type="green"
+              class="margin-bottom-half"
+              @click="goToEquipment"
+            >Eq</CustomButton>
+            <CustomButton type="grey" class="margin-bottom-half" @click="showAbilities = true">Abi</CustomButton>
+            <!-- <CustomButton
+              type="yellow"
+              class="margin-bottom-half"
+              @click="$emit('select', unit)"
+              v-if="showSelect"
+            >
+              <span class="icon-mark"></span>
+            </CustomButton> -->
+          </div>
         </div>
       </div>
 

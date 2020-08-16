@@ -45,6 +45,10 @@ export default {
   &.water {
       background-image: url("../../assets/ui/ribbon_tip_water.png");
   }
+
+  &.physical {
+      background-image: url("../../assets/ui/unit_physical.png");
+  }
 }
 
 .title-body {
@@ -65,6 +69,10 @@ export default {
 
   &.water {
       background-image: url("../../assets/ui/ribbon_body_water.png");
+  }
+
+  &.physical {
+      background-image: url("../../assets/ui/unit_physical1.png");
   }
 }
 

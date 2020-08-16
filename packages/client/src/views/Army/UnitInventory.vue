@@ -9,7 +9,7 @@
             v-for="unit in filteredUnits"
             :key="unit.id"
             :unit="unit"
-            :active="unit.id == selectedUnit.id"
+            :active="selectedUnit && unit.id == selectedUnit.id"
             :selected="selectedSlots[unit.id]"
             @click="toggleSlot(unit)"
           />
