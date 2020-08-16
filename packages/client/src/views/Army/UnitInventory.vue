@@ -18,7 +18,7 @@
     </div>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="grey" @click="showUnitFilters">{{$t("btn-filters")}}</CustomButton>
+      <CustomButton type="grey" @click="showUnitFilters">{{$t("btn-filter")}}</CustomButton>
     </portal>
   </div>
 </template>
@@ -33,7 +33,17 @@ const ItemFilter = CreateDialog(ItemFilterComponent);
 import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
-  props: ["units", "multiSelect", "selectedUnit", "remove"],
+  props: {
+    units: Array,
+    multiSelect: Boolean,
+    selectedUnit: Object,
+    remove: Boolean,
+    disableSelect: Boolean,
+    autoselect: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: { UnitItem, CustomButton },
   mixins: [ActivityMixin],
   data: () => ({
@@ -71,6 +81,10 @@ export default {
         return;
       }
 
+      if (this.disableSelect) {
+        return;
+      }
+
       if (!this.multiSelect) {
         this.selectedSlots = {
           [unit.id]: true
@@ -87,15 +101,16 @@ export default {
       this.$emit("removed");
     },
     async showUnitFilters() {
-      const filters = await ItemFilter({
+      await ItemFilter({
         stateFilters: this.filtersStore,
         commitCmd: "setUnitFilters",
-        filterLocalisation: "unit-s-filter"
+        filterLocalisation: "unit-s-filter",
+        filterChangedCb: this.filterUnits.bind(this)
       });
 
-      if (filters) {
-        this.filterUnits();
-      }
+      // if (filters) {
+      //   this.filterUnits();
+      // }
     },
     filterUnits() {
       this.filteredUnits = this.$game.army.filterProvidedUnits(
@@ -104,8 +119,10 @@ export default {
         this.filteredUnitsBuffer.get()
       );
 
-      if (!this.selectedUnit && this.filteredUnits.length > 0) {
-        this.toggleSlot(this.filteredUnits[0]);
+      if (this.autoselect) {
+        if (!this.selectedUnit && this.filteredUnits.length > 0) {
+          this.toggleSlot(this.filteredUnits[0]);
+        }
       }
     }
   }

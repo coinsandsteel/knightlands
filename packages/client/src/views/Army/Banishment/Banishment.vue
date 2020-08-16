@@ -28,14 +28,16 @@
       <UnitInventory
         ref="units"
         :units="filteredUnits"
-        :multiSelect="!maxSelected"
+        :autoselect="false"
+        :multiSelect="true"
+        :disableSelect="maxSelected"
         @toggle="toggleUnitSelect"
       />
 
       <portal to="footer" v-if="isActive">
         <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{$t("btn-banish")}}</CustomButton>
         <CustomButton type="green" @click="autofill">{{$t("btn-autofill")}}</CustomButton>
-        <CustomButton type="grey" @click="showUnitFilters">{{$t("btn-filter")}}</CustomButton>
+        <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{$t("btn-reset")}}</CustomButton>
       </portal>
     </template>
   </Promised>
@@ -85,7 +87,6 @@ export default {
     this.filtersStore = this.$store.getters.getUnitFilters;
   },
   data: () => ({
-    maxUnits: 10,
     request: null,
     tabs: [
       { title: Troops, value: Troops },
@@ -108,6 +109,9 @@ export default {
     this.filterUnits();
   },
   computed: {
+    maxUnits() {
+      return 10;
+    },
     canBanish() {
       return this.selectedUnits.length > 0;
     },

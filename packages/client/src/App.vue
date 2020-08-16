@@ -15,7 +15,7 @@
       <div class="footer flex-item-center">
         <div class="bg"></div>
         <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
-        <portal-target class="footer-container flex flex-end width-100" name="footer"></portal-target>
+        <portal-target class="footer-container flex flex-end width-100" name="footer" :multiple="true"></portal-target>
         <div class="footer-container flex flex-end full-flex">
           <component
             v-for="(footer, index) in footers"
