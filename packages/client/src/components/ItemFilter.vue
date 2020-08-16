@@ -30,7 +30,13 @@ import UserDialog from "./UserDialog.vue";
 
 export default {
   components: { UserDialog },
-  props: ["customFilter", "stateFilters", "commitCmd", "filterLocalisation"],
+  props: [
+    "customFilter",
+    "stateFilters",
+    "commitCmd",
+    "filterLocalisation",
+    "filterChangedCb"
+  ],
   data() {
     return {
       allFilters: true,
@@ -61,6 +67,9 @@ export default {
         }
 
         this.$store.commit(this.commitCmd, this.itemFilters);
+        if (this.filterChangedCb) {
+          this.filterChangedCb(this.itemFilters);
+        }
       },
       deep: true
     },
