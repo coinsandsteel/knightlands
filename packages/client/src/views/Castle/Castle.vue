@@ -11,13 +11,18 @@
       </div>
 
       <div class="flex flex-column flex-items-center flex-space-evenly margin-right-2">
-        <MenuIcon icon="icon-banishment" :to="{name: 'banishment'}" :append="true">Banishment</MenuIcon>
-
+        <MenuIcon
+          icon="icon-ability-transfer"
+          :to="{name: 'units-reserve'}"
+          :append="true"
+        >Send to Reserve</MenuIcon>
+        <MenuIcon icon="icon-banishment" :to="{name: 'units-dismiss'}" :append="true">Dismiss</MenuIcon>
+<!-- 
         <MenuIcon
           icon="icon-ability-transfer"
           :to="{name: 'ability-transfer'}"
           :append="true"
-        >Ability Transfer</MenuIcon>
+        >Ability Transfer</MenuIcon> -->
       </div>
     </div>
   </div>

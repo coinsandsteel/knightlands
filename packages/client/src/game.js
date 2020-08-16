@@ -1472,6 +1472,10 @@ class Game {
     async banishUnits(units) {
         return (await this._wrapOperation(Operations.UnitBanishment, { units })).response;
     }
+
+    async reserveUnits(units) {
+        return (await this._wrapOperation(Operations.UnitReserve, { units })).response;
+    }
 }
 
 export default Game;

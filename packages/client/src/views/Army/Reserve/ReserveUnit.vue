@@ -1,0 +1,109 @@
+<template>
+  <div class="outer unit-item relative" @click="$emit('click', unit)">
+    <div class="inner relative">
+      <template v-if="unit">
+        <div class="bg absolute-stretch" :style="unitImage"></div>
+        <div class="selected" v-show="selected"></div>
+        <div
+          class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
+        >
+          <div class="unit-item-shadow absolute-stretch"></div>
+          <UnitStars class="stars width-100 relative" :stars="stars" size="small" />
+          <Flag :weaponType="weaponType" :element="element" />
+          <span
+            class="width-100 font-size-18 font-weight-900 unit-item-lvl center-transform"
+          >x{{count}}</span>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script>
+import UnitGetter from "../UnitGetterMixin.vue";
+import UnitStars from "../UnitStars.vue";
+import Flag from "../Flag.vue";
+
+export default {
+  props: ["unit", "selected"],
+  mixins: [UnitGetter],
+  components: { UnitStars, Flag },
+  data: ()=>({
+      count: 999
+  })
+};
+</script>
+
+<style lang="less" scoped>
+.selected {
+  background-image: url("../../../assets/ui/troops_mini_bg_selected.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.unit-item-content {
+  display: grid;
+  grid-template-columns: 30% 1fr;
+  grid-template-rows: 20% 1fr 20%;
+  align-items: stretch;
+
+  & .item-badge-grid {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  & .stars {
+    grid-column: ~"1/3";
+    grid-row: 1;
+  }
+}
+
+.outer {
+  position: relative;
+
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 100%;
+  }
+
+  & > .inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.unit-item-lvl {
+  position: absolute;
+  bottom: 0;
+}
+
+.unit-item-shadow {
+  background-image: url("../../../assets/ui/troops_mini_shadow.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.unit-item {
+  background-image: url("../../../assets/ui/troops_mini_bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  & .bg {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

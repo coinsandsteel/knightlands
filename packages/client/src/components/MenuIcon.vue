@@ -1,5 +1,10 @@
 <template>
-  <router-link v-bind="$attrs" tag="div" class="flex-basis-30" :class="{'pointer-events-none': locked}">
+  <router-link
+    v-bind="$attrs"
+    tag="div"
+    class="flex-basis-30"
+    :class="{'pointer-events-none': locked}"
+  >
     <div class="flex flex-column flex-center pointer relative">
       <span :class="icon" class="icon-menu relative">
         <slot name="marker"></slot>
@@ -8,7 +13,9 @@
         </span>
       </span>
       <span class="title-holder">
-        <span class="font-size-20 capitalize"><slot></slot></span>
+        <span class="font-size-20 capitalize">
+          <slot></slot>
+        </span>
       </span>
     </div>
   </router-link>
@@ -28,9 +35,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../style/common.less";
+
 .icon-menu {
   width: 7rem;
   height: 7rem;
+
+  // .mobile({width: 5rem; height: 5rem;});
 }
 
 .overlay {

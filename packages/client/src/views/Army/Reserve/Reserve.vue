@@ -13,31 +13,31 @@
         />
       </div>
 
-      <div class="color-panel-2 flex flex-space-evenly">
+      <!-- <div class="color-panel-2 flex flex-space-evenly">
         <Title class="margin-bottom-half">{{$t("refund-items")}}</Title>
-        <Loot
+        <Loot 
           v-for="record in refundedItems"
           :key="`${record.item}${record.quantity}`"
           :gacha="true"
           :item="record.item"
           :quantity="record.quantity"
         />
-      </div>
+      </div> -->
 
       <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
       <UnitInventory
         ref="units"
         :units="units"
-        :autoselect="false"
         :multiSelect="true"
+        :autoselect="false"
         :disableSelect="maxSelected"
         @toggle="toggleUnitSelect"
       />
 
       <portal to="footer" v-if="isActive">
-        <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{$t("btn-banish")}}</CustomButton>
-        <CustomButton type="green" @click="autofill">{{$t("btn-autofill")}}</CustomButton>
-        <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{$t("btn-reset")}}</CustomButton>
+        <CustomButton type="yellow" @click="reserve" :disabled="!canReserve">{{$t("btn-reserve")}}</CustomButton>
+        <CustomButton type="yellow" @click="viewReserve">{{$t("btn-reserve-view")}}</CustomButton>
+        <CustomButton type="grey" @click="reset" :disabled="!canReserve">{{$t("btn-reset")}}</CustomButton>
       </portal>
     </template>
   </Promised>
@@ -71,15 +71,15 @@ export default {
     CustomButton,
     LoadingScreen,
     Promised,
-    Loot,
     Title
   },
   created() {
-    this.title = "window-banishment";
+    this.title = "window-reserve";
     this.$options.useRouterBack = true;
     this.filtersStore = this.$store.getters.getUnitFilters;
   },
   data: () => ({
+    maxUnits: 10,
     request: null,
     tabs: [
       { title: Troops, value: Troops },
@@ -98,10 +98,7 @@ export default {
     selectedUnits: []
   }),
   computed: {
-    maxUnits() {
-      return 10;
-    },
-    canBanish() {
+    canReserve() {
       return this.selectedUnits.length > 0;
     },
     maxSelected() {
@@ -111,36 +108,12 @@ export default {
       return this.$game.army.getUnits(this.currentTab == Troops);
     }
   },
-  watch: {
-    selectedUnits() {
-      for (const key in this.refundedItems) {
-        this.refundedItems[key].quantity = 0;
-      }
-
-      for (const unit of this.selectedUnits) {
-        this.refundedItems.gold.quantity += Math.floor(
-          unit.gold * ArmyMeta.refund.gold
-        );
-        this.refundedItems.souls.quantity += Math.floor(
-          unit.souls * ArmyMeta.refund.souls
-        );
-
-        if (unit.troop) {
-          this.refundedItems.troopEssence.quantity += Math.floor(
-            unit.essence * ArmyMeta.refund.troopEssence
-          );
-        } else {
-          this.refundedItems.generalEssence.quantity += Math.floor(
-            unit.essence * ArmyMeta.refund.generalEssence
-          );
-        }
-
-        this.refundedItems.souls.quantity +=
-          ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];
-      }
-    }
-  },
   methods: {
+    viewReserve() {
+      this.$router.push({
+        name: "units-reserve-view"
+      });
+    },
     getSelectedUnit(idx) {
       if (this.selectedUnits.length > idx - 1) {
         return this.selectedUnits[idx - 1];
@@ -158,9 +131,9 @@ export default {
         this.selectedUnits.splice(idx, 1);
       }
     },
-    async banish() {
+    async reserve() {
       this.request = this.performRequest(
-        this.$game.banishUnits(this.selectedUnits.map(x => x.id))
+        this.$game.reserveUnits(this.selectedUnits.map(x => x.id))
       );
       try {
         await this.request;

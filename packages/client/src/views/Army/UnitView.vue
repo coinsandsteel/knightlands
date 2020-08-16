@@ -28,14 +28,14 @@
               @click="goToEquipment"
             >Eq</CustomButton>
             <CustomButton type="grey" class="margin-bottom-half" @click="showAbilities = true">Abi</CustomButton>
-            <!-- <CustomButton
+            <CustomButton
               type="yellow"
               class="margin-bottom-half"
               @click="$emit('select', unit)"
               v-if="showSelect"
             >
               <span class="icon-mark"></span>
-            </CustomButton> -->
+            </CustomButton>
           </div>
         </div>
       </div>
@@ -71,7 +71,11 @@ import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  props: ["unit", "showEquipment", "showSelect"],
+  props: {
+    unit: Object,
+    showEquipment: Boolean,
+    showSelect: Boolean
+  },
   mixins: [UnitGetter],
   components: { UnitTitle, UnitStars, CustomButton, IconWithValue },
   data: () => ({
