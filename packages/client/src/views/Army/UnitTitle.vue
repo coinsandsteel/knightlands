@@ -6,7 +6,7 @@
         <span class="title-icon" :class="`icon-unit-${element}`"></span>
         <span class="title-icon" :class="`icon-unit-${weaponType}`"></span>
         <div class="title-text-container flex flex-center font-size-22 font-outline font-weight-900">
-            <span class="title-level margin-right-1">{{$t("unit-lvl", { lvl: level })}}</span>
+            <span v-if="showLevel" class="title-level margin-right-1">{{$t("unit-lvl", { lvl: level })}}</span>
             <span>{{$t(name)}}</span>
         </div>
       </div>
@@ -18,7 +18,13 @@
 import UnitGetter from "./UnitGetterMixin.vue";
 
 export default {
-  props: ["unit"],
+  props: {
+    unit: Object,
+    showLevel: {
+      type: Boolean,
+      default: true
+    }
+  },
   mixins: [UnitGetter]
 };
 </script>

@@ -4,12 +4,12 @@
       <div class="bg" :class="element"></div>
 
       <!-- Title -->
-      <UnitTitle class="width-100 unit-title" :unit="unit" />
+      <UnitTitle class="width-100 unit-title" :unit="unit" :showLevel="!garrison" />
 
       <!-- Unit -->
       <div
         class="flex flex-column flex-full flex-space-between padding-top-5 font-size-18"
-        v-if="!showAbilities"
+        v-if="!showAbilities && !garrison"
       >
         <div class="flex flex-center flex-column padding-left-3">
           <div class="padding-half panel-input unit-view-param center">
@@ -74,7 +74,8 @@ export default {
   props: {
     unit: Object,
     showEquipment: Boolean,
-    showSelect: Boolean
+    showSelect: Boolean,
+    garrison: Boolean
   },
   mixins: [UnitGetter],
   components: { UnitTitle, UnitStars, CustomButton, IconWithValue },

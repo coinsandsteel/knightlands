@@ -20,9 +20,10 @@ export default class Army {
         this._game = game;
         this._armyDb = armyDb;
         this._armyResolver = new ArmyResolver(ArmyAbilities, itemsResolver, armyUnits, TroopsMeta, GeneralsMeta);
-        this._unitsIndex = this._armyResolver.buildUnitsIndex({});
+        this._unitsIndex = this._armyResolver.buildUnitsIndex({}, {});
         this._vm = new Vue({
             data: () => ({
+                reserve: {},
                 units: {},
                 legions: [],
                 troops: [],
@@ -160,6 +161,10 @@ export default class Army {
         return filteredUnits;
     }
 
+    getReserve() {
+        return this._vm.reserve;
+    }
+
     getUnits(troops) {
         if (troops) {
             return this._vm.troops;
@@ -207,6 +212,18 @@ export default class Army {
             }
         }
         this._sort(unit.troop);
+    }
+
+    updateReserve(newReserve) {
+        for (const key in newReserve) {
+            const newUnit = newReserve[key];
+            const currentUnit = this._vm.reserve[key];
+            if (!currentUnit) {
+                this._vm.$set(this._vm.reserve, key, newUnit);
+            } else {
+                currentUnit.count = newReserve.count;
+            }
+        }
     }
 
     addUnits(units) {
@@ -275,6 +292,7 @@ export default class Army {
         }
 
         this._vm.units = unitsDict;
+        this._vm.reserve = army.reserve;
         this._unitsIndex.update(unitsDict);
 
         this._doSort(true);

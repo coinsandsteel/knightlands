@@ -12,7 +12,7 @@
           <Flag :weaponType="weaponType" :element="element" />
           <span
             class="width-100 font-size-18 font-weight-900 unit-item-lvl center-transform"
-          >x{{count}}</span>
+          >x{{unit.count}}</span>
         </div>
       </template>
     </div>
@@ -27,10 +27,7 @@ import Flag from "../Flag.vue";
 export default {
   props: ["unit", "selected"],
   mixins: [UnitGetter],
-  components: { UnitStars, Flag },
-  data: ()=>({
-      count: 999
-  })
+  components: { UnitStars, Flag }
 };
 </script>
 

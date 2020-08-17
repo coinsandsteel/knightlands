@@ -98,6 +98,7 @@ class Game {
         this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
         this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
         this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
+        this._socket.on(Events.UnitsReserveUpdate, this._handleUnitReserveUpdate.bind(this));
         this._socket.on(Events.UnitsRemoved, this._handleUnitsRemoved.bind(this));
         this._socket.on(Events.RaidDamaged, this._handleRaidDamaged.bind(this));
         this._socket.on(
@@ -419,6 +420,10 @@ class Game {
 
     _handleUnitUpdate(data) {
         this._army.updateUnit(data);
+    }
+
+    _handleUnitReserveUpdate(data) {
+        this._army.updateReserve(data);
     }
 
     _handleArmySummoned(data) {
