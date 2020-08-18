@@ -1,5 +1,15 @@
-.not-mobile(@rules) {
-  @media only screen and (min-width: 576px) {
+@mainFontColor: white;
+@mainBgColor: #245178;
+@panelBgColor: #193F5F;
+
+.mobile(@rules) {
+  @media only screen and (max-width: 576px) {
+    @rules();
+  }
+}
+
+.medium(@rules) {
+  @media only screen and (max-width: 767px) {
     @rules();
   }
 }
