@@ -7,7 +7,10 @@
     "scripts": {
         "serve:client": "yarn --cwd ./packages/client serve",
         "build:client": "yarn --cwd ./packages/client build",
-        "test:client": "yarn --cwd ./packages/client test"
+        "test:client": "yarn --cwd ./packages/client test",
+        "serve:marketplace": "yarn --cwd ./packages/marketplace serve",
+        "build:marketplace": "yarn --cwd ./packages/marketplace build",
+        "test:marketplace": "yarn --cwd ./packages/marketplace test"
     },
     "postcss": {
       "plugins": {}
