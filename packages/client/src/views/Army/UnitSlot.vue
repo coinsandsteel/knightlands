@@ -5,10 +5,18 @@
       <div class="absolute-stretch flex flex-center" v-if="!unit">
         <div class="empty"></div>
       </div>
-      <UnitStars class="stars" :stars="stars" size="small" />
-      <Flag class="item-badge-grid" :weaponType="weaponType" :element="element" />
-      <span class="unit-type font-size-20">{{$t(unitType)}}</span>
-      <span class="unit-level font-size-20">{{$t("unit-lvl", {lvl: level})}}</span>
+      <template v-if="unit">
+        <UnitStars class="stars" :stars="stars" size="small" />
+        <Flag
+          class="item-badge-grid"
+          :weaponType="weaponType"
+          :element="element"
+        />
+        <span class="unit-type font-size-20">{{ $t(unitType) }}</span>
+        <span class="unit-level font-size-20">{{
+          $t("unit-lvl", { lvl: level })
+        }}</span>
+      </template>
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 <template>
   <div class="screen-content">
+    <div class="screen-background"></div>
     <div class="width-100 legion-grid center">
       <UnitSlot
         v-for="slot in slots"

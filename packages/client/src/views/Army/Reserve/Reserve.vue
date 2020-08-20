@@ -1,6 +1,6 @@
 <template>
   <Promised class="screen-content" :promise="request">
-    <template v-slot:combined="{isPending, isDelayOver}">
+    <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-background"></div>
       <LoadingScreen :loading="isPending && isDelayOver" />
       <div class="flex">
@@ -35,9 +35,15 @@
       />
 
       <portal to="footer" v-if="isActive">
-        <CustomButton type="yellow" @click="reserve" :disabled="!canReserve">{{$t("btn-reserve")}}</CustomButton>
-        <CustomButton type="yellow" @click="viewReserve">{{$t("btn-reserve-view")}}</CustomButton>
-        <CustomButton type="grey" @click="reset" :disabled="!canReserve">{{$t("btn-reset")}}</CustomButton>
+        <CustomButton type="yellow" @click="reserve" :disabled="!canReserve">{{
+          $t("btn-reserve")
+        }}</CustomButton>
+        <CustomButton type="yellow" @click="viewReserve">{{
+          $t("btn-reserve-view")
+        }}</CustomButton>
+        <CustomButton type="grey" @click="reset" :disabled="!canReserve">{{
+          $t("btn-reset")
+        }}</CustomButton>
       </portal>
     </template>
   </Promised>
@@ -105,7 +111,10 @@ export default {
       return this.maxUnits == this.selectedUnits.length;
     },
     units() {
-      return this.$game.army.getUnits(this.currentTab == Troops);
+      return this.$game.army.getUnitsWithFilter(
+        this.currentTab == Troops,
+        unit => unit.legion == -1
+      );
     }
   },
   methods: {

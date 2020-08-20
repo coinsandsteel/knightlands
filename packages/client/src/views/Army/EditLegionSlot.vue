@@ -9,13 +9,21 @@
           :remove="true"
           :units="units"
           @removed="handleUnitRemove"
+          :autoselect="false"
           :selectedUnit="unit"
           @unitSelect="selectUnit"
         />
       </div>
-    </template>
 
-    <portal to="footer" v-if="isActive"></portal>
+      <portal to="footer" v-if="isActive">
+        <CustomButton
+          type="green"
+          @click="saveAndExit(true)"
+          :disabled="!canConfirm"
+          >{{ $t("btn-confirm") }}</CustomButton
+        >
+      </portal>
+    </template>
   </Promised>
 </template>
 
@@ -27,11 +35,18 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import CustomButton from "@/components/Button.vue";
 
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   props: ["legion", "slotId", "type"],
-  components: { UnitView, UnitInventory, LoadingScreen, Promised },
+  components: {
+    UnitView,
+    UnitInventory,
+    LoadingScreen,
+    Promised,
+    CustomButton
+  },
   data: () => ({
     unit: null,
     request: null,
@@ -71,6 +86,9 @@ export default {
     },
     isTroops() {
       return this.type == "troops";
+    },
+    canConfirm() {
+      return this.originalUnit != this.unit;
     }
   },
   methods: {
@@ -122,23 +140,26 @@ export default {
       this.$router.back();
       return true;
     },
-    async saveAndExit() {
-      let confirmation = await this.showPrompt(
-        this.$t("legion-slot-change-title"),
-        this.$t("legion-slot-change-desc"),
-        [
-          {
-            type: "red",
-            title: this.$t("btn-cancel"),
-            response: false
-          },
-          {
-            type: "green",
-            title: this.$t("btn-ok"),
-            response: true
-          }
-        ]
-      );
+    async saveAndExit(skipConfirmation) {
+      let confirmation = true;
+      if (!skipConfirmation) {
+        confirmation = await this.showPrompt(
+          this.$t("legion-slot-change-title"),
+          this.$t("legion-slot-change-desc"),
+          [
+            {
+              type: "red",
+              title: this.$t("btn-cancel"),
+              response: false
+            },
+            {
+              type: "green",
+              title: this.$t("btn-ok"),
+              response: true
+            }
+          ]
+        );
+      }
 
       if (confirmation === false) {
         this.$game.army.setInSlot(this.legion, this.slotId, this.originalUnit);

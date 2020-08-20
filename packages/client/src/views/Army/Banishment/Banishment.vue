@@ -1,6 +1,6 @@
 <template>
   <Promised class="screen-content" :promise="request">
-    <template v-slot:combined="{isPending, isDelayOver}">
+    <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-background"></div>
       <LoadingScreen :loading="isPending && isDelayOver" />
       <div class="flex">
@@ -14,7 +14,7 @@
       </div>
 
       <div class="color-panel-2 flex flex-space-evenly">
-        <Title class="margin-bottom-half">{{$t("refund-items")}}</Title>
+        <Title class="margin-bottom-half">{{ $t("refund-items") }}</Title>
         <Loot
           v-for="record in refundedItems"
           :key="`${record.item}${record.quantity}`"
@@ -35,9 +35,15 @@
       />
 
       <portal to="footer" v-if="isActive">
-        <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{$t("btn-banish")}}</CustomButton>
-        <CustomButton type="green" @click="autofill">{{$t("btn-autofill")}}</CustomButton>
-        <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{$t("btn-reset")}}</CustomButton>
+        <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{
+          $t("btn-banish")
+        }}</CustomButton>
+        <CustomButton type="green" @click="autofill">{{
+          $t("btn-autofill")
+        }}</CustomButton>
+        <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{
+          $t("btn-reset")
+        }}</CustomButton>
       </portal>
     </template>
   </Promised>
@@ -108,7 +114,10 @@ export default {
       return this.maxUnits == this.selectedUnits.length;
     },
     units() {
-      return this.$game.army.getUnits(this.currentTab == Troops);
+      return this.$game.army.getUnitsWithFilter(
+        this.currentTab == Troops,
+        unit => unit.legion == -1
+      );
     }
   },
   watch: {
