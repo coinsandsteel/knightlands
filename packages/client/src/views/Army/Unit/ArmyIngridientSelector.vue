@@ -5,6 +5,7 @@
         :units="units"
         v-if="units.length > 0"
         :multiSelect="!isEnoughSelected"
+        :autoselect="false"
         @toggle="toggleUnitSelect"
       />
       <div class="flex flex-center min-height-10r" v-else>

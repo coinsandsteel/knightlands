@@ -1,17 +1,23 @@
 <template>
   <Promised class="screen-content" :promise="request">
-    <template v-slot:combined="{isPending, isDelayOver}">
+    <template v-slot:combined="{ isPending, isDelayOver }">
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
       <div v-bar>
         <div class="dummy-height">
           <div class="color-panel-2 stats-grid font-size-20">
-            <IconWithValue iconClass="icon-damage" class="left">{{damage}}</IconWithValue>
+            <IconWithValue iconClass="icon-damage" class="left">{{
+              damage
+            }}</IconWithValue>
             <span class="right-arrow"></span>
-            <IconWithValue iconClass="icon-damage" class="right">{{nextPromotionDamage}}</IconWithValue>
+            <IconWithValue iconClass="icon-damage" class="right">{{
+              nextPromotionDamage
+            }}</IconWithValue>
 
-            <span class="left">{{$t("unit-max-lv", { lvl: maxLevel })}}</span>
+            <span class="left">{{ $t("unit-max-lv", { lvl: maxLevel }) }}</span>
             <span class="right-arrow"></span>
-            <span class="right">{{$t("unit-max-lv", { lvl: nextMaxLevel })}}</span>
+            <span class="right">{{
+              $t("unit-max-lv", { lvl: nextMaxLevel })
+            }}</span>
 
             <UnitStars :stars="stars" class="left"></UnitStars>
             <span class="right-arrow"></span>
@@ -30,18 +36,24 @@
           </div>
 
           <div class="flex flex-center" v-if="readyToPromote">
-            <CraftingIngridient class="padding-top-2" :ingridient="soulsIngridient" />
+            <CraftingIngridient
+              class="padding-top-2"
+              :ingridient="soulsIngridient"
+            />
 
             <CustomButton
               type="yellow"
               class="width-30"
               @click="promote"
               :disabled="!canPromote"
-            >{{$t("btn-promote")}}</CustomButton>
+              >{{ $t("btn-promote") }}</CustomButton
+            >
           </div>
 
           <div class="flex flex-center margin-top-2" v-else>
-            <span class="rarity-mythical font-size-25">{{$t('unit-lvl-req', { level: maxLevel })}}</span>
+            <span class="rarity-mythical font-size-25">{{
+              $t("unit-lvl-req", { level: maxLevel })
+            }}</span>
           </div>
         </div>
       </div>
@@ -167,6 +179,7 @@ export default {
       return this.unitsPerIngridient[ingrId].length;
     },
     async selectUnits(unit, ingridient) {
+      console.log(ingridient)
       this.clearSelectedUnits(ingridient);
       this.$delete(this.unitsPerIngridient, ingridient.id);
 
@@ -178,6 +191,8 @@ export default {
           this.$set(this.selectedUnits, unit.id, unit);
         }
       }
+
+      console.log(this.unitsPerIngridient)
     },
     async promote() {
       let confirmation = await this.showPrompt(

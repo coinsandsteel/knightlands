@@ -1,7 +1,7 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
-    <UnitView :unit="unit" :showSelect="true" @select="editUnit" />
+    <UnitView :unit="unit" />
     <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
 
     <div class="flex-full relative dummy-height">
@@ -12,6 +12,10 @@
         @unitSelect="selectUnit"
       />
     </div>
+
+    <portal to="footer" v-if="isActive">
+      <CustomButton type="green" @click="editUnit">{{$t("btn-select")}}</CustomButton>
+    </portal>
   </div>
 </template>
 
@@ -19,6 +23,7 @@
 import AppSection from "@/AppSection";
 import UnitInventory from "../UnitInventory.vue";
 import Tabs from "@/components/Tabs.vue";
+import CustomButton from "@/components/Button.vue";
 import UnitView from "../UnitView.vue";
 
 const Troops = "troops";
@@ -26,7 +31,7 @@ const Generals = "generals";
 
 export default {
   mixins: [AppSection],
-  components: { UnitInventory, Tabs, UnitView },
+  components: { UnitInventory, Tabs, UnitView, CustomButton },
   created() {
     this.title = "window-select-unit";
     this.$options.useRouterBack = true;
@@ -63,8 +68,8 @@ export default {
     selectUnit(unit) {
       this.unit = unit;
     },
-    editUnit(unit) {
-      this.$router.push({ name: "unit-level", params: { unitId: unit.id } });
+    editUnit() {
+      this.$router.push({ name: "unit-level", params: { unitId: this.unit.id } });
     }
   }
 };
