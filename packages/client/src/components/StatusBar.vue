@@ -56,12 +56,12 @@
     <div class="flex flex-column column" ref="softCurrency">
       <div class="flex flex-no-wrap flex-item-center">
         <div class="icon-gold"></div>
-        <span class="status-bar-font digit-font">{{softCurrency}}</span>
+        <span class="status-bar-font digit-font">{{ softCurrency }}</span>
       </div>
 
       <div class="flex flex-no-wrap flex-item-center" ref="hardCurrency">
         <div class="icon-premium"></div>
-        <span class="status-bar-font digit-font">{{hardCurrency}}</span>
+        <span class="status-bar-font digit-font">{{ hardCurrency }}</span>
       </div>
     </div>
 
@@ -79,7 +79,7 @@ import Vue from "vue";
 import AttractableResource from "@/components/AttractableResource.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 
-const TimerRefillModal = CreateDialog(TimerRefill, ...TimerRefill.props);
+const TimerRefillModal = CreateDialog(TimerRefill, "stat");
 const RESOURCE_NOT_DELAYED = -1;
 
 export default {
@@ -105,10 +105,14 @@ export default {
   components: {
     ProgressBar
   },
+  created() {
+    this._refillCb = this.refillTimer.bind(this);
+  },
   mounted() {
-    this.$game.on("refill", stat => {
-      this.refillTimer(stat);
-    });
+    this.$game.on("refill", this._refillCb);
+  },
+  destroyed() {
+    this.$game.off("refill", this._refillCb);
   },
   computed: {
     maxHealth() {
@@ -232,5 +236,3 @@ export default {
   justify-content: space-evenly;
 }
 </style>
-
-

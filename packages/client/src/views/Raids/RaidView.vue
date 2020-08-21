@@ -18,13 +18,18 @@
 
             <template v-slot:default>
               <DamageText
-                v-for="(damage) in playerDamages"
+                v-for="damage in playerDamages"
                 :key="damage.id"
                 :crit="damage.crit"
                 :local="damage.local"
-              >{{damage.damage}}</DamageText>
+                >{{ damage.damage }}</DamageText
+              >
 
-              <DamageLog :log="lastDamages" v-show="showLog" @close="showLog = false"></DamageLog>
+              <DamageLog
+                :log="lastDamages"
+                v-show="showLog"
+                @close="showLog = false"
+              ></DamageLog>
             </template>
 
             <template v-slot:overlay>
@@ -66,7 +71,11 @@
                   :hideMaxValue="lootProgress.current >= lootProgress.max"
                 ></ProgressBar>
             </div>-->
-            <RaidAttackPanel class="attack" @attack="handleAttack" :disabled="attackInProgress" />
+            <RaidAttackPanel
+              class="attack"
+              @attack="handleAttack"
+              :disabled="attackInProgress"
+            />
 
             <RaidArmy
               ref="army"
@@ -99,43 +108,52 @@
           </div>
 
           <!--RAID WON-->
-          <div
-            contentClasses="flex-center"
-            v-else-if="raidState && raidState.finished && raidState.defeat"
-          >
-            <div class="width-100 margin-top-2 margin-bottom-2">
-              <span
-                class="flex font-size-25 font-weight-700 flex-center width-100 flex-space-around full-flex"
-              >{{$t("raid-victory")}}</span>
-            </div>
+          <div class="margin-top-2 flex flex-center" v-else-if="raidWon">
+            <Title>{{ $t("raid-victory") }}</Title>
 
-            <custom-button class="raid-mid-btn" @click="claimReward">
-              <span>{{$t("claim-reward")}}</span>
+            <RewardsPreview
+              class="margin-top-2"
+              :rewards="rewards"
+            ></RewardsPreview>
+
+            <custom-button
+              class="raid-mid-btn margin-top-2"
+              @click="claimReward"
+            >
+              {{ $t("claim-reward") }}
             </custom-button>
           </div>
 
           <!--RAID LOST-->
-          <div class="flex-center" v-else-if="raidState && raidState.finished && !raidState.defeat">
+          <div
+            class="flex-center"
+            v-else-if="raidState && raidState.finished && !raidState.defeat"
+          >
             <div class="width-100 margin-top-2 margin-bottom-2">
               <span
                 class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
-              >{{$t("raid-lose", {boss: bossName})}}</span>
+                >{{ $t("raid-lose", { boss: bossName }) }}</span
+              >
             </div>
           </div>
 
           <!--NOT IN RAID YET-->
-          <div contentClasses="flex-center" v-else>
+          <div class="flex-center" v-else>
             <div class="color-panel-2">
               <span class="font-size-20">
-                {{$t("time-left")}}
-                <span class="enemy-title-font">{{timer.value}}</span>
+                {{ $t("time-left") }}
+                <span class="enemy-title-font">{{ timer.value }}</span>
               </span>
             </div>
 
             <div
               class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
             >
-              <custom-button v-if="hasChallenges" type="grey" @click="handleShowChallenges">
+              <custom-button
+                v-if="hasChallenges"
+                type="grey"
+                @click="handleShowChallenges"
+              >
                 <span class="icon-challenge"></span>
               </custom-button>
 
@@ -153,9 +171,14 @@
             </div>
 
             <PaymentStatus :request="statusRequest" @pay="continuePurchase">
-              <PromisedButton :promise="purchasePromise" width="16rem" type="yellow" @click="join">
+              <PromisedButton
+                :promise="purchasePromise"
+                width="16rem"
+                type="yellow"
+                @click="join"
+              >
                 <div class="flex flex-no-wrap">
-                  <span class="margin-right-half">{{$t("join")}}</span>
+                  <span class="margin-right-half">{{ $t("join") }}</span>
                   <PriceTag :dark="true" :iap="raidData.joinIap"></PriceTag>
                 </div>
               </PromisedButton>
@@ -163,7 +186,10 @@
           </div>
 
           <keep-alive>
-            <Challenges v-if="showChallenges" :raidState="raidState"></Challenges>
+            <Challenges
+              v-if="showChallenges"
+              :raidState="raidState"
+            ></Challenges>
           </keep-alive>
         </template>
       </div>
@@ -172,13 +198,16 @@
         <CopyButton :data="href" caption="btn-share"></CopyButton>
       </portal>
 
-      <div ref="overlay" class="absolute-stretch pointer-events-none text-align-left"></div>
+      <div
+        ref="overlay"
+        class="absolute-stretch pointer-events-none text-align-left"
+      ></div>
     </template>
 
     <template v-slot:rejected>
       <div class="full-flex flex flex-center">
-        <p class="font-size-20 font-error">{{$t("unknown-error-msg")}}</p>
-        <custom-button @click="getRaid">{{$t("try-again")}}</custom-button>
+        <p class="font-size-20 font-error">{{ $t("unknown-error-msg") }}</p>
+        <custom-button @click="getRaid">{{ $t("try-again") }}</custom-button>
       </div>
     </template>
   </Promised>
@@ -193,7 +222,7 @@ import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import BossView from "./BossView.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-import ProgressBar from "@/components/ProgressBar.vue";
+import RewardsPreview from "./RewardsPreview.vue";
 import DamageLog from "./DamageLog.vue";
 import ClaimedReward from "./ClaimedReward.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat";
@@ -211,6 +240,7 @@ import BossDamageText from "./BossDamageText.vue";
 import Vue from "vue";
 import SpriteAnimator from "@/components/SpriteAnimator.vue";
 import Timer from "@/timer.js";
+import Title from "@/components/Title.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
@@ -240,14 +270,15 @@ const Events = require("@/../../knightlands-shared/events");
 import DamageText from "./DamageText.vue";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
 
-const ShowResourceRefill = CreateDialog(
-  NotEnoughResource,
-  ...NotEnoughResource.props
+const ShowResourceRefill = CreateDialog(NotEnoughResource, "stat");
+
+const ShowPrompt = CreateDialog(Prompt, "title", "message", "buttons");
+
+const ShowClaimedReward = CreateDialog(
+  ClaimedReward,
+  "rewards",
+  "raidTemplateId"
 );
-
-const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
-
-const ShowClaimedReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
 
 export default {
   name: "raid",
@@ -268,7 +299,9 @@ export default {
     RaidArmy,
     RaidOptions,
     RaidAttackPanel,
-    SpriteAnimator
+    SpriteAnimator,
+    Title,
+    RewardsPreview
   },
   channel: undefined,
   mixins: [AppSection, PaymentHandler, RaidGetterMixin],
@@ -296,7 +329,9 @@ export default {
     },
     raid: 0,
     bossViewCenter: 0,
-    timer: new Timer(true)
+    timer: new Timer(true),
+    raidWon: false,
+    rewards: null
   }),
   created() {
     this.$options.paymentEvents = [Events.RaidJoinStatus];
@@ -317,6 +352,11 @@ export default {
   watch: {
     raidId() {
       this.init();
+    },
+    raidWon() {
+      if (this.raidWon) {
+        this.fetchRewards();
+      }
     }
   },
   computed: {
@@ -338,9 +378,7 @@ export default {
         return false;
       }
 
-      return (
-        this.raidState.currentDamage !== undefined && !this.raidState.finished
-      );
+      return this.raidState.currentDamage !== undefined && !this.raidWon;
     },
     currentDamage() {
       return this.raidState.currentDamage;
@@ -373,6 +411,10 @@ export default {
     }
   },
   methods: {
+    checkIfRaidWon() {
+      this.raidWon =
+        this.raidState && this.raidState.finished && this.raidState.defeat;
+    },
     async init() {
       await this.getRaid();
 
@@ -381,6 +423,7 @@ export default {
       }
 
       this.bossViewCenter = this.$refs.bossView.center;
+      this.checkIfRaidWon();
     },
     selectLegion() {
       this.$router.push({ name: "select-legion" });
@@ -424,6 +467,9 @@ export default {
     fetchPaymentStatus() {
       this.statusRequest = this.$game.fetchRaidJoinStatus(this.raidId);
     },
+    async fetchRewards() {
+      this.rewards = await this.$game.fetchRaidRewards(this.raidId);
+    },
     async handlePaymentComplete(iap, context) {
       await this.getRaid();
     },
@@ -434,7 +480,7 @@ export default {
     async claimReward() {
       let rewards = await this.$game.claimRaidLoot(this.raidId);
       await ShowClaimedReward(rewards.response, this.raidState.raidTemplateId);
-      this.handleBackButton();
+      this.$router.replace({ name: "raids" });
     },
     subscribeToRaid() {
       this.unsubscribe();
@@ -579,28 +625,9 @@ export default {
         this.$refs.overlay
       );
 
-      const timeline = anime.timeline({
-        duration: 500
-      });
-
-      // timeline
-      //   .add({
-      //     targets: this.$refs.cards[this.chosenCard].$el,
-      //     translateY: -this.$el.offsetHeight,
-      //     easing: "easeInOutBack"
-      //   })
-      //   .add(
-      //     {
-      //       targets: this.$el,
-      //       opacity: 0
-      //     },
-      //     500
-      //   );
-
-      await timeline.finished;
-
       this.$app.getStatusBar().setDelayResourceUpdate(false);
       this.attackInProgress = false;
+      this.checkIfRaidWon();
     },
     _handleEvents(data) {
       switch (data.event) {
@@ -765,5 +792,3 @@ export default {
   }
 }
 </style>
-
-

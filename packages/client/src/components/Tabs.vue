@@ -100,7 +100,7 @@ export default {
 }
 
 .border() {
-  border-image-slice: 43 22 27 23 fill;
+  border-image-slice: 43 20 27 23 fill;
   border-image-width: 20px 10px 20px 10px;
   border-image-repeat: round stretch;
   border-style: solid;

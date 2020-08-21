@@ -93,8 +93,15 @@ export default {
   },
   methods: {
     load() {
-      const slots = this.$game.army.getSlots(this.legion, this.isTroops);
-      let unit = slots.find(s => s.id == this.slotId).unit;
+      let slots = this.$game.army.getSlots(this.legion, this.isTroops);
+
+      let foundSlot = slots.find(s => s.id == this.slotId);
+      if (!foundSlot) {
+        slots = this.$game.army.getSlots(this.legion, !this.isTroops);
+        foundSlot = slots.find(s => s.id == this.slotId);
+      }
+
+      let unit = foundSlot.unit;
 
       if (!this.unit) {
         this.originalUnit = unit;

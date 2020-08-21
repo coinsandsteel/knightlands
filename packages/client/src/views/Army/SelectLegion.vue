@@ -15,13 +15,23 @@
             <Title class="margin-bottom-1" :title="$t('generals')" />
 
             <div class="units-grid width-100">
-              <UnitSlot v-for="slot in generals" :key="slot.id" :unit="slot.unit" />
+              <UnitSlot
+                v-for="slot in generals"
+                :key="slot.id"
+                :unit="slot.unit"
+                @click="editSlot(slot.id, false)"
+              />
             </div>
 
             <Title class="margin-bottom-1 margin-top-1" :title="$t('troops')" />
 
             <div class="units-grid width-100">
-              <UnitSlot v-for="slot in troops" :key="slot.id" :unit="slot.unit" />
+              <UnitSlot
+                v-for="slot in troops"
+                :key="slot.id"
+                :unit="slot.unit"
+                @click="editSlot(slot.id, true)"
+              />
             </div>
           </div>
         </div>
@@ -29,7 +39,9 @@
     </div>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="yellow" @click="selectLegion">{{$t("select-legion")}}</CustomButton>
+      <CustomButton type="yellow" @click="selectLegion">{{
+        $t("select-legion")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -74,6 +86,16 @@ export default {
     },
     selectLegion() {
       this.handleBackButton();
+    },
+    editSlot(slotId, troops) {
+      this.$router.push({
+        name: "edit-legion",
+        params: {
+          legion: this.legionIndex,
+          slotId: slotId,
+          type: troops ? "troops" : "generals"
+        }
+      });
     }
   }
 };

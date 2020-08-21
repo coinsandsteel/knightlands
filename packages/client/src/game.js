@@ -946,6 +946,8 @@ class Game {
         return response.response;
     }
 
+    // Raida
+
     async fetchCurrentRaids() {
         return await this._request(Operations.FetchRaidsList);
     }
@@ -986,6 +988,12 @@ class Game {
             raid,
             free
         });
+    }
+
+    async fetchRaidRewards(raidId) {
+        return (await this._request(Operations.FetchRaidRewards, {
+            raidId
+        })).response;
     }
 
     // Crafting

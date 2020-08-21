@@ -1,10 +1,12 @@
 <template>
   <UserDialog :title="$t(title)" @close="$close">
     <template v-slot:content>
-      <div class="font-size-25">{{$t(message)}}</div>
+      <div class="font-size-25">{{ $t(message) }}</div>
     </template>
     <template v-slot:footer>
-      <CustomButton type="yellow" @click="refill">{{$t("do-refill")}}</CustomButton>
+      <CustomButton type="yellow" @click="refill">{{
+        $t("do-refill")
+      }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -32,6 +34,8 @@ export default {
         case CharacterStats.Energy:
           return "no-energy-title";
       }
+
+      return "";
     }
   },
   methods: {
@@ -43,5 +47,4 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

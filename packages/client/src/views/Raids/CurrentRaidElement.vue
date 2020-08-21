@@ -47,7 +47,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 
-const ShowReward = CreateDialog(ClaimedReward, ...ClaimedReward.props);
+const ShowReward = CreateDialog(ClaimedReward, "rewards", "raidTemplateId");
 
 export default {
   props: ["raidState"],

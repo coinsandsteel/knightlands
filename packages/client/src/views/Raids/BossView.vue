@@ -97,7 +97,7 @@ export default {
       return Campaign.getRaidImage(this.raidTemplateId);
     },
     zoneBackground() {
-      return UiConstants.backgroundImage(Campaign.getRaidBackground(50));
+      return UiConstants.backgroundImage(Campaign.getRaidBackground(this.raidTemplateId));
     },
     name() {
       return this.meta.name;

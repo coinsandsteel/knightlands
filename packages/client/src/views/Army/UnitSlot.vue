@@ -2,7 +2,7 @@
   <div class="outer" @click="$emit('click')">
     <div class="inner root font-size-18 relative">
       <div class="bg width-100 height-100" :style="unitImage"></div>
-      <div class="absolute-stretch flex flex-center" v-if="!unit">
+      <div class="absolute-stretch flex flex-center" v-if="!unit && !preview">
         <div class="empty"></div>
       </div>
       <template v-if="unit">
@@ -27,7 +27,7 @@ import UnitGetter from "./UnitGetterMixin.vue";
 import Flag from "./Flag.vue";
 
 export default {
-  props: ["unit"],
+  props: ["unit", "preview"],
   mixins: [UnitGetter],
   components: { UnitStars, Flag }
 };

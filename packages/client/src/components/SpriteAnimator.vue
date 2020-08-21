@@ -141,13 +141,14 @@ export default {
       if (this.sprites.length > 0) {
         this.animationFrameID = window.requestAnimationFrame(this.loop);
       } else {
-        this.animationFrameID = undefined;
+        this.stop();
       }
     },
     stop() {
       window.cancelAnimationFrame(this.animationFrameID);
       this.animationFrameID = undefined;
       this.sprites.length = 0;
+      this.ctx.clearRect(0, 0, this.width, this.height);
     },
     play() {
       let res = this.resources[
