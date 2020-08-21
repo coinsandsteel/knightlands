@@ -218,7 +218,7 @@ export default {
   },
   methods: {
     itemStateChanged(canProceed, items) {
-      this.items = items;refillTimer
+      this.items = items;
       this.canBeConfirmed = canProceed;
     },
     async confirm() {
@@ -246,7 +246,7 @@ export default {
     },
     async fetchInfo() {
       this.infoRequest = this.$game.getTimerRefillInfo(this.stat);
-    
+
       let info = await this.infoRequest;
       this.iap = info.iap;
       this.refillsToday = info.refills;
