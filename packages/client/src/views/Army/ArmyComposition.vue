@@ -34,10 +34,10 @@
       </div>
     </div>
 
-    <portal to="footer" v-if="isActive">
+    <!-- <portal to="footer" v-if="isActive">
       <CustomButton type="grey" @click="editGenerals">{{$t("edit-generals")}}</CustomButton>
       <CustomButton type="grey" @click="editTroops">{{$t("edit-troops")}}</CustomButton>
-    </portal>
+    </portal> -->
   </div>
 </template>
 

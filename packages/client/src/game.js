@@ -85,6 +85,7 @@ class Game {
             this._handleInventoryUpdate.bind(this)
         );
         this._socket.on(Events.RaidSummonStatus, this._handleRaidStatus.bind(this));
+        this._socket.on(Events.TokenChartUpdate, this._handleChartUpdate.bind(this));
         this._socket.on(
             Events.RaidJoinStatus,
             this._handleRaidJoinStatus.bind(this)
@@ -498,6 +499,10 @@ class Game {
         });
 
         this._vm.$emit(Events.RaidSummonStatus, data);
+    }
+
+    _handleChartUpdate(data) {
+        this._vm.$emit(Events.TokenChartUpdate, data);
     }
 
     _handleCraftStatus(data) {
@@ -947,6 +952,12 @@ class Game {
     }
 
     // Raida
+
+    async fetchRaidTokenRates(raid, from, to) {
+        return (await this._request(Operations.FetchTokenRates, {
+            raid, from, to
+        })).response;
+    }
 
     async fetchCurrentRaids() {
         return await this._request(Operations.FetchRaidsList);

@@ -1,11 +1,16 @@
 <template>
   <div class="content">
-    <div class="screen-background"></div>
     <div class="height-100 flex-no-wrap flex flex-column flex center">
       <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab"></Tabs>
-      <div class="padding-top-2 height-100 flex-no-wrap flex flex-column flex center width-100">
+      <div
+        class="padding-top-2 height-100 flex-no-wrap flex flex-column flex center width-100"
+      >
         <keep-alive>
-          <component :data="raidState.challenges[currentTab]" :raidState="raidState" :is="currentTab"></component>
+          <component
+            :data="raidState.challenges[currentTab]"
+            :raidState="raidState"
+            :is="currentTab"
+          ></component>
         </keep-alive>
       </div>
     </div>

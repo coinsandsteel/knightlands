@@ -126,6 +126,7 @@
           :request="statusRequest"
           @pay="continuePurchase"
           @cancel="cancelPurchase"
+          @iap="setIap"
           :cancel="true"
           v-else
         >

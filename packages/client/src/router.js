@@ -457,7 +457,10 @@ const router = new Router({
     children: [{
       path: "composition",
       name: "army-composition",
-      component: () => import("./views/Army/ArmyComposition.vue")
+      component: () => import("./views/Army/ArmyComposition.vue"),
+      meta: {
+        noTopBar: true
+      }
     },
     {
       path: "legion/:type",
@@ -469,18 +472,21 @@ const router = new Router({
       path: "edit-legion/:legion/:type/:slotId",
       name: "edit-legion",
       component: () => import("./views/Army/EditLegionSlot.vue"),
-      props: true
+      props: true,
+      meta: {
+        noTopBar: true
+      }
     },
     {
       path: "edit-unit",
       component: () => import("./views/Army/Unit/ArmyUnitRoot.vue"),
-      meta: {
-        noTopBar: false
-      },
       children: [{
         path: "",
         name: "edit-unit",
         component: () => import("./views/Army/Unit/ArmyUnitSelect.vue"),
+        meta: {
+          noTopBar: true
+        }
       },
       {
         path: "unit/:unitId",

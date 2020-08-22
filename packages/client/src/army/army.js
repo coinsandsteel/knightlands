@@ -289,10 +289,11 @@ export default class Army {
                     unit.idx = this._vm.generals.push(unit) - 1;
                 }
             }
+
+            this._vm.reserve = army.reserve;
         }
 
         this._vm.units = unitsDict;
-        this._vm.reserve = army.reserve;
         this._unitsIndex.update(unitsDict);
 
         this._doSort(true);

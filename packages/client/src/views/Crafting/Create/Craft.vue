@@ -4,11 +4,21 @@
       <div class="flex flex-column padding-1 flex-center">
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
-        <StripedPanel class="craft width-100" contentClasses="height-100" v-if="recipeId">
-          <ItemInfo :item="item" :quantity="itemsToCraft" class="width-100"></ItemInfo>
+        <StripedPanel
+          class="craft width-100"
+          contentClasses="height-100"
+          v-if="recipeId"
+        >
+          <ItemInfo
+            :item="item"
+            :quantity="itemsToCraft"
+            class="width-100"
+          ></ItemInfo>
 
           <div class="flex flex-column flex-items-center flex-end full-flex">
-            <span class="title font-size-20 margin-top-3">{{$t("ingridients")}}</span>
+            <span class="title font-size-20 margin-top-3">{{
+              $t("ingridients")
+            }}</span>
 
             <StripedContent
               classes="margin-top-3 margin-bottom-3 width-100"
@@ -23,7 +33,9 @@
               />
             </StripedContent>
 
-            <div class="flex flex-column flex-center width-100 flex-space-evenly">
+            <div
+              class="flex flex-column flex-center width-100 flex-space-evenly"
+            >
               <NumericValue
                 class="margin-bottom-3"
                 :value="itemsToCraft"
@@ -35,32 +47,51 @@
 
               <div>
                 <CustomButton
-                  :disabled="!canCraft() && $game.softCurrency >= recipe.softCurrencyFee"
+                  :disabled="
+                    !canCraft() && $game.softCurrency >= recipe.softCurrencyFee
+                  "
                   type="yellow"
                   v-if="recipe.softCurrencyFee > 0"
                   @click="craftWithSoft()"
                 >
                   <div class="flex flex-center">
-                    <span class="margin-right-half">{{$t("btn-build", { count: itemsToCraft })}}</span>
-                    <IconWithValue iconClass="icon-gold">{{softPrice}}</IconWithValue>
+                    <span class="margin-right-half">{{
+                      $t("btn-build", { count: itemsToCraft })
+                    }}</span>
+                    <IconWithValue iconClass="icon-gold">{{
+                      softPrice
+                    }}</IconWithValue>
                   </div>
                 </CustomButton>
 
                 <CustomButton
-                  :disabled="!canCraft() && $game.hardCurrency >= recipe.hardCurrencyFee"
+                  :disabled="
+                    !canCraft() && $game.hardCurrency >= recipe.hardCurrencyFee
+                  "
                   type="grey"
                   v-if="recipe.hardCurrencyFee > 0"
                   @click="craftWithHard()"
                 >
                   <div class="flex flex-center">
-                    {{$t("btn-build", { count: itemsToCraft })}}
-                    <IconWithValue iconClass="icon-premium">{{hardPrice}}</IconWithValue>
+                    {{ $t("btn-build", { count: itemsToCraft }) }}
+                    <IconWithValue iconClass="icon-premium">{{
+                      hardPrice
+                    }}</IconWithValue>
                   </div>
                 </CustomButton>
               </div>
 
-              <PaymentStatus v-if="recipe.iap" :request="fetchPayment" @pay="continuePurchase">
-                <CustomButton :disabled="!canCraft" type="green" @click="craftWithFiat()">
+              <PaymentStatus
+                v-if="recipe.iap"
+                :request="fetchPayment"
+                @pay="continuePurchase"
+                @iap="setIap"
+              >
+                <CustomButton
+                  :disabled="!canCraft"
+                  type="green"
+                  @click="craftWithFiat()"
+                >
                   <price-tag :dark="true" :iap="recipe.iap"></price-tag>
                 </CustomButton>
               </PaymentStatus>

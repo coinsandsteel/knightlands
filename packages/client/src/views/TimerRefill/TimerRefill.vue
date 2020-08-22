@@ -34,7 +34,7 @@
                     >Time until reset: {{ resetTimer.value }}</span>
                   </div>
 
-                  <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase">
+                  <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase" @iap="setIap">
                     <PromisedButton
                       :promise="purchasePromise"
                       width="16rem"

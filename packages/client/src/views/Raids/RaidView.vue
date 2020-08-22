@@ -1,10 +1,14 @@
 <template>
   <Promised class="screen-content" :promise="request" :pendingDelay="200">
-    <template v-slot:combined="{ isPending, isDelayOver, data }">
+    <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-background"></div>
       <loading-screen :loading="isDelayOver && isPending"></loading-screen>
-      <div class="flex relative flex-column flex-no-wrap height-100">
-        <template v-if="raidState">
+      <div class="height-100 relative">
+        <div
+          class="flex relative flex-column flex-no-wrap height-100"
+          v-if="raidState"
+          v-show="mainViewNotHidden"
+        >
           <boss-view
             ref="bossView"
             class="margin-bottom-1"
@@ -56,7 +60,10 @@
           </boss-view>
 
           <!--COMBAT VIEW-->
-          <div class="raid-controls full-flex width-100" v-if="participant">
+          <div
+            class="raid-controls full-flex width-100"
+            v-if="participant && !raidWon"
+          >
             <!-- <div class="margin-top-3">
                 <div class="flex flex-column flex-center font-size-20 white-font font-outline">
                   <span
@@ -111,23 +118,30 @@
           <div class="margin-top-2 flex flex-center" v-else-if="raidWon">
             <Title>{{ $t("raid-victory") }}</Title>
 
-            <RewardsPreview
-              class="margin-top-2"
-              :rewards="rewards"
-            ></RewardsPreview>
+            <template v-if="participant">
+              <RewardsPreview
+                class="margin-top-2"
+                :rewards="rewards"
+              ></RewardsPreview>
 
-            <custom-button
-              class="raid-mid-btn margin-top-2"
-              @click="claimReward"
-            >
-              {{ $t("claim-reward") }}
-            </custom-button>
+              <custom-button
+                class="raid-mid-btn margin-top-2"
+                @click="claimReward"
+              >
+                {{ $t("claim-reward") }}
+              </custom-button>
+            </template>
           </div>
 
           <!--RAID LOST-->
           <div
             class="flex-center"
-            v-else-if="raidState && raidState.finished && !raidState.defeat"
+            v-else-if="
+              raidState &&
+                raidState.finished &&
+                !raidState.defeat &&
+                participant
+            "
           >
             <div class="width-100 margin-top-2 margin-bottom-2">
               <span
@@ -165,12 +179,12 @@
                 <span class="icon-info dark"></span>
               </custom-button>
 
-              <CustomButton type="grey" @click="$emit('chart')">
+              <CustomButton type="grey" @click="handleShowChart">
                 <span class="icon-chart"></span>
               </CustomButton>
             </div>
 
-            <PaymentStatus :request="statusRequest" @pay="continuePurchase">
+            <PaymentStatus :request="statusRequest" @pay="continuePurchase" @iap="setIap">
               <PromisedButton
                 :promise="purchasePromise"
                 width="16rem"
@@ -184,14 +198,16 @@
               </PromisedButton>
             </PaymentStatus>
           </div>
+        </div>
 
-          <keep-alive>
-            <Challenges
-              v-if="showChallenges"
-              :raidState="raidState"
-            ></Challenges>
-          </keep-alive>
-        </template>
+        <keep-alive>
+          <Challenges v-if="showChallenges" :raidState="raidState"></Challenges>
+
+          <TokenChart
+            v-if="showChart"
+            :raidTemplateId="raidState.raidTemplateId"
+          ></TokenChart>
+        </keep-alive>
       </div>
 
       <portal to="footer" v-if="isActive">
@@ -221,7 +237,6 @@ import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import BossView from "./BossView.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import RewardsPreview from "./RewardsPreview.vue";
 import DamageLog from "./DamageLog.vue";
 import ClaimedReward from "./ClaimedReward.vue";
@@ -262,7 +277,6 @@ const ShowRaidInfo = CreateDialog(
   "dktFactor"
 );
 
-import Challenges from "./Challenges/Challenges.vue";
 import anime from "animejs/lib/anime.es.js";
 
 const Events = require("@/../../knightlands-shared/events");
@@ -287,11 +301,10 @@ export default {
     Promised,
     CustomButton,
     BossView,
-    IconWithValue,
     DamageLog,
     DamageText,
     CopyButton,
-    Challenges,
+    Challenges: () => import("./Challenges/Challenges.vue"),
     PaymentStatus,
     PromisedButton,
     PriceTag,
@@ -301,19 +314,18 @@ export default {
     RaidAttackPanel,
     SpriteAnimator,
     Title,
-    RewardsPreview
+    RewardsPreview,
+    TokenChart: () => import("./TokenChart.vue")
   },
-  channel: undefined,
   mixins: [AppSection, PaymentHandler, RaidGetterMixin],
   props: ["raidId"],
   data: () => ({
     attackInProgress: false,
     statusRequest: null,
     purchasePromise: null,
-    showRewards: false,
-    showLog: false,
     showChallenges: false,
-    showInfo: false,
+    showChart: false,
+    showLog: false,
     raidState: null,
     request: null,
     attackCount: 1,
@@ -360,6 +372,9 @@ export default {
     }
   },
   computed: {
+    mainViewNotHidden() {
+      return !(this.showChallenges || this.showChart);
+    },
     hasChallenges() {
       if (!this.raidState) return false;
       return Object.keys(this.raidState.challenges).length > 0;
@@ -377,8 +392,7 @@ export default {
       if (!this.raidState) {
         return false;
       }
-
-      return this.raidState.currentDamage !== undefined && !this.raidWon;
+      return this.raidState.participants[this.$game.account] !== undefined;
     },
     currentDamage() {
       return this.raidState.currentDamage;
@@ -428,7 +442,9 @@ export default {
     selectLegion() {
       this.$router.push({ name: "select-legion" });
     },
-    handleShowChart() {},
+    handleShowChart() {
+      this.showChart = true;
+    },
     handleShowInfo() {
       ShowRaidInfo(
         this.raid,
@@ -497,6 +513,11 @@ export default {
     handleBackButton() {
       if (this.showChallenges) {
         this.showChallenges = false;
+        return true;
+      }
+
+      if (this.showChart) {
+        this.showChart = false;
         return true;
       }
 

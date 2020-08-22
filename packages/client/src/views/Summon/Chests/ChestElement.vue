@@ -52,6 +52,7 @@
         ref="status"
         :request="fetchPayment"
         @pay="continuePurchase"
+        @iap="setIap"
         v-else-if="chest.meta.iaps.length > 0"
       >
         <div class="flex flex-center flex-items-end flex-column">

@@ -49,6 +49,7 @@
           ref="status"
           :request="fetchRequest"
           @pay="continuePurchase"
+          @iap="setIap"
           v-if="info.meta.iaps.length > 0"
           class="margin-top-1"
         >

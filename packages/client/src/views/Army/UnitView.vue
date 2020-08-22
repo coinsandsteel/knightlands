@@ -26,6 +26,7 @@
               type="green"
               class="margin-bottom-half"
               @click="goToEquipment"
+              v-if="showEquipment"
             >Eq</CustomButton>
             <CustomButton type="grey" class="margin-bottom-half" @click="showAbilities = true">Abi</CustomButton>
             <!-- <CustomButton
@@ -73,7 +74,10 @@ import IconWithValue from "@/components/IconWithValue.vue";
 export default {
   props: {
     unit: Object,
-    showEquipment: Boolean,
+    showEquipment: {
+      type: Boolean,
+      default: true
+    },
     showSelect: Boolean,
     garrison: Boolean
   },

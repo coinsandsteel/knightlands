@@ -3,6 +3,9 @@ import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
   mixins: [PromptMixin],
+  data: () => ({
+    _internalIap: null
+  }),
   paymentEvents: [],
   mounted() {
     this.listener = this._handlePaymentComplete.bind(this);
@@ -16,6 +19,9 @@ export default {
     });
   },
   methods: {
+    setIap(iap) {
+      this._internalIap = iap;
+    },
     async _handlePaymentComplete(data) {
       if (data.iap != this._internalIap) {
         return;
@@ -53,8 +59,6 @@ export default {
       }
     },
     async purchase(signature, price, iap, paymentId, nonce, timestamp) {
-      await this.fetchPaymentStatus(iap);
-      this._internalIap = iap;
       try {
         console.log("purchase....");
         await this.$game.purchaseIAP(

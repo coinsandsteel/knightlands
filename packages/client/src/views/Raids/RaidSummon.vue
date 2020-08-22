@@ -1,10 +1,13 @@
 <template>
-  <Promised class="screen-content flex-start relative" :promise="raidStatusRequest">
-    <template v-slot:combined="{ isPending, isDelayOver, data }">
-      <loading-screen :loading="isPending"></loading-screen>
+  <Promised
+    class="screen-content flex-start relative"
+    :promise="raidStatusRequest"
+  >
+    <template v-slot:combined="{ isPending, isDelayOver }">
+      <loading-screen :loading="isPending && isDelayOver"></loading-screen>
       <div class="screen-background"></div>
-      <AnimatedBackgroundUnits></AnimatedBackgroundUnits>
-      <div v-bar>
+      <!-- <AnimatedBackgroundUnits></AnimatedBackgroundUnits> -->
+      <div v-bar v-show="!showChart">
         <div>
           <boss-view
             v-if="raid"
@@ -14,16 +17,22 @@
             @previous="goToPrevious"
           >
             <div class="height-100 flex flex-items-end">
-              <div class="width-100 flex flex-space-evenly overlay-color padding-1">
-                <span class="font-size-25 font-weight-900">{{$t("unit-lvl", { lvl: raidLevel })}}</span>
+              <div
+                class="width-100 flex flex-space-evenly overlay-color padding-1"
+              >
+                <span class="font-size-25 font-weight-900">{{
+                  $t("unit-lvl", { lvl: raidLevel })
+                }}</span>
                 <IconWithValue
                   iconClass="icon-health"
                   valueClass="font-size-25 font-weight-900"
-                >{{raidMaxHealth}}</IconWithValue>
+                  >{{ raidMaxHealth }}</IconWithValue
+                >
                 <IconWithValue
                   iconClass="icon-damage"
                   valueClass="font-size-25 font-weight-900"
-                >{{raidAttack}}</IconWithValue>
+                  >{{ raidAttack }}</IconWithValue
+                >
               </div>
             </div>
           </boss-view>
@@ -39,6 +48,10 @@
               <custom-button type="grey" @click="showInfo">
                 <span class="icon-info dark"></span>
               </custom-button>
+
+              <custom-button type="grey" @click="showChart = true">
+                <span class="icon-chart"></span>
+              </custom-button>
             </div>
 
             <div class="margin-top-3" v-if="$game.load">
@@ -51,12 +64,18 @@
               </div>
             </div>
 
-            <div class="margin-top-2 flex flex-column flex-center" v-if="isFreeRaid">
+            <div
+              class="margin-top-2 flex flex-column flex-center"
+              v-if="isFreeRaid"
+            >
               <span
                 v-if="!levelRequirementMet"
                 class="font-error font-size-18"
-              >{{$t("no-raid-level", { level: raidLevel })}}</span>
-              <CustomButton type="yellow" @click="confirmSummon">{{$t("btn-summon")}}</CustomButton>
+                >{{ $t("no-raid-level", { level: raidLevel }) }}</span
+              >
+              <CustomButton type="yellow" @click="confirmSummon">{{
+                $t("btn-summon")
+              }}</CustomButton>
             </div>
 
             <PaymentStatus
@@ -64,14 +83,20 @@
               class="margin-top-2"
               :request="fetchPayment"
               @pay="continuePurchase"
+              @iap="setIap"
             >
               <div class="flex flex-column flex-center">
                 <span
                   v-if="!levelRequirementMet"
                   class="font-error font-size-18"
-                >{{$t("no-raid-level", { level: raidLevel })}}</span>
-                <CustomButton :disabled="!canSummon" type="yellow" @click="confirmSummon">
-                  <span>{{$t("btn-summon")}}</span>
+                  >{{ $t("no-raid-level", { level: raidLevel }) }}</span
+                >
+                <CustomButton
+                  :disabled="!canSummon"
+                  type="yellow"
+                  @click="confirmSummon"
+                >
+                  <span>{{ $t("btn-summon") }}</span>
                   <price-tag :iap="iap" :dark="true"></price-tag>
                 </CustomButton>
               </div>
@@ -79,6 +104,10 @@
           </div>
         </div>
       </div>
+
+      <keep-alive>
+        <TokenChart v-if="showChart" :raidTemplateId="raid"></TokenChart>
+      </keep-alive>
     </template>
   </Promised>
 </template>
@@ -90,7 +119,6 @@ import AnimatedBackgroundUnits from "@/components/AnimatedBackgroundUnits.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
 import PriceTag from "@/components/PriceTag.vue";
-import Prompt from "@/components/Prompt.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import Events from "@/../../knightlands-shared/events";
 import BossView from "./BossView.vue";
@@ -105,7 +133,6 @@ import { Promised } from "vue-promised";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 
-const ShowPrompt = CreateDialog(Prompt, ...Prompt.props);
 const ShowRewards = CreateDialog(
   Rewards,
   "raidTemplateId",
@@ -141,7 +168,8 @@ export default {
     PaymentStatus,
     IconWithValue,
     Tabs,
-    AnimatedBackgroundUnits
+    AnimatedBackgroundUnits,
+    TokenChart: () => import("./TokenChart.vue")
   },
   created() {
     this.title = "window-summon-raid";
@@ -156,6 +184,7 @@ export default {
   },
   data() {
     return {
+      showChart: false,
       raidStatusRequest: null,
       fetchPayment: null,
       listener: undefined,
@@ -248,5 +277,3 @@ export default {
   top: 0;
 }
 </style>
-
-

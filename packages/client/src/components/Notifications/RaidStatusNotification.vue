@@ -12,7 +12,7 @@
             @click="openRaid(props.item.data)"
           >{{$t("btn-open-raid")}}</custom-button>
 
-          <a v-else @click="joinRaid(props.item.data)">{{$t("btn-retry")}}</a>
+          <a v-else @click="openRaid(props.item.data)">{{$t("btn-retry")}}</a>
         </template>
         <template v-else>
           <div
@@ -39,19 +39,13 @@ export default {
     openRaid(data) {
       this.$router.push({
         name: "view-raid",
-        params: { raid: data.context.raid }
+        params: { raidId: data.context.raid }
       });
     },
     summonRaid(data) {
       this.$router.push({
         name: "summon-raid",
         params: { raid: data.context.raidTemplateId }
-      });
-    },
-    joinRaid(data) {
-      this.$router.push({
-        name: "view-raid",
-        params: { raidId: data.context.raidId }
       });
     }
   }

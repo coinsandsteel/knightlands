@@ -105,6 +105,7 @@
                 ref="paymentStatus"
                 :request="fetchPayment"
                 @pay="continuePurchase"
+                @iap="setIap"
                 class="width-100 flex flex-space-evenly"
               >
                 <div class="flex flex-column width-100">

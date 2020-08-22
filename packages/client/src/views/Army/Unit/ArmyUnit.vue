@@ -1,7 +1,7 @@
 <template>
   <div class="screen-content">
     <div class="screen-background" :class="element"></div>
-    <UnitView :unit="unit" />
+    <UnitView :unit="unit" :showEquipment="false" />
     <Tabs :replace="true" :router="true" :tabs="tabs" :currentTab="currentTab" />
     <keep-alive v-if="unit">
       <router-view :unit="unit"></router-view>

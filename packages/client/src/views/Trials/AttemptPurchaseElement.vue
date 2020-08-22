@@ -1,6 +1,6 @@
 <template>
   <div class="width-100 flex flex-center margin-bottom-1">
-    <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase">
+    <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase" @iap="setIap">
         <div class="flex flex-column">
           <PromisedButton
           type="yellow margin-bottom-1"
