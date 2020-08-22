@@ -306,7 +306,7 @@ export default {
 <style lang="less" scoped>
 @import (reference) "./style/common.less";
 
-@footerColor: #245178;
+@footerColor: #112b46;
 
 .content-wrap {
   height: 100%;
@@ -317,7 +317,7 @@ export default {
 
 .section-name {
   pointer-events: none;
-  background-color: #112c47;
+  background-color: @footerColor;
   width: 200%;
   transform: translateX(-50%);
   right: -50%;
