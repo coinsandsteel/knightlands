@@ -1,4 +1,6 @@
-'use strict';
+/*jshint esversion: 9 */
+
+"use strict";
 
 const ItemTemplates = require("./items.json");
 const {
@@ -14,7 +16,12 @@ import ItemStatResolver from "@/../../knightlands-shared/item_stat_resolver";
 
 class ItemDatabase {
   constructor() {
-    this._itemStatResolver = new ItemStatResolver(Meta.statConversions, Meta.itemPower, Meta.itemPowerSlotFactors, Meta.charmItemPower);
+    this._itemStatResolver = new ItemStatResolver(
+      Meta.statConversions,
+      Meta.itemPower,
+      Meta.itemPowerSlotFactors,
+      Meta.charmItemPower
+    );
   }
 
   get itemStatResolver() {
@@ -40,14 +47,10 @@ class ItemDatabase {
   getIcon(id) {
     let template = ItemTemplates[id];
     if (template.type == ItemType.Equipment) {
-      return (
-        `/images/items/${template.type}/${template.equipmentType}/${template.icon}.png`
-      );
+      return `/images/items/${template.type}/${template.equipmentType}/${template.icon}.png`;
     }
 
-    return (
-      `/images/items/${template.type}/${template.icon}.png`
-    );
+    return `/images/items/${template.type}/${template.icon}.png`;
   }
 
   getProperty(propId) {
@@ -97,13 +100,15 @@ class ItemDatabase {
 
   isArmour(id) {
     const slot = this.getSlot(id);
-    return slot == EquipmentSlots.Boots ||
+    return (
+      slot == EquipmentSlots.Boots ||
       slot == EquipmentSlots.Cape ||
       slot == EquipmentSlots.Chest ||
       slot == EquipmentSlots.Gloves ||
-      slot == EquipmentSlots.Helmet;
+      slot == EquipmentSlots.Helmet
+    );
   }
-  
+
   getEquipmentType(id) {
     return ItemTemplates[id].equipmentType;
   }
@@ -138,11 +143,17 @@ class ItemDatabase {
 
     if (materialTemplate.type == ItemType.Equipment) {
       let materialSlot = this.getSlot(material.template);
-      expPerMaterial = UpgradeMeta.rarityExpFactor.find(x => x.rarity == materialTemplate.rarity).exp;
-      expPerMaterial *= UpgradeMeta.slotExpFactor.find(x => x.slot == materialSlot).expFactor;
+      expPerMaterial = UpgradeMeta.rarityExpFactor.find(
+        x => x.rarity == materialTemplate.rarity
+      ).exp;
+      expPerMaterial *= UpgradeMeta.slotExpFactor.find(
+        x => x.slot == materialSlot
+      ).expFactor;
       expPerMaterial *= UpgradeMeta.levelExpFactor[material.level - 1];
     } else {
-      let materialExp = meta.experienceMaterials.find(x => x.itemId == material.template);
+      let materialExp = meta.experienceMaterials.find(
+        x => x.itemId == material.template
+      );
       if (materialExp) {
         expPerMaterial = materialExp.experience;
       }
@@ -157,7 +168,7 @@ class ItemDatabase {
     let i = 0;
     const length = levelingMeta.length;
     for (; i < length; ++i) {
-      levelingMeta[i].slots.forEach(slot => slots[slot] = true);
+      levelingMeta[i].slots.forEach(slot => (slots[slot] = true));
     }
 
     return slots;
@@ -178,7 +189,7 @@ class ItemDatabase {
       return meta;
     }
 
-    return null
+    return null;
   }
 
   getStats(item, forceLevel, forceEnchanting) {
@@ -202,7 +213,11 @@ class ItemDatabase {
       enchantingLevel = forceEnchanting;
     }
 
-    return this._itemStatResolver.convertStats(template, level, enchantingLevel);
+    return this._itemStatResolver.convertStats(
+      template,
+      level,
+      enchantingLevel
+    );
   }
 }
 
