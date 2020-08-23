@@ -4,6 +4,7 @@ import Vue from "vue";
 import throttle from "lodash.throttle";
 import ItemType from "@/../../knightlands-shared/item_type";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
+const EquipmentType = require("@/../../knightlands-shared/equipment_type");
 
 const dummyItem = {
   id: -1,
@@ -15,6 +16,26 @@ const dummyItem = {
   breakLimit: 0,
   unique: false,
   _dummyValue: 0
+};
+
+const equipmentToNumber = {
+  [EquipmentType.Axe]: 17,
+  [EquipmentType.Bow]: 16,
+  [EquipmentType.Spear]: 15,
+  [EquipmentType.Sword]: 14,
+  [EquipmentType.Wand]: 13,
+  [EquipmentType.Shield]: 12,
+  [EquipmentType.Star]: 11,
+  [EquipmentType.Knive]: 10,
+  [EquipmentType.Scythe]: 9,
+  [EquipmentType.Whip]: 8,
+  [EquipmentType.Helment]: 7,
+  [EquipmentType.Chest]: 6,
+  [EquipmentType.Gloves]: 5,
+  [EquipmentType.Boots]: 4,
+  [EquipmentType.Cape]: 3,
+  [EquipmentType.Ring]: 2,
+  [EquipmentType.Necklace]: 1
 };
 
 class Inventory {
@@ -31,7 +52,7 @@ class Inventory {
     // lookup tables
     this._itemsBytemplate = new Map();
     this._itemsById = new Map();
-    this._sort = throttle(this._doSort.bind(this), 0, { leading: false });
+    this._sort = throttle(this._doSort.bind(this), 100, { leading: false });
   }
 
   static get Changed() {
@@ -316,8 +337,27 @@ class Inventory {
   _doSort() {
     this._vm.items.sort((a, b) => {
       let sortingFactorA = this._itemDB.getRarityAsNumber(a.template);
-
       let sortingFactorB = this._itemDB.getRarityAsNumber(b.template);
+
+      if (sortingFactorA == sortingFactorB) {
+        const templateA = this._itemDB.getTemplate(a.template);
+        const templateB = this._itemDB.getTemplate(b.template);
+        if (
+          templateA.type == ItemType.Equipment &&
+          templateB.type == ItemType.Equipment
+        ) {
+          sortingFactorA = equipmentToNumber[templateA.equipmentType];
+          sortingFactorB = equipmentToNumber[templateB.equipmentType];
+        } else {
+          sortingFactorA = templateA.type == ItemType.Equipment ? 1 : 0;
+          sortingFactorB = templateB.type == ItemType.Equipment ? 1 : 0;
+        }
+      }
+
+      if (sortingFactorA == sortingFactorB) {
+        sortingFactorA = a.template;
+        sortingFactorB = b.template;
+      }
 
       if (sortingFactorA == sortingFactorB) {
         sortingFactorA = a.id;
