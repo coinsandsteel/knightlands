@@ -677,7 +677,8 @@ const router = new Router({
       path: "/character",
       component: Character,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        noBackButton: true
       },
       children: [
         {

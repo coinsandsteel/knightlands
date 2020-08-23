@@ -1,21 +1,36 @@
 <template>
   <div id="app">
     <div class="content-wrap flex flex-column flex-no-wrap">
-      <status-bar v-if="$game.authenticated" v-show="!hideTopBar" ref="statusBar"></status-bar>
+      <status-bar
+        v-if="$game.authenticated"
+        v-show="!hideTopBar"
+        ref="statusBar"
+      ></status-bar>
       <div class="flex flex-center section-name flex-no-wrap" v-show="title">
         <div class="section-decor"></div>
-        <div class="section-title font-size-20">{{$t(title)}}</div>
+        <div class="section-title font-size-20">{{ $t(title) }}</div>
         <div class="section-decor right"></div>
       </div>
 
       <keep-alive exclude="gold-exchange">
-        <router-view class="content dummy-height flex flex-no-wrap flex-column" v-if="showContent" />
+        <router-view
+          class="content dummy-height flex flex-no-wrap flex-column"
+          v-if="showContent"
+        />
       </keep-alive>
 
       <div class="footer flex-item-center">
         <div class="bg"></div>
-        <span v-show="showBackMenu" class="back-button" @click="handleBackButton"></span>
-        <portal-target class="footer-container flex flex-end width-100" name="footer" :multiple="true"></portal-target>
+        <span
+          v-show="showBackMenu"
+          class="back-button"
+          @click="handleBackButton"
+        ></span>
+        <portal-target
+          class="footer-container flex flex-end width-100"
+          name="footer"
+          :multiple="true"
+        ></portal-target>
         <div class="footer-container flex flex-end full-flex">
           <component
             v-for="(footer, index) in footers"
@@ -29,22 +44,22 @@
         <div id="nav">
           <router-link class="flex flex-center" to="/home">
             <span class="menu-icon home pointer-events-none"></span>
-            <span class="menu-title">{{$t("menu-home")}}</span>
+            <span class="menu-title">{{ $t("menu-home") }}</span>
           </router-link>
 
           <router-link class="flex flex-center" to="/character">
             <span class="menu-icon character pointer-events-none"></span>
-            <span class="menu-title">{{$t("menu-character")}}</span>
+            <span class="menu-title">{{ $t("menu-character") }}</span>
           </router-link>
 
           <router-link class="flex flex-center" to="/castle">
             <span class="menu-icon crafting pointer-events-none"></span>
-            <span class="menu-title">{{$t("menu-castle")}}</span>
+            <span class="menu-title">{{ $t("menu-castle") }}</span>
           </router-link>
 
           <router-link class="flex flex-center" to="/summon">
             <span class="menu-icon shop pointer-events-none"></span>
-            <span class="menu-title">{{$t("menu-shop")}}</span>
+            <span class="menu-title">{{ $t("menu-shop") }}</span>
           </router-link>
 
           <!-- <router-link  class="flex flex-center" to="/">
@@ -54,7 +69,7 @@
 
           <router-link class="flex flex-center" to="/social/chat">
             <span class="menu-icon chat pointer-events-none"></span>
-            <span class="menu-title">{{$t("menu-chat")}}</span>
+            <span class="menu-title">{{ $t("menu-chat") }}</span>
           </router-link>
         </div>
       </div>
@@ -250,11 +265,9 @@ export default {
       this.$refs.drawerLayout.toggle();
     },
     showBackButton() {
-      // hamburger menu only supports 1st level path
       let params = this.$route.path.match(/[^//]+/g);
       this.showBackMenu = params ? params.length >= 2 : false;
 
-      // override if route requires only hamburger menu
       if (this.$route.matched.some(record => record.meta.noBackButton)) {
         this.showBackMenu = false;
       }
