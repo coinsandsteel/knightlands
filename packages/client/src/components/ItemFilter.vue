@@ -58,6 +58,7 @@ export default {
   watch: {
     computedFilters: {
       handler() {
+        console.log(this.computedFilters)
         for (let key in this.itemFilters) {
           this.itemFilters[key] = false;
         }

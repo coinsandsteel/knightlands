@@ -19,10 +19,10 @@
 <script>
 import AppSection from "@/AppSection.vue";
 
-const InventoryTab = "character";
-const StatsTab = "character-training";
-const BuffsTab = "character-buffs";
-const BeastsTab = "character-beast";
+const EquipmentTab = "equipment";
+const StatsTab = "training";
+const BuffsTab = "buffs";
+const MiscTab = "misc";
 
 export default {
   mixins: [AppSection],
@@ -32,20 +32,20 @@ export default {
   data() {
     return {
       tabs: [
-        { title: "inventory", value: InventoryTab, to: { name: "character" } },
+        { title: "equipment", value: EquipmentTab, to: { name: "equipment" } },
+        { title: "buffs", value: BuffsTab, to: { name: "character-buffs" } },
+        { title: "misc", value: MiscTab, to: { name: "character-misc" } },
         {
           title: "training",
           value: StatsTab,
           to: { name: "character-training" }
-        },
-        { title: "buffs", value: BuffsTab, to: { name: "character-buffs" } },
-        { title: "beast", value: BeastsTab, to: { name: "character-beast" } }
+        }
       ],
-      currentTab: InventoryTab,
-      InventoryTab: InventoryTab,
+      currentTab: EquipmentTab,
+      EquipmentTab: EquipmentTab,
       StatsTab: StatsTab,
       BuffsTab: BuffsTab,
-      BeastsTab: BeastsTab
+      MiscTab: MiscTab
     };
   },
   mounted() {

@@ -3,10 +3,12 @@ import DoubleBuffer from "@/helpers/DoubleBuffer";
 
 import ItemFilterComponent from "@/components/ItemFilter.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
+import debounce from "lodash.throttle";
 
 const ItemFilter = CreateDialog(ItemFilterComponent);
 
 export default {
+  props: [],
   data: () => ({
     filteredItems: []
   }),
@@ -14,13 +16,14 @@ export default {
     this.filtersStore = this.$store.getters.getItemFilters;
     this.commitCmd = "setItemFilters";
     this.filteredItemsBuffer = new DoubleBuffer();
+    this._updateItems = debounce(this.updateItems.bind(this), 50);
   },
   mounted() {
-    this.updateItems();
+    this._updateItems();
   },
   watch: {
     items() {
-      this.updateItems();
+      this._updateItems();
     }
   },
   computed: {
@@ -36,11 +39,9 @@ export default {
       options = options || {};
       options.stateFilters = this.filtersStore;
       options.commitCmd = this.commitCmd;
+      options.filterChangedCb = this.filterItems.bind(this);
 
-      const filters = await ItemFilter(options);
-      if (filters) {
-        this.filterItems(filters);
-      }
+      await ItemFilter(options);
     },
     filterItems(filters) {
       this.filteredItems = this.$game.inventory.filterItemsByType(

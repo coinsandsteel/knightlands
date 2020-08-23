@@ -2,9 +2,9 @@ import Router from "vue-router";
 
 const Character = () => import("./views/Character/Character.vue");
 const CharacterTraining = () => import("./views/Character/Training/Stats.vue");
-const CharacterInventory = () => import("./views/Character/Inventory.vue");
+const CharacterEquipment = () => import("./views/Character/Equipment.vue");
 const CharacterBuffs = () => import("./views/Character/Buffs/Buffs.vue");
-const CharacterBeast = () => import("./views/Character/BeastTaming/BeastTaming.vue")
+const CharacterMisc = () => import("./views/Character/MiscTab.vue")
 
 const Quest = () => import("./views/Quests/Quest.vue");
 const Login = () => import("./views/Login.vue");
@@ -606,8 +606,8 @@ const router = new Router({
     },
     children: [{
       path: "",
-      name: "character",
-      component: CharacterInventory
+      name: "equipment",
+      component: CharacterEquipment
     },
     {
       path: "training",
@@ -620,9 +620,9 @@ const router = new Router({
       component: CharacterBuffs
     },
     {
-      path: "beast",
-      name: "character-beast",
-      component: CharacterBeast
+      path: "misc",
+      name: "character-misc",
+      component: CharacterMisc
     }
     ]
   },
