@@ -1,7 +1,7 @@
 <template>
   <user-dialog title="filter" @close="$close(computedFilters)">
     <template v-slot:content>
-      <div class="font-size-25 flex width-100 flex-column padding-1 margin-top-3">
+      <div class="font-size-25 capitalize flex width-100 flex-column padding-1 margin-top-3">
         <p-check
           style="p-default p-curve p-thick"
           class="checkbox margin-bottom-1"
@@ -58,7 +58,6 @@ export default {
   watch: {
     computedFilters: {
       handler() {
-        console.log(this.computedFilters)
         for (let key in this.itemFilters) {
           this.itemFilters[key] = false;
         }

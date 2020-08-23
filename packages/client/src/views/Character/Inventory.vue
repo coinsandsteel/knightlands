@@ -45,7 +45,7 @@ export default {
     LootContainer,
     ScrollableItemHint
   },
-  props: [],
+  props: [""],
   data: () => ({
     showHintItems: false,
     request: null,

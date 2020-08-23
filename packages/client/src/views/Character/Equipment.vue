@@ -92,7 +92,11 @@
           </div>
         </div>
 
-        <Inventory class="full-flex"></Inventory>
+        <Inventory
+          class="full-flex"
+          commitCmd="setEquipmentFilters"
+          :filtersStore="$store.getters.getEquipmentFilters"
+        ></Inventory>
       </div>
     </template>
   </Promised>

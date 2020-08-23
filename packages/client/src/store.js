@@ -1,3 +1,5 @@
+/*jshint esversion: 9 */
+
 import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
@@ -7,45 +9,35 @@ Vue.use(Vuex);
 const vuexPersist = new VuexPersist({
   key: "knightlands",
   storage: localStorage
-})
+});
 
-import {
-  EquipmentSlots
-} from "@/../../knightlands-shared/equipment_slot";
+import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 
 import ItemType from "@/../../knightlands-shared/item_type";
 import Blockchains from "@/../../knightlands-shared/blockchains";
 const Rarity = require("@/../../knightlands-shared/rarity");
 
-let filters = {
-  ...ItemType,
-  ...EquipmentSlots
-};
-
-const defaultFilters = {};
-for (let i in filters) {
-  if (i == "Equipment") {
-    // equipment is expanded with equipment slots instead
-    continue;
-  }
-  defaultFilters[filters[i]] = true;
+const equipmentDefaultFilters = {};
+for (let i in EquipmentSlots) {
+  equipmentDefaultFilters[EquipmentSlots[i]] = true;
 }
 
 const defaultUnitFilters = {};
+// 10 stars maximum
 for (let i = 1; i <= 10; ++i) {
   defaultUnitFilters[i] = true;
 }
 
-const FiltersVersion = 6;
+const FiltersVersion = 7;
 
 const store = new Vuex.Store({
   state: {
     itemFiltersVersion: 0,
     unitFiltersVersion: 0,
     selectedQuestZone: undefined,
-    itemFilters: defaultFilters,
+    equipmentFilters: equipmentDefaultFilters,
     unitFilters: defaultUnitFilters,
-    disenchantFilters: defaultFilters,
+    disenchantFilters: equipmentDefaultFilters,
     zoneStage: 0,
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
@@ -56,9 +48,9 @@ const store = new Vuex.Store({
     setQuestZone(state, zoneId) {
       state.selectedQuestZone = zoneId;
     },
-    setItemFilters(state, filters) {
+    setEquipmentFilters(state, filters) {
       for (let i in filters) {
-        Vue.set(state.itemFilters, i, filters[i]);
+        Vue.set(state.equipmentFilters, i, filters[i]);
       }
     },
     setUnitFilters(state, filters) {
@@ -93,7 +85,7 @@ const store = new Vuex.Store({
     disenchantFilters: state => {
       if (state.itemFiltersVersion != FiltersVersion) {
         state.itemFiltersVersion = FiltersVersion;
-        state.itemFilters = defaultFilters;
+        state.itemFilters = equipmentDefaultFilters;
       }
       return state.disenchantFilters;
     },
@@ -103,12 +95,12 @@ const store = new Vuex.Store({
     selectedQuestZone: state => {
       return state.selectedQuestZone;
     },
-    getItemFilters: state => {
+    getEquipmentFilters: state => {
       if (state.itemFiltersVersion != FiltersVersion) {
         state.itemFiltersVersion = FiltersVersion;
-        state.itemFilters = defaultFilters;
+        state.equipmentFilters = equipmentDefaultFilters;
       }
-      return state.itemFilters;
+      return state.equipmentFilters;
     },
     getUnitFilters: state => {
       if (state.unitFiltersVersion != FiltersVersion) {
@@ -117,7 +109,7 @@ const store = new Vuex.Store({
       }
       return state.unitFilters;
     },
-    getZoneStage: state  => {
+    getZoneStage: state => {
       return state.zoneStage;
     },
     getRecipeFilters: state => id => {
