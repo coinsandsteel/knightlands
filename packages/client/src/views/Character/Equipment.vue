@@ -115,10 +115,9 @@ import HintHandler from "@/components/HintHandler.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import Loot from "@/components/Loot.vue";
 import ItemActionHandler from "./ItemActionHandler.vue";
+import Inventory from "./Inventory.vue";
 
 const ShowDetails = CreateDialog(StatDetails);
-
-import Inventory from "./Inventory.vue";
 
 export default {
   mixins: [ActivityMixin, HintHandler, ItemActionHandler],

@@ -22,6 +22,14 @@ for (let i in EquipmentSlots) {
   equipmentDefaultFilters[EquipmentSlots[i]] = true;
 }
 
+const miscDefaultFilters = {}
+for (let i in ItemType) {
+  if (i == "Equipment") {
+    continue;
+  }
+  miscDefaultFilters[ItemType[i]] = true;
+}
+
 const defaultUnitFilters = {};
 // 10 stars maximum
 for (let i = 1; i <= 10; ++i) {
@@ -34,8 +42,10 @@ const store = new Vuex.Store({
   state: {
     itemFiltersVersion: 0,
     unitFiltersVersion: 0,
+    miscFiltersVersion: 0,
     selectedQuestZone: undefined,
     equipmentFilters: equipmentDefaultFilters,
+    miscFilters: miscDefaultFilters,
     unitFilters: defaultUnitFilters,
     disenchantFilters: equipmentDefaultFilters,
     zoneStage: 0,
@@ -51,6 +61,11 @@ const store = new Vuex.Store({
     setEquipmentFilters(state, filters) {
       for (let i in filters) {
         Vue.set(state.equipmentFilters, i, filters[i]);
+      }
+    },
+    setMiscFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.miscFilters, i, filters[i]);
       }
     },
     setUnitFilters(state, filters) {
@@ -101,6 +116,13 @@ const store = new Vuex.Store({
         state.equipmentFilters = equipmentDefaultFilters;
       }
       return state.equipmentFilters;
+    },
+    getMiscFilters: state => {
+      if (state.miscFiltersVersion != FiltersVersion) {
+        state.miscFiltersVersion = FiltersVersion;
+        state.miscFilters = miscDefaultFilters;
+      }
+      return state.miscFilters;
     },
     getUnitFilters: state => {
       if (state.unitFiltersVersion != FiltersVersion) {
