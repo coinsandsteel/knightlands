@@ -10,60 +10,35 @@
         class="tab-content dummy-height flex flex-column flex-no-wrap full-flex"
       >
         <!-- Equipment + quick stats overview -->
-        <div class="equipment-container flex flex-space-evenly">
-          <div class="relative flex">
+        <div class="equipment-container flex flex-space-evenly flex-no-wrap">
+          <div class="equipment-slots relative flex">
             <img class="heroImage" src="/images/portraits/test.png" />
-            <div class="equipment-container-row flex flex-column flex-center">
-              <loot
-                v-for="slot in equipmentRow1()"
-                :key="slot"
-                class="equipment-slot"
-                :item="itemsInSlots[slot]"
-                :equipment="true"
-                :equipmentSlot="slot"
-                @hint="showEquipmentHint"
-              ></loot>
-            </div>
-
-            <div
-              class="equipment-container-row flex flex-column flex-center flex-space-between"
-            >
-              <loot
-                v-for="slot in equipmentRow2()"
-                :key="slot"
-                class="equipment-slot"
-                :item="itemsInSlots[slot]"
-                :equipment="true"
-                :equipmentSlot="slot"
-                @hint="showEquipmentHint"
-              ></loot>
-            </div>
-
-            <div class="equipment-container-row flex flex-column flex-center">
-              <loot
-                v-for="slot in equipmentRow3()"
-                :key="slot"
-                class="equipment-slot"
-                :item="itemsInSlots[slot]"
-                :equipment="true"
-                :equipmentSlot="slot"
-                @hint="showEquipmentHint"
-              ></loot>
-            </div>
+            <loot
+              v-for="slot in equipment()"
+              :key="slot"
+              :class="slot"
+              :item="itemsInSlots[slot]"
+              :equipment="true"
+              :equipmentSlot="slot"
+              @hint="showEquipmentHint"
+            ></loot>
           </div>
 
           <div class="flex flex-column height-100">
-            <span class="font-size-20 padding-top-1 flex-self-start">{{
-              $t("character-level", { level: $game.character.level })
-            }}</span>
+            <span
+              class="font-size-20 font-outline padding-top-1 flex-self-start"
+              >{{
+                $t("character-level", { level: $game.character.level })
+              }}</span
+            >
 
             <span
-              class="font-size-20 rarity-legendary padding-top-1 margin-bottom-1 flex-self-start"
+              class="font-size-20 font-outline rarity-legendary padding-top-1 margin-bottom-1 font-weight-900 flex-self-start"
               >{{ $t("character-power", { power: totalPower() }) }}</span
             >
 
             <div
-              class="flex flex-no-wrap full-flex flex-space-around font-size-20"
+              class="flex flex-no-wrap font-outline full-flex flex-space-around font-size-20"
             >
               <div
                 class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
@@ -145,9 +120,6 @@ export default {
       stats.push(CharacterStat.Attack);
       stats.push(CharacterStat.Defense);
 
-      stats.push(CharacterStat.Energy);
-      stats.push(CharacterStat.Stamina);
-
       return stats;
     }
   },
@@ -169,19 +141,14 @@ export default {
       let action = await this.showHint(item);
       await this.handleItemAction(item, action);
     },
-    equipmentRow1() {
+    equipment() {
       return [
         EquipmentSlots.Necklace,
         EquipmentSlots.Ring,
         EquipmentSlots.Pet,
-        EquipmentSlots.MainHand
-      ];
-    },
-    equipmentRow2() {
-      return [EquipmentSlots.Helmet, EquipmentSlots.OffHand];
-    },
-    equipmentRow3() {
-      return [
+        EquipmentSlots.MainHand,
+        EquipmentSlots.Helmet,
+        EquipmentSlots.OffHand,
         EquipmentSlots.Chest,
         EquipmentSlots.Cape,
         EquipmentSlots.Gloves,
@@ -200,10 +167,51 @@ export default {
 }
 
 .heroImage {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%);
   max-width: 8rem;
+}
+
+.equipment-slots {
+  display: grid;
+  place-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+
+  & .heroImage {
+    grid-row: ~"2/4";
+    grid-column: 2;
+  }
+
+  & .mainHand {
+    grid-row: 4;
+    grid-column: 1;
+  }
+  & .offHand {
+    grid-row: 4;
+    grid-column: 2;
+  }
+  & .ring {
+    grid-row: 4;
+    grid-column: 3;
+  }
+  & .necklace {
+    grid-row: 3;
+    grid-column: 3;
+  }
+  & .helmet {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  & .boots {
+    grid-row: 2;
+    grid-column: 3;
+  }
+  & .chest {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  & .cape {
+    grid-row: 1;
+    grid-column: 3;
+  }
 }
 </style>

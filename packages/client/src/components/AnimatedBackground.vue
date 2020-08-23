@@ -9,7 +9,7 @@
 @sizeScale: 40%;
 @scrollX: 320px * 0.4;
 @scrollY: 320px * 0.4;
-@duration: 25s;
+@duration: 120s;
 
 .layer() {
   background-repeat: repeat;
