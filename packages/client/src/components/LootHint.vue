@@ -7,39 +7,7 @@
     :hideMask="hideMask"
   >
     <template v-slot:content>
-      <ItemInfo :item="item" :hideTitle="true">
-        <template v-slot:afterType v-if="isEquipment">
-          <div class="flex flex-center">
-            <span class="star" :class="{active: stars >= 1}"></span>
-            <span class="star margin-right-auto" :class="{active: stars >= 2}"></span>
-            <span class="arrow-up" v-if="stars<2" @click="upgradeItem"></span>
-          </div>
-        </template>
-
-        <template v-slot:beforeStats>
-          <div class="progress-bar-margin">
-            <div
-              v-if="isEquipment && item.level"
-              class="text-align-left font-size-20 margin-bottom-half"
-            >
-              <span>Lvl: {{item.level}}</span>
-            </div>
-
-            <progress-bar
-              class="margin-top-small"
-              v-model="item.exp"
-              height="2rem"
-              width="70%"
-              barType="green"
-              barClasses="margin-right-auto"
-              :maxValue="nextExp"
-              plusButton="green"
-              @refill="handleLevelProgressClick"
-              v-if="isEquipment"
-            ></progress-bar>
-          </div>
-        </template>
-      </ItemInfo>
+      <ItemInfo :item="item" :hideTitle="true" class="width-80 center"></ItemInfo>
     </template>
 
     <template v-slot:footer>
@@ -49,39 +17,49 @@
           v-if="actions.equip && !item.equipped && isEquipment"
           class="common-btn center"
           @click="handleClose('equip')"
-        >{{$t('btn-equip')}}</custom-button>
+          >{{ $t("btn-equip") }}</custom-button
+        >
 
         <custom-button
           v-if="actions.equip && item.equipped && isEquipment"
           type="grey"
           class="common-btn center"
           @click="handleClose('unequip')"
-        >{{$t('btn-unequip')}}</custom-button>
+          >{{ $t("btn-unequip") }}</custom-button
+        >
 
         <template v-if="isBox">
-          <CustomButton type="yellow" @click="handleClose('open')">{{$t('btn-open-box')}}</CustomButton>
+          <CustomButton type="yellow" @click="handleClose('open')">{{
+            $t("btn-open-box")
+          }}</CustomButton>
           <CustomButton
             type="yellow"
             @click="handleClose('open', Math.min(count, 9))"
             v-if="count > 1 && count <= 9"
-          >{{$t('btn-open-boxes', {count: Math.min(count, 9)})}}</CustomButton>
+            >{{
+              $t("btn-open-boxes", { count: Math.min(count, 9) })
+            }}</CustomButton
+          >
           <CustomButton
             type="yellow"
             @click="handleClose('open', 10)"
             v-if="count >= 10"
-          >{{$t('btn-open-boxes', {count: 10})}}</CustomButton>
+            >{{ $t("btn-open-boxes", { count: 10 }) }}</CustomButton
+          >
           <CustomButton
             type="yellow"
             @click="handleClose('open', count)"
             v-if="count >= 50"
-          >{{$t('btn-open-boxes', {count: count})}}</CustomButton>
+            >{{ $t("btn-open-boxes", { count: count }) }}</CustomButton
+          >
         </template>
 
         <CustomButton
           v-else-if="isConsumable"
           type="yellow"
           @click="handleClose('use')"
-        >{{$t('btn-use-consumable')}}</CustomButton>
+          >{{ $t("btn-use-consumable") }}</CustomButton
+        >
 
         <custom-button
           type="yellow"
@@ -89,7 +67,8 @@
           :key="index"
           :class="btn.type"
           @click="handleClose(btn.response)"
-        >{{$t(btn.title)}}</custom-button>
+          >{{ $t(btn.title) }}</custom-button
+        >
       </div>
     </template>
   </user-dialog>
@@ -248,4 +227,3 @@ export default {
   border-image-width: 0 0 0.8rem 0;
 }
 </style>
-

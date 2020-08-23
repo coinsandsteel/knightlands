@@ -43,7 +43,7 @@ export default {
     },
     filterItems(filters) {
       this.filteredItems = this.$game.inventory.filterItemsByType(
-        filters,
+        this.filters || filters,
         this.filteredItemsBuffer.get()
       );
     }

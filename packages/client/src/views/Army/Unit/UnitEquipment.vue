@@ -39,7 +39,7 @@
 
 <script>
 import Loot from "@/components/Loot.vue";
-import ScrollableItemHint from "@/components/ScrollableItemHint.vue";
+import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import LootContainer from "@/components/LootContainer.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";

@@ -2,7 +2,7 @@
   <div
     class="progress-bar flex flex-center flex-no-wrap"
     @click="$emit('refill')"
-    :class="{'width-100': expand}"
+    :class="{ 'width-100': expand }"
   >
     <div class="icon">
       <div :class="iconClass"></div>
@@ -10,8 +10,8 @@
 
     <div
       class="bar-container digit-font flex flex-center"
-      :class="[{'flex-column':isTop}, barClasses]"
-      :style="{'width': width}"
+      :class="[{ 'flex-column': isTop }, barClasses]"
+      :style="{ width: width }"
     >
       <div
         class="status-bar-font bar-value flex flex-center font-weight-700 bar-value-top"
@@ -19,17 +19,32 @@
         v-if="!hideValues && isTop"
       >
         <slot name="label"></slot>
-        <div v-show="showValue">{{currentValue}}</div>
+        <div v-show="showValue">{{ currentValue }}</div>
         <div v-show="!showValue" class="status-bar-font flex">
           <div class="icon-timer icon-size-mini"></div>
-          <span>{{timerValue.value}}</span>
+          <span>{{ timerValue.value }}</span>
         </div>
       </div>
 
       <div class="bar" :style="barStyle()">
-        <div v-if="!hideMainBar" class="progress" :class="progressType()" :style="fillStyle()"></div>
-        <div v-if="!hideMainBar" class="progress-delta" :style="deltaFillStyle()" :class="{show: valueChanged}"></div>
-        <div v-if="value2 > 0" class="progress progress2" :class="barType2" :style="fillStyle2()"></div>
+        <div
+          v-if="!hideMainBar"
+          class="progress"
+          :class="progressType()"
+          :style="fillStyle()"
+        ></div>
+        <div
+          v-if="!hideMainBar"
+          class="progress-delta"
+          :style="deltaFillStyle()"
+          :class="{ show: valueChanged }"
+        ></div>
+        <div
+          v-if="value2 > 0"
+          class="progress progress2"
+          :class="barType2"
+          :style="fillStyle2()"
+        ></div>
 
         <div
           class="status-bar-font bar-value flex flex-center font-weight-700"
@@ -37,14 +52,18 @@
           v-if="!hideValues && !isTop"
         >
           <slot name="label"></slot>
-          <div v-show="showValue">{{currentValue}}</div>
+          <div v-show="showValue">{{ currentValue }}</div>
           <div v-show="!showValue" class="status-bar-font flex flex-center">
             <div class="icon-timer icon-size-mini"></div>
-            <span>{{timerValue.value}}</span>
+            <span>{{ timerValue.value }}</span>
           </div>
         </div>
       </div>
-      <div v-if="plusButton" class="btn-plus" :class="`${plusButton}-btn`"></div>
+      <div
+        v-if="plusButton"
+        class="btn-plus"
+        :class="`${plusButton}-btn`"
+      ></div>
     </div>
   </div>
 </template>
@@ -241,12 +260,11 @@ export default {
       }
       return {
         width: percentWidth + "%"
-      }
+      };
     }
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 .progress-bar {

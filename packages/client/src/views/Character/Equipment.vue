@@ -6,73 +6,97 @@
     <template v-slot:combined="{ isPending, isDelayOver }">
       <loading-screen :loading="isDelayOver && isPending"></loading-screen>
       <AnimatedBackground></AnimatedBackground>
-      <div
-        class="tab-content dummy-height flex flex-column flex-no-wrap full-flex"
-      >
-        <!-- Equipment + quick stats overview -->
-        <div class="equipment-container flex flex-space-evenly flex-no-wrap">
-          <div class="equipment-slots relative flex">
-            <img class="heroImage" src="/images/portraits/test.png" />
-            <loot
-              v-for="slot in equipment()"
-              :key="slot"
-              :class="slot"
-              :item="itemsInSlots[slot]"
-              :equipment="true"
-              :equipmentSlot="slot"
-              @hint="showEquipmentHint"
-            ></loot>
-          </div>
+      <Flipper :flipKey="slotPreview">
+        <div
+          class="tab-content dummy-height flex flex-column flex-no-wrap full-flex"
+        >
+          <div class="width-100 equipment" :class="{ preview: slotPreview }">
+            <EquipmentPreview
+              key="preview"
+              class="equipment-preview"
+              :itemSlot="selectedSlot"
+              v-show="slotPreview"
+              @close="slotPreview = false"
+            ></EquipmentPreview>
 
-          <div class="flex flex-column height-100">
-            <span
-              class="font-size-20 font-outline padding-top-1 flex-self-start"
-              >{{
-                $t("character-level", { level: $game.character.level })
-              }}</span
-            >
-
-            <span
-              class="font-size-20 font-outline rarity-legendary padding-top-1 margin-bottom-1 font-weight-900 flex-self-start"
-              >{{ $t("character-power", { power: totalPower() }) }}</span
-            >
-
+            <!-- Equipment + quick stats overview -->
             <div
-              class="flex flex-no-wrap font-outline full-flex flex-space-around font-size-20"
+              key="slots"
+              class="equipment-container flex flex-space-evenly flex-no-wrap"
+              v-show="!slotPreview"
             >
-              <div
-                class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
-              >
-                <span v-for="stat in stats" :key="stat" class>{{
-                  $t(stat)
-                }}</span>
+              <div class="equipment-slots relative flex">
+                <img class="heroImage" src="/images/portraits/test.png" />
+                <loot
+                  v-for="slot in equipment()"
+                  :key="slot"
+                  :class="slot"
+                  :item="itemsInSlots[slot]"
+                  :equipment="true"
+                  :equipmentSlot="slot"
+                  @hint="showEquipmentHint(slot)"
+                ></loot>
               </div>
 
-              <div
-                class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
-              >
+              <div class="flex flex-column height-100">
                 <span
-                  v-for="stat in stats"
-                  :key="stat"
-                  class="attribute"
-                  :class="{ 'rarity-rare': hasBonus(stat) }"
-                  >{{ $character.getStat(stat) }}</span
+                  class="font-size-20 font-outline padding-top-1 flex-self-start"
+                  >{{
+                    $t("character-level", { level: $game.character.level })
+                  }}</span
                 >
+
+                <span
+                  class="font-size-20 font-outline rarity-legendary padding-top-1 margin-bottom-1 font-weight-900 flex-self-start"
+                  >{{ $t("character-power", { power: totalPower() }) }}</span
+                >
+
+                <div
+                  class="flex flex-no-wrap font-outline full-flex flex-space-around font-size-20"
+                >
+                  <div
+                    class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
+                  >
+                    <span v-for="stat in stats" :key="stat" class>{{
+                      $t(stat)
+                    }}</span>
+                  </div>
+
+                  <div
+                    class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
+                  >
+                    <span
+                      v-for="stat in stats"
+                      :key="stat"
+                      class="attribute"
+                      :class="{ 'rarity-rare': hasBonus(stat) }"
+                      >{{ $character.getStat(stat) }}</span
+                    >
+                  </div>
+                </div>
+
+                <CustomButton type="grey" @click="openDetails">{{
+                  $t("btn-details")
+                }}</CustomButton>
               </div>
             </div>
-
-            <CustomButton type="grey" @click="openDetails">{{
-              $t("btn-details")
-            }}</CustomButton>
           </div>
-        </div>
 
-        <Inventory
-          class="full-flex"
-          commitCmd="setEquipmentFilters"
-          :filtersStore="$store.getters.getEquipmentFilters"
-        ></Inventory>
-      </div>
+          <Flipped
+            flipId="inventory"
+            inverse-flip-id="equipment"
+            :translate="true"
+          >
+            <Inventory
+              class="full-flex"
+              commitCmd="setEquipmentFilters"
+              :hideBg="true"
+              :filters="forceFilters"
+              :filtersStore="$store.getters.getEquipmentFilters"
+            ></Inventory>
+          </Flipped>
+        </div>
+      </Flipper>
     </template>
   </Promised>
 </template>
@@ -91,6 +115,8 @@ import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import Loot from "@/components/Loot.vue";
 import ItemActionHandler from "./ItemActionHandler.vue";
 import Inventory from "./Inventory.vue";
+import EquipmentPreview from "./EquipmentPreview.vue";
+import { Flipper, Flipped } from "vue-flip-toolkit";
 
 const ShowDetails = CreateDialog(StatDetails);
 
@@ -102,18 +128,29 @@ export default {
     LoadingScreen,
     CustomButton,
     AnimatedBackground,
-    Inventory
+    Inventory,
+    EquipmentPreview,
+    Flipper,
+    Flipped
   },
   data() {
     return {
       slots: {},
       itemsInSlots: this.$character.equipment,
-      showHintItems: false,
       request: null,
-      showDetails: false
+      showDetails: false,
+      slotPreview: false,
+      selectedSlot: ""
     };
   },
   computed: {
+    forceFilters() {
+      if (!this.slotPreview) {
+        return null;
+      }
+
+      return { [this.selectedSlot]: true };
+    },
     stats() {
       let stats = [];
       stats.push(CharacterStat.Health);
@@ -133,13 +170,15 @@ export default {
     hasBonus(stat) {
       return !!this.$game.character.buffResolver.bonusStats[stat];
     },
-    async showEquipmentHint(item) {
-      if (!item) {
-        return;
-      }
+    async showEquipmentHint(slot) {
+      this.slotPreview = true;
+      this.selectedSlot = slot;
+      // if (!item) {
+      //   return;
+      // }
 
-      let action = await this.showHint(item);
-      await this.handleItemAction(item, action);
+      // let action = await this.showHint(item);
+      // await this.handleItemAction(item, action);
     },
     equipment() {
       return [
@@ -158,6 +197,16 @@ export default {
   }
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>
 
 <style lang="less" scoped>
 @import (reference) "./../../style/common.less";

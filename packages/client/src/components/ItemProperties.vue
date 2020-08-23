@@ -1,11 +1,15 @@
 <template>
   <div class="flex flex-items-center font-size-18 flex-column flex-no-wrap">
-    <div class="margin-bottom-half" v-for="p in properties" :key="p" v-html="p"></div>
-    <div class="margin-bottom-half" v-if="action" v-html="action"></div>
-    <span
+    <div
       class="margin-bottom-half"
-      v-if="template.maxStacks > 0"
-    >{{$t("max-stacks", {max: template.maxStacks})}}</span>
+      v-for="p in properties"
+      :key="p"
+      v-html="p"
+    ></div>
+    <div class="margin-bottom-half" v-if="action" v-html="action"></div>
+    <span class="margin-bottom-half" v-if="template.maxStacks > 0">{{
+      $t("max-stacks", { max: template.maxStacks })
+    }}</span>
   </div>
 </template>
 

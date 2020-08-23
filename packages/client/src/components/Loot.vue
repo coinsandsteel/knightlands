@@ -319,10 +319,10 @@ export default {
   background-image: url("../assets/ui/icon_moded4.png");
   background-repeat: no-repeat;
   background-size: contain;
-  width: 20px;
-  height: 20px;
+  width: 2rem;
+  height: 2rem;
   position: absolute;
-  top: 0rem;
+  top: 0.5rem;
   right: 0rem;
 }
 

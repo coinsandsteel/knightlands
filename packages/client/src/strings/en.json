@@ -528,6 +528,7 @@
     "window-unbind-items-list": "Choose item to upgrade",
     "window-unbind-item": "Upgrade item",
     "max-level": "Max Lvl:",
+    "level": "Lvl: {lvl}",
     "unbind-materials": "Select items to consume",
     "btn-crafting-upgrade": "Upgrade",
     "unbind-confirm-title": "Confirm Upgrade",

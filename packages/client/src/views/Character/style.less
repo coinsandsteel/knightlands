@@ -13,14 +13,27 @@
     cursor: pointer;
 }
 
+.equipment {
+  height: 25rem;
+  background-color: #2E7285;
+
+  &.preview {
+    height: unset;
+    min-height: 25rem;
+  }
+}
+
 .equipment-container {
     width: 100%;
-    min-height: 25%;
-    background-color: #2E7285;
 
     .equipment-container-row {
         margin: 0.5rem;
     }
+}
+
+.equipment-preview {
+  width: 100%;
+  overflow: hidden;
 }
 
 .att-row {

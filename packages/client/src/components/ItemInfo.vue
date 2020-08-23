@@ -4,70 +4,66 @@
       class="margin-bottom-1"
       :class="`rarity-${template.rarity}`"
       v-if="!hideTitle"
-    >{{$t(template.caption)}}</Title>
+      >{{ $t(template.caption) }}</Title
+    >
 
-    <div class="flex flex-center font-size-20">
-      <loot
-        class="hintFix margin-right-1"
-        :class="{'offset-loot': !hideTitle}"
-        :item="item"
-        :interactible="false"
-        :quantity="quantity"
-        v-bind="lootProps"
-      ></loot>
-      <span :class="{'margin-right-1': !hasElement}">{{type}}</span>
-      <div v-if="hasElement" :class="elementIcon" class="big"></div>
-      <slot name="afterType"></slot>
-    </div>
+    <ItemHeader :item="item" :itemProps="lootProps"></ItemHeader>
 
     <slot name="beforeStats"></slot>
 
-    <slot name="stats">
+    <slot name="stats" v-if="item">
       <div
         class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
       >
-        <div class="flex width-40 flex-column flex-item-end text-align-right">
+        <div class="flex width-45 flex-column text-align-right">
           <div
             v-for="(statValue, statId) in stats"
             :key="statId"
             class="margin-bottom-half width-100"
-          >{{$t(statId)}}</div>
+          >
+            {{ $t(statId) }}
+          </div>
         </div>
-        <div class="flex width-40 flex-column text-align-left">
+        <div class="flex width-45 flex-column text-align-left">
           <div
             v-for="(statValue, statId) in stats"
             :key="statId"
             class="margin-bottom-half width-100"
-          >{{statValue}}</div>
+          >
+            {{ statValue }}
+          </div>
         </div>
       </div>
     </slot>
 
     <slot name="afterStats"></slot>
 
-    <ItemProperties v-if="!onlyStats" :item="item"></ItemProperties>
+    <ItemProperties v-if="!onlyStats && item" :item="item"></ItemProperties>
 
     <span
       class="loot-desc desc-font font-size-20 margin-bottom-1"
-      v-if="!onlyStats && desc"
-    >{{desc}}</span>
+      v-if="!onlyStats && desc && item"
+      >{{ desc }}</span
+    >
 
     <span
       class="loot-desc desc-font font-size-20"
-      v-if="!onlyStats && isOffHand"
-    >{{$t(`${template.equipmentType}-bonus`)}}</span>
+      v-if="!onlyStats && isOffHand && item"
+      >{{ $t(`${template.equipmentType}-bonus`) }}</span
+    >
   </div>
 </template>
 
 <script>
 import ItemProperties from "@/components/ItemProperties.vue";
-import Loot from "@/components/Loot.vue";
 const ItemType = require("@/../../knightlands-shared/item_type");
 import Title from "@/components/Title.vue";
 const {
   EquipmentSlots,
   getSlot
 } = require("@/../../knightlands-shared/equipment_slot");
+
+import ItemHeader from "@/components/Item/ItemHeader.vue";
 
 export default {
   props: {
@@ -77,7 +73,7 @@ export default {
     lootProps: Object,
     quantity: Number
   },
-  components: { Loot, ItemProperties, Title },
+  components: { ItemProperties, Title, ItemHeader },
   computed: {
     isOffHand() {
       if (this.template.type != ItemType.Equipment) {
@@ -87,6 +83,9 @@ export default {
       return getSlot(this.template.equipmentType) == EquipmentSlots.OffHand;
     },
     template() {
+      if (!this.item) {
+        return {};
+      }
       return this.$game.itemsDB.getTemplate(this.item);
     },
     elementIcon() {
@@ -115,7 +114,21 @@ export default {
       return `${this.$t(this.template.rarity)} ${this.$t(type)}`;
     },
     stats() {
+      if (!this.item) {
+        return [];
+      }
       return this.$game.itemsDB.getStats(this.item);
+    },
+    stars() {
+      return this.item.breakLimit;
+    }
+  },
+  methods: {
+    upgradeItem() {
+      this.$router.push({
+        name: "unbind-item",
+        params: { itemId: this.item.id }
+      });
     }
   }
 };

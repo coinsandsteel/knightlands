@@ -1,6 +1,6 @@
 <template>
   <div class="inv-root">
-    <AnimatedBackground></AnimatedBackground>
+    <AnimatedBackground v-if="!hideBg"></AnimatedBackground>
     <!-- Inventory  -->
     <LootContainer
       :items="filteredItems"
@@ -33,7 +33,7 @@ import LootContainer from "@/components/LootContainer.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import CustomButton from "@/components/Button.vue";
 import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
-import ScrollableItemHint from "@/components/ScrollableItemHint.vue";
+import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import ItemActionHandler from "./ItemActionHandler.vue";
 
@@ -45,12 +45,21 @@ export default {
     LootContainer,
     ScrollableItemHint
   },
-  props: [""],
+  props: ["hideBg", "filters"],
   data: () => ({
     showHintItems: false,
     request: null,
     showDetails: false
   }),
+  watch: {
+    filters() {
+      if (this.filters) {
+        this.filterItems(this.filters);
+      } else {
+        this.updateItems();
+      }
+    }
+  },
   methods: {
     _showHint(item, index) {
       if (!item) {

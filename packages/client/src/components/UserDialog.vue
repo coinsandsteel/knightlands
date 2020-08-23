@@ -3,22 +3,32 @@
     class="flex mask-hidden flex-center width-100 height-100"
     @click.self="handleClose"
     v-on="$listeners"
-    :class="{'mask': !hideMask}"
+    :class="{ mask: !hideMask }"
   >
-    <div class="width-100" v-bar="{
-          scrollThrottle: 30
-      }">
+    <div
+      class="width-100"
+      v-bar="{
+        scrollThrottle: 30
+      }"
+    >
       <div>
-        <div class="content flex-no-wrap flex-column flex center" :class="[type, contentClass]">
+        <div
+          class="content flex-no-wrap flex-column flex center"
+          :class="[type, contentClass]"
+        >
           <div
             class="margin-top-3 flex flex-center font-size-25 font-weight-700 margin-bottom-2 font-outline"
-            :class="[titleClass, {compact:compact, 'title':compact}]"
+            :class="[titleClass, { compact: compact, title: compact }]"
             v-if="title"
           >
-            <span>{{$t(title)}}</span>
+            <span>{{ $t(title) }}</span>
           </div>
 
-          <div v-if="!hideCloseBtn" class="close-btn" @click="handleClose"></div>
+          <div
+            v-if="!hideCloseBtn"
+            class="close-btn"
+            @click="handleClose"
+          ></div>
 
           <div>
             <slot name="content"></slot>
@@ -95,4 +105,3 @@ export default {
   // max-height: 90%;
 }
 </style>
-

@@ -1,7 +1,10 @@
 <template>
   <div v-show="showHintItems">
     <transition>
-      <div class="items-bg-mask relative flex flex-center" @click.self="showHintItems = false">
+      <div
+        class="items-bg-mask relative flex flex-center"
+        @click.self="showHintItems = false"
+      >
         <Hooper
           ref="hooper"
           style="height: 100%"
@@ -22,7 +25,9 @@
           </slide>
         </Hooper>
 
-        <div class="flex flex-center flex-space-between absolute-stretch pointer-events-none">
+        <div
+          class="flex flex-center flex-space-between absolute-stretch pointer-events-none"
+        >
           <div class="nav-arrow left"></div>
           <div class="nav-arrow"></div>
         </div>
