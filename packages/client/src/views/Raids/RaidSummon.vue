@@ -168,7 +168,6 @@ export default {
     PaymentStatus,
     IconWithValue,
     Tabs,
-    AnimatedBackgroundUnits,
     TokenChart: () => import("./TokenChart.vue")
   },
   created() {
@@ -256,6 +255,15 @@ export default {
       //   await ShowItemCreated(item.recipe.resultItem, item.amount);
       //   this.ingridientsKey++;
       // }
+    },
+    handleBackButton() {
+      if (this.showChart) {
+        this.showChart = false;
+        return true;
+      }
+
+      this.$router.back();
+      return true;
     },
     async fetchPaymentStatus() {
       this.fetchPayment = this.$game.fetchRaidSummonStatus(this.raid);

@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Title class="margin-bottom-2 margin-top-2">{{ $t("dkt-chart") }}</Title>
+    <Title class="margin-top-2" :stackBottom="true">{{ $t("dkt-chart") }}</Title>
     <VueApexCharts
       ref="chart"
       width="100%"
@@ -9,6 +9,9 @@
       :options="chartOptions"
       :series="series"
     ></VueApexCharts>
+    <div class="color-panel-1 width-100 font-size-18">
+      <div class="width-80 center" v-html="$t('dkt-chart-desc')"></div>
+    </div>
   </div>
 </template>
 
