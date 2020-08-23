@@ -106,15 +106,15 @@ import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
-import StatDetails from "./../StatDetails.vue";
+import StatDetails from "./StatDetails.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import Loot from "@/components/Loot.vue";
-import ItemActionHandler from "../ItemActionHandler.vue";
+import ItemActionHandler from "./ItemActionHandler.vue";
 
 const ShowDetails = CreateDialog(StatDetails);
 
-import Inventory from "../Inventory.vue";
+import Inventory from "./Inventory.vue";
 
 export default {
   mixins: [ActivityMixin, HintHandler, ItemActionHandler],
@@ -190,7 +190,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import (reference) "./../../../style/common.less";
+@import (reference) "./../../style/common.less";
 
 .attribute {
   margin-left: 1rem;
