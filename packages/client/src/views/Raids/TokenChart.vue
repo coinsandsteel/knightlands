@@ -99,9 +99,9 @@ export default {
             shadeIntensity: 1,
             gradientToColors: [GradientColor],
             inverseColors: false,
-            opacityFrom: 1,
-            opacityTo: 0,
-            stops: [0, 100]
+            opacityFrom: 0.7,
+            opacityTo: 0.3,
+            stops: [0, 90, 100]
           }
         }
       },
