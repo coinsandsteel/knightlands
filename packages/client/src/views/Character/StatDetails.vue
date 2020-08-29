@@ -1,19 +1,27 @@
 <template>
-  <UserDialog @close="$close" :title="$t('stats-details')" :disableScroll="true">
+  <UserDialog
+    @close="$close"
+    :title="$t('stats-details')"
+    :disableScroll="true"
+  >
     <template v-slot:content>
       <div class="flex flex-no-wrap full-flex flex-space-around font-size-20">
         <div
           class="flex flex-no-wrap flex-column text-align-right flex-space-evenly flex-start flex-basis-45 text-align-left"
         >
-          <span class="margin-bottom-half" v-for="stat in stats" :key="stat">{{$t(stat)}}</span>
+          <span class="margin-bottom-half" v-for="stat in stats" :key="stat">{{
+            $t(stat)
+          }}</span>
         </div>
 
         <div
           class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-45 text-align-left"
         >
           <span v-for="stat in stats" :key="stat" class="margin-bottom-half">
-            {{finalStats[stat]}}
-            <span class="rarity-rare" v-if="bonusStats[stat] > 0">(+{{bonusStats[stat]}})</span>
+            {{ finalStats[stat] }}
+            <span class="rarity-rare" v-if="bonusStats[stat] > 0"
+              >(+{{ bonusStats[stat] }})</span
+            >
           </span>
         </div>
       </div>

@@ -16,13 +16,7 @@
           class="content flex-no-wrap flex-column flex center"
           :class="[type, contentClass]"
         >
-          <div
-            class="margin-top-3 flex flex-center font-size-25 font-weight-700 margin-bottom-2 font-outline"
-            :class="[titleClass, { compact: compact, title: compact }]"
-            v-if="title"
-          >
-            <span>{{ $t(title) }}</span>
-          </div>
+          <Title class="margin-top-3" v-if="title">{{ $t(title) }}</Title>
 
           <div
             v-if="!hideCloseBtn"
@@ -30,7 +24,7 @@
             @click="handleClose"
           ></div>
 
-          <div>
+          <div class="margin-top-2 margin-bottom-2">
             <slot name="content"></slot>
           </div>
 
@@ -44,6 +38,8 @@
 </template>
 
 <script>
+import Title from "@/components/Title.vue";
+
 export default {
   props: {
     title: String,
@@ -58,6 +54,7 @@ export default {
     hideMask: Boolean,
     disableScroll: Boolean
   },
+  components: { Title },
   methods: {
     handleClose() {
       if (this.$close) {

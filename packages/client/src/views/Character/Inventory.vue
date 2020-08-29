@@ -45,7 +45,7 @@ export default {
     LootContainer,
     ScrollableItemHint
   },
-  props: ["hideBg", "filters"],
+  props: ["hideBg", "filters", "additionalFilter"],
   data: () => ({
     showHintItems: false,
     request: null,

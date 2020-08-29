@@ -1,7 +1,7 @@
 <template>
   <user-dialog title="filter" @close="$close(computedFilters)">
     <template v-slot:content>
-      <div class="font-size-25 capitalize flex width-100 flex-column padding-1 margin-top-3">
+      <div class="font-size-25 capitalize flex width-100 flex-column padding-1">
         <p-check
           style="p-default p-curve p-thick"
           class="checkbox margin-bottom-1"
@@ -9,7 +9,8 @@
           color="warning"
           :checked="allFiltersState()"
           v-model="allFilters"
-        >{{$t("all-filters")}}</p-check>
+          >{{ $t("all-filters") }}</p-check
+        >
         <div class="flex width-100 flex-space-evenly">
           <p-check
             v-for="(_, filter) in computedFilters"
@@ -18,7 +19,8 @@
             name="check"
             color="warning"
             v-model="computedFilters[filter]"
-          >{{$t(localisedFilter(filter))}}</p-check>
+            >{{ $t(localisedFilter(filter)) }}</p-check
+          >
         </div>
       </div>
     </template>
@@ -117,5 +119,3 @@ export default {
   flex: 1;
 }
 </style>
-
-

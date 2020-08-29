@@ -130,7 +130,7 @@ class Inventory {
     return this.hasItemByTemplate(ingridient.itemId, ingridient.quantity * mul);
   }
 
-  filterItemsByType(filters, buffer) {
+  filterItemsByType(filters, buffer, filter) {
     buffer = buffer || [];
     buffer.length = 0;
 
@@ -153,10 +153,11 @@ class Inventory {
       }
 
       if (
-        filters[this._itemDB.getItemType(template)] ||
-        (templateData.type == ItemType.Equipment &&
-          filters[this._itemDB.getSlot(template)] &&
-          !item.equipped)
+        (filters[this._itemDB.getItemType(template)] ||
+          (templateData.type == ItemType.Equipment &&
+            filters[this._itemDB.getSlot(template)] &&
+            !item.equipped)) &&
+        (!filter || filter(item, templateData))
       ) {
         buffer.push(item);
       }
@@ -217,7 +218,7 @@ class Inventory {
   }
 
   mergeData(inventoryChanges) {
-    let { changes, delta, currencies } = inventoryChanges;
+    let { changes, currencies } = inventoryChanges;
 
     this._vm.$set(this._vm, "currencies", currencies);
 

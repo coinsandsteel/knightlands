@@ -38,7 +38,7 @@
                 ></loot>
               </div>
 
-              <div class="flex flex-column height-100">
+              <div class="flex flex-column">
                 <span
                   class="font-size-20 font-outline padding-top-1 flex-self-start"
                   >{{
