@@ -12,28 +12,7 @@
     <slot name="beforeStats"></slot>
 
     <slot name="stats" v-if="item">
-      <div
-        class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
-      >
-        <div class="flex width-45 flex-column text-align-right">
-          <div
-            v-for="(statValue, statId) in stats"
-            :key="statId"
-            class="margin-bottom-half width-100"
-          >
-            {{ $t(statId) }}
-          </div>
-        </div>
-        <div class="flex width-45 flex-column text-align-left">
-          <div
-            v-for="(statValue, statId) in stats"
-            :key="statId"
-            class="margin-bottom-half width-100"
-          >
-            {{ statValue }}
-          </div>
-        </div>
-      </div>
+      <ItemStats :item="item" />
     </slot>
 
     <slot name="afterStats"></slot>
@@ -55,15 +34,17 @@
 </template>
 
 <script>
-import ItemProperties from "@/components/ItemProperties.vue";
-const ItemType = require("@/../../knightlands-shared/item_type");
+import ItemProperties from "@/components/Item/ItemProperties.vue";
+import ItemStats from "@/components/Item/ItemStats.vue";
+import ItemHeader from "@/components/Item/ItemHeader.vue";
 import Title from "@/components/Title.vue";
+
+const ItemType = require("@/../../knightlands-shared/item_type");
+
 const {
   EquipmentSlots,
   getSlot
 } = require("@/../../knightlands-shared/equipment_slot");
-
-import ItemHeader from "@/components/Item/ItemHeader.vue";
 
 export default {
   props: {
@@ -73,7 +54,7 @@ export default {
     lootProps: Object,
     quantity: Number
   },
-  components: { ItemProperties, Title, ItemHeader },
+  components: { ItemProperties, Title, ItemHeader, ItemStats },
   computed: {
     isOffHand() {
       if (this.template.type != ItemType.Equipment) {

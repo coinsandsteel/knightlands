@@ -1,21 +1,24 @@
 <template>
-  <div class="flex flex-items-center">
+  <div class="flex flex-items-center flex-no-wrap">
     <loot
       :item="item"
       :interactible="false"
       v-bind="itemProps"
-      class="margin-right-2"
+      class="margin-right-1"
     ></loot>
     <div class="flex flex-column flex-center full-flex">
-      <div class="width-100 flex flex-items-center">
+      <div class="width-100 flex flex-items-center flex-no-wrap">
         <span
           v-if="item"
-          class="font-size-20 font-weight-900 font-outline"
+          class="font-size-20 nowrap font-weight-900 font-outline"
           :class="{ 'margin-right-1': !hasElement }"
           >{{ type }}</span
         >
         <div v-if="hasElement" :class="elementIcon" class="big"></div>
-        <div class="flex flex-center" v-if="isEquipment && !isPreview">
+        <div
+          class="flex flex-center flex-no-wrap"
+          v-if="isEquipment && !isPreview"
+        >
           <span class="star" :class="{ active: stars >= 1 }"></span>
           <span
             class="star margin-right-auto"
@@ -53,7 +56,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import ItemGetterMixin from "./ItemGetterMixin.vue";
 
 export default {
-  props: ["item", "itemProps"],
+  props: ["itemProps"],
   mixins: [ItemGetterMixin],
   components: {
     Loot,

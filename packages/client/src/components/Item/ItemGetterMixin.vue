@@ -7,6 +7,7 @@ const {
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
+  props: ["item", "matchItem"],
   computed: {
     count() {
       if (!this.item) {
@@ -20,12 +21,21 @@ export default {
         return 0;
       }
 
+      if (this.matchItem) {
+        return this.matchItem.level;
+      }
+
       return this.item.level;
     },
     stars() {
       if (!this.item) {
         return 0;
       }
+
+      if (this.matchItem) {
+        return this.matchItem.breakLimit;
+      }
+
       return this.item.breakLimit;
     },
     template() {
@@ -63,7 +73,19 @@ export default {
       if (!this.item) {
         return [];
       }
-      return this.$game.itemsDB.getStats(this.item);
+
+      let forceLevel = 0;
+      let forceEnchanting = 0;
+      if (this.matchItem) {
+        forceLevel = this.matchItem.level;
+        forceEnchanting = this.matchItem.enchanting;
+      }
+
+      return this.$game.itemsDB.getStats(
+        this.item,
+        forceLevel,
+        forceEnchanting
+      );
     },
     isEquipment() {
       return this.template.type == ItemType.Equipment;
