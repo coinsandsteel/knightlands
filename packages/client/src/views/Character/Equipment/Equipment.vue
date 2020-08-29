@@ -113,8 +113,8 @@ import StatDetails from "./StatDetails.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import Loot from "@/components/Loot.vue";
-import ItemActionHandler from "./ItemActionHandler.vue";
-import Inventory from "./Inventory.vue";
+import ItemActionHandler from "@/components/Item/ItemActionHandler.vue";
+import Inventory from "./../Inventory.vue";
 import EquipmentPreview from "./EquipmentPreview.vue";
 import { Flipper, Flipped } from "vue-flip-toolkit";
 
@@ -198,18 +198,8 @@ export default {
 };
 </script>
 
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-</style>
-
 <style lang="less" scoped>
-@import (reference) "./../../style/common.less";
+@import (reference) "./../../../style/common.less";
 
 .attribute {
   margin-left: 1rem;

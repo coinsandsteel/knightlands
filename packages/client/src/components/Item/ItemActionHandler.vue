@@ -1,7 +1,8 @@
 <script>
-import CompareItems from "@/components/CompareItems.vue";
+import CompareItems from "@/components/Item/CompareItems.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import ItemsReceived from "@/components/ItemsReceived.vue";
+import ItemEquipWarning from "./ItemEquipWarning.vue";
 
 const ShowItems = CreateDialog(
   ItemsReceived,
@@ -12,27 +13,40 @@ const ShowItems = CreateDialog(
   "dkt"
 );
 const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
+const ShowEquipWarning = CreateDialog(ItemEquipWarning, "item");
+const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
   methods: {
+    async showEquipWarning(item) {
+      return ShowEquipWarning(item);
+    },
     async handleItemAction(item, action, ...args) {
       switch (action) {
-        case "equip":
-          this.request = this.$game.equipItem(item.id);
-          break;
+        case ItemActions.Equip: {
+          let equip = true;
+          if (item.holder > 0) {
+            equip = await this.showEquipWarning(item);
+          }
 
-        case "unequip":
+          if (equip) {
+            this.request = this.$game.equipItem(item.id);
+          }
+          break;
+        }
+
+        case ItemActions.Unequip:
           {
             const itemSlot = this.$game.itemsDB.getSlot(item.template);
             this.request = this.$game.unequipItem(itemSlot);
           }
           break;
 
-        case "use":
+        case ItemActions.Use:
           this.request = this.$game.useItem(item.id);
           break;
 
-        case "open":
+        case ItemActions.OpenBox:
           {
             let count = args[0] || 1;
             this.request = this.$game.useItem(item.id, count);
@@ -41,7 +55,7 @@ export default {
           }
           break;
 
-        case "compare":
+        case ItemActions.Compare:
           await this.compareItems(item);
           break;
       }

@@ -45,14 +45,15 @@ class Inventory {
       data: () => ({
         items: [],
         currencies: {},
-        emptyItem: dummyItem
+        emptyItem: dummyItem,
+        equippedItems: {}
       })
     });
 
     // lookup tables
     this._itemsBytemplate = new Map();
     this._itemsById = new Map();
-    this._sort = throttle(this._doSort.bind(this), 100, { leading: false });
+    this._sort = throttle(this._doSort.bind(this), 0, { leading: false });
   }
 
   static get Changed() {
@@ -155,8 +156,7 @@ class Inventory {
       if (
         (filters[this._itemDB.getItemType(template)] ||
           (templateData.type == ItemType.Equipment &&
-            filters[this._itemDB.getSlot(template)] &&
-            !item.equipped)) &&
+            filters[this._itemDB.getSlot(template)])) &&
         (!filter || filter(item, templateData))
       ) {
         buffer.push(item);
@@ -239,6 +239,7 @@ class Inventory {
         item.level = changedItem.level;
         item.exp = changedItem.exp;
         item.breakLimit = changedItem.breakLimit;
+        item.holder = changedItem.holder;
       } else {
         // add new item
         this._addItem(changedItem);
@@ -335,8 +336,8 @@ class Inventory {
     this._vm.emptyItem = { ...dummyItem };
   }
 
-  _doSort() {
-    this._vm.items.sort((a, b) => {
+  sortItems(items) {
+    items.sort((a, b) => {
       let sortingFactorA = this._itemDB.getRarityAsNumber(a.template);
       let sortingFactorB = this._itemDB.getRarityAsNumber(b.template);
 
@@ -375,6 +376,10 @@ class Inventory {
 
       return 0;
     });
+  }
+
+  _doSort() {
+    this.sortItems(this._vm.items);
 
     let i = 0;
     const l = this._vm.items.length;

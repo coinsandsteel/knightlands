@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-items-center flex-no-wrap">
+  <div
+    class="flex flex-items-center flex-no-wrap padding-left-1 padding-right-1"
+  >
     <loot
       :item="item"
       :interactible="false"
@@ -28,24 +30,26 @@
         </div>
       </div>
 
-      <div
-        class="margin-top-1 width-100 flex flex-center flex-no-wrap"
-        v-if="isEquipment && !isPreview"
-      >
-        <span class="margin-right-1 font-size-18">{{
-          $t("level", { lvl: level })
-        }}</span>
-        <progress-bar
-          v-model="item.exp"
-          :expand="false"
-          height="2rem"
-          class="full-flex"
-          barType="green"
-          :maxValue="nextExp"
-          plusButton="green"
-          @refill="handleLevelProgressClick"
-        ></progress-bar>
-      </div>
+      <slot name="level-bar">
+        <div
+          class="margin-top-1 width-100 flex flex-center flex-no-wrap"
+          v-if="isEquipment && !isPreview"
+        >
+          <span class="margin-right-1 font-size-18">{{
+            $t("level", { lvl: level })
+          }}</span>
+          <progress-bar
+            v-model="item.exp"
+            :expand="false"
+            height="2rem"
+            class="full-flex"
+            barType="green"
+            :maxValue="nextExp"
+            plusButton="green"
+            @refill="handleLevelProgressClick"
+          ></progress-bar>
+        </div>
+      </slot>
     </div>
   </div>
 </template>

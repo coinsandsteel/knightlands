@@ -3,9 +3,9 @@
     <LootContainer
       :items="items"
       @hint="openUnbind"
-      :lootProps="{showUnbindLevels: true, showLevel: true}"
+      :lootProps="{ showUnbindLevels: true, showLevel: true }"
     >
-      <span class="font-size-20">{{$t("upgrade-list-empty-msg")}}</span>
+      <span class="font-size-20">{{ $t("upgrade-list-empty-msg") }}</span>
     </LootContainer>
   </div>
 </template>
@@ -13,7 +13,6 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import LootContainer from "@/components/LootContainer.vue";
-const ItemType = require("@/../../knightlands-shared/item_type");
 
 export default {
   mixins: [AppSection],

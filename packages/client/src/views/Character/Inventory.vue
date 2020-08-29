@@ -35,7 +35,7 @@ import CustomButton from "@/components/Button.vue";
 import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
 import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
-import ItemActionHandler from "./ItemActionHandler.vue";
+import ItemActionHandler from "@/components/Item/ItemActionHandler.vue";
 
 export default {
   mixins: [ActivityMixin, FilteredLootMixin, ItemActionHandler],

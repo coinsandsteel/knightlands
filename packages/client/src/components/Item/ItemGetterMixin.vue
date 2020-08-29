@@ -52,7 +52,7 @@ export default {
         return false;
       }
 
-      if (getSlot(this.template.equipmentType) != EquipmentSlots.MainHand) {
+      if (this.slot != EquipmentSlots.MainHand) {
         return false;
       }
 
@@ -87,6 +87,9 @@ export default {
         forceEnchanting
       );
     },
+    rarityClass() {
+      return `rarity-${this.$game.itemsDB.getRarity(this.item)}`;
+    },
     isEquipment() {
       return this.template.type == ItemType.Equipment;
     },
@@ -94,11 +97,11 @@ export default {
       return this.template.type == ItemType.Consumable;
     },
     isOffHand() {
-      if (!this.isEquipment()) {
+      if (!this.isEquipment) {
         return false;
       }
 
-      return getSlot(this.template.equipmentType) == EquipmentSlots.OffHand;
+      return this.slot == EquipmentSlots.OffHand;
     },
     isBox() {
       if (!this.isConsumable) {
@@ -112,6 +115,12 @@ export default {
     },
     maxLevel() {
       return this.$game.itemsDB.getMaxLevel(this.item);
+    },
+    caption() {
+      return this.template.caption;
+    },
+    slot() {
+      return getSlot(this.template.equipmentType);
     }
   }
 };

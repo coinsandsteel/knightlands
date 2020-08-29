@@ -2,38 +2,61 @@
   <div
     class="loot-slot flex relative flex-column"
     @click="$emit('hint', itemData)"
-    :class="[rarity,{interactible: interactible}, {'bottom': gacha}, size]"
+    :class="[rarity, { interactible: interactible }, { bottom: gacha }, size]"
   >
     <div class="inner-border">
-      <img :class="{'locked': locked}" class="icon" :src="icon()" slot="reference" />
-      <div :class="[{'selected': selected}]"></div>
+      <img
+        :class="{ locked: locked }"
+        class="icon"
+        :src="icon()"
+        slot="reference"
+      />
+      <div :class="[{ selected: selected }]"></div>
       <!-- <div class="slot-border" :class="rarity"></div> -->
     </div>
 
     <template v-if="!onlyIcon">
-      <span v-if="!showUnbindLevels && itemData && itemData.unique" class="unique"></span>
+      <span
+        v-if="!showUnbindLevels && itemData && itemData.unique"
+        class="unique"
+      ></span>
+
+      <span
+        v-if="showEquipped && itemData && itemData.equipped"
+        class="equipped"
+      ></span>
 
       <div
         class="flex flex-center width-100 flex-evenly-spaced stars-container"
-        :class="{top: showLevel && itemData}"
+        :class="{ top: showLevel && itemData }"
         v-if="showUnbindLevels"
       >
-        <span class="star" :class="{active: itemData && itemData.breakLimit>=1}"></span>
-        <span class="star" :class="{active: itemData && itemData.breakLimit>=2}"></span>
+        <span
+          class="star mini"
+          :class="{ active: itemData && itemData.breakLimit >= 1 }"
+        ></span>
+        <span
+          class="star mini"
+          :class="{ active: itemData && itemData.breakLimit >= 2 }"
+        ></span>
       </div>
 
       <div
         class="loot-quantity"
-        :class="{'bottom': gacha}"
+        :class="{ bottom: gacha }"
         v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))"
       >
-        <span class="font-size-18 font-weight-700 digit-font font-outline bold">{{count}}</span>
+        <span
+          class="font-size-18 font-weight-700 digit-font font-outline bold"
+          >{{ count }}</span
+        >
       </div>
 
-      <div v-if="showLevel && itemData && itemData.level > 1" class="item-level">
+      <div v-if="showLevel && itemData" class="item-level">
         <span
           class="font-size-18 digit-font font-outline font-weight-700 bold"
-        >Lvl{{itemData.level || 1}}</span>
+          >{{ $t("level", { lvl: itemData.level || 1 }) }}</span
+        >
       </div>
     </template>
   </div>
@@ -89,6 +112,10 @@ export default {
     selected: Boolean,
     showUnbindLevels: Boolean,
     showLevel: Boolean,
+    showEquipped: {
+      type: Boolean,
+      default: true
+    },
     onlyIcon: {
       type: Boolean,
       default: false
@@ -108,7 +135,7 @@ export default {
     this.updateItemData();
   },
   computed: {
-  itemKey() {
+    itemKey() {
       return !this.itemData ? "" : `${this.itemData.template}`;
     },
     rarity() {
@@ -142,7 +169,8 @@ export default {
             template: this.item * 1,
             equipped: false,
             level: 1,
-            count: Math.floor(this.quantity * (template.quantity || 1) * 100) / 100
+            count:
+              Math.floor(this.quantity * (template.quantity || 1) * 100) / 100
           };
         }
       } else {
@@ -165,7 +193,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 @import (reference) "../style/common.less";
@@ -305,13 +332,13 @@ export default {
 
 .stars-container {
   position: absolute;
-  bottom: 1rem;
+  bottom: 0.5rem;
   left: 0;
   right: 0;
 
   &.top {
     bottom: unset;
-    top: 1rem;
+    top: 0.5rem;
   }
 }
 
@@ -324,6 +351,17 @@ export default {
   position: absolute;
   top: 0.5rem;
   right: 0rem;
+}
+
+.equipped {
+  background-image: url("../assets/ui/icon_moded1.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  top: 0.4rem;
+  left: 0rem;
 }
 
 .item-level {

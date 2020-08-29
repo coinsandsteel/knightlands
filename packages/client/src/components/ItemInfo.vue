@@ -7,7 +7,11 @@
       >{{ $t(template.caption) }}</Title
     >
 
-    <ItemHeader :item="item" :itemProps="lootProps"></ItemHeader>
+    <ItemHeader :item="item" :itemProps="lootProps">
+      <template v-slot:level-bar>
+        <slot name="level-bar"></slot>
+      </template>
+    </ItemHeader>
 
     <slot name="beforeStats"></slot>
 
@@ -17,19 +21,9 @@
 
     <slot name="afterStats"></slot>
 
-    <ItemProperties v-if="!onlyStats && item" :item="item"></ItemProperties>
+    <ItemProperties :item="item" :onlyStats="onlyStats"></ItemProperties>
 
-    <span
-      class="loot-desc desc-font font-size-20 margin-bottom-1"
-      v-if="!onlyStats && desc && item"
-      >{{ desc }}</span
-    >
-
-    <span
-      class="loot-desc desc-font font-size-20"
-      v-if="!onlyStats && isOffHand && item"
-      >{{ $t(`${template.equipmentType}-bonus`) }}</span
-    >
+    <slot name="footer"></slot>
   </div>
 </template>
 

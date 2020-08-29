@@ -1,6 +1,6 @@
 <template>
   <Promised :request="request" class="screen-content" v-if="unit">
-    <template v-slot:combined="{isPromised, isDelayOver}">
+    <template v-slot:combined="{ isPromised, isDelayOver }">
       <LoadingScreen :loading="isPromised && isDelayOver" />
 
       <div class="color-panel-2 flex flex-column flex-center">
@@ -22,14 +22,20 @@
           type="grey"
           @click="viewSelectedSlot"
           :disabled="!unit.items[selectedSlot]"
-        >{{$t("btn-view")}}</CustomButton>
+          >{{ $t("btn-view") }}</CustomButton
+        >
       </div>
 
-      <LootContainer :items="filteredItems" :inventory="true" @hint="_handleHint"></LootContainer>
+      <LootContainer
+        :items="filteredItems"
+        :inventory="true"
+        @hint="_handleHint"
+      ></LootContainer>
 
       <ScrollableItemHint
         ref="scrollHint"
         :items="hintItems"
+        :equippedItems="unit.items"
         @action="handleItemAction"
         :getHintButtons="getHintButtons"
       ></ScrollableItemHint>
@@ -46,15 +52,12 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
+import ItemActionHandler from "@/components/Item/ItemActionHandler.vue";
 import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
-
-import { create as CreateDialog } from "vue-modal-dialogs";
-import CompareItems from "@/components/CompareItems.vue";
-const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 
 export default {
   props: ["unit"],
-  mixins: [HintHandler, NetworkRequestErrorMixin],
+  mixins: [HintHandler, NetworkRequestErrorMixin, ItemActionHandler],
   components: {
     Loot,
     LootContainer,
@@ -94,9 +97,9 @@ export default {
           items.push(this.unit.items[i]);
         }
         return items;
-      } else {
-        return this.filteredItems;
       }
+
+      return this.filteredItems;
     }
   },
   watch: {
@@ -105,15 +108,10 @@ export default {
     }
   },
   methods: {
-    viewSelectedSlot() {
-      this.equippedHint = true;
-      let item = this.unit.items[this.selectedSlot];
-      this.$nextTick(() => {
-        this._handleHint(
-          item,
-          this.hintItems.findIndex(x => x == item)
-        );
-      });
+    async viewSelectedSlot() {
+      const item = this.unit.items[this.selectedSlot];
+      const action = await this.showHint(item);
+      await this.handleItemAction(item, action);
     },
     unequipSelectedSlot() {
       this.request = this.performRequest(
@@ -128,11 +126,18 @@ export default {
         this.filteredItems
       );
     },
-    async handleItemAction(item, action, ...args) {
+    async handleItemAction(item, action) {
       if (action === "equip") {
-        this.request = this.performRequest(
-          this.$game.unitEquipItem(this.unit.id, item.id)
-        );
+        let equip = true;
+        if (item.holder != this.unit.id) {
+          equip = await this.showEquipWarning(item);
+        }
+
+        if (equip) {
+          this.request = this.performRequest(
+            this.$game.unitEquipItem(this.unit.id, item.id)
+          );
+        }
       } else if (action === "unequip") {
         this.request = this.performRequest(
           this.$game.unitUnequipItem(
@@ -140,11 +145,9 @@ export default {
             this.$game.itemsDB.getSlot(item.template)
           )
         );
-      } else if (action == "compare") {
-        ShowCompareItems(this.unit.items[this.selectedSlot], item);
       }
     },
-    getHintButtons({ item }) {
+    getHintButtons(item) {
       let buttons;
       if (
         !this.equippedHint &&

@@ -5,31 +5,32 @@
         class="items-bg-mask relative flex flex-center"
         @click.self="showHintItems = false"
       >
-          <Hooper
-            ref="hooper"
-            style="height: 100%"
-            :infiniteScroll="true"
-            :autoPlay="false"
-            @slide="updateHintItems"
-          >
-            <slide v-for="(slide, index) in hintItems" :key="index">
-              <CompareItems
-                v-if="isComparable(slide.item)"
-                :leftItem="slide.item"
-                :rightItem="itemFromMatchingSlot(slide.item)"
-                :hideMask="true"
-                @close="handleItemAction"
-              ></CompareItems>
-              <LootHint
-                v-else
-                :item="slide.item"
-                :hideMask="true"
-                :showButtons="true"
-                :buttons="getHintButtons(slide.item)"
-                @close="handleItemAction"
-              ></LootHint>
-            </slide>
-          </Hooper>
+        <Hooper
+          ref="hooper"
+          style="height: 100%"
+          :infiniteScroll="true"
+          :autoPlay="false"
+          @slide="updateHintItems"
+        >
+          <slide v-for="(slide, index) in hintItems" :key="index">
+            <CompareItems
+              v-if="isComparable(slide.item)"
+              :leftItem="slide.item"
+              :rightItem="itemFromMatchingSlot(slide.item)"
+              :hideMask="true"
+              @close="handleItemAction"
+            ></CompareItems>
+            <LootHint
+              v-else
+              :item="slide.item"
+              :hideMask="true"
+              :showButtons="true"
+              :equippedItems="equippedItems"
+              :buttons="getHintButtons(slide.item)"
+              @close="handleItemAction"
+            ></LootHint>
+          </slide>
+        </Hooper>
         <div
           class="flex flex-center flex-space-between absolute-stretch pointer-events-none"
         >
@@ -47,10 +48,10 @@ import "hooper/dist/hooper.css";
 const ItemType = require("@/../../knightlands-shared/item_type");
 import LootHint from "@/components/LootHint.vue";
 import DoubleBuffer from "@/helpers/DoubleBuffer";
-import CompareItems from "@/components/CompareItems.vue";
+import CompareItems from "./CompareItems.vue";
 
 export default {
-  props: ["items", "getHintButtons"],
+  props: ["items", "getHintButtons", "equippedItems"],
   data: () => ({
     currentSlideIndex: 0,
     hintItems: [],
@@ -67,7 +68,11 @@ export default {
   },
   methods: {
     itemFromMatchingSlot(item) {
-      return this.$character.equipment[this.$game.itemsDB.getSlot(item)];
+      let equippedItems = this.equippedItems;
+      if (!equippedItems) {
+        equippedItems = this.$character.equipment;
+      }
+      return equippedItems[this.$game.itemsDB.getSlot(item)];
     },
     isComparable(item) {
       return (

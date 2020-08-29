@@ -1,10 +1,16 @@
 <template>
-  <div class="width-100 relative flex flex-end unit-view-container flex-no-wrap">
+  <div
+    class="width-100 relative flex flex-end unit-view-container flex-no-wrap"
+  >
     <template v-if="unit">
       <div class="bg" :class="element"></div>
 
       <!-- Title -->
-      <UnitTitle class="width-100 unit-title" :unit="unit" :showLevel="!garrison" />
+      <UnitTitle
+        class="width-100 unit-title"
+        :unit="unit"
+        :showLevel="!garrison"
+      />
 
       <!-- Unit -->
       <div
@@ -18,7 +24,9 @@
           <div
             class="margin-top-1 margin-bottom-1 padding-half panel-input flex flex-center unit-view-param font-size-22"
           >
-            <IconWithValue iconClass="icon-damage">{{estimatedDamage}}</IconWithValue>
+            <IconWithValue iconClass="icon-damage">{{
+              estimatedDamage
+            }}</IconWithValue>
           </div>
 
           <div class="flex">
@@ -27,8 +35,16 @@
               class="margin-bottom-half"
               @click="goToEquipment"
               v-if="showEquipment"
-            >Eq</CustomButton>
-            <CustomButton type="grey" class="margin-bottom-half" @click="showAbilities = true">Abi</CustomButton>
+            >
+              <span class="icon-custom-unit huge"></span>
+            </CustomButton>
+            <CustomButton
+              type="grey"
+              class="margin-bottom-half"
+              @click="showAbilities = true"
+            >
+              <span class="icon-pass-unit huge"></span>
+            </CustomButton>
             <!-- <CustomButton
               type="yellow"
               class="margin-bottom-half"
@@ -54,7 +70,9 @@
         ></div>
       </div>
 
-      <div class="width-60 flex flex-items-end flex-center padding-top-3 height-100">
+      <div
+        class="width-60 flex flex-items-end flex-center padding-top-3 height-100"
+      >
         <img class="unit-image" :src="$game.armyDB.getIcon(unit)" />
       </div>
     </template>
@@ -130,4 +148,3 @@ export default {
   top: 0;
 }
 </style>
-

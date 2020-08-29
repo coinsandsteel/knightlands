@@ -10,20 +10,31 @@
     <span class="margin-bottom-half" v-if="template.maxStacks > 0">{{
       $t("max-stacks", { max: template.maxStacks })
     }}</span>
+
+    <span
+      class="loot-desc desc-font font-size-20 margin-bottom-1"
+      v-if="!onlyStats && desc && item"
+      >{{ desc }}</span
+    >
+
+    <span
+      class="loot-desc desc-font font-size-20"
+      v-if="!onlyStats && isOffHand && item"
+      >{{ $t(`${template.equipmentType}-bonus`) }}</span
+    >
   </div>
 </template>
 
 <script>
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 import ItemProperties from "@/../../knightlands-shared/item_properties";
+import ItemGetterMixin from "./ItemGetterMixin.vue";
 import RaidsMeta from "@/raids_meta";
 
 export default {
-  props: ["item"],
+  mixins: [ItemGetterMixin],
+  props: ["onlyStats"],
   computed: {
-    template() {
-      return this.$game.itemsDB.getTemplate(this.item);
-    },
     action() {
       let action = this.template.action;
       if (!action || action.action == ItemActions.OpenBox) {
@@ -131,3 +142,11 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.loot-desc {
+  margin-top: 1.5rem;
+  margin-left: 0.5rem;
+  color: #dcb850;
+}
+</style>

@@ -8,21 +8,25 @@
     :disableScroll="true"
   >
     <template v-slot:content>
-      <ItemInfo :item="item" :hideTitle="true" class="width-80 center"></ItemInfo>
+      <ItemInfo
+        :item="item"
+        :hideTitle="true"
+        class="width-80 center"
+      ></ItemInfo>
     </template>
 
     <template v-slot:footer>
       <div class="flex width-100 flex-space-evenly" v-if="showButtons">
         <custom-button
           type="yellow"
-          v-if="actions.equip && !item.equipped && isEquipment"
+          v-if="canEquip"
           class="common-btn center"
           @click="handleClose('equip')"
           >{{ $t("btn-equip") }}</custom-button
         >
 
         <custom-button
-          v-if="actions.equip && item.equipped && isEquipment"
+          v-if="canUnequip"
           type="grey"
           class="common-btn center"
           @click="handleClose('unequip')"
@@ -77,21 +81,16 @@
 
 <script>
 import CustomButton from "./Button.vue";
-import ProgressBar from "./ProgressBar.vue";
 import UserDialog from "./UserDialog.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
+import ItemGetterMixin from "@/components/Item/ItemGetterMixin.vue";
 const ItemType = require("@/../../knightlands-shared/item_type");
 import Stat from "@/../../knightlands-shared/character_stat";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
-// Button object
-// { type:"yellow", title, response }
-
 export default {
+  mixins: [ItemGetterMixin],
   props: {
-    item: {
-      type: Object
-    },
     equip: {
       type: Boolean
     },
@@ -109,53 +108,32 @@ export default {
     showButtons: {
       type: Boolean,
       default: true
-    }
+    },
+    equippedItems: Object
   },
   components: {
     CustomButton,
-    ProgressBar,
     UserDialog,
     ItemInfo
   },
   computed: {
-    isEquipment() {
-      return this.template.type == ItemType.Equipment;
-    },
-    isConsumable() {
-      return this.template.type == ItemType.Consumable;
-    },
-    isBox() {
-      if (!this.isConsumable) {
-        return false;
+    canEquip() {
+      let equippable = !this.item.equipped;
+      if (this.equippedItems) {
+        equippable = !this.equippedItems[this.slot];
+      } else {
+        equippable = !this.$character.equipment[this.slot];
       }
-
-      return this.template.action.action == ItemActions.OpenBox;
+      return equippable && this.actions.equip && this.isEquipment;
     },
-    template() {
-      return this.$game.itemsDB.getTemplate(this.item.template);
-    },
-    nextExp() {
-      return this.$game.itemsDB.getNextExp(this.item.level);
-    },
-    maxLevel() {
-      return this.$game.itemsDB.getMaxLevel(this.item);
-    },
-    type() {
-      let type = this.template.type;
-      if (this.template.type == ItemType.Equipment) {
-        type = this.template.equipmentType;
+    canUnequip() {
+      let unequippable = this.item.equipped;
+      if (this.equippedItems) {
+        unequippable = this.equippedItems[this.slot];
+      } else {
+        unequippable = this.$character.equipment[this.slot];
       }
-
-      return `${this.$t(this.template.rarity)} ${this.$t(type)}`;
-    },
-    stats() {
-      return this.$game.itemsDB.getStats(this.item);
-    },
-    stars() {
-      return this.item.breakLimit;
-    },
-    count() {
-      return this.item.count;
+      return unequippable && this.actions.equip && this.isEquipment;
     }
   },
   methods: {

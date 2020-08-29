@@ -1,23 +1,42 @@
 <template>
   <div>
-    <div class="flex flex-items-end flex-space-between relative height-100 shift-buttons">
+    <div
+      class="flex flex-items-end flex-space-between relative height-100 shift-buttons"
+    >
       <div class="home-art absolute-stretch"></div>
       <!-- <AnimatedBackground></AnimatedBackground> -->
 
-      <div class="flex flex-column flex-items-center flex-space-evenly margin-left-2">
-        <MenuIcon icon="icon-units" :to="{name: 'edit-unit'}" :append="true">Units</MenuIcon>
+      <div
+        class="flex flex-column flex-items-center flex-space-evenly margin-left-2"
+      >
+        <MenuIcon icon="icon-units" :to="{ name: 'edit-unit' }" :append="true"
+          >Units</MenuIcon
+        >
 
-        <MenuIcon icon="icon-legion" :to="{name: 'army-composition'}" :append="true">Legions</MenuIcon>
+        <MenuIcon
+          icon="icon-legion"
+          :to="{ name: 'army-composition' }"
+          :append="true"
+          >Legions</MenuIcon
+        >
       </div>
 
-      <div class="flex flex-column flex-items-center flex-space-evenly margin-right-2">
+      <div
+        class="flex flex-column flex-items-center flex-space-evenly margin-right-2"
+      >
         <MenuIcon
           icon="icon-ability-transfer"
-          :to="{name: 'units-reserve'}"
+          :to="{ name: 'units-reserve' }"
           :append="true"
-        >Send to Reserve</MenuIcon>
-        <MenuIcon icon="icon-banishment" :to="{name: 'units-dismiss'}" :append="true">Dismiss</MenuIcon>
-<!-- 
+          >Send to Reserve</MenuIcon
+        >
+        <MenuIcon
+          icon="icon-banishment"
+          :to="{ name: 'units-dismiss' }"
+          :append="true"
+          >Dismiss</MenuIcon
+        >
+        <!-- 
         <MenuIcon
           icon="icon-ability-transfer"
           :to="{name: 'ability-transfer'}"
@@ -55,4 +74,3 @@ export default {
   padding-bottom: 20%;
 }
 </style>
-

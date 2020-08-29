@@ -4,7 +4,8 @@ import Router from "vue-router";
 
 const Character = () => import("./views/Character/Character.vue");
 const CharacterTraining = () => import("./views/Character/Training/Stats.vue");
-const CharacterEquipment = () => import("./views/Character/Equipment.vue");
+const CharacterEquipment = () =>
+  import("./views/Character/Equipment/Equipment.vue");
 const CharacterBuffs = () => import("./views/Character/Buffs/Buffs.vue");
 const CharacterMisc = () => import("./views/Character/MiscTab.vue");
 
@@ -28,9 +29,9 @@ const Crafting = () => import("./views/Crafting/Create/Crafting.vue");
 const CraftingHome = () => import("./views/Crafting/CraftingHome.vue");
 
 const CraftingUpgrade = () =>
-  import("./views/Crafting/Upgrade/CraftingUpgrade.vue");
-const UpgradeItem = () => import("./views/Crafting/Upgrade/UpgradeItem.vue");
-const Upgrade = () => import("./views/Crafting/Upgrade/Upgrade.vue");
+  import("./views/Crafting/LevelUp/CraftingUpgrade.vue");
+const UpgradeItem = () => import("./views/Crafting/LevelUp/UpgradeItem.vue");
+const Upgrade = () => import("./views/Crafting/LevelUp/Upgrade.vue");
 
 const CraftingUnbind = () =>
   import("./views/Crafting/Unbind/CraftingUnbind.vue");

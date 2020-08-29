@@ -1,41 +1,42 @@
 <template>
-  <div class="padding-1 dummy-height full-flex">
-    <div class="padding-1 dummy-height full-flex flex flex-center flex-column panel" v-if="item">
-      <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}" class="width-100">
+  <div class="screen-content">
+    <div class="screen-background"></div>
+    <div
+      class="padding-top-1 dummy-height full-flex flex flex-center flex-column"
+      v-if="item"
+    >
+      <ItemInfo
+        :item="item"
+        :onlyStats="true"
+        :lootProps="{ onlyIcon: true }"
+        class="width-100"
+      >
         <!-- Add leveling bar -->
-        <template v-slot:beforeStats>
-          <div class="progress-bar-margin">
-            <div class="text-align-left font-size-20">
-              <span class="flex flex-center flex-start margin-bottom-half">
-                Lvl: {{item.level}}
-                <span class="margin-left-half margin-right-half right-arrow"></span>
-                {{level}}
+        <template v-slot:level-bar>
+          <div class="width-100 flex flex-center flex-no-wrap">
+            <div
+              class="text-align-left font-size-20 flex flex-no-wrap flex-center margin-right-2"
+            >
+              <span>
+                {{ $t("level", { lvl: item.level }) }}
+              </span>
+              <span
+                class="margin-left-half margin-right-half right-arrow"
+              ></span>
+              <span>
+                {{ level }}
               </span>
             </div>
-            <div class="relative">
-              <progress-bar
-                v-model="item.exp"
-                height="2rem"
-                class="flex-start"
-                width="70%"
-                barType="green"
-                barType2="yellow"
-                :value2="futureExp"
-                :maxValue="nextExp"
-                :hideMainBar="item.level != level"
-              ></progress-bar>
-
-              <!-- <progress-bar
-                v-model="item.exp"
-                v-show="item.level == level"
-                height="2rem"
-                width="70%"
-                barType="yellow"
-                :maxValue="nextExp"
-                :hideBackground="true"
-                class="absolute-stretch"
-              ></progress-bar>-->
-            </div>
+            <progress-bar
+              v-model="item.exp"
+              class="full-flex"
+              height="2rem"
+              barType="green"
+              barType2="yellow"
+              :value2="futureExp"
+              :maxValue="nextExp"
+              :hideMainBar="item.level != level"
+            ></progress-bar>
           </div>
         </template>
 
@@ -44,12 +45,16 @@
           <div
             class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
           >
-            <div class="flex width-40 flex-column flex-item-end text-align-right">
+            <div
+              class="flex width-40 flex-column flex-item-end text-align-right"
+            >
               <div
                 v-for="(statValue, statId) in stats"
                 :key="statId"
                 class="margin-bottom-half width-100"
-              >{{$t(statId)}}</div>
+              >
+                {{ $t(statId) }}
+              </div>
             </div>
             <div class="flex width-40 flex-column text-align-left">
               <div
@@ -57,9 +62,11 @@
                 :key="statId"
                 class="margin-bottom-half flex flex-center flex-start width-100"
               >
-                {{statValue}}
-                <span class="margin-left-half margin-right-half right-arrow"></span>
-                {{futureStats[statId]}}
+                {{ statValue }}
+                <span
+                  class="margin-left-half margin-right-half right-arrow"
+                ></span>
+                {{ futureStats[statId] }}
               </div>
             </div>
           </div>
@@ -67,7 +74,9 @@
       </ItemInfo>
 
       <!-- Upgrade Materials -->
-      <span class="margin-top-1 title font-size-20 margin-bottom-1">{{$t("upgrade-materials")}}</span>
+      <Title class="margin-top-1 margin-bottom-1">{{
+        $t("upgrade-materials")
+      }}</Title>
       <div class="flex flex-center full-flex width-100 dummy-height">
         <div v-bar class="width-100 height-100 dummy-height">
           <div>
@@ -94,23 +103,31 @@
             type="grey"
             :mini="true"
             :lockPressed="selectedOption == 0"
-            @click="selectedOption=0"
-          >x1</CustomButton>
+            @click="selectedOption = 0"
+            >x1</CustomButton
+          >
           <CustomButton
             type="grey"
             :mini="true"
             :lockPressed="selectedOption == 1"
-            @click="selectedOption=1"
-          >x5</CustomButton>
+            @click="selectedOption = 1"
+            >x5</CustomButton
+          >
           <CustomButton
             type="grey"
             :mini="true"
             :lockPressed="selectedOption == 2"
-            @click="selectedOption=2"
-          >x25</CustomButton>
+            @click="selectedOption = 2"
+            >x25</CustomButton
+          >
         </div>
 
-        <CustomButton type="green" :disabled="!canUpgrade" @click="confirmUpgrade">{{$t("confirm")}}</CustomButton>
+        <CustomButton
+          type="green"
+          :disabled="!canUpgrade"
+          @click="confirmUpgrade"
+          >{{ $t("confirm") }}</CustomButton
+        >
       </div>
     </div>
   </div>
@@ -123,6 +140,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Title from "@/components/Title.vue";
 
 const Rarity = require("@/../../knightlands-shared/rarity");
 const ItemType = require("@/../../knightlands-shared/item_type");
@@ -130,7 +148,7 @@ const ItemType = require("@/../../knightlands-shared/item_type");
 export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
-  components: { ItemInfo, ProgressBar, Loot, CustomButton },
+  components: { ItemInfo, ProgressBar, Loot, CustomButton, Title },
   created() {
     this.title = "window-upgrade-item";
     this.$options.useRouterBack = true;
@@ -167,6 +185,7 @@ export default {
     },
     prepareItemForUpgrading() {
       let item = this.$game.inventory.getItem(this.itemId);
+      console.log(this.itemId, item)
       if (item && !item.equipped) {
         if (!item.unique) {
           item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
