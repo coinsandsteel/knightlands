@@ -7,18 +7,32 @@
         :key="att"
       >
         <div class="flex-2 flex flex-center margin-right-4">
-          <CraftingIngridient :ingridient="getResource(att)" :noLocking="true"></CraftingIngridient>
+          <CraftingIngridient
+            :ingridient="getResource(att)"
+            :noLocking="true"
+          ></CraftingIngridient>
         </div>
         <div class="flex flex-column flex-items-start flex-4 margin-right-2">
-          <span class="font-size-22 margin-bottom-1">{{$t(att)}}</span>
-          <IconWithValue class="margin-bottom-1" iconClass="icon-gold" :flip="true">{{getUpgradePrice(att)}}</IconWithValue>
+          <span class="font-size-22 margin-bottom-1">{{ $t(att) }}</span>
+          <IconWithValue
+            class="margin-bottom-1"
+            iconClass="icon-gold"
+            :flip="true"
+            >{{ getUpgradePrice(att) }}</IconWithValue
+          >
           <numeric-value
             class="width-100"
             :showMax="true"
             :value="getStatValue(att)"
             :maxValue="getMaxStatValue(att)"
-            :decreaseCondition="(getEditedAttribute(att) > 0 && attributesNeedReset)"
-            :increaseCondition="hasEnoughGold(att) && getAttributeValue(att) < getMaxStat(att) && hasEnoughResource(att)"
+            :decreaseCondition="
+              getEditedAttribute(att) > 0 && attributesNeedReset
+            "
+            :increaseCondition="
+              hasEnoughGold(att) &&
+                getAttributeValue(att) < getMaxStat(att) &&
+                hasEnoughResource(att)
+            "
             @inc="increaseAttribute(att)"
             @dec="decreaseAttribute(att)"
           ></numeric-value>
@@ -29,8 +43,12 @@
         v-show="attributesNeedReset"
         class="flex flex-center flex-full margin-top-3 flex-space-around"
       >
-        <custom-button type="green" @click="confirmAttributes">Apply</custom-button>
-        <custom-button @click="resetAttributes">Reset</custom-button>
+        <custom-button type="green" @click="confirmAttributes">{{
+          $t("btn-apply")
+        }}</custom-button>
+        <custom-button @click="resetAttributes">{{
+          $t("btn-reset")
+        }}</custom-button>
       </div>
     </div>
   </div>
@@ -225,5 +243,5 @@ export default {
 .disabled-btn {
   opacity: 0.3;
   pointer-events: none;
-}
-</style>;
+}</style
+>;
