@@ -5,6 +5,7 @@
     :titleClass="`rarity-${template.rarity}`"
     :compact="true"
     :hideMask="hideMask"
+    :disableScroll="true"
   >
     <template v-slot:content>
       <ItemInfo :item="item" :hideTitle="true" class="width-80 center"></ItemInfo>

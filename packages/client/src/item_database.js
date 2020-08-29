@@ -75,7 +75,7 @@ class ItemDatabase {
   }
 
   getItemType(id) {
-    return ItemTemplates[id].type;
+    return this.getTemplate(id).type;
   }
 
   getRarity(item) {
@@ -122,7 +122,7 @@ class ItemDatabase {
   }
 
   getSlot(id) {
-    let template = ItemTemplates[id];
+    let template = this.getTemplate(id);
     if (template.type != ItemType.Equipment) return null;
     return getSlot(template.equipmentType);
   }

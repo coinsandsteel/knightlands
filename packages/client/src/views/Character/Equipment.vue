@@ -1,14 +1,14 @@
 <template>
   <Promised
-    class="tab-content dummy-height flex flex-column full-flex"
+    class="screen-content"
     :promise="request"
   >
     <template v-slot:combined="{ isPending, isDelayOver }">
       <loading-screen :loading="isDelayOver && isPending"></loading-screen>
       <AnimatedBackground></AnimatedBackground>
-      <Flipper :flipKey="slotPreview">
+      <Flipper :flipKey="slotPreview" class="full-flex dummy-height width-100">
         <div
-          class="tab-content dummy-height flex flex-column flex-no-wrap full-flex"
+          class="width-100 height-100 dummy-height flex flex-column"
         >
           <div class="width-100 equipment" :class="{ preview: slotPreview }">
             <EquipmentPreview
@@ -88,7 +88,7 @@
             :translate="true"
           >
             <Inventory
-              class="full-flex"
+              class="full-flex width-100"
               commitCmd="setEquipmentFilters"
               :hideBg="true"
               :filters="forceFilters"

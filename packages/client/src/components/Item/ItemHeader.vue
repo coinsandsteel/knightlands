@@ -15,7 +15,7 @@
           >{{ type }}</span
         >
         <div v-if="hasElement" :class="elementIcon" class="big"></div>
-        <div class="flex flex-center" v-if="isEquipment">
+        <div class="flex flex-center" v-if="isEquipment && !isPreview">
           <span class="star" :class="{ active: stars >= 1 }"></span>
           <span
             class="star margin-right-auto"
@@ -27,10 +27,10 @@
 
       <div
         class="margin-top-1 width-100 flex flex-center flex-no-wrap"
-        v-if="isEquipment"
+        v-if="isEquipment && !isPreview"
       >
         <span class="margin-right-1 font-size-18">{{
-          $t("level", { lvl: item.level })
+          $t("level", { lvl: level })
         }}</span>
         <progress-bar
           v-model="item.exp"
@@ -41,7 +41,6 @@
           :maxValue="nextExp"
           plusButton="green"
           @refill="handleLevelProgressClick"
-          v-if="isEquipment"
         ></progress-bar>
       </div>
     </div>
@@ -59,6 +58,11 @@ export default {
   components: {
     Loot,
     ProgressBar
+  },
+  computed: {
+    isPreview() {
+      return this.count < 1;
+    }
   },
   methods: {
     upgradeItem() {

@@ -75,12 +75,12 @@ export default {
 
       let buttons = null;
 
-      const slot = this.$game.itemsDB.getSlot(item.item.template);
+      const slot = this.$game.itemsDB.getSlot(item.template);
       if (slot === null) {
         return null;
       }
 
-      if (this.$character.equipment[slot] && !item.item.equipped) {
+      if (this.$character.equipment[slot] && !item.equipped) {
         buttons = [
           {
             title: "btn-compare",

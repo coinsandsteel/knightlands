@@ -8,6 +8,20 @@ const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
   computed: {
+    count() {
+      if (!this.item) {
+        return -1;
+      }
+
+      return this.item.count;
+    },
+    level() {
+      if (!this.item) {
+        return 0;
+      }
+
+      return this.item.level;
+    },
     stars() {
       if (!this.item) {
         return 0;
@@ -56,6 +70,13 @@ export default {
     },
     isConsumable() {
       return this.template.type == ItemType.Consumable;
+    },
+    isOffHand() {
+      if (!this.isEquipment()) {
+        return false;
+      }
+
+      return getSlot(this.template.equipmentType) == EquipmentSlots.OffHand;
     },
     isBox() {
       if (!this.isConsumable) {

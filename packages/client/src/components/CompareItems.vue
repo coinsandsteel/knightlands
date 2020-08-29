@@ -1,12 +1,18 @@
 <template>
-  <UserDialog :compact="true" @close="$close">
+  <UserDialog
+    :compact="true"
+    @close="handleClose"
+    :disableScroll="true"
+    :hideMask="hideMask"
+  >
     <template v-slot:content>
       <div class="flex flex-no-wrap width-100 padding-top-4">
         <div class="flex-basis-50 flex flex-column flex-items-start">
           <span
             class="font-size-20 padding-1 margin-bottom-half item-title width-100"
             :class="`rarity-${getRarity(leftItem)}`"
-          >{{$t(getName(leftItem))}}</span>
+            >{{ $t(getName(leftItem)) }}</span
+          >
 
           <div class="flex">
             <div class="flex space-evenly">
@@ -18,10 +24,20 @@
               ></loot>
 
               <div class="flex flex-items-start font-size-20 margin-left-1">
-                <div v-if="hasElement(leftItem)" :class="`icon-${getElement(leftItem)}`" class="big"></div>
+                <div
+                  v-if="hasElement(leftItem)"
+                  :class="`icon-${getElement(leftItem)}`"
+                  class="big"
+                ></div>
                 <div class="flex flex-center">
-                  <span class="star" :class="{active: leftItem.stars >= 1}"></span>
-                  <span class="star margin-right-auto" :class="{active: leftItem.stars >= 2}"></span>
+                  <span
+                    class="star"
+                    :class="{ active: leftItem.stars >= 1 }"
+                  ></span>
+                  <span
+                    class="star margin-right-auto"
+                    :class="{ active: leftItem.stars >= 2 }"
+                  ></span>
                 </div>
               </div>
             </div>
@@ -30,19 +46,25 @@
           <div
             class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center width-100 font-size-18 flex-space-evenly"
           >
-            <div class="flex flex-2 flex-column margin-right-1 flex-item-end text-align-right">
+            <div
+              class="flex flex-2 flex-column margin-right-1 flex-item-end text-align-right"
+            >
               <div
                 v-for="(statValue, statId) in getStats(leftItem)"
                 :key="statId"
                 class="margin-bottom-half width-100"
-              >{{$t(statId)}}</div>
+              >
+                {{ $t(statId) }}
+              </div>
             </div>
             <div class="flex flex-1 flex-column text-align-left">
               <div
                 v-for="(statValue, statId) in getStats(leftItem)"
                 :key="statId"
                 class="margin-bottom-half width-100"
-              >{{statValue}}</div>
+              >
+                {{ statValue }}
+              </div>
             </div>
           </div>
         </div>
@@ -51,24 +73,35 @@
           <span
             class="font-size-20 padding-1 margin-bottom-half item-title width-100"
             :class="`rarity-${getRarity(rightItem)}`"
-          >{{$t(getName(rightItem))}}</span>
+            >{{ $t(getName(rightItem)) }}</span
+          >
 
           <div class="flex space-evenly">
-              <div class="flex flex-items-start font-size-20 margin-right-1">
-                <div v-if="hasElement(rightItem)" :class="`icon-${getElement(rightItem)}`" class="big"></div>
-                <div class="flex flex-center">
-                  <span class="star" :class="{active: rightItem.stars >= 1}"></span>
-                  <span class="star margin-right-auto" :class="{active: rightItem.stars >= 2}"></span>
-                </div>
+            <div class="flex flex-items-start font-size-20 margin-right-1">
+              <div
+                v-if="hasElement(rightItem)"
+                :class="`icon-${getElement(rightItem)}`"
+                class="big"
+              ></div>
+              <div class="flex flex-center">
+                <span
+                  class="star"
+                  :class="{ active: rightItem.stars >= 1 }"
+                ></span>
+                <span
+                  class="star margin-right-auto"
+                  :class="{ active: rightItem.stars >= 2 }"
+                ></span>
               </div>
-
-              <loot
-                class="loot-icon margin-right-1"
-                :item="rightItem"
-                :interactible="false"
-                :hideQuantity="true"
-              ></loot>
             </div>
+
+            <loot
+              class="loot-icon margin-right-1"
+              :item="rightItem"
+              :interactible="false"
+              :hideQuantity="true"
+            ></loot>
+          </div>
 
           <div
             class="item-info-stats margin-bottom-2 margin-top-1 flex flex-space-between width-100 font-size-18 flex-space-evenly"
@@ -78,7 +111,9 @@
                 v-for="(statValue, statId) in getStats(rightItem)"
                 :key="statId"
                 class="margin-bottom-half width-100"
-              >{{statValue}}</div>
+              >
+                {{ statValue }}
+              </div>
             </div>
 
             <div class="flex flex-2 flex-column margin-left-1 text-align-left">
@@ -86,7 +121,8 @@
                 v-for="(statValue, statId) in getStats(rightItem)"
                 :key="statId"
                 class="margin-bottom-half white-space-no-wrap"
-              >{{$t(statId)}}</span>
+                >{{ $t(statId) }}</span
+              >
             </div>
           </div>
         </div>
@@ -95,7 +131,10 @@
     <template v-slot:footer>
       <div class="flex width-100">
         <ItemProperties class="flex-basis-50" :item="leftItem"></ItemProperties>
-        <ItemProperties class="flex-basis-50" :item="rightItem"></ItemProperties>
+        <ItemProperties
+          class="flex-basis-50"
+          :item="rightItem"
+        ></ItemProperties>
       </div>
     </template>
   </UserDialog>
@@ -113,8 +152,8 @@ const {
 } = require("@/../../knightlands-shared/equipment_slot");
 
 export default {
-  props: ["leftItem", "rightItem"],
-  components: { UserDialog, ItemInfo, Loot, ItemProperties },
+  props: ["leftItem", "rightItem", "hideMask"],
+  components: { UserDialog, Loot, ItemProperties },
   methods: {
     getName(item) {
       return this.$game.itemsDB.getName(item.template);
@@ -138,7 +177,7 @@ export default {
       return template.element != "physical";
     },
     getElement(item) {
-        return this.$game.itemsDB.getTemplate(item.template).element;
+      return this.$game.itemsDB.getTemplate(item.template).element;
     },
     getType(item) {
       const template = this.$game.itemsDB.getTemplate(item.template);
@@ -148,6 +187,13 @@ export default {
       }
 
       return `${this.$t(template.rarity)} ${this.$t(type)}`;
+    },
+    handleClose(response, ...args) {
+      if (this.$close) {
+        this.$close(response, ...args);
+      } else {
+        this.$emit("close", response, ...args);
+      }
     }
   }
 };
