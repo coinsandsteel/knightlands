@@ -1,18 +1,23 @@
 <template>
   <div v-bar>
-    <div class="relative flex flex-column flex-center flex-no-wrap">
-      <EnemyView :name="name" background="/images/beast_bg.png" :image="enemyImage">
+    <div class="screen-content">
+      <div class="screen-background"></div>
+      <EnemyView
+        :name="name"
+        background="/images/beast_bg.png"
+        :image="enemyImage"
+      >
         <FloatingTextContainer
           ref="floatingText"
           class="absolute-stretch"
-          :config="{fontSizeNormal: 3, fontSizeCrit: 3}"
+          :config="{ fontSizeNormal: 3, fontSizeCrit: 3 }"
         ></FloatingTextContainer>
       </EnemyView>
 
       <div class="flex flex-center width-100">
-        <span
-          class="font-size-20 margin-left-1 margin-right-1"
-        >{{$t("beast-level", {level: level})}}</span>
+        <span class="font-size-20 margin-left-1 margin-right-1">{{
+          $t("beast-level", { level: level })
+        }}</span>
         <ProgressBar
           v-model="exp"
           :maxValue="nextExp"
@@ -24,23 +29,27 @@
       </div>
 
       <div
-        class="width-100 margin-bottom-1 margin-top-half att-row flex flex-center font-size-20 flex-space-between"
+        class="width-100 margin-bottom-1 margin-top-half att-row flex flex-center font-size-20 flex-space-between color-panel-1"
       >
         <div class="flex flex-3 flex-column margin-right-1 text-align-right">
           <div
             v-for="(statValue, statId) in stats"
             :key="statId"
             class="margin-bottom-half width-100"
-          >{{$t(statId)}}</div>
+          >
+            {{ $t(statId) }}
+          </div>
         </div>
 
-        <div class="flex flex-3 text-align-left" :class="{'flex-4': !isMax}">
+        <div class="flex flex-3 text-align-left" :class="{ 'flex-4': !isMax }">
           <div class="flex flex-column">
             <div
               v-for="(statValue, statId) in stats"
               :key="statId"
               class="margin-bottom-half flex flex-center flex-end width-100"
-            >{{statValue}}</div>
+            >
+              {{ statValue }}
+            </div>
           </div>
 
           <div class="flex flex-column" v-if="!isMax">
@@ -50,60 +59,82 @@
               class="margin-bottom-half flex flex-center flex-start width-100"
             >
               <span class="margin-left-2 margin-right-2 right-arrow"></span>
-              <span class="rarity-rare">{{futureStats[statId]}}</span>
+              <span class="rarity-rare">{{ futureStats[statId] }}</span>
             </div>
           </div>
         </div>
       </div>
 
       <div
-        class="flex flex-column margin-left-half margin-right-half padding-bottom-2 padding-top-1"
+        class="flex flex-column padding-bottom-2 padding-top-1"
         v-if="!isMax"
       >
-        <span class="title font-size-22 margin-bottom-1">{{$t('regular-boost')}}</span>
+        <Title class="margin-bottom-1">{{ $t("regular-boost") }}</Title>
 
-        <div class="width-100 flex flex-space-evenly font-size-18 margin-bottom-2">
+        <div
+          class="width-100 flex flex-space-evenly font-size-18 margin-bottom-2"
+        >
           <div class="flex flex-column width-45">
-            <span>{{$t("beast-boost", {count: 1})}}</span>
+            <span>{{ $t("beast-boost", { count: 1 }) }}</span>
             <PromisedButton
               :promise="request"
               type="yellow"
               @click="regularBoost(1)"
               :disabled="!canBoost(1)"
             >
-              <IconWithValue iconClass="icon-gold">{{softPrice}}</IconWithValue>
+              <IconWithValue iconClass="icon-gold">{{
+                softPrice
+              }}</IconWithValue>
             </PromisedButton>
           </div>
 
           <div class="flex flex-column width-45">
-            <span>{{$t("beast-boost", {count: 50})}}</span>
+            <span>{{ $t("beast-boost", { count: 50 }) }}</span>
             <PromisedButton
               :promise="request"
               type="yellow"
               @click="regularBoost(50)"
               :disabled="!canBoost(50)"
             >
-              <IconWithValue iconClass="icon-gold">{{softPrice * 50}}</IconWithValue>
+              <IconWithValue iconClass="icon-gold">{{
+                softPrice * 50
+              }}</IconWithValue>
             </PromisedButton>
           </div>
         </div>
 
-        <span class="title font-size-22 margin-bottom-1" @click="showAdvancedBoostInfo">
-          <IconWithValue iconClass="icon-info" :flip="true">{{$t('adv-boost')}}</IconWithValue>
-        </span>
+        <Title class="margin-bottom-1" @click="showAdvancedBoostInfo">
+          <IconWithValue
+            iconClass="icon-info"
+            :flip="true"
+            :iconMargin="true"
+            >{{ $t("adv-boost") }}</IconWithValue
+          >
+        </Title>
 
-        <div class="width-100 flex flex-column flex-center" v-if="totalSouls() > 0">
-          <div class="flex flex-center padding-left-1 padding-right-1 font-size-18">
-            <span>{{$t(beastItemName)}}</span>
+        <div
+          class="width-100 flex flex-column flex-center"
+          v-if="totalSouls() > 0"
+        >
+          <div
+            class="flex flex-center padding-left-1 padding-right-1 font-size-18"
+          >
+            <span>{{ $t(beastItemName) }}</span>
             <div class="item-icon" :style="ticketIcon"></div>
-            <span>{{totalSouls()}}</span>
+            <span>{{ totalSouls() }}</span>
           </div>
 
           <div class="width-100 flex flex-space-evenly font-size-18">
             <div class="flex flex-column width-45">
-              <span>{{$t("beast-boost", {count: 1})}}</span>
-              <PromisedButton :promise="request" type="green" @click="advancedBoost(1)">
-                <div class="flex flex-items-center padding-left-1 padding-right-1">
+              <span>{{ $t("beast-boost", { count: 1 }) }}</span>
+              <PromisedButton
+                :promise="request"
+                type="green"
+                @click="advancedBoost(1)"
+              >
+                <div
+                  class="flex flex-items-center padding-left-1 padding-right-1"
+                >
                   <div class="item-icon" :style="ticketIcon"></div>
                   <span class="font-size-18">1</span>
                 </div>
@@ -111,11 +142,17 @@
             </div>
 
             <div class="flex flex-column width-45" v-if="batchBoost() > 1">
-              <span>{{$t("beast-boost", {count: batchBoost()})}}</span>
-              <PromisedButton :promise="request" type="green" @click="advancedBoost(batchBoost())">
-                <div class="flex flex-items-center padding-left-1 padding-right-1">
+              <span>{{ $t("beast-boost", { count: batchBoost() }) }}</span>
+              <PromisedButton
+                :promise="request"
+                type="green"
+                @click="advancedBoost(batchBoost())"
+              >
+                <div
+                  class="flex flex-items-center padding-left-1 padding-right-1"
+                >
                   <div class="item-icon" :style="ticketIcon"></div>
-                  <span class="font-size-18">{{batchBoost()}}</span>
+                  <span class="font-size-18">{{ batchBoost() }}</span>
                 </div>
               </PromisedButton>
             </div>
@@ -136,8 +173,14 @@
               v-for="(iapMeta, index) in iaps"
               :key="iapMeta.iap"
             >
-              <span>{{$t("beast-souls", {count: iapMeta.ticketsCount})}}</span>
-              <PromisedButton :promise="request" type="green" @click="purchaseBoostItems(index)">
+              <span>{{
+                $t("beast-souls", { count: iapMeta.ticketsCount })
+              }}</span>
+              <PromisedButton
+                :promise="request"
+                type="green"
+                @click="purchaseBoostItems(index)"
+              >
                 <PriceTag :dark="true" :iap="iapMeta.iap"></PriceTag>
               </PromisedButton>
             </div>
@@ -146,14 +189,16 @@
       </div>
 
       <div v-else-if="canEvolve" class="flex flex-center width-100">
-        <PromisedButton type="green" @click="evolve">{{$t("beast-evolve")}}</PromisedButton>
+        <PromisedButton type="green" @click="evolve">{{
+          $t("beast-evolve")
+        }}</PromisedButton>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ActivityMixin from "@/components/ActivityMixin.vue";
+import AppSection from "@/AppSection.vue";
 import Beasts from "@/beasts";
 import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import PromisedButton from "@/components/PromisedButton.vue";
@@ -165,13 +210,14 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
 import EnemyView from "@/components/EnemyView.vue";
+import Title from "@/components/Title.vue";
 
 const Events = require("@/../../knightlands-shared/events");
 
 const MaxBoostSize = 50;
 
 export default {
-  mixins: [ActivityMixin, PaymentHandler, PromptMixin],
+  mixins: [AppSection, PaymentHandler, PromptMixin],
   components: {
     PromisedButton,
     IconWithValue,
@@ -179,7 +225,8 @@ export default {
     PriceTag,
     ProgressBar,
     FloatingTextContainer,
-    EnemyView
+    EnemyView,
+    Title
   },
   data: () => ({
     request: null,
@@ -192,6 +239,8 @@ export default {
   }),
   created() {
     this.$options.paymentEvents = [Events.ItemPurchased];
+    this.$options.useRouterBack = true;
+    this.title = "window-beast";
   },
   activated() {
     this.$set(this, "beast", this.$game.beast());

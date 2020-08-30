@@ -510,6 +510,11 @@ const router = new Router({
       }
     },
     {
+      path: "/castle/beast",
+      name: "beast",
+      component: () => import("./views/Castle/BeastTaming.vue")
+    },
+    {
       path: "/castle/army",
       name: "",
       component: () => import("./views/Army/ArmyRoot.vue"),
