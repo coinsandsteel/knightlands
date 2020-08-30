@@ -101,7 +101,8 @@ export default {
         const unit = units[i];
         for (const slot in unit.items) {
           const item = unit.items[slot];
-          if (this.filter(item)) {
+          const template = this.$game.itemsDB.getTemplate(item.template);
+          if (this.filter(item, template)) {
             items.push(item);
           }
         }

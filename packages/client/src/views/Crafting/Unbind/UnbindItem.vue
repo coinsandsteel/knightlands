@@ -1,57 +1,81 @@
 <template>
-  <div class="padding-1 flex flex-column flex-justify-center dummy-height">
-    <div class="padding-1 dummy-height flex flex-center flex-column panel" v-if="item">
-      <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}" class="width-100">
+  <div class="screen-content padding-top-1">
+    <div class="screen-background"></div>
+    <div class="dummy-height flex flex-center flex-column" v-if="item">
+      <ItemInfo
+        :item="item"
+        :onlyStats="true"
+        :lootProps="{ onlyIcon: true }"
+        class="width-100"
+      >
         <template v-slot:afterStats>
-          <div>
-            <div class="flex flex-center margin-top-1 font-size-20">
-              <span class="flex flex-center flex-start margin-bottom-half">
-                {{$t("max-level")}} {{maxLevel}}
-                <span
-                  class="margin-left-half margin-right-half right-arrow"
-                ></span>
-                {{nextMaxLevel}}
-              </span>
+          <div class="color-panel-1">
+            <div class="flex flex-center font-size-20 margin-bottom-1">
+              <span> {{ $t("max-level") }} {{ maxLevel }} </span>
+
+              <span
+                class="margin-left-half margin-right-half right-arrow"
+              ></span>
+
+              <span>{{ nextMaxLevel }}</span>
             </div>
 
             <div class="flex flex-center">
-              <span class="margin-left-1 star" :class="{active: stars >= 1}"></span>
-              <span class="star" :class="{active: stars >= 2}"></span>
-              <span class="margin-left-half margin-right-half right-arrow"></span>
-              <span class="star" :class="{active: futureStars >= 1}"></span>
-              <span class="star" :class="{active: futureStars >= 2}"></span>
+              <span
+                class="margin-left-1 star"
+                :class="{ active: stars >= 1 }"
+              ></span>
+              <span class="star" :class="{ active: stars >= 2 }"></span>
+              <span
+                class="margin-left-half margin-right-half right-arrow"
+              ></span>
+              <span class="star" :class="{ active: futureStars >= 1 }"></span>
+              <span class="star" :class="{ active: futureStars >= 2 }"></span>
             </div>
           </div>
         </template>
       </ItemInfo>
 
-      <span class="margin-top-1 margin-bottom-1 title font-size-20">{{$t("unbind-materials")}}</span>
+      <Title class="margin-top-1 margin-bottom-1">{{
+        $t("unbind-materials")
+      }}</Title>
 
-      <div class="flex flex-center full-flex width-100 dummy-height margin-bottom-2 upgrade-height-fix">
-        <template v-if="unbindItems.length > 0 && !lockRest">
-          <div v-bar class="flex width-100 height-100 dummy-height">
-          <div>
-            <div class="flex width-100 flex-center dummy-height">
-              <loot
-                v-for="(item, index) in unbindItems"
-                :key="index"
-                :item="item"
-                :showLevel="true"
-                :showUnbindLevels="true"
-                :hideQuantity="true"
-                :selected="selectedItems[index]"
-                :locked="!selectedItems[index] && lockRest"
-                @hint="toggleSelectItem(index)"
-              />
+      <div
+        class="flex flex-center full-flex width-100 dummy-height margin-bottom-2 upgrade-height-fix"
+      >
+        <span v-if="isAtMaxUnbind" class="font-size-20 yellow-title">{{
+          $t("unbind-max-level")
+        }}</span>
+        <template v-else-if="unbindItems.length > 0">
+          <div v-bar class="width-100 height-100 dummy-height">
+            <div>
+              <div class="flex width-100 flex-center dummy-height">
+                <loot
+                  v-for="(item, index) in unbindItems"
+                  :key="index"
+                  :item="item"
+                  :showLevel="true"
+                  :showUnbindLevels="true"
+                  :hideQuantity="true"
+                  :selected="selectedItems[index]"
+                  :locked="!selectedItems[index] && lockRest"
+                  @hint="toggleSelectItem(index)"
+                />
+              </div>
             </div>
           </div>
-        </div>
         </template>
-        <span v-else-if="!lockRest" class="font-size-20">{{$t("unbind-no-items")}}</span>
-        <span v-else class="font-size-20 yellow-title">{{$t("unbind-max-level")}}</span>
+        <span v-else-if="!lockRest" class="font-size-20">{{
+          $t("unbind-no-items")
+        }}</span>
       </div>
 
-      <CustomButton type="yellow" :disabled="lockedTotal==0" @click="unbind">{{$t("btn-upgrade")}}</CustomButton>
+      <CustomButton
+        type="yellow"
+        :disabled="lockedTotal == 0"
+        @click="unbind"
+        >{{ $t("btn-upgrade") }}</CustomButton
+      >
     </div>
   </div>
 </template>
@@ -65,11 +89,12 @@ import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import Loot from "@/components/Loot.vue";
+import Title from "@/components/Title.vue";
 
 export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
-  components: { ItemInfo, LootContainer, CustomButton, Loot },
+  components: { ItemInfo, LootContainer, CustomButton, Loot, Title },
   created() {
     this.title = "window-unbind-item";
     this.$options.useRouterBack = true;
@@ -96,6 +121,9 @@ export default {
     }
   },
   computed: {
+    isAtMaxUnbind() {
+      return this.stars == 2;
+    },
     maxLevel() {
       return this.$game.itemsDB.getMaxLevel(this.item);
     },
@@ -184,7 +212,7 @@ export default {
     updateUnbindItemsList() {
       this.selectedItems = {};
       this.lockedTotal = 0;
-      
+
       let filteredItems = [];
 
       if (this.item) {

@@ -7,7 +7,7 @@
       >{{ $t(template.caption) }}</Title
     >
 
-    <ItemHeader :item="item" :itemProps="lootProps">
+    <ItemHeader :item="item" :itemProps="lootProps" class="margin-left-1 margin-right-1">
       <template v-slot:level-bar>
         <slot name="level-bar"></slot>
       </template>

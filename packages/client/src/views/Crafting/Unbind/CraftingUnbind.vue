@@ -1,46 +1,27 @@
 <template>
-  <div class="padding-1 height-100 dummy-height">
-    <LootContainer
-      :items="items"
-      @hint="openUnbind"
-      :lootProps="{ showUnbindLevels: true, showLevel: true }"
-    >
-      <span class="font-size-20">{{ $t("upgrade-list-empty-msg") }}</span>
-    </LootContainer>
-  </div>
+  <CraftingItemList
+    :items="items"
+    :hintHandler="openUnbind"
+    :equippedItemsFilter="equippedItemsFilter"
+  >
+    <span class="font-size-20">{{ $t("upgrade-list-empty-msg") }}</span>
+  </CraftingItemList>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
 import LootContainer from "@/components/LootContainer.vue";
+import CraftingItemList from "../CraftingItemList.vue";
 
 export default {
   mixins: [AppSection],
-  components: { LootContainer },
+  components: { LootContainer, CraftingItemList },
   created() {
     this.title = "window-unbind-items-list";
   },
   computed: {
     items() {
       const filteredItems = [];
-      const filteredIds = {};
-
-      // place equipment items first
-      for (let slot in this.$game.character.equipment) {
-        const gear = this.$game.character.equipment[slot];
-        const template = this.$game.itemsDB.getTemplate(gear.template);
-
-        if (!template.unbindable || gear.breakLimit == 2) {
-          continue;
-        }
-
-        if (this.$game.inventory.getItemsCountByTemplate(gear.template) == 0) {
-          continue;
-        }
-
-        filteredIds[gear.id] = true;
-        filteredItems.push(gear);
-      }
 
       let items = this.$game.inventory.items;
       let i = 0;
@@ -53,7 +34,7 @@ export default {
         if (
           !template.unbindable ||
           item.breakLimit == 2 ||
-          filteredIds[item.id]
+          item.equipped
         ) {
           continue;
         }
@@ -71,6 +52,9 @@ export default {
   methods: {
     openUnbind(item) {
       this.$router.push({ name: "unbind-item", params: { itemId: item.id } });
+    },
+    equippedItemsFilter(item, template) {
+      return item.breakLimit != 2 && !template.unbindable;
     }
   }
 };
