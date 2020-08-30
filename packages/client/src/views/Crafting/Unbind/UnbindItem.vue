@@ -94,7 +94,7 @@ import Title from "@/components/Title.vue";
 export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
-  components: { ItemInfo, LootContainer, CustomButton, Loot, Title },
+  components: { ItemInfo, CustomButton, Loot, Title },
   created() {
     this.title = "window-unbind-item";
     this.$options.useRouterBack = true;

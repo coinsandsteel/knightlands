@@ -3,16 +3,19 @@
     <AnimatedBackground v-if="!hideBg"></AnimatedBackground>
     <!-- Inventory  -->
     <LootContainer
-      :items="filteredItems"
       :inventory="true"
+      :filters="filters"
+      :filtersStore="filtersStore"
+      :commitCmd="commitCmd"
       @hint="_showHint"
+      v-model="items"
       class="height-100"
     ></LootContainer>
 
     <!-- Loot hints -->
     <ScrollableItemHint
       ref="scrollHint"
-      :items="filteredItems"
+      :items="items"
       @action="handleItemAction"
       :getHintButtons="getHintButtons"
     ></ScrollableItemHint>
@@ -20,9 +23,6 @@
     <portal to="footer" :slim="true" v-if="isActive">
       <CustomButton type="yellow" @click="goToCraft">{{
         $t("btn-craft")
-      }}</CustomButton>
-      <CustomButton type="grey" @click="showItemFilter">{{
-        $t("btn-filter")
       }}</CustomButton>
     </portal>
   </div>
@@ -32,34 +32,26 @@
 import LootContainer from "@/components/LootContainer.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import CustomButton from "@/components/Button.vue";
-import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
+
 import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import ItemActionHandler from "@/components/Item/ItemActionHandler.vue";
 
 export default {
-  mixins: [ActivityMixin, FilteredLootMixin, ItemActionHandler],
+  mixins: [ActivityMixin, ItemActionHandler],
   components: {
     AnimatedBackground,
     CustomButton,
     LootContainer,
     ScrollableItemHint
   },
-  props: ["hideBg", "filters", "additionalFilter"],
+  props: ["hideBg", "filters", "commitCmd", "filtersStore"],
   data: () => ({
     showHintItems: false,
     request: null,
-    showDetails: false
+    showDetails: false,
+    items: []
   }),
-  watch: {
-    filters() {
-      if (this.filters) {
-        this.filterItems(this.filters);
-      } else {
-        this.updateItems();
-      }
-    }
-  },
   methods: {
     _showHint(item, index) {
       if (!item) {

@@ -5,6 +5,8 @@
     <LootContainer
       :items="items"
       @hint="hintHandler"
+      :filtersStore="filtersStore"
+      :commitCmd="commitCmd"
       :lootProps="{
         showLevel: true,
         hideQuantity: true,
@@ -15,11 +17,15 @@
       <slot></slot>
     </LootContainer>
 
-    <EquippedItemList
-      v-show="onlyEquippedItems"
-      :filter="equippedItemsFilter"
-      :hintHandler="hintHandler"
-    />
+    <keep-alive>
+      <EquippedItemList
+        v-if="onlyEquippedItems"
+        :filter="equippedItemsFilter"
+        :hintHandler="hintHandler"
+        :commitCmd="commitCmd"
+        :filtersStore="filtersStore"
+      />
+    </keep-alive>
   </div>
 </template>
 
@@ -32,14 +38,20 @@ const OtherItems = "other_items";
 const OnlyEquippedItems = "only_items";
 
 export default {
-  props: ["items", "hintHandler", "equippedItemsFilter"],
+  props: [
+    "items",
+    "hintHandler",
+    "equippedItemsFilter",
+    "filtersStore",
+    "commitCmd"
+  ],
   components: { LootContainer, Tabs, EquippedItemList },
   data: () => ({
     tabs: [
       { title: "other-items", value: OtherItems },
       { title: "only-equipped-items", value: OnlyEquippedItems }
     ],
-    currentTab: OnlyEquippedItems
+    currentTab: OtherItems
   }),
   computed: {
     onlyEquippedItems() {

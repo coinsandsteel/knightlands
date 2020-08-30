@@ -1,15 +1,10 @@
 <template>
-  <Promised
-    class="screen-content"
-    :promise="request"
-  >
+  <Promised class="screen-content" :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <loading-screen :loading="isDelayOver && isPending"></loading-screen>
       <AnimatedBackground></AnimatedBackground>
       <Flipper :flipKey="slotPreview" class="full-flex dummy-height width-100">
-        <div
-          class="width-100 height-100 dummy-height flex flex-column"
-        >
+        <div class="width-100 height-100 dummy-height flex flex-column">
           <div class="width-100 equipment" :class="{ preview: slotPreview }">
             <EquipmentPreview
               key="preview"

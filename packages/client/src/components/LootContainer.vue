@@ -1,12 +1,12 @@
 <template>
   <div class="flex full-flex dummy-height">
-    <template v-if="items.length > 0">
+    <template v-if="filteredItems.length > 0">
       <div v-bar class="width-100 height-100 dummy-height">
         <div>
           <div class="flex flex-center inventory-container">
             <div class="flex loot-container inventory-items">
               <loot
-                v-for="(item, index) in items"
+                v-for="(item, index) in filteredItems"
                 :item="item"
                 :key="index"
                 :inventory="inventory"
@@ -25,23 +25,31 @@
         <div></div>
       </slot>
     </div>
+
+    <portal to="footer" :slim="true" v-if="isActive && !hideFilters">
+      <CustomButton type="grey" @click="showItemFilter">{{
+        $t("btn-filter")
+      }}</CustomButton>
+    </portal>
   </div>
 </template>
 
 <script>
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "./Loot.vue";
+import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
+import CustomButton from "@/components/Button.vue";
 
 export default {
+  mixins: [FilteredLootMixin, ActivityMixin],
   components: {
-    Loot
+    Loot,
+    CustomButton
   },
   data: () => ({
     selected: {}
   }),
   props: {
-    items: {
-      type: Array
-    },
     inventory: {
       type: Boolean,
       default: false
@@ -50,11 +58,20 @@ export default {
     multiSelect: Boolean,
     lootProps: Object,
     lootClasses: String,
-    selectedItem: Number
+    selectedItem: Number,
+    filters: Object,
+    hideFilters: Boolean
   },
   watch: {
     items() {
       this.selected = {};
+    },
+    filters() {
+      if (this.filters) {
+        this.filterItems(this.filters);
+      } else {
+        this.updateItems();
+      }
     }
   },
   methods: {
@@ -80,7 +97,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 @import (reference) "../style/common.less";
@@ -130,4 +146,3 @@ export default {
   }
 }
 </style>
-

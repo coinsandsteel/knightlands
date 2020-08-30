@@ -7,6 +7,9 @@
           <LootContainer
             class="margin-top-1 margin-bottom-1"
             :items="characterItems"
+            :commitCmd="commitCmd"
+            :filtersStore="filtersStore"
+            :hideFilters="true"
             @hint="hintHandler"
             :lootProps="{
               showEquipped: false,
@@ -22,6 +25,9 @@
           <LootContainer
             class="margin-top-1 margin-bottom-1"
             :items="generalsItems"
+            :commitCmd="commitCmd"
+            :filtersStore="filtersStore"
+            :hideFilters="true"
             @hint="hintHandler"
             :lootProps="{
               showEquipped: false,
@@ -37,6 +43,9 @@
           <LootContainer
             class="margin-top-1 margin-bottom-1"
             :items="troopsItems"
+            :commitCmd="commitCmd"
+            :filtersStore="filtersStore"
+            :hideFilters="true"
             @hint="hintHandler"
             :lootProps="{
               showEquipped: false,
@@ -58,7 +67,7 @@ const ItemType = require("@/../../knightlands-shared/item_type");
 
 export default {
   components: { Title, LootContainer },
-  props: ["filter", "hintHandler"],
+  props: ["filter", "hintHandler", "commitCmd", "filtersStore"],
   computed: {
     characterItems() {
       const upgradableSlots = this.$game.itemsDB.getUpgradableSlots();

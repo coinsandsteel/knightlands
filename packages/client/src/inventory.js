@@ -132,15 +132,19 @@ class Inventory {
     return this.hasItemByTemplate(ingridient.itemId, ingridient.quantity * mul);
   }
 
-  filterItemsByType(filters, buffer, filter) {
+  filterItemsByType({ filters, buffer, filter, items }) {
     buffer = buffer || [];
     buffer.length = 0;
 
+    if (!items) {
+      items = this.items;
+    }
+
     let i = 0;
-    const length = this.items.length;
+    const length = items.length;
 
     for (; i < length; ++i) {
-      let item = this.items[i];
+      let item = items[i];
       let template = item.template;
       const templateData = this._itemDB.getTemplate(template);
 

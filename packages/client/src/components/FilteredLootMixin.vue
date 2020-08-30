@@ -8,7 +8,7 @@ import debounce from "lodash.throttle";
 const ItemFilter = CreateDialog(ItemFilterComponent);
 
 export default {
-  props: ["commitCmd", "filtersStore"],
+  props: ["commitCmd", "filtersStore", "items"],
   data: () => ({
     filteredItems: []
   }),
@@ -22,31 +22,38 @@ export default {
   watch: {
     items() {
       this._updateItems();
+    },
+    filtersStore: {
+      deep: true,
+      handler() {
+        this.updateItems();
+      }
     }
   },
   computed: {
-    items() {
-      return this.$game.inventory.items;
+    computedItems() {
+      return this.items || this.$game.inventory.items;
     }
   },
   methods: {
     updateItems() {
       this.filterItems(this.filtersStore);
+      this.$emit("input", this.filteredItems);
     },
     async showItemFilter(options) {
       options = options || {};
       options.stateFilters = this.filtersStore;
       options.commitCmd = this.commitCmd;
-      options.filterChangedCb = this.filterItems.bind(this);
 
       await ItemFilter(options);
     },
     filterItems(filters) {
-      this.filteredItems = this.$game.inventory.filterItemsByType(
-        this.filters || filters,
-        this.filteredItemsBuffer.get(),
-        this.additionalFilter
-      );
+      this.filteredItems = this.$game.inventory.filterItemsByType({
+        filters: this.filters || filters,
+        buffer: this.filteredItemsBuffer.get(),
+        filter: this.additionalFilter,
+        items: this.computedItems
+      });
     }
   }
 };

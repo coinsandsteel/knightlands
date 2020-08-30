@@ -48,6 +48,8 @@ const store = new Vuex.Store({
     miscFilters: miscDefaultFilters,
     unitFilters: defaultUnitFilters,
     disenchantFilters: equipmentDefaultFilters,
+    unbindFilters: equipmentDefaultFilters,
+    levelUpFilters: equipmentDefaultFilters,
     zoneStage: 0,
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
@@ -76,6 +78,16 @@ const store = new Vuex.Store({
     setDisenchantingFilters(state, filters) {
       for (let i in filters) {
         Vue.set(state.disenchantFilters, i, filters[i]);
+      }
+    },
+    setUnbindFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.unbindFilters, i, filters[i]);
+      }
+    },
+    setLevelUpFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.levelUpFilters, i, filters[i]);
       }
     },
     setZoneStage(state, args) {
@@ -130,6 +142,20 @@ const store = new Vuex.Store({
         state.unitFilters = defaultUnitFilters;
       }
       return state.unitFilters;
+    },
+    getUnbindFilters: state => {
+      if (state.unitFiltersVersion != FiltersVersion) {
+        state.unitFiltersVersion = FiltersVersion;
+        state.unbindFilters = equipmentDefaultFilters;
+      }
+      return state.unbindFilters;
+    },
+    getLevelUpFilters: state => {
+      if (state.unitFiltersVersion != FiltersVersion) {
+        state.unitFiltersVersion = FiltersVersion;
+        state.unitFilters = equipmentDefaultFilters;
+      }
+      return state.levelUpFilters;
     },
     getZoneStage: state => {
       return state.zoneStage;

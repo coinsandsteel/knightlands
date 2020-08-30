@@ -3,6 +3,8 @@
     :items="items"
     :hintHandler="openUnbind"
     :equippedItemsFilter="equippedItemsFilter"
+    :filtersStore="$store.getters.getUnbindFilters"
+    commitCmd="setUnbindFilters"
   >
     <span class="font-size-20">{{ $t("upgrade-list-empty-msg") }}</span>
   </CraftingItemList>
@@ -10,12 +12,11 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import LootContainer from "@/components/LootContainer.vue";
 import CraftingItemList from "../CraftingItemList.vue";
 
 export default {
   mixins: [AppSection],
-  components: { LootContainer, CraftingItemList },
+  components: { CraftingItemList },
   created() {
     this.title = "window-unbind-items-list";
   },
@@ -31,11 +32,7 @@ export default {
         const item = items[i];
         const template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (
-          !template.unbindable ||
-          item.breakLimit == 2 ||
-          item.equipped
-        ) {
+        if (!template.unbindable || item.breakLimit == 2 || item.equipped) {
           continue;
         }
 

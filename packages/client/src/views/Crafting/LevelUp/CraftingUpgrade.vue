@@ -3,6 +3,8 @@
     :items="items"
     :hintHandler="openUpgrade"
     :equippedItemsFilter="equippedItemsFilter"
+    :filtersStore="$store.getters.getLevelUpFilters"
+    commitCmd="setLevelUpFilters"
   >
     <span class="font-size-20">{{ $t("leveling-list-empty-msg") }}</span>
   </CraftingItemList>
