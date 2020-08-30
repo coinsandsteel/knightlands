@@ -62,19 +62,14 @@ export default {
     lootClasses: String,
     selectedItem: Number,
     filters: Object,
-    hideFilters: Boolean,
-    value: Array
+    hideFilters: Boolean
   },
   watch: {
     items() {
       this.selected = {};
     },
     filters() {
-      if (this.filters) {
-        this.filterItems(this.filters);
-      } else {
-        this.updateItems();
-      }
+      this.updateItems(this.filters);
     }
   },
   methods: {

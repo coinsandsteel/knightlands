@@ -8,7 +8,7 @@ import debounce from "lodash.throttle";
 const ItemFilter = CreateDialog(ItemFilterComponent);
 
 export default {
-  props: ["commitCmd", "filtersStore", "items"],
+  props: ["commitCmd", "filtersStore", "items", "value"],
   data: () => ({
     filteredItems: []
   }),
@@ -36,8 +36,8 @@ export default {
     }
   },
   methods: {
-    updateItems() {
-      this.filterItems(this.filtersStore);
+    updateItems(filters) {
+      this.filterItems(filters || this.filtersStore);
       this.$emit("input", this.filteredItems);
     },
     async showItemFilter(options) {
