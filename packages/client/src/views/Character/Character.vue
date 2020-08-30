@@ -41,11 +41,7 @@ export default {
           to: { name: "character-training" }
         }
       ],
-      currentTab: EquipmentTab,
-      EquipmentTab: EquipmentTab,
-      StatsTab: StatsTab,
-      BuffsTab: BuffsTab,
-      MiscTab: MiscTab
+      currentTab: EquipmentTab
     };
   },
   mounted() {
@@ -64,4 +60,3 @@ export default {
 <style lang="less">
 @import "./style.less";
 </style>
-

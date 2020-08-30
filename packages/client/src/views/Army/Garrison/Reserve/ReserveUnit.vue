@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import UnitGetter from "../UnitGetterMixin.vue";
-import UnitStars from "../UnitStars.vue";
-import Flag from "../Flag.vue";
+import UnitGetter from "../../UnitGetterMixin.vue";
+import UnitStars from "../../UnitStars.vue";
+import Flag from "../../Flag.vue";
 
 export default {
   props: ["unit", "selected"],
@@ -33,7 +33,7 @@ export default {
 
 <style lang="less" scoped>
 .selected {
-  background-image: url("../../../assets/ui/troops_mini_bg_selected.png");
+  background-image: url("../../../../assets/ui/troops_mini_bg_selected.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: absolute;
@@ -85,13 +85,13 @@ export default {
 }
 
 .unit-item-shadow {
-  background-image: url("../../../assets/ui/troops_mini_shadow.png");
+  background-image: url("../../../../assets/ui/troops_mini_shadow.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .unit-item {
-  background-image: url("../../../assets/ui/troops_mini_bg.png");
+  background-image: url("../../../../assets/ui/troops_mini_bg.png");
   background-repeat: no-repeat;
   background-size: cover;
 

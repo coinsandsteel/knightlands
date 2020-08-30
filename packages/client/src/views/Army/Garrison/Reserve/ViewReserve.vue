@@ -1,7 +1,10 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
-    <UnitView :unit="garrisonUnits[selectedUnitKey]" :garrison="true"></UnitView>
+    <UnitView
+      :unit="garrisonUnits[selectedUnitKey]"
+      :garrison="true"
+    ></UnitView>
     <div class="height-100" v-bar>
       <div class="flex-full">
         <div class="padding-half">
@@ -24,7 +27,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import ReserveUnit from "./ReserveUnit.vue";
-import UnitView from "../UnitView.vue";
+import UnitView from "../../UnitView.vue";
 
 export default {
   mixins: [AppSection],

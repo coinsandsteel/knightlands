@@ -4,7 +4,34 @@
       class="flex flex-items-end flex-space-between relative height-100 shift-buttons"
     >
       <div class="home-art absolute-stretch"></div>
-      <!-- <AnimatedBackground></AnimatedBackground> -->
+
+      <MenuIconRow>
+        <MenuIcon icon="icon-recipe-book" :to="{ name: 'recipe-book' }">
+          <span>{{ $t("btn-recipes") }}</span>
+        </MenuIcon>
+
+        <MenuIcon icon="icon-craft" :to="{ name: 'crafting' }">
+          <span>{{ $t("btn-crafting") }}</span>
+        </MenuIcon>
+
+        <MenuIcon icon="icon-disenchant" :to="{ name: 'crafting-disenchant' }">
+          <span>{{ $t("btn-disenchant") }}</span>
+        </MenuIcon>
+      </MenuIconRow>
+
+      <MenuIconRow>
+        <MenuIcon icon="icon-craft-level" :to="{ name: 'crafting-upgrade' }">
+          <span>{{ $t("btn-crafting-level") }}</span>
+        </MenuIcon>
+
+        <MenuIcon icon="icon-craft-upgrade" :to="{ name: 'crafting-unbind' }">
+          <span>{{ $t("btn-crafting-upgrade") }}</span>
+        </MenuIcon>
+
+        <MenuIcon icon="icon-enchant" :to="{ name: 'crafting-enchant' }">
+          <span>{{ $t("btn-enchant") }}</span>
+        </MenuIcon>
+      </MenuIconRow>
 
       <div
         class="flex flex-column flex-items-center flex-space-evenly margin-left-2"
@@ -24,17 +51,11 @@
       <div
         class="flex flex-column flex-items-center flex-space-evenly margin-right-2"
       >
-        <MenuIcon
-          icon="icon-ability-transfer"
-          :to="{ name: 'units-reserve' }"
-          :append="true"
-          >Send to Reserve</MenuIcon
+        <MenuIcon icon="icon-garrison" :to="{ name: 'garrison' }"
+          >Garrison</MenuIcon
         >
-        <MenuIcon
-          icon="icon-banishment"
-          :to="{ name: 'units-dismiss' }"
-          :append="true"
-          >Dismiss</MenuIcon
+        <MenuIcon icon="icon-beast" :to="{ name: 'beast' }" 
+          >Beast</MenuIcon
         >
         <!-- 
         <MenuIcon
@@ -50,12 +71,14 @@
 <script>
 import MenuIcon from "@/components/MenuIcon.vue";
 import AppSection from "@/AppSection.vue";
+import MenuIconRow from "@/components/MenuIconRow.vue";
 
 export default {
   name: "castle",
   mixins: [AppSection],
   components: {
-    MenuIcon
+    MenuIcon,
+    MenuIconRow
   },
   created() {
     this.title = this.$t("window-title-castle");

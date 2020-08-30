@@ -13,7 +13,8 @@
         :replace="replace"
         exact
         @click="handleClick(tab.value)"
-      >{{$t(tab.title)}}</router-link>
+        >{{ $t(tab.title) }}</router-link
+      >
     </template>
     <template v-else>
       <div
@@ -22,13 +23,15 @@
         :ref="tab.value"
         :key="tab.title"
         :class="[
-        { 'tabs__item_active' : tab.value === currentTab },
-        tab.value === currentTab && tabActiveClass ? tabActiveClass: '',
-        tabClass,
-      ]"
+          { tabs__item_active: tab.value === currentTab },
+          tab.value === currentTab && tabActiveClass ? tabActiveClass : '',
+          tabClass
+        ]"
         :disabled="tab.disabled"
         @click="handleClick(tab.value)"
-      >{{$t(tab.title)}}</div>
+      >
+        {{ $t(tab.title) }}
+      </div>
     </template>
   </nav>
 </template>
@@ -86,7 +89,7 @@ export default {
   width: 100%;
   position: relative;
   padding: 0.5rem 1rem 0 1rem;
-  background-color: #112C47;
+  background-color: #112c47;
 
   * > {
     margin: 0 2px 0 2px;
@@ -147,5 +150,3 @@ export default {
   margin-right: 0;
 }
 </style>
-
-

@@ -13,35 +13,35 @@
         />
       </div>
 
-      <div class="color-panel-2 flex flex-space-evenly">
-        <Title class="margin-bottom-half">{{ $t("refund-items") }}</Title>
-        <Loot
+      <!-- <div class="color-panel-2 flex flex-space-evenly">
+        <Title class="margin-bottom-half">{{$t("refund-items")}}</Title>
+        <Loot 
           v-for="record in refundedItems"
           :key="`${record.item}${record.quantity}`"
           :gacha="true"
           :item="record.item"
           :quantity="record.quantity"
         />
-      </div>
+      </div> -->
 
       <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
       <UnitInventory
         ref="units"
         :units="units"
-        :autoselect="false"
         :multiSelect="true"
+        :autoselect="false"
         :disableSelect="maxSelected"
         @toggle="toggleUnitSelect"
       />
 
       <portal to="footer" v-if="isActive">
-        <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{
-          $t("btn-banish")
+        <CustomButton type="yellow" @click="reserve" :disabled="!canReserve">{{
+          $t("btn-reserve")
         }}</CustomButton>
-        <CustomButton type="green" @click="autofill">{{
-          $t("btn-autofill")
+        <CustomButton type="yellow" @click="viewReserve">{{
+          $t("btn-reserve-view")
         }}</CustomButton>
-        <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{
+        <CustomButton type="grey" @click="reset" :disabled="!canReserve">{{
           $t("btn-reset")
         }}</CustomButton>
       </portal>
@@ -54,38 +54,33 @@ import ArmyMeta from "@/army_meta";
 import TroopsMeta from "@/troops_meta";
 import GeneralsMeta from "@/generals_meta";
 
-import AppSection from "@/AppSection.vue";
-import Loot from "@/components/Loot.vue";
-import UnitItem from "../UnitItem.vue";
-import UnitInventory from "../UnitInventory.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
+import UnitItem from "../../UnitItem.vue";
+import UnitInventory from "../../UnitInventory.vue";
 import Tabs from "@/components/Tabs.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-import Title from "@/components/Title.vue";
 
 const Troops = "troops";
 const Generals = "generals";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [NetworkRequestErrorMixin, ActivityMixin],
   components: {
     UnitItem,
     Tabs,
     UnitInventory,
     CustomButton,
     LoadingScreen,
-    Promised,
-    Loot,
-    Title
+    Promised
   },
   created() {
-    this.title = "window-banishment";
-    this.$options.useRouterBack = true;
     this.filtersStore = this.$store.getters.getUnitFilters;
   },
   data: () => ({
+    maxUnits: 10,
     request: null,
     tabs: [
       { title: Troops, value: Troops },
@@ -104,10 +99,7 @@ export default {
     selectedUnits: []
   }),
   computed: {
-    maxUnits() {
-      return 10;
-    },
-    canBanish() {
+    canReserve() {
       return this.selectedUnits.length > 0;
     },
     maxSelected() {
@@ -120,36 +112,12 @@ export default {
       );
     }
   },
-  watch: {
-    selectedUnits() {
-      for (const key in this.refundedItems) {
-        this.refundedItems[key].quantity = 0;
-      }
-
-      for (const unit of this.selectedUnits) {
-        this.refundedItems.gold.quantity += Math.floor(
-          unit.gold * ArmyMeta.refund.gold
-        );
-        this.refundedItems.souls.quantity += Math.floor(
-          unit.souls * ArmyMeta.refund.souls
-        );
-
-        if (unit.troop) {
-          this.refundedItems.troopEssence.quantity += Math.floor(
-            unit.essence * ArmyMeta.refund.troopEssence
-          );
-        } else {
-          this.refundedItems.generalEssence.quantity += Math.floor(
-            unit.essence * ArmyMeta.refund.generalEssence
-          );
-        }
-
-        this.refundedItems.souls.quantity +=
-          ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];
-      }
-    }
-  },
   methods: {
+    viewReserve() {
+      this.$router.push({
+        name: "units-reserve-view"
+      });
+    },
     getSelectedUnit(idx) {
       if (this.selectedUnits.length > idx - 1) {
         return this.selectedUnits[idx - 1];
@@ -167,9 +135,9 @@ export default {
         this.selectedUnits.splice(idx, 1);
       }
     },
-    async banish() {
+    async reserve() {
       this.request = this.performRequest(
-        this.$game.banishUnits(this.selectedUnits.map(x => x.id))
+        this.$game.reserveUnits(this.selectedUnits.map(x => x.id))
       );
       try {
         await this.request;

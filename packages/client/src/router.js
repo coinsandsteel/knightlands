@@ -580,32 +580,41 @@ const router = new Router({
           meta: {
             noTopBar: true
           },
-          path: "reserve",
-          component: () => import("./views/Army/Reserve/ReserveRoot.vue"),
+          path: "garrison",
+          name: "garrison",
+          component: () => import("./views/Army/Garrison/Garrison.vue"),
           children: [
             {
-              path: "",
-              name: "units-reserve",
-              component: () => import("./views/Army/Reserve/Reserve.vue")
+              path: "reserve",
+              component: () =>
+                import("./views/Army/Garrison/Reserve/ReserveRoot.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "units-reserve",
+                  component: () =>
+                    import("./views/Army/Garrison/Reserve/Reserve.vue")
+                },
+                {
+                  path: "view",
+                  name: "units-reserve-view",
+                  component: () =>
+                    import("./views/Army/Garrison/Reserve/ViewReserve.vue")
+                }
+              ]
             },
             {
-              path: "garrison",
-              name: "units-reserve-view",
-              component: () => import("./views/Army/Reserve/ViewReserve.vue")
-            }
-          ]
-        },
-        {
-          meta: {
-            noTopBar: true
-          },
-          path: "dimiss",
-          component: () => import("./views/Army/Banishment/BanishmentRoot.vue"),
-          children: [
-            {
               path: "",
-              name: "units-dismiss",
-              component: () => import("./views/Army/Banishment/Banishment.vue")
+              component: () =>
+                import("./views/Army/Garrison/Banishment/BanishmentRoot.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "units-dismiss",
+                  component: () =>
+                    import("./views/Army/Garrison/Banishment/Banishment.vue")
+                }
+              ]
             }
           ]
         },
