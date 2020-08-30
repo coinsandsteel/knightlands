@@ -27,6 +27,10 @@
           <span v-else class="font-size-20 font-outline margin-bottom-1">{{
             $t("eq-on-ch")
           }}</span>
+
+          <span class="font-size-20 font-outline color-panel-2">{{
+            $t("eq-war-q")
+          }}</span>
         </div>
       </div>
     </template>

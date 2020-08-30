@@ -72,7 +72,8 @@ export default {
     ChestsTransfer,
     Promised,
     PresaleChestSelector,
-    ChestOpening
+    ChestOpening,
+    LoadingScreen
   },
   data: () => ({
     chests: {},

@@ -1,11 +1,5 @@
 <template>
-  <Promised :promise="request" tag="div">
-    <template v-slot:combined="{ isPending, isDelayOver, error, data }">
-      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
-
-      <router-view v-if="data && !error"></router-view>
-    </template>
-  </Promised>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -18,8 +12,8 @@ export default {
     request: null
   }),
   async mounted() {
-    this.request = this.$game.army.load();
-    await this.request;
+    // this.request = this.$game.army.load();
+    // await this.request;
   }
 };
 </script>

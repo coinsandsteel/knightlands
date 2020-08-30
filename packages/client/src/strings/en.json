@@ -541,6 +541,7 @@
     "item-crafted-title": "Item Crafted!",
     "waiting-for-tx-confirmation": "Waiting for transaction confirmation...",
     "waiting-for-payment": "Waiting for payment...",
+    "eq-war-q":"Are you sure you want to equip this item?",
     "menu-home": "home",
     "toggle-same-level": "same level",
     "btn-apply": "Apply",

@@ -90,15 +90,11 @@ export default {
 
 .content {
   position: relative;
-  padding: 2rem 1.1rem 1rem 1.1rem;
+  padding: 2rem 0.9rem 1rem 0.9rem;
 }
 
 .footer {
   margin-top: 2rem;
   margin-bottom: 1rem;
-}
-
-.scrollable-content {
-  // max-height: 90%;
 }
 </style>

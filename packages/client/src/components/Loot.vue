@@ -312,8 +312,8 @@ export default {
     cursor: pointer;
   }
 
-  &:active {
-    background-color: #607279;
+  &:active { 
+    background-color: #607279; 
   }
 
   pointer-events: all;
@@ -354,7 +354,7 @@ export default {
 }
 
 .equipped {
-  background-image: url("../assets/ui/icon_moded1.png");
+  background-image: url("../assets/ui/icon_equipped1.png");
   background-repeat: no-repeat;
   background-size: contain;
   width: 2rem;

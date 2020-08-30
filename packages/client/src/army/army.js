@@ -273,12 +273,18 @@ export default class Army {
 
   async load() {
     if (this._loaded) {
-      return true;
+      return this._loaded;
     }
 
-    let army = await this._game.getArmy();
-
     this._loaded = true;
+
+    this._loadingRequest = this._game.getArmy().catch(()=>{
+      this._loaded = false;
+      this._loadingRequest = null;
+    });
+
+    let army = await this._loadingRequest;
+    this._loadingRequest = null;
 
     const unitsDict = {};
 
@@ -299,6 +305,8 @@ export default class Army {
       }
 
       this._vm.reserve = army.reserve;
+    } else {
+      this._loaded = false;
     }
 
     this._vm.units = unitsDict;

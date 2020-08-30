@@ -19,9 +19,6 @@ export default {
   }),
   created() {
     this.title = "Sign in";
-    this.$game.on(this.$game.SignUp, () => {
-      this.redirectToNextPage();
-    });
   },
   mounted() {
     if (this.$game.authenticated) {
@@ -37,8 +34,10 @@ export default {
         this.$router.replace({ name: "home" });
       }
     },
-    signIn() {
+    async signIn() {
       this.request = this.$game.signIn();
+      await this.request;
+      this.redirectToNextPage();
     }
   }
 };

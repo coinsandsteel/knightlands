@@ -331,7 +331,7 @@ class Game {
           message: message
         });
 
-        resolve();
+        this._signInResolve = resolve;
       } catch (exc) {
         // signing was rejected
         console.log("signIn", exc);
@@ -365,11 +365,16 @@ class Game {
     });
   }
 
-  _handleAuthentication(data) {
+  async _handleAuthentication(data) {
     let signedIn = data.newState == "authenticated";
 
     if (signedIn && !this._vm.authenticated) {
+      await this.updateUserData();
+
       this._vm.authenticated = true;
+      if (this._signInResolve) {
+          this._signInResolve();
+      }
       this._vm.$emit(this.SignUp);
 
       this._syncTime();
@@ -383,7 +388,6 @@ class Game {
     if (data.isAuthenticated) {
       await this.updateUserData();
     }
-
     this._vm.ready = true;
     this._vm.$emit(this.Ready, data.isAuthenticated);
   }
@@ -512,7 +516,6 @@ class Game {
   }
 
   _handleCraftStatus(data) {
-    const { iap, reason, context } = data;
     this._vm.$emit(Events.CraftingStatus, data);
   }
 

@@ -21,7 +21,7 @@
           type="yellow"
           v-if="canEquip"
           class="common-btn center"
-          @click="handleClose('equip')"
+          @click="handleClose(ItemActions.Equip)"
           >{{ $t("btn-equip") }}</custom-button
         >
 
@@ -29,17 +29,17 @@
           v-if="canUnequip"
           type="grey"
           class="common-btn center"
-          @click="handleClose('unequip')"
+          @click="handleClose(ItemActions.Unequip)"
           >{{ $t("btn-unequip") }}</custom-button
         >
 
         <template v-if="isBox">
-          <CustomButton type="yellow" @click="handleClose('open')">{{
+          <CustomButton type="yellow" @click="handleClose(ItemActions.OpenBox)">{{
             $t("btn-open-box")
           }}</CustomButton>
           <CustomButton
             type="yellow"
-            @click="handleClose('open', Math.min(count, 9))"
+            @click="handleClose(ItemActions.OpenBox, Math.min(count, 9))"
             v-if="count > 1 && count <= 9"
             >{{
               $t("btn-open-boxes", { count: Math.min(count, 9) })
@@ -47,13 +47,13 @@
           >
           <CustomButton
             type="yellow"
-            @click="handleClose('open', 10)"
+            @click="handleClose(ItemActions.OpenBox, 10)"
             v-if="count >= 10"
             >{{ $t("btn-open-boxes", { count: 10 }) }}</CustomButton
           >
           <CustomButton
             type="yellow"
-            @click="handleClose('open', count)"
+            @click="handleClose(ItemActions.OpenBox, count)"
             v-if="count >= 50"
             >{{ $t("btn-open-boxes", { count: count }) }}</CustomButton
           >
@@ -62,7 +62,7 @@
         <CustomButton
           v-else-if="isConsumable"
           type="yellow"
-          @click="handleClose('use')"
+          @click="handleClose(ItemActions.Use)"
           >{{ $t("btn-use-consumable") }}</CustomButton
         >
 
@@ -111,6 +111,9 @@ export default {
     },
     equippedItems: Object
   },
+  data:()=>({
+    ItemActions
+  }),
   components: {
     CustomButton,
     UserDialog,

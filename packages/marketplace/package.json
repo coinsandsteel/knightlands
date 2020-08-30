@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
+    "serve": "vue-cli-service serve --modern",
+    "build": "vue-cli-service build --modern",
+    "test:unit": "vue-cli-service test:unit --modern",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

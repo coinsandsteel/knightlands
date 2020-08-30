@@ -210,16 +210,6 @@ export default {
       this.loading = false;
     });
 
-    // fetch initial data
-    this.$game.on(this.$game.SignUp, async () => {
-      await this.$game.updateUserData();
-
-      this.loading = false;
-      if (this.$route.name == "login") {
-        this.$router.replace({ name: "character" });
-      }
-    });
-
     this.$nextTick(() => {
       this.showBackButton();
     });
