@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content">
-      <div class="screen-background"></div>
+    <div class="screen-background"></div>
     <Tabs
       :tabs="tabs"
       :router="true"

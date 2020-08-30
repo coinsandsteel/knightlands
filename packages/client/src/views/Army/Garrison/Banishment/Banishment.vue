@@ -1,5 +1,5 @@
 <template>
-  <Promised class="screen-content" :promise="request">
+  <Promised class="screen-content" tag="div" :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-background"></div>
       <LoadingScreen :loading="isPending && isDelayOver" />

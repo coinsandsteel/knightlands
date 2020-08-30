@@ -587,6 +587,7 @@ const router = new Router({
           },
           path: "garrison",
           name: "garrison",
+          redirect: { name: "units-dismiss" },
           component: () => import("./views/Army/Garrison/Garrison.vue"),
           children: [
             {
@@ -610,16 +611,9 @@ const router = new Router({
             },
             {
               path: "",
+              name: "units-dismiss",
               component: () =>
-                import("./views/Army/Garrison/Banishment/BanishmentRoot.vue"),
-              children: [
-                {
-                  path: "",
-                  name: "units-dismiss",
-                  component: () =>
-                    import("./views/Army/Garrison/Banishment/Banishment.vue")
-                }
-              ]
+                import("./views/Army/Garrison/Banishment/Banishment.vue")
             }
           ]
         },

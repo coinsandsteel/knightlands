@@ -54,9 +54,7 @@
         <MenuIcon icon="icon-garrison" :to="{ name: 'garrison' }"
           >Garrison</MenuIcon
         >
-        <MenuIcon icon="icon-beast" :to="{ name: 'beast' }" 
-          >Beast</MenuIcon
-        >
+        <MenuIcon icon="icon-beast" :to="{ name: 'beast' }">Beast</MenuIcon>
         <!-- 
         <MenuIcon
           icon="icon-ability-transfer"
