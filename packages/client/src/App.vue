@@ -175,20 +175,6 @@ export default {
       next();
     });
 
-    // check metas
-    this.$router.beforeEach((to, from, next) => {
-      if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!this.$game.authenticated) {
-          next({
-            name: "login",
-            query: { url: to.path }
-          });
-          return;
-        }
-      }
-      next();
-    });
-
     // show login page when user signed out
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));
 
@@ -207,6 +193,21 @@ export default {
           this.redirectToLogin();
         }
       }
+
+      // check metas
+      this.$router.beforeEach((to, from, next) => {
+        if (to.matched.some(record => record.meta.requiresAuth)) {
+          if (!this.$game.authenticated) {
+            next({
+              name: "login",
+              query: { url: to.path }
+            });
+            return;
+          }
+        }
+        next();
+      });
+
       this.loading = false;
     });
 
@@ -279,7 +280,8 @@ export default {
       this.ready = false;
       this.loading = false;
       this.$router.push({
-        name: "login"
+        name: "login",
+        query: { url: this.$route.path }
       });
     },
     async updateUserData() {
