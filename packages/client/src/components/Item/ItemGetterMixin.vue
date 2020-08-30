@@ -121,6 +121,9 @@ export default {
     },
     slot() {
       return getSlot(this.template.equipmentType);
+    },
+    matchedWithOtherItem() {
+      return this.matchItem && this.matchItem.id != this.item.id;
     }
   }
 };

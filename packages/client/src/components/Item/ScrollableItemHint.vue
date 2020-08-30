@@ -1,6 +1,6 @@
 <template>
   <div v-show="showHintItems">
-    <transition>
+    <keep-alive>
       <div
         class="items-bg-mask relative flex flex-center"
         @click.self="showHintItems = false"
@@ -39,7 +39,7 @@
           <div class="nav-arrow"></div>
         </div>
       </div>
-    </transition>
+    </keep-alive>
   </div>
 </template>
 
@@ -73,12 +73,14 @@ export default {
       if (!equippedItems) {
         equippedItems = this.$character.equipment;
       }
+
       return equippedItems[this.$game.itemsDB.getSlot(item)];
     },
     isComparable(item) {
+      const itemInSlot = this.itemFromMatchingSlot(item);
       return (
         this.$game.itemsDB.getItemType(item) == ItemType.Equipment &&
-        this.itemFromMatchingSlot(item)
+        itemInSlot && itemInSlot.id != item.id
       );
     },
     showHint(index) {

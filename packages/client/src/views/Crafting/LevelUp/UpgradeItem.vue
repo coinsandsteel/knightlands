@@ -172,8 +172,8 @@ export default {
   methods: {
     init() {
       this.cancelUpgrading();
-        this.prepareItemForUpgrading();
-        this.updateMaterialList();
+      this.prepareItemForUpgrading();
+      this.updateMaterialList();
     },
     cancelUpgrading() {
       if (this.item && !this.item.unique) {
@@ -244,6 +244,7 @@ export default {
       );
 
       if (newItemId != this.itemId) {
+        this.item = null;
         this.$router.replace({
           name: "upgrade-item",
           params: { itemId: newItemId }

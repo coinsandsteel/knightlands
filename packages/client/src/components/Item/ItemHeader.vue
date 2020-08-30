@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-items-center flex-no-wrap padding-left-1 padding-right-1"
+    class="flex flex-items-center flex-no-wrap"
   >
     <loot
       :item="item"
@@ -8,31 +8,32 @@
       v-bind="itemProps"
       class="margin-right-1"
     ></loot>
-    <div class="flex flex-column flex-center full-flex">
+    <div class="flex flex-column flex-start full-flex">
       <div class="width-100 flex flex-items-center flex-no-wrap">
         <span
           v-if="item"
           class="font-size-20 nowrap font-weight-900 font-outline"
-          :class="{ 'margin-right-1': !hasElement }"
+          :class="[{ 'margin-right-1': !hasElement }, rarityClass]"
           >{{ type }}</span
         >
         <div v-if="hasElement" :class="elementIcon" class="big"></div>
-        <div
-          class="flex flex-center flex-no-wrap"
-          v-if="isEquipment && !isPreview"
-        >
-          <span class="star" :class="{ active: stars >= 1 }"></span>
-          <span
-            class="star margin-right-auto"
-            :class="{ active: stars >= 2 }"
-          ></span>
-          <span class="arrow-up" v-if="stars < 2" @click="upgradeItem"></span>
-        </div>
+      </div>
+
+      <div
+        class="flex flex-items-center flex-no-wrap margin-top-half margin-bottom-1"
+        v-if="isEquipment && !isPreview"
+      >
+        <span class="star" :class="{ active: stars >= 1 }"></span>
+        <span
+          class="star"
+          :class="{ active: stars >= 2 }"
+        ></span>
+        <span class="arrow-up" v-if="stars < 2" @click="upgradeItem"></span>
       </div>
 
       <slot name="level-bar">
         <div
-          class="margin-top-1 width-100 flex flex-center flex-no-wrap"
+          class="width-100 flex flex-center flex-no-wrap"
           v-if="isEquipment && !isPreview"
         >
           <span class="margin-right-1 font-size-18">{{

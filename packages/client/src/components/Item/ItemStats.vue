@@ -1,6 +1,7 @@
 <template>
   <div
     class="item-info-stats font-size-18 margin-bottom-2 margin-top-1 flex flex-center flex-space-evenly"
+    :class="{'matched': matchedWithOtherItem}"
   >
     <div class="flex width-45 flex-column text-align-right">
       <div
@@ -38,6 +39,10 @@ export default {
 
   & > div {
     white-space: nowrap;
+  }
+
+  &.matched {
+    color: #00AC21;
   }
 }
 </style>

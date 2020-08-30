@@ -15,6 +15,7 @@ const dummyItem = {
   equipped: false,
   breakLimit: 0,
   unique: false,
+  holder: -1,
   _dummyValue: 0
 };
 
@@ -322,7 +323,7 @@ class Inventory {
     }
 
     let lastItem = this._vm.items[this._vm.items.length - 1];
-    this._vm.items[item.index] = lastItem;
+    this._vm.$set(this._vm.items, item.index, lastItem);
     this._vm.items.pop();
     this._sort();
   }

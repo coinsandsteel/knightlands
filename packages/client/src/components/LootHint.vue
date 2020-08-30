@@ -139,20 +139,6 @@ export default {
     }
   },
   methods: {
-    upgradeItem() {
-      this.handleClose();
-      this.$router.push({
-        name: "unbind-item",
-        params: { itemId: this.item.id }
-      });
-    },
-    handleLevelProgressClick() {
-      this.handleClose();
-      this.$router.push({
-        name: "upgrade-item",
-        params: { itemId: this.item.id }
-      });
-    },
     handleClose(response, ...args) {
       if (this.$close) {
         this.$close(response, ...args);
