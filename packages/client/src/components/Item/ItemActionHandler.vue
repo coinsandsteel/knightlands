@@ -37,6 +37,7 @@ export default {
 
         case ItemActions.Unequip:
           {
+            console.log(item, action)
             const itemSlot = this.$game.itemsDB.getSlot(item.template);
             this.request = this.$game.unequipItem(itemSlot);
           }

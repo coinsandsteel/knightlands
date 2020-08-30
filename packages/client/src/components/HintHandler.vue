@@ -7,7 +7,8 @@ const Hint = CreateDialog(
   "unequip",
   "actions",
   "buttons",
-  "showButtons"
+  "showButtons",
+  "equippedItems"
 );
 import { create as CreateDialog } from "vue-modal-dialogs";
 
@@ -24,7 +25,8 @@ export default {
         item.equipped,
         options.actions || {},
         buttons,
-        showButtons
+        showButtons,
+        options.equippedItems
       );
     },
     async handleHint(item) {

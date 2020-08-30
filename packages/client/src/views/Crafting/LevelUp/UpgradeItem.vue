@@ -142,9 +142,6 @@ import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Title from "@/components/Title.vue";
 
-const Rarity = require("@/../../knightlands-shared/rarity");
-const ItemType = require("@/../../knightlands-shared/item_type");
-
 export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
@@ -154,8 +151,7 @@ export default {
     this.$options.useRouterBack = true;
   },
   activated() {
-    this.prepareItemForUpgrading();
-    this.updateMaterialList();
+    this.init();
   },
   deactivated() {
     this.cancelUpgrading();
@@ -169,13 +165,16 @@ export default {
     upgradeMaterials: []
   }),
   watch: {
-    itemId(_, oldItemId) {
-      this.cancelUpgrading();
-      this.prepareItemForUpgrading();
-      this.updateMaterialList();
+    itemId() {
+      this.init();
     }
   },
   methods: {
+    init() {
+      this.cancelUpgrading();
+        this.prepareItemForUpgrading();
+        this.updateMaterialList();
+    },
     cancelUpgrading() {
       if (this.item && !this.item.unique) {
         this.$game.inventory.increaseStack(this.item);
@@ -185,19 +184,9 @@ export default {
     },
     prepareItemForUpgrading() {
       let item = this.$game.inventory.getItem(this.itemId);
-      console.log(this.itemId, item)
       if (item && !item.equipped) {
         if (!item.unique) {
           item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
-        }
-      } else {
-        // try search in equipment gear
-        for (const slot in this.$game.character.equipment) {
-          const gear = this.$game.character.equipment[slot];
-          if (gear.id == this.itemId) {
-            item = gear;
-            break;
-          }
         }
       }
 

@@ -240,6 +240,7 @@ class Inventory {
         item.exp = changedItem.exp;
         item.breakLimit = changedItem.breakLimit;
         item.holder = changedItem.holder;
+        item.unique = changedItem.unique;
       } else {
         // add new item
         this._addItem(changedItem);

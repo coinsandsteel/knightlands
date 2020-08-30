@@ -18,6 +18,7 @@
               :leftItem="slide.item"
               :rightItem="itemFromMatchingSlot(slide.item)"
               :hideMask="true"
+              :equippedItems="equippedItems"
               @close="handleItemAction"
             ></CompareItems>
             <LootHint

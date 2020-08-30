@@ -36,7 +36,7 @@ export default {
         if (
           template.type != ItemType.Equipment ||
           !upgradableSlots[this.$game.itemsDB.getSlot(item.template)] ||
-          filteredIds[item.id]
+          filteredIds[item.id] || item.equipped
         ) {
           continue;
         }

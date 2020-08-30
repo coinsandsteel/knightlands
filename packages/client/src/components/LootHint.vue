@@ -84,7 +84,6 @@ import CustomButton from "./Button.vue";
 import UserDialog from "./UserDialog.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import ItemGetterMixin from "@/components/Item/ItemGetterMixin.vue";
-const ItemType = require("@/../../knightlands-shared/item_type");
 import Stat from "@/../../knightlands-shared/character_stat";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 

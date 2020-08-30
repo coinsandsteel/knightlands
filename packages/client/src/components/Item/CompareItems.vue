@@ -35,7 +35,7 @@
         ></Toggle>
         <custom-button
           type="yellow"
-          v-if="leftItem && !leftItem.equipped"
+          v-if="canEquip"
           class="common-btn center"
           @click="handleClose('equip')"
           >{{ $t("btn-equip") }}</custom-button
@@ -54,7 +54,7 @@ import CustomButton from "@/components/Button.vue";
 import Toggle from "@/components/Toggle.vue";
 
 export default {
-  props: ["leftItem", "rightItem", "hideMask"],
+  props: ["leftItem", "rightItem", "hideMask", "equippedItems"],
   components: {
     UserDialog,
     ItemProperties,
@@ -74,6 +74,13 @@ export default {
           : this.leftItem;
       }
       return null;
+    },
+    canEquip() {
+      if (this.leftItem && this.rightItem) {
+        return this.leftItem.holder != this.rightItem.holder;
+      }
+
+      return false;
     }
   },
   methods: {

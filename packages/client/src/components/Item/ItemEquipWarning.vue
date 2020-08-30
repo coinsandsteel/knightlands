@@ -24,7 +24,7 @@
             }}</span>
             <UnitItem class="unit" :unit="unit" />
           </template>
-          <span v-else class="font-size-20 font-outline margin-bottom-1">{{
+          <span v-if="equippedOnCharacter" class="font-size-20 font-outline margin-bottom-1">{{
             $t("eq-on-ch")
           }}</span>
 
@@ -64,6 +64,9 @@ export default {
     },
     equippedOnUnit() {
       return this.item.holder > 0;
+    },
+    equippedOnCharacter() {
+        return this.item.equipped && this.item.holder < 0;
     }
   },
   methods: {

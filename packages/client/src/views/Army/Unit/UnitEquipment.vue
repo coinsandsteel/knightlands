@@ -36,7 +36,7 @@
         ref="scrollHint"
         :items="hintItems"
         :equippedItems="unit.items"
-        @action="handleItemAction"
+        @action="handleEquipmentAction"
         :getHintButtons="getHintButtons"
       ></ScrollableItemHint>
     </template>
@@ -54,6 +54,7 @@ import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import ItemActionHandler from "@/components/Item/ItemActionHandler.vue";
 import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
+const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
   props: ["unit"],
@@ -110,8 +111,12 @@ export default {
   methods: {
     async viewSelectedSlot() {
       const item = this.unit.items[this.selectedSlot];
-      const action = await this.showHint(item);
-      await this.handleItemAction(item, action);
+      const action = await this.showHint(item, [], {
+        showButtons: true,
+        equippedItems: this.unit.items,
+        actions: { equip: true }
+      });
+      await this.handleEquipmentAction(item, action);
     },
     unequipSelectedSlot() {
       this.request = this.performRequest(
@@ -126,10 +131,10 @@ export default {
         this.filteredItems
       );
     },
-    async handleItemAction(item, action) {
-      if (action === "equip") {
+    async handleEquipmentAction(item, action) {
+      if (action === ItemActions.Equip) {
         let equip = true;
-        if (item.holder != this.unit.id) {
+        if (item.equipped && item.holder != this.unit.id) {
           equip = await this.showEquipWarning(item);
         }
 
@@ -138,7 +143,7 @@ export default {
             this.$game.unitEquipItem(this.unit.id, item.id)
           );
         }
-      } else if (action === "unequip") {
+      } else if (action === ItemActions.Unequip) {
         this.request = this.performRequest(
           this.$game.unitUnequipItem(
             this.unit.id,
