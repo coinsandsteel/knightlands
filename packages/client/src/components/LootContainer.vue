@@ -1,29 +1,31 @@
 <template>
   <div class="flex full-flex dummy-height">
-    <template v-if="filteredItems.length > 0">
-      <div v-bar class="width-100 height-100 dummy-height">
-        <div>
-          <div class="flex flex-center inventory-container">
-            <div class="flex loot-container inventory-items">
-              <loot
-                v-for="(item, index) in filteredItems"
-                :item="item"
-                :key="index"
-                :inventory="inventory"
-                :selected="selected[item.id] || selectedItem == item.id"
-                :class="lootClasses"
-                @hint="handleHint(item, index)"
-                v-bind="lootProps"
-              ></loot>
-            </div>
+    <div v-bar class="width-100 height-100 dummy-height">
+      <div>
+        <div
+          class="flex flex-center dummy-height inventory-container"
+          v-if="filteredItems.length > 0"
+        >
+          <div class="flex loot-container dummy-height inventory-items">
+            <loot
+              v-for="(item, index) in filteredItems"
+              :item="item"
+              :key="index"
+              :inventory="inventory"
+              :selected="selected[item.id] || selectedItem == item.id"
+              :class="lootClasses"
+              @hint="handleHint(item, index)"
+              v-bind="lootProps"
+            ></loot>
           </div>
         </div>
+
+        <div class="flex flex-center width-100 height-100 v-bar-fix" v-else>
+          <slot>
+            <div></div>
+          </slot>
+        </div>
       </div>
-    </template>
-    <div class="flex flex-center width-100 height-100 v-bar-fix" v-else>
-      <slot>
-        <div></div>
-      </slot>
     </div>
 
     <portal to="footer" :slim="true" v-if="isActive && !hideFilters">
@@ -60,7 +62,8 @@ export default {
     lootClasses: String,
     selectedItem: Number,
     filters: Object,
-    hideFilters: Boolean
+    hideFilters: Boolean,
+    value: Array
   },
   watch: {
     items() {

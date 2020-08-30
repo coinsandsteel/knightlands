@@ -19,6 +19,7 @@ export default {
   }),
   created() {
     this.title = "window-recipe-book";
+    this.$options.useRouterBack = true;
   }
 };
 </script>

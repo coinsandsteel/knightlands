@@ -3,6 +3,7 @@
     <div class="screen-background"></div>
     <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
     <LootContainer
+      class="height-100"
       :items="items"
       @hint="hintHandler"
       :filtersStore="filtersStore"

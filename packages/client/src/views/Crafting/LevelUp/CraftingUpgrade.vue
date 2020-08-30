@@ -20,6 +20,7 @@ export default {
   components: { CraftingItemList },
   created() {
     this.title = "window-upgrade-items-list";
+    this.$options.useRouterBack = true;
   },
   computed: {
     items() {

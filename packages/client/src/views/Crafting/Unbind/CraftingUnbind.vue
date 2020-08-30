@@ -19,6 +19,7 @@ export default {
   components: { CraftingItemList },
   created() {
     this.title = "window-unbind-items-list";
+    this.$options.useRouterBack = true;
   },
   computed: {
     items() {

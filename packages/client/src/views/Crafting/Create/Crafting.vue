@@ -29,6 +29,7 @@ export default {
   data: () => ({}),
   created() {
     this.title = "window-crafting";
+    this.$options.useRouterBack = true;
 
     for (let i in TabNames) {
       this.tabs.push({

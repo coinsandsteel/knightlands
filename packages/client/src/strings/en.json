@@ -988,6 +988,8 @@
     "unbind-no-items": "No items of same kind.",
     "unbind-max-level": "Item reached maximum rank.",
     "btn-dis-upgrade": "Convert Dust",
+    "window-title-castle": "Castle",
+    "window-recipe-book": "Recipe Book",
     "window-dis-convert": "Dust Converter",
     "dis-convert-title": "Convert Dust:",
     "btn-dis-convert": "Convert",
