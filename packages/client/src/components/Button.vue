@@ -1,13 +1,30 @@
 <template>
   <div
     class="btn relative"
-    :class="[btnType, {disabled:disabled||locked}, {lockPressed: lockPressed}, {selected: selected}, {'mini': mini}, {skewed: skewed}, btnClass, {'big': big}]"
+    :class="[
+      btnType,
+      { disabled: disabled || locked },
+      { lockPressed: lockPressed },
+      { selected: selected },
+      { mini: mini },
+      { skewed: skewed },
+      btnClass,
+      { big: big }
+    ]"
     :style="sizeStyle"
-    @click="()=>{$emit('click'); if (cb) cb();}"
+    @click="
+      () => {
+        $emit('click');
+        if (cb) cb();
+      }
+    "
   >
     <!-- <div class="btn-fill" :class="{skewed: skewed}"></div> -->
-    <div class="btn-content flex flex-center font-weight-700 flex-no-wrap" :class="fontClass">
-      <slot>{{$t(caption)}}</slot>
+    <div
+      class="btn-content flex flex-center font-weight-700 flex-no-wrap"
+      :class="fontClass"
+    >
+      <slot>{{ $t(caption) }}</slot>
     </div>
     <div v-if="locked" class="locked"></div>
   </div>
@@ -61,7 +78,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 @import (reference) "../style/common.less";
@@ -259,4 +275,3 @@ export default {
   height: 100%;
 }
 </style>
-

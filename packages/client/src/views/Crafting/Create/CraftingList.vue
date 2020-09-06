@@ -1,6 +1,10 @@
 <template>
   <div class="flex full-flex flex-column relative dummy-height flex-column">
-    <IconTabs :tabs="tabs" :currentTab="currentTab" @onClick="handleTab"></IconTabs>
+    <IconTabs
+      :tabs="tabs"
+      :currentTab="currentTab"
+      @onClick="handleTab"
+    ></IconTabs>
     <div class="full-flex height-100 dummy-height relative">
       <div class="wrapper dummy-height">
         <RecycleScroller
@@ -23,7 +27,7 @@
     <portal v-if="isActive" to="footer">
       <Toggle
         :cb="handleAvailableToggle"
-        :startValue="onlyAvailabe"
+        :startValue="onlyAvailable"
         caption="toggle-available-recipes"
       ></Toggle>
       <CustomButton type="grey" @click="showItemFilter">Filter</CustomButton>
@@ -51,17 +55,17 @@ export default {
     recipes: [],
     filtered: [],
     filteredRecipes: [],
-    onlyAvailabe: false,
+    onlyAvailable: false,
     listId: "",
     filters: {}
   }),
   mounted() {
-    this.onlyAvailabe = this.$store.getters.getAvailableSwitchInCraftingList(
+    this.onlyAvailable = this.$store.getters.getAvailableSwitchInCraftingList(
       this.listId
     );
   },
   activated() {
-    this.handleAvailableToggle(this.onlyAvailabe);
+    this.handleAvailableToggle(this.onlyAvailable);
 
     if (this.scrollState) {
       this.$nextTick(() => {
@@ -74,7 +78,7 @@ export default {
   },
   watch: {
     recipes() {
-      this.handleAvailableToggle(this.onlyAvailabe);
+      this.handleAvailableToggle(this.onlyAvailable);
     }
   },
   methods: {
@@ -97,7 +101,7 @@ export default {
     },
     async showItemFilter() {
       this.filters = await ShowFilters(this.listId, {});
-      this.handleAvailableToggle(this.onlyAvailabe);
+      this.handleAvailableToggle(this.onlyAvailable);
     },
     handleCraft(recipeId) {
       this.scrollState = this.$refs.scroller.getScroll();
@@ -110,7 +114,7 @@ export default {
       });
     },
     updateList() {
-      let recipes = this.onlyAvailabe ? this.filtered : this.recipes;
+      let recipes = this.onlyAvailable ? this.filtered : this.recipes;
 
       if (!this.filters.rarity) {
         this.filters = this.$store.getters.getRecipeFilters(this.listId);
@@ -165,7 +169,7 @@ export default {
         value
       });
 
-      this.onlyAvailabe = value;
+      this.onlyAvailable = value;
       this.filtered.length = 0;
 
       if (value) {

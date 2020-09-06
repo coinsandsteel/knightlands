@@ -13,6 +13,8 @@
         :hideTitle="true"
         class="width-80 center"
       ></ItemInfo>
+
+      <slot></slot>
     </template>
 
     <template v-slot:footer>
@@ -34,9 +36,11 @@
         >
 
         <template v-if="isBox">
-          <CustomButton type="yellow" @click="handleClose(ItemActions.OpenBox)">{{
-            $t("btn-open-box")
-          }}</CustomButton>
+          <CustomButton
+            type="yellow"
+            @click="handleClose(ItemActions.OpenBox)"
+            >{{ $t("btn-open-box") }}</CustomButton
+          >
           <CustomButton
             type="yellow"
             @click="handleClose(ItemActions.OpenBox, Math.min(count, 9))"
@@ -110,7 +114,7 @@ export default {
     },
     equippedItems: Object
   },
-  data:()=>({
+  data: () => ({
     ItemActions
   }),
   components: {

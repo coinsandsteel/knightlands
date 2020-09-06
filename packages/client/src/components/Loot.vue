@@ -1,6 +1,6 @@
 <template>
   <div
-    class="loot-slot flex relative flex-column"
+    class="loot-slot pixelated flex relative flex-column"
     @click="$emit('hint', itemData)"
     :class="[rarity, { interactible: interactible }, { bottom: gacha }, size]"
   >

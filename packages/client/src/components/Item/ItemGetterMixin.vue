@@ -18,7 +18,7 @@ export default {
     },
     level() {
       if (!this.item) {
-        return 0;
+        return 1;
       }
 
       if (this.matchItem) {

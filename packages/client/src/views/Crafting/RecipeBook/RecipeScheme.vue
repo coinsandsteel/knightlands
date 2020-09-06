@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-column flex-center scheme flex-no-wrap flex-space-evenly">
+  <div
+    class="flex flex-column flex-center scheme flex-no-wrap flex-space-evenly"
+  >
     <div class="flex flex-space-evenly">
       <CraftingIngridient
         v-for="ingridient in ingridients"
@@ -11,7 +13,7 @@
     </div>
     <div class="result-arrow"></div>
     <CraftingIngridient
-      :ingridient="{itemId:resultItem}"
+      :ingridient="{ itemId: resultItem }"
       :gacha="true"
       :hintHandler="handleIngridientHint"
       :hideCount="true"

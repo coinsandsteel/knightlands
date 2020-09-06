@@ -70,7 +70,11 @@
         }}</span>
       </div>
 
+      <CustomButton type="yellow" v-if="isAtMaxUnbind" @click="levelUp">{{
+        $t("btn-level-up")
+      }}</CustomButton>
       <CustomButton
+        v-else
         type="yellow"
         :disabled="lockedTotal == 0"
         @click="unbind"
@@ -84,10 +88,8 @@
 import AppSection from "@/AppSection.vue";
 import anime from "animejs/lib/anime.es.js";
 import ItemInfo from "@/components/ItemInfo.vue";
-import LootContainer from "@/components/LootContainer.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
-import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import Loot from "@/components/Loot.vue";
 import Title from "@/components/Title.vue";
 
@@ -182,7 +184,8 @@ export default {
         if (newItemId != this.itemId) {
           this.$router.replace({
             name: "unbind-item",
-            params: { itemId: newItemId }
+            params: { itemId: newItemId },
+            query: { returnTo: this.$route.query.returnTo }
           });
         }
 
@@ -281,6 +284,13 @@ export default {
       if (item) {
         this.item = item;
       }
+    },
+    levelUp() {
+      this.$router.replace({
+        name: "upgrade-item",
+        params: { itemId: this.item.id },
+        query: { returnTo: this.$route.query.returnTo }
+      });
     }
   }
 };

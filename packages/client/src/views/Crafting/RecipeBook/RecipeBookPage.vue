@@ -46,20 +46,6 @@ export default {
         break;
       }
     }
-
-    // this.$nextTick(() => {
-    //   this.panzoom = panzoom(this.$refs.panel, {
-    //     onTouch: function(e) {
-    //       // `e` - is current touch event.
-
-    //       return false; // tells the library to not preventDefault.
-    //     },
-    //     maxZoom: 1,
-    //     minZoom: 0.5,
-    //     autocenter: true,
-    //     bounds: true
-    //   });
-    // });
   },
   destroyed() {
     if (this.panzoom) {

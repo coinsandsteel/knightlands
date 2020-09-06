@@ -219,7 +219,7 @@ class Inventory {
 
   // returns reference to the array of items
   _getItemsByTemplate(templateId) {
-    return this._itemsBytemplate.get(templateId);
+    return this._itemsBytemplate.get(+templateId);
   }
 
   mergeData(inventoryChanges) {
@@ -252,9 +252,11 @@ class Inventory {
       }
     }
 
-    this._sort();
+    this._doSort();
 
-    this._vm.$emit(Inventory.Changed, inventoryChanges);
+    this._vm.$nextTick(()=>{
+      this._vm.$emit(Inventory.Changed, inventoryChanges);
+    });
   }
 
   getItemCount(itemId) {

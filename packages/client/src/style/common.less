@@ -485,25 +485,29 @@ span {
     }
 }
 
+@panelColor1: #193F5F;
+@panelColor2: #2E7285;
+@panelColor3: #00AC21;
+@panelColor4: #3D4A6A;
+
 .color-panel-1 {
     .color-panel();
-    background-color: #193F5F;
+    background-color: @panelColor1;
 }
 
 .color-panel-2 {
     .color-panel();
-    background-color: #2E7285;
-    ;
+    background-color: @panelColor2;
 }
 
 .color-panel-3 {
     .color-panel();
-    background-color: #00AC21;
+    background-color: @panelColor3;
 }
 
 .color-panel-4 {
     .color-panel();
-    background-color: #3D4A6A;
+    background-color: @panelColor4;
 }
 
 .element-background {
@@ -548,6 +552,22 @@ span {
         background: linear-gradient(180deg,
                 rgba(32, 15, 32, 1) 0%,
                 rgba(164, 175, 204, 1) 100%);
+    }
+}
+
+.list-shadow {
+    > :last-child {
+        position: relative;
+        &::after {
+            background: unset;
+            content: "";
+            height: 100%;
+            position: absolute;
+            left: -25%;
+            top: 0;
+            width: 150%;
+            box-shadow: 0px 8px 12px -5px #060413;
+        }
     }
 }
 

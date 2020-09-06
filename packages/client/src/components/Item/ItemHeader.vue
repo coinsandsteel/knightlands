@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex flex-items-center flex-no-wrap"
-  >
+  <div class="flex flex-items-center flex-no-wrap">
     <loot
       :item="item"
       :interactible="false"
@@ -24,10 +22,7 @@
         v-if="isEquipment && !isPreview"
       >
         <span class="star" :class="{ active: stars >= 1 }"></span>
-        <span
-          class="star"
-          :class="{ active: stars >= 2 }"
-        ></span>
+        <span class="star" :class="{ active: stars >= 2 }"></span>
         <span class="arrow-up" v-if="stars < 2" @click="upgradeItem"></span>
       </div>
 

@@ -2,7 +2,7 @@
   <div class="screen-content">
     <div class="screen-background"></div>
     <div
-      class="padding-top-1 dummy-height full-flex flex flex-center flex-column"
+      class="padding-top-1 dummy-height full-flex flex flex-column"
       v-if="item"
     >
       <ItemInfo
@@ -72,61 +72,76 @@
           </div>
         </template>
       </ItemInfo>
-
       <!-- Upgrade Materials -->
-      <Title class="margin-top-1 margin-bottom-1">{{
-        $t("upgrade-materials")
-      }}</Title>
-      <div class="flex flex-center full-flex width-100 dummy-height">
-        <div v-bar class="width-100 height-100 dummy-height">
-          <div>
-            <div class="flex flex-center dummy-height">
-              <loot
-                v-for="(mat, index) in upgradeMaterials"
-                :key="mat.id"
-                :item="mat"
-                @hint="toggleMaterial(index)"
-                :locked="!selectedMaterials[index] && lockRest"
-                :selected="selectedMaterials[index]"
-              ></loot>
+      <div v-show="notAtMaxLevel">
+        <Title class="margin-top-1 margin-bottom-1">{{
+          $t("upgrade-materials")
+        }}</Title>
+        <div class="flex flex-center full-flex width-100 dummy-height">
+          <div v-bar class="width-100 height-100 dummy-height">
+            <div>
+              <div class="flex flex-center dummy-height">
+                <loot
+                  v-for="(mat, index) in upgradeMaterials"
+                  :key="mat.id"
+                  :item="mat"
+                  @hint="toggleMaterial(index)"
+                  :locked="!selectedMaterials[index] && lockRest"
+                  :selected="selectedMaterials[index]"
+                ></loot>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="flex margin-top-1 flex-space-evenly width-100">
-        <div
-          class="flex flex-center flex-no-wrap font-size-20 font-weight-700"
-          v-show="totalMaterials < 2"
-        >
-          <CustomButton
-            type="grey"
-            :mini="true"
-            :lockPressed="selectedOption == 0"
-            @click="selectedOption = 0"
-            >x1</CustomButton
+        <div class="flex margin-top-1 flex-space-evenly width-100">
+          <div
+            class="flex flex-center flex-no-wrap font-size-20 font-weight-700"
+            v-show="totalMaterials < 2"
           >
+            <CustomButton
+              type="grey"
+              :mini="true"
+              :lockPressed="selectedOption == 0"
+              @click="selectedOption = 0"
+              >x1</CustomButton
+            >
+            <CustomButton
+              type="grey"
+              :mini="true"
+              :lockPressed="selectedOption == 1"
+              @click="selectedOption = 1"
+              >x5</CustomButton
+            >
+            <CustomButton
+              type="grey"
+              :mini="true"
+              :lockPressed="selectedOption == 2"
+              @click="selectedOption = 2"
+              >x25</CustomButton
+            >
+          </div>
+
           <CustomButton
-            type="grey"
-            :mini="true"
-            :lockPressed="selectedOption == 1"
-            @click="selectedOption = 1"
-            >x5</CustomButton
-          >
-          <CustomButton
-            type="grey"
-            :mini="true"
-            :lockPressed="selectedOption == 2"
-            @click="selectedOption = 2"
-            >x25</CustomButton
+            type="green"
+            :disabled="!canUpgrade"
+            @click="confirmUpgrade"
+            >{{ $t("confirm") }}</CustomButton
           >
         </div>
+      </div>
+
+      <div v-show="!notAtMaxLevel" class="flex flex-column flex-center">
+        <span class="color-panel-2 font-size-20 yellow-title">{{
+          $t("lvl-max-level")
+        }}</span>
 
         <CustomButton
-          type="green"
-          :disabled="!canUpgrade"
-          @click="confirmUpgrade"
-          >{{ $t("confirm") }}</CustomButton
+          v-if="returnTo"
+          class="margin-top-2"
+          type="yellow"
+          @click="returnBack"
+          >{{ $t("btn-conitnue") }}</CustomButton
         >
       </div>
     </div>
@@ -170,6 +185,9 @@ export default {
     }
   },
   methods: {
+    returnBack() {
+      this.$router.replace({ path: this.$route.query.returnTo });
+    },
     init() {
       this.cancelUpgrading();
       this.prepareItemForUpgrading();
@@ -295,6 +313,12 @@ export default {
     }
   },
   computed: {
+    returnTo() {
+      return !!this.$route.query.returnTo;
+    },
+    notAtMaxLevel() {
+      return this.item.level < this.$game.itemsDB.getMaxLevel(this.item);
+    },
     totalMaterials() {
       return this.selectedMaterialsAsArray.length;
     },
@@ -306,10 +330,7 @@ export default {
       return materials;
     },
     canUpgrade() {
-      return (
-        this.totalMaterials > 0 &&
-        this.item.level < this.$game.itemsDB.getMaxLevel(this.item)
-      );
+      return this.totalMaterials > 0 && this.notAtMaxLevel;
     },
     stats() {
       return this.$game.itemsDB.getStats(this.item);

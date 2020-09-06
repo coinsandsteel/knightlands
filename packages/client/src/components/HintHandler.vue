@@ -1,5 +1,7 @@
 <script>
 import LootHint from "@/components/LootHint.vue";
+import { create as CreateDialog } from "vue-modal-dialogs";
+
 const Hint = CreateDialog(
   LootHint,
   "item",
@@ -10,7 +12,7 @@ const Hint = CreateDialog(
   "showButtons",
   "equippedItems"
 );
-import { create as CreateDialog } from "vue-modal-dialogs";
+
 
 export default {
   methods: {

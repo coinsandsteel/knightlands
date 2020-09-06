@@ -1,0 +1,224 @@
+<template>
+  <div class="screen-content padding-top-1">
+    <div class="screen-background"></div>
+
+    <Title :stackBottom="true">Select base:</Title>
+
+    <div class="color-panel-2">
+      <div class="flex flex-space-evenly margin-top-1 margin-bottom-2">
+        <Loot
+          v-for="itemId in baseItems"
+          :key="itemId"
+          :item="itemId"
+          :selected="itemId == selectedItemId"
+          @hint="selectBaseItem(itemId)"
+        />
+      </div>
+
+      <ItemStats :item="selectedItemId" />
+    </div>
+
+    <Title :stackTop="true" :stackBottom="true">Select element:</Title>
+
+    <div class="flex width-100 flex-space-evenly color-panel-1">
+      <div class="selector" v-for="element in elements" :key="element">
+        <input
+          ref="stages"
+          :id="element"
+          type="radio"
+          name="element"
+          :value="element"
+          v-model="selectedElement"
+        />
+        <label class="relative" :for="element" :class="`icon-${element} huge`">
+          <div :class="{ 'selector-border': selectedElement == element }"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="width-100 flex flex-space-evenly margin-top-3">
+      <CraftingIngridient
+        v-for="ingridient in ingridients"
+        :key="`${ingridient.itemId}_${ingridientsKey}`"
+        :ingridient="ingridient"
+        :placeholderIndex="selectedItemIndex"
+        :placeholderProvided="!!item"
+        @plus="selectItem"
+      />
+    </div>
+
+    <div class="flex flex-center margin-top-3">
+      <CustomButton
+        :disabled="!canCraft"
+        type="yellow"
+        v-if="recipe.softCurrencyFee > 0"
+        @click="craft"
+      >
+        <div class="flex flex-center">
+          <span class="margin-right-1">{{ $t("btn-craft") }}</span>
+          <IconWithValue iconClass="icon-gold">{{ craftingFee }}</IconWithValue>
+        </div>
+      </CustomButton>
+    </div>
+  </div>
+</template>
+
+<script>
+import AppSection from "@/AppSection.vue";
+import Title from "@/components/Title.vue";
+import Loot from "@/components/Loot.vue";
+import ItemStats from "@/components/Item/ItemStats.vue";
+import CraftingIngridient from "@/components/CraftingIngridient.vue";
+import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
+import CraftingBook from "@/crafting_book";
+import Elements from "@/../../knightlands-shared/elements";
+
+export default {
+  mixins: [AppSection],
+  components: {
+    Title,
+    Loot,
+    ItemStats,
+    CraftingIngridient,
+    CustomButton,
+    IconWithValue
+  },
+  props: ["type"],
+  created() {
+    this.title = "window-new-elem";
+    this.$options.useRouterBack = true;
+  },
+  data: () => ({
+    item: null,
+    ingridientsKey: 0,
+    selectedItemId: 0,
+    selectedElement: Elements.Water,
+    elements: Object.values(Elements).filter(x => x != Elements.Physical)
+  }),
+  watch: {
+    type: {
+      immediate: true,
+      handler() {
+        this.selectedItemId = this.baseItems[0];
+      }
+    },
+    "$route.query.item": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.item) {
+          const item = this.$game.inventory.getItem(this.$route.query.item);
+          if (item) {
+            this.selectedItemId = item.template;
+            this.item = item;
+          }
+        }
+      }
+    }
+  },
+  computed: {
+    selectedItemIndex() {
+      return this.baseItems.findIndex(x => x == this.selectedItemId);
+    },
+    ingridients() {
+      if (this.recipe) {
+        return this.recipe.ingridients;
+      } else {
+        return [];
+      }
+    },
+    recipe() {
+      const entry = CraftingBook.elementalWeapons.find(
+        x => x.type == this.type
+      );
+      if (!entry) {
+        return null;
+      }
+      return this.$game.crafting.getRecipe(entry.recipe);
+    },
+    baseItems() {
+      const items = [];
+      if (this.recipe) {
+        const ingridient = this.recipe.ingridients.find(x => x.placeholder);
+        items.push(...ingridient.placeholderItems);
+      }
+
+      return items;
+    },
+    craftingFee() {
+      return this.recipe.softCurrencyFee;
+    },
+    canCraft() {
+      return this.$game.softCurrency >= this.craftingFee;
+    }
+  },
+  methods: {
+    async craft() {},
+    selectBaseItem(itemId) {
+      this.item = null;
+      this.selectedItemId = itemId;
+    },
+    selectItem() {
+      this.$router.push({
+        name: "select-for-elem",
+        params: {
+          itemTemplate: this.selectedItemId
+        },
+        query: { returnTo: this.$route.path }
+      });
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.selector {
+  margin: 1rem;
+  display: inline-grid;
+
+  &.preview {
+    margin: 0.3rem;
+    pointer-events: none;
+
+    & label {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    & span {
+      display: none;
+    }
+  }
+
+  &.disabled {
+    & label {
+      filter: brightness(1.8) grayscale(1) opacity(0.7);
+    }
+  }
+
+  & input {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  & label {
+    transition: all 100ms ease-in;
+    filter: brightness(0.8) opacity(0.9);
+  }
+
+  & input:checked + label {
+    filter: brightness(1) opacity(1);
+  }
+}
+
+.selector-border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: no-repeat url("./../../../../assets/ui/difficulty_selected.png");
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+}
+</style>

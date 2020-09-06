@@ -195,6 +195,36 @@ const router = new Router({
               props: true
             }
           ]
+        },
+        {
+          path: "elemental",
+          component: () =>
+            import("./views/Crafting/CreateElementalWeapons/Root.vue"),
+            meta: {
+              requiresAuth: true
+            },
+          children: [
+            {
+              path: "",
+              component: () =>
+                import(
+                  "./views/Crafting/CreateElementalWeapons/SelectCategory.vue"
+                )
+            },
+            {
+              path: "create/:type",
+              name: "new-elemental",
+              component: () =>
+                import("./views/Crafting/CreateElementalWeapons/New/Weapon.vue"),
+              props: true
+            },
+            {
+              path: "select/:itemTemplate",
+              name: "select-for-elem",
+              component: () => import("./views/Crafting/SelectEquipment.vue"),
+              props: true
+            }
+          ]
         }
       ]
     },

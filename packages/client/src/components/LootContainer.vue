@@ -1,32 +1,14 @@
 <template>
   <div class="flex full-flex dummy-height">
-    <div v-bar class="width-100 height-100 dummy-height">
-      <div>
-        <div
-          class="flex flex-center dummy-height inventory-container"
-          v-if="filteredItems.length > 0"
-        >
-          <div class="flex loot-container dummy-height inventory-items">
-            <loot
-              v-for="(item, index) in filteredItems"
-              :item="item"
-              :key="index"
-              :inventory="inventory"
-              :selected="selected[item.id] || selectedItem == item.id"
-              :class="lootClasses"
-              @hint="handleHint(item, index)"
-              v-bind="lootProps"
-            ></loot>
-          </div>
-        </div>
-
-        <div class="flex flex-center width-100 height-100 v-bar-fix" v-else>
-          <slot>
-            <div></div>
-          </slot>
-        </div>
-      </div>
-    </div>
+    <ItemList
+      :lootClasses="lootClasses"
+      :multiSelect="multiSelect"
+      :selectSlots="selectSlots"
+      :selectedItem="selectedItem"
+      :lootProps="lootProps"
+      :inventory="inventory"
+      :items="filteredItems"
+    />
 
     <portal to="footer" :slim="true" v-if="isActive && !hideFilters">
       <CustomButton type="grey" @click="showItemFilter">{{
@@ -38,19 +20,17 @@
 
 <script>
 import ActivityMixin from "@/components/ActivityMixin.vue";
-import Loot from "./Loot.vue";
+import ItemList from "@/components/Item/ItemList.vue";
 import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
 import CustomButton from "@/components/Button.vue";
 
 export default {
   mixins: [FilteredLootMixin, ActivityMixin],
   components: {
-    Loot,
-    CustomButton
+    CustomButton,
+    ItemList
   },
-  data: () => ({
-    selected: {}
-  }),
+
   props: {
     inventory: {
       type: Boolean,
@@ -64,33 +44,9 @@ export default {
     filters: Object,
     hideFilters: Boolean
   },
-  watch: {
-    items() {
-      this.selected = {};
-    },
-    filters() {
-      this.updateItems(this.filters);
-    }
-  },
   methods: {
     selectedItems() {
       return this.selected;
-    },
-    handleHint(item, index) {
-      if (this.selectSlots && this.multiSelect) {
-        if (this.selected[item.id]) {
-          this.$delete(this.selected, item.id);
-        } else {
-          this.$set(this.selected, item.id, true);
-        }
-        this.$emit("selected", item, index, this.selected[item.id]);
-      } else {
-        this.$emit("hint", item, index);
-
-        this.selected = {
-          [item.id]: true
-        };
-      }
     }
   }
 };
