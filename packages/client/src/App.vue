@@ -200,7 +200,7 @@ export default {
           if (!this.$game.authenticated) {
             next({
               name: "login",
-              query: { url: to.path }
+              query: { url: to.fullPath }
             });
             return;
           }
