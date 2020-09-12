@@ -158,12 +158,15 @@ class Inventory {
         }
       }
 
-      if (
-        (filters[this._itemDB.getItemType(template)] ||
-          (templateData.type == ItemType.Equipment &&
-            filters[this._itemDB.getSlot(template)])) &&
-        (!filter || filter(item, templateData))
-      ) {
+      let allowed = filters[templateData.type];
+      if (!allowed && templateData.type == ItemType.Equipment) {
+        allowed = filters[this._itemDB.getSlot(template)];
+        if (!allowed) {
+          allowed = filters[templateData.equipmentType];
+        }
+      }
+
+      if (allowed || (filter && filter(item, templateData))) {
         buffer.push(item);
       }
     }
@@ -254,7 +257,7 @@ class Inventory {
 
     this._doSort();
 
-    this._vm.$nextTick(()=>{
+    this._vm.$nextTick(() => {
       this._vm.$emit(Inventory.Changed, inventoryChanges);
     });
   }

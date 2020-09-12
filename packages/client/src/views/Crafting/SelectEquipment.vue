@@ -35,7 +35,13 @@ const Responses = {
 
 export default {
   mixins: [AppSection, HintHandler],
-  props: ["itemTemplate", "includeElemental"],
+  props: {
+    itemTemplate: [Number, String],
+    includeElemental: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: { ItemList, Title },
   created() {
     this.$options.useRouterBack = true;
@@ -53,18 +59,18 @@ export default {
         this.itemTemplate
       );
 
-      if (!this.includeElemental) {
-        const length = filteredItems.length;
-        let filteredIndex = 0;
-        for (let i = 0; i < length; ++i) {
-          const item = filteredItems[i];
-          if (!item.element || item.element == Elements.Physical) {
-            filteredItems[filteredIndex++] = item;
-          }
-        }
+      const length = filteredItems.length;
+      let filteredIndex = 0;
+      for (let i = 0; i < length; ++i) {
+        const item = filteredItems[i];
+        const isElemental = this.$game.itemsDB.getElement(item) == Elements.Physical;
 
-        filteredItems.length = filteredIndex;
+        if (!item.equipped && this.includeElemental == isElemental) {
+          filteredItems[filteredIndex++] = item;
+        }
       }
+
+      filteredItems.length = filteredIndex;
 
       return filteredItems;
     }

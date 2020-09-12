@@ -17,7 +17,7 @@
 
     <template v-if="!onlyIcon">
       <span
-        v-if="!showUnbindLevels && itemData && itemData.unique"
+        v-if="showUnique && !showUnbindLevels && itemData && itemData.unique"
         class="unique"
       ></span>
 
@@ -113,6 +113,10 @@ export default {
     selected: Boolean,
     showUnbindLevels: Boolean,
     showLevel: Boolean,
+    showUnique: {
+      type: Boolean,
+      default: true
+    },
     showEquipped: {
       type: Boolean,
       default: true
@@ -144,7 +148,7 @@ export default {
         return "";
       }
 
-      return `slot-${this.$game.itemsDB.getRarity(this.itemData.template)}`;
+      return `slot-${this.$game.itemsDB.getRarity(this.itemData)}`;
     },
     element() {
       return this.$game.itemsDB.getElement(this.item);
@@ -167,7 +171,7 @@ export default {
     updateItemData() {
       if (this.item && typeof this.item !== "object") {
         // template
-        let template = this.$game.itemsDB.getTemplate(this.item * 1);
+        let template = this.$game.itemsDB.getTemplate(+this.item);
         if (template) {
           this.itemData = {
             template: this.item * 1,

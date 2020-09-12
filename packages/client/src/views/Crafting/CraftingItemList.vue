@@ -4,7 +4,7 @@
     <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
     <LootContainer
       class="height-100"
-      :items="items"
+      :items="filteredItems"
       @hint="hintHandler"
       :filtersStore="filtersStore"
       :commitCmd="commitCmd"
@@ -55,6 +55,17 @@ export default {
     currentTab: OtherItems
   }),
   computed: {
+    filteredItems() {
+      const filteredItems = [];
+      const length = this.items.length;
+      for (let i = 0; i < length; ++i) {
+        const item = this.items[i];
+        if (this.onlyEquippedItems == item.equipped) {
+          filteredItems.push(item);
+        }
+      }
+      return filteredItems;
+    },
     onlyEquippedItems() {
       return this.currentTab == OnlyEquippedItems;
     }

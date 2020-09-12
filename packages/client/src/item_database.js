@@ -207,7 +207,7 @@ class ItemDatabase {
     return null;
   }
 
-  getStats(item, forceLevel, forceEnchanting) {
+  getStats(item, forceLevel, forceEnchanting, forceRarity) {
     let template;
     let level = 1;
     let enchantingLevel = 0;
@@ -231,7 +231,8 @@ class ItemDatabase {
     return this._itemStatResolver.convertStats(
       template,
       level,
-      enchantingLevel
+      enchantingLevel,
+      forceRarity
     );
   }
 }

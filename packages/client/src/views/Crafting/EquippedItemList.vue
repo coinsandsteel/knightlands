@@ -74,7 +74,9 @@ export default {
       const items = [];
 
       for (let slot in this.$game.character.equipment) {
-        const gear = this.$game.character.equipment[slot];
+        const gear = this.$game.inventory.getItem(
+          this.$game.character.equipment[slot].id
+        );
         const template = this.$game.itemsDB.getTemplate(gear.template);
 
         if (

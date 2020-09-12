@@ -2,7 +2,7 @@
   <div class="screen-content">
     <div class="screen-background"></div>
     <div
-      class="padding-top-1 dummy-height full-flex flex flex-column"
+      class="padding-top-1 dummy-height full-flex flex flex-column flex-no-wrap"
       v-if="item"
     >
       <ItemInfo
@@ -42,34 +42,7 @@
 
         <!-- replace stats -->
         <template v-slot:stats>
-          <div
-            class="item-info-stats margin-bottom-2 margin-top-1 flex flex-center font-size-20 flex-space-evenly"
-          >
-            <div
-              class="flex width-40 flex-column flex-item-end text-align-right"
-            >
-              <div
-                v-for="(statValue, statId) in stats"
-                :key="statId"
-                class="margin-bottom-half width-100"
-              >
-                {{ $t(statId) }}
-              </div>
-            </div>
-            <div class="flex width-40 flex-column text-align-left">
-              <div
-                v-for="(statValue, statId) in stats"
-                :key="statId"
-                class="margin-bottom-half flex flex-center flex-start width-100"
-              >
-                {{ statValue }}
-                <span
-                  class="margin-left-half margin-right-half right-arrow"
-                ></span>
-                {{ futureStats[statId] }}
-              </div>
-            </div>
-          </div>
+          <ItemStatsUpgraded :item="item" :nextLevel="level" />
         </template>
       </ItemInfo>
       <!-- Upgrade Materials -->
@@ -155,12 +128,13 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import ItemStatsUpgraded from "@/components/Item/ItemStatsUpgraded.vue";
 import Title from "@/components/Title.vue";
 
 export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
-  components: { ItemInfo, ProgressBar, Loot, CustomButton, Title },
+  components: { ItemInfo, ProgressBar, Loot, CustomButton, Title, ItemStatsUpgraded },
   created() {
     this.title = "window-upgrade-item";
     this.$options.useRouterBack = true;
@@ -300,10 +274,9 @@ export default {
         upgradeMeta.slotsMaterials.forEach(slot => (hash[slot] = true));
         materials = materials.concat(
           this.$game.inventory.filterItems(x => {
-            if (x.unique && x.id == this.item.id) {
+            if ((x.unique && x.id == this.item.id) || x.equipped) {
               return false;
             }
-
             return hash[this.$game.itemsDB.getSlot(x.template)];
           })
         );
@@ -331,12 +304,6 @@ export default {
     },
     canUpgrade() {
       return this.totalMaterials > 0 && this.notAtMaxLevel;
-    },
-    stats() {
-      return this.$game.itemsDB.getStats(this.item);
-    },
-    futureStats() {
-      return this.$game.itemsDB.getStats(this.item, this.level);
     },
     optionFactor() {
       let optionFactor = 1;

@@ -232,6 +232,12 @@ const router = new Router({
             {
               path: "",
               component: () => import("./views/Crafting/Evolve/ItemList.vue")
+            },
+            {
+              path: "item/:itemId",
+              props: true,
+              name: "evolve-item",
+              component: () => import("./views/Crafting/Evolve/Evolve.vue")
             }
           ]
         }

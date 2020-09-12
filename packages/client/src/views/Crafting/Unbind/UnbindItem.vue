@@ -270,15 +270,6 @@ export default {
           item = { ...item };
           item.count = 1;
         }
-      } else {
-        // try search in equipment gear
-        for (const slot in this.$game.character.equipment) {
-          const gear = this.$game.character.equipment[slot];
-          if (gear.id == this.itemId) {
-            item = gear;
-            break;
-          }
-        }
       }
 
       if (item) {

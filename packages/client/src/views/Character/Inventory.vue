@@ -84,7 +84,7 @@ export default {
       return buttons;
     },
     goToCraft() {
-      this.$router.push({ name: "blacksmith" });
+      this.$router.push({ name: "alchemy-lab" });
     }
   }
 };
