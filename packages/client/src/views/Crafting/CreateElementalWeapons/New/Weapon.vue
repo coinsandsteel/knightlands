@@ -77,7 +77,7 @@ import CraftingBook from "@/crafting_book";
 import Elements from "@/../../knightlands-shared/elements";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import ItemPicker from "./ItemPicker.vue";
+import ItemPicker from "../../ItemPicker.vue";
 
 import ItemCreatedPopup from "../../Create/ItemCreatedPopup.vue";
 import { create } from "vue-modal-dialogs";

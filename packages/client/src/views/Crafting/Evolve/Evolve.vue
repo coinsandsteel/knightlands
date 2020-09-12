@@ -4,10 +4,11 @@
 
     <div class="margin-top-2 flex flex-items-center flex-space-evenly">
       <Loot
-        :item="item"
+        :item="baseItem"
         :showEquipped="false"
         :hideQuantity="true"
         :showUnique="false"
+        @hint="handleHint"
       ></Loot>
       <span class="nav-arrow"></span>
       <Loot
@@ -15,45 +16,137 @@
         :showEquipped="false"
         :hideQuantity="true"
         :showUnique="false"
+        @hint="handleHint"
       ></Loot>
     </div>
 
     <ItemStatsUpgraded
       class="margin-top-2 color-panel-2"
-      :item="item"
-      :nextLevel="item.level"
+      :item="baseItem"
+      :nextLevel="baseItem.level"
       :nextRarity="nextRarity"
     ></ItemStatsUpgraded>
+
+    <div class="width-100 flex flex-space-evenly margin-top-3">
+      <ItemPicker
+        v-if="isElemental"
+        :item="nextItem"
+        @select="selectItem"
+        :filled="!!selectedBaseItem"
+      />
+      <CraftingIngridient
+        v-for="ingridient in recipe.ingridients"
+        :key="`${ingridient.itemId}_${ingridientsKey}`"
+        :ingridient="ingridient"
+      />
+    </div>
+
+    <div class="flex flex-center margin-top-3" v-if="isMaxLevel">
+      <CustomButton
+        :disabled="!canEvolve"
+        type="yellow"
+        v-if="recipe.softCurrencyFee > 0"
+        @click="evolve"
+      >
+        <div class="flex flex-center">
+          <span class="margin-right-1">{{ $t("btn-craft") }}</span>
+          <IconWithValue iconClass="icon-gold">{{
+            recipe.softCurrencyFee
+          }}</IconWithValue>
+        </div>
+      </CustomButton>
+    </div>
+
+    <div class="flex flex-column flex-center margin-top-3 color-panel-1">
+      <span class="font-error margin-bottom-1 font-size-22">{{
+        $t("item-max-lvl", { lvl: maxLevel })
+      }}</span>
+      <CustomButton type="grey" @click="levelUp">{{
+        $t("btn-level-up")
+      }}</CustomButton>
+    </div>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
 import Loot from "@/components/Loot.vue";
-import ItemStats from "@/components/Item/ItemStats.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
+import CustomButton from "@/components/Button.vue";
+import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import ItemStatsUpgraded from "@/components/Item/ItemStatsUpgraded.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import HintHandler from "@/components/HintHandler.vue";
+import ItemPicker from "../ItemPicker.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
+import Elements from "@/../../knightlands-shared/elements";
+import EvolveMeta from "@/evolve";
+
+import ItemCreatedPopup from "../Create/ItemCreatedPopup.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 
 export default {
-  mixins: [AppSection],
-  props: ["itemId"],
-  components: { Loot, ItemStats, ItemStatsUpgraded },
+  mixins: [AppSection, NetworkRequestErrorMixin, HintHandler],
+  props: ["itemId", "baseItemId"],
+  components: {
+    Loot,
+    ItemStatsUpgraded,
+    CraftingIngridient,
+    CustomButton,
+    IconWithValue,
+    ItemPicker
+  },
   created() {
     this.$options.useRouterBack = true;
     this.title = "window-evolve";
   },
+  mounted() {},
+  data: () => ({
+    ingridientsKey: 0,
+    selectedBaseItem: null
+  }),
   computed: {
+    isElemental() {
+      return this.$game.itemsDB.getElement(this.baseItem) != Elements.Physical;
+    },
+    evolveRecipe() {
+      return EvolveMeta.evolveRecipes.find(
+        x => x.fromRarity == this.$game.itemsDB.getRarity(this.baseItem)
+      );
+    },
+    recipe() {
+      return this.$game.crafting.getRecipe(this.evolveRecipe.recipe);
+    },
+    baseItem() {
+      return this.$game.inventory.getItem(this.baseItemId);
+    },
     item() {
       return this.$game.inventory.getItem(this.itemId);
     },
     nextItem() {
-      let nextItem = { ...this.item };
+      let nextItem = { ...this.baseItem };
       nextItem.rarity = this.nextRarity;
       return nextItem;
     },
+    isMaxLevel() {
+      if (!this.baseItem) {
+        return false;
+      }
+
+      return this.baseItem.level >= this.maxLevel;
+    },
+    maxLevel() {
+      if (!this.baseItem) {
+        return 0;
+      }
+
+      return this.$game.itemsDB.getMaxLevel(this.baseItem, 2);
+    },
     nextRarity() {
-      let rarity = this.item.rarity;
-      switch (this.item.rarity) {
+      let rarity = this.$game.itemsDB.getRarity(this.baseItem);
+      switch (rarity) {
         case Rarity.Common:
           rarity = Rarity.Rare;
           break;
@@ -69,6 +162,44 @@ export default {
       }
 
       return rarity;
+    },
+    canEvolve() {
+      return (
+        this.recipe.softCurrencyFee <= this.$game.softCurrency &&
+        this.$game.itemsDB.getRarity(this.baseItem) != Rarity.Mythical
+      );
+    }
+  },
+  methods: {
+    async evolve() {
+      const { item } = await this.performRequest(
+        this.$game.evolveItem(this.baseItem.id)
+      );
+
+      await ShowItemCreated(item, 1);
+    },
+    levelUp() {
+      if (this.baseItem.breakLimit != 2) {
+        this.$router.push({
+          name: "unbind-item",
+          params: { itemId: this.baseItem.id }
+        });
+      } else {
+        this.$router.push({
+          name: "upgrade-item",
+          params: { itemId: this.baseItem.id }
+        });
+      }
+    },
+    selectItem() {
+      this.$router.push({
+        name: "select-for-elem",
+        params: {
+          itemTemplate: this.baseItem.template,
+          rarity: this.nextRarity
+        },
+        query: { returnTo: this.$route.fullPath }
+      });
     }
   }
 };

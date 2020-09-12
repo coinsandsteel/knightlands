@@ -65,6 +65,7 @@ const store = new Vuex.Store({
     levelUpFilters: equipmentDefaultFilters,
     evolveOtherFilters: equipmentDefaultFilters,
     evolveWeaponFilters: weaponDefaultFilters,
+    evolveToggleState: true,
     zoneStage: 0,
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
@@ -115,6 +116,9 @@ const store = new Vuex.Store({
         Vue.set(state.evolveWeaponFilters, i, filters[i]);
       }
     },
+    setEvolveToggle(state, value) {
+      state.evolveToggleState = value;
+    },
     setZoneStage(state, args) {
       state.zoneStage = args.stage;
     },
@@ -140,6 +144,9 @@ const store = new Vuex.Store({
         state.itemFilters = equipmentDefaultFilters;
       }
       return state.disenchantFilters;
+    },
+    getEvolveToggle: state => {
+      return state.evolveToggleState;
     },
     getAvailableSwitchInCraftingList: state => listId => {
       return !!(state.craftingListOptions[listId] || {}).availableSwitch;

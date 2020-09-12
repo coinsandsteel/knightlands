@@ -40,7 +40,8 @@ export default {
     includeElemental: {
       type: Boolean,
       default: true
-    }
+    },
+    rarity: String
   },
   components: { ItemList, Title },
   created() {
@@ -59,13 +60,21 @@ export default {
         this.itemTemplate
       );
 
+      const targetRarity = this.rarity;
       const length = filteredItems.length;
       let filteredIndex = 0;
       for (let i = 0; i < length; ++i) {
         const item = filteredItems[i];
-        const isElemental = this.$game.itemsDB.getElement(item) == Elements.Physical;
+        const isElemental =
+          this.$game.itemsDB.getElement(item) == Elements.Physical;
+        const rarityMatch =
+          targetRarity && this.$game.itemsDB.getRarity(item) == targetRarity;
 
-        if (!item.equipped && this.includeElemental == isElemental) {
+        if (
+          !item.equipped &&
+          this.includeElemental == isElemental &&
+          rarityMatch
+        ) {
           filteredItems[filteredIndex++] = item;
         }
       }

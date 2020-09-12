@@ -373,15 +373,15 @@ class Game {
 
       this._vm.authenticated = true;
       if (this._signInResolve) {
-          this._signInResolve();
+        this._signInResolve();
       }
-      this._vm.$nextTick(()=>{
+      this._vm.$nextTick(() => {
         this._vm.$emit(this.SignUp);
       });
       this._syncTime();
     } else if (!signedIn && this._vm.authenticated) {
       this._vm.authenticated = false;
-      this._vm.$nextTick(()=>{
+      this._vm.$nextTick(() => {
         this._vm.$emit(this.SignedOut);
       });
     }
@@ -392,9 +392,9 @@ class Game {
       await this.updateUserData();
     }
     this._vm.ready = true;
-    this._vm.$nextTick(()=>{
-        this._vm.$emit(this.Ready, data.isAuthenticated);
-      });
+    this._vm.$nextTick(() => {
+      this._vm.$emit(this.Ready, data.isAuthenticated);
+    });
   }
 
   _handleDisconnect(errorCode) {
@@ -1065,6 +1065,13 @@ class Game {
       items
     });
 
+    return response.response;
+  }
+
+  async evolveItem(itemId) {
+    let response = await this._wrapOperation(Operations.Evolve, {
+      itemId
+    });
     return response.response;
   }
 

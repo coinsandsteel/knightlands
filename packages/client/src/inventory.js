@@ -249,6 +249,8 @@ class Inventory {
         item.breakLimit = changedItem.breakLimit;
         item.holder = changedItem.holder;
         item.unique = changedItem.unique;
+        item.rarity = changedItem.rarity;
+        item.elemental = changedItem.elemental;
       } else {
         // add new item
         this._addItem(changedItem);

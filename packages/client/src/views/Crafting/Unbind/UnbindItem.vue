@@ -185,7 +185,7 @@ export default {
           this.$router.replace({
             name: "unbind-item",
             params: { itemId: newItemId },
-            query: { returnTo: this.$route.query.returnTo }
+            query: this.$route.query
           });
         }
 
@@ -219,6 +219,7 @@ export default {
       let filteredItems = [];
 
       if (this.item) {
+        const targetRarity = this.$game.itemsDB.getRarity(this.item);
         let items = this.$game.inventory.getItemsByTemplate(this.item.template);
 
         if (items) {
@@ -227,6 +228,10 @@ export default {
 
           for (; i < length; ++i) {
             let item = items[i];
+            if (this.$game.itemsDB.getRarity(item) != targetRarity) {
+              continue;
+            }
+
             if (item.unique && item.id == this.itemId) {
               continue;
             }
@@ -280,7 +285,7 @@ export default {
       this.$router.replace({
         name: "upgrade-item",
         params: { itemId: this.item.id },
-        query: { returnTo: this.$route.query.returnTo }
+        query: this.$route.query
       });
     }
   }

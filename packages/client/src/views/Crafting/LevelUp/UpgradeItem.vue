@@ -46,11 +46,11 @@
         </template>
       </ItemInfo>
       <!-- Upgrade Materials -->
-      <div v-show="notAtMaxLevel">
+      <template v-if="notAtMaxLevel">
         <Title class="margin-top-1 margin-bottom-1">{{
           $t("upgrade-materials")
         }}</Title>
-        <div class="flex flex-center full-flex width-100 dummy-height">
+        <div class="flex full-flex dummy-height">
           <div v-bar class="width-100 height-100 dummy-height">
             <div>
               <div class="flex flex-center dummy-height">
@@ -102,7 +102,7 @@
             >{{ $t("confirm") }}</CustomButton
           >
         </div>
-      </div>
+      </template>
 
       <div v-show="!notAtMaxLevel" class="flex flex-column flex-center">
         <span class="color-panel-2 font-size-20 yellow-title">{{
@@ -134,7 +134,14 @@ import Title from "@/components/Title.vue";
 export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
-  components: { ItemInfo, ProgressBar, Loot, CustomButton, Title, ItemStatsUpgraded },
+  components: {
+    ItemInfo,
+    ProgressBar,
+    Loot,
+    CustomButton,
+    Title,
+    ItemStatsUpgraded
+  },
   created() {
     this.title = "window-upgrade-item";
     this.$options.useRouterBack = true;
@@ -160,7 +167,10 @@ export default {
   },
   methods: {
     returnBack() {
-      this.$router.replace({ path: this.$route.query.returnTo });
+      this.$router.replace({
+        path: this.$route.query.returnTo,
+        query: this.$route.query
+      });
     },
     init() {
       this.cancelUpgrading();

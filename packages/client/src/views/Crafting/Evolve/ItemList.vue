@@ -5,6 +5,7 @@
     <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
     <keep-alive>
       <EquippedItemList
+        v-if="onlyElemental && onlyEquipped"
         class="height-100"
         :filter="filter"
         :hintHandler="hintHandler"
@@ -13,7 +14,6 @@
         :lootProps="{
           hideQuantity: true
         }"
-        v-if="onlyElemental && onlyEquipped"
       />
       <EquippedItemList
         v-else-if="!onlyElemental && onlyEquipped"
@@ -26,31 +26,36 @@
           hideQuantity: true
         }"
       />
-      <LootContainer
-        v-else-if="onlyElemental"
-        class="height-100"
-        :filter="filter"
-        :items="items"
-        @hint="hintHandler"
-        :filtersStore="$store.getters.getEvolveWeaponFilters"
-        commitCmd="setEvolveWeaponFilters"
-        :lootProps="{
-          hideQuantity: true
-        }"
-      />
-      <LootContainer
-        v-else
-        class="height-100"
-        :items="items"
-        :filter="filter"
-        @hint="hintHandler"
-        :filtersStore="$store.getters.getEvolveOtherFilters"
-        commitCmd="setEvolveOtherFilters"
-        :lootProps="{
-          hideQuantity: true
-        }"
-      />
     </keep-alive>
+
+    <LootContainer
+      v-show="onlyElemental && !onlyEquipped"
+      ref="weaponsContainer"
+      class="height-100"
+      :filter="filter"
+      :items="items"
+      :hideFilters="true"
+      @hint="hintHandler"
+      :filtersStore="$store.getters.getEvolveWeaponFilters"
+      commitCmd="setEvolveWeaponFilters"
+      :lootProps="{
+        hideQuantity: true
+      }"
+    />
+    <LootContainer
+      v-show="!onlyElemental && !onlyEquipped"
+      ref="othersContainer"
+      class="height-100"
+      :items="items"
+      :filter="filter"
+      :hideFilters="true"
+      @hint="hintHandler"
+      :filtersStore="$store.getters.getEvolveOtherFilters"
+      commitCmd="setEvolveOtherFilters"
+      :lootProps="{
+        hideQuantity: true
+      }"
+    />
 
     <portal to="footer" v-if="isActive">
       <Toggle
@@ -58,6 +63,9 @@
         :startValue="onlyEquipped"
         :cb="handleEquippedToggle"
       />
+      <CustomButton type="grey" @click="showItemFilter">{{
+        $t("btn-filter")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -69,6 +77,7 @@ import LootContainer from "@/components/LootContainer.vue";
 import EquippedItemList from "../EquippedItemList.vue";
 import Elements from "@/../../knightlands-shared/elements";
 import Toggle from "@/components/Toggle.vue";
+import CustomButton from "@/components/Button.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import EquipmentIngridientHint from "./../EquipmentIngridientHint.vue";
@@ -90,9 +99,8 @@ const Responses = {
 
 export default {
   mixins: [AppSection],
-  components: { LootContainer, Tabs, EquippedItemList, Toggle },
+  components: { LootContainer, Tabs, EquippedItemList, Toggle, CustomButton },
   data: () => ({
-    onlyEquipped: true,
     tabs: [
       { title: "other-items", value: OtherItems },
       { title: "elemental", value: ElementalItems }
@@ -113,6 +121,9 @@ export default {
     }
   },
   computed: {
+    onlyEquipped() {
+      return this.$store.getters.getEvolveToggle;
+    },
     onlyElemental() {
       return this.currentTab == ElementalItems;
     },
@@ -144,6 +155,13 @@ export default {
     }
   },
   methods: {
+    showItemFilter() {
+      if (this.onlyElemental) {
+        this.$refs.weaponsContainer.showItemFilter();
+      } else {
+        this.$refs.othersContainer.showItemFilter();
+      }
+    },
     switchTab(tab) {
       this.currentTab = tab;
     },
@@ -153,17 +171,10 @@ export default {
       return template.unbindable && this.onlyElemental == isElemental;
     },
     handleEquippedToggle(value) {
-      this.onlyEquipped = value;
+      this.$store.commit("setEvolveToggle", value);
     },
     async hintHandler(item) {
-      let buttons = [
-        {
-          type: "yellow",
-          response: Responses.Select,
-          title: "btn-select"
-        }
-      ];
-
+      let buttons;
       let hintType;
       if (this.$game.itemsDB.getMaxLevel(item) != item.level) {
         hintType = "not-max-lvl";
@@ -174,22 +185,23 @@ export default {
             title: "btn-level-up"
           }
         ];
+      } else {
+        this.evolve(item);
+        return;
       }
 
       const response = await Hint(hintType, item, buttons, {
         actions: { equip: false }
       });
 
-      if (response == Responses.Select) {
-        this.evolve(item);
-      } else if (response == Responses.LevelUp) {
+      if (response == Responses.LevelUp) {
         this.levelUp(item);
       }
     },
     evolve(item) {
       this.$router.push({
         name: "evolve-item",
-        params: { itemId: item.id }
+        params: { baseItemId: item.id }
       });
     },
     levelUp(item) {
@@ -198,6 +210,7 @@ export default {
         tab: this.currentTab,
         item: item.id
       };
+
       if (item.breakLimit < 2) {
         this.$router.push({
           name: "unbind-item",

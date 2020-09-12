@@ -48,7 +48,6 @@ export default {
   },
   created() {
     this.itemFilters = Object.assign({}, this.stateFilters);
-    console.log(this.itemFilters)
     for (const key in this.itemFilters) {
       if (this.customFilter && !this.customFilter(key)) {
         this.itemFilters[key] = false;

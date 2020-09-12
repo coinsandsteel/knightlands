@@ -8,6 +8,9 @@
       <CustomButton type="grey" @click="$close">{{
         $t("btn-continue")
       }}</CustomButton>
+      <CustomButton type="grey" @click="levelUp">{{
+        $t("btn-level-up")
+      }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -19,8 +22,23 @@ import CustomButton from "@/components/Button.vue";
 
 export default {
   props: ["item", "amount"],
-  components: { UserDialog, ItemInfo, CustomButton }
+  components: { UserDialog, ItemInfo, CustomButton },
+  methods: {
+    levelUp() {
+      if (this.item.breakLimit != 2) {
+        this.$router.push({
+          name: "unbind-item",
+          params: { itemId: this.item.id }
+        });
+      } else {
+        this.$router.push({
+          name: "upgrade-item",
+          params: { itemId: this.item.id }
+        });
+      }
+
+      this.$close();
+    }
+  }
 };
 </script>
-
-<style lang="less" scoped></style>
