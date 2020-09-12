@@ -1078,6 +1078,17 @@ class Game {
     return response.response;
   }
 
+  async createWeapon(recipeId, currency, itemId, element) {
+    let response = await this._wrapOperation(Operations.CreateWeapon, {
+      recipeId,
+      currency,
+      itemId,
+      element
+    });
+
+    return response.response;
+  }
+
   async fetchCraftingStatus(recipeId) {
     return await this._request(Operations.FetchCraftingStatus, {
       recipeId

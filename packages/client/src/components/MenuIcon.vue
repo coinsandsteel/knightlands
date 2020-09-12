@@ -2,14 +2,16 @@
   <router-link
     v-bind="$attrs"
     tag="div"
-    class="flex-basis-30"
-    :class="{'pointer-events-none': locked}"
+    class="flex-basis-30 margin-bottom-2"
+    :class="{ 'pointer-events-none': locked }"
   >
     <div class="flex flex-column flex-center pointer relative">
       <span :class="icon" class="icon-menu relative">
         <slot name="marker"></slot>
         <span class="overlay absolute-stretch" v-if="locked">
-          <span class="font-size-20 font-weight-900">Lvl: {{levelRequired}}</span>
+          <span class="font-size-20 font-weight-900"
+            >Lvl: {{ levelRequired }}</span
+          >
         </span>
       </span>
       <span class="title-holder">

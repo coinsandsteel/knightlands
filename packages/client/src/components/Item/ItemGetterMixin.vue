@@ -44,8 +44,11 @@ export default {
       }
       return this.$game.itemsDB.getTemplate(this.item);
     },
+    element() {
+      return this.$game.itemsDB.getElement(this.item);
+    },
     elementIcon() {
-      return `icon-${this.template.element}`;
+      return `icon-${this.element}`;
     },
     hasElement() {
       if (this.template.type != ItemType.Equipment) {
@@ -56,7 +59,7 @@ export default {
         return false;
       }
 
-      return this.template.element != "physical";
+      return this.element != "physical";
     },
     desc() {
       return this.$t(this.template.description, "");

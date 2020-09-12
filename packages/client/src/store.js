@@ -3,6 +3,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
+import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
+
+import ItemType from "@/../../knightlands-shared/item_type";
+import Blockchains from "@/../../knightlands-shared/blockchains";
+const Rarity = require("@/../../knightlands-shared/rarity");
+import EquipmentType from "@/../../knightlands-shared/equipment_type";
 
 Vue.use(Vuex);
 
@@ -10,12 +16,6 @@ const vuexPersist = new VuexPersist({
   key: "knightlands",
   storage: localStorage
 });
-
-import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
-
-import ItemType from "@/../../knightlands-shared/item_type";
-import Blockchains from "@/../../knightlands-shared/blockchains";
-const Rarity = require("@/../../knightlands-shared/rarity");
 
 const equipmentDefaultFilters = {};
 for (let i in EquipmentSlots) {
@@ -36,7 +36,20 @@ for (let i = 1; i <= 10; ++i) {
   defaultUnitFilters[i] = true;
 }
 
-const FiltersVersion = 7;
+const weaponDefaultFilters = {
+  [EquipmentType.Axe]: true,
+  [EquipmentType.Bow]: true,
+  [EquipmentType.Spear]: true,
+  [EquipmentType.Sword]: true,
+  [EquipmentType.Wand]: true,
+  [EquipmentType.Shield]: true,
+  [EquipmentType.Star]: true,
+  [EquipmentType.Knive]: true,
+  [EquipmentType.Scythe]: true,
+  [EquipmentType.Whip]: true
+}
+
+const FiltersVersion = 2;
 
 const store = new Vuex.Store({
   state: {
@@ -50,6 +63,8 @@ const store = new Vuex.Store({
     disenchantFilters: equipmentDefaultFilters,
     unbindFilters: equipmentDefaultFilters,
     levelUpFilters: equipmentDefaultFilters,
+    evolveOtherFilters: equipmentDefaultFilters,
+    evolveWeaponFilters: weaponDefaultFilters,
     zoneStage: 0,
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
@@ -88,6 +103,16 @@ const store = new Vuex.Store({
     setLevelUpFilters(state, filters) {
       for (let i in filters) {
         Vue.set(state.levelUpFilters, i, filters[i]);
+      }
+    },
+    setEvolveOtherFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.evolveOtherFilters, i, filters[i]);
+      }
+    },
+    setEvolveWeaponFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.evolveWeaponFilters, i, filters[i]);
       }
     },
     setZoneStage(state, args) {
@@ -156,6 +181,20 @@ const store = new Vuex.Store({
         state.unitFilters = equipmentDefaultFilters;
       }
       return state.levelUpFilters;
+    },
+    getEvolveOtherFilters: state => {
+      if (state.unitFiltersVersion != FiltersVersion) {
+        state.unitFiltersVersion = FiltersVersion;
+        state.evolveOtherFilters = equipmentDefaultFilters;
+      }
+      return state.evolveOtherFilters;
+    },
+    getEvolveWeaponFilters: state => {
+      if (state.unitFiltersVersion != FiltersVersion) {
+        state.unitFiltersVersion = FiltersVersion;
+        state.evolveWeaponFilters = weaponDefaultFilters;
+      }
+      return state.evolveWeaponFilters;
     },
     getZoneStage: state => {
       return state.zoneStage;

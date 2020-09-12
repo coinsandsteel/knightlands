@@ -9,7 +9,7 @@ export default {
   methods: {
     async performRequest(request) {
       try {
-        await request;
+        return await request;
       } catch (exc) {
         this.showPrompt(
           this.$t("request-error-title"),

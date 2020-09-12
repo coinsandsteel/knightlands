@@ -37,13 +37,15 @@
     </div>
 
     <div class="width-100 flex flex-space-evenly margin-top-3">
+      <ItemPicker
+        :item="selectedItemId"
+        @select="selectItem"
+        :filled="!!item"
+      />
       <CraftingIngridient
         v-for="ingridient in ingridients"
         :key="`${ingridient.itemId}_${ingridientsKey}`"
         :ingridient="ingridient"
-        :placeholderIndex="selectedItemIndex"
-        :placeholderProvided="!!item"
-        @plus="selectItem"
       />
     </div>
 
@@ -73,16 +75,25 @@ import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CraftingBook from "@/crafting_book";
 import Elements from "@/../../knightlands-shared/elements";
+import CurrencyType from "@/../../knightlands-shared/currency_type";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import ItemPicker from "./ItemPicker.vue";
+
+import ItemCreatedPopup from "../../Create/ItemCreatedPopup.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
     Title,
     Loot,
     ItemStats,
     CraftingIngridient,
     CustomButton,
-    IconWithValue
+    IconWithValue,
+    ItemPicker
   },
   props: ["type"],
   created() {
@@ -128,32 +139,51 @@ export default {
       }
     },
     recipe() {
+      return this.$game.crafting.getRecipe(this.weaponRecipe.recipe);
+    },
+    weaponRecipe() {
       const entry = CraftingBook.elementalWeapons.find(
         x => x.type == this.type
       );
-      if (!entry) {
-        return null;
-      }
-      return this.$game.crafting.getRecipe(entry.recipe);
+      return entry;
     },
     baseItems() {
-      const items = [];
-      if (this.recipe) {
-        const ingridient = this.recipe.ingridients.find(x => x.placeholder);
-        items.push(...ingridient.placeholderItems);
-      }
-
-      return items;
+      return this.weaponRecipe.baseItems;
     },
     craftingFee() {
       return this.recipe.softCurrencyFee;
     },
     canCraft() {
-      return this.$game.softCurrency >= this.craftingFee;
+      let hasEnough = true;
+      for (const ingridient of this.ingridients) {
+        if (ingridient.placeholder) {
+          continue;
+        }
+
+        if (!this.$game.inventory.hasEnoughIngridient(ingridient)) {
+          hasEnough = false;
+          break;
+        }
+      }
+
+      return (
+        this.$game.softCurrency >= this.craftingFee && this.item && hasEnough
+      );
     }
   },
   methods: {
-    async craft() {},
+    async craft() {
+      const { item } = await this.performRequest(
+        this.$game.createWeapon(
+          this.weaponRecipe.id,
+          CurrencyType.Soft,
+          this.item.id,
+          this.selectedElement
+        )
+      );
+
+      await ShowItemCreated(item, 1);
+    },
     selectBaseItem(itemId) {
       this.item = null;
       this.selectedItemId = itemId;

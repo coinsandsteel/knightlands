@@ -5,7 +5,9 @@
     </template>
 
     <template v-slot:footer>
-      <CustomButton type="grey" @click="$close">{{$t("btn-continue")}}</CustomButton>
+      <CustomButton type="grey" @click="$close">{{
+        $t("btn-continue")
+      }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -21,5 +23,4 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

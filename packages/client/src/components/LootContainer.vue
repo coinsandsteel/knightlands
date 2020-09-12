@@ -8,6 +8,7 @@
       :lootProps="lootProps"
       :inventory="inventory"
       :items="filteredItems"
+      v-on="$listeners"
     />
 
     <portal to="footer" :slim="true" v-if="isActive && !hideFilters">
@@ -41,7 +42,6 @@ export default {
     lootProps: Object,
     lootClasses: String,
     selectedItem: Number,
-    filters: Object,
     hideFilters: Boolean
   },
   methods: {

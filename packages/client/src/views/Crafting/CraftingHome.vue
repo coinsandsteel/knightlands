@@ -1,14 +1,20 @@
 <template>
   <div class="screen-content flex-end padding-bottom-5">
-    <div class="screen-background"></div>
+    <div class="art screen-background"></div>
 
     <MenuIconRow>
-      <MenuIcon icon="icon-recipe-book" to="recipes" :append="true">
-        <span>{{ $t("btn-recipes") }}</span>
+      <MenuIcon icon="icon-craft" to="elemental" :append="true">
+        <span>{{ $t("btn-new-weapon") }}</span>
       </MenuIcon>
 
-      <MenuIcon icon="icon-craft" to="craft" :append="true">
-        <span>{{ $t("btn-crafting") }}</span>
+      <MenuIcon icon="icon-evolve" to="evolve" :append="true">
+        <span>{{ $t("btn-evolve") }}</span>
+      </MenuIcon>
+    </MenuIconRow>
+
+    <MenuIconRow>
+      <MenuIcon icon="icon-recipe-book" to="craft" :append="true">
+        <span>{{ $t("btn-recipes") }}</span>
       </MenuIcon>
 
       <MenuIcon icon="icon-disenchant" to="disenchant" :append="true">
@@ -51,3 +57,11 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.art {
+  background-image: url("../../assets/backgrounds/alchemy_lab.jpg");
+  background-size: cover;
+  background-position: bottom center;
+}
+</style>

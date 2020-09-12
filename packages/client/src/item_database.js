@@ -78,14 +78,29 @@ class ItemDatabase {
     return this.getTemplate(id).type;
   }
 
-  getRarity(item) {
-    if (typeof item == "number") {
-      if (!ItemTemplates[item]) {
-        console.error("no item", item);
-      }
-      return ItemTemplates[item].rarity;
+  getElement(item) {
+    if (item.element) {
+      return item.element;
     }
-    return ItemTemplates[item.template].rarity;
+
+    return this.getTemplate(item).element;
+  }
+
+  getRarity(item) {
+    let templateid = item
+    if (typeof item == "object") {
+      if (item.rarity) {
+        return item.rarity;
+      }
+
+      templateid = item.template;
+    }
+
+    if (!ItemTemplates[templateid]) {
+      console.error("no item", item);
+    }
+
+    return ItemTemplates[templateid].rarity;
   }
 
   isWeapon(id) {

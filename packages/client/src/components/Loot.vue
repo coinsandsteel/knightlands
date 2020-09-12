@@ -25,6 +25,7 @@
         v-if="showEquipped && itemData && itemData.equipped"
         class="equipped"
       ></span>
+      <span v-else-if="itemData" :class="`icon-${element} element`"></span>
 
       <div
         class="flex flex-center width-100 flex-evenly-spaced stars-container"
@@ -144,6 +145,9 @@ export default {
       }
 
       return `slot-${this.$game.itemsDB.getRarity(this.itemData.template)}`;
+    },
+    element() {
+      return this.$game.itemsDB.getElement(this.item);
     },
     count() {
       let count = this.quantity;
@@ -312,8 +316,8 @@ export default {
     cursor: pointer;
   }
 
-  &:active { 
-    background-color: #607279; 
+  &:active {
+    background-color: #607279;
   }
 
   pointer-events: all;
@@ -359,6 +363,12 @@ export default {
   background-size: contain;
   width: 2rem;
   height: 2rem;
+  position: absolute;
+  top: 0.4rem;
+  left: 0rem;
+}
+
+.element {
   position: absolute;
   top: 0.4rem;
   left: 0rem;

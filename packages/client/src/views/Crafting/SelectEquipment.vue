@@ -16,6 +16,7 @@ import AppSection from "@/AppSection.vue";
 import Title from "@/components/Title.vue";
 import ItemList from "@/components/Item/ItemList.vue";
 import HintHandler from "@/components/HintHandler.vue";
+import Elements from "@/../../knightlands-shared/elements";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import EquipmentIngridientHint from "./EquipmentIngridientHint.vue";
@@ -34,7 +35,7 @@ const Responses = {
 
 export default {
   mixins: [AppSection, HintHandler],
-  props: ["itemTemplate"],
+  props: ["itemTemplate", "includeElemental"],
   components: { ItemList, Title },
   created() {
     this.$options.useRouterBack = true;
@@ -51,6 +52,19 @@ export default {
       const filteredItems = this.$game.inventory.getItemsByTemplate(
         this.itemTemplate
       );
+
+      if (!this.includeElemental) {
+        const length = filteredItems.length;
+        let filteredIndex = 0;
+        for (let i = 0; i < length; ++i) {
+          const item = filteredItems[i];
+          if (!item.element || item.element == Elements.Physical) {
+            filteredItems[filteredIndex++] = item;
+          }
+        }
+
+        filteredItems.length = filteredIndex;
+      }
 
       return filteredItems;
     }

@@ -124,7 +124,7 @@ import NumericValue from "@/components/NumericValue.vue";
 
 import { create } from "vue-modal-dialogs";
 
-const ShowItemCreated = create(ItemCreatedPopup, ...ItemCreatedPopup.props);
+const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 
 export default {
   props: ["recipeId"],
@@ -217,7 +217,6 @@ export default {
     },
     async handlePaymentComplete(iap, item) {
       if (item) {
-        console.log(item);
         await ShowItemCreated(item.recipe.resultItem, item.amount);
         this.ingridientsKey++;
       }

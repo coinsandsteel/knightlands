@@ -92,7 +92,7 @@ const router = new Router({
       children: [
         {
           path: "",
-          name: "blacksmith",
+          name: "alchemy-lab",
           component: CraftingHome
         },
         {
@@ -200,9 +200,6 @@ const router = new Router({
           path: "elemental",
           component: () =>
             import("./views/Crafting/CreateElementalWeapons/Root.vue"),
-            meta: {
-              requiresAuth: true
-            },
           children: [
             {
               path: "",
@@ -215,7 +212,9 @@ const router = new Router({
               path: "create/:type",
               name: "new-elemental",
               component: () =>
-                import("./views/Crafting/CreateElementalWeapons/New/Weapon.vue"),
+                import(
+                  "./views/Crafting/CreateElementalWeapons/New/Weapon.vue"
+                ),
               props: true
             },
             {
@@ -223,6 +222,16 @@ const router = new Router({
               name: "select-for-elem",
               component: () => import("./views/Crafting/SelectEquipment.vue"),
               props: true
+            }
+          ]
+        },
+        {
+          path: "evolve",
+          component: () => import("./views/Crafting/Evolve/Root.vue"),
+          children: [
+            {
+              path: "",
+              component: () => import("./views/Crafting/Evolve/ItemList.vue")
             }
           ]
         }

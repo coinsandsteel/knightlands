@@ -5,7 +5,7 @@
     >
       <div class="home-art absolute-stretch"></div>
 
-      <MenuIconRow>
+      <!-- <MenuIconRow>
         <MenuIcon icon="icon-recipe-book" :to="{ name: 'recipe-book' }">
           <span>{{ $t("btn-recipes") }}</span>
         </MenuIcon>
@@ -31,11 +31,15 @@
         <MenuIcon icon="icon-enchant" :to="{ name: 'crafting-enchant' }">
           <span>{{ $t("btn-enchant") }}</span>
         </MenuIcon>
-      </MenuIconRow>
+      </MenuIconRow> -->
 
       <div
         class="flex flex-column flex-items-center flex-space-evenly margin-left-2"
       >
+        <MenuIcon icon="icon-garrison" :to="{ name: 'garrison' }"
+          >Garrison</MenuIcon
+        >
+
         <MenuIcon icon="icon-units" :to="{ name: 'edit-unit' }" :append="true"
           >Units</MenuIcon
         >
@@ -51,9 +55,10 @@
       <div
         class="flex flex-column flex-items-center flex-space-evenly margin-right-2"
       >
-        <MenuIcon icon="icon-garrison" :to="{ name: 'garrison' }"
-          >Garrison</MenuIcon
+        <MenuIcon icon="icon-alchemy" :to="{ name: 'alchemy-lab' }"
+          >Alchemy Lab</MenuIcon
         >
+
         <MenuIcon icon="icon-beast" :to="{ name: 'beast' }">Beast</MenuIcon>
         <!-- 
         <MenuIcon
