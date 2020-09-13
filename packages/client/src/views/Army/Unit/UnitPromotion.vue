@@ -179,7 +179,6 @@ export default {
       return this.unitsPerIngridient[ingrId].length;
     },
     async selectUnits(unit, ingridient) {
-      console.log(ingridient)
       this.clearSelectedUnits(ingridient);
       this.$delete(this.unitsPerIngridient, ingridient.id);
 
@@ -191,8 +190,6 @@ export default {
           this.$set(this.selectedUnits, unit.id, unit);
         }
       }
-
-      console.log(this.unitsPerIngridient)
     },
     async promote() {
       let confirmation = await this.showPrompt(

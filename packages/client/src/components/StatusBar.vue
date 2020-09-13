@@ -56,12 +56,12 @@
     <div class="flex flex-column column" ref="softCurrency">
       <div class="flex flex-no-wrap flex-item-center">
         <div class="icon-gold"></div>
-        <span class="status-bar-font digit-font">{{ softCurrency }}</span>
+        <span class="status-bar-font">{{ softCurrency }}</span>
       </div>
 
       <div class="flex flex-no-wrap flex-item-center" ref="hardCurrency">
         <div class="icon-premium"></div>
-        <span class="status-bar-font digit-font">{{ hardCurrency }}</span>
+        <span class="status-bar-font">{{ hardCurrency }}</span>
       </div>
     </div>
 

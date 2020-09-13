@@ -30,6 +30,7 @@
         :items="filteredItems"
         :inventory="true"
         @hint="_handleHint"
+        :hideFilters="true"
       ></LootContainer>
 
       <ScrollableItemHint
@@ -126,10 +127,9 @@ export default {
     handleSlotSelection(slot) {
       this.equippedHint = false;
       this.selectedSlot = slot;
-      this.filteredItems = this.$game.inventory.filterItemsByType(
-        { [slot]: true },
-        this.filteredItems
-      );
+      this.filteredItems = this.$game.inventory.filterItemsByType({
+        filters: { [slot]: true }
+      });
     },
     async handleEquipmentAction(item, action) {
       if (action === ItemActions.Equip) {

@@ -54,6 +54,11 @@ export default {
       await ItemFilter(options);
     },
     filterItems(filters) {
+      if (!this.filters && !filters) {
+        this.filteredItems = this.computedItems;
+        return;
+      }
+
       this.filteredItems = this.$game.inventory.filterItemsByType({
         filters: this.filters || filters,
         buffer: this.filteredItemsBuffer.get(),

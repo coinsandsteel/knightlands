@@ -391,9 +391,4 @@ export default {
 .icon {
   position: relative;
 }
-
-.status-bar-font {
-  font-size: 1.55rem;
-  line-height: 1.3;
-}
 </style>

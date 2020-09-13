@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content">
-      <UnitView :unit="unit" :showEquipment="false" />
+    <UnitView :unit="unit" :showEquipment="false" />
   </div>
 </template>
 

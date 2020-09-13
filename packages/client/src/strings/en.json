@@ -83,6 +83,7 @@
     "window-craft": "Craft Item",
     "magic_lonely_blossom_ring_desc": "This ring is made from a blossoming rose bush enchanted by a hex.",
     "ingridients": "Ingridients",
+    "btn-view": "Preview",
     "btn-build": "Build x{count}",
     "window-crafting": "Craft Recipes",
     "unknown-recipe": "Oh snap! I don't know such recipe :(",
