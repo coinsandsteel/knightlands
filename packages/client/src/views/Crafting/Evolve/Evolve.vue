@@ -49,7 +49,7 @@
         @click="evolve"
       >
         <div class="flex flex-center">
-          <span class="margin-right-1">{{ $t("btn-craft") }}</span>
+          <span class="margin-right-1">{{ $t("btn-evolve") }}</span>
           <IconWithValue iconClass="icon-gold">{{
             recipe.softCurrencyFee
           }}</IconWithValue>
@@ -57,7 +57,7 @@
       </CustomButton>
     </div>
 
-    <div class="flex flex-column flex-center margin-top-3 color-panel-1">
+    <div v-else class="flex flex-column flex-center margin-top-3 color-panel-1">
       <span class="font-error margin-bottom-1 font-size-22">{{
         $t("item-max-lvl", { lvl: maxLevel })
       }}</span>

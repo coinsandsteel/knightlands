@@ -1,24 +1,22 @@
 <template>
-  <div v-bar class="width-100 height-100 dummy-height">
+  <div v-bar class="center width-100 height-100 dummy-height">
     <div>
       <div
-        class="flex flex-center dummy-height inventory-container"
+        class="loot-container width-100 dummy-height inventory-container"
         v-if="items.length > 0"
       >
-        <div class="flex loot-container dummy-height inventory-items">
-          <loot
-            v-for="(item, index) in items"
-            :item="item"
-            :key="index"
-            :inventory="inventory"
-            :selected="
-              (selectSlots && selected[item.id]) || selectedItem == item.id
-            "
-            :class="lootClasses"
-            @hint="handleHint(item, index)"
-            v-bind="lootProps"
-          ></loot>
-        </div>
+        <Loot
+          v-for="(item, index) in items"
+          :item="item"
+          :key="index"
+          :inventory="inventory"
+          :selected="
+            (selectSlots && selected[item.id]) || selectedItem == item.id
+          "
+          :class="lootClasses"
+          @hint="handleHint(item, index)"
+          v-bind="lootProps"
+        />
       </div>
 
       <div class="flex flex-center width-100 height-100 v-bar-fix" v-else>
@@ -78,3 +76,12 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+
+.loot-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  justify-items: center;
+}
+</style>

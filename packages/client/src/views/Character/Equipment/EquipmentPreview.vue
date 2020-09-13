@@ -36,7 +36,13 @@ export default {
   },
   computed: {
     item() {
-      return this.$character.equipment[this.itemSlot];
+      if (!this.$character.equipment[this.itemSlot]) {
+        return null;
+      }
+
+      return this.$game.inventory.getItem(
+        this.$character.equipment[this.itemSlot].id
+      );
     }
   },
   methods: {

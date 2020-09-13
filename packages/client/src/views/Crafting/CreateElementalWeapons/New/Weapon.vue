@@ -76,6 +76,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import CraftingBook from "@/crafting_book";
 import Elements from "@/../../knightlands-shared/elements";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
+import Rarity from "@/../../knightlands-shared/rarity";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ItemPicker from "../../ItemPicker.vue";
 
@@ -192,7 +193,8 @@ export default {
       this.$router.push({
         name: "select-for-elem",
         params: {
-          itemTemplate: this.selectedItemId
+          itemTemplate: this.selectedItemId,
+          rarity: Rarity.Common
         },
         query: { returnTo: this.$route.path }
       });

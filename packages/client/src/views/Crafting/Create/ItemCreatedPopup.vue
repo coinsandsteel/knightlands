@@ -8,7 +8,7 @@
       <CustomButton type="grey" @click="$close">{{
         $t("btn-continue")
       }}</CustomButton>
-      <CustomButton type="grey" @click="levelUp">{{
+      <CustomButton type="grey" v-if="!isAtMaxLevel" @click="levelUp">{{
         $t("btn-level-up")
       }}</CustomButton>
     </template>
@@ -23,6 +23,11 @@ import CustomButton from "@/components/Button.vue";
 export default {
   props: ["item", "amount"],
   components: { UserDialog, ItemInfo, CustomButton },
+  computed: {
+    isAtMaxLevel() {
+      return this.$game.itemsDB.getMaxLevel(this.item, 2) < this.item.level;
+    }
+  },
   methods: {
     levelUp() {
       if (this.item.breakLimit != 2) {
@@ -30,7 +35,7 @@ export default {
           name: "unbind-item",
           params: { itemId: this.item.id }
         });
-      } else {
+      } else if (this.isAtMaxLevel) {
         this.$router.push({
           name: "upgrade-item",
           params: { itemId: this.item.id }

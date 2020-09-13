@@ -68,7 +68,7 @@ export default {
         const isElemental =
           this.$game.itemsDB.getElement(item) == Elements.Physical;
         const rarityMatch =
-          targetRarity && this.$game.itemsDB.getRarity(item) == targetRarity;
+          !targetRarity || this.$game.itemsDB.getRarity(item) == targetRarity;
 
         if (
           !item.equipped &&

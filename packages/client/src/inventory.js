@@ -351,8 +351,8 @@ class Inventory {
 
   sortItems(items) {
     items.sort((a, b) => {
-      let sortingFactorA = this._itemDB.getRarityAsNumber(a.template);
-      let sortingFactorB = this._itemDB.getRarityAsNumber(b.template);
+      let sortingFactorA = this._itemDB.getRarityAsNumber(a);
+      let sortingFactorB = this._itemDB.getRarityAsNumber(b);
 
       if (sortingFactorA == sortingFactorB) {
         const templateA = this._itemDB.getTemplate(a.template);
