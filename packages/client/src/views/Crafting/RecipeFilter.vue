@@ -11,7 +11,8 @@
           name="check"
           color="warning"
           v-model="itemFilters.rarity[filter]"
-        >{{filter}}</p-check>
+          >{{ filter }}</p-check
+        >
       </div>
     </template>
   </user-dialog>
@@ -81,5 +82,3 @@ export default {
   flex: 1;
 }
 </style>
-
-

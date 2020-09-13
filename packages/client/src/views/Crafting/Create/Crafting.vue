@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="screen-content">
+    <div class="screen-background"></div>
     <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="handleTab"></Tabs>
     <keep-alive>
       <component :is="currentTab"></component>

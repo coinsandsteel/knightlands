@@ -9,18 +9,18 @@
     </div>
 
     <div
-      class="bar-container digit-font flex flex-center"
+      class="bar-container status-bar-font flex flex-center"
       :class="[{ 'flex-column': isTop }, barClasses]"
       :style="{ width: width }"
     >
       <div
-        class="status-bar-font bar-value flex flex-center font-weight-700 bar-value-top"
+        class="bar-value flex flex-center font-weight-700 bar-value-top"
         :class="valueClass"
         v-if="!hideValues && isTop"
       >
         <slot name="label"></slot>
         <div v-show="showValue">{{ currentValue }}</div>
-        <div v-show="!showValue" class="status-bar-font flex">
+        <div v-show="!showValue" class="flex">
           <div class="icon-timer icon-size-mini"></div>
           <span>{{ timerValue.value }}</span>
         </div>
@@ -47,7 +47,7 @@
         ></div>
 
         <div
-          class="status-bar-font bar-value flex flex-center font-weight-700"
+          class="bar-value flex flex-center font-weight-700"
           :class="valueClass"
           v-if="!hideValues && !isTop"
         >
@@ -390,5 +390,10 @@ export default {
 
 .icon {
   position: relative;
+}
+
+.status-bar-font {
+  font-size: 1.55rem;
+  line-height: 1.3;
 }
 </style>

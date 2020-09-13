@@ -1,15 +1,15 @@
 <template>
   <div class="flex full-flex flex-column relative dummy-height flex-column">
-    <IconTabs
+    <!-- <IconTabs
       :tabs="tabs"
       :currentTab="currentTab"
       @onClick="handleTab"
-    ></IconTabs>
+    ></IconTabs> -->
     <div class="full-flex height-100 dummy-height relative">
       <div class="wrapper dummy-height">
         <RecycleScroller
           ref="scroller"
-          class="scroller"
+          class="width-100 height-100"
           :items="filteredRecipes"
           :item-size="112"
           key-field="id"
@@ -30,14 +30,15 @@
         :startValue="onlyAvailable"
         caption="toggle-available-recipes"
       ></Toggle>
-      <CustomButton type="grey" @click="showItemFilter">Filter</CustomButton>
+      <CustomButton type="grey" @click="showItemFilter">{{
+        $t("btn-filter")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
 
 <script>
 import TabHandler from "@/components/TabHandler.vue";
-import IconTabs from "./IconTabs.vue";
 import CraftingRecipeListElement from "./CraftingRecipeListElement.vue";
 import Toggle from "@/components/Toggle.vue";
 import AppSection from "@/AppSection.vue";
@@ -46,11 +47,11 @@ import HintHandler from "@/components/HintHandler.vue";
 
 import { create } from "vue-modal-dialogs";
 import RecipeFilter from "./../RecipeFilter.vue";
-const ShowFilters = create(RecipeFilter, ...RecipeFilter.props);
+const ShowFilters = create(RecipeFilter, "id", "types");
 
 export default {
   mixins: [TabHandler, AppSection, HintHandler],
-  components: { IconTabs, CraftingRecipeListElement, Toggle, CustomButton },
+  components: { CraftingRecipeListElement, Toggle, CustomButton },
   data: () => ({
     recipes: [],
     filtered: [],
@@ -100,7 +101,8 @@ export default {
       }
     },
     async showItemFilter() {
-      this.filters = await ShowFilters(this.listId, {});
+      await ShowFilters(this.listId, {});
+      this.filters = this.$store.getters.getRecipeFilters(this.listId);
       this.handleAvailableToggle(this.onlyAvailable);
     },
     handleCraft(recipeId) {
@@ -192,11 +194,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.scroller {
-  width: 100%;
-  height: 100%;
-}
-
 .wrapper {
   overflow: hidden;
   position: absolute;

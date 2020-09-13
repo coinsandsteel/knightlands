@@ -14,7 +14,7 @@
       </div>
 
       <div class="color-panel-2 flex flex-space-evenly">
-        <Title class="margin-bottom-half">{{ $t("refund-items") }}</Title>
+        <Title :stackTop="true" class="margin-bottom-half">{{ $t("refund-items") }}</Title>
         <Loot
           v-for="record in refundedItems"
           :key="`${record.item}${record.quantity}`"
@@ -39,7 +39,7 @@
           $t("btn-banish")
         }}</CustomButton>
         <CustomButton type="green" @click="autofill">{{
-          $t("btn-autofill") 
+          $t("btn-autofill")
         }}</CustomButton>
         <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{
           $t("btn-reset")

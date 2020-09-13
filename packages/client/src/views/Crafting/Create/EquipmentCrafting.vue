@@ -73,7 +73,7 @@ export default {
           filters[EquipmentType.Ring] = true;
           filters[EquipmentType.Necklace] = true;
           break;
-      } 
+      }
 
       this.recipes.length = 0;
 
@@ -82,7 +82,11 @@ export default {
       const itemsDB = this.$game.itemsDB;
       const crafting = this.$game.crafting;
       for (; i < length; ++i) {
-        if (filters[itemsDB.getEquipmentType(crafting.getRecipe(recipes[i]).resultItem)]) {
+        if (
+          filters[
+            itemsDB.getEquipmentType(crafting.getRecipe(recipes[i]).resultItem)
+          ]
+        ) {
           this.recipes.push(recipes[i]);
         }
       }

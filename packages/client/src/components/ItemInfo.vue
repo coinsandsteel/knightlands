@@ -136,6 +136,6 @@ export default {
 }
 
 .item-info-container {
-  min-height: 10rem;
+  // min-height: 10rem;
 }
 </style>

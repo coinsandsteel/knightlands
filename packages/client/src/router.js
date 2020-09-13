@@ -738,7 +738,10 @@ const router = new Router({
         {
           path: "",
           name: "equipment",
-          component: CharacterEquipment
+          component: CharacterEquipment,
+          meta: {
+            noTopBar: true
+          }
         },
         {
           path: "training",
@@ -748,12 +751,18 @@ const router = new Router({
         {
           path: "buffs",
           name: "character-buffs",
-          component: CharacterBuffs
+          component: CharacterBuffs,
+          meta: {
+            noTopBar: true
+          }
         },
         {
           path: "misc",
           name: "character-misc",
-          component: CharacterMisc
+          component: CharacterMisc,
+          meta: {
+            noTopBar: true
+          }
         }
       ]
     },

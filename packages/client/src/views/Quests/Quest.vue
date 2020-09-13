@@ -8,12 +8,14 @@
             v-for="zone in zones"
             v-bind:key="zone._id"
             class="element mission1 font-size-30"
-            :class="{'zone-locked': isLocked(zone)}"
-            :to="{ path: zone._id+'', append: true }"
+            :class="{ 'zone-locked': isLocked(zone) }"
+            :to="{ path: zone._id + '', append: true }"
           >
             <div class="zone-picture">
               <img :src="getZoneImage(zone._id)" />
-              <div class="font-size-30 overlay-title font-outline">{{$t(getZoneName(zone._id))}}</div>
+              <div class="font-size-30 overlay-title font-outline">
+                {{ $t(getZoneName(zone._id)) }}
+              </div>
             </div>
           </router-link>
         </div>
@@ -29,7 +31,7 @@
               v-if="showQuest"
               :zone="currentZone"
               :questIndex="quest"
-              :maxQuestIndex="currentZone.quests.length-1"
+              :maxQuestIndex="currentZone.quests.length - 1"
               :stage="zoneStage(zone)"
               @nextQuest="goToNextQuest"
               @prevQuest="goToPrevQuest"
@@ -66,7 +68,12 @@
     </keep-alive>
 
     <portal to="footer" v-if="isActive" :slim="true">
-      <CustomButton v-if="allFinished" @click="handleResetProgress" type="grey">{{$t("btn-reset")}}</CustomButton>
+      <CustomButton
+        v-if="allFinished"
+        @click="handleResetProgress"
+        type="grey"
+        >{{ $t("btn-reset") }}</CustomButton
+      >
       <DifficultySwitch
         v-if="zone !== undefined && zones.length > 0"
         :cb="handleDifficultySwitch"

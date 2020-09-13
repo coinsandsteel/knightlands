@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-start font-size-25 padding-1 adventures-content">
     <Promised :promise="request">
-      <template v-slot:combined="{isPending, isDelayOver}">
+      <template v-slot:combined="{ isPending, isDelayOver }">
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
         <template v-if="selectedAventure">
@@ -14,7 +14,7 @@
         </template>
 
         <template v-else>
-            <div class="height-100" v-bar>
+          <div class="height-100" v-bar>
             <div>
               <AdventureSlot
                 v-for="(adv, index) in adventures"
@@ -28,11 +28,19 @@
                 class="panel width-100 padding-1 margin-bottom-2 adventure-slot flex flex-center"
                 v-if="upgradePrice > 0"
               >
-                <span class="font-size-18 grey-title">{{$t("adventure-expand-message")}}</span>
+                <span class="font-size-18 grey-title">{{
+                  $t("adventure-expand-message")
+                }}</span>
                 <div class="margin-top-2">
-                  <CustomButton type="yellow" @click="buySlot" :disabled="!enoughCurrency">
-                    {{$t("adventure-expand")}}
-                    <IconWithValue iconClass="icon-gold">{{upgradePrice}}</IconWithValue>
+                  <CustomButton
+                    type="yellow"
+                    @click="buySlot"
+                    :disabled="!enoughCurrency"
+                  >
+                    {{ $t("adventure-expand") }}
+                    <IconWithValue iconClass="icon-gold">{{
+                      upgradePrice
+                    }}</IconWithValue>
                   </CustomButton>
                 </div>
               </div>
@@ -83,7 +91,12 @@ export default {
   },
   computed: {
     upgradePrice() {
-      if (!this.adventures || this.adventures.length == 0 || this.adventures.length >= AdventuresMeta.upgradePrice.length) return 0;
+      if (
+        !this.adventures ||
+        this.adventures.length == 0 ||
+        this.adventures.length >= AdventuresMeta.upgradePrice.length
+      )
+        return 0;
       return AdventuresMeta.upgradePrice[this.adventures.length - 1].soft;
     },
     enoughCurrency() {
@@ -101,7 +114,10 @@ export default {
       }
     },
     async startAdventure(adventureIndex) {
-      this.request = this.$game.startAdventure(this.selectedAventureIndex, adventureIndex);
+      this.request = this.$game.startAdventure(
+        this.selectedAventureIndex,
+        adventureIndex
+      );
 
       let adventureUpdate = await this.request;
       this.$set(this.adventures, this.selectedAventureIndex, adventureUpdate);

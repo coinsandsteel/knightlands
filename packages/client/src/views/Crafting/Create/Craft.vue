@@ -1,29 +1,23 @@
 <template>
-  <Promised :promise="request">
+  <Promised class="screen-content" :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
-      <div class="flex flex-column padding-1 flex-center">
-        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+      <div class="screen-background"></div>
 
-        <StripedPanel
-          class="craft width-100"
-          contentClasses="height-100"
-          v-if="recipeId"
+      <div v-bar v-if="recipe">
+        <div
+          class="width-100 height-100 flex flex-column flex-no-wrap margin-top-1"
         >
           <ItemInfo
             :item="item"
             :quantity="itemsToCraft"
-            class="width-100"
+            class="width-100 full-flex"
           ></ItemInfo>
 
-          <div class="flex flex-column flex-items-center flex-end full-flex">
-            <span class="title font-size-20 margin-top-3">{{
-              $t("ingridients")
-            }}</span>
+          <div class="flex flex-column flex-items-center full-flex">
+            <Title :stackBottom="true">{{ $t("ingridients") }}</Title>
 
-            <StripedContent
-              classes="margin-top-3 margin-bottom-3 width-100"
-              contentClasses="width-100 flex flex-space-evenly"
-            >
+            <div class="color-panel-1 width-100 flex flex-space-evenly">
               <CraftingIngridient
                 v-for="ingridient in ingridients"
                 :key="`${ingridient.itemId}_${ingridientsKey}`"
@@ -31,13 +25,13 @@
                 :hintHandler="handleIngridientHint"
                 :quantity="itemsToCraft"
               />
-            </StripedContent>
+            </div>
 
             <div
-              class="flex flex-column flex-center width-100 flex-space-evenly"
+              class="flex flex-column flex-center width-100 flex-space-evenly margin-top-2"
             >
               <NumericValue
-                class="margin-bottom-3"
+                class="margin-bottom-2"
                 :value="itemsToCraft"
                 :decreaseCondition="itemsToCraft > 1"
                 :increaseCondition="canCraftNext()"
@@ -97,15 +91,18 @@
               </PaymentStatus>
             </div>
           </div>
-        </StripedPanel>
+        </div>
+      </div>
+      <div class="flex height-100 flex-center" v-else>
+        <span class="font-size-22 font-outline font-weight-900">{{
+          $t("unknown-recipe")
+        }}</span>
       </div>
     </template>
   </Promised>
 </template>
 
 <script>
-import StripedContent from "@/components/StripedContent.vue";
-import StripedPanel from "@/components/StripedPanel.vue";
 import AppSection from "@/AppSection.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
@@ -121,6 +118,7 @@ import Events from "@/../../knightlands-shared/events";
 import ItemCreatedPopup from "./ItemCreatedPopup.vue";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
 import NumericValue from "@/components/NumericValue.vue";
+import Title from "@/components/Title.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -130,8 +128,6 @@ export default {
   props: ["recipeId"],
   mixins: [AppSection, PaymentHandler, CraftingIngridientHintHandler],
   components: {
-    StripedContent,
-    StripedPanel,
     CraftingIngridient,
     CustomButton,
     IconWithValue,
@@ -140,7 +136,8 @@ export default {
     Promised,
     LoadingScreen,
     PaymentStatus,
-    NumericValue
+    NumericValue,
+    Title
   },
   data: () => ({
     fetchPayment: null,
@@ -253,9 +250,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.craft {
-  margin: 2rem;
-}
-</style>

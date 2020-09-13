@@ -14,10 +14,11 @@
         ></FloatingTextContainer>
       </EnemyView>
 
-      <div class="flex flex-center width-100">
-        <span class="font-size-20 margin-left-1 margin-right-1">{{
-          $t("beast-level", { level: level })
-        }}</span>
+      <div class="flex flex-center width-100 margin-top-half">
+        <span
+          class="font-size-20 margin-left-1 margin-right-1 font-outline font-weight-900"
+          >{{ $t("beast-level", { level: level }) }}</span
+        >
         <ProgressBar
           v-model="exp"
           :maxValue="nextExp"

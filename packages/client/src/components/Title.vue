@@ -1,11 +1,14 @@
 <template>
   <div
     class="width-100 flex flex-center relative flex-self-start"
-    :class="{'stackTop': stackTop, 'stackBottom': stackBottom}"
+    :class="{ stackTop: stackTop, stackBottom: stackBottom }"
   >
     <div class="flex-full title-side"></div>
-    <span class="font-size-22 capitalize title flex flex-center" :class="titleClass">
-      <span>{{title}}</span>
+    <span
+      class="font-size-22 capitalize title flex flex-center"
+      :class="titleClass"
+    >
+      <span>{{ title }}</span>
       <slot></slot>
     </span>
     <div class="flex-full title-side"></div>
@@ -32,7 +35,7 @@ export default {
   align-self: center;
   height: @TitleHeight;
   min-width: 10rem;
-} 
+}
 
 .title-side {
   background-image: url("../assets/ui/title1.png");
