@@ -1,133 +1,185 @@
 <template>
   <div class="screen-content">
-    <Promised :promise="request">
+    <Promised :promise="request" tag="div" class="height-100">
       <template v-slot:combined="{ isPending, isDelayOver }">
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
         <div class="screen-background"></div>
 
-        <div class="dummy-height flex flex-center flex-column" v-if="item">
-          <ItemInfo :item="item" :onlyStats="true" :lootProps="{onlyIcon:true}" class="width-100">
-            <template v-slot:beforeStats>
-              <div ref="level">
-                <div class="flex flex-center margin-top-1 font-size-20">
+        <div class="height-100" v-bar>
+          <div>
+            <div
+              class="dummy-height flex flex-center flex-column padding-top-1"
+              v-if="item"
+            >
+              <ItemInfo
+                :item="item"
+                :onlyStats="true"
+                :lootProps="{ onlyIcon: true }"
+                class="width-100"
+              >
+                <template v-slot:beforeStats>
+                  <div ref="level">
+                    <div class="flex flex-center margin-top-1 font-size-20">
+                      <div class="color-panel-1 flex flex-center padding-1">
+                        <span class="yellow-title margin-right-half">{{
+                          $t("enchanting-level")
+                        }}</span>
+                        <span class="yellow-title">{{
+                          item.enchant || 0
+                        }}</span>
+                        <template v-if="canEnchant">
+                          <span
+                            class="margin-left-half margin-right-half right-arrow"
+                          ></span>
+                          <span class="green-title">{{
+                            (item.enchant || 0) + 1
+                          }}</span>
+                        </template>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+
+                <template v-slot:stats v-if="canEnchant">
                   <div
-                    class="color-panel-1 flex flex-center padding-1"
-                    v-if="canEnchant"
-                    
+                    class="color-panel-2 stacked-bottom flex flex-center font-size-20 flex-space-evenly"
                   >
-                    <span class="yellow-title margin-right-half">{{$t("enchanting-level")}}</span>
-                    {{item.enchant || 0}}
+                    <div
+                      class="flex width-40 flex-column flex-item-end text-align-right"
+                    >
+                      <div
+                        v-for="(statValue, statId) in stats"
+                        :key="statId"
+                        class="margin-bottom-half width-100"
+                      >
+                        {{ $t(statId) }}
+                      </div>
+                    </div>
+                    <div class="flex width-40 flex-column text-align-left">
+                      <div
+                        v-for="(statValue, statId) in stats"
+                        :key="statId"
+                        class="margin-bottom-half flex flex-center flex-start width-100"
+                      >
+                        {{ statValue }}
+                        <span
+                          class="margin-left-half margin-right-half right-arrow"
+                        ></span>
+                        {{ futureStats[statId] }}
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </ItemInfo>
+
+              <span
+                class="flex flex-center font-size-22 color-panel-2"
+                v-if="!canEnchant"
+              >
+                <span class="rarity-mythical margin-right-half">{{
+                  $t("enchanting-maxed-out")
+                }}</span>
+              </span>
+
+              <template v-if="canEnchant">
+                <Title class="margin-bottom-1" :stackTop="true">{{
+                  $t("enchant-materials")
+                }}</Title>
+
+                <div
+                  classes="margin-top-2 margin-bottom-2"
+                  contentClasses="width-100 flex flex-space-evenly"
+                  stripeHeight="10rem"
+                >
+                  <crafting-ingridient
+                    v-for="ingridient in ingridients"
+                    :key="ingridient.itemId"
+                    :ingridient="ingridient"
+                    :hintHandler="showHint"
+                  />
+                </div>
+
+                <template v-if="!paymentInProcess">
+                  <transition name="fade" mode="out-in">
                     <span
-                      class="margin-left-half margin-right-half right-arrow"
-                    ></span>
-                    <span class="green-title">{{(item.enchant || 0) + 1}}</span>
-                  </div>
-                  <span class="flex flex-center flex-start margin-bottom-half" v-else>
-                    <span class="rarity-mythical margin-right-half">{{$t("enchanting-maxed-out")}}</span>
-                    <span>{{item.enchant}}</span>
-                  </span>
-                </div>
-              </div>
-            </template>
+                      class="margin-top-1 margin-bottom-1 rarity-mythical font-outline font-size-20"
+                      v-if="failed"
+                      key="failed"
+                      >{{ $t("enchant-failed") }}</span
+                    >
+                    <span
+                      class="margin-top-1 margin-bottom-1 orange-title font-outline font-size-20"
+                      v-if="!failed"
+                      key="success"
+                      >{{
+                        $t("enchant-success-rate", {
+                          rate: stepData.successRate
+                        })
+                      }}</span
+                    >
+                  </transition>
+                </template>
 
-            <template v-slot:stats v-if="canEnchant">
-              <div
-                class="color-panel-2 stacked-bottom flex flex-center font-size-20 flex-space-evenly"
-              >
-                <div class="flex width-40 flex-column flex-item-end text-align-right">
-                  <div
-                    v-for="(statValue, statId) in stats"
-                    :key="statId"
-                    class="margin-bottom-half width-100"
-                  >{{$t(statId)}}</div>
-                </div>
-                <div class="flex width-40 flex-column text-align-left">
-                  <div
-                    v-for="(statValue, statId) in stats"
-                    :key="statId"
-                    class="margin-bottom-half flex flex-center flex-start width-100"
+                <div
+                  class="flex flex-center width-100"
+                  v-if="!paymentInProcess"
+                >
+                  <CustomButton
+                    type="yellow"
+                    @click="enchant(currencies.Soft)"
+                    :disabled="!(enoughResources && enoughSoft)"
                   >
-                    {{statValue}}
-                    <span class="margin-left-half margin-right-half right-arrow"></span>
-                    {{futureStats[statId]}}
-                  </div>
+                    {{ $t("btn-enchant") }}
+                    <IconWithValue iconClass="icon-gold">{{
+                      stepData.soft
+                    }}</IconWithValue>
+                  </CustomButton>
                 </div>
-              </div>
-            </template>
-          </ItemInfo>
 
-          <template v-if="canEnchant">
-            <Title
-              class="margin-bottom-1"
-              :stackTop="true"
-            >{{$t("enchant-materials")}}</Title>
+                <div
+                  class="margin-top-3 margin-bottom-5 color-panel-3"
+                  v-if="stepData.successRate < 100"
+                >
+                  <PaymentStatus
+                    ref="paymentStatus"
+                    :request="fetchPayment"
+                    @pay="continuePurchase"
+                    @iap="setIap"
+                    class="width-100 flex flex-space-evenly"
+                  >
+                    <div class="flex flex-column width-100">
+                      <span
+                        class="margin-top-1 margin-bottom-1 success-font font-outline font-size-20"
+                        >{{ $t("enchant-success-rate", { rate: 100 }) }}</span
+                      >
 
-            <div
-              classes="margin-top-2 margin-bottom-2"
-              contentClasses="width-100 flex flex-space-evenly"
-              stripeHeight="10rem"
-            >
-              <crafting-ingridient
-                v-for="(ingridient) in ingridients"
-                :key="ingridient.itemId"
-                :ingridient="ingridient"
-                :hintHandler="showHint"
-              />
-            </div>
+                      <div class="flex flex-center width-100 flex-space-evenly">
+                        <CustomButton
+                          type="green"
+                          @click="enchant(currencies.Fiat)"
+                          :disabled="!enoughResources"
+                        >
+                          {{ $t("btn-enchant") }}
+                          <PriceTag :dark="true" :iap="stepData.iap"></PriceTag>
+                        </CustomButton>
 
-            <template v-if="!paymentInProcess">
-              <transition name="fade" mode="out-in">
-                <span
-                  class="margin-top-1 margin-bottom-1 rarity-mythical font-outline font-size-20"
-                  v-if="failed"
-                  key="failed"
-                >{{$t("enchant-failed")}}</span>
-                <span
-                  class="margin-top-1 margin-bottom-1 orange-title font-outline font-size-20"
-                  v-if="!failed"
-                  key="success"
-                >{{$t("enchant-success-rate", {rate: stepData.successRate})}}</span>
-              </transition>
-            </template>
-
-            <div class="flex flex-center width-100" v-if="!paymentInProcess">
-              <CustomButton type="yellow" @click="enchant(currencies.Soft)" :disabled="!(enoughResources && enoughSoft)">
-                {{$t("btn-enchant")}}
-                <IconWithValue iconClass="icon-gold">{{stepData.soft}}</IconWithValue>
-              </CustomButton>
-            </div>
-
-            <div
-              class="margin-top-3 margin-bottom-5 color-panel-3"
-              v-if="stepData.successRate < 100"
-            >
-              <PaymentStatus
-                ref="paymentStatus"
-                :request="fetchPayment"
-                @pay="continuePurchase"
-                @iap="setIap"
-                class="width-100 flex flex-space-evenly"
-              >
-                <div class="flex flex-column width-100">
-                  <span
-                  class="margin-top-1 margin-bottom-1 success-font font-outline font-size-20"
-                  >{{$t("enchant-success-rate", {rate: 100})}}</span>
-
-                  <div class="flex flex-center width-100 flex-space-evenly">
-                    <CustomButton type="green" @click="enchant(currencies.Fiat)" :disabled="!enoughResources">
-                      {{$t("btn-enchant")}}
-                      <PriceTag :dark="true" :iap="stepData.iap"></PriceTag>
-                    </CustomButton>
-
-                    <CustomButton type="grey" @click="enchant(currencies.Hard)" :disabled="!(enoughResources && enoughHard)">
-                      {{$t("btn-enchant")}}
-                      <IconWithValue iconClass="icon-premium">{{stepData.hard}}</IconWithValue>
-                    </CustomButton>
-                  </div>
+                        <CustomButton
+                          type="grey"
+                          @click="enchant(currencies.Hard)"
+                          :disabled="!(enoughResources && enoughHard)"
+                        >
+                          {{ $t("btn-enchant") }}
+                          <IconWithValue iconClass="icon-premium">{{
+                            stepData.hard
+                          }}</IconWithValue>
+                        </CustomButton>
+                      </div>
+                    </div>
+                  </PaymentStatus>
                 </div>
-              </PaymentStatus>
+              </template>
             </div>
-          </template>
+          </div>
         </div>
       </template>
     </Promised>
@@ -218,7 +270,7 @@ export default {
         let template = this.$game.itemsDB.getTemplate(this.item.template);
 
         const isWeapon = this.$game.itemsDB.isWeapon(this.item.template);
-        const isAccessory = this.$game.itemsDB.isAccessory(this.item.template)
+        const isAccessory = this.$game.itemsDB.isAccessory(this.item.template);
         const isArmour = this.$game.itemsDB.isArmour(this.item.template);
 
         let steps = {};
@@ -231,9 +283,7 @@ export default {
           steps = EnchantingMeta.armour;
         }
 
-        return steps[template.rarity].steps[
-          this.currentEnchantingLevel
-        ];
+        return steps[template.rarity].steps[this.currentEnchantingLevel];
       }
 
       return null;
@@ -265,48 +315,23 @@ export default {
       });
     },
     async enchant(currency) {
-      let itemName = this.$t(this.$game.itemsDB.getName(this.item.template));
-      let itemRarity = this.$game.itemsDB.getRarity(this.item.template);
+      this.request = this.$game.enchantItem(this.itemId, currency);
 
-      let confirmation = await this.showPrompt(
-        this.$t("enchanting-confirm-title"),
-        this.$t("enchanting-confirm-text", {
-          item: itemName,
-          rarity: itemRarity
-        }),
-        [
-          {
-            type: "red",
-            title: this.$t("btn-cancel"),
-            response: false
-          },
-          {
-            type: "green",
-            title: this.$t("btn-ok"),
-            response: "ok"
-          }
-        ]
-      );
-
-      if (confirmation == "ok") {
-        this.request = this.$game.enchantItem(this.itemId, currency);
-
-        if (currency == CurrencyType.Fiat) {
-          this.request = this.purchaseRequest(this.request);
-        }
-
-        let newItemId = await this.request;
-        if (newItemId === false) {
-          this.notifyEnchantingFailed();
-        } else if (newItemId && newItemId != this.itemId) {
-          this.$router.replace({
-            name: "enchant-item",
-            params: { itemId: newItemId }
-          });
-        }
-
-        this.updateEnchantItemsList();
+      if (currency == CurrencyType.Fiat) {
+        this.request = this.purchaseRequest(this.request);
       }
+
+      let newItemId = await this.request;
+      if (newItemId === false) {
+        this.notifyEnchantingFailed();
+      } else if (newItemId && newItemId != this.itemId) {
+        this.$router.replace({
+          name: "enchant-item",
+          params: { itemId: newItemId }
+        });
+      }
+
+      this.updateEnchantItemsList();
     },
     notifyEnchantingFailed() {
       // failed
@@ -317,16 +342,16 @@ export default {
       anime({
         targets: this.$refs.level,
         translateX: [
-            { value: "-0.5rem" },
-            { value: "0.45rem" },
-            { value: "-0.4rem" },
-            { value: "0.35rem" },
-            { value: "-0.3rem" },
-            { value: "0.25rem" },
-            { value: "-0.2rem" },
-            { value: "0rem" }
+          { value: "-0.5rem" },
+          { value: "0.45rem" },
+          { value: "-0.4rem" },
+          { value: "0.35rem" },
+          { value: "-0.3rem" },
+          { value: "0.25rem" },
+          { value: "-0.2rem" },
+          { value: "0rem" }
         ],
-        easing: 'easeOutExpo',
+        easing: "easeOutExpo",
         duration: 325,
         loop: 1
       });
@@ -366,7 +391,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.fade-enter-active  {
+.fade-enter-active {
   transition: opacity 0.2s;
 }
 

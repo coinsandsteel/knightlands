@@ -1,23 +1,25 @@
 <template>
-  <div class="padding-1 height-100 dummy-height">
-    <LootContainer
+  <div class="screen-content">
+    <CraftingItemList
       :items="items"
-      @hint="openUnbind"
-      :lootProps="{showUnbindLevels: true, showLevel: true}"
+      :hintHandler="openEnchant"
+      :equippedItemsFilter="equippedItemsFilter"
+      :filtersStore="$store.getters.getEnchantFilters"
+      commitCmd="setEnchantingFilters"
     >
-      <span class="font-size-20">{{$t("enchant-list-empty-msg")}}</span>
-    </LootContainer>
+      <span class="font-size-20">{{ $t("enchant-list-empty-msg") }}</span>
+    </CraftingItemList>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
-import LootContainer from "@/components/LootContainer.vue";
+import CraftingItemList from "../CraftingItemList.vue";
 const ItemType = require("@/../../knightlands-shared/item_type");
 
 export default {
   mixins: [AppSection],
-  components: { LootContainer },
+  components: { CraftingItemList },
   created() {
     this.title = "window-enchant-items-list";
   },
@@ -66,7 +68,10 @@ export default {
     }
   },
   methods: {
-    openUnbind(item) {
+    equippedItemsFilter(item) {
+      return true;
+    },
+    openEnchant(item) {
       this.$router.push({ name: "enchant-item", params: { itemId: item.id } });
     }
   }

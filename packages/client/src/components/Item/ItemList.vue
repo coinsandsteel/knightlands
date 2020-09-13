@@ -78,7 +78,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .loot-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));

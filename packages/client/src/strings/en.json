@@ -814,7 +814,7 @@
     "enchanting-confirm-text": "You are going to enchant <span class='rarity-{rarity}'>{item}</span>. Are you sure?",
     "window-enchant-item": "Enchant item",
     "enchant-failed": "Enchanting failed!",
-    "enchanting-maxed-out": "Max Lvl",
+    "enchanting-maxed-out": "Item has reached maximum enchanting level",
     "btn-adventures": "Adventures",
     "adventure-title": "{rarity} adventure",
     "adventure-start": "Start",

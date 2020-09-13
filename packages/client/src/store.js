@@ -61,6 +61,7 @@ const store = new Vuex.Store({
     miscFilters: miscDefaultFilters,
     unitFilters: defaultUnitFilters,
     disenchantFilters: equipmentDefaultFilters,
+    enchantFilters: equipmentDefaultFilters,
     unbindFilters: equipmentDefaultFilters,
     levelUpFilters: equipmentDefaultFilters,
     evolveOtherFilters: equipmentDefaultFilters,
@@ -94,6 +95,11 @@ const store = new Vuex.Store({
     setDisenchantingFilters(state, filters) {
       for (let i in filters) {
         Vue.set(state.disenchantFilters, i, filters[i]);
+      }
+    },
+    setEnchantingFilters(state, filters) {
+      for (let i in filters) {
+        Vue.set(state.enchantFilters, i, filters[i]);
       }
     },
     setUnbindFilters(state, filters) {
@@ -138,12 +144,19 @@ const store = new Vuex.Store({
     selectedLegion: state => {
       return state.selectedLegion + 1;
     },
-    disenchantFilters: state => {
+    getDisenchantFilters: state => {
       if (state.itemFiltersVersion != FiltersVersion) {
         state.itemFiltersVersion = FiltersVersion;
-        state.itemFilters = equipmentDefaultFilters;
+        state.disenchantFilters = equipmentDefaultFilters;
       }
       return state.disenchantFilters;
+    },
+    getEnchantFilters: state => {
+      if (state.itemFiltersVersion != FiltersVersion) {
+        state.itemFiltersVersion = FiltersVersion;
+        state.enchantFilters = equipmentDefaultFilters;
+      }
+      return state.enchantFilters;
     },
     getEvolveToggle: state => {
       return state.evolveToggleState;
