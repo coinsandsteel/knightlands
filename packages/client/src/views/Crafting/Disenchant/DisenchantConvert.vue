@@ -4,41 +4,48 @@
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
       <div class="screen-background"></div>
 
-      <Title class="margin-top-1 margin-bottom-3">{{
-        $t("dis-from-title")
-      }}</Title>
+      <div v-bar>
+        <div>
+          <Title class="margin-top-1 margin-bottom-3">{{
+            $t("dis-from-title")
+          }}</Title>
 
-      <div class="flex flex-center">
-        <Loot
-          v-for="material in materialsInPosession"
-          :key="material.id"
-          :item="material"
-        ></Loot>
-      </div>
+          <div class="flex flex-center">
+            <Loot
+              v-for="material in materialsInPosession"
+              :key="material.id"
+              :item="material"
+            ></Loot>
+          </div>
 
-      <Title class="margin-top-5 margin-bottom-3">{{
-        $t("dis-convert-title")
-      }}</Title>
+          <Title class="margin-top-5 margin-bottom-3">{{
+            $t("dis-convert-title")
+          }}</Title>
 
-      <div class="flex flex-column">
-        <MaterialConverterElement
-          class="margin-bottom-4"
-          ref="converters"
-          v-for="material in materialsForConversion"
-          :key="material.rarity"
-          :id="material.rarity"
-          :itemFrom="material.from"
-          :itemTo="material.to"
-          :conversionRate="material.upgradeCost"
-          @changed="handleConversion"
-          @hint="handleHint"
-        ></MaterialConverterElement>
-      </div>
+          <div class="flex flex-column">
+            <MaterialConverterElement
+              class="margin-bottom-4"
+              ref="converters"
+              v-for="material in materialsForConversion"
+              :key="material.rarity"
+              :id="material.rarity"
+              :itemFrom="material.from"
+              :itemTo="material.to"
+              :conversionRate="material.upgradeCost"
+              @changed="handleConversion"
+              @hint="handleHint"
+            ></MaterialConverterElement>
+          </div>
 
-      <div class="flex flex-center margin-top-5">
-        <CustomButton type="yellow" :disabled="!canConvert" @click="convert">{{
-          $t("btn-dis-convert")
-        }}</CustomButton>
+          <div class="flex flex-center margin-top-1">
+            <CustomButton
+              type="yellow"
+              :disabled="!canConvert"
+              @click="convert"
+              >{{ $t("btn-dis-convert") }}</CustomButton
+            >
+          </div>
+        </div>
       </div>
     </template>
   </Promised>

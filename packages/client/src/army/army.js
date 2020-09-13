@@ -25,7 +25,12 @@ export default class Army {
       itemsResolver,
       armyUnits,
       TroopsMeta,
-      GeneralsMeta
+      GeneralsMeta,
+      {
+        level: ArmyMeta.damageBonusPerLevel,
+        rarity: ArmyMeta.damageBonusPerRarity,
+        enchant: ArmyMeta.damageBonusPerEnchantLevel
+      }
     );
     this._unitsIndex = this._armyResolver.buildUnitsIndex({}, {});
     this._vm = new Vue({
@@ -278,7 +283,7 @@ export default class Army {
 
     this._loaded = true;
 
-    this._loadingRequest = this._game.getArmy().catch(()=>{
+    this._loadingRequest = this._game.getArmy().catch(() => {
       this._loaded = false;
       this._loadingRequest = null;
     });

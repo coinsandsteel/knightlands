@@ -31,7 +31,7 @@ export default {
     tabs: [
       { title: "level-up", to: { name: "unit-level" } },
       { title: "equipment", to: { name: "unit-equip" } },
-      { title: "promotoion", to: { name: "unit-promo" } }
+      { title: "promotion", to: { name: "unit-promo" } }
     ],
     currentTab: "level-up"
   }),

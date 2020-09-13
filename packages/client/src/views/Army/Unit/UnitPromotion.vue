@@ -35,12 +35,13 @@
             />
           </div>
 
-          <div class="flex flex-center" v-if="readyToPromote">
-            <CraftingIngridient
-              class="padding-top-2"
-              :ingridient="soulsIngridient"
-            />
+          <CraftingIngridient
+            class="padding-top-2"
+            :ingridient="soulsIngridient"
+            v-if="readyToPromote"
+          />
 
+          <div class="flex flex-center margin-top-1" v-if="readyToPromote">
             <CustomButton
               type="yellow"
               class="width-30"

@@ -2,10 +2,10 @@
   <router-link
     v-bind="$attrs"
     tag="div"
-    class="flex-basis-30 margin-bottom-2"
+    class="margin-bottom-2"
     :class="{ 'pointer-events-none': locked }"
   >
-    <div class="flex flex-column flex-center pointer relative">
+    <div class="flex flex-column flex-center pointer relative bg">
       <span :class="icon" class="icon-menu relative">
         <slot name="marker"></slot>
         <span class="overlay absolute-stretch" v-if="locked">
@@ -44,6 +44,11 @@ export default {
   height: 7rem;
 
   // .mobile({width: 5rem; height: 5rem;});
+}
+
+.bg {
+  background-color: #15132c6b;
+  border-radius: 3px;
 }
 
 .overlay {
