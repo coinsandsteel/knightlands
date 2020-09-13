@@ -49,7 +49,7 @@ const weaponDefaultFilters = {
   [EquipmentType.Whip]: true
 }
 
-const FiltersVersion = 2;
+const FiltersVersion = 3;
 
 const store = new Vuex.Store({
   state: {

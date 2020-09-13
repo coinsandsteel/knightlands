@@ -2,20 +2,29 @@
   <Promised class="screen-content" :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver, data }">
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+      <div class="screen-background"></div>
 
-      <span class="font-size-25 margin-bottom-3 title">{{$t("dis-from-title")}}</span>
+      <Title class="margin-top-1 margin-bottom-3">{{
+        $t("dis-from-title")
+      }}</Title>
 
       <div class="flex flex-center">
-        <Loot v-for="material in materialsInPosession" :key="material.id" :item="material"></Loot>
+        <Loot
+          v-for="material in materialsInPosession"
+          :key="material.id"
+          :item="material"
+        ></Loot>
       </div>
 
-      <span class="font-size-25 margin-top-5 margin-bottom-3 title">{{$t("dis-convert-title")}}</span>
+      <Title class="margin-top-5 margin-bottom-3">{{
+        $t("dis-convert-title")
+      }}</Title>
 
       <div class="flex flex-column">
         <MaterialConverterElement
           class="margin-bottom-4"
           ref="converters"
-          v-for="(material) in materialsForConversion"
+          v-for="material in materialsForConversion"
           :key="material.rarity"
           :id="material.rarity"
           :itemFrom="material.from"
@@ -27,11 +36,9 @@
       </div>
 
       <div class="flex flex-center margin-top-5">
-        <CustomButton
-          type="yellow"
-          :disabled="!canConvert"
-          @click="convert"
-        >{{$t("btn-dis-convert")}}</CustomButton>
+        <CustomButton type="yellow" :disabled="!canConvert" @click="convert">{{
+          $t("btn-dis-convert")
+        }}</CustomButton>
       </div>
     </template>
   </Promised>
@@ -49,6 +56,7 @@ import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import Loot from "@/components/Loot.vue";
 import MaterialConverterElement from "./MaterialConverterElement.vue";
+import Title from "@/components/Title.vue";
 
 export default {
   mixins: [AppSection, ShowItemsMixin, HintHandler, PromptMixin],
@@ -57,7 +65,8 @@ export default {
     LoadingScreen,
     MaterialConverterElement,
     CustomButton,
-    Loot
+    Loot,
+    Title
   },
   data: () => ({
     request: null,

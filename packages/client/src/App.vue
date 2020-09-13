@@ -522,20 +522,11 @@ export default {
 
 html {
   font-family: "Brandon", sans-serif;
-  font-size: 8px;
+  font-size: 6px;
   line-height: 1.2;
   box-sizing: content-box;
 
-  .mobile({font-size: 6px;});
-  .tablet({font-size: 7px;});
-  .laptop_small({font-size: 8px;});
-  .laptop({font-size: 8px;});
-  .laptop({font-size: 8px;});
   .fourk_screen({font-size: 10px;});
-
-  @media only screen and (max-width: 320px) {
-    font-size: 6px;
-  }
 
   background: @backgroundOutsideColor;
   background-image: url("./assets/ui/pattern.jpg");

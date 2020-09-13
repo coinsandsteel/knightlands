@@ -2,15 +2,26 @@
   <div class="flex flex-column">
     <div class="flex flex-center width-100">
       <div class="flex flex-column relative">
-        <span class="font-size-20 absolute-top white-space-no-wrap">{{$t(fromTitle)}}</span>
-        <Loot :item="itemFrom" :hideQuantity="true" :quantity="conversionRate" @hint="onHint"></Loot>
-        <span class="font-size-18 absolute-bottom">{{totalCount}}/{{requiredCount}}</span>
+        <span class="font-size-20 absolute-top white-space-no-wrap">{{
+          $t(fromTitle)
+        }}</span>
+        <Loot
+          :item="itemFrom"
+          :hideQuantity="true"
+          :quantity="conversionRate"
+          @hint="onHint"
+        ></Loot>
+        <span class="font-size-18 absolute-bottom"
+          >{{ totalCount }}/{{ requiredCount }}</span
+        >
       </div>
 
       <span class="arror right-arrow margin-left-2 margin-right-2"></span>
 
       <div class="flex flex-column relative">
-        <span class="font-size-20 absolute-top white-space-no-wrap">{{$t(toTitle)}}</span>
+        <span class="font-size-20 absolute-top white-space-no-wrap">{{
+          $t(toTitle)
+        }}</span>
         <NumericValue
           :showMax="true"
           :value="requiredCount"
@@ -24,7 +35,7 @@
             <Loot :hideQuantity="true" :item="itemTo" @hint="onHint"></Loot>
           </template>
         </NumericValue>
-        <span class="font-size-18 absolute-bottom">{{resultCount}}</span>
+        <span class="font-size-18 absolute-bottom">{{ resultCount }}</span>
       </div>
     </div>
   </div>
@@ -45,9 +56,11 @@ export default {
     resultCount: 0
   }),
   computed: {
-      totalCount() {
-      let item = this.$game.inventory.getItemByTemplate(this.itemFrom);
-      return item.count;
+    itemDataFrom() {
+      return this.$game.inventory.getItemByTemplate(this.itemFrom);
+    },
+    totalCount() {
+      return this.itemDataFrom.count;
     }
   },
   methods: {
@@ -56,7 +69,7 @@ export default {
       this.resultCount = 0;
     },
     canAdd() {
-      return this.requiredCount + this.conversionRate < this.totalCount;
+      return this.requiredCount + this.conversionRate <= this.totalCount;
     },
     inc() {
       this.requiredCount += this.conversionRate;

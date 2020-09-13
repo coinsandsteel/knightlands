@@ -1,31 +1,46 @@
 <template>
-  <div class="padding-1 height-100">
-    <Promised class="screen-content" :promise="request">
+  <div class="screen-content">
+    <Promised class="height-100 padding-top-1" :promise="request">
       <template v-slot:combined="{ isPending, isDelayOver }">
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+        <div class="screen-background"></div>
 
         <LootContainer
           ref="lootContainer"
-          :items="filteredItems"
+          class="item-list"
+          :items="items"
           :selectSlots="true"
           :multiSelect="true"
-          :lootProps="{showUnbindLevels: true, showLevel: true, }"
+          :lootProps="{
+            showUnbindLevels: true,
+            showLevel: true,
+            hideQuantity: true
+          }"
+          :filtersStore="$store.getters.getDisenchantFilters"
+          commitCmd="setDisenchantingFilters"
           @selected="handleItemSelected"
         ></LootContainer>
 
-        <span class="font-size-22 margin-top-3 margin-bottom-1 title">{{$t("disenchant-results")}}</span>
+        <div class="color-panel-2 no-padding margin-top-1">
+          <span
+            class="font-size-22 margin-bottom-1 font-outline font-weight-900"
+            >{{ $t("disenchant-results") }}</span
+          >
 
-        <div class="flex flex-center materials-preview">
-          <template v-if="Object.keys(predictedMaterials).length > 0">
-            <Loot
-              v-for="(data, key) in predictedMaterials"
-              :key="`${key}_${data.count}`"
-              :quantity="data.count"
-              :item="data.template"
-            ></Loot>
-          </template>
+          <div class="flex flex-center materials-preview">
+            <template v-if="Object.keys(predictedMaterials).length > 0">
+              <Loot
+                v-for="(data, key) in predictedMaterials"
+                :key="`${key}_${data.count}`"
+                :quantity="data.count"
+                :item="data.template"
+              ></Loot>
+            </template>
 
-          <span class="font-size-20" v-else>{{$t("disenchant-no-materials")}}</span>
+            <span class="font-size-18" v-else>{{
+              $t("disenchant-no-materials")
+            }}</span>
+          </div>
         </div>
 
         <div class="flex flex-center margin-top-1">
@@ -33,17 +48,21 @@
             @click="disenchantItems"
             :disabled="Object.keys(predictedMaterials).length == 0"
             type="yellow"
-          >{{$t("btn-disenchant")}}</CustomButton>
+            >{{ $t("btn-disenchant") }}</CustomButton
+          >
         </div>
       </template>
     </Promised>
 
     <portal to="footer" :slim="true" v-if="isActive">
-      <CustomButton
+      <!-- <CustomButton
         type="grey"
-        @click="showItemFilter({customFilter: customFilter})"
-      >{{$t("btn-filter")}}</CustomButton>
-      <CustomButton type="green" @click="goToUpgrade">{{$t("btn-dis-upgrade")}}</CustomButton>
+        @click="showItemFilter({ customFilter: customFilter })"
+        >{{ $t("btn-filter") }}</CustomButton
+      > -->
+      <CustomButton type="grey" @click="goToUpgrade">{{
+        $t("btn-dis-upgrade")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -54,7 +73,6 @@ import { Promised } from "vue-promised";
 import PromptMixin from "@/components/PromptMixin.vue";
 import LootContainer from "@/components/LootContainer.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
 import CustomButton from "@/components/Button.vue";
 import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 import DisenchantingMeta from "@/disenchanting_meta";
@@ -62,7 +80,7 @@ import Loot from "@/components/Loot.vue";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 
 export default {
-  mixins: [AppSection, PromptMixin, FilteredLootMixin, ShowItemsMixin],
+  mixins: [AppSection, PromptMixin, ShowItemsMixin],
   components: {
     LoadingScreen,
     LootContainer,
@@ -86,6 +104,25 @@ export default {
       }
 
       this.equipmentLookup[EquipmentSlots[key]] = true;
+    }
+  },
+  computed: {
+    items() {
+      const items = this.$game.inventory.items;
+      const filteredItems = new Array(items.length);
+      const length = items.length;
+      let insertedItems = 0;
+
+      for (let index = 0; index < length; ++index) {
+        const item = items[index];
+        if (item.equipped) {
+          continue;
+        }
+        filteredItems[insertedItems++] = item;
+      }
+
+      filteredItems.length = insertedItems;
+      return filteredItems;
     }
   },
   methods: {
@@ -149,5 +186,10 @@ export default {
 <style lang="less" scoped>
 .materials-preview {
   height: 10rem;
+}
+
+.item-list {
+  height: 60%;
+  overflow: hidden;
 }
 </style>
