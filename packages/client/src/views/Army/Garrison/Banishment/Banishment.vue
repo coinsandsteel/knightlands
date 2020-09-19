@@ -185,13 +185,13 @@ export default {
       }
     },
     autofill() {
-      let i = this.filteredUnits.length - 1;
+      let i = this.units.length - 1;
       for (; i >= 0; i--) {
         if (this.maxSelected) {
           break;
         }
 
-        const unit = this.filteredUnits[i];
+        const unit = this.units[i];
         const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
         if (idx != -1) {
           continue;
