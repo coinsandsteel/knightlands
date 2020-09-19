@@ -82,11 +82,13 @@ export default {
       const itemsDB = this.$game.itemsDB;
       const crafting = this.$game.crafting;
       for (; i < length; ++i) {
-        if (
-          filters[
-            itemsDB.getEquipmentType(crafting.getRecipe(recipes[i]).resultItem)
-          ]
-        ) {
+        const resultItemId = crafting.getRecipe(recipes[i]).resultItem;
+
+        if (!resultItemId) {
+          continue;
+        }
+
+        if (filters[itemsDB.getEquipmentType(resultItemId)]) {
           this.recipes.push(recipes[i]);
         }
       }

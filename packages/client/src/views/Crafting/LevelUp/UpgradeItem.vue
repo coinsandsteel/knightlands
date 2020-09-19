@@ -114,7 +114,7 @@
           class="margin-top-2"
           type="yellow"
           @click="returnBack"
-          >{{ $t("btn-conitnue") }}</CustomButton
+          >{{ $t("btn-return") }}</CustomButton
         >
       </div>
     </div>

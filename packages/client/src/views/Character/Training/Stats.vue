@@ -39,9 +39,18 @@
         </div>
       </div>
 
+      <div class="flex flex-center color-panel-2">
+        <div class="flex flex-no-wrap flex-item-center">
+          <span class="icon-gold margin-right-half"></span>
+          <span class="status-bar-font font-size-20">{{
+            $game.softCurrency
+          }}</span>
+        </div>
+      </div>
+
       <div
         v-show="attributesNeedReset"
-        class="flex flex-center flex-full margin-top-3 flex-space-around"
+        class="flex flex-center flex-full margin-top-3 flex-space-around margin-bottom-3"
       >
         <custom-button type="green" @click="confirmAttributes">{{
           $t("btn-apply")
@@ -105,10 +114,9 @@ export default {
     getResource(stat) {
       return {
         itemId: TrainingCampMeta.find(x => x.stat == stat).resource,
-        quantity: TrainingCamp.getStatResourceCost(
-          stat,
-          this.getAttributeValue(stat)
-        )
+        quantity:
+          TrainingCamp.getStatResourceCost(stat, this.getAttributeValue(stat)) +
+          this.upgradeResources[stat]
       };
     },
     getAttributeValue(stat) {
@@ -132,10 +140,10 @@ export default {
       return this.getUpgradePrice(stat) <= this.$game.softCurrency;
     },
     hasEnoughResource(stat) {
+      const res = this.getResource(stat);
       return (
         this.resourceItems[stat] &&
-        this.resourceItems[stat].count >=
-          TrainingCamp.getStatResourceCost(stat, this.getAttributeValue(stat))
+        this.resourceItems[stat].count >= res.quantity
       );
     },
     getUpgradePrice(stat) {
@@ -156,7 +164,7 @@ export default {
         this.upgradePrice[i] = 0;
 
         if (this.resourceItems[i]) {
-          this.resourceItems[i].count += this.upgradeResources[i];
+          // this.resourceItems[i].count += this.upgradeResources[i];
         }
         this.upgradeResources[i] = 0;
       }
@@ -172,7 +180,7 @@ export default {
       );
       this.upgradeResources[attr] += resUpgradePrice;
       if (this.resourceItems[attr]) {
-        this.resourceItems[attr].count -= resUpgradePrice;
+        // this.resourceItems[attr].count -= resUpgradePrice;
       }
 
       this.purchasedAttributes[attr]++;
@@ -193,7 +201,7 @@ export default {
       this.upgradeResources[attr] -= resUpgradePrice;
 
       if (this.resourceItems[attr]) {
-        this.resourceItems[attr].count += resUpgradePrice;
+        // this.resourceItems[attr].count += resUpgradePrice;
       }
 
       return true;

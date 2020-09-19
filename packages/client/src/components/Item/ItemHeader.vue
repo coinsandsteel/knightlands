@@ -31,7 +31,7 @@
           class="width-100 flex flex-center flex-no-wrap"
           v-if="isEquipment && !isPreview"
         >
-          <span class="margin-right-1 font-size-18">{{
+          <span class="margin-right-1 font-size-18" v-if="level">{{
             $t("level", { lvl: level })
           }}</span>
           <progress-bar

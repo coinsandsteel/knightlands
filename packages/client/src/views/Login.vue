@@ -42,7 +42,13 @@ export default {
     },
     async signIn() {
       this.request = this.$game.signIn();
-      await this.request;
+
+      try {
+        await this.request;
+      } catch (e) {
+        console.error(e);
+      }
+
       this.redirectToNextPage();
     }
   }

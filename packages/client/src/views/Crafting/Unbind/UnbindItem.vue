@@ -73,13 +73,17 @@
       <CustomButton type="yellow" v-if="isAtMaxUnbind" @click="levelUp">{{
         $t("btn-level-up")
       }}</CustomButton>
-      <CustomButton
-        v-else
-        type="yellow"
-        :disabled="lockedTotal == 0"
-        @click="unbind"
-        >{{ $t("btn-upgrade") }}</CustomButton
-      >
+      <div v-else class="flex flex-center">
+        <CustomButton
+          type="yellow"
+          :disabled="lockedTotal == 0"
+          @click="unbind"
+          >{{ $t("btn-upgrade") }}</CustomButton
+        >
+        <CustomButton type="grey" @click="craft">{{
+          $t("btn-craft-more")
+        }}</CustomButton>
+      </div>
     </div>
   </div>
 </template>
@@ -92,6 +96,7 @@ import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Loot from "@/components/Loot.vue";
 import Title from "@/components/Title.vue";
+import DustRecipes from "@/dust_recipes";
 
 export default {
   mixins: [AppSection, PromptMixin],
@@ -149,6 +154,18 @@ export default {
     }
   },
   methods: {
+    craft() {
+      let query = { returnTo: this.$route.fullPath };
+      if (this.$route.query) {
+        query = this.$route.query;
+      }
+
+      this.$router.push({
+        name: "craft",
+        params: { recipeId: DustRecipes[this.item.template] },
+        query
+      });
+    },
     async unbind() {
       let itemName = this.$t(this.$game.itemsDB.getName(this.item.template));
       let itemRarity = this.$game.itemsDB.getRarity(this.item.template);

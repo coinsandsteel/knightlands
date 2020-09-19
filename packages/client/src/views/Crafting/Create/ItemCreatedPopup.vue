@@ -25,20 +25,41 @@ export default {
   components: { UserDialog, ItemInfo, CustomButton },
   computed: {
     isAtMaxLevel() {
-      return this.$game.itemsDB.getMaxLevel(this.item, 2) < this.item.level;
+      return (
+        this.$game.itemsDB.getMaxLevel(this.itemData, 2) < this.itemData.level
+      );
+    },
+    itemData() {
+      let item = this.item;
+      if (typeof this.item != "object") {
+        // if template was passed it means that new item was created
+        // search for non-unique version of item
+        const items = this.$game.inventory.getItemsByTemplate(this.item);
+        for (const i of items) {
+          if (!i.unique) {
+            item = i;
+            break;
+          }
+        }
+      }
+
+      return item;
     }
   },
   methods: {
     levelUp() {
-      if (this.item.breakLimit != 2) {
+      const query = { returnTo: this.$route.query.returnTo };
+      if (this.itemData.breakLimit != 2) {
         this.$router.push({
           name: "unbind-item",
-          params: { itemId: this.item.id }
+          params: { itemId: this.itemData.id },
+          query
         });
       } else if (this.isAtMaxLevel) {
         this.$router.push({
           name: "upgrade-item",
-          params: { itemId: this.item.id }
+          params: { itemId: this.itemData.id },
+          query
         });
       }
 

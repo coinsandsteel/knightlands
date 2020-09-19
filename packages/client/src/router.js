@@ -732,16 +732,14 @@ const router = new Router({
       component: Character,
       meta: {
         requiresAuth: true,
-        noBackButton: true
+        noBackButton: true,
+        noTopBar: true
       },
       children: [
         {
           path: "",
           name: "equipment",
-          component: CharacterEquipment,
-          meta: {
-            noTopBar: true
-          }
+          component: CharacterEquipment
         },
         {
           path: "training",
@@ -751,18 +749,12 @@ const router = new Router({
         {
           path: "buffs",
           name: "character-buffs",
-          component: CharacterBuffs,
-          meta: {
-            noTopBar: true
-          }
+          component: CharacterBuffs
         },
         {
           path: "misc",
           name: "character-misc",
-          component: CharacterMisc,
-          meta: {
-            noTopBar: true
-          }
+          component: CharacterMisc
         }
       ]
     },
