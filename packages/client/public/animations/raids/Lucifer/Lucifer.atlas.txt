@@ -7,9 +7,9 @@ repeat: none
 Bow
   rotate: true
   xy: 2, 326
-  size: 264, 388
+  size: 264, 392
   orig: 264, 392
-  offset: 0, 2
+  offset: 0, 0
   index: -1
 Ellipse 1
   rotate: true
@@ -20,7 +20,7 @@ Ellipse 1
   index: -1
 Katana
   rotate: false
-  xy: 449, 407
+  xy: 449, 329
   size: 119, 131
   orig: 119, 131
   offset: 0, 0
@@ -34,21 +34,21 @@ Layer 21
   index: -1
 Layer 22
   rotate: false
-  xy: 430, 329
+  xy: 453, 462
   size: 78, 76
   orig: 86, 85
   offset: 5, 5
   index: -1
 Layer 23
   rotate: true
-  xy: 392, 387
+  xy: 533, 507
   size: 31, 36
   orig: 33, 38
   offset: 1, 1
   index: -1
 Layer 24
   rotate: true
-  xy: 392, 456
+  xy: 396, 456
   size: 45, 51
   orig: 47, 57
   offset: 1, 5
@@ -82,22 +82,22 @@ Layer 27
   offset: 0, 0
   index: -1
 Layer 28
-  rotate: true
-  xy: 392, 420
+  rotate: false
+  xy: 533, 462
   size: 34, 43
   orig: 37, 45
   offset: 1, 1
   index: -1
 Layer 29
   rotate: true
-  xy: 392, 503
+  xy: 396, 503
   size: 40, 55
   orig: 40, 55
   offset: 0, 0
   index: -1
 Layer 30
   rotate: true
-  xy: 392, 545
+  xy: 396, 545
   size: 45, 58
   orig: 45, 60
   offset: 0, 2

@@ -273,7 +273,17 @@ export default {
       this.raidStatus = await this.raidStatusRequest;
     },
     async confirmSummon() {
-      this.request = this.purchaseRequest(this.$game.summonRaid(this.raid));
+      this.request = this.purchaseRequest(
+        this.$game.summonRaid(this.raid, this.isFreeRaid)
+      );
+
+      if (this.isFreeRaid) {
+        const data = await this.request;
+        this.$router.push({
+          name: "view-raid",
+          params: { raidId: data.raid }
+        });
+      }
     }
   }
 };

@@ -1,90 +1,90 @@
 
 Terraos.png
-size: 580,976
+size: 580,956
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Ellipse 7
   rotate: false
-  xy: 2, 801
+  xy: 2, 781
   size: 458, 31
   orig: 460, 33
   offset: 1, 1
   index: -1
 Layer 299
   rotate: false
-  xy: 293, 8
+  xy: 293, 22
   size: 268, 243
   orig: 268, 243
   offset: 0, 0
   index: -1
 Layer 300
   rotate: false
-  xy: 2, 504
+  xy: 2, 484
   size: 380, 295
   orig: 384, 295
   offset: 4, 0
   index: -1
 Layer 301
   rotate: false
-  xy: 2, 834
+  xy: 2, 814
   size: 476, 140
   orig: 476, 140
   offset: 0, 0
   index: -1
 Layer 302
   rotate: false
-  xy: 293, 253
-  size: 273, 245
+  xy: 293, 267
+  size: 270, 211
   orig: 273, 245
   offset: 0, 0
   index: -1
 Layer 303
   rotate: false
-  xy: 384, 500
+  xy: 384, 480
   size: 170, 145
   orig: 170, 145
   offset: 0, 0
   index: -1
 Layer 304
   rotate: true
-  xy: 464, 647
+  xy: 464, 627
   size: 138, 105
   orig: 140, 107
   offset: 1, 1
   index: -1
 Layer 305
   rotate: false
-  xy: 480, 787
+  xy: 480, 767
   size: 95, 136
   orig: 97, 138
   offset: 1, 1
   index: -1
 Layer 306
   rotate: true
-  xy: 480, 925
+  xy: 480, 905
   size: 49, 98
   orig: 51, 100
   offset: 1, 1
   index: -1
 Layer 307
   rotate: false
-  xy: 384, 675
+  xy: 384, 655
   size: 78, 124
   orig: 80, 126
   offset: 1, 1
   index: -1
 Layer 308
   rotate: true
-  xy: 2, 233
+  xy: 2, 213
   size: 269, 289
   orig: 269, 289
   offset: 0, 0
   index: -1
 Layer 41 copy 2
-  rotate: true
+  rotate: false
   xy: 2, 2
-  size: 229, 231
+  size: 229, 209
   orig: 229, 231
   offset: 0, 0
   index: -1

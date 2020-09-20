@@ -1,75 +1,75 @@
 
 ValkFara.png
-size: 795,519
+size: 1388,283
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Ellipse 1
   rotate: false
-  xy: 2, 2
+  xy: 456, 19
   size: 191, 14
   orig: 193, 16
   offset: 1, 1
   index: -1
 Layer 46 copy 2
-  rotate: true
-  xy: 636, 120
-  size: 116, 155
+  rotate: false
+  xy: 1270, 128
+  size: 116, 153
   orig: 139, 155
   offset: 11, 0
   index: -1
 Layer 46 copy 6
   rotate: false
-  xy: 688, 238
-  size: 105, 279
+  xy: 1178, 2
+  size: 90, 279
   orig: 111, 279
-  offset: 0, 0
+  offset: 4, 0
   index: -1
 Layer 732
-  rotate: false
-  xy: 2, 65
-  size: 297, 452
+  rotate: true
+  xy: 2, 2
+  size: 279, 452
   orig: 297, 455
-  offset: 0, 3
+  offset: 18, 3
   index: -1
 Layer 733
   rotate: true
-  xy: 301, 47
+  xy: 843, 59
   size: 222, 333
   orig: 222, 333
   offset: 0, 0
   index: -1
 Layer 735
   rotate: true
-  xy: 2, 18
+  xy: 1053, 12
   size: 45, 85
   orig: 45, 85
   offset: 0, 0
   index: -1
 Layer 736
   rotate: false
-  xy: 301, 271
+  xy: 456, 35
   size: 385, 246
   orig: 385, 249
   offset: 0, 3
   index: -1
 Layer 738
   rotate: false
-  xy: 636, 9
+  xy: 1270, 17
   size: 100, 109
   orig: 100, 109
   offset: 0, 0
   index: -1
 Layer 739
   rotate: true
-  xy: 184, 34
+  xy: 843, 28
   size: 29, 113
   orig: 29, 113
   offset: 0, 0
   index: -1
 Layer 740
   rotate: true
-  xy: 89, 24
+  xy: 958, 18
   size: 39, 93
   orig: 39, 93
   offset: 0, 0

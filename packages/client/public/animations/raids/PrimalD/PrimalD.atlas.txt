@@ -1,117 +1,117 @@
 
 PrimalD.png
-size: 1820,1048
+size: 2777,706
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Ellipse 2
-  rotate: true
-  xy: 2, 278
+  rotate: false
+  xy: 686, 2
   size: 768, 46
   orig: 770, 48
   offset: 1, 1
   index: -1
 Group 49
-  rotate: true
-  xy: 50, 307
+  rotate: false
+  xy: 686, 50
   size: 739, 654
   orig: 765, 803
   offset: 0, 92
   index: -1
 Layer 599
-  rotate: true
-  xy: 1061, 2
+  rotate: false
+  xy: 2059, 5
   size: 360, 206
   orig: 360, 206
   offset: 0, 0
   index: -1
 Layer 600
   rotate: true
-  xy: 1332, 506
-  size: 540, 483
+  xy: 1427, 162
+  size: 542, 491
   orig: 542, 491
-  offset: 0, 8
+  offset: 0, 0
   index: -1
 Layer 601
-  rotate: true
-  xy: 706, 364
-  size: 682, 624
+  rotate: false
+  xy: 2, 20
+  size: 682, 684
   orig: 682, 684
-  offset: 0, 60
+  offset: 0, 0
   index: -1
 Layer 606
   rotate: false
-  xy: 1269, 131
+  xy: 2592, 67
   size: 183, 231
   orig: 202, 235
   offset: 18, 3
   index: -1
 Layer 607
-  rotate: true
-  xy: 795, 311
+  rotate: false
+  xy: 1820, 26
   size: 51, 134
   orig: 53, 136
   offset: 1, 1
   index: -1
 Layer 609
-  rotate: true
-  xy: 706, 310
+  rotate: false
+  xy: 2715, 617
   size: 52, 87
   orig: 54, 89
   offset: 1, 1
   index: -1
 Layer 61 copy 2
-  rotate: true
-  xy: 1455, 319
+  rotate: false
+  xy: 2224, 492
   size: 185, 212
   orig: 211, 214
   offset: 25, 1
   index: -1
 Layer 610
-  rotate: false
-  xy: 1625, 106
+  rotate: true
+  xy: 1456, 4
   size: 156, 211
   orig: 156, 211
   offset: 0, 0
   index: -1
 Layer 611
-  rotate: true
-  xy: 1454, 132
+  rotate: false
+  xy: 2224, 321
   size: 185, 169
   orig: 185, 169
   offset: 0, 0
   index: -1
 Layer 612
-  rotate: true
-  xy: 666, 14
-  size: 291, 393
+  rotate: false
+  xy: 2421, 300
+  size: 292, 404
   orig: 292, 404
-  offset: 1, 11
+  offset: 0, 0
   index: -1
 Layer 614
   rotate: true
-  xy: 1669, 351
+  xy: 1669, 7
   size: 153, 149
   orig: 155, 151
   offset: 1, 1
   index: -1
 Layer 615
-  rotate: true
-  xy: 173, 3
+  rotate: false
+  xy: 1920, 213
   size: 302, 491
   orig: 302, 491
   offset: 0, 0
   index: -1
 Layer 63 copy
   rotate: true
-  xy: 1269, 2
+  xy: 1873, 33
   size: 127, 184
   orig: 127, 184
   offset: 0, 0
   index: -1
 Layer 69 copy
   rotate: false
-  xy: 2, 10
+  xy: 2421, 32
   size: 169, 266
   orig: 175, 277
   offset: 2, 11

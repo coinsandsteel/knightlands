@@ -1,61 +1,61 @@
 
 Ella.png
-size: 519,521
+size: 550,521
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Ellipse 5
-  rotate: false
-  xy: 2, 6
+  rotate: true
+  xy: 529, 36
   size: 239, 19
   orig: 241, 21
   offset: 1, 1
   index: -1
 Group 266 copy 4
-  rotate: false
-  xy: 2, 166
-  size: 242, 353
+  rotate: true
+  xy: 2, 275
+  size: 244, 393
   orig: 244, 393
-  offset: 2, 0
+  offset: 0, 0
   index: -1
 Group 268 copy
-  rotate: true
-  xy: 246, 2
+  rotate: false
+  xy: 397, 18
   size: 130, 257
   orig: 133, 259
   offset: 1, 1
   index: -1
 Group 268 copy 2
-  rotate: true
-  xy: 2, 27
+  rotate: false
+  xy: 397, 277
   size: 137, 242
   orig: 140, 244
   offset: 2, 1
   index: -1
 Layer 44
-  rotate: true
-  xy: 246, 134
+  rotate: false
+  xy: 2, 103
   size: 385, 170
   orig: 385, 170
   offset: 0, 0
   index: -1
 Layer 45
-  rotate: false
-  xy: 418, 355
+  rotate: true
+  xy: 2, 2
   size: 99, 164
   orig: 99, 164
   offset: 0, 0
   index: -1
 Layer 46
   rotate: false
-  xy: 418, 192
+  xy: 293, 65
   size: 36, 36
   orig: 38, 38
   offset: 1, 1
   index: -1
 Layer 47
-  rotate: false
-  xy: 418, 230
+  rotate: true
+  xy: 168, 6
   size: 95, 123
   orig: 97, 125
   offset: 1, 1

@@ -989,10 +989,13 @@ class Game {
     });
   }
 
-  async joinRaid(raidId) {
-    return await this._request(Operations.JoinRaid, {
-      raidId
-    });
+  async joinRaid(raidId, isFree = false) {
+    return (
+      await this._request(Operations.JoinRaid, {
+        raidId,
+        isFree
+      })
+    ).response;
   }
 
   async fetchRaid(raidId) {

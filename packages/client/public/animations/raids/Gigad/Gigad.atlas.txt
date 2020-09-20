@@ -27,8 +27,8 @@ Layer 245 copy
   index: -1
 Layer 48
   rotate: false
-  xy: 221, 138
-  size: 71, 140
+  xy: 209, 31
+  size: 62, 140
   orig: 71, 140
   offset: 0, 0
   index: -1
@@ -69,7 +69,7 @@ Layer 53
   index: -1
 Layer 54
   rotate: false
-  xy: 209, 31
+  xy: 221, 173
   size: 69, 105
   orig: 71, 107
   offset: 1, 1

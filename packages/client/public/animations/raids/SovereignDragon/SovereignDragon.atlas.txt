@@ -1,145 +1,145 @@
 
 SovereignDragon.png
-size: 2503,483
+size: 2510,478
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Ellipse 1
   rotate: false
-  xy: 1206, 3
+  xy: 1206, 427
   size: 828, 49
   orig: 830, 51
   offset: 1, 1
   index: -1
 Layer 196 copy
   rotate: true
-  xy: 1477, 144
+  xy: 1453, 88
   size: 117, 228
   orig: 117, 228
   offset: 0, 0
   index: -1
 Layer 200 copy
   rotate: false
-  xy: 1574, 82
+  xy: 1828, 88
   size: 120, 60
   orig: 120, 60
   offset: 0, 0
   index: -1
 Layer 208 copy
-  rotate: true
-  xy: 1206, 54
-  size: 427, 269
+  rotate: false
+  xy: 1704, 150
+  size: 427, 275
   orig: 427, 275
-  offset: 0, 6
+  offset: 0, 0
   index: -1
 Layer 688
   rotate: false
-  xy: 1477, 263
+  xy: 1206, 207
   size: 496, 218
   orig: 496, 218
   offset: 0, 0
   index: -1
 Layer 689
   rotate: true
-  xy: 604, 29
+  xy: 604, 24
   size: 452, 600
   orig: 452, 600
   offset: 0, 0
   index: -1
 Layer 690
   rotate: true
-  xy: 1707, 156
+  xy: 2408, 150
   size: 105, 97
   orig: 105, 97
   offset: 0, 0
   index: -1
 Layer 691
   rotate: false
-  xy: 2133, 8
+  xy: 2034, 114
   size: 93, 34
   orig: 93, 34
   offset: 0, 0
   index: -1
 Layer 692
-  rotate: false
-  xy: 1696, 60
+  rotate: true
+  xy: 1950, 67
   size: 81, 82
   orig: 81, 82
   offset: 0, 0
   index: -1
 Layer 693
-  rotate: true
-  xy: 1975, 366
+  rotate: false
+  xy: 1828, 40
   size: 115, 46
   orig: 117, 48
   offset: 1, 1
   index: -1
 Layer 695
   rotate: false
-  xy: 604, 2
+  xy: 1828, 13
   size: 72, 25
   orig: 82, 27
   offset: 9, 1
   index: -1
 Layer 697
   rotate: false
-  xy: 2, 10
-  size: 600, 471
+  xy: 2, 3
+  size: 600, 473
   orig: 600, 473
-  offset: 0, 2
+  offset: 0, 0
   index: -1
 Layer 698
   rotate: false
-  xy: 2036, 262
+  xy: 2133, 257
   size: 375, 219
   orig: 375, 226
   offset: 0, 7
   index: -1
 Layer 699
   rotate: false
-  xy: 1477, 59
+  xy: 1570, 3
   size: 95, 83
   orig: 95, 83
   offset: 0, 0
   index: -1
 Layer 700
   rotate: true
-  xy: 2036, 44
+  xy: 2133, 39
   size: 216, 273
   orig: 216, 273
   offset: 0, 0
   index: -1
 Layer 701
-  rotate: false
-  xy: 2311, 8
+  rotate: true
+  xy: 1206, 15
   size: 190, 245
   orig: 190, 245
   offset: 0, 0
   index: -1
 Layer 702
   rotate: false
-  xy: 2036, 5
+  xy: 2036, 439
   size: 95, 37
   orig: 95, 37
   offset: 0, 0
   index: -1
 Layer 703
   rotate: false
-  xy: 2413, 255
+  xy: 2408, 39
   size: 86, 109
   orig: 86, 109
   offset: 0, 0
   index: -1
 Layer 705
-  rotate: true
-  xy: 2413, 366
+  rotate: false
+  xy: 1453, 2
   size: 115, 84
   orig: 115, 84
   offset: 0, 0
   index: -1
 Layer 706
-  rotate: false
-  xy: 1806, 118
+  rotate: true
+  xy: 1683, 12
   size: 136, 143
   orig: 158, 143
   offset: 0, 0

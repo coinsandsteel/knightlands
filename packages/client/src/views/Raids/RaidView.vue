@@ -211,7 +211,7 @@
       </div>
 
       <portal to="footer" v-if="isActive">
-        <CopyButton :data="href" caption="btn-share"></CopyButton>
+        <CopyButton v-if="!isFreeRaid" :data="href" caption="btn-share"></CopyButton>
       </portal>
 
       <div

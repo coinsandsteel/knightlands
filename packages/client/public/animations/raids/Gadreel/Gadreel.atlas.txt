@@ -1,6 +1,6 @@
 
 Gadreel.png
-size: 825,250
+size: 820,250
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -13,7 +13,7 @@ Ellipse 18
   index: -1
 Group 232 copy
   rotate: true
-  xy: 473, 112
+  xy: 468, 112
   size: 136, 275
   orig: 138, 277
   offset: 1, 1
@@ -21,7 +21,7 @@ Group 232 copy
 Layer 766
   rotate: false
   xy: 299, 5
-  size: 172, 243
+  size: 167, 243
   orig: 172, 243
   offset: 0, 0
   index: -1
@@ -34,21 +34,21 @@ Layer 767
   index: -1
 Layer 768
   rotate: false
-  xy: 758, 13
+  xy: 753, 13
   size: 65, 110
   orig: 65, 110
   offset: 0, 0
   index: -1
 Layer 769
   rotate: true
-  xy: 473, 2
+  xy: 468, 2
   size: 108, 283
   orig: 119, 283
   offset: 1, 0
   index: -1
 Layer 770
   rotate: false
-  xy: 750, 125
+  xy: 745, 125
   size: 71, 123
   orig: 71, 123
   offset: 0, 0
