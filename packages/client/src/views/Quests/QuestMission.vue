@@ -3,7 +3,9 @@
     <div
       class="flex flex-center flex-column font-outline font-size-30 enemy-title"
     >
-      <span class="rarity-mythical font-weight-700" v-show="isBoss">BOSS</span>
+      <span class="rarity-mythical font-weight-900 font-outline" v-show="isBoss"
+        >BOSS</span
+      >
       <div class="enemy-title-font">{{ $t(missionName) }}</div>
     </div>
 
@@ -19,24 +21,24 @@
         <div class="nav-arrow left"></div>
       </div>
 
-      <agile
-        ref="enemyList"
-        :dots="false"
-        :navButtons="false"
-        :centerMode="true"
-        :speed="300"
-        :infinite="false"
-        class="quest-enemies width-100"
-        @afterChange="handleEnemyChanged($event)"
+      <slider
+        ref="slider"
+        animation="fade"
+        :touch="true"
+        :control-btn="false"
+        :indicators="false"
+        :autoplay="false"
+        width="100%"
+        height="100%"
+        v-model="sliderIndex"
+        @change="handleEnemyChanged($event)"
       >
-        <div
-          v-for="index in enemyList"
-          :key="index"
-          class="quest-image flex flex-column flex-center flex-end"
-        >
-          <img ref="enemyView" :src="enemyImage(index)" />
-        </div>
-      </agile>
+        <slider-item class="flex" v-for="index in enemyList" :key="index">
+          <div class="quest-image flex flex-column flex-center flex-end">
+            <img ref="enemyView" :src="enemyImage(index)" />
+          </div>
+        </slider-item>
+      </slider>
 
       <div
         :class="{ hidden: questIndex >= maxQuestIndex }"
@@ -46,9 +48,10 @@
         <div class="nav-arrow"></div>
       </div>
 
-      <div class="absolute-stretch z-index-1 pointer-events-none">
+      <div class="absolute-stretch z-index-100 pointer-events-none">
         <DamageText
           v-for="damage in playerDamages"
+          :local="true"
           :key="damage.id"
           :crit="damage.crit"
           >{{ damage.damage }}</DamageText
@@ -56,59 +59,55 @@
       </div>
     </div>
 
-    <progress-bar
-      :percentMode="true"
-      v-model="progress.current"
-      :maxValue="progress.max"
-      height="0.75rem"
-      width="80%"
-      valuePosition="top"
-      barType="yellow"
-      valueClass="white-font font-outline font-size-30 quest-progress-value"
-      :thresholds="thresholds"
-    ></progress-bar>
+    <div class="color-panel-1 flex flex-column full-flex">
+      <progress-bar
+        :percentMode="true"
+        v-model="progress.current"
+        :maxValue="progress.max"
+        height="0.75rem"
+        width="80%"
+        valuePosition="top"
+        barType="yellow"
+        valueClass="white-font font-outline font-size-30 quest-progress-value"
+        :thresholds="thresholds"
+      ></progress-bar>
 
-    <div class="quest-bottom panel flex flex-column full-flex">
-      <div class="flex quest-info-table">
+      <div class="flex margin-top-2">
         <div
-          class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start"
+          class="width-50 font-size-25 flex flex-column flex-center flex-justify-start"
         >
-          <div>Rewards</div>
-          <div class="margin-top-small">
+          <span class="margin-bottom-1 yellow-title font-weight-900"
+            >Rewards</span
+          >
+          <div class="flex flex-column flex-start">
             <icon-with-value
+              class="flex-start margin-bottom-half"
               iconClass="icon-exp"
               :value="quest.exp"
             ></icon-with-value>
             <icon-with-value
+              class="flex-start"
               iconClass="icon-gold"
               :value="`${quest.goldMin}-${quest.goldMax}`"
             ></icon-with-value>
           </div>
         </div>
         <div
-          class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start"
+          class="width-50 font-size-25 flex flex-column flex-center flex-justify-start"
           v-show="quest.energy"
         >
-          <div>Cost</div>
-          <div class="margin-top-small">
+          <span class="margin-bottom-1 blue-title font-weight-900">Cost</span>
+          <div class="flex flex-column">
             <icon-with-value
+              class="flex-start"
               iconClass="icon-energy"
               :value="quest.energy"
             ></icon-with-value>
           </div>
         </div>
       </div>
-
-      <div class="flex full-flex padding-left-2 padding-right-2">
-        <loot
-          v-for="reward in rewards"
-          :key="reward.id"
-          :item="reward"
-          @hint="handleHint"
-        ></loot>
-      </div>
     </div>
-    <div class="quest-footer flex flex-center">
+    <div class="margin-top-1 flex flex-center">
       <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">
         Kill previous enemies
       </div>
@@ -132,6 +131,15 @@
         >
       </div>
     </div>
+
+    <div class="flex full-flex padding-left-2 padding-right-2">
+      <loot
+        v-for="reward in rewards"
+        :key="reward.id"
+        :item="reward"
+        @hint="handleHint"
+      ></loot>
+    </div>
   </div>
 </template>
 
@@ -141,7 +149,6 @@ import Zones from "@/campaign_database";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Loot from "@/components/Loot.vue";
-const ItemType = require("@/../../knightlands-shared/item_type");
 import Stat from "@/../../knightlands-shared/character_stat.js";
 import IconWithValue from "@/components/IconWithValue.vue";
 import UiConstants from "@/ui_constants";
@@ -150,7 +157,6 @@ import PromisedButton from "@/components/PromisedButton.vue";
 import AttackButton from "@/components/AttackButton.vue";
 import CustomButton from "@/components/Button.vue";
 import DamageText from "@/views/Raids/DamageText.vue";
-const Events = require("@/../../knightlands-shared/events");
 import Errors from "@/../../knightlands-shared/errors";
 
 import { create } from "vue-modal-dialogs";
@@ -183,7 +189,8 @@ export default {
       thresholds: UiConstants.progressThresholds,
       lootHash: {},
       request: null,
-      playerDamages: []
+      playerDamages: [],
+      sliderIndex: 0
     };
   },
   created() {
@@ -194,12 +201,13 @@ export default {
 
     this.$game.inventory.on(Inventory.Changed, this.handleInventoryCallback);
 
-    this.$refs.enemyList.goTo(this.questIndex * 1);
+    this.sliderIndex = +this.questIndex;
   },
   activated() {
     this.$game.inventory.on(Inventory.Changed, this.handleInventoryCallback);
-
-    this.$refs.enemyList.goTo(this.questIndex);
+    this.$refs.slider.af = null;
+    this.$refs.slider.initTouchArea();
+    this.sliderIndex = +this.questIndex;
   },
   destroyed() {
     this.$game.inventory.off(Inventory.Changed, this.handleInventoryCallback);
@@ -252,7 +260,7 @@ export default {
         let index = this.enemyList[i];
         let progress = this.$game.getQuestProgress(this.zone._id, index);
         if (progress.current < progress.max) {
-          this.$refs.enemyList.goTo(index);
+          this.sliderIndex = index;
           return;
         }
       }
@@ -265,13 +273,13 @@ export default {
       });
     },
     goToNext() {
-      this.$refs.enemyList.goToNext();
+      this.sliderIndex++;
     },
     goToPrev() {
-      this.$refs.enemyList.goToPrev();
+      this.sliderIndex--;
     },
-    handleEnemyChanged(event) {
-      let questIndex = this.enemyList[event.currentSlide];
+    handleEnemyChanged(slideIndex) {
+      let questIndex = this.enemyList[slideIndex];
       if (this.questIndex == questIndex) {
         return;
       }
@@ -293,7 +301,6 @@ export default {
         this.questIndex * 1,
         max
       );
-      console.log("engage");
       try {
         let damages = await this.request;
         let delay = 0;
@@ -385,17 +392,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.agile__slide {
-  display: flex;
-}
-
-.stamina-buttons {
-  padding: 0.5rem;
-  * > {
-    margin: 0.5rem;
-  }
-}
-
 .quest-mid {
   width: 100%;
   height: 30vh;
@@ -415,10 +411,6 @@ export default {
   }
 }
 
-.quest-footer {
-  width: 100%;
-}
-
 .quest-enemies {
   height: 80%;
   width: 100%;
@@ -435,18 +427,6 @@ export default {
   }
 }
 
-.quest-bottom {
-  width: calc(100% - 3rem);
-  margin: 1.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.quest-info-table {
-  width: 100%;
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-}
-
 .quest-view {
   display: flex;
   flex-direction: column;
@@ -458,7 +438,7 @@ export default {
 .enemy-title {
   position: absolute;
   top: 0;
-  z-index: 1;
+  z-index: 100;
 }
 
 .hidden {

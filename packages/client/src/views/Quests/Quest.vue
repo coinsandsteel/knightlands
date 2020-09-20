@@ -57,7 +57,7 @@
                     @engage="selectQuest(index)"
                   ></quest-mission-element>
                 </div>
-                <div class="blocker center" v-if="loaded && isZoneLocked">
+                <div class="blocker center padding-top-2" v-if="loaded && isZoneLocked">
                   <p class="yellow-title font-size-30">Finish Previous Zone</p>
                 </div>
               </div>

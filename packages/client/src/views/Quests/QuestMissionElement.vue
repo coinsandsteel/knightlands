@@ -31,16 +31,16 @@
             <div class="margin-bottom-small yellow-title margin-bottom-half">
               Rewards
             </div>
-            <div class="list digit-font font-outline">
+            <div class="flex flex-column digit-font font-outline">
               <icon-with-value
                 class="flex-start"
-                iconClass="icon-exp icon-size-mini"
+                iconClass="icon-exp icon-size-mini margin-right-1"
                 :value="quest.exp"
                 valueClass="info-font"
               ></icon-with-value>
               <icon-with-value
                 class="flex-start"
-                iconClass="icon-gold icon-size-mini"
+                iconClass="icon-gold icon-size-mini margin-right-1"
                 :value="`${quest.goldMin}-${quest.goldMax}`"
                 valueClass="info-font"
               ></icon-with-value>

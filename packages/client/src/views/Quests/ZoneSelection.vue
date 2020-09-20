@@ -9,21 +9,6 @@
     </span>
 
     <div class="zone-scene">
-      <!-- <agile
-        ref="zonesList"
-        :dots="false"
-        :navButtons="false"
-        :speed="300"
-        @afterChange="handleZoneChanged($event)"
-      >
-        <div v-for="zone in zones" :key="zone._id" class="zone-picture">
-          <div class="height-100 pixelated" :style="getZoneImage(zone._id)" />
-          <div class="font-size-30 overlay-title font-outline">
-            {{ $t(getZoneName(zone._id)) }}
-          </div>
-        </div>
-      </agile> -->
-
       <slider
         ref="slider"
         animation="fade"
