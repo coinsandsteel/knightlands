@@ -1,11 +1,12 @@
 <template>
-  <div :class="[{'panel': preview}, {'margin-bottom-2': preview}, {'padding-top-1': preview}]">
-    <span
-      class="title font-size-20"
-      :class="[`rarity-${rarity}`]"
-    >{{$t("adventure-title", {rarity: $t(rarity)})}}</span>
+  <div>
+    <Title :stackTop="true" :stackBottom="true" :class="[`rarity-${rarity}`]">{{
+      $t("adventure-title", { rarity: $t(rarity) })
+    }}</Title>
 
-    <div class="flex flex-space-between margin-top-1 padding-left-1 padding-right-1">
+    <div
+      class="color-panel-5 stacked-top stacked-bottom flex flex-space-between margin-top-1 padding-right-1 padding-left-1"
+    >
       <div class="flex flex-10">
         <Loot
           v-for="record in loot"
@@ -23,19 +24,27 @@
 
       <div class="flex flex-column flex-4 flex-space-evenly">
         <span class="panel-input padding-top-half padding-bottom-half">
-          <IconWithValue iconClass="icon-timer small" valueClass="font-size-18">{{timer.value}}</IconWithValue>
+          <IconWithValue
+            iconClass="icon-timer small"
+            valueClass="font-size-18"
+            >{{ timer.value }}</IconWithValue
+          >
         </span>
 
         <span
           class="green-title font-size-18"
           v-if="!preview && timer.timeLeft > 0"
-        >{{$t("adventure-in-progress")}}</span>
+          >{{ $t("adventure-in-progress") }}</span
+        >
         <CustomButton
           type="green"
           @click="$emit('claim')"
           v-else-if="timer.timeLeft <= 0"
-        >{{$t("claim-adventure")}}</CustomButton>
-        <CustomButton type="yellow" @click="$emit('start')" v-else>{{$t("start-adventure")}}</CustomButton>
+          >{{ $t("claim-adventure") }}</CustomButton
+        >
+        <CustomButton type="yellow" @click="$emit('start')" v-else>{{
+          $t("start-adventure")
+        }}</CustomButton>
       </div>
     </div>
   </div>
@@ -47,10 +56,11 @@ import CustomButton from "@/components/Button.vue";
 import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
 import HintHandler from "@/components/HintHandler.vue";
+import Title from "@/components/Title.vue";
 
 export default {
   mixins: [HintHandler],
-  components: { Loot, CustomButton, IconWithValue },
+  components: { Loot, CustomButton, IconWithValue, Title },
   props: ["adventure", "preview"],
   data: () => ({
     timer: new Timer(true)

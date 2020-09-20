@@ -43,7 +43,7 @@
                 :value="zone"
                 v-if="zones.length > 0"
                 @zoneChanged="handleZoneChanged"
-                class="margin-bottom-2"
+                class="margin-bottom-3"
               ></zone-selection>
 
               <div class="quest-list center">
@@ -57,7 +57,10 @@
                     @engage="selectQuest(index)"
                   ></quest-mission-element>
                 </div>
-                <div class="blocker center padding-top-2" v-if="loaded && isZoneLocked">
+                <div
+                  class="blocker center padding-top-2"
+                  v-if="loaded && isZoneLocked"
+                >
                   <p class="yellow-title font-size-30">Finish Previous Zone</p>
                 </div>
               </div>

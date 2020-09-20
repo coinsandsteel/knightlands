@@ -39,7 +39,9 @@
       <div class="nav-arrow"></div>
     </span>
 
-    <div class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap">
+    <div
+      class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap"
+    >
       <div
         :class="{ hidden: currentZone == 1 }"
         class="zone-id-dots left"

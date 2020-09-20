@@ -354,6 +354,10 @@ span {
     .@{property}-@{counter} {
         @{property}:~'@{counter}rem';
     }
+
+    .@{property}-@{counter}i {
+        @{property}:~'@{counter}rem' !important;
+    }
 }
 
 .size(margin, 6);
@@ -362,12 +366,6 @@ span {
 .size(margin-left, 6);
 .size(margin-right, 6);
 
-
-.size(padding, 6);
-.size(padding-top, 6);
-.size(padding-bottom, 6);
-.size(padding-left, 6);
-.size(padding-right, 6);
 
 .scroll-fix {
     overflow-y: auto !important;
@@ -474,11 +472,13 @@ span {
     @remVal: ((@TitleHeight - @TitleSideHeight)/2)/@ReferenceFontSize;
 
     &.stacked-bottom {
-        padding: 2rem 0 (2rem + @remVal) 0;
+        padding-top: 2rem;
+        padding-bottom: (2rem + @remVal);
     }
 
     &.stacked-top {
-        padding: (2rem + @remVal) 0 2rem 0;
+        padding-top: (2rem + @remVal);
+        padding-bottom: 2rem;
     }
 
     &.no-padding {
@@ -490,6 +490,7 @@ span {
 @panelColor2: #2E7285;
 @panelColor3: #00AC21;
 @panelColor4: #3D4A6A;
+@panelColor5: #245178;
 
 .color-panel-1 {
     .color-panel();
@@ -510,6 +511,17 @@ span {
     .color-panel();
     background-color: @panelColor4;
 }
+
+.color-panel-5 {
+    .color-panel();
+    background-color: @panelColor5;
+}
+
+.size(padding, 6);
+.size(padding-top, 6);
+.size(padding-bottom, 6);
+.size(padding-left, 6);
+.size(padding-right, 6);
 
 .element-background {
     position: absolute !important;
@@ -564,6 +576,7 @@ span {
             content: "";
             height: 100%;
             position: absolute;
+            pointer-events: none;
             left: -25%;
             top: 0;
             width: 150%;

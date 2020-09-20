@@ -1,7 +1,9 @@
 <template>
-  <div class="flex flex-start font-size-25 padding-1 adventures-content">
-    <Promised :promise="request">
+  <div class="flex flex-start font-size-25">
+    <Promised :promise="request" class="screen-content relative">
       <template v-slot:combined="{ isPending, isDelayOver }">
+        <div class="screen-background"></div>
+        <AnimatedBackground></AnimatedBackground>
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
         <template v-if="selectedAventure">
@@ -15,14 +17,16 @@
 
         <template v-else>
           <div class="height-100" v-bar>
-            <div>
-              <AdventureSlot
-                v-for="(adv, index) in adventures"
-                :key="index"
-                :adventure="adv"
-                @start="selectAdventure"
-                @claim="claimAdventure(index)"
-              ></AdventureSlot>
+            <div class="padding-top-1">
+              <div class="list-shadow">
+                <AdventureSlot
+                  v-for="(adv, index) in adventures"
+                  :key="index"
+                  :adventure="adv"
+                  @start="selectAdventure"
+                  @claim="claimAdventure(index)"
+                ></AdventureSlot>
+              </div>
 
               <div
                 class="panel width-100 padding-1 margin-bottom-2 adventure-slot flex flex-center"
@@ -61,6 +65,7 @@ import StartAdventure from "./StartAdventure.vue";
 import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+import AnimatedBackground from "@/components/AnimatedBackground.vue";
 
 import AdventureRewards from "./AdventureRewards.vue";
 import { create } from "vue-modal-dialogs";
@@ -75,7 +80,8 @@ export default {
     IconWithValue,
     StartAdventure,
     Promised,
-    LoadingScreen
+    LoadingScreen,
+    AnimatedBackground
   },
   created() {
     this.title = "window-adventures";
