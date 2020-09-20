@@ -1,21 +1,37 @@
 <template>
-  <div class="relative flex flex-column flex-center flex-no-wrap">
-    <EnemyView ref="enemyView" :image="enemyImage" :name="name" background="/images/castle.png">
-      <FloatingTextContainer ref="floatingText" :enemyView="$refs.enemyView" class="absolute-stretch"></FloatingTextContainer>
+  <div class="relative flex flex-column flex-center flex-no-wrap padding-top-1">
+    <Title class="enemy-title-font font-outline" :stackBottom="true">{{
+      name
+    }}</Title>
+    <EnemyView
+      ref="enemyView"
+      :image="enemyImage"
+      background="/images/castle.png"
+    >
+      <FloatingTextContainer
+        ref="floatingText"
+        :enemyView="$refs.enemyView"
+        class="absolute-stretch"
+      ></FloatingTextContainer>
     </EnemyView>
 
-    <ProgressBar
-      valuePosition="top"
-      valueClass="white-font font-outline font-size-25"
-      :thresholds="barThreshold"
-      v-model="enemyHealth"
-      :maxValue="floor.maxHealth"
-      height="1rem"
-    ></ProgressBar>
+    <div class="color-panel-1 flex flex-column width-100 padding-1">
+      <ProgressBar
+        valuePosition="top"
+        valueClass="white-font font-outline font-size-25"
+        :thresholds="barThreshold"
+        v-model="enemyHealth"
+        :maxValue="floor.maxHealth"
+        height="1rem"
+      ></ProgressBar>
 
-    <div class="panel flex flex-column width-100 padding-1 margin-1">
-      <span class="margin-top-1 margin-bottom-1 font-size-22">{{$t("tower-player-hp")}}</span>
-      <ProgressBar v-model="playerHealth" :maxValue="floor.userMaxHealth"></ProgressBar>
+      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
+        $t("tower-player-hp")
+      }}</span>
+      <ProgressBar
+        v-model="playerHealth"
+        :maxValue="floor.userMaxHealth"
+      ></ProgressBar>
 
       <div v-if="lost" class="flex margin-top-2 width-100 flex-center">
         <PromisedButton
@@ -23,23 +39,29 @@
           @click="close(true)"
           width="15rem"
           type="red"
-        >{{$t("continue")}}</PromisedButton>
+          >{{ $t("continue") }}</PromisedButton
+        >
       </div>
 
-      <div v-else-if="!finished" class="flex margin-top-2 flex-center width-100 flex-space-evenly">
+      <div
+        v-else-if="!finished"
+        class="flex margin-top-2 flex-center width-100 flex-space-evenly"
+      >
         <AttackButton
           :promise="request"
           @click="attack"
           width="15rem"
           type="yellow"
-        >{{$t("btn-attack")}}</AttackButton>
+          >{{ $t("btn-attack") }}</AttackButton
+        >
 
         <PromisedButton
           :promise="request"
           @click="cancel"
           width="15rem"
           type="red"
-        >{{$t("btn-cancel")}}</PromisedButton>
+          >{{ $t("btn-cancel") }}</PromisedButton
+        >
       </div>
 
       <div v-else class="flex margin-top-2 width-100 flex-center">
@@ -48,7 +70,8 @@
           @click="collect"
           width="15rem"
           type="green"
-        >{{$t("claim-reward")}}</PromisedButton>
+          >{{ $t("claim-reward") }}</PromisedButton
+        >
       </div>
     </div>
   </div>
@@ -63,6 +86,7 @@ import AttackButton from "@/components/AttackButton.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Title from "@/components/Title.vue";
 
 import { create } from "vue-modal-dialogs";
 import ClaimedReward from "./ClaimedReward.vue";
@@ -72,7 +96,14 @@ const ShowRewards = create(ClaimedReward, ...ClaimedReward.props);
 export default {
   mixins: [PromptMixin],
   props: ["floor"],
-  components: { EnemyView, FloatingTextContainer, PromisedButton, ProgressBar, AttackButton },
+  components: {
+    EnemyView,
+    FloatingTextContainer,
+    PromisedButton,
+    ProgressBar,
+    AttackButton,
+    Title
+  },
   data: () => ({
     request: null,
     barThreshold: UiConstants.progressThresholds,

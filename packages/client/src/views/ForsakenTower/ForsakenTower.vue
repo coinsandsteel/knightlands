@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <forsaken-tower-floor v-if="currentFloor" :floor="currentFloor" @close="handleFloorClosed"></forsaken-tower-floor>
+  <div class="screen-content">
+    <div class="screen-background"></div>
+    <forsaken-tower-floor
+      v-if="currentFloor"
+      :floor="currentFloor"
+      @close="handleFloorClosed"
+    ></forsaken-tower-floor>
     <RecycleScroller
       v-show="!currentFloor"
       ref="scroller"
@@ -41,7 +46,7 @@ export default {
   components: { FloorListElement, ForsakenTowerFloor, TowerFooter },
   data: () => ({
     floors: [],
-    itemSize: 150,
+    itemSize: 110,
     floorsCleared: 0,
     currentFloor: null
   }),
@@ -88,6 +93,10 @@ export default {
       this.currentFloor = null;
     },
     scrollToFloor(floor) {
+      if (this.floors.length == 0) {
+        return;
+      }
+
       let scrollToItem = floor - this.floors[this.floors.length - 1]._id;
       this.$refs.scroller.scrollToItem(this.floors.length - scrollToItem - 1);
       // this.$refs.scroller.updateVisibleItems(false);

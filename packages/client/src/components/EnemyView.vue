@@ -1,6 +1,11 @@
 <template>
-  <div class="enemy-view pixelated relative height-100 width-100 flex flex-center" :style="backgroundImage">
-    <span class="enemy-name font-size-30 enemy-title-font font-outline ">{{$t(name)}}</span>
+  <div
+    class="enemy-view pixelated relative height-100 width-100 flex flex-center"
+    :style="backgroundImage"
+  >
+    <span class="enemy-name font-size-30 enemy-title-font font-outline">{{
+      $t(name)
+    }}</span>
     <img ref="enemyView" :src="enemyImage" />
     <slot></slot>
   </div>
