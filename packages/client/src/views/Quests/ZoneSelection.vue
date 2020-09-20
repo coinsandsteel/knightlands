@@ -1,49 +1,87 @@
 <template>
   <div class="zone-grid">
-    <span class="zone-nav flex flex-center" @click="goToPrev" :class="{hidden: currentZone == 1}">
+    <span
+      class="zone-nav flex flex-center"
+      @click="goToPrev"
+      :class="{ hidden: currentZone == 1 }"
+    >
       <div class="nav-arrow left"></div>
     </span>
 
     <div class="zone-scene">
-      <agile
+      <!-- <agile
         ref="zonesList"
         :dots="false"
         :navButtons="false"
         :speed="300"
-        :infinite="false"
         @afterChange="handleZoneChanged($event)"
       >
         <div v-for="zone in zones" :key="zone._id" class="zone-picture">
           <div class="height-100 pixelated" :style="getZoneImage(zone._id)" />
-          <div class="font-size-30 overlay-title font-outline">{{$t(getZoneName(zone._id))}}</div>
+          <div class="font-size-30 overlay-title font-outline">
+            {{ $t(getZoneName(zone._id)) }}
+          </div>
         </div>
-      </agile>
+      </agile> -->
+
+      <slider
+        ref="slider"
+        animation="fade"
+        :touch="true"
+        :control-btn="false"
+        :indicators="false"
+        :autoplay="false"
+        height="100%"
+        @change="handleZoneChanged"
+        v-model="sliderIndex"
+      >
+        <slider-item v-for="zone in zones" :key="zone._id" class="zone-picture">
+          <div class="zone-picture">
+            <div class="height-100 pixelated" :style="getZoneImage(zone._id)" />
+            <div class="font-size-30 overlay-title font-outline">
+              {{ $t(getZoneName(zone._id)) }}
+            </div>
+          </div>
+        </slider-item>
+      </slider>
     </div>
 
     <span
       class="zone-nav right flex flex-center"
       @click="goToNext"
-      :class="{hidden: currentZone == zones.length}"
+      :class="{ hidden: currentZone == zones.length }"
     >
       <div class="nav-arrow"></div>
     </span>
 
     <div class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap">
-      <div :class="{hidden: currentZone == 1}" class="zone-id-dots left" @click="goToPrev"></div>
       <div
-        :class="{hidden: currentZone == 1}"
+        :class="{ hidden: currentZone == 1 }"
+        class="zone-id-dots left"
+        @click="goToPrev"
+      ></div>
+      <div
+        :class="{ hidden: currentZone == 1 }"
         class="zone-id small"
         @click="goToPrev"
-      >{{currentZone-1}}</div>
+      >
+        {{ currentZone - 1 }}
+      </div>
       <div class="zone-id flex flex-center">
-        <span>{{currentZone}}</span>
+        <span>{{ currentZone }}</span>
       </div>
       <div
-        :class="{hidden: currentZone == zones.length}"
+        :class="{ hidden: currentZone == zones.length }"
         class="zone-id small"
         @click="goToNext"
-      >{{currentZone+1}}</div>
-      <div :class="{hidden: currentZone == zones.length}" class="zone-id-dots" @click="goToNext"></div>
+      >
+        {{ currentZone + 1 }}
+      </div>
+      <div
+        :class="{ hidden: currentZone == zones.length }"
+        class="zone-id-dots"
+        @click="goToNext"
+      ></div>
     </div>
   </div>
 </template>
@@ -55,15 +93,24 @@ export default {
   props: ["zones", "value"],
   data() {
     return {
-      currentZone: 1
+      sliderIndex: 0
     };
   },
   mounted() {
     this.goTo(this.value);
   },
+  activated() {
+    this.$refs.slider.af = null;
+    this.$refs.slider.initTouchArea();
+  },
   watch: {
     value(newZone) {
       this.goTo(newZone);
+    }
+  },
+  computed: {
+    currentZone() {
+      return this.sliderIndex + 1;
     }
   },
   methods: {
@@ -72,7 +119,7 @@ export default {
         return zone._id == zoneId;
       });
       if (index >= 0) {
-        this.$refs.zonesList.goTo(index);
+        this.sliderIndex = index;
       }
     },
     getZoneImage(zoneId) {
@@ -82,21 +129,15 @@ export default {
       return Zones.getZoneName(zoneId);
     },
     goToNext() {
-      this.$refs.zonesList.goToNext();
+      this.sliderIndex++;
     },
     goToPrev() {
-      this.$refs.zonesList.goToPrev();
+      this.sliderIndex--;
     },
     handleZoneChanged(event) {
       // v-model loopback
-      this.$emit("input", this.zones[event.currentSlide]._id);
-      this.$emit("zoneChanged", this.zones[event.currentSlide]._id);
-
-      if (this.$refs.zonesList) {
-        this.currentZone = this.$refs.zonesList.getCurrentSlide() + 1;
-      } else {
-        this.currentZone = 0;
-      }
+      this.$emit("input", this.zones[event]._id);
+      this.$emit("zoneChanged", this.zones[event]._id);
     }
   }
 };
@@ -181,7 +222,7 @@ export default {
   height: 100%;
   grid-column: 1;
   grid-row: 1;
-  z-index: 1;
+  z-index: 100;
 
   &.right {
     grid-column: 3;
@@ -192,5 +233,3 @@ export default {
   opacity: 0 !important;
 }
 </style>
-
-

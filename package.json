@@ -13,10 +13,10 @@
         "test:marketplace": "yarn --cwd ./packages/marketplace test"
     },
     "postcss": {
-      "plugins": {}
+        "plugins": {}
     },
     "browserslist": [
-      "> 1%",
-      "last 2 versions"
+        "> 1%",
+        "last 2 versions"
     ]
 }

@@ -8,19 +8,19 @@ import VueAgile from "vue-agile";
 import * as ModalDialogs from "vue-modal-dialogs";
 import VueCollapse from "vue2-collapse";
 import PrettyCheckbox from "pretty-checkbox-vue";
-import {
-  VueSpinners
-} from "@saeris/vue-spinners";
+import { VueSpinners } from "@saeris/vue-spinners";
 import Notifications from "vue-notification";
 import VueResource from "vue-resource";
 import vuexI18n from "vuex-i18n";
 import PortalVue from "portal-vue";
 import VueVirtualScroller from "vue-virtual-scroller";
 import Vue2TouchEvents from "vue2-touch-events";
+import EasySlider from "vue-easy-slider";
 
 import RecipeScheme from "@/views/Crafting/RecipeBook/RecipeScheme.vue";
 Vue.component("recipe-scheme", RecipeScheme);
 
+Vue.use(EasySlider);
 Vue.use(Vue2TouchEvents);
 Vue.use(VueVirtualScroller);
 Vue.use(PortalVue);

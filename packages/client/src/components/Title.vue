@@ -45,11 +45,11 @@ export default {
 
 .stackTop {
   margin-top: -(@TitleHeight - @TitleSideHeight)/2;
-  z-index: 100;
+  z-index: 4;
 }
 
 .stackBottom {
   margin-bottom: -(@TitleHeight - @TitleSideHeight)/2;
-  z-index: 100;
+  z-index: 4;
 }
 </style>

@@ -1,13 +1,18 @@
 <template>
   <div class="flex flex-column flex-center">
-    <div class="flex flex-center flex-column font-outline font-size-30 enemy-title">
+    <div
+      class="flex flex-center flex-column font-outline font-size-30 enemy-title"
+    >
       <span class="rarity-mythical font-weight-700" v-show="isBoss">BOSS</span>
-      <div class="enemy-title-font">{{$t(missionName)}}</div>
+      <div class="enemy-title-font">{{ $t(missionName) }}</div>
     </div>
 
-    <div :style="zoneBackground" class="flex quest-mid relative flex-center flex-no-wrap">
+    <div
+      :style="zoneBackground"
+      class="flex quest-mid relative flex-center flex-no-wrap"
+    >
       <div
-        :class="{hidden: questIndex <= 0}"
+        :class="{ hidden: questIndex <= 0 }"
         class="quest-nav flex flex-item-center"
         @click="goToPrev"
       >
@@ -34,7 +39,7 @@
       </agile>
 
       <div
-        :class="{hidden: questIndex >= maxQuestIndex}"
+        :class="{ hidden: questIndex >= maxQuestIndex }"
         class="quest-nav right flex flex-item-center"
         @click="goToNext"
       >
@@ -43,10 +48,11 @@
 
       <div class="absolute-stretch z-index-1 pointer-events-none">
         <DamageText
-          v-for="(damage) in playerDamages"
+          v-for="damage in playerDamages"
           :key="damage.id"
           :crit="damage.crit"
-        >{{damage.damage}}</DamageText>
+          >{{ damage.damage }}</DamageText
+        >
       </div>
     </div>
 
@@ -64,11 +70,19 @@
 
     <div class="quest-bottom panel flex flex-column full-flex">
       <div class="flex quest-info-table">
-        <div class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start">
+        <div
+          class="flex-basis-50 font-size-25 flex flex-column flex-center flex-justify-start"
+        >
           <div>Rewards</div>
           <div class="margin-top-small">
-            <icon-with-value iconClass="icon-exp" :value="quest.exp"></icon-with-value>
-            <icon-with-value iconClass="icon-gold" :value="`${quest.goldMin}-${quest.goldMax}`"></icon-with-value>
+            <icon-with-value
+              iconClass="icon-exp"
+              :value="quest.exp"
+            ></icon-with-value>
+            <icon-with-value
+              iconClass="icon-gold"
+              :value="`${quest.goldMin}-${quest.goldMax}`"
+            ></icon-with-value>
           </div>
         </div>
         <div
@@ -77,34 +91,45 @@
         >
           <div>Cost</div>
           <div class="margin-top-small">
-            <icon-with-value iconClass="icon-energy" :value="quest.energy"></icon-with-value>
+            <icon-with-value
+              iconClass="icon-energy"
+              :value="quest.energy"
+            ></icon-with-value>
           </div>
         </div>
       </div>
 
       <div class="flex full-flex padding-left-2 padding-right-2">
-        <loot v-for="reward in rewards" :key="reward.id" :item="reward" @hint="handleHint"></loot>
+        <loot
+          v-for="reward in rewards"
+          :key="reward.id"
+          :item="reward"
+          @hint="handleHint"
+        ></loot>
       </div>
     </div>
     <div class="quest-footer flex flex-center">
-      <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">Kill previous enemies</div>
+      <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">
+        Kill previous enemies
+      </div>
 
       <div v-else-if="progress.current >= progress.max && hasNextZone">
-        <CustomButton type="yellow" @click="goToNextMission">{{$t("btn-next-quest")}}</CustomButton>
+        <CustomButton type="yellow" @click="goToNextMission">{{
+          $t("btn-next-quest")
+        }}</CustomButton>
       </div>
 
       <div v-else class="flex flex-center width-100 flex-space-evenly">
-        <AttackButton
-          :promise="request"
-          @click="engage(false)"
-          width="15rem"
-        >Attack x1</AttackButton>
+        <AttackButton :promise="request" @click="engage(false)" width="15rem"
+          >Attack x1</AttackButton
+        >
         <PromisedButton
           :promise="request"
           :locked="!$game.hasPremiumAccount"
           @click="engage(true)"
           width="15rem"
-        >Attack MAX</PromisedButton>
+          >Attack MAX</PromisedButton
+        >
       </div>
     </div>
   </div>
@@ -353,13 +378,11 @@ export default {
           easing: "linear",
           duration: 100
         }
-          
       });
     }
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 .agile__slide {
@@ -456,5 +479,3 @@ export default {
   }
 }
 </style>
-
-
