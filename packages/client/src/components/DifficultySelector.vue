@@ -2,7 +2,7 @@
   <div class="flex flex-center margin-top-small">
     <div
       class="panel-dark stage-selector"
-      :class="[{'preview' : preview}, {'disabled' : isLocked(stage)}]"
+      :class="[{ preview: preview }, { disabled: isLocked(stage) }]"
       v-for="stage in stages"
       :key="stage"
     >
@@ -15,21 +15,19 @@
         v-model="selectedStage"
       />
       <label class="relative" :for="`stage${stage}`" :class="`stage${stage}`">
-        <div :class="{'selector-border': selectedStage==stage}"></div>
-        <span class="caption font-size-18">{{getStageBtnCaption(stage)}}</span>
+        <div :class="{ 'selector-border': selectedStage == stage }"></div>
+        <span class="caption font-size-18">{{
+          getStageBtnCaption(stage)
+        }}</span>
       </label>
     </div>
   </div>
 </template>
 
 <script>
-import CustomButton from "./Button.vue";
 import UiConstants from "@/ui_constants";
 
 export default {
-  components: {
-    CustomButton
-  },
   props: ["stages", "value", "preview", "stagesState"],
   data: () => ({
     selectedStage: 0
@@ -59,7 +57,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 .caption {
@@ -153,5 +150,3 @@ export default {
   height: 100%;
 }
 </style>
-
-

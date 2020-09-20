@@ -1,5 +1,5 @@
 <template>
-  <custom-button type="grey" @click="showSelector">{{caption}}</custom-button>
+  <custom-button type="grey" @click="showSelector">{{ caption }}</custom-button>
 </template>
 
 <script>
@@ -39,4 +39,3 @@ export default {
   }
 };
 </script>
-

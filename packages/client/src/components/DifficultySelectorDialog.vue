@@ -1,8 +1,14 @@
 <template>
-  <user-dialog title="Select Difficulty" @close="$close(current)">
+  <user-dialog title="Select Difficulty" @close="handleClose" :emitClose="true">
     <template v-slot:content>
-      <div class="flex flex-center flex-column flex-space-between button-column">
-        <div v-for="(status, index) in stages" :key="index" class="flex flex-center flex-column">
+      <div
+        class="flex flex-center flex-column flex-space-between button-column"
+      >
+        <div
+          v-for="(status, index) in stages"
+          :key="index"
+          class="flex flex-center flex-column"
+        >
           <custom-button
             :type="getStageBtnStyle(index)"
             :caption="getStageBtnCaption(index)"
@@ -10,7 +16,16 @@
             :lockPressed="index == current"
             @click="$close(index)"
           ></custom-button>
-          <span v-if="!isUnlocked(index)" class="font-size-18 font-shadow rarity-mythical">{{$t("finish-zone", {zone: lastZoneName, difficulty: getStageBtnCaption(index-1)})}}</span>
+          <span
+            v-if="!isUnlocked(index)"
+            class="font-size-18 font-shadow rarity-mythical"
+            >{{
+              $t("finish-zone", {
+                zone: lastZoneName,
+                difficulty: getStageBtnCaption(index - 1)
+              })
+            }}</span
+          >
         </div>
       </div>
     </template>
@@ -29,7 +44,7 @@ export default {
     CustomButton
   },
   props: ["stages", "current"],
-  data: ()=>({
+  data: () => ({
     lastZoneName: ""
   }),
   async mounted() {
@@ -59,11 +74,13 @@ export default {
     },
     getStageBtnCaption(stage) {
       return this.$t(UiConstants.stageNames[stage]);
+    },
+    handleClose() {
+      this.$close(this.current);
     }
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 .button-column {
@@ -75,5 +92,3 @@ export default {
   }
 }
 </style>
-
-

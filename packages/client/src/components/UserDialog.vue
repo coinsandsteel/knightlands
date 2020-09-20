@@ -52,15 +52,21 @@ export default {
     },
     contentClass: String,
     hideMask: Boolean,
-    disableScroll: Boolean
+    disableScroll: Boolean,
+    emitClose: Boolean
   },
   components: { Title },
   methods: {
     handleClose() {
-      if (this.$close) {
-        this.$close();
-      } else if (this.$parent.$close) {
+      if (this.emitClose) {
+        this.$emit("close");
+        return;
+      }
+
+      if (this.$parent.$close) {
         this.$parent.$close();
+      } else if (this.$close) {
+        this.$close();
       } else {
         this.$emit("close");
       }
