@@ -810,6 +810,8 @@
     "raidBuff": "Increased {stat} by {value}{suffix} against {raid} raid.",
     "btn-open-box": "Open",
     "btn-open-boxes": "Open x{count}",
+    "btn-open-shard": "Summon",
+    "btn-open-shards": "Summon x{count}",
     "box-opened-title": "Items received.",
     "enchanting-level": "Enchanting Lvl",
     "enchant-materials": "Enchanting Ingridients",

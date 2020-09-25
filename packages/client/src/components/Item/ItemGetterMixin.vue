@@ -113,6 +113,13 @@ export default {
 
       return this.template.action.action == ItemActions.OpenBox;
     },
+    isSummon() {
+      if (!this.isConsumable) {
+        return false;
+      }
+
+      return this.template.action.action == ItemActions.SummonUnit;
+    },
     nextExp() {
       return this.$game.itemsDB.getNextExp(this.item.level);
     },

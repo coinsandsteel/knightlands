@@ -1,8 +1,10 @@
 <template>
   <UserDialog @close="$close(false)" :disableScroll="true">
     <template v-slot:content>
-      <Title v-if="summonType == ArmySummonType.Normal">{{$t("basic-summon")}}</Title>
-      <Title v-else>{{$t("advanced-summon")}}</Title>
+      <Title v-if="summonType == ArmySummonType.Normal">{{
+        $t("basic-summon")
+      }}</Title>
+      <Title v-else>{{ $t("advanced-summon") }}</Title>
 
       <span class="font-size-20"></span>
 
@@ -10,10 +12,14 @@
 
       <div class="width-70 center">
         <template v-if="hasTicket">
-          <PromisedButton class="margin-top-1" type="yellow" @click="singleSummon">
+          <PromisedButton
+            class="margin-top-1"
+            type="yellow"
+            @click="singleSummon"
+          >
             <div
               class="flex flex-center"
-              v-html="$t('unit-summon-item', {count: 1, icon: ticketIcon})"
+              v-html="$t('unit-summon-item', { count: 1, icon: ticketIcon })"
             ></div>
           </PromisedButton>
 
@@ -25,7 +31,9 @@
           >
             <div
               class="flex flex-center flex-no-wrap"
-              v-html="$t('unit-summon-item', {count: batchSize, icon: ticketIcon})"
+              v-html="
+                $t('unit-summon-item', { count: batchSize, icon: ticketIcon })
+              "
             ></div>
           </PromisedButton>
         </template>
@@ -62,7 +70,7 @@
               @click="purchaseSummon(iap.iap)"
             >
               <div class="flex flex-center flex-no-wrap">
-                <span>{{$t('unit-summon', { count: iap.count })}}</span>
+                <span>{{ $t("unit-summon", { count: iap.count }) }}</span>
                 <PriceTag :dark="true" :iap="iap.iap" />
               </div>
             </PromisedButton>
@@ -106,7 +114,7 @@ export default {
   }),
   watch: {
     fetchRequest() {
-      console.log(this.fetchRequest)
+      console.log(this.fetchRequest);
     }
   },
   computed: {

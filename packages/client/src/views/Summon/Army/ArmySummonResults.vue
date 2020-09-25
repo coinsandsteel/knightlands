@@ -1,14 +1,19 @@
 <template>
-<div class="height-100">
-  <div class="screen-background"></div>
-  <div class="height-100" v-bar>
-    <div class="flex-full dummy-height">
-      <div class="width-100 padding-half results">
-        <UnitSlot class="preview-u" v-for="unit in units" :key="unit.id" :unit="unit" />
+  <div class="height-100">
+    <div class="screen-background"></div>
+    <div class="height-100" v-bar>
+      <div class="flex-full dummy-height">
+        <div class="width-100 padding-half results">
+          <UnitSlot
+            class="preview-u"
+            v-for="unit in units"
+            :key="unit.id"
+            :unit="unit"
+          />
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -27,7 +32,7 @@ export default {
         anime.remove(".preview-u");
         anime.set(".preview-u", { opacity: 0, scale: 0 });
 
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
           this.show();
         });
       }
@@ -35,7 +40,7 @@ export default {
   },
   methods: {
     async show() {
-      console.log("show")
+      console.log("show");
       anime({
         targets: ".preview-u",
         opacity: {
@@ -56,7 +61,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .results {
   display: grid;
   grid-template-columns: repeat(3, 33%);
@@ -65,5 +69,4 @@ export default {
   column-gap: 0.5%;
   row-gap: 1rem;
 }
-
 </style>

@@ -37,7 +37,11 @@ export default {
   computed: {
     action() {
       let action = this.template.action;
-      if (!action || action.action == ItemActions.OpenBox) {
+      if (
+        !action ||
+        action.action == ItemActions.OpenBox ||
+        action.action == ItemActions.SummonUnit
+      ) {
         return "";
       }
 

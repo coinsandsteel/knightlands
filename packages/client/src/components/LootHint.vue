@@ -63,8 +63,38 @@
           >
         </template>
 
+        <template v-else-if="maxSummons > 0">
+          <CustomButton
+            type="yellow"
+            @click="handleClose(ItemActions.SummonUnit)"
+            >{{ $t("btn-open-shard") }}</CustomButton
+          >
+          <CustomButton
+            type="yellow"
+            @click="
+              handleClose(ItemActions.SummonUnit, Math.min(maxSummons, 9))
+            "
+            v-if="maxSummons > 1 && maxSummons <= 9"
+            >{{
+              $t("btn-open-shards", { count: Math.min(maxSummons, 9) })
+            }}</CustomButton
+          >
+          <CustomButton
+            type="yellow"
+            @click="handleClose(ItemActions.SummonUnit, 10)"
+            v-if="maxSummons >= 10"
+            >{{ $t("btn-open-shards", { count: 10 }) }}</CustomButton
+          >
+          <CustomButton
+            type="yellow"
+            @click="handleClose(ItemActions.SummonUnit, count)"
+            v-if="maxSummons >= 50"
+            >{{ $t("btn-open-shards", { count: maxSummons }) }}</CustomButton
+          >
+        </template>
+
         <CustomButton
-          v-else-if="isConsumable"
+          v-else-if="isConsumable && !isSummon"
           type="yellow"
           @click="handleClose(ItemActions.Use)"
           >{{ $t("btn-use-consumable") }}</CustomButton
@@ -140,6 +170,13 @@ export default {
         unequippable = this.$character.equipment[this.slot];
       }
       return unequippable && this.actions.equip && this.isEquipment;
+    },
+    maxSummons() {
+      if (!this.isSummon) {
+        return false;
+      }
+
+      return Math.floor(this.count / this.template.action.required);
     }
   },
   methods: {
