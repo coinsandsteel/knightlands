@@ -162,10 +162,7 @@ import Errors from "@/../../knightlands-shared/errors";
 import { create } from "vue-modal-dialogs";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
 
-const ShowResourceRefill = create(
-  NotEnoughResource,
-  ...NotEnoughResource.props
-);
+const ShowResourceRefill = create(NotEnoughResource, "stat");
 
 import anime from "animejs/lib/anime.es.js";
 

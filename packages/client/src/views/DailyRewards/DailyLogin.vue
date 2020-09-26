@@ -42,7 +42,7 @@ import Timer from "@/timer";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
-const ShowItems = create(ItemsReceived, ...ItemsReceived.props);
+const ShowItems = create(ItemsReceived, "items", "soft", "hard", "exp", "dkt");
 
 export default {
   mixins: [HintHandler],

@@ -70,7 +70,7 @@ import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import AdventureRewards from "./AdventureRewards.vue";
 import { create } from "vue-modal-dialogs";
 
-const ShowRewards = create(AdventureRewards, ...AdventureRewards.props);
+const ShowRewards = create(AdventureRewards, "items");
 
 export default {
   mixins: [AppSection],

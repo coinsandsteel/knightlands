@@ -91,7 +91,7 @@ import Title from "@/components/Title.vue";
 import { create } from "vue-modal-dialogs";
 import ClaimedReward from "./ClaimedReward.vue";
 
-const ShowRewards = create(ClaimedReward, ...ClaimedReward.props);
+const ShowRewards = create(ClaimedReward, "rewards", "raidTemplateId");
 
 export default {
   mixins: [PromptMixin],

@@ -28,7 +28,7 @@ import CustomButton from "@/components/Button.vue";
 
 import { create } from "vue-modal-dialogs";
 
-const ShowBuffInfo = create(BuffInfo, ...BuffInfo.props);
+const ShowBuffInfo = create(BuffInfo, "buff", "item");
 
 export default {
   mixins: [ActivityMixin],
