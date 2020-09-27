@@ -158,7 +158,7 @@ class Game {
     return this._vm.goldExchange;
   }
 
-  dailyQuests() {
+  get dailyQuests() {
     return this._vm.dailyQuests;
   }
 
@@ -1444,8 +1444,8 @@ class Game {
     return (await this._wrapOperation(Operations.RefreshDailyTasks)).response;
   }
 
-  async claimDailyQuestsRewards() {
-    return (await this._wrapOperation(Operations.ClaimDailyTasksRewards))
+  async claimDailyQuestsRewards(taskType) {
+    return (await this._wrapOperation(Operations.ClaimDailyTasksRewards, { taskType }))
       .response;
   }
 

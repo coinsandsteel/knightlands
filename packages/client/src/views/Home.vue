@@ -6,7 +6,7 @@
       class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5"
     >
       <MenuIconRow>
-        <MenuIcon icon="icon-daily-quests" to="daily-quests" :append="true">{{
+        <MenuIcon icon="icon-daily-quests" to="daily-tasks" :append="true">{{
           $t("btn-daily-quests")
         }}</MenuIcon>
 

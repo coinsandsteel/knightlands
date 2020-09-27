@@ -14,7 +14,9 @@
     </div>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="green" @click="editUnit">{{$t("btn-select")}}</CustomButton>
+      <CustomButton type="green" @click="editUnit">{{
+        $t("btn-select")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -69,7 +71,10 @@ export default {
       this.unit = unit;
     },
     editUnit() {
-      this.$router.push({ name: "unit-level", params: { unitId: this.unit.id } });
+      this.$router.push({
+        name: "unit-level",
+        params: { unitId: this.unit.id }
+      });
     }
   }
 };

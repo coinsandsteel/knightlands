@@ -539,9 +539,9 @@ const router = new Router({
       }
     },
     {
-      path: "/home/daily-quests",
-      name: "daily-quests",
-      component: () => import("./views/DailyQuests/DailyQuests.vue"),
+      path: "/home/daily-tasks",
+      name: "daily-tasks",
+      component: () => import("./views/DailyTasks/DailyTasks.vue"),
       meta: {
         requiresAuth: true
       }
@@ -610,16 +610,19 @@ const router = new Router({
                 {
                   path: "",
                   name: "unit-level",
+                  props: true,
                   component: () => import("./views/Army/Unit/UnitLevelUp.vue")
                 },
                 {
                   path: "equip",
                   name: "unit-equip",
+                  props: true,
                   component: () => import("./views/Army/Unit/UnitEquipment.vue")
                 },
                 {
                   path: "promo",
                   name: "unit-promo",
+                  props: true,
                   component: () => import("./views/Army/Unit/UnitPromotion.vue")
                 }
               ]
