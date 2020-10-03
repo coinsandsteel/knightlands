@@ -47,27 +47,24 @@
           ></loot>
         </div>
 
-        <div class="flex flex-center flex-no-wrap">
-          <div class="flex-full">
-            <ProgressBar
-              :value="progress"
-              :maxValue="maxValue"
-              valuePosition="top"
-              height="0.75rem"
-              barType="yellow"
-              class=""
-              valueClass="white-font font-outline font-size-16"
-            ></ProgressBar>
-          </div>
-
-          <CustomButton
-            type="yellow"
-            :disabled="!canClaim"
-            @click="$emit('claim', task.type)"
-            >{{ $t("btn-claim") }}</CustomButton
-          >
-        </div>
+        <ProgressBar
+          :value="progress"
+          :maxValue="maxValue"
+          valuePosition="top"
+          height="0.75rem"
+          barType="yellow"
+          class=""
+          valueClass="white-font font-outline font-size-16"
+        ></ProgressBar>
       </div>
+
+      <CustomButton
+        class="flex-self-end"
+        type="yellow"
+        :disabled="!canClaim"
+        @click="$emit('claim', task.type)"
+        >{{ $t("btn-claim") }}</CustomButton
+      >
     </div>
   </div>
 </template>
