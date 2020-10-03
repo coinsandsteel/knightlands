@@ -82,7 +82,7 @@
     ></portal-target>
 
     <RaidStatusNotification />
-
+    <DailyQuestCompleteNotification />
     <LoadingNotification />
 
     <dialogs-wrapper></dialogs-wrapper>
@@ -98,6 +98,7 @@ import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
 import LoadingNotification from "./components/Notifications/LoadingNotification.vue";
+import DailyQuestCompleteNotification from "./components/Notifications/DailyQuestCompleteNotification.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -111,7 +112,8 @@ export default {
   components: {
     StatusBar,
     RaidStatusNotification,
-    LoadingNotification
+    LoadingNotification,
+    DailyQuestCompleteNotification
   },
   data() {
     return {

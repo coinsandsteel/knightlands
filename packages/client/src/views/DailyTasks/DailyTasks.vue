@@ -8,7 +8,6 @@
           v-html="$t('daily-quests-timer', { time: timer.value })"
         ></div>
 
-        <Task :task="allCompleteTask" :all="true" @claim="claim"></Task>
         <Task
           v-for="(task, index) in tasks"
           :key="index"
@@ -71,7 +70,11 @@ export default {
       return quest;
     },
     tasks() {
-      return this.meta.rewards;
+      const tasks = this.meta.rewards;
+      tasks.sort((x, y) => {
+        return x.order - y.order;
+      });
+      return tasks;
     }
   },
   methods: {

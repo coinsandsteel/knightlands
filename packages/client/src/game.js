@@ -103,6 +103,10 @@ class Game {
     this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
     this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
     this._socket.on(
+      Events.DailyTaskComplete,
+      this._handleDailyTaskComplete.bind(this)
+    );
+    this._socket.on(
       Events.UnitsReserveUpdate,
       this._handleUnitReserveUpdate.bind(this)
     );
@@ -480,6 +484,19 @@ class Game {
   _handleDivTokenWithdrawal(data) {
     this._inventory.setCurrency(CurrencyType.Dkt, data.dkt);
     this._vm.$emit(Events.DivTokenWithdrawal, data);
+  }
+
+  _handleDailyTaskComplete(data) {
+    console.log("_handleDailyTaskComplete");
+    const { type } = data;
+
+    Vue.notify({
+      group: "daily",
+      data: {
+        type
+      },
+      duration: 5000
+    });
   }
 
   _handleRaidJoinStatus(data) {
@@ -1445,8 +1462,9 @@ class Game {
   }
 
   async claimDailyQuestsRewards(taskType) {
-    return (await this._wrapOperation(Operations.ClaimDailyTasksRewards, { taskType }))
-      .response;
+    return (
+      await this._wrapOperation(Operations.ClaimDailyTasksRewards, { taskType })
+    ).response;
   }
 
   // Dividends

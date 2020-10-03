@@ -13,19 +13,7 @@
       </div> -->
 
       <div class="flex flex-column full-flex margin-1">
-        <div class="flex full-flex flex-start flex-column">
-          <ProgressBar
-            :value="progress"
-            :maxValue="maxValue"
-            valuePosition="top"
-            height="0.75rem"
-            width="100%"
-            barType="yellow"
-            valueClass="white-font font-outline font-size-16"
-          ></ProgressBar>
-        </div>
-
-        <div class="flex flex-space-evenly margin-top-2">
+        <div class="flex flex-center flex-space-evenly margin-bottom-2">
           <IconWithValue
             v-if="task.soft > 0"
             class="margin-bottom-1"
@@ -49,9 +37,7 @@
             iconClass="icon-premium"
             >{{ task.hard }}</IconWithValue
           >
-        </div>
 
-        <div class="flex flex-center reward-loot margin-top-1">
           <loot
             v-for="item in task.loot.guaranteedLootRecords"
             :item="item.itemId"
@@ -60,14 +46,28 @@
             @hint="showHint"
           ></loot>
         </div>
-      </div>
 
-      <CustomButton
-        type="yellow"
-        :disabled="!canClaim"
-        @click="$emit('claim', task.type)"
-        >{{ $t("btn-claim") }}</CustomButton
-      >
+        <div class="flex flex-center flex-no-wrap">
+          <div class="flex-full">
+            <ProgressBar
+              :value="progress"
+              :maxValue="maxValue"
+              valuePosition="top"
+              height="0.75rem"
+              barType="yellow"
+              class=""
+              valueClass="white-font font-outline font-size-16"
+            ></ProgressBar>
+          </div>
+
+          <CustomButton
+            type="yellow"
+            :disabled="!canClaim"
+            @click="$emit('claim', task.type)"
+            >{{ $t("btn-claim") }}</CustomButton
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -80,7 +80,6 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import Loot from "@/components/Loot.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import DailyTaskType from "@/../../knightlands-shared/daily_quest_type";
-import DailyQuestsMeta from "@/daily_quests";
 
 export default {
   props: ["task", "all"],
@@ -97,8 +96,7 @@ export default {
       );
     },
     maxValue() {
-      return DailyQuestsMeta.questTargets.find(x => x.id == this.task.type)
-        .value;
+      return this.task.targetValue;
     },
     panelClass() {
       return this.all ? "color-panel-1" : "color-panel-2";
@@ -141,27 +139,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-@import (reference) "../../style/common.less";
-
-.slot-common {
-  background-image: url("../../assets/ui/slot_common.png") !important;
-}
-
-.loot-slot {
-  position: relative;
-  background-image: url("../../assets/ui/item_slot_dark.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-
-  width: @lootCellSize;
-  height: @lootCellSize;
-  .mobile({width: @mobileLootCellSize; height: @mobileLootCellSize;});
-
-  .inner-border {
-    position: relative;
-    width: (100%);
-  }
-}
-</style>
