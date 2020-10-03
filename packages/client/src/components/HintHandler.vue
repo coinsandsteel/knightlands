@@ -13,13 +13,19 @@ const Hint = CreateDialog(
   "equippedItems"
 );
 
-
 export default {
   methods: {
-    async showHint(item, buttons, options = { showButtons: true, actions: { equip: true } }) {
+    async showHint(
+      item,
+      buttons,
+      options = { showButtons: true, actions: { equip: true } }
+    ) {
       buttons = buttons || [];
 
-      const showButtons = options.showButtons == undefined ? buttons.length > 0 : options.showButtons;
+      const showButtons =
+        options.showButtons == undefined
+          ? buttons.length > 0
+          : options.showButtons;
 
       return await Hint(
         item,

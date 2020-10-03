@@ -43,7 +43,7 @@
             :item="item.itemId"
             :quantity="item.minCount"
             :key="item.itemId"
-            @hint="showHint"
+            @hint="handleHint"
           ></loot>
         </div>
 
