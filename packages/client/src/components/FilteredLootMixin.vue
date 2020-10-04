@@ -13,13 +13,16 @@ export default {
     filteredItems: []
   }),
   created() {
-    this.filteredItemsBuffer = new DoubleBuffer();
     this._updateItems = debounce(this.updateItems.bind(this), 50);
+    this.filteredItemsBuffer = new DoubleBuffer();
   },
   mounted() {
     this._updateItems();
   },
   watch: {
+    "$game.inventory.items"() {
+      this._updateItems();
+    },
     items() {
       this._updateItems();
     },
