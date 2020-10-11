@@ -1,7 +1,11 @@
 <template>
-  <div class="dummy-height flex flex-center flex-column flex-no-wrap padding-1 panel">
+  <div
+    class="dummy-height flex flex-center flex-column flex-no-wrap padding-1 panel"
+  >
     <div class="dummy-height flex flex-column flex-no-wrap full-flex">
-      <span class="font-size-18 width-100 margin-bottom-3">{{$t('daily-login-desc')}}</span>
+      <span class="font-size-18 width-100 margin-bottom-3">{{
+        $t("daily-login-desc")
+      }}</span>
       <div class="full-flex dummy-height">
         <div class="width-100" v-bar>
           <div class="dummy-height height-100">
@@ -27,8 +31,11 @@
         :promise="request"
         @click="collect"
         v-if="!collected"
-      >{{$t("claim-daily-bonus")}}</PromisedButton>
-      <span class="font-size-18" v-else>{{$t("time-till-reward", {time: timer.value})}}</span>
+        >{{ $t("claim-daily-bonus") }}</PromisedButton
+      >
+      <span class="font-size-18" v-else>{{
+        $t("time-till-reward", { time: timer.value })
+      }}</span>
     </div>
   </div>
 </template>

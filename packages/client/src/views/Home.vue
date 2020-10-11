@@ -30,8 +30,8 @@
       </MenuIconRow>
 
       <MenuIconRow>
-        <MenuIcon icon="icon-goldExchange" to="gold" :append="true">
-          {{ $t("btn-goldExchange") }}
+        <MenuIcon icon="icon-gold-mine" to="gold-mine" :append="true">
+          {{ $t("gold-mine") }}
         </MenuIcon>
 
         <MenuIcon icon="icon-tower" to="onyx-tower" :append="true">{{
@@ -100,6 +100,6 @@ export default {
 .home-art {
   background-image: url("../assets/backgrounds/castle_bg.jpg");
   background-size: cover;
-  background-position: bottom center;
+  background-position: center;
 }
 </style>

@@ -539,6 +539,14 @@ const router = new Router({
       }
     },
     {
+      path: "/home/gold-mine",
+      name: "gold-mine",
+      component: () => import("./views/GoldMine/GoldMine.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: "/home/daily-tasks",
       name: "daily-tasks",
       component: () => import("./views/DailyTasks/DailyTasks.vue"),

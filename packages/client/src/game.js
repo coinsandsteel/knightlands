@@ -50,7 +50,8 @@ class Game {
         rank: 0,
         trials: {},
         goldExchange: {},
-        dailyQuests: {}
+        dailyQuests: {},
+        goldMines: {}
       })
     });
 
@@ -192,6 +193,10 @@ class Game {
 
   get crafting() {
     return this._crafting;
+  }
+
+  get goldMines() {
+    return this._vm.goldMines;
   }
 
   get inventory() {
@@ -567,19 +572,10 @@ class Game {
     for (let i in newData) {
       const newField = newData[i];
 
-      if (Array.isArray(newData[i])) {
-        currentData[i] = newData[i];
-        continue;
-      }
-
-      if (typeof newField == "object") {
-        if (currentData.hasOwnProperty(i)) {
-          this.mergeObjects(vm, currentData[i], newField);
-        } else {
-          vm.$set(currentData, i, newField);
-        }
-      } else {
+      if (!currentData.hasOwnProperty(i) || typeof newField != "object") {
         vm.$set(currentData, i, newField);
+      } else {
+        this.mergeObjects(vm, currentData[i], newField);
       }
     }
   }
@@ -625,6 +621,10 @@ class Game {
 
     if (changes.goldExchange) {
       this.mergeObjects(this._vm, this._vm.goldExchange, changes.goldExchange);
+    }
+
+    if (changes.goldMines) {
+      this.mergeObjects(this._vm, this._vm.goldMines, changes.goldMines);
     }
 
     if (changes.beast) {
@@ -1665,6 +1665,27 @@ class Game {
   async reserveUnits(units) {
     return (await this._wrapOperation(Operations.UnitReserve, { units }))
       .response;
+  }
+
+  // Gold Mines
+  async upgradeGoldMineRate(mineIndex) {
+    return (await this._wrapOperation(Operations.UpgradeMine, { mineIndex }))
+      .response;
+  }
+
+  async upgradeGoldMineStorage(mineIndex) {
+    return (
+      await this._wrapOperation(Operations.UpgradeMineStorage, { mineIndex })
+    ).response;
+  }
+
+  async collectGoldMine(mineIndex) {
+    return (await this._wrapOperation(Operations.CollectMine, { mineIndex }))
+      .response;
+  }
+
+  async expandGoldMine() {
+    return (await this._wrapOperation(Operations.ExpandMine)).response;
   }
 }
 

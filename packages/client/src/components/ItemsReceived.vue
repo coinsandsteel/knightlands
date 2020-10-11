@@ -44,7 +44,7 @@
               :item="item.item"
               :quantity="item.quantity"
               :key="item.item"
-              @hint="showHint"
+              @hint="handleHint"
             ></loot>
           </div>
         </div>

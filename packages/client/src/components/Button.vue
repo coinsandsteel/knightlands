@@ -181,6 +181,11 @@ export default {
     margin-left: @btnFillExtrudeSkewed;
     margin-right: @btnFillExtrudeSkewed;
   }
+
+  & > .btn-content {
+    height: 100%;
+    transform: translateY(-0.1rem);
+  }
 }
 
 .disabled {
@@ -271,7 +276,4 @@ export default {
   }
 }
 
-.btn-content {
-  height: 100%;
-}
 </style>
