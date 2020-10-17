@@ -1,12 +1,13 @@
 <template>
-  <Promised class="dummy-height flex width-100 height-100" :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <LoadingScreen :loading="isPending && isDelayOver" />
-
+  <PromisedView
+    class="dummy-height flex width-100 height-100"
+    :promise="request"
+  >
+    <template v-slot:loaded>
       <keep-alive>
-        <div class="width-100" v-bar v-if="!selectedStage">
+        <div class="width-100 height-100" v-bar v-if="!selectedStage">
           <div>
-            <div class="flex flex-column">
+            <div class="flex flex-column padding-top-2">
               <TrialStageListElement
                 v-for="(stage, index) in meta.stages"
                 :key="stage.id"
@@ -37,15 +38,14 @@
         ></TrialStage>
       </keep-alive>
     </template>
-  </Promised>
+  </PromisedView>
 </template>
 
 <script>
+import PromisedView from "@/components/PromisedView.vue";
 import TrialStageListElement from "./TrialStageListElement.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import TrialStage from "./TrialStage.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import Elements from "@/../../knightlands-shared/elements";
@@ -60,8 +60,7 @@ export default {
   components: {
     TrialStageListElement,
     TrialStage,
-    Promised,
-    LoadingScreen
+    PromisedView
   },
   data: () => ({
     request: null,
@@ -128,17 +127,13 @@ export default {
     },
     handleStageCleared() {
       this.selectedStage = null;
-      this.showPrompt(
-        "trial-stage-cleared-t",
-        "trial-stage-cleared-m",
-        [
-          {
-            type: "green",
-            title: this.$t("btn-ok"),
-            response: "ok"
-          }
-        ]
-      );
+      this.showPrompt("trial-stage-cleared-t", "trial-stage-cleared-m", [
+        {
+          type: "green",
+          title: this.$t("btn-ok"),
+          response: "ok"
+        }
+      ]);
       this.refresh();
     },
     getElement(stageId) {

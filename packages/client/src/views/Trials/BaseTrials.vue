@@ -1,21 +1,28 @@
 <template>
-  <div>
+  <div class="height-100">
+    <div class="screen-background"></div>
     <keep-alive exclude="trial-cards">
       <Cards v-if="showCards"></Cards>
       <template v-else>
         <slot
+          v-if="trialId !== null"
           name="trial"
           :state="state"
           :id="trialId"
           :trialIndex="trialIndex"
           :mountCallback="addBackButtonListener"
           :engage="engageFight"
-          v-if="trialId!==null"
         ></slot>
-        <slot name="list" :state="state" :openTrial="openTrial" :trialType="trialType" v-else></slot>
+        <slot
+          v-else
+          name="list"
+          :state="state"
+          :openTrial="openTrial"
+          :trialType="trialType"
+        ></slot>
       </template>
     </keep-alive>
-    <portal to="footer" :slim="true" v-if="isActive">
+    <portal to="footer" :slim="true" v-if="isActive && !showCards">
       <TrialFooter
         :trialType="trialType"
         :state="state"

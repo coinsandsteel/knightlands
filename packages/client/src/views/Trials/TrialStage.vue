@@ -13,7 +13,7 @@
       ></FightView>
       <div class="width-100" v-bar v-else>
         <div>
-          <div>
+          <div class="padding-top-2">
             <TrialFightListElement
               v-for="(fight, index) in stage.fights"
               :key="`${fight.id}_${lastClearedFight}`"

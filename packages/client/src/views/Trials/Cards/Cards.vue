@@ -1,48 +1,42 @@
 <template>
-  <promised :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver, data }">
-      <div class="flex height-100 flex-column flex-center">
-        <portal to="footer" :slim="true">
-          <div class="flex flex-center margin-1 font-size-20">
-            <span class="item-icon trials-points-item margin-right-half"></span>
-            <span>{{points}}</span>
-          </div>
-
-          <CustomButton :disabled="!needReset" type="yellow" @click="resetCards">
-            {{$t("trials-cards-reset")}}
-            <IconWithValue iconClass="icon-gold">{{resetCost}}</IconWithValue>
-          </CustomButton>
-        </portal>
-
-        <div class="flex full-flex dummy-height">
-          <div class="height-100" v-bar>
-            <div>
-              <div class="flex flex-space-evenly height-100">
-                <CardModifier
-                  v-for="mod in cardModifiers"
-                  :key="getModKey(mod)"
-                  :effect="mod.effect"
-                  :type="mod.type"
-                  :upgradeCost="getUpgradeCost(mod.effect)"
-                  @upgrade="upgradeCard(mod.effect)"
-                />
-              </div>
-            </div>
+  <PromisedView :promise="request" class="height-100">
+    <template v-slot:fixed>
+      <div v-bar class="height-100">
+        <div>
+          <div class="flex flex-space-evenly height-100">
+            <CardModifier
+              v-for="mod in cardModifiers"
+              :key="getModKey(mod)"
+              :effect="mod.effect"
+              :type="mod.type"
+              :upgradeCost="getUpgradeCost(mod.effect)"
+              @upgrade="upgradeCard(mod.effect)"
+            />
           </div>
         </div>
       </div>
+
+      <portal to="footer" :slim="true">
+        <div class="flex flex-center margin-1 font-size-20">
+          <span class="item-icon trials-points-item margin-right-half"></span>
+          <span>{{ points }}</span>
+        </div>
+
+        <CustomButton :disabled="!needReset" type="yellow" @click="resetCards">
+          {{ $t("trials-cards-reset") }}
+          <IconWithValue iconClass="icon-gold">{{ resetCost }}</IconWithValue>
+        </CustomButton>
+      </portal>
     </template>
-  </promised>
+  </PromisedView>
 </template>
 
 <script>
 import "./style.less";
 import TrialsMeta from "@/trials_meta";
 import CardModifier from "./CardModifier.vue";
-import AppSection from "@/AppSection.vue";
+import PromisedView from "@/components/PromisedView.vue";
 import CustomButton from "@/components/Button.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
@@ -50,8 +44,7 @@ export default {
   components: {
     CardModifier,
     CustomButton,
-    Promised,
-    LoadingScreen,
+    PromisedView,
     IconWithValue
   },
   data: () => ({

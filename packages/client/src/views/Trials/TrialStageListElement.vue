@@ -1,18 +1,28 @@
 <template>
-  <div class="flex flex-column panel padding-top-1 padding-bottom-1 margin-1">
-    <span
-      class="font-size-22 flex-self-start margin-left-3 margin-bottom-1 flex flex-center"
+  <div class="flex flex-column">
+    <Title
+      :stackTop="true"
+      :stackBottom="true"
+      class="font-size-22 flex flex-center"
     >
-      <span>{{$t("trial-stage-title", {stage: index + 1})}}</span>
+      <span>{{ $t("trial-stage-title", { stage: index + 1 }) }}</span>
       <span v-if="isElemental" :class="`icon-${element}`"></span>
-    </span>
+    </Title>
 
-    <div class="flex flex-full flex-space-between">
+    <div class="flex flex-full flex-space-between color-panel-2">
       <div class="flex flex-column flex-items-start padding-left-3 flex-8">
-        <span class="font-size-18 margin-bottom-half">{{$t(firstTime?"tower-rewards":"tower-rewards-2")}}</span>
+        <span class="font-size-18 margin-bottom-half">{{
+          $t(firstTime ? "tower-rewards" : "tower-rewards-2")
+        }}</span>
         <div class="flex flex-space-evenly">
-          <IconWithValue valueClass="font-size-18 margin-right-3" iconClass="icon-gold">{{soft}}</IconWithValue>
-          <IconWithValue valueClass="font-size-18" iconClass="icon-exp">{{exp}}</IconWithValue>
+          <IconWithValue
+            valueClass="font-size-18 margin-right-3"
+            iconClass="icon-gold"
+            >{{ soft }}</IconWithValue
+          >
+          <IconWithValue valueClass="font-size-18" iconClass="icon-exp">{{
+            exp
+          }}</IconWithValue>
         </div>
         <div class="flex margin-top-half">
           <Loot
@@ -27,25 +37,34 @@
       </div>
 
       <div class="flex flex-column flex-items-center flex-space-between flex-4">
-         <span v-if="locked" class="rarity-mythical font-size-18">{{$t(inFight ? "trial-stage-locked-2" : "trial-stage-locked")}}</span>
+        <span v-if="locked" class="rarity-mythical font-size-18">{{
+          $t(inFight ? "trial-stage-locked-2" : "trial-stage-locked")
+        }}</span>
 
-        <div class="flex font-size-20 margin-bottom-1" v-else-if="!readyToCollect">
-          <span>{{$t("trial-stage-progress")}}</span>
-          <span class="margin-left-1">{{fightsComplete}}/{{totalFights}}</span>
+        <div
+          class="flex font-size-18 margin-bottom-1"
+          v-else-if="!readyToCollect"
+        >
+          <span>{{ $t("trial-stage-progress") }}</span>
+          <span class="margin-left-1"
+            >{{ fightsComplete }}/{{ totalFights }}</span
+          >
         </div>
         <div class="flex">
           <CustomButton
             v-if="readyToCollect"
             type="green"
             @click="$emit('collect', index)"
-          >{{$t("trial-stage-collect")}}</CustomButton>
+            >{{ $t("trial-stage-collect") }}</CustomButton
+          >
 
           <CustomButton
             v-else
             :disabled="locked"
             type="yellow"
             @click="$emit('continue', index)"
-          >{{$t("continue")}}</CustomButton>
+            >{{ $t("continue") }}</CustomButton
+          >
         </div>
       </div>
     </div>
@@ -56,11 +75,12 @@
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Loot from "@/components/Loot.vue";
+import Title from "@/components/Title.vue";
 import Elements from "@/../../knightlands-shared/elements";
 
 export default {
   props: ["index", "stage", "state", "locked", "inFight", "element"],
-  components: { CustomButton, IconWithValue, Loot },
+  components: { CustomButton, IconWithValue, Loot, Title },
   computed: {
     readyToCollect() {
       return this.cleared && !this.collected;

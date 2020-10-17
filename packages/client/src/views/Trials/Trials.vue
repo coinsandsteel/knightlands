@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-items-center flex-start">
+    <div class="screen-background"></div>
     <div
       class="trials-bg width-100 flex flex-column flex-end flex-items-end flex-space-between margin-bottom-1"
       v-for="(trial, index) in trials"
@@ -7,9 +8,14 @@
       :style="background(trial)"
       :class="`color-${trial}`"
     >
-      <span class="trial-title text-align-right font-outline padding-1 font-weight-700">{{$t(`window-trials-${trial}`)}}</span>
+      <span
+        class="trial-title text-align-right font-outline padding-1 font-weight-700"
+        >{{ $t(`window-trials-${trial}`) }}</span
+      >
       <div class="flex margin-1">
-        <CustomButton type="red" @click="goTo(trial)">{{$t("btn-enter")}}</CustomButton>
+        <CustomButton type="red" @click="goTo(trial)">{{
+          $t("btn-enter")
+        }}</CustomButton>
       </div>
     </div>
   </div>
@@ -86,5 +92,4 @@ export default {
 .color-accessory {
   color: #6adafc;
 }
-
 </style>

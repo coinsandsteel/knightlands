@@ -1,11 +1,11 @@
 <template>
   <Promised :promise="promise" tag="div">
-    <template v-slot:combined="{ isPending, isDelayOver, data }">
+    <template v-slot:combined="{ isPending, isDelayOver, error }">
       <LoadingScreen :loading="isPending && isDelayOver" />
 
       <slot name="fixed"></slot>
-      <slot name="loaded" v-if="data"></slot>
-      <slot name="error"></slot>
+      <slot name="loaded"></slot>
+      <slot name="error" v-if="error"></slot>
     </template>
   </Promised>
 </template>

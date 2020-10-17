@@ -2,7 +2,12 @@
   <div v-bar>
     <div>
       <div class="flex flex-column">
-        <slot v-if="state" :open="openTrial" :unlockedTrials="state.unlockedTrials" :trialType="trialType"></slot>
+        <slot
+          v-if="state"
+          :open="openTrial"
+          :unlockedTrials="state.unlockedTrials"
+          :trialType="trialType"
+        ></slot>
       </div>
     </div>
   </div>
