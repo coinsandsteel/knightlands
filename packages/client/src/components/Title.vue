@@ -5,7 +5,7 @@
   >
     <div class="flex-full title-side"></div>
     <span
-      class="font-size-22 capitalize title flex flex-center"
+      class="font-size-22 capitalize title flex flex-center font-weight-900"
       :class="titleClass"
     >
       <span>{{ title }}</span>

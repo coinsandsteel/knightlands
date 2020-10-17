@@ -1,6 +1,13 @@
 <template>
   <div class="screen-content">
-    <Tabs :tabs="tabs" :router="true" :currentTab="currentTab" @onClick="switchTab" :replace="true"></Tabs>
+    <div class="screen-background"></div>
+    <Tabs
+      :tabs="tabs"
+      :router="true"
+      :currentTab="currentTab"
+      @onClick="switchTab"
+      :replace="true"
+    ></Tabs>
 
     <keep-alive>
       <router-view></router-view>

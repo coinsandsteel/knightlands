@@ -2,14 +2,15 @@
   <Promised :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-content">
+        <div class="screen-background"></div>
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
         <div
           class="font-size-20 panel-input pdding-1 margin-2"
           v-if="cooldownTimer.timeLeft > 0"
-          v-html="$t('race-cooldown', {time: cooldownTimer.value})"
+          v-html="$t('race-cooldown', { time: cooldownTimer.value })"
         ></div>
         <div v-bar>
-          <div>
+          <div class="padding-top-2">
             <RaceListElement
               v-for="r in races"
               :key="r.id"
@@ -25,12 +26,15 @@
         </div>
 
         <portal to="footer" :slim="true" v-if="isActive">
-          <CustomButton type="yellow" @click="goToShop">{{$t("race-shop")}}</CustomButton>
+          <CustomButton type="yellow" @click="goToShop">{{
+            $t("race-shop")
+          }}</CustomButton>
           <CustomButton
             type="green"
             @click="previewRewards"
             :disabled="finishedRaces.length == 0"
-          >{{$t("claim-rewards")}}</CustomButton>
+            >{{ $t("claim-rewards") }}</CustomButton
+          >
         </portal>
       </div>
     </template>

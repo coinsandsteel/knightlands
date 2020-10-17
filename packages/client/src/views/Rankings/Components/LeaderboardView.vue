@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content dummy-height panel flex-items-center">
+  <div class="screen-content dummy-height flex-items-center">
     <!-- <div class="panel-input padding-1" v-if="currentRank">
       <div class="flex font-size-20">
         <span class="margin-right-half">{{$t("race-target")}}</span>
@@ -12,17 +12,20 @@
       v-if="participates"
     >
       <div class="flex margin-right-2">
-        <span class="margin-right-half">{{$t("your-rank")}}</span>
-        <span class="green-title">{{rank}}</span>
+        <span class="margin-right-half">{{ $t("your-rank") }}</span>
+        <span class="green-title">{{ rank }}</span>
       </div>
 
       <div class="flex">
-        <span class="margin-right-half">{{$t("your-score")}}</span>
-        <span class="yellow-title">{{currentRank.rank.score}}</span>
+        <span class="margin-right-half">{{ $t("your-score") }}</span>
+        <span class="yellow-title">{{ currentRank.rank.score }}</span>
       </div>
     </div>
 
-    <div class="full-flex width-100 dummy-height padding-1" v-if="records.length > 0 && currentRank">
+    <div
+      class="full-flex width-100 dummy-height padding-1"
+      v-if="records.length > 0 && currentRank"
+    >
       <RecycleScroller
         ref="scroller"
         class="width-100 height-100"
@@ -47,12 +50,17 @@
 
     <div class="flex flex-center full-flex" v-else>
       <div class="panel-input padding-1">
-        <span class="font-size-20 flex flex-center" v-html="$t('empty-leaderboard')"></span>
+        <span
+          class="font-size-20 flex flex-center"
+          v-html="$t('empty-leaderboard')"
+        ></span>
       </div>
     </div>
 
     <portal to="footer" v-if="isActive && showInfoButton">
-      <CustomButton type="grey" @click="openInfo">{{$t("leaderboard-info")}}</CustomButton>
+      <CustomButton type="grey" @click="openInfo">{{
+        $t("leaderboard-info")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -88,7 +96,6 @@ export default {
       return this.currentRank.rank.id == id;
     },
     async fetchNextPage() {
-      
       if (this.fetchInProcess || this.fetchedAll) {
         return true;
       }
@@ -96,10 +103,7 @@ export default {
       this.fetchInProcess = true;
 
       try {
-        let newRecords = await this.fetchRankings(
-          this.id,
-          this.currentPage
-        );
+        let newRecords = await this.fetchRankings(this.id, this.currentPage);
 
         if (newRecords) {
           this.fetchedAll = newRecords.finished;
@@ -127,7 +131,7 @@ export default {
     rank() {
       if (this.currentRank.rank.rank == 0) {
         return this.$t("race-unranked");
-      } 
+      }
 
       return this.currentRank.rank.rank;
     }

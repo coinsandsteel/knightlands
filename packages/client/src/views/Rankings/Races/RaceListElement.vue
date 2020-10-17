@@ -1,62 +1,78 @@
 <template>
-  <StripedPanel class="flex flex-column panel padding-top-1 padding-bottom-1 margin-1 full-flex">
-    <span
-      class="title font-size-22 font-weight-900 margin-bottom-1"
-      v-html="$t('race-title', { tier, type: raceType, tierColor})"
-    />
+  <div class="flex flex-column full-flex padding-bottom-1">
+    <Title :stackBottom="true" :stackTop="true">
+      <span v-html="$t('race-title', { tier, type: raceType, tierColor })" />
+    </Title>
 
-    <StripedContent
-      classes="margin-top-2 margin-bottom-2"
-      contentClasses="width-100 flex flex-space-evenly"
-      stripeHeight="10rem"
-    >
-      <div class="flex flex-column flex-space-between">
-        <div class="flex flex-center panel-input padding-1">
-          <div class="icon-timer icon-size-mini"></div>
-          <span class="font-size-18">{{timer.value}}</span>
+    <div class="color-panel-5 margin-top-1">
+      <div class="width-100 flex flex-space-evenly">
+        <div class="flex flex-column flex-space-between">
+          <div class="flex flex-center panel-input padding-1">
+            <div class="icon-timer icon-size-mini"></div>
+            <span class="font-size-18">{{ timer.value }}</span>
+          </div>
+
+          <div class="flex font-size-22 margin-1">
+            <span class="margin-right-half">{{ $t("players-joined") }}</span>
+            <IconWithValue iconClass="icon-person">{{
+              race.totalParticipants
+            }}</IconWithValue>
+          </div>
         </div>
 
-        <div class="flex font-size-22 margin-1">
-          <span class="margin-right-half">{{$t("players-joined")}}</span>
-          <IconWithValue iconClass="icon-person">{{race.totalParticipants}}</IconWithValue>
+        <div
+          class="flex flex-space-between flex-center flex-column flex-center font-size-22"
+        >
+          <IconWithValue iconClass="icon-leaderboards big"
+            >x{{ targetMultiplier }}</IconWithValue
+          >
+          <IconWithValue iconClass="icon-loot big"
+            >x{{ rewardsMultiplier }}</IconWithValue
+          >
+        </div>
+
+        <div
+          class="flex flex-center font-size-22 margin-bottom-1"
+          v-if="currentRank"
+        >
+          <IconWithValue iconClass="icon-rankings big">{{
+            currentRank.rank.rank
+          }}</IconWithValue>
         </div>
       </div>
 
-      <div class="flex flex-space-between flex-center flex-column flex-center font-size-22">
-        <IconWithValue iconClass="icon-leaderboards big">x{{targetMultiplier}}</IconWithValue>
-        <IconWithValue iconClass="icon-loot big">x{{rewardsMultiplier}}</IconWithValue>
-      </div>
+      <div class="flex flex-center margin-top-1">
+        <CustomButton type="grey" @click="$emit('ranks')">{{
+          $t("btn-ranks")
+        }}</CustomButton>
 
-      <div class="flex flex-center font-size-22 margin-bottom-1" v-if="currentRank">
-        <IconWithValue iconClass="icon-rankings">{{currentRank.rank.rank}}</IconWithValue>
-      </div>
-    </StripedContent>
+        <CustomButton type="green" @click="$emit('rewards')">{{
+          $t("btn-rewards")
+        }}</CustomButton>
 
-    <div class="flex flex-items-end">
-      <CustomButton type="grey" @click="$emit('ranks')">{{$t("btn-ranks")}}</CustomButton>
-      <CustomButton type="green" @click="$emit('rewards')">{{$t("btn-rewards")}}</CustomButton>
-      <CustomButton
-        type="yellow"
-        @click="$emit('join')"
-        v-if="!currentRank"
-        :disabled="cooldown > 0"
-      >{{$t("btn-join")}}</CustomButton>
+        <CustomButton
+          type="yellow"
+          @click="$emit('join')"
+          v-if="!currentRank"
+          :disabled="cooldown > 0"
+          >{{ $t("btn-join") }}</CustomButton
+        >
+      </div>
     </div>
-  </StripedPanel>
+  </div>
 </template>
 
 <script>
 import CustomButton from "@/components/Button.vue";
+import Title from "@/components/Title.vue";
 import RankingType from "@/../../knightlands-shared/ranking_type";
 import RaidsMeta from "@/raids_meta";
 import Timer from "@/timer";
-import StripedPanel from "@/components/StripedPanel.vue";
-import StripedContent from "@/components/StripedContent.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["race", "currentRank", "cooldown"],
-  components: { CustomButton, StripedPanel, StripedContent, IconWithValue },
+  components: { CustomButton, IconWithValue, Title },
   data: () => ({
     timer: new Timer(true),
     winnerCooldownTimer: new Timer(true)

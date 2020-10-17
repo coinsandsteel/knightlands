@@ -1,18 +1,18 @@
 <template>
   <div
-    class="flex flex-item-center font-size-20 width-100 text-align-left"
-    :class="[{'even-bg': (index+1)%2==0}, {'yellow-title': you}]"
+    class="flex flex-item-center font-size-20 width-100 text-align-left padding-top-1 padding-bottom-1"
+    :class="[bgColor, { 'yellow-title': you }]"
   >
     <span :class="rankIcon" class="flex-1"></span>
-    <span class="flex-1">#{{rank}}</span>
+    <span class="flex-1">#{{ rank }}</span>
     <span class="flex flex-center flex-8">
-        <Loot
-          v-for="(r, index) in rewards"
-          :key="index"
-          :item="r.itemId"
-          :quantity="r.minCount"
-          @hint="handleHint"
-        />
+      <Loot
+        v-for="(r, index) in rewards"
+        :key="index"
+        :item="r.itemId"
+        :quantity="r.minCount"
+        @hint="handleHint"
+      />
     </span>
   </div>
 </template>
@@ -26,7 +26,10 @@ export default {
   mixins: [HintHandler],
   components: { Loot },
   computed: {
-  rankIcon() {
+    bgColor() {
+      return (this.index + 1) % 2 == 0 ? "even-bg" : "odd-bg";
+    },
+    rankIcon() {
       if (this.rank < 4) {
         return `icon-rank${this.rank}`;
       }
@@ -46,6 +49,6 @@ export default {
 
 <style lang="less" scoped>
 .even-bg {
-  background-color: #303048;
+  background-color: #193f5f;
 }
 </style>

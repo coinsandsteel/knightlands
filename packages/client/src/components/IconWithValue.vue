@@ -2,7 +2,7 @@
   <div class="flex-inline flex-center flex-no-wrap">
     <span
       v-if="!flip"
-      class="value-icon"
+      class="value-icon margin-right-half"
       :class="[iconClass, { m: iconMargin }]"
     ></span>
     <div :class="valueClass">
@@ -11,7 +11,7 @@
     <span
       v-if="flip"
       :class="[iconClass, { m: iconMargin }]"
-      class="value-icon"
+      class="value-icon margin-left-half"
     ></span>
   </div>
 </template>
