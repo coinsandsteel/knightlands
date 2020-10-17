@@ -5,14 +5,16 @@
 
       <div v-bar>
         <div>
+          <GoldStorageElement
+            @upgrade-storage="handleStorageUpgrade"
+            @collect="handleCollectGold"
+          />
           <GoldMineElement
             v-for="(mine, idx) in mines"
             :key="idx"
             :mine="mine"
             :idx="idx"
             @upgrade-rate="handleRateUpgrade"
-            @upgrade-storage="handleStorageUpgrade"
-            @collect="handleCollectGold"
           />
 
           <GoldMineExpandElement
@@ -30,13 +32,19 @@
 import AppSection from "@/AppSection.vue";
 import GoldMineElement from "./GoldMineElement.vue";
 import GoldMineExpandElement from "./GoldMineExpandElement.vue";
+import GoldStorageElement from "./GoldStorageElement.vue";
 import MinesMeta from "@/mines_meta";
 import PromisedView from "@/components/PromisedView.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
-  components: { GoldMineElement, GoldMineExpandElement, PromisedView },
+  components: {
+    GoldMineElement,
+    GoldMineExpandElement,
+    PromisedView,
+    GoldStorageElement
+  },
   data: () => ({
     request: null
   }),
@@ -64,16 +72,14 @@ export default {
         this.$game.upgradeGoldMineRate(mineIndex)
       );
     },
-    async handleStorageUpgrade(mineIndex) {
-      this.request = this.performRequest(
-        this.$game.upgradeGoldMineStorage(mineIndex)
-      );
+    async handleStorageUpgrade() {
+      this.request = this.performRequest(this.$game.upgradeGoldMineStorage());
     },
     async handleExpansion() {
       this.request = this.performRequest(this.$game.expandGoldMine());
     },
-    async handleCollectGold(mineIndex) {
-      this.request = this.performRequest(this.$game.collectGoldMine(mineIndex));
+    async handleCollectGold() {
+      this.request = this.performRequest(this.$game.collectGoldMine());
     }
   }
 };

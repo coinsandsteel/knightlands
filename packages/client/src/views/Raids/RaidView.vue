@@ -421,6 +421,9 @@ export default {
       return i;
     },
     isFreeRaid() {
+      if (!this.raidState) {
+        return false;
+      }
       return this.raidState.isFree;
     }
   },

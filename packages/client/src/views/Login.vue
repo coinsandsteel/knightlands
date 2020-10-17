@@ -25,6 +25,11 @@ export default {
   }),
   created() {
     this.title = "Sign in";
+    this.cb = this.redirectToNextPage.bind(this);
+    this.$game.on(this.$game.SignUp, this.cb);
+  },
+  destroyed() {
+    this.$game.off(this.$game.SignUp, this.cb);
   },
   mounted() {
     if (this.$game.authenticated) {

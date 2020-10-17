@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content flex-justify-center">
-    <div class="flex flex-space-evenly panel-input margin-1 padding-top-2 padding-bottom-2">
+    <div class="screen-background"></div>
+    <div class="flex flex-space-evenly color-panel-1">
       <div
         class="rankings-bg flex flex-column flex-center flex-space-between margin-bottom-1 pointer"
         v-for="(rankingType, index) in rankings"
@@ -10,10 +11,9 @@
         @click="goTo(rankingType)"
       >
         <span :class="icon(rankingType)" class="icon-menu"></span>
-        <span
-          class="ranking-title font-outline padding-1 font-weight-700"
-        >{{$t(`window-${rankingType}`)}}</span>
-
+        <span class="ranking-title font-outline padding-1 font-weight-700">{{
+          $t(`window-${rankingType}`)
+        }}</span>
       </div>
     </div>
   </div>

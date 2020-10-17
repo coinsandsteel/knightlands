@@ -44,6 +44,23 @@ import router from "./router";
 import localisationSetup from "./strings/setup";
 localisationSetup.setup(Vue.i18n);
 
+import Game from "./game";
+
+Vue.prototype.$game = new Game(store);
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!Vue.prototype.$game.authenticated) {
+      next({
+        name: "login",
+        query: { url: to.fullPath }
+      });
+      return;
+    }
+  }
+  next();
+});
+
 window.onload = async () => {
   new Vue({
     router,

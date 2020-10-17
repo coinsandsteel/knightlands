@@ -92,7 +92,6 @@
 <script>
 import StatusBar from "./components/StatusBar.vue";
 // import { disableBodyScroll } from "body-scroll-lock";
-import Game from "./game";
 import { Promise } from "q";
 import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
@@ -156,7 +155,6 @@ export default {
   },
   async created() {
     Vue.prototype.$app = this;
-    Vue.prototype.$game = new Game(this.$store);
 
     this.$game.on("change-class", async () => {
       if (this.selectionShown) {
@@ -180,7 +178,6 @@ export default {
     // show login page when user signed out
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));
 
-    // if disconnection due to corrupted sign up or other server side issue - open login
     this.$game.on(this.$game.Disconnected, () => {
       if (this.$route.matched.some(record => record.meta.requiresAuth)) {
         if (!this.$game.authenticated) {
@@ -195,21 +192,6 @@ export default {
           this.redirectToLogin();
         }
       }
-
-      // check metas
-      this.$router.beforeEach((to, from, next) => {
-        if (to.matched.some(record => record.meta.requiresAuth)) {
-          if (!this.$game.authenticated) {
-            next({
-              name: "login",
-              query: { url: to.fullPath }
-            });
-            return;
-          }
-        }
-        next();
-      });
-
       this.loading = false;
     });
 
@@ -283,7 +265,7 @@ export default {
       this.loading = false;
       this.$router.push({
         name: "login",
-        query: { url: this.$route.path }
+        query: { url: this.$route.fullPath }
       });
     },
     async updateUserData() {

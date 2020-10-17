@@ -731,6 +731,7 @@ class Game {
         this._vm.towerFreeAttempts = info.tower.freeAttemps;
         this._vm.trials = info.trials;
         this._vm.dailyQuests = info.dailyQuests;
+        this._vm.goldMines = info.goldMines;
 
         if (!this._vm.loaded) {
           this._checkClassChoice();
@@ -1673,14 +1674,14 @@ class Game {
       .response;
   }
 
-  async upgradeGoldMineStorage(mineIndex) {
+  async upgradeGoldMineStorage() {
     return (
-      await this._wrapOperation(Operations.UpgradeMineStorage, { mineIndex })
+      await this._wrapOperation(Operations.UpgradeMineStorage)
     ).response;
   }
 
-  async collectGoldMine(mineIndex) {
-    return (await this._wrapOperation(Operations.CollectMine, { mineIndex }))
+  async collectGoldMine() {
+    return (await this._wrapOperation(Operations.CollectMine))
       .response;
   }
 
