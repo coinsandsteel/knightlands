@@ -1,5 +1,6 @@
 <template>
   <div class="screen-content">
+    <div class="screen-background"></div>
     <div v-bar>
       <div>
         <LeaderboardListElement

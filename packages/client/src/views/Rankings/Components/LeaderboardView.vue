@@ -1,5 +1,6 @@
 <template>
   <div class="screen-content dummy-height flex-items-center">
+    <div class="screen-background"></div>
     <!-- <div class="panel-input padding-1" v-if="currentRank">
       <div class="flex font-size-20">
         <span class="margin-right-half">{{$t("race-target")}}</span>
@@ -8,7 +9,7 @@
     </div> -->
 
     <div
-      class="title flex flex-center font-size-20 margin-bottom-1 margin-top-1"
+      class="title flex flex-center font-size-20 color-panel-2"
       v-if="participates"
     >
       <div class="flex margin-right-2">
@@ -23,7 +24,7 @@
     </div>
 
     <div
-      class="full-flex width-100 dummy-height padding-1"
+      class="full-flex width-100 dummy-height"
       v-if="records.length > 0 && currentRank"
     >
       <RecycleScroller
