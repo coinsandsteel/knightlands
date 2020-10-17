@@ -1,6 +1,5 @@
 <template>
   <div class="screen-content dummy-height flex-items-center">
-    <div class="screen-background"></div>
     <!-- <div class="panel-input padding-1" v-if="currentRank">
       <div class="flex font-size-20">
         <span class="margin-right-half">{{$t("race-target")}}</span>

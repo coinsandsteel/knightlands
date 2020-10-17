@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-space-between flex-items-end panel margin-1 padding-1">
+  <div class="flex flex-space-between flex-items-end margin-1 padding-1">
     <div class="flex flex-column">
       <div
         class="flex font-size-25 margin-1 panel-dark padding-left-1 padding-right-1"

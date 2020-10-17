@@ -2,10 +2,11 @@
   <Promised :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <div class="screen-content">
+        <div class="screen-background"></div>
         <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
         <div v-bar>
-          <div>
+          <div class="padding-top-1">
             <TournamentListElement
               v-for="t in tournaments"
               :key="t.id"
