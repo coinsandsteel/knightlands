@@ -1,15 +1,15 @@
 <template>
   <div
-    class="dummy-height flex flex-center flex-column flex-no-wrap padding-1 panel"
+    class="dummy-height flex flex-center flex-column flex-no-wrap"
   >
-    <div class="dummy-height flex flex-column flex-no-wrap full-flex">
-      <span class="font-size-18 width-100 margin-bottom-3">{{
+    <div class="dummy-height flex flex-column flex-no-wrap full-flex width-100">
+      <span class="font-size-20 color-panel-1 font-weight-900">{{
         $t("daily-login-desc")
       }}</span>
-      <div class="full-flex dummy-height">
+      <div class="full-flex dummy-height margin-top-2">
         <div class="width-100" v-bar>
           <div class="dummy-height height-100">
-            <div class="flex width-100 dummy-height flex-space-evenly">
+            <div class="width-100 login-rewards">
               <DailyReward
                 v-for="(reward, index) in rewards"
                 :key="index"
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="dummy-height margin-top-3 flex flex-center width-100">
+    <div class="dummy-height margin-top-2 flex flex-center width-100">
       <PromisedButton
         type="green"
         :promise="request"
@@ -33,9 +33,11 @@
         v-if="!collected"
         >{{ $t("claim-daily-bonus") }}</PromisedButton
       >
-      <span class="font-size-18" v-else>{{
+      <div class="color-panel-1" v-else>
+        <span class="font-size-18" >{{
         $t("time-till-reward", { time: timer.value })
       }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -90,3 +92,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.login-rewards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  justify-items: center;
+}
+</style>

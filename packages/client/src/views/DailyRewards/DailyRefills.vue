@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-center flex-column padding-1 panel">
+  <div class="flex flex-center flex-column padding-top-2">
     <div class="flex flex-center flex-space-evenly width-90">
       <span class="font-size-18 width-100 margin-bottom-3">{{$t('daily-refills-desc')}}</span>
 
@@ -18,7 +18,9 @@
         @click="collect"
         v-if="!collected"
       >{{$t("claim-daily-refill")}}</PromisedButton>
-      <span class="font-size-18" v-else>{{$t("time-till-refill", {time: timer.value})}}</span>
+      <div class="color-panel-1" v-else>
+        <span class="font-size-18">{{$t("time-till-refill", {time: timer.value})}}</span>
+      </div>
     </div>
   </div>
 </template>
