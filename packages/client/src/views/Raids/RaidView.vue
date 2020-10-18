@@ -294,6 +294,8 @@ const ShowClaimedReward = CreateDialog(
   "raidTemplateId"
 );
 
+const MAX_LAST_DAMAGES = 10;
+
 export default {
   name: "raid",
   components: {
@@ -679,7 +681,7 @@ export default {
         hits: data.hits
       });
 
-      if (this.lastDamages.length > 10) {
+      if (this.lastDamages.length > MAX_LAST_DAMAGES) {
         this.lastDamages.splice(0, 1);
       }
 
@@ -703,6 +705,9 @@ export default {
       this.$refs.bossAnimation.playDamageTaken();
       this.$refs.impact.play();
       this.raidProgress.current -= damage;
+      if (this.raidProgress.current < 0) {
+        this.raidProgress.current = 0;
+      }
     },
     async _handlePlayerDamage(damage, crit, local) {
       this.playerDamages.push({
