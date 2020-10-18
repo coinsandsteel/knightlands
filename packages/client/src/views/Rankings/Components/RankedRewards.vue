@@ -22,6 +22,7 @@
             :minRank="reward.minRank"
             :maxRank="reward.maxRank"
             :rewards="reward.loot"
+            :dkt="reward.dkt"
             :you="isYou(reward.minRank, reward.maxRank)"
           />
         </div>

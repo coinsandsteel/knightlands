@@ -4,8 +4,11 @@
     :class="[bgColor, { 'yellow-title': you }]"
   >
     <span :class="rankIcon" class="flex-1"></span>
-    <span class="flex-1">#{{ rank }}</span>
+    <span class="flex-2">#{{ rank }}</span>
     <span class="flex flex-center flex-8">
+      <IconWithValue iconClass="icon-dkt big" v-if="dkt > 0">
+        {{Math.floor(dkt * 10000)/1000}}
+      </IconWithValue>
       <Loot
         v-for="(r, index) in rewards"
         :key="index"
@@ -20,11 +23,12 @@
 <script>
 import Loot from "@/components/Loot.vue";
 import HintHandler from "@/components/HintHandler.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  props: ["index", "minRank", "maxRank", "you", "rewards"],
+  props: ["index", "minRank", "maxRank", "you", "rewards", "dkt"],
   mixins: [HintHandler],
-  components: { Loot },
+  components: { Loot, IconWithValue },
   computed: {
     bgColor() {
       return (this.index + 1) % 2 == 0 ? "even-bg" : "odd-bg";
