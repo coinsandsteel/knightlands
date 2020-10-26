@@ -1675,18 +1675,25 @@ class Game {
   }
 
   async upgradeGoldMineStorage() {
-    return (
-      await this._wrapOperation(Operations.UpgradeMineStorage)
-    ).response;
+    return (await this._wrapOperation(Operations.UpgradeMineStorage)).response;
   }
 
   async collectGoldMine() {
-    return (await this._wrapOperation(Operations.CollectMine))
-      .response;
+    return (await this._wrapOperation(Operations.CollectMine)).response;
   }
 
   async expandGoldMine() {
     return (await this._wrapOperation(Operations.ExpandMine)).response;
+  }
+
+  // Inventory
+  async lockItem(item) {
+    return (await this._wrapOperation(Operations.LockItem, { item })).response;
+  }
+
+  async unlockItem(item) {
+    return (await this._wrapOperation(Operations.UnlockItem, { item }))
+      .response;
   }
 }
 

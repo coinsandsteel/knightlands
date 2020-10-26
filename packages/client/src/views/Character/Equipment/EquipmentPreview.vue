@@ -6,6 +6,7 @@
       class="info"
       :item="item"
       :hideTitle="true"
+      :showLocked="true"
       :lootProps="{ equipment: true, equipmentSlot: itemSlot }"
     >
     </ItemInfo>

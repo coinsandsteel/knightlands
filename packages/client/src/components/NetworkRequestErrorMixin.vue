@@ -9,6 +9,7 @@ export default {
   methods: {
     async performRequest(request) {
       try {
+        this._showLoading();
         return await request;
       } catch (exc) {
         this.showPrompt(
@@ -24,10 +25,34 @@ export default {
         );
 
         throw exc;
+      } finally {
+        this._hideLoading();
       }
     },
     async performRequestNoCatch(request) {
-      return await request;
+      try {
+        this._showLoading();
+
+        return await request;
+      } finally {
+        this._hideLoading();
+      }
+    },
+    _showLoading() {
+      this._timeout = setTimeout(200, () => {
+        this.$notify({
+          group: "loading",
+          duration: -1,
+          closeOnClick: false
+        });
+      });
+    },
+    _hideLoading() {
+      clearTimeout(this._timeout);
+      this.$notify({
+        group: "loading",
+        clean: true
+      });
     }
   }
 };

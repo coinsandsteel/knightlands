@@ -7,7 +7,12 @@
       >{{ $t(template.caption) }}</Title
     >
 
-    <ItemHeader :item="item" :itemProps="lootProps" class="margin-left-1 margin-right-1">
+    <ItemHeader
+      :item="item"
+      :showLocked="showLocked"
+      :itemProps="lootProps"
+      class="margin-left-1 margin-right-1"
+    >
       <template v-slot:level-bar>
         <slot name="level-bar"></slot>
       </template>
@@ -46,7 +51,8 @@ export default {
     hideTitle: Boolean,
     onlyStats: Boolean,
     lootProps: Object,
-    quantity: Number
+    quantity: Number,
+    showLocked: Boolean
   },
   components: { ItemProperties, Title, ItemHeader, ItemStats },
   computed: {

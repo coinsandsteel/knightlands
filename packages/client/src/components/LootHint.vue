@@ -9,6 +9,7 @@
   >
     <template v-slot:content>
       <ItemInfo
+        :showLocked="showLocked"
         :item="item"
         :hideTitle="true"
         class="width-80 center"
@@ -124,6 +125,9 @@ const ItemActions = require("@/../../knightlands-shared/item_actions");
 export default {
   mixins: [ItemGetterMixin],
   props: {
+    showLocked: {
+      type: Boolean
+    },
     equip: {
       type: Boolean
     },

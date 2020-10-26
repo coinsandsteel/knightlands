@@ -26,6 +26,7 @@
               :item="slide.item"
               :hideMask="true"
               :showButtons="true"
+              :showLocked="true"
               :equippedItems="equippedItems"
               :buttons="getHintButtons(slide.item)"
               @close="handleItemAction"
@@ -80,7 +81,8 @@ export default {
       const itemInSlot = this.itemFromMatchingSlot(item);
       return (
         this.$game.itemsDB.getItemType(item) == ItemType.Equipment &&
-        itemInSlot && itemInSlot.id != item.id
+        itemInSlot &&
+        itemInSlot.id != item.id
       );
     },
     showHint(index) {

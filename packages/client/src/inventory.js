@@ -240,17 +240,9 @@ class Inventory {
 
       let item = this.getItem(itemId);
       if (item) {
-        // update fields
-        item.count = changedItem.count;
-        item.equipped = changedItem.equipped;
-        item.enchant = changedItem.enchant;
-        item.level = changedItem.level;
-        item.exp = changedItem.exp;
-        item.breakLimit = changedItem.breakLimit;
-        item.holder = changedItem.holder;
-        item.unique = changedItem.unique;
-        item.rarity = changedItem.rarity;
-        item.elemental = changedItem.elemental;
+        for (const field in changedItem) {
+          Vue.set(item, field, changedItem[field]);
+        }
       } else {
         // add new item
         this._addItem(changedItem);

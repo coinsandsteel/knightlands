@@ -1,11 +1,9 @@
 <template>
   <div class="flex flex-items-center flex-no-wrap">
-    <loot
-      :item="item"
-      :interactible="false"
-      v-bind="itemProps"
-      class="margin-right-1"
-    ></loot>
+    <div class="flex flex-column flex-center margin-right-half">
+      <LockToggle v-if="showLocked" :item="item" class="margin-bottom-half" />
+      <Loot :item="item" :interactible="false" v-bind="itemProps"></Loot>
+    </div>
     <div class="flex flex-column flex-start full-flex">
       <div class="width-100 flex flex-items-center flex-no-wrap">
         <span
@@ -34,7 +32,7 @@
           <span class="margin-right-1 font-size-18" v-if="level">{{
             $t("level", { lvl: level })
           }}</span>
-          <progress-bar
+          <ProgressBar
             v-model="item.exp"
             :expand="false"
             height="2rem"
@@ -43,7 +41,7 @@
             :maxValue="nextExp"
             plusButton="green"
             @refill="handleLevelProgressClick"
-          ></progress-bar>
+          ></ProgressBar>
         </div>
       </slot>
     </div>
@@ -53,18 +51,23 @@
 <script>
 import Loot from "@/components/Loot.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
+import LockToggle from "@/components/LockToggle.vue";
 import ItemGetterMixin from "./ItemGetterMixin.vue";
 
 export default {
-  props: ["itemProps"],
+  props: ["itemProps", "showLocked"],
   mixins: [ItemGetterMixin],
   components: {
     Loot,
-    ProgressBar
+    ProgressBar,
+    LockToggle
   },
   computed: {
     isPreview() {
       return this.count < 1;
+    },
+    isItemLocked() {
+      return this.item.locked;
     }
   },
   methods: {

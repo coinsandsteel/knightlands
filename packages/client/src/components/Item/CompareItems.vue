@@ -6,13 +6,23 @@
     :hideMask="hideMask"
   >
     <template v-slot:content>
-      <div class="flex flex-no-wrap width-100 padding-top-4 flex-space-between padding-left-1 padding-right-1">
+      <div
+        class="flex flex-no-wrap width-100 padding-top-4 flex-space-between padding-left-1 padding-right-1"
+      >
         <div class="flex-basis-50 margin-right-half">
-          <ItemHeader :item="leftItem" :matchItem="matchedItem" />
+          <ItemHeader
+            :item="leftItem"
+            :matchItem="matchedItem"
+            :showLocked="true"
+          />
           <ItemStats :item="leftItem" :matchItem="matchedItem" />
         </div>
         <div class="flex-basis-50 margin-left-half">
-          <ItemHeader :item="rightItem" :matchItem="matchedItem" />
+          <ItemHeader
+            :item="rightItem"
+            :matchItem="matchedItem"
+            :showLocked="true"
+          />
           <ItemStats :item="rightItem" :matchItem="matchedItem" />
         </div>
       </div>
