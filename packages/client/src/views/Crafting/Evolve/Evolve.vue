@@ -166,7 +166,8 @@ export default {
     canEvolve() {
       return (
         this.recipe.softCurrencyFee <= this.$game.softCurrency &&
-        this.$game.itemsDB.getRarity(this.baseItem) != Rarity.Mythical
+        this.$game.itemsDB.getRarity(this.baseItem) != Rarity.Mythical &&
+        !this.baseItem.locked
       );
     }
   },

@@ -34,7 +34,11 @@ export default {
         const gear = this.$game.character.equipment[slot];
         const template = this.$game.itemsDB.getTemplate(gear.template);
 
-        if (!template.enchantable || gear.enchant >= maxEnchant) {
+        if (
+          !template.enchantable ||
+          gear.enchant >= maxEnchant ||
+          gear.locked
+        ) {
           continue;
         }
 
@@ -56,7 +60,8 @@ export default {
         if (
           !template.enchantable ||
           item.enchant >= maxEnchant ||
-          filteredIds[item.id]
+          filteredIds[item.id] ||
+          item.locked
         ) {
           continue;
         }
