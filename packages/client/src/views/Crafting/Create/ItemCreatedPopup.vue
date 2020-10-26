@@ -25,6 +25,10 @@ export default {
   components: { UserDialog, ItemInfo, CustomButton },
   computed: {
     isAtMaxLevel() {
+      if (!this.$game.itemsDB.getSlot(this.itemData)) {
+        return true;
+      }
+
       return (
         this.$game.itemsDB.getMaxLevel(this.itemData, 2) < this.itemData.level
       );

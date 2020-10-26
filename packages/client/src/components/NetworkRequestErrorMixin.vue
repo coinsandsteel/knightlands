@@ -25,6 +25,9 @@ export default {
 
         throw exc;
       }
+    },
+    async performRequestNoCatch(request) {
+      return await request;
     }
   }
 };

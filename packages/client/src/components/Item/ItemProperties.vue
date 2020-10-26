@@ -7,8 +7,8 @@
       v-html="p"
     ></div>
     <div class="margin-bottom-half" v-if="action" v-html="action"></div>
-    <span class="margin-bottom-half" v-if="template.maxStacks > 0">{{
-      $t("max-stacks", { max: template.maxStacks })
+    <span class="margin-bottom-half" v-if="template.maxStack > 0">{{
+      $t("max-stacks", { max: template.maxStack })
     }}</span>
 
     <span

@@ -1,13 +1,13 @@
 <template>
   <div
-    class="loot-slot pixelated flex relative flex-column"
+    class="loot-slot flex relative flex-column"
     @click="$emit('hint', itemData)"
     :class="[rarity, { interactible: interactible }, { bottom: gacha }, size]"
   >
     <div class="inner-border">
       <img
         :class="{ locked: locked }"
-        class="icon"
+        class="icon pixelated"
         :src="icon()"
         slot="reference"
       />

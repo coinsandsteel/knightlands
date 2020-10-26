@@ -3,8 +3,10 @@
     <div
       class="flex flex-center flex-column font-outline font-size-30 enemy-title"
     >
-      <span class="rarity-mythical font-weight-900 font-outline" v-show="isBoss"
-        >BOSS</span
+      <span
+        class="rarity-mythical font-weight-900 font-outline"
+        v-show="isBoss"
+        >{{ $t("q-boss") }}</span
       >
       <div class="enemy-title-font">{{ $t(missionName) }}</div>
     </div>
@@ -56,6 +58,13 @@
           :crit="damage.crit"
           >{{ damage.damage }}</DamageText
         >
+        <NewLoot
+          v-for="reward in newRewards"
+          :key="reward.id"
+          :item="reward"
+          :delay="reward.delay"
+        >
+        </NewLoot>
       </div>
     </div>
 
@@ -106,33 +115,38 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="margin-top-1 flex flex-center">
-      <div v-if="!isBossUnlocked" class="font-size-30 grey-title font-outline">
-        Kill previous enemies
-      </div>
 
-      <div v-else-if="progress.current >= progress.max && hasNextZone">
-        <CustomButton type="yellow" @click="goToNextMission">{{
-          $t("btn-next-quest")
-        }}</CustomButton>
-      </div>
-
-      <div v-else class="flex flex-center width-100 flex-space-evenly">
-        <AttackButton :promise="request" @click="engage(false)" width="15rem"
-          >Attack x1</AttackButton
+      <div class="margin-top-1 flex flex-center">
+        <div
+          v-if="!isBossUnlocked"
+          class="font-size-30 grey-title font-outline"
         >
-        <PromisedButton
-          :promise="request"
-          :locked="!$game.hasPremiumAccount"
-          @click="engage(true)"
-          width="15rem"
-          >Attack MAX</PromisedButton
-        >
+          {{ $t("clear-quests") }}
+        </div>
+
+        <div v-else-if="progress.current >= progress.max && hasNextZone">
+          <CustomButton type="yellow" @click="goToNextMission">{{
+            $t("btn-next-quest")
+          }}</CustomButton>
+        </div>
+
+        <div v-else class="flex flex-center width-100 flex-space-evenly">
+          <AttackButton :promise="request" @click="engage(false)">{{
+            isBoss ? $t("q-att-s") : $t("q-prog-s")
+          }}</AttackButton>
+          <PromisedButton
+            :promise="request"
+            :locked="!$game.hasPremiumAccount"
+            @click="engage(true)"
+            >{{ isBoss ? $t("q-att-m") : $t("q-prog-m") }}</PromisedButton
+          >
+        </div>
       </div>
     </div>
 
-    <div class="flex full-flex padding-left-2 padding-right-2">
+    <Title class="margin-top-2">Loot</Title>
+
+    <div class="flex full-flex padding-left-1 padding-right-1 margin-top-1">
       <loot
         v-for="reward in rewards"
         :key="reward.id"
@@ -146,16 +160,17 @@
 <script>
 import HintHandler from "@/components/HintHandler.vue";
 import Zones from "@/campaign_database";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Loot from "@/components/Loot.vue";
 import Stat from "@/../../knightlands-shared/character_stat.js";
 import IconWithValue from "@/components/IconWithValue.vue";
 import UiConstants from "@/ui_constants";
-import Inventory from "@/inventory";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 import AttackButton from "@/components/AttackButton.vue";
 import CustomButton from "@/components/Button.vue";
+import Title from "@/components/Title.vue";
+import NewLoot from "@/components/Item/NewLoot.vue";
 import DamageText from "@/views/Raids/DamageText.vue";
 import Errors from "@/../../knightlands-shared/errors";
 
@@ -166,19 +181,23 @@ const ShowResourceRefill = create(NotEnoughResource, "stat");
 
 import anime from "animejs/lib/anime.es.js";
 
+const NEW_LOOT_DELAY = 300;
+const DAMAGE_DELAY = 200;
+
 export default {
   name: "quest-mission",
-  mixins: [HintHandler],
+  mixins: [HintHandler, NetworkRequestErrorMixin],
   props: ["zone", "questIndex", "maxQuestIndex", "stage"],
   components: {
-    LoadingScreen,
     Loot,
     ProgressBar,
     IconWithValue,
     PromisedButton,
     CustomButton,
     DamageText,
-    AttackButton
+    AttackButton,
+    Title,
+    NewLoot
   },
   data() {
     return {
@@ -187,31 +206,23 @@ export default {
       lootHash: {},
       request: null,
       playerDamages: [],
+      newRewards: [],
       sliderIndex: 0
     };
-  },
-  created() {
-    this.handleInventoryCallback = this.handleInventoryDelta.bind(this);
   },
   mounted() {
     this.damageTextId = 0;
 
-    this.$game.inventory.on(Inventory.Changed, this.handleInventoryCallback);
-
     this.sliderIndex = +this.questIndex;
   },
   activated() {
-    this.$game.inventory.on(Inventory.Changed, this.handleInventoryCallback);
     this.$refs.slider.af = null;
     this.$refs.slider.initTouchArea();
     this.sliderIndex = +this.questIndex;
   },
-  destroyed() {
-    this.$game.inventory.off(Inventory.Changed, this.handleInventoryCallback);
-  },
   deactivated() {
-    this.$game.inventory.off(Inventory.Changed, this.handleInventoryCallback);
     this.rewards = [];
+    this.newRewards = [];
     this.lootHash = {};
   },
   computed: {
@@ -293,34 +304,39 @@ export default {
       return Zones.getEnemyImage(this.zone._id, questIndex);
     },
     async engage(max, boss) {
-      this.request = this.$game.engageQuest(
-        this.zone._id * 1,
-        this.questIndex * 1,
-        max
+      this.request = this.performRequestNoCatch(
+        this.$game.engageQuest(this.zone._id * 1, this.questIndex * 1, max)
       );
       try {
-        let damages = await this.request;
+        let { damages, items } = await this.request;
         let delay = 0;
         for (let i = 0; i < damages.length; ++i) {
           this.handleDamage(damages[i].damage, damages[i].crit, delay);
-          delay += 150;
+          delay += DAMAGE_DELAY;
         }
+        this.handleLoot(items);
       } catch (exc) {
         await this._handleQuestError(exc);
       }
     },
-    handleInventoryDelta(lootDrops) {
-      for (let itemId in lootDrops.changes) {
+    handleLoot(lootDrop) {
+      let delay = 0;
+      for (let loot of lootDrop) {
+        const templateId = loot.item;
         // if already was dropped before - just inc loot counter
-        if (this.lootHash[itemId]) {
-          this.lootHash[itemId].count += lootDrops.delta[itemId];
-        } else if (lootDrops.changes[itemId]) {
+        if (this.lootHash[templateId]) {
+          this.lootHash[templateId].count += loot.quantity;
+        } else {
           // or add to loot array and hash for tracking
-          let copy = { ...lootDrops.changes[itemId] };
-          copy.count = lootDrops.delta[itemId];
-          this.$set(this.lootHash, itemId, copy);
-          this.rewards.push(this.lootHash[itemId]);
+          this.$set(this.lootHash, templateId, {
+            template: loot.item,
+            count: loot.quantity
+          });
+          this.rewards.push(this.lootHash[templateId]);
         }
+
+        this.showNewLoot(loot, delay);
+        delay += NEW_LOOT_DELAY;
       }
     },
     async _handleQuestError(error) {
@@ -333,6 +349,17 @@ export default {
           await ShowResourceRefill(Stat.Energy);
           break;
       }
+    },
+    showNewLoot(loot, delay) {
+      setTimeout(() => {
+        this.newRewards.splice(0, 1);
+      }, 3000);
+
+      this.newRewards.push({
+        template: loot.item,
+        count: loot.quantity,
+        delay
+      });
     },
     handleDamage(damage, crit, delay) {
       this.playerDamages.push({
@@ -377,6 +404,7 @@ export default {
         translateX: 0,
         translateY: 0,
         scale: 1,
+        delay: delay,
         filter: {
           value: "brightness(1)",
           easing: "linear",
@@ -392,7 +420,7 @@ export default {
 .quest-mid {
   width: 100%;
   height: 30vh;
-  min-height: 10vh;
+  min-height: 30vh;
   justify-content: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -428,7 +456,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
   width: 100%;
 }
 

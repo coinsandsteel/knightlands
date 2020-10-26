@@ -5,7 +5,9 @@
         <div class="flex flex-center loading padding-2 relative">
           <div class="bg-color"></div>
           <GridLoader color="#fde648" :size="15" margin="1px" />
-          <span class="font-size-30 relative margin-left-2">{{$t("loading")}}</span>
+          <span class="font-size-30 relative margin-left-2">{{
+            $t("loading")
+          }}</span>
         </div>
       </div>
     </template>

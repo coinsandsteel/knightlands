@@ -156,8 +156,11 @@ export default {
     value: {
       immediate: false,
       handler(newValue, oldValue) {
-        this.previousValue = oldValue;
-        this._removeBlink();
+        this.previousValue = newValue;
+        this.$nextTick(()=>{
+          this.previousValue = oldValue;
+          this._removeBlink();
+        });
       }
     },
     timer: {
