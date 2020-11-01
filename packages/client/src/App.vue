@@ -371,6 +371,11 @@ export default {
   }
 }
 
+.vue-notification-group {
+  min-width: 35.625rem;
+  width: 55vh;
+}
+
 .footer {
   flex-basis: 0;
   display: flex;
@@ -507,7 +512,7 @@ export default {
 html {
   font-family: "Brandon", sans-serif;
   font-size: 6px;
-  line-height: 1.2;
+  line-height: 1;
   box-sizing: content-box;
 
   .fourk_screen({font-size: 10px;});

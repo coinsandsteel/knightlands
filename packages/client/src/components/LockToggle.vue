@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="lock-btn"
-    :class="{ locked: item.locked }"
-    @click="toggleLock"
-  ></div>
+  <div class="lock-btn" :class="{ locked: locked }" @click="toggleLock"></div>
 </template>
 
 <script>
@@ -12,6 +8,11 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 export default {
   mixins: [NetworkRequestErrorMixin],
   props: ["item"],
+  computed: {
+    locked() {
+      return this.item ? this.item.locked : false;
+    }
+  },
   methods: {
     toggleLock() {
       if (this.item.locked) {

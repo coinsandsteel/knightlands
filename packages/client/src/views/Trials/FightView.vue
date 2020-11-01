@@ -1,6 +1,10 @@
 <template>
   <div class="relative flex flex-column flex-center flex-no-wrap">
-    <EnemyView ref="enemyView" :image="enemyImage" :background="`${background}`">
+    <EnemyView
+      ref="enemyView"
+      :image="enemyImage"
+      :background="`${background}`"
+    >
       <FloatingTextContainer
         ref="floatingText"
         :enemyView="$refs.enemyView"
@@ -10,6 +14,7 @@
 
     <ProgressBar
       valuePosition="top"
+      class="margin-top-1 margin-bottom-2"
       valueClass="white-font font-outline font-size-25"
       :thresholds="barThreshold"
       v-model="enemyHealth"
@@ -17,12 +22,20 @@
       height="1rem"
     ></ProgressBar>
 
-    <div class="panel flex flex-column width-100 padding-1 margin-1">
-      <span class="margin-top-1 margin-bottom-1 font-size-22">{{$t("tower-player-hp")}}</span>
+    <div class="color-panel-2 flex flex-column width-100 padding-1">
+      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
+        $t("tower-player-hp")
+      }}</span>
       <ProgressBar v-model="playerHealth" :maxValue="maxHealth"></ProgressBar>
 
-      <span class="margin-top-1 margin-bottom-1 font-size-22">{{$t("trial-player-mana")}}</span>
-      <ProgressBar barType="blue" :value="mana" :maxValue="maxMana"></ProgressBar>
+      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
+        $t("trial-player-mana")
+      }}</span>
+      <ProgressBar
+        barType="blue"
+        :value="mana"
+        :maxValue="maxMana"
+      ></ProgressBar>
 
       <!-- <div v-if="lost" class="flex margin-top-2 width-100 flex-center">
         <PromisedButton
@@ -33,18 +46,17 @@
       </div>-->
 
       <div class="flex margin-top-2 flex-center width-100 flex-space-evenly">
-        <AttackButton
-          :promise="request"
-          @click="attack"
-          type="red"
-        >{{$t("btn-attack")}}</AttackButton>
+        <AttackButton :promise="request" @click="attack" type="red">{{
+          $t("btn-attack")
+        }}</AttackButton>
 
         <PromisedButton
           :promise="request"
           :disabled="!enoughManaToSummon"
           @click="summonCards"
           type="blue"
-        >{{$t("btn-summon-trial-cards")}}</PromisedButton>
+          >{{ $t("btn-summon-trial-cards") }}</PromisedButton
+        >
 
         <!-- <PromisedButton
           :promise="request"

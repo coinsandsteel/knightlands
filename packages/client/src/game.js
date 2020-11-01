@@ -492,11 +492,11 @@ class Game {
   }
 
   _handleDailyTaskComplete(data) {
-    console.log("_handleDailyTaskComplete");
     const { type } = data;
 
     Vue.notify({
       group: "daily",
+      max: 2,
       data: {
         type
       },
