@@ -23,6 +23,7 @@
 <script>
 import CustomButton from "@/components/Button.vue";
 import MinesMeta from "@/mines_meta";
+import ItemProperties from "@/../../knightlands-shared/item_properties";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
@@ -39,7 +40,18 @@ export default {
       return this.mine.level + 1;
     },
     ratePrice() {
-      return MinesMeta.mines[this.mine.level].price;
+      const item = this.$game.inventory.getItemByTemplate(MinesMeta.priceCharm);
+      const template = this.$game.itemsDB.getTemplate(item);
+      const prop = template.properties.find(
+        x =>
+          this.$game.itemsDB.getProperty(x).type ==
+          ItemProperties.GoldMineUpgradeDiscount
+      );
+      return Math.floor(
+        (MinesMeta.mines[this.mine.level].price *
+          (item.count * this.$game.itemsDB.getProperty(prop).value)) /
+          100
+      );
     },
     rate() {
       // per second
