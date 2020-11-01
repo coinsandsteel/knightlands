@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-items-center flex-no-wrap">
     <div class="flex flex-column flex-center margin-right-half">
-      <LockToggle v-if="showLocked" :item="item" class="margin-bottom-half" />
+      <LockToggle v-if="canLock" :item="item" class="margin-bottom-half" />
       <Loot :item="item" :interactible="false" v-bind="itemProps"></Loot>
     </div>
     <div class="flex flex-column flex-start full-flex">
@@ -63,6 +63,12 @@ export default {
     LockToggle
   },
   computed: {
+    canLock() {
+      if (!this.item) {
+        return false;
+      }
+      return this.showLocked && this.$game.itemsDB.isEquipment(this.item);
+    },
     isPreview() {
       return this.count < 1;
     },

@@ -87,7 +87,7 @@ class ItemDatabase {
   }
 
   getRarity(item) {
-    let templateid = item
+    let templateid = item;
     if (typeof item == "object") {
       if (item.rarity) {
         return item.rarity;
@@ -124,8 +124,12 @@ class ItemDatabase {
     );
   }
 
+  isEquipment(id) {
+    return this.getItemType(id) == ItemType.Equipment;
+  }
+
   getEquipmentType(id) {
-    return ItemTemplates[id].equipmentType;
+    return this.getTemplate(id).equipmentType;
   }
 
   getTemplate(item) {
