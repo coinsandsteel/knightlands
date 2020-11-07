@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex flex-column flex-center flex-no-wrap padding-top-1">
+  <div class="relative flex flex-column flex-center flex-no-wrap">
     <Title class="enemy-title-font font-outline" :stackBottom="true">{{
       name
     }}</Title>

@@ -500,7 +500,7 @@ class Game {
       data: {
         type
       },
-      duration: 5000
+      duration: 2000
     });
   }
 

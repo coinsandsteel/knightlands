@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-column flex-items-center width-100" v-if="rewards">
     <IconWithValue
+      v-if="rewards.dkt > 0"
       class="margin-bottom-1"
       valueClass="font-size-20 digit-font"
       iconClass="icon-dkt"
@@ -8,6 +9,7 @@
     >
 
     <IconWithValue
+      v-if="rewards.gold > 0"
       class="margin-bottom-1"
       valueClass="font-size-20 digit-font"
       iconClass="icon-gold"
@@ -15,6 +17,7 @@
     >
 
     <IconWithValue
+      v-if="rewards.hardCurrency > 0"
       class="margin-bottom-1"
       valueClass="font-size-20 digit-font"
       iconClass="icon-premium"

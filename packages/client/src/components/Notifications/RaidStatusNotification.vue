@@ -1,5 +1,5 @@
 <template>
-  <notifications group="raid" position="top" width="100%">
+  <notifications group="raid" position="top" width="inherit">
     <template v-slot:body="props">
       <div
         class="flex flex-column flex-center color-panel-2"

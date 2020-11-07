@@ -62,8 +62,7 @@ export default {
       return this.$game.character.maxStats;
     },
     bonusStats() {
-      console.log(this.$game.character.buffResolver.bonusStats);
-      return this.$game.character.buffResolver.bonusStats;
+      return this.$game.character.buffResolver.bonuses;
     }
   }
 };

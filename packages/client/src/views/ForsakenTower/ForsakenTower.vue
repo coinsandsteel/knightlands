@@ -18,6 +18,7 @@
       @update="scrollUpdated"
     >
       <FloorListElement
+        :height="itemSize"
         :floor="item"
         :locked="item._id > floorsCleared"
         :firstTime="item._id == floorsCleared"
@@ -46,7 +47,7 @@ export default {
   components: { FloorListElement, ForsakenTowerFloor, TowerFooter },
   data: () => ({
     floors: [],
-    itemSize: 110,
+    itemSize: 150,
     floorsCleared: 0,
     currentFloor: null
   }),
@@ -55,6 +56,11 @@ export default {
     this.fetchInProcess = false;
     this.startPage = -1;
     this.endPage = -1;
+
+    if (window.innerHeight / 115 > 5) {
+      this.itemSize = 150;
+    }
+    // this.itemSize = window.innerHeight / 5;
   },
   watch: {
     currentFloor() {

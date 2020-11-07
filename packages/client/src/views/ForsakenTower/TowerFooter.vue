@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-center font-size-18 flex-no-wrap">
     <div class="flex flex-center padding-1 panel-input height-100">
-      <span>{{$t(ticketItemName)}}</span>
+      <span>{{ $t(ticketItemName) }}</span>
       <div class="key-icon" :style="ticketIcon"></div>
-      <span>{{totalTickets}}</span>
+      <span>{{ totalTickets }}</span>
     </div>
   </div>
 </template>

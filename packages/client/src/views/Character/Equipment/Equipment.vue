@@ -163,7 +163,7 @@ export default {
       ShowDetails();
     },
     hasBonus(stat) {
-      return !!this.$game.character.buffResolver.bonusStats[stat];
+      return !!this.$game.character.buffResolver.bonuses[stat];
     },
     async showEquipmentHint(slot) {
       this.slotPreview = true;

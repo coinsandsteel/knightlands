@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column padding-top-1 padding-bottom-1 color-panel-2">
+  <div class="flex flex-column" :style="style">
     <Title :stackTop="true" class="font-size-22">{{
       $t("tower-floor-title", { floor: floor._id + 1 })
     }}</Title>
@@ -60,7 +60,7 @@ import Loot from "@/components/Loot.vue";
 import Title from "@/components/Title.vue";
 
 export default {
-  props: ["floor", "locked", "firstTime"],
+  props: ["floor", "locked", "firstTime", "height"],
   components: { CustomButton, IconWithValue, Loot, Title },
   computed: {
     rewards() {
@@ -69,6 +69,9 @@ export default {
       }
 
       return this.floor.repeatClearReward.records;
+    },
+    style() {
+      return { height: this.height + "px" };
     }
   },
   methods: {

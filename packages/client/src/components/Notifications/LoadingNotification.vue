@@ -1,5 +1,5 @@
 <template>
-  <notifications group="loading" position="top" width="100%" height="100%">
+  <notifications group="loading" position="top" width="inherit" height="100%">
     <template slot="body" slot-scope="props">
       <div class="full-height">
         <div class="flex flex-center loading padding-2 relative">
