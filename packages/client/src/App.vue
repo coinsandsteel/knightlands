@@ -320,9 +320,10 @@ export default {
     .title_decor;
     height: 100% !important;
     width: 6rem !important;
+    transform: translateY(20%);
 
     &.right {
-      transform: scaleX(-1);
+      transform: translateY(20%) scaleX(-1);
     }
   }
 

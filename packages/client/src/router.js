@@ -113,6 +113,19 @@ const router = new Router({
           ]
         },
         {
+          path: "craft-acc",
+          component: () =>
+            import("./views/Crafting/Accessories/AccessoriesRoot.vue"),
+          children: [
+            {
+              path: "",
+              name: "create-acc",
+              component: () =>
+                import("./views/Crafting/Accessories/Accessories.vue")
+            }
+          ]
+        },
+        {
           path: "level",
           component: Upgrade,
           children: [

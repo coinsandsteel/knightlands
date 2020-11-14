@@ -33,7 +33,7 @@
     "rewards": "Rewards",
     "damage-short": "DMG",
     "tier": "Tier",
-    "dkt-bonus": "DKT Bonus:",
+    "dkt-bonus": "DKT Bonus:x{bonus}",
     "damage-done": "Damage Done",
     "slots-avaialble": "Slots",
     "raid-reward-title": "{boss} was defeated!",
