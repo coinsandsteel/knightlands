@@ -167,9 +167,7 @@ export default {
     },
     icon() {
       if ((!this.itemData || !this.itemData.id) && this.equipment) {
-        return `/images/ui/equipment/${
-          SlotPlaceholders[this.equipmentSlot]
-        }.png`;
+        return SlotPlaceholders[this.equipmentSlot];
       }
       if (this.itemData) {
         return this.$game.itemsDB.getIcon(this.itemData.template);

@@ -34,13 +34,13 @@
             <div class="flex flex-column digit-font font-outline">
               <icon-with-value
                 class="flex-start"
-                iconClass="icon-exp icon-size-mini margin-right-1"
+                iconClass="icon-exp small margin-right-1"
                 :value="quest.exp"
                 valueClass="info-font"
               ></icon-with-value>
               <icon-with-value
                 class="flex-start"
-                iconClass="icon-gold icon-size-mini margin-right-1"
+                iconClass="icon-gold small margin-right-1"
                 :value="`${quest.goldMin}-${quest.goldMax}`"
                 valueClass="info-font"
               ></icon-with-value>
@@ -55,7 +55,7 @@
             </div>
             <div class="list digit-font font-outline">
               <icon-with-value
-                iconClass="icon-energy icon-size-mini"
+                iconClass="icon-energy small"
                 :value="quest.energy"
                 valueClass="info-font"
               ></icon-with-value>

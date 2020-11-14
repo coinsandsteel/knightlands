@@ -21,7 +21,7 @@
         <slot name="label"></slot>
         <div v-show="showValue">{{ currentValue }}</div>
         <div v-show="!showValue" class="flex">
-          <div class="icon-timer icon-size-mini"></div>
+          <div class="icon-timer small"></div>
           <span>{{ timerValue.value }}</span>
         </div>
       </div>
@@ -54,7 +54,7 @@
           <slot name="label"></slot>
           <div v-show="showValue">{{ currentValue }}</div>
           <div v-show="!showValue" class="status-bar-font flex flex-center">
-            <div class="icon-timer icon-size-mini"></div>
+            <div class="icon-timer small"></div>
             <span>{{ timerValue.value }}</span>
           </div>
         </div>
@@ -157,7 +157,7 @@ export default {
       immediate: false,
       handler(newValue, oldValue) {
         this.previousValue = newValue;
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
           this.previousValue = oldValue;
           this._removeBlink();
         });

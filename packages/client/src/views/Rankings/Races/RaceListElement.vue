@@ -8,7 +8,7 @@
       <div class="width-100 flex flex-space-evenly">
         <div class="flex flex-column flex-space-between">
           <div class="flex flex-center panel-input padding-1">
-            <div class="icon-timer icon-size-mini"></div>
+            <div class="icon-timer small"></div>
             <span class="font-size-18">{{ timer.value }}</span>
           </div>
 

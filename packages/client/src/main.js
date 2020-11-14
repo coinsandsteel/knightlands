@@ -3,7 +3,7 @@ import App from "./App.vue";
 import store from "./store";
 import Router from "vue-router";
 import LoadScript from "vue-plugin-load-script";
-import Vuebar from "vuebar";
+import Vuebar from "./vuebar";
 import VueAgile from "vue-agile";
 import * as ModalDialogs from "vue-modal-dialogs";
 import VueCollapse from "vue2-collapse";

@@ -1,5 +1,17 @@
 <template>
-  <div>
-      
+  <div class="screen-content">
+    <div class="screen-background"></div>
   </div>
 </template>
+
+<script>
+import AppSection from "@/AppSection.vue";
+
+export default {
+  mixins: [AppSection],
+  created() {
+    this.title = "win-craft-acc";
+    this.$options.useRouterBack = true;
+  }
+};
+</script>

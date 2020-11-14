@@ -12,7 +12,7 @@
             :class="{'new-line': record.new}"
           >
             <span class="damage trim-text width-50">{{record.by}}</span>
-            <IconWithValue iconClass="icon-attack icon-size-mini">
+            <IconWithValue iconClass="icon-attack small">
               <span class="margin-right-1">{{record.damage}}</span>
               <span>(x{{record.hits}})</span>
             </IconWithValue>
