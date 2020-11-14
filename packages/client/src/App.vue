@@ -296,6 +296,7 @@ export default {
 
 <style lang="less" scoped>
 @import (reference) "./style/common.less";
+@import (reference) "./style/ui.less";
 
 @footerColor: #112b46;
 
@@ -316,15 +317,11 @@ export default {
   margin: 0;
 
   & > .section-decor {
-    background-image: url("./assets/ui/title_decor.png");
-    height: 100%;
-    width: 6rem;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+    .title_decor;
+    height: 100% !important;
+    width: 6rem !important;
 
     &.right {
-      background-image: url("./assets/ui/title_decor.png");
       transform: scaleX(-1);
     }
   }
@@ -360,16 +357,14 @@ export default {
 .back-button {
   display: block;
   cursor: pointer;
-  width: @backButtonWidth;
-  height: @backButtonHeight;
+  width: @backButtonWidth !important;
+  height: @backButtonHeight !important;
   // .mobile({width: @backButtonWidth/2; height: @backButtonHeight / 2});
   left: 1.2rem;
-  background: url("./assets/ui/button_back.png") no-repeat;
-  background-size: contain;
+  .button_back;
 
   &:active {
-    background: url("./assets/ui/button_back_active.png") no-repeat;
-    background-size: contain;
+    .button_back_active;
   }
 }
 
@@ -409,10 +404,12 @@ export default {
   height: 5rem;
 
   a {
-    height: 100%;
-    width: calc(100% - 30px);
+    display: inherit !important;
+    height: 100% !important;
+    width: calc(100% - 30px) !important;
     text-align: center;
     position: relative;
+    .tabbar_bg;
 
     .menu-title {
       font-size: 1.5rem;
@@ -427,8 +424,8 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
       background-size: contain;
-      width: 6rem;
-      height: 6rem;
+      width: 6rem !important;
+      height: 6rem !important;
       transition: all 0.2s ease;
       position: absolute;
       bottom: -0.5rem;
@@ -436,27 +433,24 @@ export default {
     }
 
     .home {
-      background-image: url("./assets/ui/tabbar_home.png");
+      .tabbar_home;
     }
 
     .crafting {
-      background-image: url("./assets/ui/tabbar_castle.png");
+      .tabbar_castle;
     }
 
     .character {
-      background-image: url("./assets/ui/tabbar_character.png");
+      .tabbar_character;
     }
 
     .shop {
-      background-image: url("./assets/ui/tabbar_shop.png");
+      .tabbar_shop;
     }
 
     .chat {
-      background-image: url("./assets/ui/tabbar_chat.png");
+      .tabbar_chat;
     }
-
-    background-image: url("./assets/ui/tabbar_bg.png");
-    background-size: 100% 100%;
 
     &.router-link-active {
       background-image: unset;
