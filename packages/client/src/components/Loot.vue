@@ -1,14 +1,13 @@
 <template>
   <div
-    class="loot-slot flex relative flex-column"
+    class="loot-slot item_slot_dark flex relative flex-column "
     @click="$emit('hint', itemData)"
     :class="[rarity, { interactible: interactible }, { bottom: gacha }, size]"
   >
     <div class="inner-border">
-      <img
-        :class="{ locked: locked }"
+      <div
+        :class="[{ locked: locked }, icon]"
         class="icon pixelated"
-        :src="icon()"
         slot="reference"
       />
       <div :class="[{ selected: selected }]"></div>
@@ -148,7 +147,7 @@ export default {
         return "";
       }
 
-      return `slot-${this.$game.itemsDB.getRarity(this.itemData)}`;
+      return `slot_${this.$game.itemsDB.getRarity(this.itemData)}`;
     },
     element() {
       return this.$game.itemsDB.getElement(this.item);
@@ -165,6 +164,18 @@ export default {
       }
 
       return count;
+    },
+    icon() {
+      if ((!this.itemData || !this.itemData.id) && this.equipment) {
+        return `/images/ui/equipment/${
+          SlotPlaceholders[this.equipmentSlot]
+        }.png`;
+      }
+      if (this.itemData) {
+        return this.$game.itemsDB.getIcon(this.itemData.template);
+      }
+
+      return "";
     }
   },
   methods: {
@@ -184,19 +195,6 @@ export default {
       } else {
         this.itemData = this.item;
       }
-    },
-    icon() {
-      if ((!this.itemData || !this.itemData.id) && this.equipment) {
-        return `/images/ui/equipment/${
-          SlotPlaceholders[this.equipmentSlot]
-        }.png`;
-      }
-
-      if (this.itemData) {
-        return this.$game.itemsDB.getIcon(this.itemData.template);
-      }
-
-      return "";
     }
   }
 };
@@ -221,9 +219,6 @@ export default {
 
 .loot-slot {
   position: relative;
-  background-image: url("../assets/ui/item_slot_dark.png");
-  background-size: contain;
-  background-repeat: no-repeat;
 
   width: @lootCellSize;
   height: @lootCellSize;
@@ -243,6 +238,7 @@ export default {
     position: relative;
     width: (100%);
     padding: 0.5rem;
+    height: 100%;
   }
 
   pointer-events: none;
@@ -273,25 +269,25 @@ export default {
   right: 0;
 }
 
-.slot-common {
-  background-image: url("../assets/ui/slot_common.png");
-}
+// .slot-common {
+//   background-image: url("../assets/ui/slot_common.png");
+// }
 
-.slot-rare {
-  background-image: url("../assets/ui/slot_rare.png");
-}
+// .slot-rare {
+//   background-image: url("../assets/ui/slot_rare.png");
+// }
 
-.slot-epic {
-  background-image: url("../assets/ui/slot_epic.png");
-}
+// .slot-epic {
+//   background-image: url("../assets/ui/slot_epic.png");
+// }
 
-.slot-legendary {
-  background-image: url("../assets/ui/slot_legendary.png");
-}
+// .slot-legendary {
+//   background-image: url("../assets/ui/slot_legendary.png");
+// }
 
-.slot-mythical {
-  background-image: url("../assets/ui/slot_mythical.png");
-}
+// .slot-mythical {
+//   background-image: url("../assets/ui/slot_mythical.png");
+// }
 
 .loot-equipped {
   background-image: url("../assets/ui/slot_selected.png");

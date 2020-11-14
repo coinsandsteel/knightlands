@@ -6,30 +6,35 @@
       class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5"
     >
       <MenuIconRow>
-        <MenuIcon icon="icon-garrison" :to="{ name: 'garrison' }"
+        <MenuIcon icon="skewed_icon_garisson" :to="{ name: 'garrison' }"
           >Garrison</MenuIcon
         >
       </MenuIconRow>
 
       <MenuIconRow>
-        <MenuIcon icon="icon-units" :to="{ name: 'edit-unit' }" :append="true"
+        <MenuIcon
+          icon="skewed_icon_army_edit_units"
+          :to="{ name: 'edit-unit' }"
+          :append="true"
           >Units</MenuIcon
         >
 
-        <MenuIcon icon="icon-alchemy" :to="{ name: 'alchemy-lab' }"
+        <MenuIcon icon="skewed_icon_summon" :to="{ name: 'alchemy-lab' }"
           >Alchemy Lab</MenuIcon
         >
       </MenuIconRow>
 
       <MenuIconRow>
         <MenuIcon
-          icon="icon-legion"
+          icon="skewed_icon_army_composition"
           :to="{ name: 'army-composition' }"
           :append="true"
           >Legions</MenuIcon
         >
 
-        <MenuIcon icon="icon-beast" :to="{ name: 'beast' }">Beast</MenuIcon>
+        <MenuIcon icon="skewed_icon_beast" :to="{ name: 'beast' }"
+          >Beast</MenuIcon
+        >
       </MenuIconRow>
     </div>
   </div>

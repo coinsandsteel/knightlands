@@ -1,3 +1,5 @@
+@import (reference) url("./ui.less");
+
 @backgroundMainColor: #230e21;
 @backgroundOutsideColor: #0c080c;
 @lootCellSize: 6.25rem;
@@ -606,66 +608,62 @@ span {
 @iconSize: 2.5rem;
 
 .star {
-    background-image: url("../assets/ui/icon_star_empty.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: @iconSize;
-    height: @iconSize;
+    .icon_star_empty;
+    width: @iconSize !important;
+    height: @iconSize !important;
 
     &.active {
-        background-image: url("../assets/ui/icon_star.png");
+        .icon_star;
     }
 
     &.small {
-        background-image: url("../assets/ui/troops_mini_star1.png");
-        width: @iconSize * 0.75;
-        height: @iconSize * 0.75;
+        .troops_mini_star1;
+        width: @iconSize * 0.75 !important;
+        height: @iconSize * 0.75 !important;
 
         &.active {
-            background-image: url("../assets/ui/troops_mini_star.png");
+            .troops_mini_star;
         }
     }
 
     &.mini {
-        background-image: url("../assets/ui/troops_mini_star1.png");
-        width: @iconSize * 0.65;
-        height: @iconSize * 0.65;
+        .troops_mini_star1;
+        width: @iconSize * 0.65 !important;
+        height: @iconSize * 0.65 !important;
 
         &.active {
-            background-image: url("../assets/ui/troops_mini_star.png");
+            .troops_mini_star;
         }
     }
 
     &.big {
-        width: @iconSize * 1.25;
-        height: @iconSize * 1.25;
+        width: @iconSize * 1.25 !important;
+        height: @iconSize * 1.25 !important;
     }
 }
 
 .weapon-badge {
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: @iconSize;
-    height: @iconSize;
+    width: @iconSize !important;
+    height: @iconSize !important;
 
     &.axe {
-        background-image: url("../assets/ui/troops_mini_weapon_axe.png");
+        .troops_mini_weapon_axe;
     }
 
     &.sword {
-        background-image: url("../assets/ui/troops_mini_weapon_sword.png");
+        .troops_mini_weapon_sword;
     }
 
     &.bow {
-        background-image: url("../assets/ui/troops_mini_weapon_bow.png");
+        .troops_mini_weapon_bow;
     }
 
     &.wand {
-        background-image: url("../assets/ui/troops_mini_weapon_wand.png");
+        .troops_mini_weapon_wand;
     }
 
     &.spear {
-        background-image: url("../assets/ui/troops_mini_weapon_spear.png");
+        .troops_mini_weapon_spear;
     }
 }
 
@@ -700,13 +698,13 @@ span {
     }
 }
 
-.icon-evolve {
-    .icon("skewed_icon_unbind");
-}
+// .icon-evolve {
+//     .icon("skewed_icon_unbind");
+// }
 
-.icon-alchemy {
-    .icon("skewed_icon_summon");
-}
+// .icon-alchemy {
+//     .icon("skewed_icon_summon");
+// }
 
 .icon-exp {
     .icon("icon_xp");
@@ -776,53 +774,53 @@ span {
     .icon("icon_attack");
 }
 
-.icon-raids {
-    .icon("skewed_icon_raids");
-}
+// .icon-raids {
+//     .icon("skewed_icon_raids");
+// }
 
-.icon-quests {
-    .icon("skewed_icon_quests");
-}
+// .icon-quests {
+//     .icon("skewed_icon_quests");
+// }
 
-.icon-divs {
-    .icon("skewed_icon_dividents");
-}
+// .icon-divs {
+//     .icon("skewed_icon_dividents");
+// }
 
-.icon-settings {
-    .icon("skewed_icon_settings");
-}
+// .icon-settings {
+//     .icon("skewed_icon_settings");
+// }
 
-.icon-craft {
-    .icon("skewed_icon_craft");
-}
+// .icon-craft {
+//     .icon("skewed_icon_craft");
+// }
 
-.icon-craft-upgrade {
-    .icon("skewed_icon_upgrade");
-}
+// .icon-craft-upgrade {
+//     .icon("skewed_icon_upgrade");
+// }
 
-.icon-craft-level {
-    .icon("skewed_icon_lvlup");
-}
+// .icon-craft-level {
+//     .icon("skewed_icon_lvlup");
+// }
 
-.icon-disenchant {
-    .icon("skewed_icon_disenchant");
-}
+// .icon-disenchant {
+//     .icon("skewed_icon_disenchant");
+// }
 
 .icon-race-token {
     .icon("icon_race_token");
 }
 
-.icon-enchant {
-    .icon("skewed_icon_enchant");
-}
+// .icon-enchant {
+//     .icon("skewed_icon_enchant");
+// }
 
 .icon-chests {
     .icon("skewed_icon_chests");
 }
 
-.icon-recipe-book {
-    .icon("skewed_icon_recipes");
-}
+// .icon-recipe-book {
+//     .icon("skewed_icon_recipes");
+// }
 
 .icon-shop {
     .icon("skewed_icon_shop");
@@ -853,33 +851,33 @@ span {
     .icon("element_light");
 }
 
-.icon-adventures {
-    .icon("skewed_icon_adventures");
-}
+// .icon-adventures {
+//     .icon("skewed_icon_adventures");
+// }
 
-.icon-tower {
-    .icon("skewed_icon_tower");
-}
+// .icon-tower {
+//     .icon("skewed_icon_tower");
+// }
 
-.icon-trials {
-    .icon("skewed_icon_portal");
-}
+// .icon-trials {
+//     .icon("skewed_icon_portal");
+// }
 
-.icon-garrison {
-    .icon("skewed_icon_garisson");
-}
+// .icon-garrison {
+//     .icon("skewed_icon_garisson");
+// }
 
-.icon-beast {
-    .icon("skewed_icon_beast");
-}
+// .icon-beast {
+//     .icon("skewed_icon_beast");
+// }
 
-.icon-gold-mine {
-    .icon("skewed_icon_mines");
-}
+// .icon-gold-mine {
+//     .icon("skewed_icon_mines");
+// }
 
-.icon-daily-quests {
-    .icon("skewed_icon_quest");
-}
+// .icon-daily-quests {
+//     .icon("skewed_icon_quest");
+// }
 
 .icon-daily-acc-trial {
     .icon("DailyAccessoryTrial");
@@ -985,9 +983,9 @@ span {
     .icon("element_dark");
 }
 
-.icon-calendar {
-    .icon("skewed_icon_calendar");
-}
+// .icon-calendar {
+//     .icon("skewed_icon_calendar");
+// }
 
 .icon-rank1 {
     .icon("icon_cup_gold");
@@ -1001,9 +999,9 @@ span {
     .icon("icon_cup_bronze");
 }
 
-.icon-rankings {
-    .icon("skewed_icon_rankings");
-}
+// .icon-rankings {
+//     .icon("skewed_icon_rankings");
+// }
 
 .icon-leaderboards {
     .icon("skewed_icon_leaderboards");
@@ -1029,13 +1027,13 @@ span {
     .icon("skewed_icon_army_banishment");
 }
 
-.icon-legion {
-    .icon("skewed_icon_army_composition");
-}
+// .icon-legion {
+//     .icon("skewed_icon_army_composition");
+// }
 
-.icon-units {
-    .icon("skewed_icon_army_edit_units");
-}
+// .icon-units {
+//     .icon("skewed_icon_army_edit_units");
+// }
 
 .icon-damage {
     .icon("damage_icon");

@@ -5,7 +5,7 @@
   >
     <div class="flex-full title-side"></div>
     <span
-      class="font-size-22 capitalize title flex flex-center font-weight-900"
+      class="font-size-22 capitalize title- flex flex-center font-weight-900"
       :class="titleClass"
     >
       <span>{{ title }}</span>
@@ -24,7 +24,7 @@ export default {
 <style lang="less" scoped>
 @import (reference) "../style/common.less";
 
-.title {
+.title- {
   border-image-source: url("../assets/ui/title.png");
   border-image-slice: 38 30 38 30 fill;
   border-image-width: 38px 30px 38px 30px;

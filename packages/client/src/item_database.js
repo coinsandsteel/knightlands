@@ -45,12 +45,13 @@ class ItemDatabase {
   }
 
   getIcon(id) {
-    let template = ItemTemplates[id];
-    if (template.type == ItemType.Equipment) {
-      return `/images/items/${template.type}/${template.equipmentType}/${template.icon}.png`;
-    }
+    let template = this.getTemplate(id);
+    // if (template.type == ItemType.Equipment) {
+    //   return `/images/items/${template.type}/${template.equipmentType}/${template.icon}.png`;
+    // }
 
-    return `/images/items/${template.type}/${template.icon}.png`;
+    // return `/images/items/${template.type}/${template.icon}.png`;
+    return `${template.icon}`;
   }
 
   getProperty(propId) {

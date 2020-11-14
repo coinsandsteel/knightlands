@@ -47,7 +47,7 @@ export default {
 }
 
 .bg {
-  background-color: #15132c6b;
+  // background-color: #15132c6b;
   border-radius: 3px;
 }
 

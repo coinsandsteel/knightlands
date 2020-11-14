@@ -5,9 +5,13 @@
       <div class="title-body flex-full flex" :class="element">
         <span class="title-icon" :class="`icon-unit-${element}`"></span>
         <span class="title-icon" :class="`icon-unit-${weaponType}`"></span>
-        <div class="title-text-container flex flex-center font-size-22 font-outline font-weight-900">
-            <span v-if="showLevel" class="title-level margin-right-1">{{$t("unit-lvl", { lvl: level })}}</span>
-            <span>{{$t(name)}}</span>
+        <div
+          class="title-text-container flex flex-center font-size-22 font-outline font-weight-900"
+        >
+          <span v-if="showLevel" class="title-level margin-right-1">{{
+            $t("unit-lvl", { lvl: level })
+          }}</span>
+          <span>{{ $t(name) }}</span>
         </div>
       </div>
     </div>
@@ -30,30 +34,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) url("../../style/ui.less");
+
 .title-tip {
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  width: 2rem;
-  height: 5rem;
+  width: 2rem !important;
+  height: 5rem !important;
 
   &.light {
-      background-image: url("../../assets/ui/ribbon_tip_light.png");
+    .ribbon_tip_light;
   }
 
   &.darkness {
-      background-image: url("../../assets/ui/ribbon_tip_darkness.png");
+    .ribbon_tip_darkness;
   }
 
   &.earth {
-      background-image: url("../../assets/ui/ribbon_tip_earth.png");
+    .ribbon_tip_earth;
   }
 
   &.water {
-      background-image: url("../../assets/ui/ribbon_tip_water.png");
+    .ribbon_tip_water;
   }
 
   &.physical {
-      background-image: url("../../assets/ui/unit_physical.png");
+    .unit_physical;
   }
 }
 
@@ -62,23 +66,23 @@ export default {
   background-repeat: repeat;
 
   &.light {
-      background-image: url("../../assets/ui/ribbon_body_light.png");
+    background-image: url("../../assets/ui/ribbon_body_light.png");
   }
 
   &.darkness {
-      background-image: url("../../assets/ui/ribbon_body_darkness.png");
+    background-image: url("../../assets/ui/ribbon_body_darkness.png");
   }
 
   &.earth {
-      background-image: url("../../assets/ui/ribbon_body_earth.png");
+    background-image: url("../../assets/ui/ribbon_body_earth.png");
   }
 
   &.water {
-      background-image: url("../../assets/ui/ribbon_body_water.png");
+    background-image: url("../../assets/ui/ribbon_body_water.png");
   }
 
   &.physical {
-      background-image: url("../../assets/ui/unit_physical1.png");
+    background-image: url("../../assets/ui/unit_physical1.png");
   }
 }
 
@@ -88,11 +92,11 @@ export default {
 }
 
 .title-level {
-    color: #ffe401;
+  color: #ffe401;
 }
 
 .title-text-container {
-    position: relative;
-    top: -0.7rem;
+  position: relative;
+  top: -0.7rem;
 }
 </style>

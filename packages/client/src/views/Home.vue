@@ -6,39 +6,39 @@
       class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5"
     >
       <MenuIconRow>
-        <MenuIcon icon="icon-daily-quests" to="daily-tasks" :append="true">{{
+        <MenuIcon icon="skewed_icon_quest" to="daily-tasks" :append="true">{{
           $t("btn-daily-quests")
         }}</MenuIcon>
 
-        <MenuIcon icon="icon-rankings" to="rankings" :append="true">{{
+        <MenuIcon icon="skewed_icon_rankings" to="rankings" :append="true">{{
           $t("btn-rankings")
         }}</MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
-        <MenuIcon icon="icon-quests" to="quest" :append="true">{{
+        <MenuIcon icon="skewed_icon_quests" to="quest" :append="true">{{
           $t("btn-quests")
         }}</MenuIcon>
 
-        <MenuIcon icon="icon-raids" to="raids" :append="true">{{
+        <MenuIcon icon="skewed_icon_raids" to="raids" :append="true">{{
           $t("btn-raids")
         }}</MenuIcon>
 
-        <MenuIcon icon="icon-trials" to="trials" :append="true">{{
+        <MenuIcon icon="skewed_icon_portal" to="trials" :append="true">{{
           $t("btn-trials")
         }}</MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
-        <MenuIcon icon="icon-gold-mine" to="gold-mine" :append="true">
+        <MenuIcon icon="skewed_icon_mines" to="gold-mine" :append="true">
           {{ $t("gold-mine") }}
         </MenuIcon>
 
-        <MenuIcon icon="icon-tower" to="onyx-tower" :append="true">{{
+        <MenuIcon icon="skewed_icon_tower" to="onyx-tower" :append="true">{{
           $t("btn-tower")
         }}</MenuIcon>
 
-        <MenuIcon icon="icon-adventures" to="adventures" :append="true">
+        <MenuIcon icon="skewed_icon_adventures" to="adventures" :append="true">
           {{ $t("btn-adventures") }}
           <template v-slot:marker>
             <AdventuresMarker></AdventuresMarker>
@@ -47,7 +47,7 @@
       </MenuIconRow>
 
       <MenuIconRow>
-        <MenuIcon icon="icon-calendar" to="daily-rewards" :append="true">
+        <MenuIcon icon="skewed_icon_calendar" to="daily-rewards" :append="true">
           <template v-slot:default>
             {{ $t("btn-check-in") }}
           </template>
@@ -57,11 +57,11 @@
           </template>
         </MenuIcon>
 
-        <MenuIcon icon="icon-divs" to="dividends" :append="true">
+        <MenuIcon icon="skewed_icon_dividents" to="dividends" :append="true">
           {{ $t("btn-divs") }}
         </MenuIcon>
 
-        <MenuIcon icon="icon-settings" to="settings" :append="true">
+        <MenuIcon icon="skewed_icon_settings" to="settings" :append="true">
           {{ $t("btn-settings") }}
         </MenuIcon>
       </MenuIconRow>

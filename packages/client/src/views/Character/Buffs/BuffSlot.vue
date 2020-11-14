@@ -1,5 +1,9 @@
 <template>
-  <div class="relative margin-1 slot-effect padding-top-half padding-bottom-1" @click="$emit('info', buff, item)" :class="{active: timer.timeLeft > 0}">
+  <div
+    class="relative margin-1 slot-effect padding-half"
+    @click="$emit('info', buff, item)"
+    :class="{ active: timer.timeLeft > 0 }"
+  >
     <progress-bar
       v-if="timer.timeLeft > 0"
       :percentMode="true"
@@ -9,11 +13,13 @@
       height="0.5rem"
       width="80%"
       :thresholds="thresholds"
-      class="buff-progress center"
+      class="buff-progress"
     ></progress-bar>
-    <img class="icon" :src="icon" />
+    <div class="icon" :class="icon" />
 
-    <span class="font-size-20 quantity font-weight-700 font-outline">{{count}}</span>
+    <span class="font-size-20 quantity font-weight-700 font-outline">{{
+      count
+    }}</span>
   </div>
 </template>
 
@@ -82,6 +88,8 @@ export default {
 .buff-progress {
   position: absolute;
   top: 0.5rem;
+  left: -50%;
+  transform: translateX(50%);
 }
 
 .slot-effect {
@@ -100,8 +108,7 @@ export default {
 
 .icon {
   width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  height: 100%;
 }
 
 .quantity {

@@ -3,35 +3,35 @@
     <div class="art screen-background"></div>
 
     <MenuIconRow>
-      <MenuIcon icon="icon-craft" to="elemental" :append="true">
+      <MenuIcon icon="skewed_icon_craft" to="elemental" :append="true">
         <span>{{ $t("btn-new-weapon") }}</span>
       </MenuIcon>
 
-      <MenuIcon icon="icon-evolve" to="evolve" :append="true">
+      <MenuIcon icon="skewed_icon_unbind" to="evolve" :append="true">
         <span>{{ $t("btn-evolve") }}</span>
       </MenuIcon>
     </MenuIconRow>
 
     <MenuIconRow>
-      <MenuIcon icon="icon-recipe-book" to="craft" :append="true">
+      <MenuIcon icon="skewed_icon_recipes" to="craft" :append="true">
         <span>{{ $t("btn-recipes") }}</span>
       </MenuIcon>
 
-      <MenuIcon icon="icon-disenchant" to="disenchant" :append="true">
+      <MenuIcon icon="skewed_icon_disenchant" to="disenchant" :append="true">
         <span>{{ $t("btn-disenchant") }}</span>
       </MenuIcon>
     </MenuIconRow>
 
     <MenuIconRow>
-      <MenuIcon icon="icon-craft-level" to="level" :append="true">
+      <MenuIcon icon="skewed_icon_lvlup" to="level" :append="true">
         <span>{{ $t("btn-crafting-level") }}</span>
       </MenuIcon>
 
-      <MenuIcon icon="icon-craft-upgrade" to="upgrade" :append="true">
+      <MenuIcon icon="skewed_icon_upgrade" to="upgrade" :append="true">
         <span>{{ $t("btn-crafting-upgrade") }}</span>
       </MenuIcon>
 
-      <MenuIcon icon="icon-enchant" to="enchant" :append="true">
+      <MenuIcon icon="skewed_icon_enchant" to="enchant" :append="true">
         <span>{{ $t("btn-enchant") }}</span>
       </MenuIcon>
     </MenuIconRow>

@@ -1,10 +1,10 @@
 <template>
   <div
-    class="relative slot-daily-reward padding-top-half flex flex-no-wrap flex-items-center flex-column"
-    :class="{ active: active }"
+    class="relative slot-daily-reward padding-half flex flex-no-wrap flex-items-center flex-column"
+    :class="{ slot_selected: active }"
     @click="$emit('hint', reward)"
   >
-    <img :class="{ trans: collected }" class="icon" :src="icon" />
+    <div :class="[{ trans: collected }, icon]" class="icon" />
 
     <span
       v-if="!collected"
@@ -12,14 +12,14 @@
       >{{ reward.minCount }}</span
     >
 
-    <span
-      :class="{ trans: collected }"
-      class="font-size-18 font-weight-700 font-outline"
-      >{{ $t("daily-reward-day", { day: index + 1 }) }}</span
-    >
-
     <div class="absolute-stretch" :class="{ collected: collected }"></div>
     <div class="absolute-stretch active" v-if="active"></div>
+
+    <span
+      :class="{ trans: collected }"
+      class="font-size-18 font-weight-700 font-outline z-index-1 day"
+      >{{ $t("daily-reward-day", { day: index + 1 }) }}</span
+    >
   </div>
 </template>
 
@@ -38,6 +38,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../../style/ui.less";
 @import (reference) "../../style/common.less";
 
 .active {
@@ -56,16 +57,17 @@ export default {
 
 .slot-daily-reward {
   position: relative;
-  background-image: url("../../assets/ui/slot_effect.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+  .slot_effect;
+  // background-image: url("../../assets/ui/slot_effect.png");
+  // background-size: contain;
+  // background-repeat: no-repeat;
 
   width: @lootCellSize;
   height: @lootCellSize;
   margin-bottom: 3rem;
 
   &.active {
-    background-image: url("../../assets/ui/slot_effect_green.png");
+    .slot_effect_green;
   }
 }
 
@@ -84,5 +86,13 @@ export default {
   top: 0.4rem;
   right: 0.2rem;
   position: absolute;
+}
+
+.day {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(100%);
+  left: 0;
 }
 </style>
