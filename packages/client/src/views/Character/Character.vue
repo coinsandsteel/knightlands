@@ -44,7 +44,7 @@ export default {
       currentTab: EquipmentTab
     };
   },
-  mounted() {
+  created() {
     this.title = `Character`;
     this.$options.useRouterBack = true;
   },

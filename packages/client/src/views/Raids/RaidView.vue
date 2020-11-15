@@ -95,6 +95,7 @@
             <RaidOptions
               class="raid-options-left"
               :left="true"
+              :isFreeRaid="isFreeRaid"
               @log="handleShowLogs"
               @rewards="handleShowRewards"
               @info="handleShowInfo"
@@ -105,6 +106,7 @@
 
             <RaidOptions
               class="raid-options-right"
+              :isFreeRaid="isFreeRaid"
               @log="handleShowLogs"
               @rewards="handleShowRewards"
               @info="handleShowInfo"
@@ -184,7 +186,11 @@
               </CustomButton>
             </div>
 
-            <PaymentStatus :request="statusRequest" @pay="continuePurchase" @iap="setIap">
+            <PaymentStatus
+              :request="statusRequest"
+              @pay="continuePurchase"
+              @iap="setIap"
+            >
               <PromisedButton
                 :promise="purchasePromise"
                 width="16rem"
@@ -211,7 +217,11 @@
       </div>
 
       <portal to="footer" v-if="isActive">
-        <CopyButton v-if="!isFreeRaid" :data="href" caption="btn-share"></CopyButton>
+        <CopyButton
+          v-if="!isFreeRaid"
+          :data="href"
+          caption="btn-share"
+        ></CopyButton>
       </portal>
 
       <div
@@ -274,7 +284,8 @@ const ShowRaidInfo = CreateDialog(
   "raidTemplateId",
   "isFreeRaid",
   "weakness",
-  "dktFactor"
+  "dktFactor",
+  "isFirst"
 );
 
 import anime from "animejs/lib/anime.es.js";
@@ -467,14 +478,16 @@ export default {
     handleShowRewards() {
       this.lootProgress.current = this.raidState.currentDamage;
 
-      let i = 0;
-      const length = this.raidLoot.damageThresholds.length;
-      let damageRequired = 0;
+      if (this.raidLoot.damageThresholds) {
+        let i = 0;
+        const length = this.raidLoot.damageThresholds.length;
+        let damageRequired = 0;
 
-      for (; i < length; ++i) {
-        if (damageRequired > this.raidState.currentDamage) {
-          this.lootProgress.max = Math.floor(damageRequired);
-          break;
+        for (; i < length; ++i) {
+          if (damageRequired > this.raidState.currentDamage) {
+            this.lootProgress.max = Math.floor(damageRequired);
+            break;
+          }
         }
       }
 
@@ -482,7 +495,8 @@ export default {
         this.raid,
         this.isFreeRaid,
         this.currentDamage,
-        this.raidState.dktFactor
+        this.raidState.dktFactor,
+        this.raidState.isFirst
       );
     },
     fetchPaymentStatus() {

@@ -119,9 +119,16 @@ const router = new Router({
           children: [
             {
               path: "",
-              name: "create-acc",
+              name: "create-acc-list",
               component: () =>
                 import("./views/Crafting/Accessories/Accessories.vue")
+            },
+            {
+              path: ":ring/:template",
+              name: "create-acc",
+              component: () =>
+                import("./views/Crafting/Accessories/AccessoryCraft.vue"),
+              props: true
             }
           ]
         },

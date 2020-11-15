@@ -1054,6 +1054,15 @@ class Game {
 
   // Crafting
 
+  async createAccessory(template, count) {
+    let response = await this._wrapOperation(Operations.CraftAccessory, {
+      template,
+      count
+    });
+
+    return response.response;
+  }
+
   async disenchantConvert(conversions) {
     let response = await this._wrapOperation(Operations.DisenchantConvert, {
       conversions

@@ -20,18 +20,20 @@
       </keep-alive>
 
       <div class="footer flex-item-center">
-        <div class="bg"></div>
         <span
           v-show="showBackMenu"
           class="back-button"
           @click="handleBackButton"
         ></span>
         <portal-target
-          class="footer-container flex flex-end width-100"
+          class="footer-container flex flex-end full-flex"
           name="footer"
           :multiple="true"
         ></portal-target>
-        <div class="footer-container flex flex-end full-flex">
+        <div
+          class="footer-container flex flex-end full-flex"
+          v-if="footers.length > 0"
+        >
           <component
             v-for="(footer, index) in footers"
             :key="index"
@@ -319,11 +321,10 @@ export default {
   & > .section-decor {
     .title_decor;
     height: 100% !important;
-    width: 6rem !important;
-    transform: translateY(20%);
+    width: 9rem !important;
 
     &.right {
-      transform: translateY(20%) scaleX(-1);
+      transform: scaleX(-1);
     }
   }
 
@@ -352,7 +353,7 @@ export default {
   width: 80%;
 }
 
-@backButtonWidth: 6rem;
+@backButtonWidth: 4.2125rem;
 @backButtonHeight: 4.2125rem;
 @footerBottomPadding: 0.5rem;
 .back-button {
@@ -361,7 +362,7 @@ export default {
   width: @backButtonWidth !important;
   height: @backButtonHeight !important;
   // .mobile({width: @backButtonWidth/2; height: @backButtonHeight / 2});
-  left: 1.2rem;
+  margin-left: 1.2rem;
   .button_back;
 
   &:active {

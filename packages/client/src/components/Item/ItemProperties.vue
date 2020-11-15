@@ -6,6 +6,12 @@
       :key="p"
       v-html="p"
     ></div>
+    <div
+      class="margin-bottom-half"
+      v-for="p in accessoryProperties"
+      :key="p"
+      v-html="p"
+    ></div>
     <div class="margin-bottom-half" v-if="action" v-html="action"></div>
     <span class="margin-bottom-half" v-if="template.maxStack > 0">{{
       $t("max-stacks", { max: template.maxStack })
@@ -28,8 +34,11 @@
 <script>
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 import ItemProperties from "@/../../knightlands-shared/item_properties";
+import AccessoryOption from "@/../../knightlands-shared/accessory_option";
 import ItemGetterMixin from "./ItemGetterMixin.vue";
 import RaidsMeta from "@/raids_meta";
+import CraftAccessories from "@/craft_accessories";
+const { EquipmentSlots } = require("@/../../knightlands-shared/equipment_slot");
 
 export default {
   mixins: [ItemGetterMixin],
@@ -64,6 +73,32 @@ export default {
       }
 
       return this.$t(action.action, params);
+    },
+    accessoryProperties() {
+      if (!this.item || !this.item.properties) {
+        return [];
+      }
+
+      const isRing =
+        this.$game.itemsDB.getSlot(this.item.template) == EquipmentSlots.Ring;
+      const meta = isRing ? CraftAccessories.ring : CraftAccessories.necklace;
+
+      const length = this.item.properties.length;
+      let props = new Array(length);
+      for (let i = 0; i < length; ++i) {
+        const property = this.item.properties[i];
+        const propertyTemplate = meta.options[property.id];
+        const locParams = { ...property };
+        locParams.value = Math.floor(locParams.value * 100);
+
+        if (locParams.element) {
+          locParams.element = this.$t(locParams.element);
+        }
+
+        const locKey = `o-${propertyTemplate.type}`;
+        props[i] = this.$t(locKey, locParams);
+      }
+      return props;
     },
     properties() {
       if (!this.template.properties) {

@@ -29,6 +29,7 @@
     "raid-view": "Raid",
     "try-again": "Try again",
     "win-craft-acc": "Craft Accessories",
+    "win-create-acc": "Craft Accessory",
     "unknown-error-msg": "Unexpected error.",
     "challenges": "Challenges",
     "rewards": "Rewards",
@@ -2937,5 +2938,17 @@
     "extraDamage": "+<span class='rarity-mythical'>{value}</span> damage",
     "extraDamagePerGeneralTypeOwned": "+<span class='rarity-mythical'>{value}</span> damage for each <span class='rarity-epic'>{unitType}</span> general {stars} or higher in reserve",
     "extraDamageVsRaid": "+<span class='rarity-mythical'>{value}</span> damage against <span class='rarity-rare'>{raid}</span>",
-    "increasedDamagePerGeneralTypeUsed": "+<span class='rarity-mythical'>{value}</span>% damage per <span class='rarity-epic'>{unitType}</span> general in legion"
+    "increasedDamagePerGeneralTypeUsed": "+<span class='rarity-mythical'>{value}</span>% damage per <span class='rarity-epic'>{unitType}</span> general in legion",
+    "o-armyDamageInRaidElement": "<span class='rarity-rare'>+{value}%</span> damage in {element} raids.",
+    "o-dropItemInQuest": "",
+    "o-dropItemInRaid": "",
+    "o-dropUnitShard": "",
+    "o-increasedDktInRaid": "",
+    "o-goldOnHitInRaid": "",
+    "o-expOnHitInRaid": "",
+    "o-dodge": "",
+    "o-rewardsOnyxTower": "",
+    "o-rewardsAdventures": "",
+    "o-rewardsTrial": "",
+    "o-increasedStat": ""
 }

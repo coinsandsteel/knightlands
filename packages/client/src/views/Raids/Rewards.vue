@@ -1,21 +1,35 @@
 <template>
   <user-dialog :compact="true" v-on="$listeners">
     <template v-slot:content>
-      <div class="flex flex-center flex-column flex-space-between">
+      <div class="flex flex-center flex-column flex-space-between margin-top-1">
+        <div v-if="isFreeRaid" class="width-100 flex flex-center flex-column">
+          <Title :stackBottom="true">{{ $t("rewards") }}</Title>
+          <div class="flex flex-center reward-loot color-panel-1">
+            <loot
+              v-for="item in loot"
+              :item="item.itemId"
+              :key="item.itemId"
+              :quantity="item.minCount"
+              :gacha="true"
+              @hint="showHint"
+            ></loot>
+          </div>
+        </div>
         <div
+          v-else
           class="width-100 flex flex-center flex-column"
-          v-for="(threshold, index) in loot.damageThresholds"
+          v-for="(threshold, index) in damageThresholds"
           :key="index"
         >
           <div class="title flex flex-center compact font-size-18">
-            <span class="margin-title tier-font">{{$t("tier")}}</span>
-            <span class="title-space tier-font">{{index+1}}</span>
-            <span class="margin-title">{{getDamage(threshold)}}</span>
-            <span class="title-space">{{$t("damage-short")}}</span>
+            <span class="margin-title tier-font">{{ $t("tier") }}</span>
+            <span class="title-space tier-font">{{ index + 1 }}</span>
+            <span class="margin-title">{{ getDamage(threshold) }}</span>
+            <span class="title-space">{{ $t("damage-short") }}</span>
             <span
               v-show="tierUnlocked(threshold)"
               class="icon-mark small"
-              :class="{'not-last': tierIsNotLast(index)}"
+              :class="{ 'not-last': tierIsNotLast(index) }"
             ></span>
           </div>
 
@@ -24,7 +38,9 @@
               iconClass="icon-dkt"
               valueClass="font-weight-700"
               class="margin-top-1 margin-bottom-1 font-size-18"
-            >{{getMinDkt(threshold)}} - {{getMaxDkt(threshold)}}</IconWithValue>
+              >{{ getMinDkt(threshold) }} -
+              {{ getMaxDkt(threshold) }}</IconWithValue
+            >
 
             <div class="flex flex-center reward-loot">
               <loot
@@ -36,18 +52,6 @@
                 @hint="showHint"
               ></loot>
             </div>
-
-            <!-- <div class="flex flex-center compact width-100 font-size-18 margin-top-1 margin-bottom-1">{{$t("raid-possible-loot")}}</div>
-
-            <div class="flex flex-center reward-loot">
-              <loot
-                v-for="item in threshold.lootPreview"
-                :item="item.itemId"
-                :key="item.itemId"
-                :gacha="true"
-                @hint="showHint"
-              ></loot>
-            </div>-->
           </div>
         </div>
       </div>
@@ -59,6 +63,7 @@
 import UserDialog from "@/components/UserDialog.vue";
 import RaidsMeta from "@/raids_meta";
 import Loot from "@/components/Loot.vue";
+import Title from "@/components/Title.vue";
 import LootHint from "@/components/LootHint.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
@@ -66,8 +71,17 @@ import { create as CreateDialog } from "vue-modal-dialogs";
 const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "hideButtons");
 
 export default {
-  components: { UserDialog, Loot, IconWithValue },
-  props: ["raidTemplateId", "isFreeRaid", "currentDamage", "dktFactor"],
+  components: { UserDialog, Loot, IconWithValue, Title },
+  props: [
+    "raidTemplateId",
+    "isFreeRaid",
+    "currentDamage",
+    "dktFactor",
+    "isFirst"
+  ],
+  mounted() {
+    console.log(this.data.freeLoot);
+  },
   computed: {
     meta() {
       return RaidsMeta[this.raidTemplateId];
@@ -76,7 +90,19 @@ export default {
       return this.isFreeRaid ? this.meta.soloData : this.meta.data;
     },
     loot() {
-      return this.isFreeRaid ? this.data.freeLoot : this.data.paidLoot;
+      if (this.isFreeRaid) {
+        let loot = this.data.freeLoot.repeatedClearance;
+        if (this.isFirst) {
+          loot = this.data.freeLoot.firstClearance;
+        }
+
+        return loot.damageThresholds[0].lootGuarantees;
+      }
+
+      return this.data.paidLoot;
+    },
+    damageThresholds() {
+      return this.loot.damageThresholds;
     }
   },
   methods: {

@@ -220,23 +220,34 @@ export default {
 
   width: @lootCellSize;
   height: @lootCellSize;
-  .mobile({width: @mobileLootCellSize; height: @mobileLootCellSize;});
+  .mobile(
+    {width: @mobileLootCellSize; height: @mobileLootCellSize; &.inner-border {height:
+      @mobileLootCellSize * 0.5;}}
+  );
 
   &.small {
     width: @mobileLootCellSize * 0.75;
     height: @mobileLootCellSize * 0.75;
+
+    &.inner-border {
+      height: @mobileLootCellSize * 0.75;
+    }
   }
 
   &.mini {
     width: @mobileLootCellSize * 0.5;
     height: @mobileLootCellSize * 0.5;
+
+    &.inner-border {
+      height: @mobileLootCellSize * 0.5;
+    }
   }
 
   .inner-border {
     position: relative;
-    width: (100%);
+    width: 100%;
     padding: 0.5rem;
-    height: 100%;
+    height: @lootCellSize;
   }
 
   pointer-events: none;
