@@ -17,6 +17,14 @@
         <span>{{ $t("btn-recipes") }}</span>
       </MenuIcon>
 
+      <MenuIcon
+        icon="skewed_icon_recipes"
+        :to="{ name: 'create-acc-list' }"
+        :append="true"
+      >
+        <span>{{ $t("btn-create-acc") }}</span>
+      </MenuIcon>
+
       <MenuIcon icon="skewed_icon_disenchant" to="disenchant" :append="true">
         <span>{{ $t("btn-disenchant") }}</span>
       </MenuIcon>

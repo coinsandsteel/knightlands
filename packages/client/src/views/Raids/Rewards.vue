@@ -79,9 +79,6 @@ export default {
     "dktFactor",
     "isFirst"
   ],
-  mounted() {
-    console.log(this.data.freeLoot);
-  },
   computed: {
     meta() {
       return RaidsMeta[this.raidTemplateId];

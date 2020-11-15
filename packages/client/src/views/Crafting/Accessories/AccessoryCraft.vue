@@ -10,9 +10,11 @@
 
     <CraftingIngridient :ingridient="ingridient" />
 
-    <CustomButton type="yellow" @click="craft">{{
-      $t("btn-craft")
-    }}</CustomButton>
+    <div class="flex flex-center margin-top-2">
+      <CustomButton type="yellow" @click="craft">{{
+        $t("btn-craft")
+      }}</CustomButton>
+    </div>
   </div>
 </template>
 
@@ -23,6 +25,11 @@ import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
 import CraftAccessories from "@/craft_accessories";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+
+import ItemCreatedPopup from "../Create/ItemCreatedPopup.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -55,7 +62,10 @@ export default {
   },
   methods: {
     async craft() {
-      this.performRequest(this.$game.createAccessory(this.template, 1));
+      const items = await this.performRequest(
+        this.$game.createAccessory(this.template, 1)
+      );
+      await ShowItemCreated(items[0], 1);
     }
   }
 };

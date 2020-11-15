@@ -92,10 +92,11 @@ export default {
         locParams.value = Math.floor(locParams.value * 100);
 
         if (locParams.element) {
-          locParams.element = this.$t(locParams.element);
+          locParams.element = this.$t(`e-${locParams.element}`);
         }
 
         const locKey = `o-${propertyTemplate.type}`;
+        console.log(locKey, locParams);
         props[i] = this.$t(locKey, locParams);
       }
       return props;

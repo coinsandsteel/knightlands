@@ -6,11 +6,9 @@
         @click="props.close"
       >
         <template>
-          <div
-            class="title font-size-25 font-weight-900 font-outline margin-bottom-2"
-          >
+          <Title class="margin-bottom-2">
             {{ $t("task-complete", { task: $t(props.item.data.type) }) }}
-          </div>
+          </Title>
 
           <custom-button @click="openDailyTasks">{{
             $t("btn-open")
@@ -23,8 +21,10 @@
 
 <script>
 import CustomButton from "@/components/Button.vue";
+import Title from "@/components/Title.vue";
+
 export default {
-  components: { CustomButton },
+  components: { CustomButton, Title },
   methods: {
     openDailyTasks() {
       this.$router.push({

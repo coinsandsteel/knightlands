@@ -800,30 +800,20 @@ Vuebar.install = function(Vue, installOptions) {
               scrollbar behaviors for different elements using '-ms-overflow-style'
         \*------------------------------------*/
   function getNativeScrollbarWidth(container) {
-    var container = container ? container : document.body;
+    // Add temporary box to wrapper
+    let scrollbox = document.createElement("div");
 
-    var fullWidth = 0;
-    var barWidth = 0;
+    // Make box scrollable
+    scrollbox.style.overflow = "scroll";
 
-    var wrapper = document.createElement("div");
-    var child = document.createElement("div");
+    // Append box to document
+    document.body.appendChild(scrollbox);
 
-    wrapper.style.position = "absolute";
-    wrapper.style.pointerEvents = "none";
-    wrapper.style.bottom = "0";
-    wrapper.style.right = "0";
-    wrapper.style.width = "100px";
-    wrapper.style.overflow = "hidden";
+    // Measure inner width of box
+    const barWidth = scrollbox.offsetWidth - scrollbox.clientWidth;
 
-    wrapper.appendChild(child);
-    container.appendChild(wrapper);
-
-    fullWidth = child.offsetWidth;
-    child.style.width = "100%";
-    wrapper.style.overflowY = "scroll";
-    barWidth = fullWidth - child.offsetWidth;
-
-    container.removeChild(wrapper);
+    // Remove box
+    document.body.removeChild(scrollbox);
 
     return barWidth + 1;
   }

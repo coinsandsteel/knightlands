@@ -1,10 +1,10 @@
 <template>
   <div
-    class="loot-slot item_slot_dark flex relative flex-column "
+    class="loot-slot  flex relative flex-column "
     @click="$emit('hint', itemData)"
-    :class="[rarity, { interactible: interactible }, { bottom: gacha }, size]"
+    :class="[{ interactible: interactible }, { bottom: gacha }, size]"
   >
-    <div class="inner-border">
+    <div class="inner-border item_slot_dark" :class="rarity">
       <div
         :class="[{ locked: locked }, icon]"
         class="icon pixelated"

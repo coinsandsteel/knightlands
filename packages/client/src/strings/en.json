@@ -2950,5 +2950,11 @@
     "o-rewardsOnyxTower": "",
     "o-rewardsAdventures": "",
     "o-rewardsTrial": "",
-    "o-increasedStat": ""
+    "o-increasedStat": "",
+    "btn-create-acc": "Craft Accessory",
+    "e-earth": "Earth",
+    "e-darkness": "Darkness",
+    "e-light": "Light",
+    "e-water": "Water",
+    "e-physical": "Physical"
 }
