@@ -1053,6 +1053,21 @@ class Game {
   }
 
   // Crafting
+  async rerollAccessory(itemId) {
+    return (
+      await this._wrapOperation(Operations.RerollAccessory, {
+        itemId
+      })
+    ).response;
+  }
+
+  async rollbackAccessory(itemId) {
+    return (
+      await this._wrapOperation(Operations.CancelRerollAccessory, {
+        itemId
+      })
+    ).response;
+  }
 
   async createAccessory(template, count) {
     let response = await this._wrapOperation(Operations.CraftAccessory, {

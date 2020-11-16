@@ -28,12 +28,12 @@ export default {
   data: () => ({
     tabs: [
       {
-        title: "window-banishment",
+        title: "w-banishment",
         value: Dismiss,
         to: { name: "units-dismiss" }
       },
       {
-        title: "window-reserve",
+        title: "w-reserve",
         value: Reserve,
         to: { name: "units-reserve" }
       }

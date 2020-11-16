@@ -6,7 +6,6 @@
         class="rankings-bg flex flex-column flex-center flex-space-between margin-bottom-1 pointer"
         v-for="(rankingType, index) in rankings"
         :key="index"
-        :style="background(rankingType)"
         :class="`color-${rankingType}`"
         @click="goTo(rankingType)"
       >
@@ -21,14 +20,11 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import CustomButton from "@/components/Button.vue";
-import MenuIcon from "@/components/MenuIcon.vue";
 
 const rankings = ["leaderboards", "tournaments", "races"];
 
 export default {
   mixins: [AppSection],
-  components: { CustomButton, MenuIcon },
   data: () => ({
     rankings
   }),
@@ -40,7 +36,6 @@ export default {
       let name = rankingType;
       this.$router.push({ name });
     },
-    background(rankingType) {},
     icon(rankingType) {
       switch (rankingType) {
         case "leaderboards":

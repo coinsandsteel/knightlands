@@ -26,7 +26,7 @@ import CustomButton from "@/components/Button.vue";
 import CraftAccessories from "@/craft_accessories";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
-import ItemCreatedPopup from "../Create/ItemCreatedPopup.vue";
+import ItemCreatedPopup from "../../Create/ItemCreatedPopup.vue";
 import { create } from "vue-modal-dialogs";
 
 const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");

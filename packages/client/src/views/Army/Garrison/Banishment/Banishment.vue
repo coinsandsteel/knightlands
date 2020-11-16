@@ -14,7 +14,9 @@
       </div>
 
       <div class="color-panel-2 flex flex-space-evenly">
-        <Title :stackTop="true" class="margin-bottom-half">{{ $t("refund-items") }}</Title>
+        <Title :stackTop="true" class="margin-bottom-half">{{
+          $t("refund-items")
+        }}</Title>
         <Loot
           v-for="record in refundedItems"
           :key="`${record.item}${record.quantity}`"
@@ -97,7 +99,6 @@ export default {
     currentTab: Troops,
     refundedItems: {
       troopEssence: { item: TroopsMeta.essenceItem, quantity: 0 },
-      generalEssence: { item: GeneralsMeta.essenceItem, quantity: 0 },
       souls: { item: ArmyMeta.soulsItem, quantity: 0 },
       gold: { item: GeneralsMeta.goldItem, quantity: 0 }
     },
@@ -134,15 +135,9 @@ export default {
           unit.souls * ArmyMeta.refund.souls
         );
 
-        if (unit.troop) {
-          this.refundedItems.troopEssence.quantity += Math.floor(
-            unit.essence * ArmyMeta.refund.troopEssence
-          );
-        } else {
-          this.refundedItems.generalEssence.quantity += Math.floor(
-            unit.essence * ArmyMeta.refund.generalEssence
-          );
-        }
+        this.refundedItems.troopEssence.quantity += Math.floor(
+          unit.essence * ArmyMeta.refund.troopEssence
+        );
 
         this.refundedItems.souls.quantity +=
           ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];

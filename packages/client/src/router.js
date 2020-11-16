@@ -115,19 +115,41 @@ const router = new Router({
         {
           path: "craft-acc",
           component: () =>
-            import("./views/Crafting/Accessories/AccessoriesRoot.vue"),
+            import("./views/Crafting/Accessories/Craft/AccessoriesRoot.vue"),
           children: [
             {
               path: "",
               name: "create-acc-list",
               component: () =>
-                import("./views/Crafting/Accessories/Accessories.vue")
+                import("./views/Crafting/Accessories/Craft/Accessories.vue")
             },
             {
               path: ":ring/:template",
               name: "create-acc",
               component: () =>
-                import("./views/Crafting/Accessories/AccessoryCraft.vue"),
+                import("./views/Crafting/Accessories/Craft/AccessoryCraft.vue"),
+              props: true
+            }
+          ]
+        },
+        {
+          path: "reroll-acc",
+          component: () =>
+            import("./views/Crafting/Accessories/Reroll/AccessoriesRoot.vue"),
+          children: [
+            {
+              path: "",
+              name: "reroll-acc-list",
+              component: () =>
+                import("./views/Crafting/Accessories/Reroll/Accessories.vue")
+            },
+            {
+              path: ":itemId",
+              name: "reroll-acc",
+              component: () =>
+                import(
+                  "./views/Crafting/Accessories/Reroll/AccessoryReroll.vue"
+                ),
               props: true
             }
           ]

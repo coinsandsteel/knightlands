@@ -4,7 +4,7 @@
       <TrialsList v-bind="scope"></TrialsList>
     </template>
     <template slot="trial" slot-scope="scope">
-        <Trial v-bind="scope" @engage="scope.engage"></Trial>
+      <Trial v-bind="scope" @engage="scope.engage"></Trial>
     </template>
   </BaseTrials>
 </template>

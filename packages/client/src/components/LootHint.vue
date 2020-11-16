@@ -19,87 +19,89 @@
     </template>
 
     <template v-slot:footer>
-      <div class="flex width-100 flex-space-evenly" v-if="showButtons">
-        <custom-button
-          type="yellow"
-          v-if="canEquip"
-          class="common-btn center"
-          @click="handleClose(ItemActions.Equip)"
-          >{{ $t("btn-equip") }}</custom-button
-        >
+      <div class="flex width-100 flex-space-evenly">
+        <template v-if="showButtons">
+          <custom-button
+            type="yellow"
+            v-if="canEquip"
+            class="common-btn center"
+            @click="handleClose(ItemActions.Equip)"
+            >{{ $t("btn-equip") }}</custom-button
+          >
 
-        <custom-button
-          v-if="canUnequip"
-          type="grey"
-          class="common-btn center"
-          @click="handleClose(ItemActions.Unequip)"
-          >{{ $t("btn-unequip") }}</custom-button
-        >
+          <custom-button
+            v-if="canUnequip"
+            type="grey"
+            class="common-btn center"
+            @click="handleClose(ItemActions.Unequip)"
+            >{{ $t("btn-unequip") }}</custom-button
+          >
 
-        <template v-if="isBox">
+          <template v-if="isBox">
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.OpenBox)"
+              >{{ $t("btn-open-box") }}</CustomButton
+            >
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.OpenBox, Math.min(count, 9))"
+              v-if="count > 1 && count <= 9"
+              >{{
+                $t("btn-open-boxes", { count: Math.min(count, 9) })
+              }}</CustomButton
+            >
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.OpenBox, 10)"
+              v-if="count >= 10"
+              >{{ $t("btn-open-boxes", { count: 10 }) }}</CustomButton
+            >
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.OpenBox, count)"
+              v-if="count >= 50"
+              >{{ $t("btn-open-boxes", { count: count }) }}</CustomButton
+            >
+          </template>
+
+          <template v-else-if="maxSummons > 0">
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.SummonUnit)"
+              >{{ $t("btn-open-shard") }}</CustomButton
+            >
+            <CustomButton
+              type="yellow"
+              @click="
+                handleClose(ItemActions.SummonUnit, Math.min(maxSummons, 9))
+              "
+              v-if="maxSummons > 1 && maxSummons <= 9"
+              >{{
+                $t("btn-open-shards", { count: Math.min(maxSummons, 9) })
+              }}</CustomButton
+            >
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.SummonUnit, 10)"
+              v-if="maxSummons >= 10"
+              >{{ $t("btn-open-shards", { count: 10 }) }}</CustomButton
+            >
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.SummonUnit, count)"
+              v-if="maxSummons >= 50"
+              >{{ $t("btn-open-shards", { count: maxSummons }) }}</CustomButton
+            >
+          </template>
+
           <CustomButton
+            v-else-if="isConsumable && !isSummon"
             type="yellow"
-            @click="handleClose(ItemActions.OpenBox)"
-            >{{ $t("btn-open-box") }}</CustomButton
-          >
-          <CustomButton
-            type="yellow"
-            @click="handleClose(ItemActions.OpenBox, Math.min(count, 9))"
-            v-if="count > 1 && count <= 9"
-            >{{
-              $t("btn-open-boxes", { count: Math.min(count, 9) })
-            }}</CustomButton
-          >
-          <CustomButton
-            type="yellow"
-            @click="handleClose(ItemActions.OpenBox, 10)"
-            v-if="count >= 10"
-            >{{ $t("btn-open-boxes", { count: 10 }) }}</CustomButton
-          >
-          <CustomButton
-            type="yellow"
-            @click="handleClose(ItemActions.OpenBox, count)"
-            v-if="count >= 50"
-            >{{ $t("btn-open-boxes", { count: count }) }}</CustomButton
+            @click="handleClose(ItemActions.Use)"
+            >{{ $t("btn-use-consumable") }}</CustomButton
           >
         </template>
-
-        <template v-else-if="maxSummons > 0">
-          <CustomButton
-            type="yellow"
-            @click="handleClose(ItemActions.SummonUnit)"
-            >{{ $t("btn-open-shard") }}</CustomButton
-          >
-          <CustomButton
-            type="yellow"
-            @click="
-              handleClose(ItemActions.SummonUnit, Math.min(maxSummons, 9))
-            "
-            v-if="maxSummons > 1 && maxSummons <= 9"
-            >{{
-              $t("btn-open-shards", { count: Math.min(maxSummons, 9) })
-            }}</CustomButton
-          >
-          <CustomButton
-            type="yellow"
-            @click="handleClose(ItemActions.SummonUnit, 10)"
-            v-if="maxSummons >= 10"
-            >{{ $t("btn-open-shards", { count: 10 }) }}</CustomButton
-          >
-          <CustomButton
-            type="yellow"
-            @click="handleClose(ItemActions.SummonUnit, count)"
-            v-if="maxSummons >= 50"
-            >{{ $t("btn-open-shards", { count: maxSummons }) }}</CustomButton
-          >
-        </template>
-
-        <CustomButton
-          v-else-if="isConsumable && !isSummon"
-          type="yellow"
-          @click="handleClose(ItemActions.Use)"
-          >{{ $t("btn-use-consumable") }}</CustomButton
-        >
 
         <custom-button
           type="yellow"

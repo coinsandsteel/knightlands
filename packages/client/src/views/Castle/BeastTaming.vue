@@ -121,7 +121,7 @@
             class="flex flex-center padding-left-1 padding-right-1 font-size-18"
           >
             <span>{{ $t(beastItemName) }}</span>
-            <div class="item-icon" :style="ticketIcon"></div>
+            <div class="item-icon" :class="ticketIcon"></div>
             <span>{{ totalSouls() }}</span>
           </div>
 
@@ -136,7 +136,7 @@
                 <div
                   class="flex flex-items-center padding-left-1 padding-right-1"
                 >
-                  <div class="item-icon" :style="ticketIcon"></div>
+                  <div class="item-icon" :class="ticketIcon"></div>
                   <span class="font-size-18">1</span>
                 </div>
               </PromisedButton>
@@ -152,7 +152,7 @@
                 <div
                   class="flex flex-items-center padding-left-1 padding-right-1"
                 >
-                  <div class="item-icon" :style="ticketIcon"></div>
+                  <div class="item-icon" :class="ticketIcon"></div>
                   <span class="font-size-18">{{ batchBoost() }}</span>
                 </div>
               </PromisedButton>
@@ -313,9 +313,7 @@ export default {
       return Beasts.softPrice;
     },
     ticketIcon() {
-      return `background-image: url(${this.$game.itemsDB.getIcon(
-        Beasts.ticketItem
-      )});`;
+      return this.$game.itemsDB.getIcon(Beasts.ticketItem);
     },
     enemyImage() {
       return Beasts.levels[this.beastIndex].image;

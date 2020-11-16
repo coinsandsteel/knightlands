@@ -144,8 +144,8 @@ class Inventory {
     const length = items.length;
 
     for (; i < length; ++i) {
-      let item = items[i];
-      let template = item.template;
+      const item = items[i];
+      const template = item.template;
       const templateData = this._itemDB.getTemplate(template);
 
       if (templateData.type == ItemType.Consumable) {

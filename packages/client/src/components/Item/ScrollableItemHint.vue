@@ -14,7 +14,7 @@
         >
           <slide v-for="(slide, index) in hintItems" :key="index">
             <CompareItems
-              v-if="isComparable(slide.item)"
+              v-if="!noComparison && isComparable(slide.item)"
               :leftItem="slide.item"
               :rightItem="itemFromMatchingSlot(slide.item)"
               :hideMask="true"
@@ -25,8 +25,8 @@
               v-else
               :item="slide.item"
               :hideMask="true"
-              :showButtons="true"
-              :showLocked="true"
+              :showButtons="showButtons"
+              :showLocked="showLocked"
               :equippedItems="equippedItems"
               :buttons="getHintButtons(slide.item)"
               @close="handleItemAction"
@@ -53,7 +53,20 @@ import DoubleBuffer from "@/helpers/DoubleBuffer";
 import CompareItems from "./CompareItems.vue";
 
 export default {
-  props: ["items", "getHintButtons", "equippedItems"],
+  props: {
+    items: Array,
+    getHintButtons: Function,
+    equippedItems: Object,
+    noComparison: Boolean,
+    showLocked: {
+      type: Boolean,
+      default: true
+    },
+    showButtons: {
+      type: Boolean,
+      default: true
+    }
+  },
   data: () => ({
     currentSlideIndex: 0,
     hintItems: [],

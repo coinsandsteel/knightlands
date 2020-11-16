@@ -5,7 +5,9 @@
       :class="{show: choice}"
     >{{$t("trial-choose-cards-title")}}</span> -->
 
-    <div class="flex flex-center flex-space-evenly width-100 height-100 flex-self-end">
+    <div
+      class="flex flex-center flex-space-evenly width-100 height-100 flex-self-end"
+    >
       <Card
         v-for="(card, index) in cards"
         :key="index"
@@ -19,8 +21,9 @@
 
     <span
       class="cards-footer center-transform rarity-common font-outline"
-      :class="{show: showContinue}"
-    >{{$t("tap-to-continue")}}</span>
+      :class="{ show: showContinue }"
+      >{{ $t("tap-to-continue") }}</span
+    >
   </div>
 </template>
 
@@ -275,7 +278,7 @@ export default {
 
   & .cards-footer {
     font-size: 4rem;
-    bottom: 20vh;
+    bottom: 10%;
     .cards-text();
   }
 }

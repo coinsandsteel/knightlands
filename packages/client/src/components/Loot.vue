@@ -48,7 +48,7 @@
       >
         <span
           class="font-size-18 font-weight-700 digit-font font-outline bold"
-          >{{ count }}</span
+          >{{ countCompact }}</span
         >
       </div>
 
@@ -165,6 +165,28 @@ export default {
 
       return count;
     },
+    countCompact() {
+      const count = this.count;
+      let loc = "";
+      let value = count;
+
+      if (Math.floor(count / 1e9) > 0) {
+        loc = "cb";
+        value = Math.floor(count / 1e9);
+      } else if (Math.floor(count / 1e6) > 0) {
+        loc = "cm";
+        value = Math.floor(count / 1e6);
+      } else if (Math.floor(count / 1e3) > 0) {
+        loc = "ck";
+        value = Math.floor(count / 1e3);
+      }
+
+      if (loc) {
+        return this.$t(loc, { x: value });
+      }
+
+      return `${count}`;
+    },
     icon() {
       if ((!this.itemData || !this.itemData.id) && this.equipment) {
         return SlotPlaceholders[this.equipmentSlot];
@@ -221,7 +243,7 @@ export default {
   width: @lootCellSize;
   height: @lootCellSize;
   .mobile(
-    {width: @mobileLootCellSize; height: @mobileLootCellSize; &.inner-border {height:
+    {width: @mobileLootCellSize; height: @mobileLootCellSize; & > .inner-border {height:
       @mobileLootCellSize * 0.5;}}
   );
 
@@ -229,7 +251,7 @@ export default {
     width: @mobileLootCellSize * 0.75;
     height: @mobileLootCellSize * 0.75;
 
-    &.inner-border {
+    & > .inner-border {
       height: @mobileLootCellSize * 0.75;
     }
   }
@@ -238,7 +260,7 @@ export default {
     width: @mobileLootCellSize * 0.5;
     height: @mobileLootCellSize * 0.5;
 
-    &.inner-border {
+    & > .inner-border {
       height: @mobileLootCellSize * 0.5;
     }
   }

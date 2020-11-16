@@ -136,7 +136,11 @@ export default {
 
       for (; i < length; ++i) {
         const item = items[i];
-        if (item.equipped) {
+        if (item.equipped || item.locked) {
+          continue;
+        }
+
+        if (this.$game.itemsDB.isAccessory(item)) {
           continue;
         }
 

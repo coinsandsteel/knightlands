@@ -73,7 +73,7 @@
       <div
         class="width-60 flex flex-items-end flex-center padding-top-3 height-100"
       >
-        <img class="unit-image" :src="$game.armyDB.getIcon(unit)" />
+        <img class="unit-image" :src="$game.armyDB.getImage(unit)" />
       </div>
     </template>
     <div v-else>

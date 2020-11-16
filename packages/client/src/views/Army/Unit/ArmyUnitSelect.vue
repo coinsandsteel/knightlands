@@ -35,7 +35,7 @@ export default {
   mixins: [AppSection],
   components: { UnitInventory, Tabs, UnitView, CustomButton },
   created() {
-    this.title = "window-select-unit";
+    this.title = "w-select-unit";
     this.$options.useRouterBack = true;
   },
   data: () => ({

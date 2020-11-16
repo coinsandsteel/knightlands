@@ -77,16 +77,13 @@ export default {
   computed: {
     equipmentSlots() {
       let slots = [];
-      if (this.unit.troop) {
-        slots.push(EquipmentSlots.MainHand);
-        slots.push(EquipmentSlots.OffHand);
-      } else {
-        slots.push(EquipmentSlots.Helmet);
-        slots.push(EquipmentSlots.Chest);
-        slots.push(EquipmentSlots.Gloves);
-        slots.push(EquipmentSlots.Cape);
-        slots.push(EquipmentSlots.Boots);
-      }
+      slots.push(EquipmentSlots.MainHand);
+      slots.push(EquipmentSlots.OffHand);
+      slots.push(EquipmentSlots.Helmet);
+      slots.push(EquipmentSlots.Chest);
+      slots.push(EquipmentSlots.Gloves);
+      slots.push(EquipmentSlots.Cape);
+      slots.push(EquipmentSlots.Boots);
       return slots;
     },
     items() {
