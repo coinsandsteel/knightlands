@@ -8,7 +8,7 @@
             v-for="item in shop.items"
             :key="item.item"
             :item="item.item"
-            :quantity="item.count"
+            :quantity="item.quantity"
             :price="item.price"
             @purchase="handlePurchase"
           />

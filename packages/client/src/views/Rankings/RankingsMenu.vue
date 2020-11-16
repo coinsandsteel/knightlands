@@ -52,8 +52,8 @@ export default {
 
 <style lang="less" scoped>
 .icon-menu {
-  width: 7rem;
-  height: 7rem;
+  width: 7rem !important;
+  height: 7rem !important;
 }
 
 .ranking-title {

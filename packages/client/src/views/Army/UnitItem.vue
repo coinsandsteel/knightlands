@@ -99,10 +99,6 @@ export default {
 }
 
 .unit-item {
-  background-image: url("../../assets/ui/troops_mini_bg.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-
   & .bg {
     background-repeat: no-repeat;
     background-size: contain;

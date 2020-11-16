@@ -2963,5 +2963,6 @@
     "w-reserve": "Reserve",
     "ck": "{x}k",
     "cm": "{x}mil",
-    "cb": "{x}bil"
+    "cb": "{x}bil",
+    "w-world-chat": "Global Chat"
 }
