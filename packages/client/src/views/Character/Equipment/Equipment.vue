@@ -29,6 +29,7 @@
                   :item="itemsInSlots[slot]"
                   :equipment="true"
                   :equipmentSlot="slot"
+                  :showLevel="true"
                   @hint="showEquipmentHint(slot)"
                 ></loot>
               </div>

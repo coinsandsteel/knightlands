@@ -3,7 +3,10 @@
     <StripedContent stripeHeight="10rem">
       <div class="flex flex-items-center flex-space-between flex-no-wrap">
         <div :class="chest.name"></div>
-        <span class="font-size-20 width-80" v-html="$t(`${chest.name}-desc`)"></span>
+        <span
+          class="font-size-20 width-80"
+          v-html="$t(`${chest.name}-desc`)"
+        ></span>
       </div>
     </StripedContent>
 
@@ -11,8 +14,8 @@
       <div>
         <div class="flex flex-center">
           <div class="flex flex-items-center panel-input padding-1">
-            <div class="item-icon" :style="keyIcon"></div>
-            <span class="font-size-18">{{totalKeys}}</span>
+            <div class="item-icon" :class="keyIcon"></div>
+            <span class="font-size-18">{{ totalKeys }}</span>
           </div>
         </div>
       </div>
@@ -20,7 +23,7 @@
       <template v-if="freeOpenAvailable">
         <CustomButton type="yellow" @click="$emit('open', chest.name)">
           <div class="flex flex-items-center">
-            <span class="margin-right-half">{{$t('btn-open-free')}}</span>
+            <span class="margin-right-half">{{ $t("btn-open-free") }}</span>
           </div>
         </CustomButton>
       </template>
@@ -29,22 +32,32 @@
         <span
           class="font-size-18 margin-bottom-half"
           v-show="timer.timeLeft > 0"
-        >{{$t("free-chest-timer", {timer: timer.value})}}</span>
+          >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
+        >
 
         <div class="flex flex-center flex-items-end flex-column">
-          <CustomButton :disabled="!hasKey" type="yellow" @click="$emit('open', chest.name)">
-          <div class="flex flex-items-center">
-            <span class="margin-right-half">{{$t('btn-open')}}</span>
-            <div class="item-icon" :style="keyIcon"></div>
-          </div>
-        </CustomButton>
-        <CustomButton class="margin-top-1" v-show="batchSize > 1" type="yellow" @click="$emit('openBatch', chest.name, batchSize)">
-          <div class="flex flex-items-center">
-            <span class="margin-right-half">{{$t('btn-open')}}</span>
-            <div class="item-icon" :style="keyIcon"></div>
-            <span>x{{batchSize}}</span>
-          </div>
-        </CustomButton>
+          <CustomButton
+            :disabled="!hasKey"
+            type="yellow"
+            @click="$emit('open', chest.name)"
+          >
+            <div class="flex flex-items-center">
+              <span class="margin-right-half">{{ $t("btn-open") }}</span>
+              <div class="item-icon" :class="keyIcon"></div>
+            </div>
+          </CustomButton>
+          <CustomButton
+            class="margin-top-1"
+            v-show="batchSize > 1"
+            type="yellow"
+            @click="$emit('openBatch', chest.name, batchSize)"
+          >
+            <div class="flex flex-items-center">
+              <span class="margin-right-half">{{ $t("btn-open") }}</span>
+              <div class="item-icon" :class="keyIcon"></div>
+              <span>x{{ batchSize }}</span>
+            </div>
+          </CustomButton>
         </div>
       </div>
 
@@ -59,7 +72,8 @@
           <span
             class="font-size-18 margin-bottom-half"
             v-show="timer.timeLeft > 0"
-          >{{$t("free-chest-timer", {timer: timer.value})}}</span>
+            >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
+          >
 
           <PromisedButton
             v-for="iap in chest.meta.iaps"
@@ -71,18 +85,23 @@
             class="margin-bottom-1"
           >
             <div class="flex flex-items-center">
-              <span>{{$t('btn-open')}}</span>
-              <span v-if="iap.count > 1" class="margin-left-half margin-right-half">x{{iap.count}}</span>
+              <span>{{ $t("btn-open") }}</span>
+              <span
+                v-if="iap.count > 1"
+                class="margin-left-half margin-right-half"
+                >x{{ iap.count }}</span
+              >
               <PriceTag :dark="true" :iap="iap.iap" :flip="false"></PriceTag>
             </div>
           </PromisedButton>
         </div>
       </PaymentStatus>
       <span
-          class="font-size-18 margin-bottom-half"
-          v-else
-          v-show="timer.timeLeft > 0"
-        >{{$t("free-chest-timer", {timer: timer.value})}}</span>
+        class="font-size-18 margin-bottom-half"
+        v-else
+        v-show="timer.timeLeft > 0"
+        >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
+      >
     </div>
   </StripedPanel>
 </template>
@@ -137,12 +156,12 @@ export default {
         this.fetchPayment = this.$game.getchChestOpenStatus(this.chest.name);
         await this.fetchPayment;
         if (this.$refs.status && this.$refs.status.pending) {
-            this.$emit("wait");
+          this.$emit("wait");
         }
       }
     },
     handlePaymentComplete(iap, context) {
-      if (this.chest.meta.iaps.find(x=>x.iap == iap)) {
+      if (this.chest.meta.iaps.find(x => x.iap == iap)) {
         this.$emit("open", this.chest.name, null, context);
       }
     },
@@ -157,9 +176,7 @@ export default {
   },
   computed: {
     keyIcon() {
-      return `background-image: url(${this.$game.itemsDB.getIcon(
-        this.chest.meta.keyItem
-      )});`;
+      return this.$game.itemsDB.getIcon(this.chest.meta.keyItem);
     },
     totalKeys() {
       return this.$game.inventory.getItemsCountByTemplate(

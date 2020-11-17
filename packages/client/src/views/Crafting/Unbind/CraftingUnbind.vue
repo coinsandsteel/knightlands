@@ -52,7 +52,7 @@ export default {
       this.$router.push({ name: "unbind-item", params: { itemId: item.id } });
     },
     equippedItemsFilter(item, template) {
-      return item.breakLimit != 2 && !template.unbindable;
+      return item.breakLimit != 2 && template.unbindable;
     }
   }
 };

@@ -2,7 +2,11 @@
   <div
     class="flex flex-space-between flex-items-end color-panel-2 padding-left-2 padding-right-2"
   >
-    <ProgressBar :maxValue="maxStorage" v-model="gold" class="margin-bottom-2" />
+    <ProgressBar
+      :maxValue="maxStorage"
+      v-model="gold"
+      class="margin-bottom-2"
+    />
 
     <div class="flex flex-column flex-center margin-top-2">
       <span class="font-size-20 font-outline font-weight-900">{{
@@ -19,11 +23,7 @@
       </CustomButton>
     </div>
 
-    <CustomButton
-      type="yellow"
-      @click="$emit('collect')"
-      :disabled="gold < 1"
-    >
+    <CustomButton type="yellow" @click="$emit('collect')" :disabled="gold < 1">
       {{ $t("btn-collect") }}
     </CustomButton>
   </div>

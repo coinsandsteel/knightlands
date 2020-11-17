@@ -178,7 +178,7 @@ export default {
       this.updateMaterialList();
     },
     cancelUpgrading() {
-      if (this.item && !this.item.unique) {
+      if (this.item && !this.item.equipped && !this.item.unique) {
         this.$game.inventory.increaseStack(this.item);
       }
 
@@ -186,10 +186,8 @@ export default {
     },
     prepareItemForUpgrading() {
       let item = this.$game.inventory.getItem(this.itemId);
-      if (item && !item.equipped) {
-        if (!item.unique) {
-          item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
-        }
+      if (item && !item.equipped && !item.unique) {
+        item = this.$game.inventory.decreaseStackAndReturn(this.itemId);
       }
 
       if (item) {
