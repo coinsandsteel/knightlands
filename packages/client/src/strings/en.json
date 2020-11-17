@@ -2884,7 +2884,7 @@
     "basic-summon": "Basic Summon",
     "advanced-summon": "Advanced Summon",
     "unit-summon": "Summon x{count}",
-    "unit-summon-item": "Summon <span class='item-icon' style='{icon}'></span> x{count}",
+    "unit-summon-item": "Summon <span class='item-icon {icon}'></span> x{count}",
     "legion-slot-change-title": "Confirm unit change",
     "legion-slot-change-desc": "Do you want to save changes?",
     "free-summon-timer": "Free summon in {timer}",

@@ -5,8 +5,11 @@
         type="yellow"
         v-if="summonType == ArmySummonType.Normal"
         @click="showPopup"
-      >{{$t("basic-summon")}}</CustomButton>
-      <CustomButton type="yellow" v-else @click="showPopup">{{$t("advanced-summon")}}</CustomButton>
+        >{{ $t("basic-summon") }}</CustomButton
+      >
+      <CustomButton type="yellow" v-else @click="showPopup">{{
+        $t("advanced-summon")
+      }}</CustomButton>
     </FreeSummon>
   </div>
 </template>
@@ -25,7 +28,8 @@ const SummonPopup = create(
   "fetchRequest",
   "summonCb",
   "purchaseSummonCb",
-  "continuePurchaseCb"
+  "continuePurchaseCb",
+  "iapCb"
 );
 
 export default {
@@ -37,7 +41,7 @@ export default {
   watch: {
     fetchRequest() {
       if (this.popup) {
-        this.popup.fetchRequest = this.fetchRequest;
+        this.popup.setFetchRequest(this.fetchRequest);
       }
     }
   },
@@ -49,9 +53,10 @@ export default {
         this.fetchRequest,
         this.summon,
         this.purchaseSummon,
-        this.continuePurchase
+        this.continuePurchase,
+        this.setIap
       );
-      
+
       this.popup = await popup.getInstance();
     },
     summon(count) {
@@ -63,6 +68,9 @@ export default {
     },
     continuePurchase(payload) {
       this.$emit("continuePurchase", payload);
+    },
+    setIap(iap) {
+      this.$emit("iap", iap);
     }
   }
 };

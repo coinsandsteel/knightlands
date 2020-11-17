@@ -23,6 +23,7 @@ export default {
       this._internalIap = iap;
     },
     async _handlePaymentComplete(data) {
+      console.log("handlePaymentComplete", data, this._internalIap);
       if (data.iap != this._internalIap) {
         return;
       }

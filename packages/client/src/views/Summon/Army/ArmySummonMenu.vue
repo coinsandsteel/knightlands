@@ -19,6 +19,7 @@
                   @summon="summon"
                   @purchaseSummon="purchaseSummon"
                   @continuePurchase="continuePurchase"
+                  @iap="setIap"
                 />
               </div>
             </div>
@@ -35,6 +36,7 @@
                   @summon="summon"
                   @purchaseSummon="purchaseSummon"
                   @continuePurchase="continuePurchase"
+                  @iap="setIap"
                 />
               </div>
             </div>
@@ -76,18 +78,19 @@ export default {
   },
   methods: {
     async fetchPaymentStatus() {
-      console.log("fetchPaymentStatus")
       this.fetchRequest = this.$game.fetchArmySummonStatus();
-      const r = await this.fetchRequest;
-      console.log(r)
+      this.request = this.fetchRequest;
+      // ugly
+      const status = await this.request;
+      if (status) {
+        this.setIap(status.iap);
+      }
     },
     async purchaseSummon(summonType, iap) {
-      console.log(iap)
       this.request = this.$game.summonUnits(iap, summonType);
       this.purchaseRequest(this.request);
     },
     async summon(summonType, count) {
-      console.log(summonType, count)
       this.request = this.$game.summonUnits(null, summonType, count);
 
       let results = await this.request;
@@ -119,7 +122,7 @@ export default {
       this.showSummoning(context);
     },
     showSummoning(units) {
-      this.$router.push({ name: "army-summon", params: { units } })
+      this.$router.push({ name: "army-summon", params: { units } });
     }
   }
 };

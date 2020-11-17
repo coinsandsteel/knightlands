@@ -453,7 +453,7 @@ class Game {
 
   _handleArmySummoned(data) {
     this._vm.$emit(Events.UnitSummoned, data);
-    this._army.addUnits(data);
+    this._army.addUnits(data.context);
   }
 
   _handleUnitsRemoved(data) {

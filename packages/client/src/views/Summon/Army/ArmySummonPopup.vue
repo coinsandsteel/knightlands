@@ -55,9 +55,9 @@
 
         <PaymentStatus
           ref="status"
-          :request="fetchRequest"
+          :request="request"
           @pay="continuePurchase"
-          @iap="setIap"
+          @iap="iapCb"
           v-if="info.meta.iaps.length > 0"
           class="margin-top-1"
         >
@@ -98,7 +98,8 @@ export default {
     "fetchRequest",
     "summonCb",
     "purchaseSummonCb",
-    "continuePurchaseCb"
+    "continuePurchaseCb",
+    "iapCb"
   ],
   components: {
     UserDialog,
@@ -112,10 +113,8 @@ export default {
     request: null,
     ArmySummonType
   }),
-  watch: {
-    fetchRequest() {
-      console.log(this.fetchRequest);
-    }
+  mounted() {
+    this.request = this.fetchRequest;
   },
   computed: {
     totalTickets() {
@@ -130,12 +129,16 @@ export default {
       return this.totalTickets > 10 ? 10 : this.totalTickets;
     },
     ticketIcon() {
-      return `background-image: url(${this.$game.itemsDB.getIcon(
-        this.info.meta.ticketItem
-      )});`;
+      return this.$game.itemsDB.getIcon(this.info.meta.ticketItem);
+    },
+    computedRequest() {
+      return this.request || this.fetchRequest;
     }
   },
   methods: {
+    setFetchRequest(request) {
+      this.request = request;
+    },
     batchSummon() {
       this.summonCb(this.batchSize);
       this.$close();
