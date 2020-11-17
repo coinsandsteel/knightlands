@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-items-center flex-column">
-    <span class="min-width-90 title font-size-20">{{$t(className)}}</span>
+    <span class="min-width-90 title font-size-20">{{ $t(className) }}</span>
     <div
       class="margin-top-2 relative selector-content"
       @click="select"
-      :class="{show: value == className}"
+      :class="{ show: value == className }"
     >
       <div :class="classIcon"></div>
       <div class="params panel-dark relative margin-top-4">
@@ -16,17 +16,22 @@
               valueClass="font-size-15 blue-title"
               :flip="true"
               iconClass="icon-timer small"
-            >{{energyRegen}}</IconWithValue>
+              >{{ energyRegen }}</IconWithValue
+            >
           </IconWithValue>
           <IconWithValue iconClass="icon-stamina">
             <IconWithValue
               valueClass="font-size-15 blue-title"
               :flip="true"
               iconClass="icon-timer small"
-            >{{staminaRegen}}</IconWithValue>
+              >{{ staminaRegen }}</IconWithValue
+            >
           </IconWithValue>
         </div>
-        <div class="selector-border panel-selected" :class="{show: value == className}"></div>
+        <div
+          class="selector-border panel-selected"
+          :class="{ show: value == className }"
+        ></div>
       </div>
     </div>
   </div>

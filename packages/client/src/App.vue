@@ -212,22 +212,22 @@ export default {
         let tries = 0;
         let interval;
         interval = setInterval(() => {
-          // if (tries++ > 10) {
-          //   // redirect to login page
-          //   if (this.$route.matched.some(record => record.meta.requiresAuth)) {
-          //     if (!this.$game.authenticated) {
-          //       this.redirectToLogin();
-          //     }
-          //   }
-          //   this.loading = false;
-          //   clearInterval(interval);
-          //   return;
-          // }
+          if (tries++ > 10) {
+            // redirect to login page
+            if (this.$route.matched.some(record => record.meta.requiresAuth)) {
+              if (!this.$game.authenticated) {
+                this.redirectToLogin();
+              }
+            }
+            this.loading = false;
+            clearInterval(interval);
+            return;
+          }
 
-          // if (this.$game.walletReady()) {
-          clearInterval(interval);
-          this.$game.connect();
-          // }
+          if (this.$game.walletReady()) {
+            clearInterval(interval);
+            this.$game.connect();
+          }
         }, 200);
       });
     } catch (e) {

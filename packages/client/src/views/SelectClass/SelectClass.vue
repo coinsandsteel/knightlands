@@ -1,5 +1,5 @@
 <template>
-  <UserDialog :title="$t('select-class-title')" type="panel" :hideCloseBtn="true">
+  <UserDialog :title="$t('select-class-title')" :hideCloseBtn="true">
     <template v-slot:content>
       <div class="flex flex-space-evenly">
         <ClassSelector
@@ -20,9 +20,10 @@
             :disabled="!selectedClass"
             type="yellow"
             @click="confirm"
-          >{{$t('choose-class')}}</PromisedButton>
+            >{{ $t("choose-class") }}</PromisedButton
+          >
         </div>
-        <span class="font-size-18 margin-top-2">{{$t("class-footer")}}</span>
+        <span class="font-size-18 margin-top-2">{{ $t("class-footer") }}</span>
       </div>
     </template>
   </UserDialog>
@@ -78,9 +79,9 @@ export default {
       );
 
       if (response === true) {
-          this.request = this.$game.selectClass(this.selectedClass);
-          await this.request;
-          this.$close();
+        this.request = this.$game.selectClass(this.selectedClass);
+        await this.request;
+        this.$close();
       }
     }
   }

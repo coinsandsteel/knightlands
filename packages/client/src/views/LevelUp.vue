@@ -17,30 +17,54 @@
       ></SpinePlayer>
       <span ref="hook"></span>
       <span class="level-up-spacer"></span>
-      <span class="grey-title font-size-20 font-weight-700">{{$t("level-up-title")}}</span>
+      <span class="grey-title font-size-20 font-weight-700">{{
+        $t("level-up-title")
+      }}</span>
       <span
         class="font-size-4 margin-bottom-3 font-weight-700"
-        v-html="$t('level-up-title2', {level: $game.character.level})"
+        v-html="$t('level-up-title2', { level: $game.character.level })"
       ></span>
 
       <StripedContent class="flex flex-center font-size-20" stripeHeight>
         <ul class="level-up-list">
-          <li v-if="soft>0"><IconWithValue :flip="true" class="flex-start" iconClass="icon-gold">{{soft}}</IconWithValue></li>
-          <li v-if="hard>0"><IconWithValue :flip="true" class="flex-start" iconClass="icon-premium">{{hard}}</IconWithValue></li>
+          <li v-if="soft > 0">
+            <IconWithValue
+              :flip="true"
+              class="flex-start"
+              iconClass="icon-gold"
+              >{{ soft }}</IconWithValue
+            >
+          </li>
+          <li v-if="hard > 0">
+            <IconWithValue
+              :flip="true"
+              class="flex-start"
+              iconClass="icon-premium"
+              >{{ hard }}</IconWithValue
+            >
+          </li>
           <li>Max training stats +5</li>
-          <li v-for="stat in stats" :key="stat.stat">{{$t("level-up-stat", {stat: $t(stat.stat), value: stat.value})}}</li>
+          <li v-for="stat in stats" :key="stat.stat">
+            {{
+              $t("level-up-stat", { stat: $t(stat.stat), value: stat.value })
+            }}
+          </li>
         </ul>
       </StripedContent>
 
       <div class="flex flex-center">
-        <CustomButton class="center margin-top-3" type="yellow" @click="$close">{{$t('continue')}}</CustomButton>
+        <CustomButton
+          class="center margin-top-3"
+          type="yellow"
+          @click="$close"
+          >{{ $t("continue") }}</CustomButton
+        >
       </div>
     </StripedPanel>
   </div>
 </template>
 
 <script>
-import spine from "@/spine.js";
 import UserDialog from "@/components/UserDialog.vue";
 import SpinePlayer from "@/components/SpinePlayer.vue";
 import StripedPanel from "@/components/StripedPanel.vue";
@@ -51,7 +75,6 @@ import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   components: {
-    UserDialog,
     SpinePlayer,
     StripedPanel,
     StripedContent,
@@ -69,7 +92,7 @@ export default {
         var state = this.$refs.animation.getState();
         state.setAnimation(0, "show", false);
         state.setAnimation(1, "loop", true);
-        let top = this.$refs.hook.getBoundingClientRect().top;
+        // let top = this.$refs.hook.getBoundingClientRect().top;
         // this.animationPosition = `transform: translateY(${top}px);`;
       });
     }
