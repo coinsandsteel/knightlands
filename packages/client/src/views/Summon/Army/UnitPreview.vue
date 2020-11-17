@@ -10,7 +10,7 @@
             <div class="width-100 flex flex-center padding-2 height-45">
               <img
                 class="unit-image"
-                :src="$game.armyDB.getIcon(unit)"
+                :src="$game.armyDB.getImage(unit)"
                 @load="handleImageLoaded"
               />
             </div>

@@ -2964,5 +2964,6 @@
     "ck": "{x}k",
     "cm": "{x}mil",
     "cb": "{x}bil",
-    "w-world-chat": "Global Chat"
+    "w-world-chat": "Global Chat",
+    "w-edit-leg": "Edit Slot"
 }

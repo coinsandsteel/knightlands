@@ -21,7 +21,7 @@
           @selected="handleItemSelected"
         ></LootContainer>
 
-        <div class="color-panel-2 no-padding margin-top-1">
+        <div class="color-panel-2 margin-top-1">
           <span
             class="font-size-22 margin-bottom-1 font-outline font-weight-900"
             >{{ $t("disenchant-results") }}</span
@@ -128,6 +128,7 @@ export default {
   methods: {
     async disenchantItems() {
       const selectedItems = this.$refs.lootContainer.selectedItems();
+      console.log(selectedItems);
       const payload = {};
       for (const itemId in selectedItems) {
         payload[itemId] = 1;

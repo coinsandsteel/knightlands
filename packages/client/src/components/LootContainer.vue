@@ -1,6 +1,7 @@
 <template>
   <div class="flex full-flex dummy-height">
     <ItemList
+      ref="list"
       :lootClasses="lootClasses"
       :multiSelect="multiSelect"
       :selectSlots="selectSlots"
@@ -46,7 +47,7 @@ export default {
   },
   methods: {
     selectedItems() {
-      return this.selected;
+      return this.$refs.list.selectedItems();
     }
   }
 };

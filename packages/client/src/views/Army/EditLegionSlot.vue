@@ -54,7 +54,7 @@ export default {
   }),
   created() {
     this.$options.useRouterBack = true;
-    this.title = "";
+    this.title = "w-edit-leg";
   },
   watch: {
     legion: {

@@ -38,13 +38,15 @@ export default {
     },
     unitImage() {
       if (this.unit) {
-        return UiConstants.backgroundImage(this.unitIcon);
+        return UiConstants.backgroundImage(
+          this.$game.armyDB.getImage(this.unit)
+        );
       }
 
       return "";
     },
     unitIcon() {
-      return this.$game.armyDB.getIcon(this.unit);
+      return UiConstants.backgroundImage(this.$game.armyDB.getIcon(this.unit));
     },
     unitType() {
       if (this.unit) {
