@@ -7,7 +7,7 @@
         <div
           class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
         >
-          <div class="unit-item-shadow absolute-stretch"></div>
+          <div class="unit-item-shadow"></div>
           <UnitStars
             class="stars width-100 relative"
             :stars="stars"
@@ -43,7 +43,7 @@ export default {
 .selected {
   background-image: url("../../assets/ui/troops_mini_bg_selected.png");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -89,13 +89,18 @@ export default {
 
 .unit-item-lvl {
   position: absolute;
-  bottom: 0;
+  bottom: 10%;
 }
 
 .unit-item-shadow {
   background-image: url("../../assets/ui/troops_mini_shadow.png");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
+  position: absolute;
+  left: 1%;
+  right: 1%;
+  top: 1%;
+  bottom: 1%;
 }
 
 .unit-item {
