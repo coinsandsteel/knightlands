@@ -53,53 +53,51 @@
         <div class="flex full-flex dummy-height">
           <div v-bar class="width-100 height-100 dummy-height">
             <div>
-              <div class="flex flex-center dummy-height">
+              <div class="material-container dummy-height">
                 <loot
                   v-for="(mat, index) in upgradeMaterials"
                   :key="mat.id"
                   :item="mat"
-                  @hint="toggleMaterial(index)"
+                  @hint="selectMaterial(index)"
                   :locked="!selectedMaterials[index] && lockRest"
-                  :selected="selectedMaterials[index]"
-                ></loot>
+                  :selected="index == selectedMaterial"
+                >
+                  <div
+                    class="absolute-stretch select-overlay flex flex-center"
+                    v-if="materialsCount[index]"
+                  >
+                    <span class="font-size-22 font-outline font-weight-900"
+                      >x{{ materialsCount[index] }}</span
+                    >
+                  </div>
+                </loot>
               </div>
             </div>
           </div>
         </div>
 
         <div class="flex margin-top-1 flex-space-evenly width-100">
-          <div
-            class="flex flex-center flex-no-wrap font-size-20 font-weight-700"
-            v-show="totalMaterials < 2"
-          >
-            <CustomButton
-              type="grey"
-              :mini="true"
-              :lockPressed="selectedOption == 0"
-              @click="selectedOption = 0"
-              >x1</CustomButton
-            >
-            <CustomButton
-              type="grey"
-              :mini="true"
-              :lockPressed="selectedOption == 1"
-              @click="selectedOption = 1"
-              >x5</CustomButton
-            >
-            <CustomButton
-              type="grey"
-              :mini="true"
-              :lockPressed="selectedOption == 2"
-              @click="selectedOption = 2"
-              >x25</CustomButton
-            >
-          </div>
+          <NumericValue
+            class="margin-bottom-2"
+            :value="currentMaterialCount"
+            :decreaseCondition="currentMaterialCount >= 1"
+            :increaseCondition="canIncreaseMaterial"
+            @inc="incMaterialCount"
+            @dec="decMaterialCount"
+          ></NumericValue>
 
           <CustomButton
             type="green"
             :disabled="!canUpgrade"
             @click="confirmUpgrade"
-            >{{ $t("confirm") }}</CustomButton
+            >{{ $t("btn-confirm") }}</CustomButton
+          >
+
+          <CustomButton
+            type="grey"
+            :disabled="!canUpgrade"
+            @click="resetSelection"
+            >{{ $t("btn-reset") }}</CustomButton
           >
         </div>
       </template>
@@ -112,7 +110,7 @@
         <CustomButton
           v-if="returnTo"
           class="margin-top-2"
-          type="yellow"
+          type="grey"
           @click="returnBack"
           >{{ $t("btn-return") }}</CustomButton
         >
@@ -124,6 +122,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
+import NumericValue from "@/components/NumericValue.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
@@ -140,7 +139,8 @@ export default {
     Loot,
     CustomButton,
     Title,
-    ItemStatsUpgraded
+    ItemStatsUpgraded,
+    NumericValue
   },
   created() {
     this.title = "window-upgrade-item";
@@ -158,6 +158,8 @@ export default {
     futureExp: 0,
     currentExp: 0,
     selectedMaterials: {},
+    selectedMaterial: 0,
+    materialsCount: {},
     upgradeMaterials: []
   }),
   watch: {
@@ -166,6 +168,19 @@ export default {
     }
   },
   methods: {
+    resetSelection() {
+      this.materialsCount = {};
+    },
+    decMaterialCount() {
+      this.materialsCount[this.selectedMaterial]--;
+    },
+    incMaterialCount() {
+      if (!this.materialsCount[this.selectedMaterial]) {
+        this.$set(this.materialsCount, this.selectedMaterial, 1);
+      } else {
+        this.materialsCount[this.selectedMaterial]++;
+      }
+    },
     returnBack() {
       this.$router.replace({
         path: this.$route.query.returnTo,
@@ -197,21 +212,10 @@ export default {
         this.item = item;
       }
     },
-    toggleMaterial(index) {
-      let state = this.selectedMaterials[index];
-
-      if (this.lockRest && !state) {
-        return;
-      }
-
-      if (state !== undefined) {
-        this.selectedMaterials[index] = !state;
-      } else {
-        this.$set(this.selectedMaterials, index, true);
-      }
-
-      if (!this.selectedMaterials[index]) {
-        this.$delete(this.selectedMaterials, index);
+    selectMaterial(index) {
+      this.selectedMaterial = index;
+      if (!this.materialsCount[index]) {
+        this.incMaterialCount();
       }
     },
     async confirmUpgrade() {
@@ -239,7 +243,7 @@ export default {
     async upgradeItem() {
       let newItemId = await this.$game.upgradeItem(
         this.itemId,
-        this.selectedMaterialsAsArray.map(x => x.id),
+        this.selectedMaterialsAsArray.map(x => this.upgradeMaterials[x].id),
         this.optionFactor
       );
 
@@ -257,6 +261,8 @@ export default {
     updateMaterialList() {
       this.$set(this, "selectedMaterials", {});
       this.upgradeMaterials = [];
+      this.materialsCount = {};
+      this.selectedMaterial = 0;
 
       if (!this.item) {
         return;
@@ -294,6 +300,15 @@ export default {
     }
   },
   computed: {
+    canIncreaseMaterial() {
+      return (
+        this.currentMaterialCount <
+          this.upgradeMaterials[this.selectedMaterial].count && !this.lockRest
+      );
+    },
+    currentMaterialCount() {
+      return this.materialsCount[this.selectedMaterial] || 0;
+    },
     returnTo() {
       return !!this.$route.query.returnTo;
     },
@@ -305,8 +320,8 @@ export default {
     },
     selectedMaterialsAsArray() {
       const materials = [];
-      for (let i in this.selectedMaterials) {
-        materials.push(this.upgradeMaterials[i]);
+      for (let i in this.materialsCount) {
+        materials.push(i);
       }
       return materials;
     },
@@ -340,8 +355,11 @@ export default {
 
       if (this.totalMaterials > 0) {
         for (let i = 0; i < this.selectedMaterialsAsArray.length; i++) {
-          const material = this.selectedMaterialsAsArray[i];
-          materialExp += this.$game.itemsDB.getMaterialExp(this.item, material);
+          const index = this.selectedMaterialsAsArray[i];
+          const material = this.upgradeMaterials[index];
+          materialExp +=
+            this.$game.itemsDB.getMaterialExp(this.item, material) *
+            this.materialsCount[index];
         }
       }
 
@@ -370,6 +388,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.material-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  justify-items: center;
+}
+
 .progress-bar-margin {
   margin-top: 1rem;
   margin-left: 10rem;
@@ -381,5 +405,10 @@ export default {
   top: 0;
   right: 0;
   bottom: 0;
+}
+
+.select-overlay {
+  background-color: #102a2491;
+  border-radius: 2px;
 }
 </style>

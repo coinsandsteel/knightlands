@@ -58,6 +58,8 @@
           >{{ $t("level", { lvl: itemData.level || 1 }) }}</span
         >
       </div>
+
+      <slot></slot>
     </template>
   </div>
 </template>
