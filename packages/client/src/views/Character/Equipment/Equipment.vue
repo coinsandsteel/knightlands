@@ -132,7 +132,6 @@ export default {
   data() {
     return {
       slots: {},
-      itemsInSlots: this.$character.equipment,
       request: null,
       showDetails: false,
       slotPreview: false,
@@ -140,6 +139,15 @@ export default {
     };
   },
   computed: {
+    itemsInSlots() {
+      let items = {};
+      for (const slotId in this.$character.equipment) {
+        items[slotId] = this.$game.inventory.getItem(
+          this.$character.equipment[slotId].id
+        );
+      }
+      return items;
+    },
     forceFilters() {
       if (!this.slotPreview) {
         return null;

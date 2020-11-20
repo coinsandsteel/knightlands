@@ -1022,15 +1022,6 @@ class Game {
     });
   }
 
-  async fetchRaidWeakness(raid, stage) {
-    return (
-      await this._wrapOperation(Operations.UpgradeItem, {
-        raid,
-        stage
-      })
-    ).response;
-  }
-
   async fetchRaidSummonStatus(raid) {
     return await this._request(Operations.FetchRaidSummonStatus, {
       raid
@@ -1094,11 +1085,10 @@ class Game {
     return response.response;
   }
 
-  async upgradeItem(itemId, materials, count) {
+  async upgradeItem(itemId, materials) {
     let response = await this._wrapOperation(Operations.UpgradeItem, {
       itemId,
-      materials,
-      count
+      materials
     });
 
     return response.response;

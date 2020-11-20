@@ -1,9 +1,9 @@
 <template>
   <div class="screen-content">
-    <!-- <DiscordChat
+    <DiscordChat
       server="694928249167282176"
       channel="699540977773183066"
-    ></DiscordChat> -->
+    ></DiscordChat>
   </div>
 </template>
 

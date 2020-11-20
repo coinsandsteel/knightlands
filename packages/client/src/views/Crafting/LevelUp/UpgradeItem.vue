@@ -241,11 +241,12 @@ export default {
       }
     },
     async upgradeItem() {
-      let newItemId = await this.$game.upgradeItem(
-        this.itemId,
-        this.selectedMaterialsAsArray.map(x => this.upgradeMaterials[x].id),
-        this.optionFactor
-      );
+      let materials = {};
+      for (const i in this.materialsCount) {
+        materials[this.upgradeMaterials[i].id] = this.materialsCount[i];
+      }
+
+      let newItemId = await this.$game.upgradeItem(this.itemId, materials);
 
       if (newItemId != this.itemId) {
         this.item = null;
