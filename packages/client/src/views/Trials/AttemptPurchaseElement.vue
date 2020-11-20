@@ -1,20 +1,26 @@
 <template>
   <div class="width-100 flex flex-center margin-bottom-1">
-    <PaymentStatus :request="refillStatusRequest" @pay="continuePurchase" @iap="setIap">
-        <div class="flex flex-column">
-          <PromisedButton
+    <PaymentStatus
+      :request="refillStatusRequest"
+      @pay="continuePurchase"
+      @iap="setIap"
+    >
+      <div class="flex flex-column">
+        <PromisedButton
           type="yellow margin-bottom-1"
           v-for="(iap, index) in iaps"
           :key="index"
           @click="purchaseAttempts(index)"
         >
-          <div class="flex">
+          <div class="flex flex-center">
             <span class="item-icon" :class="trialType"></span>
-            <span class="margin-left-half margin-right-1">x{{iap.attempts}}</span>
+            <span class="margin-left-half margin-right-1"
+              >x{{ iap.attempts }}</span
+            >
             <PriceTag :iap="iap.iap" :dark="true"></PriceTag>
           </div>
         </PromisedButton>
-        </div>
+      </div>
     </PaymentStatus>
   </div>
 </template>

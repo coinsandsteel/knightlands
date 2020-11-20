@@ -79,7 +79,7 @@ export default {
         trialType: this.trialType
       });
     },
-    async engageFight(trialId, stageId, fightIndex, callback) {
+    async engageFight(trialId, stageId, fightIndex) {
       this.request = this.$game.engageTrialFight(
         this.trialType,
         trialId,
@@ -91,9 +91,18 @@ export default {
         await this.request;
       } catch (exc) {
         if (exc.includes(Errors.TrialNoAttempts)) {
-          this.showPrompt("prompt-snap-title", "trials-no-keys", [
-            { type: "green", title: "Ok", response: true }
-          ]);
+          const response = await this.showPrompt(
+            "prompt-snap-title",
+            "trials-no-keys",
+            [
+              { type: "grey", title: "Ok", response: 1 },
+              { type: "green", title: "btn-p-more", response: 2 }
+            ]
+          );
+
+          if (response === 2) {
+            this.purchaseAttempts();
+          }
         }
       }
     },

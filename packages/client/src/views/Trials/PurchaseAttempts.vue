@@ -2,7 +2,10 @@
   <UserDialog title="trials-purchase-attempts" :compact="true" @close="$close">
     <template v-slot:content>
       <div class="flex flex-column flex-space-evenly width-100">
-        <AttemptPurchaseElement :trialType="trialType" :iaps="iaps"></AttemptPurchaseElement>
+        <AttemptPurchaseElement
+          :trialType="trialType"
+          :iaps="iaps"
+        ></AttemptPurchaseElement>
       </div>
     </template>
   </UserDialog>
@@ -30,7 +33,7 @@ export default {
   }),
   mounted() {
     this.iaps = iapsByType[this.trialType];
-    console.log(this.iaps)
+    console.log(this.iaps);
   }
 };
 </script>

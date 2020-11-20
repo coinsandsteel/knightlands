@@ -95,11 +95,19 @@ import AttackButton from "@/components/AttackButton.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import CardSelector from "./Cards/CardSelector.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 import TrialCardsEffect from "@/../../knightlands-shared/trial_cards_effect";
+import Errors from "@/../../knightlands-shared/errors";
 import TrialsMeta from "@/trials_meta";
+
+import PurchaseAttempts from "./PurchaseAttempts.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowPurchaseAttempts = create(PurchaseAttempts);
 
 export default {
   props: ["state", "meta", "trialIndex", "trialType", "trialMeta"],
+  mixins: [PromptMixin],
   components: {
     EnemyView,
     FloatingTextContainer,
@@ -199,16 +207,35 @@ export default {
     async attack() {
       this.request = await this.$game.attackTrial(this.trialType);
 
-      const response = await this.request;
+      try {
+        const response = await this.request;
 
-      const { attackResult, cards, fightFinished } = response;
-      this.$refs.floatingText.addFloatingText(
-        attackResult.damage,
-        attackResult.crit
-      );
+        const { attackResult } = response;
+        this.$refs.floatingText.addFloatingText(
+          attackResult.damage,
+          attackResult.crit
+        );
 
-      this.enemyHealth = attackResult.enemyHealth;
-      this.playerHealth = attackResult.playerHealth;
+        this.enemyHealth = attackResult.enemyHealth;
+        this.playerHealth = attackResult.playerHealth;
+      } catch (exc) {
+        if (exc.includes(Errors.TrialNoAttempts)) {
+          const response = await this.showPrompt(
+            "prompt-snap-title",
+            "trials-no-keys",
+            [
+              { type: "grey", title: "Ok", response: 1 },
+              { type: "green", title: "btn-p-more", response: 2 }
+            ]
+          );
+
+          if (response === 2) {
+            await ShowPurchaseAttempts({
+              trialType: this.trialType
+            });
+          }
+        }
+      }
     }
   }
 };
