@@ -266,6 +266,7 @@ import Vue from "vue";
 import SpriteAnimator from "@/components/SpriteAnimator.vue";
 import Timer from "@/timer.js";
 import Title from "@/components/Title.vue";
+import RaidsMeta from "@/raids_meta";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
@@ -385,6 +386,9 @@ export default {
     }
   },
   computed: {
+    bossName() {
+      return RaidsMeta[this.raidState.raidTemplateId].name;
+    },
     mainViewNotHidden() {
       return !(this.showChallenges || this.showChart);
     },

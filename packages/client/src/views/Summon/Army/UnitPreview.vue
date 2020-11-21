@@ -7,7 +7,7 @@
           <div class="flex flex-column flex-no-wrap min-height-100">
             <div class="element-background" :class="element"></div>
 
-            <div class="width-100 flex flex-center padding-2 height-45">
+            <div class="width-100 flex flex-center padding-2 unit-height">
               <img
                 class="unit-image"
                 :src="$game.armyDB.getImage(unit)"
@@ -72,11 +72,10 @@
                 :key="idx"
               >
                 <div
-                  class="ability-panel width-100"
+                  class="ability-panel width-100 flex flex-items-center whitespace-prewrap"
                   :class="{ show: showAnimation }"
-                >
-                  <span v-html="getAbilityDesc(a)"></span>
-                </div>
+                  v-html="getAbilityDesc(a)"
+                ></div>
               </Flipped>
             </Flipper>
           </div>
@@ -131,6 +130,7 @@ export default {
   },
   methods: {
     handleImageLoaded(p) {
+      console.log("image loaded");
       // if (!this.resolveTimeout) {
       //   return;
       // }
@@ -172,6 +172,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.unit-height {
+  height: 45vh;
+}
+
 .unit-image {
   max-width: 100%;
   max-height: 100%;

@@ -1,10 +1,7 @@
 <template>
   <div class="item-badge-grid">
     <div class="element-flag" :class="element"></div>
-    <span
-      :class="`weapon-badge ${weaponType}`"
-      class="flag-badge grid-center-self"
-    ></span>
+    <span :class="`weapon-badge ${weaponType}`" class="flag-badge"></span>
   </div>
 </template>
 
@@ -30,6 +27,8 @@ export default {
   & .flag-badge {
     grid-column: 1;
     grid-row: 2;
+    align-self: baseline;
+    justify-self: center;
   }
 }
 

@@ -1,10 +1,15 @@
 <template>
   <div class="relative flex flex-column boss-view flex-center flex-no-wrap">
-    <div ref="zoneView" class="boss-image absolute-stretch" :style="zoneBackground"></div>
+    <div
+      ref="zoneView"
+      class="boss-image absolute-stretch"
+      :style="zoneBackground"
+    ></div>
 
     <span
       class="raid-summon-title font-size-30 relative font-weight-700 enemy-title-font font-outline"
-    >{{$t(name)}}</span>
+      >{{ $t(name) }}</span
+    >
 
     <div ref="image" class="flex flex-center relative unit-image">
       <slot name="view"></slot>
@@ -97,7 +102,9 @@ export default {
       return Campaign.getRaidImage(this.raidTemplateId);
     },
     zoneBackground() {
-      return UiConstants.backgroundImage(Campaign.getRaidBackground(this.raidTemplateId));
+      return UiConstants.backgroundImage(
+        Campaign.getRaidBackground(this.raidTemplateId)
+      );
     },
     name() {
       return this.meta.name;

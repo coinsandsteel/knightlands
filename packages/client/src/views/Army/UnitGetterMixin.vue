@@ -2,6 +2,7 @@
 import UiConstants from "@/ui_constants";
 import ArmyUnitTypes from "@/army_unit_types";
 import RaidsMeta from "@/raids_meta";
+import UnitAbilityType from "@/../../knightlands-shared/unit_ability_type";
 
 export default {
   computed: {
@@ -103,14 +104,40 @@ export default {
   },
   methods: {
     getAbilityDesc(ability, overrideUnit) {
-      const levelValue = this.$game.army.getAbilityLevelValue(
-        this.unit || overrideUnit,
-        ability.id
+      const unit = this.unit || overrideUnit;
+      console.log(unit);
+      const levelValue = this.$game.army.getAbilityLevelValue(unit, ability.id);
+
+      const abilityTemplate = this.$game.armyDB.getAbility(
+        ability.id,
+        unit.troop
       );
 
       const localisationParams = { value: levelValue, ...ability };
+      console.log(localisationParams);
+
+      let locType = ability.type;
+
+      switch (abilityTemplate.type) {
+        case UnitAbilityType.ExtraTroopsDamage:
+        case UnitAbilityType.ExtraGeneralsDamage:
+        case UnitAbilityType.IncreasedTroopsDamagePerTroopTypeUsed:
+        case UnitAbilityType.IncreasedTroopsDamage:
+        case UnitAbilityType.IncreasedGeneralsDamage:
+          if (localisationParams.unitType == 0) {
+            locType += "-all";
+          }
+          break;
+      }
+
       if (ability.unitType) {
         localisationParams.unitType = this.$t(ArmyUnitTypes[ability.unitType]);
+      }
+
+      if (ability.unitType2) {
+        localisationParams.unitType2 = this.$t(
+          ArmyUnitTypes[ability.unitType2]
+        );
       }
 
       if (ability.stars) {
@@ -134,7 +161,7 @@ export default {
         }
       }
 
-      return this.$t(ability.type, localisationParams);
+      return this.$t(locType, localisationParams);
     }
   }
 };

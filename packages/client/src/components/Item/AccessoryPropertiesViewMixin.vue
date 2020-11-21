@@ -39,6 +39,12 @@ export default {
           locParams.value = this._getPropValue(locParams.value, relative);
         }
 
+        if (locParams.itemId) {
+          locParams.item = this.$t(
+            this.$game.itemsDB.getName(locParams.itemId)
+          );
+        }
+
         if (locParams.element) {
           locParams.element = this.$t(`e-${locParams.element}`);
         }

@@ -87,8 +87,8 @@ export default {
 }
 
 .title-icon {
-  height: 3.5rem;
-  width: 3.5rem;
+  height: 3.5rem !important;
+  width: 3.5rem !important;
 }
 
 .title-level {

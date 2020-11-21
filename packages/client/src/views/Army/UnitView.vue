@@ -63,7 +63,7 @@
         @click="showAbilities = false"
       >
         <div
-          class="flex flex-center"
+          class="flex flex-center whitespace-prewrap"
           v-for="(ability, idx) in abilities"
           :key="idx"
           v-html="getAbilityDesc(ability)"
