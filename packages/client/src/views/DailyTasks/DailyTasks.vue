@@ -4,7 +4,7 @@
     <div class="full-flex" v-bar>
       <div class="flex flex-column">
         <div
-          class="flex flex-center font-size-22 margin-top-1 margin-bottom-3 font-outline font-weight-900"
+          class="flex flex-center font-size-22 margin-top-2 margin-bottom-3 font-outline font-weight-900"
           v-html="$t('daily-quests-timer', { time: timer.value })"
         ></div>
 

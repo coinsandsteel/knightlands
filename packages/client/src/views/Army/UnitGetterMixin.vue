@@ -105,7 +105,6 @@ export default {
   methods: {
     getAbilityDesc(ability, overrideUnit) {
       const unit = this.unit || overrideUnit;
-      console.log(unit);
       const levelValue = this.$game.army.getAbilityLevelValue(unit, ability.id);
 
       const abilityTemplate = this.$game.armyDB.getAbility(
@@ -114,7 +113,6 @@ export default {
       );
 
       const localisationParams = { value: levelValue, ...ability };
-      console.log(localisationParams);
 
       let locType = ability.type;
 
