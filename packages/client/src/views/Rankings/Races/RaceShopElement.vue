@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-column flex-center margin-1 padding-1">
     <Loot :item="item" :quantity="quantity" @hint="handleHint" />
-    <CustomButton type="grey" @click="$emit('purchase', item, price)">
+    <CustomButton
+      type="grey"
+      @click="$emit('purchase', item, price)"
+      :disabled="locked"
+    >
       <IconWithValue iconClass="icon-race-token">{{ price }}</IconWithValue>
     </CustomButton>
   </div>
@@ -16,6 +20,6 @@ import HintHandler from "@/components/HintHandler.vue";
 export default {
   mixins: [HintHandler],
   components: { Loot, IconWithValue, CustomButton },
-  props: ["item", "quantity", "price"]
+  props: ["item", "quantity", "price", "locked"]
 };
 </script>

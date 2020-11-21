@@ -26,26 +26,26 @@
                   @start="selectAdventure"
                   @claim="claimAdventure(index)"
                 ></AdventureSlot>
-              </div>
 
-              <div
-                class="panel width-100 padding-1 margin-bottom-2 adventure-slot flex flex-center"
-                v-if="upgradePrice > 0"
-              >
-                <span class="font-size-18 grey-title">{{
-                  $t("adventure-expand-message")
-                }}</span>
-                <div class="margin-top-2">
-                  <CustomButton
-                    type="yellow"
-                    @click="buySlot"
-                    :disabled="!enoughCurrency"
-                  >
-                    {{ $t("adventure-expand") }}
-                    <IconWithValue iconClass="icon-gold">{{
-                      upgradePrice
-                    }}</IconWithValue>
-                  </CustomButton>
+                <div
+                  class="color-panel-2 width-100 margin-bottom-2 adventure-slot flex flex-center"
+                  v-if="upgradePrice > 0"
+                >
+                  <span class="font-size-18">{{
+                    $t("adventure-expand-message")
+                  }}</span>
+                  <div class="margin-top-2">
+                    <CustomButton
+                      type="yellow"
+                      @click="buySlot"
+                      :disabled="!enoughCurrency"
+                    >
+                      {{ $t("adventure-expand") }}
+                      <IconWithValue iconClass="icon-gold">{{
+                        upgradePrice
+                      }}</IconWithValue>
+                    </CustomButton>
+                  </div>
                 </div>
               </div>
             </div>

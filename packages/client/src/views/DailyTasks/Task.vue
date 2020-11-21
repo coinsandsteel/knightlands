@@ -17,24 +17,24 @@
           <IconWithValue
             v-if="task.soft > 0"
             class="margin-bottom-1"
-            iconClass="icon-gold"
-            valueClass="font-size-18"
+            iconClass="icon-gold medium"
+            valueClass="font-size-20 font-outline"
             >{{ task.soft }}</IconWithValue
           >
 
           <IconWithValue
             v-if="task.exp > 0"
             class="margin-bottom-1"
-            iconClass="icon-exp"
-            valueClass="font-size-18"
+            iconClass="icon-exp medium"
+            valueClass="font-size-20 font-outline"
             >{{ task.exp }}</IconWithValue
           >
 
           <IconWithValue
             v-if="task.hard > 0"
             class="margin-bottom-1"
-            valueClass="font-size-18"
-            iconClass="icon-premium"
+            valueClass="font-size-20 font-outline"
+            iconClass="icon-premium medium"
             >{{ task.hard }}</IconWithValue
           >
 

@@ -10,6 +10,7 @@
             :item="item.item"
             :quantity="item.quantity"
             :price="item.price"
+            :locked="!canPurchase(item.price)"
             @purchase="handlePurchase"
           />
         </div>
@@ -47,6 +48,9 @@ export default {
     }
   },
   methods: {
+    canPurchase(price) {
+      return price <= this.chips;
+    },
     async handlePurchase(templateId, price) {
       const template = this.$game.itemsDB.getTemplate(templateId);
       let response = await this.showPrompt(

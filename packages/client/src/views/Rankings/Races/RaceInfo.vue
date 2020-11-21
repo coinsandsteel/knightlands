@@ -1,36 +1,38 @@
 <template>
-  <user-dialog :title="' '" @close="$close">
+  <user-dialog :title="'race-info'" @close="$close">
     <template v-slot:content>
       <div class="flex flex-column flex-center font-size-20">
         <span
           class="title font-size-22 font-weight-900 margin-bottom-1"
-          v-html="$t('race-title', { tier, type: raceType, tierColor})"
+          v-html="$t('race-title', { tier, type: raceType, tierColor })"
         />
         <div class="flex margin-bottom-1 panel-input padding-1">
-          <span class="margin-right-half">{{$t("race-target")}}</span>
-          <span class="green-yellow font-weight-900">{{target}}</span>
+          <span class="margin-right-half">{{ $t("race-target") }}</span>
+          <span class="green-yellow font-weight-900">{{ target }}</span>
         </div>
         <div class="flex margin-bottom-1">
-          <span class="margin-right-half">{{$t("race-target-m")}}</span>
-          <span>x{{targetMulti}}</span>
+          <span class="margin-right-half">{{ $t("race-target-m") }}</span>
+          <span>x{{ targetMulti }}</span>
         </div>
         <div class="flex margin-bottom-1">
-          <span class="margin-right-half">{{$t("race-rewards-m")}}</span>
-          <span>x{{rewardsMulti}}</span>
+          <span class="margin-right-half">{{ $t("race-rewards-m") }}</span>
+          <span>x{{ rewardsMulti }}</span>
         </div>
 
-        <span class="title margin-top-2 margin-bottom-1">{{$t("race-predictions")}}</span>
+        <span class="title margin-top-2 margin-bottom-1">{{
+          $t("race-predictions")
+        }}</span>
 
         <div class="flex margin-bottom-1">
-          <span class="margin-right-half">{{$t("race-target-m")}}</span>
-          <span>x{{nextTargetMulti}}</span>
+          <span class="margin-right-half">{{ $t("race-target-m") }}</span>
+          <span>x{{ nextTargetMulti }}</span>
         </div>
         <div class="flex margin-bottom-1">
-          <span class="margin-right-half">{{$t("race-rewards-m")}}</span>
-          <span>x{{nextRewardsMulti}}</span>
+          <span class="margin-right-half">{{ $t("race-rewards-m") }}</span>
+          <span>x{{ nextRewardsMulti }}</span>
         </div>
 
-        <span class="orange-title">{{$t("race-mult-hint")}}</span>
+        <span class="orange-title">{{ $t("race-mult-hint") }}</span>
       </div>
     </template>
   </user-dialog>

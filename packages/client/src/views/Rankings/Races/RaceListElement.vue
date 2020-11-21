@@ -50,6 +50,10 @@
           $t("btn-rewards")
         }}</CustomButton>
 
+        <CustomButton type="grey" @click="openInfo">{{
+          $t("leaderboard-info")
+        }}</CustomButton>
+
         <CustomButton
           type="yellow"
           @click="$emit('join')"
@@ -69,6 +73,11 @@ import RankingType from "@/../../knightlands-shared/ranking_type";
 import RaidsMeta from "@/raids_meta";
 import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
+
+import { create } from "vue-modal-dialogs";
+import RaceInfo from "./RaceInfo.vue";
+
+const infoWindow = create(RaceInfo);
 
 export default {
   props: ["race", "currentRank", "cooldown"],
@@ -133,6 +142,25 @@ export default {
       }
 
       return this.$t(`ranking-type-${rankingOptions.type}`, options);
+    },
+    info() {
+      return {
+        tier: this.race.config.tier,
+        type: this.race.config.type,
+        target: Math.floor(
+          this.race.config.baseTarget * this.race.targetMultiplier
+        ),
+        predictedMultipliers: this.race.predictedMultipliers,
+        rewardsMultiplier: this.race.rewardsMultiplier,
+        targetMultiplier: this.race.targetMultiplier
+      };
+    }
+  },
+  methods: {
+    openInfo() {
+      infoWindow({
+        race: this.info
+      });
     }
   }
 };
