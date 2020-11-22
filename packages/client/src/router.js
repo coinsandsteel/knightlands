@@ -2,17 +2,26 @@
 
 import Router from "vue-router";
 
-const Character = () => import("./views/Character/Character.vue");
-const CharacterTraining = () => import("./views/Character/Training/Stats.vue");
+const Character = () =>
+  import(/* webpackChunkName: "Character" */ "./views/Character/Character.vue");
+const CharacterTraining = () =>
+  import(
+    /* webpackChunkName: "Stats" */ "./views/Character/Training/Stats.vue"
+  );
 const CharacterEquipment = () =>
-  import("./views/Character/Equipment/Equipment.vue");
-const CharacterBuffs = () => import("./views/Character/Buffs/Buffs.vue");
-const CharacterMisc = () => import("./views/Character/MiscTab.vue");
+  import(
+    /* webpackChunkName: "Equipment" */ "./views/Character/Equipment/Equipment.vue"
+  );
+const CharacterBuffs = () =>
+  import(/* webpackChunkName: "Buffs" */ "./views/Character/Buffs/Buffs.vue");
+const CharacterMisc = () =>
+  import(/* webpackChunkName: "MiscTab" */ "./views/Character/MiscTab.vue");
 
-const Quest = () => import("./views/Quests/Quest.vue");
-const Login = () => import("./views/Login.vue");
-const Admin = () => import("./views/Admin.vue");
-const Home = () => import("./views/Home.vue");
+const Quest = () =>
+  import(/* webpackChunkName: "Quest" */ "./views/Quests/Quest.vue");
+const Login = () => import(/* webpackChunkName: "Login" */ "./views/Login.vue");
+const Admin = () => import(/* webpackChunkName: "Admin" */ "./views/Admin.vue");
+const Home = () => import(/* webpackChunkName: "Home" */ "./views/Home.vue");
 const Raids = () => import("./views/Raids/Raids.vue");
 const RaidView = () => import("./views/Raids/RaidView.vue");
 const RaidSummon = () => import("./views/Raids/RaidSummon.vue");

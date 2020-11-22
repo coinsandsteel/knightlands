@@ -275,5 +275,4 @@ export default {
     .selected("button_pale");
   }
 }
-
 </style>

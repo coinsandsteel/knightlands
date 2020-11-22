@@ -373,17 +373,6 @@ export default {
     prepareItemForEnchant() {
       let item = this.$game.inventory.getItem(this.itemId);
 
-      if (!item || item.equipped) {
-        // try search in equipment gear
-        for (const slot in this.$game.character.equipment) {
-          const gear = this.$game.character.equipment[slot];
-          if (gear.id == this.itemId) {
-            item = gear;
-            break;
-          }
-        }
-      }
-
       this.item = item;
     }
   }

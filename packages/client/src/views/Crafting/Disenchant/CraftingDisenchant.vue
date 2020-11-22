@@ -128,7 +128,6 @@ export default {
   methods: {
     async disenchantItems() {
       const selectedItems = this.$refs.lootContainer.selectedItems();
-      console.log(selectedItems);
       const payload = {};
       for (const itemId in selectedItems) {
         payload[itemId] = 1;
