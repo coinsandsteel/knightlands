@@ -1,11 +1,11 @@
 <template>
   <Promised :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
-      <LoadingScreen  :loading="isPending && isDelayOver" />
-
+      <LoadingScreen :loading="isPending && isDelayOver" />
+      <div class="screen-background"></div>
       <div v-bar>
         <div class="flex flex-center">
-          <div class="flex flex-center padding-1 flex-column">
+          <div class="flex flex-center flex-column">
             <ChestElement
               v-for="chest in chests"
               :key="chest.name"
@@ -52,9 +52,9 @@ export default {
   methods: {
     openBatchChest(chest, count) {
       this.$router.push({
-          name: "open-chest",
-          params: { chest, count }
-        });
+        name: "open-chest",
+        params: { chest, count }
+      });
     },
     openChest(chest, iap, items) {
       if (iap) {

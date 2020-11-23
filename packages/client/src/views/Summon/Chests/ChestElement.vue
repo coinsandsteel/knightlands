@@ -1,14 +1,12 @@
 <template>
-  <StripedPanel class="margin-bottom-1 margin-top-1">
-    <StripedContent stripeHeight="10rem">
-      <div class="flex flex-items-center flex-space-between flex-no-wrap">
-        <div :class="chest.name"></div>
-        <span
-          class="font-size-20 width-80"
-          v-html="$t(`${chest.name}-desc`)"
-        ></span>
-      </div>
-    </StripedContent>
+  <div class="margin-bottom-1 margin-top-1 padding-1 color-panel-1">
+    <div class="flex flex-items-center flex-space-between flex-no-wrap">
+      <div :class="chest.name"></div>
+      <span
+        class="font-size-20 width-80 text-align-left"
+        v-html="$t(`${chest.name}-desc`)"
+      ></span>
+    </div>
 
     <div class="flex flex-space-between">
       <div>
@@ -103,7 +101,7 @@
         >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
       >
     </div>
-  </StripedPanel>
+  </div>
 </template>
 
 <script>

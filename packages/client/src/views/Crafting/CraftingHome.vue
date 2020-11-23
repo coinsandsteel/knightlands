@@ -12,7 +12,7 @@
       </MenuIcon>
 
       <MenuIcon
-        icon="skewed_icon_recipes"
+        icon="skewed_icon_reroll_accessory"
         :to="{ name: 'reroll-acc-list' }"
         :append="true"
       >
@@ -30,7 +30,7 @@
       </MenuIcon>
 
       <MenuIcon
-        icon="skewed_icon_recipes"
+        icon="skewed_icon_craft_accessory"
         :to="{ name: 'create-acc-list' }"
         :append="true"
       >

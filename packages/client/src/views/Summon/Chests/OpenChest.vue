@@ -11,12 +11,15 @@
       atlas="chests_anim"
       atlasImage="chests_anim"
       @ready="handleAnimationReady"
-      :class="{'hidden': hide}"
+      :class="{ hidden: hide }"
     ></SpinePlayer>
 
     <div class="close-btn" @click="handleBackButton"></div>
     <Promised :promise="request">
-      <template class="flex-full" v-slot:combined="{ isDelayOver, isPending, error }">
+      <template
+        class="flex-full"
+        v-slot:combined="{ isDelayOver, isPending, error }"
+      >
         <loading-screen :loading="isDelayOver && isPending"></loading-screen>
 
         <template v-if="error">
@@ -32,11 +35,15 @@
             :class="[{'show': showLoot},`chest-${chest}`]"
             >{{$t(chest)}}</h1>-->
 
-            <Flipped flipId="lootId" stagger="lootCard" :shouldFlip="isHidden()">
+            <Flipped
+              flipId="lootId"
+              stagger="lootCard"
+              :shouldFlip="isHidden()"
+            >
               <div
                 id="loot-container"
                 class="flex flex-center gacha-loot"
-                :class="{'expanded': showLoot}"
+                :class="{ expanded: showLoot }"
               >
                 <Flipped
                   stagger="lootCard"
@@ -60,9 +67,14 @@
 
           <div @click="handleContinue" class="continueButton"></div>
 
-          <div class="gacha-continue pointer pointer-events-none" :class="{'show': showContinue}">
+          <div
+            class="gacha-continue pointer pointer-events-none"
+            :class="{ show: showContinue }"
+          >
             <!-- <span class="font-size-30 font-weight-700" v-if="hasMoreChests">{{$t("open_next")}}</span> -->
-            <span class="font-size-30 font-weight-700">{{$t("continue_from_gacha")}}</span>
+            <span class="font-size-30 font-weight-700">{{
+              $t("continue_from_gacha")
+            }}</span>
           </div>
         </template>
       </template>
@@ -114,6 +126,9 @@ export default {
     if (this.$refs.animation.isReady()) {
       this.startGacha();
     }
+  },
+  deactivated() {
+    this.showLoot = false;
   },
   computed: {
     lootFlipKey() {
@@ -177,7 +192,7 @@ export default {
       this.showContinue = false;
       this.hide = true;
 
-      const fadeDuration = 500;
+      const fadeDuration = 0;
       let timeline = anime.timeline({
         duration: fadeDuration,
         easing: "easeOutCubic"

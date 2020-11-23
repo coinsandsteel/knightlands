@@ -37,23 +37,23 @@ export default {
 @import (reference) url("../../style/ui.less");
 
 .title-tip {
-  width: 2rem !important;
+  width: 3rem !important;
   height: 5rem !important;
 
   &.light {
-    .ribbon_tip_light;
+    .unit_light;
   }
 
   &.darkness {
-    .ribbon_tip_darkness;
+    .unit_dark;
   }
 
   &.earth {
-    .ribbon_tip_earth;
+    .unit_earth;
   }
 
   &.water {
-    .ribbon_tip_water;
+    .unit_water;
   }
 
   &.physical {
@@ -66,19 +66,19 @@ export default {
   background-repeat: repeat;
 
   &.light {
-    background-image: url("../../assets/ui/ribbon_body_light.png");
+    background-image: url("../../assets/ui/unit_light1.png");
   }
 
   &.darkness {
-    background-image: url("../../assets/ui/ribbon_body_darkness.png");
+    background-image: url("../../assets/ui/unit_dark1.png");
   }
 
   &.earth {
-    background-image: url("../../assets/ui/ribbon_body_earth.png");
+    background-image: url("../../assets/ui/unit_earth1.png");
   }
 
   &.water {
-    background-image: url("../../assets/ui/ribbon_body_water.png");
+    background-image: url("../../assets/ui/unit_water1.png");
   }
 
   &.physical {
