@@ -86,7 +86,6 @@ const ForsakenTower = () => import("./views/ForsakenTower/ForsakenTower.vue");
 
 const DailyRewards = () => import("./views/DailyRewards/DailyRewards.vue");
 
-const Dividends = () => import("./views/Dividends/Dividends.vue");
 const Settings = () => import("./views/Settings/Settings.vue");
 
 const router = new Router({
@@ -873,13 +872,24 @@ const router = new Router({
     },
     {
       path: "/home/dividends",
-      props: true,
-      name: "dividends",
-      component: Dividends,
+      component: () => import("./views/Dividends/DividendsRoot.vue"),
       meta: {
         requiresAuth: true
-      }
+      },
+      children: [
+        {
+          path: "",
+          name: "dividends",
+          component: () => import("./views/Dividends/Dividends.vue")
+        },
+        {
+          path: "divs-withdrawals",
+          name: "divs-withdrawals",
+          component: () => import("./views/Dividends/DividendsWithdrawals.vue")
+        }
+      ]
     },
+
     {
       path: "/home/settings",
       props: true,

@@ -44,9 +44,10 @@ export default {
 
         this.handlePaymentFailed(data.iap, data.context, data.reason);
       } else {
-        await this.fetchPaymentStatus(data.iap);
         this.handlePaymentComplete(data.iap, data.context);
       }
+
+      await this.fetchPaymentStatus(data.iap);
     },
     handlePaymentComplete(iap, context) {},
     handlePaymentFailed(iap, context) {},

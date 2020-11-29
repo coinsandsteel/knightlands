@@ -39,13 +39,13 @@ export default {
       }
     },
     _showLoading() {
-      this._timeout = setTimeout(200, () => {
+      this._timeout = setTimeout(() => {
         this.$notify({
           group: "loading",
           duration: -1,
           closeOnClick: false
         });
-      });
+      }, 200);
     },
     _hideLoading() {
       clearTimeout(this._timeout);

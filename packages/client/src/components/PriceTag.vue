@@ -1,5 +1,10 @@
 <template>
-  <IconWithValue :iconClass="dark?'icon-trx-dark':'icon-trx'" :valueClass="valueClass" :flip="flip">{{price}}</IconWithValue>
+  <IconWithValue
+    :iconClass="dark ? 'icon-trx-dark' : 'icon-trx'"
+    :valueClass="valueClass"
+    :flip="flip"
+    >{{ price }}</IconWithValue
+  >
 </template>
 
 <script>
@@ -45,7 +50,7 @@ export default {
       let conversion = await this.$game.getCurrencyConversionRate();
       let iapMeta = IAPs[this.iap];
       if (iapMeta) {
-        this.price = Math.floor(iapMeta.price * conversion.rate * 100) / 100;
+        this.price = Math.floor(iapMeta.price * conversion.rate) / 100;
       }
     }
   }

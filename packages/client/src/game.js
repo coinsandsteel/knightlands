@@ -51,7 +51,8 @@ class Game {
         trials: {},
         goldExchange: {},
         dailyQuests: {},
-        goldMines: {}
+        goldMines: {},
+        dividends: {}
       })
     });
 
@@ -185,6 +186,10 @@ class Game {
 
   get armyDB() {
     return this._armyDb;
+  }
+
+  get dividends() {
+    return this._vm.dividends;
   }
 
   get army() {
@@ -453,7 +458,9 @@ class Game {
 
   _handleArmySummoned(data) {
     this._vm.$emit(Events.UnitSummoned, data);
-    this._army.addUnits(data.context);
+    if (!data.reason) {
+      this._army.addUnits(data.context);
+    }
   }
 
   _handleUnitsRemoved(data) {
@@ -645,6 +652,10 @@ class Game {
       this.mergeObjects(this._vm, this._vm.trials, changes.trials);
     }
 
+    if (changes.dividends) {
+      this.mergeObjects(this._vm, this._vm.dividends, changes.dividends);
+    }
+
     if (changes.questsProgress) {
       for (let zone in changes.questsProgress.zones) {
         let quests = changes.questsProgress.zones[zone];
@@ -732,6 +743,7 @@ class Game {
         this._vm.trials = info.trials;
         this._vm.dailyQuests = info.dailyQuests;
         this._vm.goldMines = info.goldMines;
+        this._vm.dividends = info.dividends;
 
         if (!this._vm.loaded) {
           this._checkClassChoice();
@@ -1233,6 +1245,16 @@ class Game {
         class: className
       })
     ).response;
+  }
+
+  // Dividends
+  async getDivsStatus() {
+    return (await this._wrapOperation(Operations.GetDivsStatus)).response;
+  }
+
+  async claimDividends(blockchainId) {
+    return (await this._wrapOperation(Operations.ClaimDivs, { blockchainId }))
+      .response;
   }
 
   // Daily login

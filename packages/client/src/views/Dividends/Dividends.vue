@@ -1,112 +1,104 @@
 <template>
   <Promised :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
+      <div class="screen-background"></div>
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
 
-      <div class="flex flex-column flex-items-center font-size-22">
+      <div class="flex flex-column flex-items-center">
         <!-- DIVIDENDS INFO -->
-        <StripedPanel class="width-90">
-          <span class="title margin-top-1">Available Dividends</span>
-          <StripedContent
-            classes="margin-top-3 margin-bottom-3"
-            contentClasses="width-100 flex flex-space-evenly"
-            stripeHeight="6rem"
-          >
+        <div class="width-100">
+          <template v-if="hasPayouts">
+            <Title :stackBottom="true" class="margin-top-1"
+              >Available Dividends</Title
+            >
+            <div class="flex flex-column flex-center color-panel-1">
+              <div
+                class="flex flex-center"
+                v-for="(payout, bId) in payouts"
+                :key="bId"
+              >
+                <IconWithValue
+                  :iconClass="getIcon(bId)"
+                  valueClass="font-size-30 font-weight-900"
+                  :flip="true"
+                  >{{ toDecimal(bId, payout) }}</IconWithValue
+                >
+                <CustomButton
+                  type="yellow"
+                  @click="claimDivs(bId)"
+                  :disabled="!canClaim(bId)"
+                  >{{ $t("btn-claim") }}</CustomButton
+                >
+              </div>
+            </div>
+          </template>
+
+          <Title :stackTop="true" :stackBottom="true">Total DKT Staked</Title>
+          <div class="color-panel-2 width-100 flex flex-column flex-center">
             <IconWithValue
-              iconClass="icon-trx"
+              class="margin-top-1 margin-bottom-1"
+              iconClass="icon-dkt"
               valueClass="font-size-30 font-weight-900"
               :flip="true"
-            >{{totalDivs}}</IconWithValue>
-          </StripedContent>
+              >{{ totalStaked }}</IconWithValue
+            >
 
-          <span class="title margin-top-1">Total DKT Staked</span>
-          <StripedContent
-            classes="margin-top-3 margin-bottom-3"
-            contentClasses="width-100 flex flex-space-evenly"
-            stripeHeight="6rem"
-          >
-            <IconWithValue
-              iconClass="icon-trx"
-              valueClass="font-size-30 font-weight-900"
-              :flip="true"
-            >{{totalStaked}}</IconWithValue>
-          </StripedContent>
-
-          <!-- <span class="font-size-20">Estimated dividends for you:</span>
-
-          <StripedContent
-            classes="margin-top-2 margin-bottom-5"
-            contentClasses="width-100 flex flex-space-evenly"
-            stripeHeight="6rem"
-          >
-            <IconWithValue
-              iconClass="icon-trx"
-              valueClass="font-size-20 font-weight-900"
-              :flip="true"
-            >{{estimatedDivs}}</IconWithValue>
-          </StripedContent>-->
-
-          <span class="font-size-18">Next payout in {{nextPayoutTimer.value}}</span>
-        </StripedPanel>
+            <span class="font-size-18"
+              >Next payout in {{ nextPayoutTimer.value }}</span
+            >
+          </div>
+        </div>
 
         <!-- DIVIDENDS MANAGEMENT -->
-        <div class="flex flex-center width-100 margin-top-2 flex-space-evenly">
-          <Line3Element class="width-25 margin-right-half" v-if="pendingWithdrawal">
+        <!-- <div class="flex flex-center width-100 margin-top-2 flex-space-evenly">
+          <Line3Element
+            class="width-25 margin-right-half"
+            v-if="pendingWithdrawal"
+          >
             <template v-slot:title>Withdrawn DKT</template>
-            <template v-slot:value>{{pendingWithdrawal.amount}}</template>
+            <template v-slot:value>{{ pendingWithdrawal.amount }}</template>
             <template>
               <CustomButton @click="confirmWithdrawal">Confirm</CustomButton>
             </template>
           </Line3Element>
 
           <Line3Element class="width-25 margin-right-half" v-else>
-            <template v-slot:title>Available DKT</template>
-            <template v-slot:value>{{dkt}}</template>
-            <template>
-              <CustomButton @click="withdrawToken">Withdraw</CustomButton>
+            <template v-slot:title>Your stake</template>
+            <template v-slot:value>
+              <IconWithValue iconClass="icon-dkt" :flip="true">{{
+                dkt
+              }}</IconWithValue>
             </template>
           </Line3Element>
 
           <Line3Element class="width-25 margin-right-half">
-            <template v-slot:title>DKT Balance</template>
-            <template v-slot:value>{{dktForFreezing}}</template>
-            <template>
-              <CustomButton type="blue" @click="freeze">Freeze</CustomButton>
-            </template>
+            <template v-slot:title>Your Balance</template>
+            <template v-slot:value
+              ><IconWithValue iconClass="icon-dkt" :flip="true">{{
+                unlockedDkt
+              }}</IconWithValue></template
+            >
           </Line3Element>
-
-          <Line3Element class="width-25 margin-right-half">
-            <template v-slot:title>Frozen DKT</template>
-            <template v-slot:value>{{stakedDkt}}</template>
-            <template>
-              <CustomButton
-                type="green"
-                @click="unfreeze"
-                :disabled="false"
-                v-if="unfreezeTimer.timeLeft > 0"
-              >{{unfreezeTimer.value}}</CustomButton>
-              <CustomButton type="green" @click="unfreeze" v-else>Unfreeze</CustomButton>
-            </template>
-          </Line3Element>
-
-          <Line3Element class="width-25 margin-top-3">
-            <template v-slot:title>Available TRX</template>
-            <template v-slot:value>{{estimatedDivs}}</template>
-            <template>
-              <CustomButton type="yellow" @click="claimDivs">Claim</CustomButton>
-            </template>
-          </Line3Element>
-        </div>
+        </div> -->
       </div>
-    </template>>
+
+      <portal to="footer" v-if="isActive">
+        <CustomButton
+          type="grey"
+          v-if="hasPendingWithdrawals"
+          @click="goTo('divs-withdrawals')"
+          >{{ $t("btn-pend-divs") }}</CustomButton
+        >
+      </portal>
+    </template>
   </Promised>
 </template>
 
 <script>
+import Title from "@/components/Title.vue";
 import AppSection from "@/AppSection.vue";
-import StripedPanel from "@/components/StripedPanel.vue";
-import StripedContent from "@/components/StripedContent.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import BlockchainUtilsMixin from "./BlockchainUtilsMixin";
 import Line3Element from "./Line3Element";
 import CustomButton from "@/components/Button.vue";
 import Events from "@/../../knightlands-shared/events";
@@ -115,79 +107,93 @@ import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import Timer from "@/timer";
 import { toDecimal } from "../../blockchain/utils";
+import CurrencyType from "@/../../knightlands-shared/currency_type";
 
 export default {
-  mixins: [PromptMixin, AppSection],
+  mixins: [PromptMixin, AppSection, BlockchainUtilsMixin],
   components: {
-    StripedPanel,
-    StripedContent,
     IconWithValue,
     Line3Element,
     CustomButton,
     Promised,
-    LoadingScreen
+    LoadingScreen,
+    Title
   },
   data: () => ({
-    pendingWithdrawal: null,
     divsInfo: null,
-    unfreezeTimer: new Timer(true),
     request: null,
     nextPayoutTimer: new Timer(true)
   }),
   created() {
-    this.title = "window-dividends";
+    this.title = "w-divs";
     this.nextPayoutTimer.on(
       "finished",
       this.handlePayoutTimerFinished.bind(this)
     );
   },
-  async activated() {
-    this.$game.on(Events.DivTokenWithdrawal, this.handleWithdrawal.bind(this));
-
-    this.fetchDividendsInfo();
-    this.pendingWithdrawal = await this.$game.fetchPendingDividendTokenWithdrawal();
-
-    if (this.pendingWithdrawal) {
-      this.nonce = this.pendingWithdrawal.nonce;
-      this.signature = this.pendingWithdrawal.signature;
-      this.amount = this.pendingWithdrawal.amount;
-    }
+  mounted() {
+    this.init();
   },
-  deactivated() {
+  destroyed() {
     this.$game.removeAllListeners(Events.DivTokenWithdrawal);
   },
   computed: {
     dkt() {
-      return this.$game.dkt;
-    },
-    dktForFreezing() {
-      if (this.divsInfo) return this.divsInfo.dkt;
-      return 0;
-    },
-    stakedDkt() {
-      if (this.divsInfo) return toDecimal(this.divsInfo.state.totalStaked, 6);
-      return 0;
+      return this.$game.inventory.getCurrency(CurrencyType.Dkt, 8);
     },
     totalStaked() {
-      if (this.divsInfo) return this.divsInfo.totalStaked;
+      if (this.divsInfo) return this.divsInfo.supply;
       return 0;
     },
-    estimatedDivs() {
-      if (this.divsInfo) return this.divsInfo.payout;
+    unlockedDkt() {
+      if (this.divsInfo) return this.$game.dividends.unlockedTokens;
       return 0;
     },
-    totalDivs() {
-      if (this.divsInfo) return this.divsInfo.totalDivs;
-      return 0;
+    payouts() {
+      return this.$game.dividends.payouts;
+    },
+    hasPayouts() {
+      let hasPayout = false;
+      for (const id in this.payouts) {
+        if (this.payouts[id]) {
+          hasPayout = true;
+          break;
+        }
+      }
+      return hasPayout;
+    },
+    hasPendingWithdrawals() {
+      if (this.divsInfo) {
+        return this.divsInfo.pendingDivs.length > 0;
+      }
+
+      return false;
     }
   },
   methods: {
+    async init() {
+      this.$game.on(
+        Events.DivTokenWithdrawal,
+        this.handleWithdrawal.bind(this)
+      );
+
+      this.fetchDividendsInfo();
+    },
+    goTo(name) {
+      this.$router.push({ name });
+    },
     async handlePayoutTimerFinished() {
       await this.fetchDividendsInfo();
     },
-    async claimDivs() {
+    canClaim(bId) {
+      if (typeof this.payouts[bId] === "string") {
+        return this.payouts[bId] !== "0";
+      }
+      return this.payouts[bId];
+    },
+    async claimDivs(bid) {
       try {
-        this.request = this.$game.blockchainClient.claimDividends();
+        this.request = this.$game.claimDividends(bid);
         await this.request;
         await this.fetchDividendsInfo();
       } catch {
@@ -204,62 +210,14 @@ export default {
         );
       }
     },
-    async unfreeze() {
-      try {
-        this.request = this.$game.blockchainClient.unfreezeDkt(0);
-        await this.request;
-        await this.fetchDividendsInfo();
-      } catch {
-        this.showPrompt(
-          this.$t("prompt-snap-title"),
-          this.$t("div-token-unfreeze-failed"),
-          [
-            {
-              type: "red",
-              title: "btn-ok",
-              response: true
-            }
-          ]
-        );
-      }
-    },
-    async freeze() {
-      try {
-        this.request = this.$game.blockchainClient.freezeDkt(
-          this.dktForFreezing
-        );
-        await this.request;
-        await this.fetchDividendsInfo();
-      } catch (e) {
-        this.showPrompt(
-          this.$t("prompt-snap-title"),
-          this.$t("div-token-freeze-failed"),
-          [
-            {
-              type: "red",
-              title: "btn-ok",
-              response: true
-            }
-          ]
-        );
-      }
-    },
     async fetchDividendsInfo() {
-      this.request = this.$game.blockchainClient.fetchDividendsInfo();
+      this.request = this.$game.getDivsStatus();
 
       try {
         this.divsInfo = await this.request;
 
-        this.unfreezeTimer.timeLeft =
-          Number(this.divsInfo.state.depositTimestamp) +
-          this.divsInfo.freezeDuration -
-          this.$game.nowSec;
-
-        const payoutPeriodDuration = this.divsInfo.payoutPeriod * 30;
         this.nextPayoutTimer.timeLeft =
-          payoutPeriodDuration -
-          ((this.$game.nowSec - this.divsInfo.stakingStart) %
-            payoutPeriodDuration);
+          this.divsInfo.nextPayout - this.$game.nowSec;
       } catch {
         // possible stack overflow
         await this.fetchDividendsInfo();

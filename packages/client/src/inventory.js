@@ -65,8 +65,11 @@ class Inventory {
     return this._vm.items;
   }
 
-  getCurrency(type) {
-    return Math.floor((this._vm.currencies[type] || 0) * 100) / 100;
+  getCurrency(type, precision = 2) {
+    return (
+      Math.floor((this._vm.currencies[type] || 0) * Math.pow(10, precision)) /
+      Math.pow(10, precision)
+    );
   }
 
   setCurrency(type, value) {

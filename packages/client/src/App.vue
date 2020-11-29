@@ -12,7 +12,7 @@
         <div class="section-decor right"></div>
       </div>
 
-      <keep-alive exclude="gold-exchange">
+      <keep-alive>
         <router-view
           class="content dummy-height flex flex-no-wrap flex-column"
           v-if="showContent"
@@ -407,11 +407,12 @@ export default {
 
   a {
     display: inherit !important;
-    height: 100% !important;
-    width: calc(100% - 30px) !important;
     text-align: center;
     position: relative;
-    .tabbar_bg;
+    height: 100%;
+    width: calc(100% - 30px);
+    background-image: url("./assets/ui/tabbar_bg.png");
+    background-size: 100% 100%;
 
     .menu-title {
       font-size: 1.5rem;
@@ -468,7 +469,7 @@ export default {
       }
 
       border-image-source: url("./assets/ui/tabbar_selected.png");
-      border-image-slice: 60 59 27 59 fill;
+      border-image-slice: 50 59 27 59 fill;
       border-image-width: 20px 20px 20px 20px;
       border-image-outset: 0px 0px 0px 0px;
       border-image-repeat: stretch stretch;
@@ -516,9 +517,9 @@ html {
   .fourk_screen({font-size: 10px;});
 
   background: @backgroundOutsideColor;
-  background-image: url("./assets/ui/pattern.jpg");
-  background-repeat: repeat;
-  background-size: 20%;
+  // background-image: url("./assets/ui/pattern.jpg");
+  // background-repeat: repeat;
+  // background-size: 20%;
 }
 
 *,

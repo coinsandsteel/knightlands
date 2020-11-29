@@ -57,9 +57,9 @@
           </template>
         </MenuIcon>
 
-        <!-- <MenuIcon icon="skewed_icon_dividents" to="dividends" :append="true">
+        <MenuIcon icon="skewed_icon_dividents" to="dividends" :append="true">
           {{ $t("btn-divs") }}
-        </MenuIcon> -->
+        </MenuIcon>
 
         <!-- <MenuIcon icon="skewed_icon_settings" to="settings" :append="true">
           {{ $t("btn-settings") }}
