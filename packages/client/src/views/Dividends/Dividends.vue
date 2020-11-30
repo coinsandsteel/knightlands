@@ -1,17 +1,16 @@
 <template>
-  <Promised :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <div class="screen-background"></div>
-      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+  <div class="screen-content padding-top-2">
+    <div class="screen-background"></div>
 
+    <div v-bar>
       <div class="flex flex-column flex-items-center">
         <!-- DIVIDENDS INFO -->
         <div class="width-100">
-          <template v-if="hasPayouts">
-            <Title :stackBottom="true" class="margin-top-1"
-              >Available Dividends</Title
-            >
-            <div class="flex flex-column flex-center color-panel-1">
+          <Title :stackBottom="true" class="margin-top-1"
+            >Available Dividends</Title
+          >
+          <div class="flex flex-column flex-center color-panel-1">
+            <template v-if="hasPayouts">
               <div
                 class="flex flex-center"
                 v-for="(payout, bId) in payouts"
@@ -30,8 +29,14 @@
                   >{{ $t("btn-claim") }}</CustomButton
                 >
               </div>
-            </div>
-          </template>
+            </template>
+            <template v-else>
+              <span
+                class="grey-title font-size-20 margin-top-1 margin-bottom-1"
+                >{{ $t("w-no-divs") }}</span
+              >
+            </template>
+          </div>
 
           <Title :stackTop="true" :stackBottom="true">Total DKT Staked</Title>
           <div class="color-panel-2 width-100 flex flex-column flex-center">
@@ -50,8 +55,8 @@
         </div>
 
         <!-- DIVIDENDS MANAGEMENT -->
-        <!-- <div class="flex flex-center width-100 margin-top-2 flex-space-evenly">
-          <Line3Element
+        <div class="flex flex-center width-100 margin-top-2 flex-space-evenly">
+          <!-- <Line3Element
             class="width-25 margin-right-half"
             v-if="pendingWithdrawal"
           >
@@ -60,9 +65,9 @@
             <template>
               <CustomButton @click="confirmWithdrawal">Confirm</CustomButton>
             </template>
-          </Line3Element>
+          </Line3Element> -->
 
-          <Line3Element class="width-25 margin-right-half" v-else>
+          <Line3Element class="width-25 margin-right-half">
             <template v-slot:title>Your stake</template>
             <template v-slot:value>
               <IconWithValue iconClass="icon-dkt" :flip="true">{{
@@ -79,19 +84,19 @@
               }}</IconWithValue></template
             >
           </Line3Element>
-        </div> -->
+        </div>
       </div>
+    </div>
 
-      <portal to="footer" v-if="isActive">
-        <CustomButton
-          type="grey"
-          v-if="hasPendingWithdrawals"
-          @click="goTo('divs-withdrawals')"
-          >{{ $t("btn-pend-divs") }}</CustomButton
-        >
-      </portal>
-    </template>
-  </Promised>
+    <portal to="footer" v-if="isActive">
+      <CustomButton
+        type="grey"
+        v-if="hasPendingWithdrawals"
+        @click="goTo('divs-withdrawals')"
+        >{{ $t("btn-pend-divs") }}</CustomButton
+      >
+    </portal>
+  </div>
 </template>
 
 <script>
@@ -103,21 +108,23 @@ import Line3Element from "./Line3Element";
 import CustomButton from "@/components/Button.vue";
 import Events from "@/../../knightlands-shared/events";
 import PromptMixin from "@/components/PromptMixin.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import Timer from "@/timer";
 import { toDecimal } from "../../blockchain/utils";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [PromptMixin, AppSection, BlockchainUtilsMixin],
+  mixins: [
+    PromptMixin,
+    AppSection,
+    BlockchainUtilsMixin,
+    NetworkRequestErrorMixin
+  ],
   components: {
     IconWithValue,
-    Line3Element,
     CustomButton,
-    Promised,
-    LoadingScreen,
-    Title
+    Title,
+    Line3Element
   },
   data: () => ({
     divsInfo: null,
@@ -153,14 +160,12 @@ export default {
       return this.$game.dividends.payouts;
     },
     hasPayouts() {
-      let hasPayout = false;
       for (const id in this.payouts) {
-        if (this.payouts[id]) {
-          hasPayout = true;
-          break;
+        if (this.canClaim(id)) {
+          return true;
         }
       }
-      return hasPayout;
+      return false;
     },
     hasPendingWithdrawals() {
       if (this.divsInfo) {
@@ -193,8 +198,7 @@ export default {
     },
     async claimDivs(bid) {
       try {
-        this.request = this.$game.claimDividends(bid);
-        await this.request;
+        await this.performRequestNoCatch(this.$game.claimDividends(bid));
         await this.fetchDividendsInfo();
       } catch {
         this.showPrompt(

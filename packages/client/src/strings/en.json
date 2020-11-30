@@ -787,6 +787,7 @@
     "btn-share": "Share",
     "copied": "Copied!",
     "join": "Join",
+    "w-no-divs": "There are no dividends availabe today",
     "no-raid-level": "Level required: {level}",
     "character-level": "Level: {level}",
     "btn-next-quest": "Next quest",

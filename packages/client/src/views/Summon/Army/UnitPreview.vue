@@ -61,7 +61,7 @@
               class="full-flex font-size-22 preview-abilities relative"
             >
               <div class="bg absolute-stretch flex flex-column flex-no-wrap">
-                <div class="pattern"></div>
+                <div class="pattern_"></div>
                 <div class="fade"></div>
               </div>
 
@@ -248,7 +248,7 @@ export default {
   padding-top: 1rem;
 
   & .bg {
-    & .pattern {
+    & .pattern_ {
       background-image: url("../../../assets/ui/bg_blue_pattern.png");
       background-repeat: repeat;
       background-size: 9rem;
