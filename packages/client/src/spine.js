@@ -2,7 +2,7 @@ var __extends = (this && this.__extends) || (function () {
 	var extendStatics = function (d, b) {
 		extendStatics = Object.setPrototypeOf ||
 			({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-			function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+			function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
 		return extendStatics(d, b);
 	};
 	return function (d, b) {
@@ -1554,7 +1554,11 @@ var spine;
 							timelineBlend = spine.MixBlend.setup;
 							alpha = alphaMix;
 							break;
-						case AnimationState.HOLD:
+						case AnimationState.HOLD_SUBSEQUENT:
+							timelineBlend = blend;
+							alpha = alphaHold;
+							break;
+						case AnimationState.HOLD_FIRST:
 							timelineBlend = spine.MixBlend.setup;
 							alpha = alphaHold;
 							break;
@@ -1908,8 +1912,7 @@ var spine;
 			var propertyIDs = this.propertyIDs;
 			if (to != null && to.holdPrevious) {
 				for (var i = 0; i < timelinesCount; i++) {
-					propertyIDs.add(timelines[i].getPropertyId());
-					timelineMode[i] = AnimationState.HOLD;
+					timelineMode[i] = propertyIDs.add(timelines[i].getPropertyId()) ? AnimationState.HOLD_FIRST : AnimationState.HOLD_SUBSEQUENT;
 				}
 				return;
 			}
@@ -1933,7 +1936,7 @@ var spine;
 						}
 						break;
 					}
-					timelineMode[i] = AnimationState.HOLD;
+					timelineMode[i] = AnimationState.HOLD_FIRST;
 				}
 			}
 		};
@@ -1961,8 +1964,9 @@ var spine;
 		AnimationState.emptyAnimation = new spine.Animation("<empty>", [], 0);
 		AnimationState.SUBSEQUENT = 0;
 		AnimationState.FIRST = 1;
-		AnimationState.HOLD = 2;
-		AnimationState.HOLD_MIX = 3;
+		AnimationState.HOLD_SUBSEQUENT = 2;
+		AnimationState.HOLD_FIRST = 3;
+		AnimationState.HOLD_MIX = 4;
 		AnimationState.SETUP = 1;
 		AnimationState.CURRENT = 2;
 		return AnimationState;
@@ -2137,7 +2141,7 @@ var spine;
 	var AnimationStateData = (function () {
 		function AnimationStateData(skeletonData) {
 			this.animationToMixTime = {};
-			this.defaultMix = 0.2;
+			this.defaultMix = 0;
 			if (skeletonData == null)
 				throw new Error("skeletonData cannot be null.");
 			this.skeletonData = skeletonData;
@@ -3568,15 +3572,35 @@ var spine;
 			path = this.pathPrefix + path;
 			if (!this.queueAsset(clientId, textureLoader, path))
 				return;
-			var img = new Image();
-			img.crossOrigin = "anonymous";
-			img.onload = function (ev) {
-				_this.rawAssets[path] = img;
-			};
-			img.onerror = function (ev) {
-				_this.errors[path] = "Couldn't load image " + path;
-			};
-			img.src = path;
+			var isBrowser = !!(typeof window !== 'undefined' && typeof navigator !== 'undefined' && window.document);
+			var isWebWorker = !isBrowser && typeof importScripts !== 'undefined';
+			if (isWebWorker) {
+				var options = { mode: "cors" };
+				fetch(path, options).then(function (response) {
+					if (!response.ok) {
+						_this.errors[path] = "Couldn't load image " + path;
+					}
+					return response.blob();
+				}).then(function (blob) {
+					return createImageBitmap(blob, {
+						premultiplyAlpha: 'none',
+						colorSpaceConversion: 'none'
+					});
+				}).then(function (bitmap) {
+					_this.rawAssets[path] = bitmap;
+				});
+			}
+			else {
+				var img_1 = new Image();
+				img_1.crossOrigin = "anonymous";
+				img_1.onload = function (ev) {
+					_this.rawAssets[path] = img_1;
+				};
+				img_1.onerror = function (ev) {
+					_this.errors[path] = "Couldn't load image " + path;
+				};
+				img_1.src = path;
+			}
 		};
 		SharedAssetManager.prototype.get = function (clientId, path) {
 			path = this.pathPrefix + path;
@@ -3586,6 +3610,8 @@ var spine;
 			return clientAssets.assets[path];
 		};
 		SharedAssetManager.prototype.updateClientAssets = function (clientAssets) {
+			var isBrowser = !!(typeof window !== 'undefined' && typeof navigator !== 'undefined' && window.document);
+			var isWebWorker = !isBrowser && typeof importScripts !== 'undefined';
 			for (var i = 0; i < clientAssets.toLoad.length; i++) {
 				var path = clientAssets.toLoad[i];
 				var asset = clientAssets.assets[path];
@@ -3593,11 +3619,21 @@ var spine;
 					var rawAsset = this.rawAssets[path];
 					if (rawAsset === null || rawAsset === undefined)
 						continue;
-					if (rawAsset instanceof HTMLImageElement) {
-						clientAssets.assets[path] = clientAssets.textureLoader(rawAsset);
+					if (isWebWorker) {
+						if (rawAsset instanceof ImageBitmap) {
+							clientAssets.assets[path] = clientAssets.textureLoader(rawAsset);
+						}
+						else {
+							clientAssets.assets[path] = rawAsset;
+						}
 					}
 					else {
-						clientAssets.assets[path] = rawAsset;
+						if (rawAsset instanceof HTMLImageElement) {
+							clientAssets.assets[path] = clientAssets.textureLoader(rawAsset);
+						}
+						else {
+							clientAssets.assets[path] = rawAsset;
+						}
 					}
 				}
 			}
@@ -7745,7 +7781,7 @@ var spine;
 			return _this;
 		}
 		BoundingBoxAttachment.prototype.copy = function () {
-			var copy = new BoundingBoxAttachment(name);
+			var copy = new BoundingBoxAttachment(this.name);
 			this.copyTo(copy);
 			copy.color.setFromColor(this.color);
 			return copy;
@@ -7764,7 +7800,7 @@ var spine;
 			return _this;
 		}
 		ClippingAttachment.prototype.copy = function () {
-			var copy = new ClippingAttachment(name);
+			var copy = new ClippingAttachment(this.name);
 			this.copyTo(copy);
 			copy.endSlot = this.endSlot;
 			copy.color.setFromColor(this.color);
@@ -7908,7 +7944,7 @@ var spine;
 			return _this;
 		}
 		PathAttachment.prototype.copy = function () {
-			var copy = new PathAttachment(name);
+			var copy = new PathAttachment(this.name);
 			this.copyTo(copy);
 			copy.lengths = new Array(this.lengths.length);
 			spine.Utils.arrayCopy(this.lengths, 0, copy.lengths, 0, this.lengths.length);
@@ -7942,7 +7978,7 @@ var spine;
 			return Math.atan2(y, x) * spine.MathUtils.radDeg;
 		};
 		PointAttachment.prototype.copy = function () {
-			var copy = new PointAttachment(name);
+			var copy = new PointAttachment(this.name);
 			copy.x = this.x;
 			copy.y = this.y;
 			copy.rotation = this.rotation;

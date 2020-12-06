@@ -46,17 +46,15 @@
         :class="{ bottom: gacha }"
         v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))"
       >
-        <span
-          class="font-size-18 font-weight-700 digit-font font-outline bold"
-          >{{ countCompact }}</span
-        >
+        <span class="font-size-18 font-weight-700 font-outline">{{
+          countCompact
+        }}</span>
       </div>
 
       <div v-if="showLevel && itemData" class="item-level">
-        <span
-          class="font-size-18 digit-font font-outline font-weight-700 bold"
-          >{{ $t("level", { lvl: itemData.level || 1 }) }}</span
-        >
+        <span class="font-size-18 digit-font font-outline font-weight-700">{{
+          $t("level", { lvl: itemData.level || 1 })
+        }}</span>
       </div>
 
       <slot></slot>

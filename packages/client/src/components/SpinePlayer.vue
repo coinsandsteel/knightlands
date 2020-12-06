@@ -6,7 +6,7 @@
 
 <script>
 import spine from "@/spine.js";
-
+ 
 export default {
   props: {
     skeletonFile: String,
@@ -18,7 +18,11 @@ export default {
       default: 1.0
     },
     folder: String,
-    binary: Boolean
+    binary: Boolean,
+    useTriangleRendering: {
+      type: Boolean,
+      default: true
+    }
   },
   created() {
     this.lastFrameTime = Date.now() / 1000;
@@ -76,14 +80,14 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted() {     
     this.$nextTick(() => {
       this.canvas = this.$refs.canvas;
       this.context = this.canvas.getContext("2d");
-      spine.canvas.SkeletonRenderer.useTriangleRendering = true;
+      spine.canvas.SkeletonRenderer.useTriangleRendering = this.useTriangleRendering;
       this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
       // enable the triangle renderer, supports meshes, but may produce artifacts in some browsers
-      this.skeletonRenderer.triangleRendering = true;
+      this.skeletonRenderer.triangleRendering = this.useTriangleRendering;
       this.scheduleLoad();
     });
   },
@@ -197,8 +201,8 @@ export default {
         this.canvas.height = h;
       }
       // magic
-      var centerX = this.bounds.offset.x + this.bounds.size.x / 2;
-      var centerY = this.bounds.offset.y + this.bounds.size.y / 2;
+      // var centerX = this.bounds.offset.x + this.bounds.size.x / 2;
+      // var centerY = this.bounds.offset.y + this.bounds.size.y / 2;
       var scaleX = this.bounds.size.x / this.canvas.width;
       var scaleY = this.bounds.size.y / this.canvas.height;
       var scale = Math.max(scaleX, scaleY);

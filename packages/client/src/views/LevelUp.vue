@@ -1,8 +1,7 @@
 <template>
   <div class="mask relative flex flex-center">
-    <StripedPanel
-      containerClasses="width-90"
-      class="flex-no-wrap relative flex flex-center flex-column"
+    <div
+      class="flex flex-column flex-item-center flex-no-wrap flex-column panel-popup width-100 padding-1"
       v-show="ready"
     >
       <SpinePlayer
@@ -12,11 +11,12 @@
         skeletonName="levelup"
         atlas="levelup"
         atlasImage="levelup"
-        :style="animationPosition"
         @ready="handleAnimationReady"
+        :binary="true"
+        :useTriangleRendering="false"
       ></SpinePlayer>
       <span ref="hook"></span>
-      <span class="level-up-spacer"></span>
+      <div class="level-up-spacer"></div>
       <span class="grey-title font-size-20 font-weight-700">{{
         $t("level-up-title")
       }}</span>
@@ -25,7 +25,7 @@
         v-html="$t('level-up-title2', { level: $game.character.level })"
       ></span>
 
-      <StripedContent class="flex flex-center font-size-20" stripeHeight>
+      <div class="flex flex-center font-size-20">
         <ul class="level-up-list">
           <li v-if="soft > 0">
             <IconWithValue
@@ -43,14 +43,14 @@
               >{{ hard }}</IconWithValue
             >
           </li>
-          <li>Max training stats +5</li>
+          <li>{{ $t("lvl-up-stats", { stats: trainingStats }) }}</li>
           <li v-for="stat in stats" :key="stat.stat">
-            {{
-              $t("level-up-stat", { stat: $t(stat.stat), value: stat.value })
-            }}
+            <IconWithValue :iconClass="getIcon(stat.stat)"
+              >+{{ stat.value }}</IconWithValue
+            >
           </li>
         </ul>
-      </StripedContent>
+      </div>
 
       <div class="flex flex-center">
         <CustomButton
@@ -60,24 +60,20 @@
           >{{ $t("continue") }}</CustomButton
         >
       </div>
-    </StripedPanel>
+    </div>
   </div>
 </template>
 
 <script>
-import UserDialog from "@/components/UserDialog.vue";
 import SpinePlayer from "@/components/SpinePlayer.vue";
-import StripedPanel from "@/components/StripedPanel.vue";
-import StripedContent from "@/components/StripedContent.vue";
 import CustomButton from "@/components/Button.vue";
 import LevelUpMeta from "@/levelup_meta";
 import IconWithValue from "@/components/IconWithValue.vue";
+import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
   components: {
     SpinePlayer,
-    StripedPanel,
-    StripedContent,
     CustomButton,
     IconWithValue
   },
@@ -85,21 +81,59 @@ export default {
     ready: false,
     animationPosition: ""
   }),
+  props: ["data"],
   methods: {
+    getIcon(stat) {
+      switch (stat) {
+        case CharacterStat.Health:
+          return "icon-health";
+
+        case CharacterStat.Stamina:
+          return "icon-stamina";
+
+        case CharacterStat.Energy:
+          return "icon-energy";
+      }
+
+      return "";
+    },
     handleAnimationReady() {
       this.ready = true;
       this.$nextTick(() => {
         var state = this.$refs.animation.getState();
         state.setAnimation(0, "show", false);
         state.setAnimation(1, "loop", true);
-        // let top = this.$refs.hook.getBoundingClientRect().top;
-        // this.animationPosition = `transform: translateY(${top}px);`;
       });
     }
   },
   computed: {
+    trainingStats() {
+      return (this.data.new - this.data.current) * 5;
+    },
     meta() {
-      return LevelUpMeta[this.$game.character.level - 1];
+      const meta = {};
+      for (let i = this.data.current; i < this.data.new; ++i) {
+        const record = LevelUpMeta[i];
+        for (const k in record) {
+          if (Array.isArray(record[k])) {
+            if (meta[k]) {
+              let index = 0;
+              for (const kk of record[k]) {
+                meta[k][index].value += kk.value;
+                index++;
+              }
+            } else {
+              meta[k] = record[k];
+            }
+          } else {
+            meta[k] = (meta[k] || 0) + record[k];
+          }
+        }
+      }
+
+      console.log(meta);
+
+      return meta;
     },
     stats() {
       return this.meta.stats;
@@ -126,7 +160,7 @@ export default {
 }
 
 .level-up-spacer {
-  margin-top: 10rem;
+  height: 15rem;
 }
 
 .level-up-list {

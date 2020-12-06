@@ -412,10 +412,12 @@ class Game {
   }
 
   _handleDisconnect(errorCode) {
-    if (errorCode == DisconnectCodes.OtherClientSignedIn) {
-      this.logout();
-    } else if (errorCode == DisconnectCodes.NotAllowed) {
-      this.logout();
+    switch (errorCode) {
+      case DisconnectCodes.OtherClientSignedIn:
+      case DisconnectCodes.NotAllowed:
+      case DisconnectCodes.NotAuthorized:
+        this.logout();
+        break;
     }
 
     this._vm.$emit(this.Disconnected);
@@ -618,7 +620,10 @@ class Game {
 
     if (changes.character) {
       if (this.character.level < changes.character.level) {
-        this._vm.$emit("level-up");
+        this._vm.$emit("level-up", {
+          current: this.character.level,
+          new: changes.character.level
+        });
       }
 
       this.character.mergeData(changes.character);
@@ -1248,12 +1253,29 @@ class Game {
   }
 
   // Dividends
+  async upgradeDktMining() {
+    return (await this._wrapOperation(Operations.DivsMineUpgrade)).response;
+  }
+
+  async collectDktMining() {
+    return (await this._wrapOperation(Operations.ClaimMinedDkt)).response;
+  }
+
+  async upgradeDktDropRate() {
+    return (await this._wrapOperation(Operations.DivsDropUpgrade)).response;
+  }
+
   async getDivsStatus() {
     return (await this._wrapOperation(Operations.GetDivsStatus)).response;
   }
 
   async claimDividends(blockchainId) {
     return (await this._wrapOperation(Operations.ClaimDivs, { blockchainId }))
+      .response;
+  }
+
+  async purchaseDktShopItem(itemId) {
+    return (await this._wrapOperation(Operations.DivsPurchaseShop, { itemId }))
       .response;
   }
 

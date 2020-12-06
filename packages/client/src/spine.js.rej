@@ -1,0 +1,4 @@
+diff a/packages/client/src/spine.js b/packages/client/src/spine.js	(rejected hunks)
+@@ -0,2 +0 @@
+ //# sourceMappingURL=spine-canvas.js.map
+-export default spine;

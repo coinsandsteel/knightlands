@@ -4,11 +4,22 @@
 
     <div v-bar>
       <div class="flex flex-column flex-items-center">
+        <!-- SEASON INFO -->
+        <div class="width-100 flex flex-column flex-center">
+          <Title :stackBottom="true">{{ $t("d-season", { season }) }}</Title>
+
+          <div class="color-panel-2 season-timer flex flex-center">
+            <span class="font-size-22 font-weight-700">{{
+              $t("d-s-f-at", { timer: seasonTimer.value })
+            }}</span>
+          </div>
+        </div>
+
         <!-- DIVIDENDS INFO -->
         <div class="width-100">
-          <Title :stackBottom="true" class="margin-top-1"
-            >Available Dividends</Title
-          >
+          <Title :stackBottom="true" :stackTop="true">{{
+            $t("d-avai-d")
+          }}</Title>
           <div class="flex flex-column flex-center color-panel-1">
             <template v-if="hasPayouts">
               <div
@@ -38,7 +49,9 @@
             </template>
           </div>
 
-          <Title :stackTop="true" :stackBottom="true">Total DKT Staked</Title>
+          <Title :stackTop="true" :stackBottom="true">{{
+            $t("d-total-s")
+          }}</Title>
           <div class="color-panel-2 width-100 flex flex-column flex-center">
             <IconWithValue
               class="margin-top-1 margin-bottom-1"
@@ -48,9 +61,9 @@
               >{{ totalStaked }}</IconWithValue
             >
 
-            <span class="font-size-18"
-              >Next payout in {{ nextPayoutTimer.value }}</span
-            >
+            <span class="font-size-18">{{
+              $t("next-p", { timer: nextPayoutTimer.value })
+            }}</span>
           </div>
         </div>
 
@@ -68,7 +81,7 @@
           </Line3Element> -->
 
           <Line3Element class="width-25 margin-right-half">
-            <template v-slot:title>Your stake</template>
+            <template v-slot:title>{{ $t("d-stake") }}</template>
             <template v-slot:value>
               <IconWithValue iconClass="icon-dkt" :flip="true">{{
                 dkt
@@ -77,7 +90,7 @@
           </Line3Element>
 
           <Line3Element class="width-25 margin-right-half">
-            <template v-slot:title>Your Balance</template>
+            <template v-slot:title>{{ $t("d-balance") }}</template>
             <template v-slot:value
               ><IconWithValue iconClass="icon-dkt" :flip="true">{{
                 unlockedDkt
@@ -85,10 +98,17 @@
             >
           </Line3Element>
         </div>
+
+        <!-- PAYOUT POOL -->
+        <Title class="margin-top-2">{{ $t("d-pools") }}</Title>
+        <DividendsPools :pools="pools" />
       </div>
     </div>
 
     <portal to="footer" v-if="isActive">
+      <CustomButton type="green" @click="goTo('divs-shop')">{{
+        $t("btn-shop")
+      }}</CustomButton>
       <CustomButton
         type="grey"
         v-if="hasPendingWithdrawals"
@@ -105,6 +125,7 @@ import AppSection from "@/AppSection.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import BlockchainUtilsMixin from "./BlockchainUtilsMixin";
 import Line3Element from "./Line3Element";
+import DividendsPools from "./DividendsPools";
 import CustomButton from "@/components/Button.vue";
 import Events from "@/../../knightlands-shared/events";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -124,12 +145,14 @@ export default {
     IconWithValue,
     CustomButton,
     Title,
-    Line3Element
+    Line3Element,
+    DividendsPools
   },
   data: () => ({
     divsInfo: null,
     request: null,
-    nextPayoutTimer: new Timer(true)
+    nextPayoutTimer: new Timer(true),
+    seasonTimer: new Timer(true)
   }),
   created() {
     this.title = "w-divs";
@@ -141,10 +164,26 @@ export default {
   mounted() {
     this.init();
   },
+  activated() {
+    this.init();
+  },
   destroyed() {
     this.$game.removeAllListeners(Events.DivTokenWithdrawal);
   },
   computed: {
+    pools() {
+      if (!this.divsInfo) {
+        return {};
+      }
+
+      return this.divsInfo.pools;
+    },
+    season() {
+      if (!this.divsInfo) {
+        return 0;
+      }
+      return this.divsInfo.season.season;
+    },
     dkt() {
       return this.$game.inventory.getCurrency(CurrencyType.Dkt, 8);
     },
@@ -153,7 +192,11 @@ export default {
       return 0;
     },
     unlockedDkt() {
-      if (this.divsInfo) return this.$game.dividends.unlockedTokens;
+      if (this.divsInfo)
+        return (
+          Math.floor(this.$game.dividends.unlockedTokens * Math.pow(10, 6)) /
+          Math.pow(10, 6)
+        );
       return 0;
     },
     payouts() {
@@ -222,6 +265,9 @@ export default {
 
         this.nextPayoutTimer.timeLeft =
           this.divsInfo.nextPayout - this.$game.nowSec;
+
+        this.seasonTimer.timeLeft =
+          this.divsInfo.season.finishAt - this.$game.nowSec;
       } catch {
         // possible stack overflow
         await this.fetchDividendsInfo();
@@ -281,3 +327,9 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.season-timer {
+  height: 8rem;
+}
+</style>

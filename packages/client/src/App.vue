@@ -104,7 +104,7 @@ import DailyQuestCompleteNotification from "./components/Notifications/DailyQues
 import { create } from "vue-modal-dialogs";
 
 import LevelUp from "@/views/LevelUp.vue";
-const ShowLevelUp = create(LevelUp);
+const ShowLevelUp = create(LevelUp, "data");
 
 import SelectClass from "@/views/SelectClass/SelectClass.vue";
 const ShowSelectClass = create(SelectClass);
@@ -155,6 +155,9 @@ export default {
       return !this.loading && this.$game.ready && this.$game.authenticated;
     }
   },
+  mounted() {
+    ShowLevelUp({ current: 1, new: 30 });
+  },
   async created() {
     Vue.prototype.$app = this;
 
@@ -168,8 +171,8 @@ export default {
       this.selectionShown = false;
     });
 
-    this.$game.on("level-up", async () => {
-      await ShowLevelUp();
+    this.$game.on("level-up", async args => {
+      await ShowLevelUp(args);
     });
 
     this.$router.beforeResolve((to, from, next) => {

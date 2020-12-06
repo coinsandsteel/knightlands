@@ -30,6 +30,10 @@ import CurrencyType from "@/../../knightlands-shared/currency_type";
 import IconWithValue from "@/components/IconWithValue.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 
+import ItemsReceived from "@/components/ItemsReceived.vue";
+import { create } from "vue-modal-dialogs";
+const ShowItems = create(ItemsReceived, "items");
+
 export default {
   mixins: [AppSection, PromptMixin],
   components: { RaceShopElement, IconWithValue },
@@ -68,6 +72,7 @@ export default {
 
       if (response === true) {
         await this.$game.purchaseFromRaceShop(templateId);
+        await ShowItems([{ item: templateId, quantity: 1 }]);
       }
     }
   }
