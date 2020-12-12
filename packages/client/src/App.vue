@@ -87,13 +87,12 @@
     <DailyQuestCompleteNotification />
     <LoadingNotification />
 
-    <dialogs-wrapper></dialogs-wrapper>
+    <dialogs-wrapper wrapper-name="default" />
   </div>
 </template>
 
 <script>
 import StatusBar from "./components/StatusBar.vue";
-// import { disableBodyScroll } from "body-scroll-lock";
 import { Promise } from "q";
 import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
@@ -154,9 +153,6 @@ export default {
 
       return !this.loading && this.$game.ready && this.$game.authenticated;
     }
-  },
-  mounted() {
-    ShowLevelUp({ current: 1, new: 30 });
   },
   async created() {
     Vue.prototype.$app = this;

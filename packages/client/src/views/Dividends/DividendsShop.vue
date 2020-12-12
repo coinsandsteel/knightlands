@@ -10,6 +10,11 @@
           @collect="collectMining"
         />
 
+        <Title :stackTop="true" :stackBottom="true">{{
+          $t("divs-rate")
+        }}</Title>
+        <DividendsDropRate @upgrade="upgradeDktDrop" />
+
         <Title :stackTop="true">{{ $t("divs-shop") }}</Title>
         <div class="divs-shop width-100">
           <DividendsShopElement
@@ -33,6 +38,7 @@ import Title from "@/components/Title.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import DividendsShopElement from "./DividendsShopElement.vue";
 import DividendsMining from "./DividendsMining.vue";
+import DividendsDropRate from "./DividendsDropRate.vue";
 import DividendsMeta from "@/dividends";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";
@@ -44,7 +50,12 @@ export default {
   created() {
     this.title = "w-divs-shop";
   },
-  components: { DividendsShopElement, Title, DividendsMining },
+  components: {
+    DividendsShopElement,
+    Title,
+    DividendsMining,
+    DividendsDropRate
+  },
   computed: {
     shopItems() {
       return DividendsMeta.shop;

@@ -1,6 +1,8 @@
 <template>
   <div class="content">
-    <Title class="margin-top-2" :stackBottom="true">{{ $t("dkt-chart") }}</Title>
+    <Title class="margin-top-2" :stackBottom="true">{{
+      $t("dkt-chart")
+    }}</Title>
     <VueApexCharts
       ref="chart"
       width="100%"
@@ -131,7 +133,6 @@ export default {
   },
   methods: {
     async fetchRates() {
-      console.log(this.raidTemplateId)
       const rates = await this.$game.fetchRaidTokenRates(
         this.raidTemplateId,
         this.$game.now - MaxDatapoints * UpdateInterval,
