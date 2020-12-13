@@ -2,7 +2,12 @@
   <div
     class="flex flex-column flex-center flex-items-center full-flex width-100 height-100 relative gacha-container"
   >
-    <canvas class="canvas" ref="canvas" id="canvas" :class="{'hidden': hide}"></canvas>
+    <canvas
+      class="canvas"
+      ref="canvas"
+      id="canvas"
+      :class="{ hidden: hide }"
+    ></canvas>
 
     <div class="close-btn" @click="goBack"></div>
     <Promised :promise="request">
@@ -11,14 +16,16 @@
         <Flipper :flipKey="lootFlipKey">
           <h1
             class="chest-title font-weight-700"
-            :class="[{'show': showLoot},`chest-${chestId}`]"
-          >{{$t(`presale-chest-${chestId}`)}}</h1>
+            :class="[{ show: showLoot }, `chest-${chestId}`]"
+          >
+            {{ $t(`presale-chest-${chestId}`) }}
+          </h1>
 
           <Flipped flipId="lootId" stagger="lootCard" :shouldFlip="isHidden()">
             <div
               id="loot-container"
               class="flex flex-center gacha-loot"
-              :class="{'expanded': showLoot}"
+              :class="{ expanded: showLoot }"
             >
               <Flipped
                 stagger="lootCard"
@@ -29,7 +36,12 @@
                 inverseFlipId="lootId"
                 translate
               >
-                <loot :gacha="true" :item="drop.item" :quantity="drop.quantity" @hint="showHint"></loot>
+                <loot
+                  :gacha="true"
+                  :item="drop.item"
+                  :quantity="drop.quantity"
+                  @hint="showHint"
+                ></loot>
               </Flipped>
             </div>
           </Flipped>
@@ -37,9 +49,16 @@
 
         <div @click="handleContinue" class="continueButton"></div>
 
-        <div class="gacha-continue pointer pointer-events-none" :class="{'show': showContinue}">
-          <span class="font-size-30 font-weight-700" v-if="hasMoreChests">{{$t("open_next")}}</span>
-          <span v-else class="font-size-30 font-weight-700">{{$t("continue_from_gacha")}}</span>
+        <div
+          class="gacha-continue pointer pointer-events-none"
+          :class="{ show: showContinue }"
+        >
+          <span class="font-size-30 font-weight-700" v-if="hasMoreChests">{{
+            $t("open_next")
+          }}</span>
+          <span v-else class="font-size-30 font-weight-700">{{
+            $t("continue_from_gacha")
+          }}</span>
         </div>
       </template>
 

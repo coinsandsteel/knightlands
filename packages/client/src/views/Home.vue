@@ -5,13 +5,10 @@
     <div
       class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5"
     >
+      <RankingsMenu />
       <MenuIconRow>
         <MenuIcon icon="skewed_icon_quest" to="daily-tasks" :append="true">{{
           $t("btn-daily-quests")
-        }}</MenuIcon>
-
-        <MenuIcon icon="skewed_icon_rankings" to="rankings" :append="true">{{
-          $t("btn-rankings")
         }}</MenuIcon>
       </MenuIconRow>
 
@@ -31,7 +28,13 @@
 
       <MenuIconRow>
         <MenuIcon icon="skewed_icon_mines" to="gold-mine" :append="true">
-          {{ $t("gold-mine") }}
+          <template v-slot:default>
+            {{ $t("gold-mine") }}
+          </template>
+
+          <template v-slot:marker>
+            <GoldMinesMarker></GoldMinesMarker>
+          </template>
         </MenuIcon>
 
         <MenuIcon icon="skewed_icon_tower" to="onyx-tower" :append="true">{{
@@ -73,8 +76,10 @@
 import AppSection from "@/AppSection.vue";
 import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
 import CheckinMarker from "@/components/Markers/CheckinMarker.vue";
+import GoldMinesMarker from "@/components/Markers/GoldMinesMarker.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
+import RankingsMenu from "./Rankings/RankingsMenu.vue";
 
 export default {
   name: "home",
@@ -83,7 +88,9 @@ export default {
     AdventuresMarker,
     CheckinMarker,
     MenuIcon,
-    MenuIconRow
+    MenuIconRow,
+    RankingsMenu,
+    GoldMinesMarker
   },
   created() {
     this.title = this.$t("window-title-home");

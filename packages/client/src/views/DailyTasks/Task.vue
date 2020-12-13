@@ -62,9 +62,13 @@
         class="flex-self-end"
         type="yellow"
         :disabled="!canClaim"
+        v-if="notClaimed"
         @click="$emit('claim', task.type)"
         >{{ $t("btn-claim") }}</CustomButton
       >
+      <CustomButton class="flex-self-end" type="grey" :disabled="true" v-else>{{
+        $t("claimed")
+      }}</CustomButton>
     </div>
   </div>
 </template>
@@ -79,7 +83,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import DailyTaskType from "@/../../knightlands-shared/daily_quest_type";
 
 export default {
-  props: ["task", "all"],
+  props: ["task"],
   mixins: [HintHandler],
   components: { Title, IconWithValue, Loot, ProgressBar, CustomButton },
   computed: {
@@ -87,16 +91,26 @@ export default {
       return this.$game.dailyQuests.taskProgress[this.task.type] || 0;
     },
     canClaim() {
-      return (
-        this.maxValue <= this.progress &&
-        !this.$game.dailyQuests.claimedTasks[this.task.type]
-      );
+      return this.maxValue <= this.progress && this.notClaimed;
+    },
+    notClaimed() {
+      return !this.$game.dailyQuests.claimedTasks[this.task.type];
     },
     maxValue() {
       return this.task.targetValue;
     },
     panelClass() {
       return this.all ? "color-panel-1" : "color-panel-2";
+    },
+    all() {
+      switch (this.task.type) {
+        case DailyTaskType.DailyAllTasks:
+        case DailyTaskType.DailyAllTasks2:
+        case DailyTaskType.DailyAllTasks3:
+          return true;
+      }
+
+      return false;
     },
     taskIcon() {
       switch (this.task.type) {

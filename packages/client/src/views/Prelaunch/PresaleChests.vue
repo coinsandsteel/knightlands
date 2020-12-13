@@ -1,11 +1,13 @@
 <template>
   <div class="flex flex-column" v-if="showMain">
     <div>
-      <div class="margin-top-2 flex flex-column flex-center headline">
-        <span
-          class="flex flex-center font-size-18 margin-bottom-2"
-        >To open chest transfer it to Knightlands first.</span>
-        <custom-button type="yellow" @click="transferChests">{{$t("transfer-chests")}}</custom-button>
+      <div class="flex flex-column flex-center color-panel-1">
+        <span class="flex flex-center font-size-18 margin-bottom-2"
+          >To open chest transfer it to Knightlands first.</span
+        >
+        <custom-button type="yellow" @click="transferChests">{{
+          $t("transfer-chests")
+        }}</custom-button>
       </div>
 
       <!-- <div class="flex flex-center panel flex-column" v-if="nothingToOpen">
@@ -16,19 +18,23 @@
       <Promised :promise="request">
         <template v-slot:combined="{ isPending, isDelayOver }">
           <loading-screen :loading="isPending && isDelayOver"></loading-screen>
-          <div class="chests-content panel flex flex-center flex-center flex-column">
-            <span class="font-size-25 margin-bottom-5 title">Select chest to open</span>
+          <div class="color-panel-2 flex flex-center flex-center flex-column">
+            <Title class="margin-bottom-5">Select chest to open</Title>
             <div class="flex flex-center flex-column relative width-100">
               <div class="margin-bottom-5 relative chests-picker width-100">
                 <div class="chests-picker-bg"></div>
-                <presale-chest-selector v-model="selectedChest" :chests="chests"></presale-chest-selector>
+                <presale-chest-selector
+                  v-model="selectedChest"
+                  :chests="chests"
+                ></presale-chest-selector>
               </div>
 
               <custom-button
                 type="yellow"
                 @click="openChest"
                 :disabled="chests[selectedChest] <= 0"
-              >{{$t('button-open')}}</custom-button>
+                >{{ $t("button-open") }}</custom-button
+              >
             </div>
           </div>
         </template>
@@ -63,6 +69,7 @@ import ChestsTransfer from "./ChestsTransfer.vue";
 import ChestOpening from "./ChestOpening.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+import Title from "@/components/Title.vue";
 import Config from "@/config";
 import PresaleChestSelector from "./PresaleChestSelector.vue";
 
@@ -73,7 +80,8 @@ export default {
     Promised,
     PresaleChestSelector,
     ChestOpening,
-    LoadingScreen
+    LoadingScreen,
+    Title
   },
   data: () => ({
     chests: {},
@@ -136,7 +144,7 @@ export default {
               chests[i] = chestStatus.body.chest[i].total - opened;
             }
           }
-        
+
           this.openToken = chestStatus.body.openingToken;
         }
 
@@ -185,6 +193,3 @@ export default {
   }
 }
 </style>
-
-
-

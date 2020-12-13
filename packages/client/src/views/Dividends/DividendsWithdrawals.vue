@@ -16,10 +16,11 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import DividendsWithdrawalElement from "./DividendsWithdrawalElement.vue";
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: { DividendsWithdrawalElement },
   created() {
     this.title = "w-divs-w";

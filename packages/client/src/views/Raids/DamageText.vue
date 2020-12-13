@@ -1,5 +1,5 @@
 <template>
-  <div class="font-size-5 root font-outline inline-block">
+  <div class="font-size-5 root font-shadow inline-block">
     <slot></slot>
   </div>
 </template>

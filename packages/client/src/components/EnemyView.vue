@@ -1,6 +1,6 @@
 <template>
   <div
-    class="enemy-view pixelated relative height-100 width-100 flex flex-center"
+    class="enemy-view relative height-100 width-100 flex flex-center"
     :style="backgroundImage"
   >
     <span class="enemy-name font-size-30 enemy-title-font font-outline">{{
@@ -75,7 +75,8 @@ export default {
 <style lang="less" scoped>
 .enemy-view {
   width: 100%;
-  height: 25vh;
+  min-height: 25vh;
+  max-height: 50vh;
   justify-content: center;
   background-repeat: no-repeat;
   background-position: center;

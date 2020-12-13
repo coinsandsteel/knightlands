@@ -1,5 +1,9 @@
 <template>
-  <UserDialog type="panel" contentClass="min-height-60" :title="$t('presale-feed-title')" :compact="true" @close="$close">
+  <UserDialog
+    contentClass="min-height-60"
+    :title="$t('presale-feed-title')"
+    @close="$close"
+  >
     <template v-slot:content>
       <PresaleFeedLine
         v-for="(feedRecord, index) in feed"
@@ -13,8 +17,6 @@
 </template>
 
 <script>
-import CustomButton from "@/components/Button.vue";
-import Config from "@/config";
 import UserDialog from "@/components/UserDialog.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import PresaleFeedLine from "./PresaleFeedLine.vue";
@@ -22,9 +24,8 @@ import PresaleFeedLine from "./PresaleFeedLine.vue";
 export default {
   mixins: [HintHandler],
   props: ["feed"],
-  components: { CustomButton, UserDialog, PresaleFeedLine }
+  components: { UserDialog, PresaleFeedLine }
 };
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

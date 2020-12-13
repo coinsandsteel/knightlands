@@ -25,7 +25,8 @@
             type="green"
             @click="previewRewards"
             :disabled="finishedTournaments.length == 0"
-          >{{$t("claim-rewards")}}</CustomButton>
+            >{{ $t("claim-rewards") }}</CustomButton
+          >
         </portal>
       </div>
     </template>
@@ -45,6 +46,7 @@ export default {
   components: { Promised, LoadingScreen, TournamentListElement, CustomButton },
   created() {
     this.title = "window-tournaments";
+    this.$options.useRouterBack = true;
   },
   mounted() {
     this.fetchList();

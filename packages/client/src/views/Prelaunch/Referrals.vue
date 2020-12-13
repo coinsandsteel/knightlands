@@ -3,11 +3,16 @@
     <template v-slot:combined="{ isPending, isDelayOver }">
       <loading-screen :loading="isPending && isDelayOver"></loading-screen>
       <div
-        class="flex margin-left-1 margin-right-1 min-height-30 flex-column panel flex-items-center"
+        class="min-height-30 flex-column color-panel-1 flex-items-center"
+        v-if="data"
       >
-        <div class="flex font-size-25 margin-top-2 margin-bottom-3 title flex-center">
-          <div class="margin-right-1">{{$t("total-ref-dkt")}}</div>
-          <IconWithValue iconClass="icon-dkt">{{data.body.totalDkt}}</IconWithValue>
+        <div
+          class="flex font-size-25 margin-top-2 margin-bottom-3 title flex-center"
+        >
+          <div class="margin-right-1">{{ $t("total-ref-dkt") }}</div>
+          <IconWithValue iconClass="icon-dkt">{{
+            data.body.totalDkt
+          }}</IconWithValue>
         </div>
 
         <div class="width-100">
@@ -18,8 +23,10 @@
                 :key="ref.id"
                 class="width-100 margin-bottom-2 font-size-20 flex flex-items-center flex-space-around"
               >
-                <span>{{ref.id}}</span>
-                <IconWithValue iconClass="icon-dkt">{{ref.dkt}}</IconWithValue>
+                <span>{{ ref.id }}</span>
+                <IconWithValue iconClass="icon-dkt">{{
+                  ref.dkt
+                }}</IconWithValue>
               </div>
             </div>
           </div>
@@ -28,16 +35,15 @@
     </template>
   </Promised>
 </template>
-    
+
 <script>
 import { Promised } from "vue-promised";
-import CustomButton from "@/components/Button.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Config from "@/config";
 
 export default {
-  components: { LoadingScreen, Promised, CustomButton, IconWithValue },
+  components: { LoadingScreen, Promised, IconWithValue },
   data: () => ({
     request: null,
     data: null
@@ -52,10 +58,11 @@ export default {
           wallet: this.$game.account
         }
       });
+
+      this.data = await this.request;
     }
   }
 };
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

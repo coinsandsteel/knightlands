@@ -38,19 +38,19 @@
 
               <div class="flex flex-column">
                 <span
-                  class="font-size-20 font-outline padding-top-1 flex-self-start"
+                  class="font-size-20 font-shadow padding-top-1 flex-self-start"
                   >{{
                     $t("character-level", { level: $game.character.level })
                   }}</span
                 >
 
                 <span
-                  class="font-size-20 font-outline rarity-legendary padding-top-1 margin-bottom-1 font-weight-900 flex-self-start"
+                  class="font-size-20 font-shadow rarity-legendary padding-top-1 margin-bottom-1 font-weight-900 flex-self-start"
                   >{{ $t("character-power", { power: totalPower() }) }}</span
                 >
 
                 <div
-                  class="flex flex-no-wrap font-outline full-flex flex-space-around font-size-20"
+                  class="flex flex-no-wrap font-shadow full-flex flex-space-around font-size-20"
                 >
                   <div
                     class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"

@@ -106,7 +106,7 @@ export default {
     getMinDkt(threshold) {
       return (
         Math.floor(
-          this.data.minDkt * threshold.dktReward * this.dktFactor * 10000
+          this.data.maxDkt * 0.7 * threshold.dktReward * this.dktFactor * 10000
         ) / 10000
       );
     },

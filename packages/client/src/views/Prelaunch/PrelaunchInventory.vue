@@ -1,28 +1,49 @@
 <template>
   <div>
+    <div class="screen-background"></div>
     <div class="flex flex-center height-100" v-if="!ready || signin">
-      <div class="font-size-30" v-if="!ready">{{$t('unlock_wallet')}}</div>
+      <div class="font-size-30" v-if="!ready">{{ $t("unlock_wallet") }}</div>
 
       <div v-else-if="signin">
         <GridLoader color="#fde648" :size="15" margin="1px" v-if="loading" />
-        <custom-button type="yellow" @click="claimWelcomeGift" v-else>Claim Royal Giveaway</custom-button>
+        <custom-button type="yellow" @click="claimWelcomeGift" v-else
+          >Claim Royal Giveaway</custom-button
+        >
       </div>
     </div>
 
-    <div class="flex flex-column flex-no-wrap full-flex width-100 height-100" v-else>
+    <div
+      class="flex flex-column flex-no-wrap full-flex width-100 height-100"
+      v-else
+    >
       <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
 
       <keep-alive>
-        <div v-if="currentTab == InventoryTab" class="flex flex-column flex-full dummy-height">
+        <div
+          v-if="currentTab == InventoryTab"
+          class="flex flex-column flex-full dummy-height"
+        >
           <PresaleFeed></PresaleFeed>
 
-          <div class="currency-bar digit-font flex flex-center flex-space-evenly">
-            <icon-with-value iconClass="icon-gold">{{Math.floor(softCurrency*100)/100}}</icon-with-value>
-            <icon-with-value iconClass="icon-premium">{{Math.floor(hardCurrency*100)/100}}</icon-with-value>
-            <icon-with-value iconClass="icon-dkt">{{Math.floor(dkt*100)/100}}</icon-with-value>
+          <div
+            class="currency-bar digit-font flex flex-center flex-space-evenly"
+          >
+            <icon-with-value iconClass="icon-gold">{{
+              Math.floor(softCurrency)
+            }}</icon-with-value>
+            <icon-with-value iconClass="icon-premium">{{
+              Math.floor(hardCurrency)
+            }}</icon-with-value>
+            <icon-with-value iconClass="icon-dkt">{{
+              Math.floor(dkt * 10000) / 10000
+            }}</icon-with-value>
           </div>
 
-          <LootContainer :items="items" :inventory="true" @hint="showHint"></LootContainer>
+          <LootContainer
+            :items="items"
+            :inventory="true"
+            @hint="showHint"
+          ></LootContainer>
         </div>
         <presale-chests v-if="currentTab == ChestsTab"></presale-chests>
         <Referrals v-if="currentTab == ReferralsTab"></Referrals>
@@ -209,7 +230,10 @@ export default {
         return;
       }
 
-      await ShowHint(item, !item.equipped, item.equipped, { equip: false });
+      await ShowHint(item, !item.equipped, item.equipped, {
+        equip: false,
+        showButtons: false
+      });
     }
   }
 };
@@ -227,5 +251,3 @@ export default {
   min-height: 0;
 }
 </style>
-
-

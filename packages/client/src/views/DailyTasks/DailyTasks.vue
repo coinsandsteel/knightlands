@@ -72,12 +72,49 @@ export default {
     tasks() {
       const tasks = this.meta.rewards;
       tasks.sort((x, y) => {
+        const xClaimed = this.isClaimed(x);
+        const yClaimed = this.isClaimed(y);
+
+        if (xClaimed && yClaimed) {
+          return x.order - y.order;
+        }
+
+        if (xClaimed) {
+          return 1;
+        }
+
+        if (yClaimed) {
+          return -1;
+        }
+
+        const xFinished = this.isFinished(x);
+        const yFinished = this.isFinished(y);
+
+        if (xFinished && yFinished) {
+          return x.order - y.order;
+        }
+
+        if (xFinished) {
+          return -1;
+        }
+
+        if (yFinished) {
+          return 1;
+        }
+
         return x.order - y.order;
       });
       return tasks;
     }
   },
   methods: {
+    isFinished(task) {
+      const progress = this.$game.dailyQuests.taskProgress[task.type] || 0;
+      return task.targetValue <= progress;
+    },
+    isClaimed(task) {
+      return !!this.$game.dailyQuests.claimedTasks[task.type];
+    },
     async claim(type) {
       const rewards = await this.performRequest(
         this.$game.claimDailyQuestsRewards(type)

@@ -6,7 +6,11 @@
         v-show="!hideTopBar"
         ref="statusBar"
       ></status-bar>
-      <div class="flex flex-center section-name flex-no-wrap" v-show="title">
+      <div
+        class="flex flex-center section-name flex-no-wrap"
+        v-show="title"
+        :class="{ 'padding-top-1': hideTopBar }"
+      >
         <div class="section-decor"></div>
         <div class="section-title font-size-20">{{ $t(title) }}</div>
         <div class="section-decor right"></div>
@@ -509,11 +513,12 @@ export default {
 
 html {
   font-family: "Brandon", sans-serif;
-  font-size: 6px;
+  font-size: 8px;
   line-height: 1;
   box-sizing: content-box;
 
   .fourk_screen({font-size: 10px;});
+  .mobile({font-size: 6px;});
 
   background: @backgroundOutsideColor;
   // background-image: url("./assets/ui/pattern.jpg");

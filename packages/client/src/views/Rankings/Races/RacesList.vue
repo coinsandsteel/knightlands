@@ -55,6 +55,7 @@ export default {
   components: { Promised, LoadingScreen, RaceListElement, CustomButton },
   created() {
     this.title = "window-races";
+    this.$options.useRouterBack = true;
   },
   mounted() {
     this.fetchList();

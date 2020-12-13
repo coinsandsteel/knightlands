@@ -1,10 +1,16 @@
 <template>
   <div class="flex flex-center relative">
     <div class="chest-selector" v-for="(count, chest) in chests" :key="chest">
-      <input :id="`chest${chest}`" type="radio" name="chest" :value="chest" v-model="selectedChest" />
+      <input
+        :id="`chest${chest}`"
+        type="radio"
+        name="chest"
+        :value="chest"
+        v-model="selectedChest"
+      />
       <label :for="`chest${chest}`" :class="`chest${chest}`">
-        <div :class="{'selector-border': selectedChest==chest}"></div>
-        <span class="chest-count font-size-20 digit-font">{{count}}</span>
+        <div :class="{ 'selector-border': selectedChest == chest }"></div>
+        <span class="chest-count font-size-20 digit-font">{{ count }}</span>
       </label>
     </div>
   </div>
@@ -103,4 +109,3 @@ export default {
   .chest-icon("chest5");
 }
 </style>
-

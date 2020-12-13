@@ -1,7 +1,10 @@
 <template>
   <div class="item-badge-grid">
     <div class="element-flag" :class="element"></div>
-    <span :class="`weapon-badge ${weaponType}`" class="flag-badge"></span>
+    <span
+      :class="`weapon-badge ${weaponType}`"
+      class="flag-badge grid-center-self"
+    ></span>
   </div>
 </template>
 
@@ -12,49 +15,37 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import (reference) url("../../style/ui.less");
-
 .item-badge-grid {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(2, 50%);
-
   & .element-flag {
     grid-column: 1;
     grid-row: ~"1 / 3";
   }
-
   & .flag-badge {
     grid-column: 1;
     grid-row: 2;
-    align-self: baseline;
-    justify-self: center;
   }
 }
-
 .element-flag {
-  margin: auto;
-  width: 80% !important;
-  height: 100% !important;
-
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
   &.darkness {
-    .troops_mini_ribbon_darkness;
+    background-image: url("/images/ui/troops_mini_ribbon_darkness.png");
   }
-
   &.light {
-    .troops_mini_ribbon_light;
+    background-image: url("/images/ui/troops_mini_ribbon_light.png");
   }
-
   &.earth {
-    .troops_mini_ribbon_earth;
+    background-image: url("/images/ui/troops_mini_ribbon_earth.png");
   }
-
   &.water {
-    .troops_mini_ribbon_water;
+    background-image: url("/images/ui/troops_mini_ribbon_water.png");
   }
-
   &.physical {
-    .troops_mini_ribbon_physical;
+    background-image: url("/images/ui/troops_mini_ribbon_physical.png");
   }
 }
 </style>

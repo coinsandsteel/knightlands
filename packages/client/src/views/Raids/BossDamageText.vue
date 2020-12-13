@@ -1,5 +1,7 @@
 <template>
-  <div class="inline-block absolute font-weight-900 font-outline">{{damage}}</div>
+  <div class="inline-block absolute font-weight-900 font-shadow">
+    {{ damage }}
+  </div>
 </template>
 
 <script>
@@ -9,16 +11,16 @@ export default {
   props: ["damage"],
   methods: {
     async show() {
-    //   const FontSize = this.crit ? 15 : 8;
-    //   const color = this.crit ? "#fdc64f" : "#fff";
-    //   const easing = this.crit ? "easeOutElastic" : "easeOutExpo";
+      //   const FontSize = this.crit ? 15 : 8;
+      //   const color = this.crit ? "#fdc64f" : "#fff";
+      //   const easing = this.crit ? "easeOutElastic" : "easeOutExpo";
 
       let timeline = anime.timeline({
         targets: this.$el
       });
 
       anime.set(this.$el, {
-          opacity: 0
+        opacity: 0
       });
 
       timeline.add({

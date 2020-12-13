@@ -92,19 +92,15 @@ class TronBlockchainClient extends BlockchainClient {
         Dividends.address
       );
 
-      if (process.env.NODE_ENV == "production") {
-        this._presaleChestGateway = await this._tronWeb
-          .contract()
-          .at("TAGCzgmuUGzfgNvaXKsztH9Kqk2rjwvJE4");
-        this._presale = await this._tronWeb
-          .contract()
-          .at("TUCnRiaydK4h9BMtYZXXjUwNBrDYoXp2FB");
-      } else {
-        this._paymentContract = await this._tronWeb
-          .contract()
-          .at(PaymentGateway.address);
-      }
-    } catch {}
+      this._presaleChestGateway = await this._tronWeb
+        .contract()
+        .at("TAGCzgmuUGzfgNvaXKsztH9Kqk2rjwvJE4");
+      this._presale = await this._tronWeb
+        .contract()
+        .at("TUCnRiaydK4h9BMtYZXXjUwNBrDYoXp2FB");
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async fetchOwnedChests() {

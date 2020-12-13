@@ -27,6 +27,7 @@ export default {
   }),
   created() {
     this.title = "window-leaderboards";
+    this.$options.useRouterBack = true;
   },
   methods: {
     openLeaderboard(type) {

@@ -1,7 +1,16 @@
 <template>
-  <div class="center margin-top-1 margin-bottom-1 flex width-100 flex-center flex-space-around">
-    <PresaleFeedLine ref="preview" @hint="showHint" v-if="prevewItem" :feedRecord="prevewItem"></PresaleFeedLine>
-    <div class="flex flex-center font-size-18" v-else>There is no Epic or Legendary loot obtained yet.</div>
+  <div
+    class="center margin-top-1 margin-bottom-1 flex width-100 flex-center flex-space-around"
+  >
+    <PresaleFeedLine
+      ref="preview"
+      @hint="showHint"
+      v-if="prevewItem"
+      :feedRecord="prevewItem"
+    ></PresaleFeedLine>
+    <div class="flex flex-center font-size-18" v-else>
+      There is no Epic or Legendary loot obtained yet.
+    </div>
     <CustomButton type="yellow" @click="showAll">Show All</CustomButton>
   </div>
 </template>
@@ -97,5 +106,4 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

@@ -6,7 +6,7 @@
         <span class="yellow-title font-weight-900">{{currentRank.target}}</span>
       </div>
     </div> -->
-
+    <div class="screen-background"></div>
     <div
       class="title flex flex-center font-size-20 color-panel-2"
       v-if="participates"
