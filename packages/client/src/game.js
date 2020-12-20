@@ -20,6 +20,9 @@ import TrialsMeta from "@/trials_meta";
 import ArmyDB from "@/army/armyDB";
 import Army from "@/army/army";
 
+import { Magic } from "magic-sdk";
+const magic = new Magic("pk_test_55236F76ECAF72CF");
+
 class Game {
   constructor(store) {
     this.Ready = "ready";
@@ -327,22 +330,16 @@ class Game {
     return await this._blockchainClient.sign(message);
   }
 
-  async signIn() {
-    const publicAddress = this.account;
+  async signIn(email) {
+    const didToken = await magic.auth.loginWithMagicLink({
+      email: email,
+      showUI: true
+    });
 
     return new Promise(async (resolve, reject) => {
       try {
-        // get nonce first
-        let nonce = await this._request(Operations.Auth, {
-          address: publicAddress
-        });
-        // sign message
-        let message = await this._blockchainClient.sign(nonce);
-
-        // send signed message
         await this._request(Operations.Auth, {
-          address: publicAddress,
-          message: message
+          token: didToken
         });
 
         this._signInResolve = resolve;
@@ -358,6 +355,23 @@ class Game {
         reject();
       }
     });
+  }
+
+  async purchase(iap, address) {
+    return (
+      await this._request(Operations.Purchase, {
+        iap,
+        address
+      })
+    ).response;
+  }
+
+  async paymentStatus(iap) {
+    return (
+      await this._request(Operations.PurchaseStatus, {
+        iap
+      })
+    ).response;
   }
 
   async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {

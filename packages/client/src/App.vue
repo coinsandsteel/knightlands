@@ -521,9 +521,6 @@ html {
   .mobile({font-size: 6px;});
 
   background: @backgroundOutsideColor;
-  // background-image: url("./assets/ui/pattern.jpg");
-  // background-repeat: repeat;
-  // background-size: 20%;
 }
 
 *,

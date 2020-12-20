@@ -1,13 +1,19 @@
 <template>
   <div class="login-container flex flex-center">
     <div class="screen-background"></div>
-    <div class="font-size-20" v-if="!$game.hasWallet()">
-      {{ $t("no-wallet") }}
-    </div>
-    <div class="font-size-20" v-else-if="!$game.walletReady()">
-      {{ $t("unlock-wallet") }}
-    </div>
-    <PromisedButton :promise="request" size="big" v-else @click="signIn">{{
+
+    <input
+      data-v-25441fae=""
+      id="input"
+      type="email"
+      placeholder="Your email address"
+      aria-invalid="true"
+      class="email-input margin-bottom-2"
+      aria-describedby="input-email"
+      v-model="email"
+    />
+
+    <PromisedButton :promise="request" size="big" @click="signIn">{{
       $t("btn-signin")
     }}</PromisedButton>
   </div>
@@ -16,12 +22,14 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
   components: { PromisedButton },
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   data: () => ({
-    request: null
+    request: null,
+    email: ""
   }),
   created() {
     this.title = "Sign in";
@@ -45,8 +53,8 @@ export default {
         this.$router.replace({ name: "home" });
       }
     },
-    async signIn() {
-      this.request = this.$game.signIn();
+  async signIn() {
+      this.request = this.performRequest(this.$game.signIn(this.email));
 
       try {
         await this.request;
@@ -64,5 +72,16 @@ export default {
 .login-container {
   height: 100%;
   width: 100%;
+}
+
+.email-input {
+  text-align: center;
+  font-size: 2rem;
+  line-height: 24px;
+  padding: 6px 151px;
+  border-radius: 0;
+  float: left;
+  border: 1px solid #666;
+  box-shadow: none;
 }
 </style>

@@ -613,6 +613,25 @@ const router = new Router({
       }
     },
     {
+      path: "/account",
+      name: "account",
+      component: () => import("./views/Account/AccountRoot.vue"),
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          component: () => import("./views/Account/Account.vue"),
+          path: ""
+        },
+        {
+          component: () => import("./views/Account/TopUp.vue"),
+          path: "top-up",
+          name: "top-up"
+        }
+      ]
+    },
+    {
       path: "/castle/beast",
       name: "beast",
       component: () => import("./views/Castle/BeastTaming.vue")

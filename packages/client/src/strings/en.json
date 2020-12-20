@@ -998,6 +998,7 @@
     "mine-rate": "Mining rate (Lvl {lvl}): {rate}/hour",
     "mine-strg": "Gold storage (Lvl {lvl}): {size}",
     "btn-buy-mine": "Additional mine",
+    "w-shop": "Shop",
     "gold-exchange-exp": "Experience to next level",
     "btn-collect": "Collect",
     "gld-exchange-obtain": "Obtain",
@@ -3016,5 +3017,9 @@
     "cm": "{x}mil",
     "cb": "{x}bil",
     "w-world-chat": "Global Chat",
-    "w-edit-leg": "Edit Slot"
+    "w-edit-leg": "Edit Slot",
+    "s-top-up": "Top Up",
+    "s-daily": "Daily",
+    "s-sub": "Subscriptions",
+    "s-packs": "Packs"
 }
