@@ -2,10 +2,16 @@
   <div class="screen-content">
     <div class="screen-background"></div>
 
-    <Tabs :tabs="tabs" @onClick="handleTab" :currentTab="currentTab" />
+    <Tabs
+      :tabs="tabs"
+      @onClick="handleTab"
+      :currentTab="currentTab"
+      :router="true"
+      :replace="true"
+    />
 
     <keep-alive>
-      <component :is="currentTabComponent"></component>
+      <router-view></router-view>
     </keep-alive>
   </div>
 </template>
@@ -13,8 +19,6 @@
 <script>
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
-
-import ShopTopUp from "./ShopTopUp.vue";
 
 const TabIds = {
   TopUp: "s-top-up",
@@ -29,8 +33,7 @@ export default {
     this.title = "w-shop";
   },
   components: {
-    Tabs,
-    ShopTopUp
+    Tabs
   },
   data: () => ({
     currentTabComponent: "",
@@ -38,19 +41,25 @@ export default {
     tabs: [
       {
         title: TabIds.Daily,
-        value: TabIds.Daily
+        value: TabIds.Daily,
+        to: { name: "daily-shop" }
       },
       {
         title: TabIds.Packs,
-        value: TabIds.Packs
+        value: TabIds.Packs,
+        to: { name: "packs" }
       },
       {
         title: TabIds.TopUp,
-        value: TabIds.TopUp
+        value: TabIds.TopUp,
+        to: {
+          name: "top-up"
+        }
       },
       {
         title: TabIds.Subscription,
-        value: TabIds.Subscription
+        value: TabIds.Subscription,
+        to: { name: "sub-shop" }
       }
     ]
   }),

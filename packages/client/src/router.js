@@ -329,7 +329,30 @@ const router = new Router({
             {
               path: "",
               name: "shop",
-              component: ShopHome
+              component: ShopHome,
+              children: [
+                {
+                  path: "",
+                  name: "daily-shop",
+                  component: () => import("./views/Summon/Shop/ShopDaily.vue")
+                },
+                {
+                  path: "packs",
+                  name: "packs",
+                  component: () => import("./views/Summon/Shop/ShopPacks.vue")
+                },
+                {
+                  path: "top-up",
+                  name: "top-up",
+                  component: () => import("./views/Summon/Shop/ShopTopUp.vue")
+                },
+                {
+                  path: "sub-shop",
+                  name: "sub-shop",
+                  component: () =>
+                    import("./views/Summon/Shop/ShopSubscription.vue")
+                }
+              ]
             }
           ]
         },
@@ -634,7 +657,10 @@ const router = new Router({
     {
       path: "/castle/beast",
       name: "beast",
-      component: () => import("./views/Castle/BeastTaming.vue")
+      component: () => import("./views/Castle/BeastTaming.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/castle/army",

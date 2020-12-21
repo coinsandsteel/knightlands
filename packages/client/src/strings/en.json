@@ -3020,6 +3020,9 @@
     "w-edit-leg": "Edit Slot",
     "s-top-up": "Top Up",
     "s-daily": "Daily",
-    "s-sub": "Subscriptions",
-    "s-packs": "Packs"
+    "s-sub": "Subscription",
+    "s-packs": "Packs",
+    "no-shinies": "Out of shinies?",
+    "no-shinies-m": "It looks like you are out of <span class='icon-premium'></span>. Would you like to top up your balance?",
+    "buy-shinies": "Top up"
 }

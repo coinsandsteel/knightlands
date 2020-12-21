@@ -9,7 +9,9 @@
 
     <portal to="footer" v-if="isActive">
       <div class="flex flex-center width-100 height-100">
-        <span class="font-size-20 uppercase font-weight-900">{{$t("continue_from_gacha")}}</span>
+        <span class="font-size-20 uppercase font-weight-900">{{
+          $t("continue_from_gacha")
+        }}</span>
       </div>
     </portal>
   </div>
@@ -32,7 +34,7 @@ export default {
   },
   computed: {
     computedUnits() {
-      return this.units || mock;
+      return this.units;
     },
     previewedUnit() {
       if (this.showResults) {

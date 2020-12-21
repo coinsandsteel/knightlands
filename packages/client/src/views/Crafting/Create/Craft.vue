@@ -74,21 +74,6 @@
                   </div>
                 </CustomButton>
               </div>
-
-              <PaymentStatus
-                v-if="recipe.iap"
-                :request="fetchPayment"
-                @pay="continuePurchase"
-                @iap="setIap"
-              >
-                <CustomButton
-                  :disabled="!canCraft"
-                  type="green"
-                  @click="craftWithFiat()"
-                >
-                  <price-tag :dark="true" :iap="recipe.iap"></price-tag>
-                </CustomButton>
-              </PaymentStatus>
             </div>
           </div>
         </div>
@@ -108,13 +93,9 @@ import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
-import PriceTag from "@/components/PriceTag.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-import PaymentStatus from "@/components/PaymentStatus.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue";
-import Events from "@/../../knightlands-shared/events";
 import ItemCreatedPopup from "./ItemCreatedPopup.vue";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
 import NumericValue from "@/components/NumericValue.vue";
@@ -126,16 +107,14 @@ const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 
 export default {
   props: ["recipeId"],
-  mixins: [AppSection, PaymentHandler, CraftingIngridientHintHandler],
+  mixins: [AppSection, CraftingIngridientHintHandler],
   components: {
     CraftingIngridient,
     CustomButton,
     IconWithValue,
     ItemInfo,
-    PriceTag,
     Promised,
     LoadingScreen,
-    PaymentStatus,
     NumericValue,
     Title
   },
@@ -149,7 +128,6 @@ export default {
   created() {
     this.title = "window-craft";
     this.$options.useRouterBack = true;
-    this.$options.paymentEvents.push(Events.CraftingStatus);
   },
   mounted() {
     this.ready = true;
@@ -158,7 +136,6 @@ export default {
     recipeId: {
       handler() {
         this.itemsToCraft = 1;
-        this.fetchPaymentStatus();
       },
       immediate: true
     }
@@ -217,9 +194,6 @@ export default {
         await ShowItemCreated(item.recipe.resultItem, item.amount);
         this.ingridientsKey++;
       }
-    },
-    async fetchPaymentStatus() {
-      this.fetchPayment = this.$game.fetchCraftingStatus(this.recipeId);
     },
     craftWithSoft() {
       this.craft(CurrencyType.Soft);

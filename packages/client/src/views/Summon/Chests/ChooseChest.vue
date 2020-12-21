@@ -11,9 +11,9 @@
               :key="chest.name"
               :chest="chest"
               :pending="pendingOpening"
-              @open="openChest"
+              @purchase="purchase"
+              @open="handleOpen"
               @openBatch="openBatchChest"
-              @wait="pendingOpening = true"
             />
           </div>
         </div>
@@ -28,20 +28,18 @@ import ChestsMeta from "@/chests_meta";
 import ChestElement from "./ChestElement.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const ChestNames = ["wooden_chest", "silver_chest", "velvet_chest"];
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: { ChestElement, Promised, LoadingScreen },
   created() {
     this.title = "window-choose-chest";
   },
   activated() {
     this.getChestsStatus();
-  },
-  deactivated() {
-    this.pendingOpening = false;
   },
   data: () => ({
     request: null,
@@ -50,21 +48,24 @@ export default {
     pendingOpening: false
   }),
   methods: {
+    purchase(chest, iap) {
+      this.openChest(chest, iap);
+    },
+    handleOpen(chest) {
+      this.openChest(chest, -1, 1);
+    },
     openBatchChest(chest, count) {
+      this.openChest(chest, -1, count);
+    },
+    async openChest(chest, iap, count = 1) {
+      const items = await this.performRequest(
+        this.$game.openChest(chest, iap, count)
+      );
+
       this.$router.push({
         name: "open-chest",
-        params: { chest, count }
+        params: { chest, items }
       });
-    },
-    openChest(chest, iap, items) {
-      if (iap) {
-        this.request = this.$game.openChest(chest, iap);
-      } else {
-        this.$router.push({
-          name: "open-chest",
-          params: { chest, items }
-        });
-      }
     },
     async getChestsStatus() {
       this.request = this.$game.getChestsStatus();

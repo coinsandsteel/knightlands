@@ -160,33 +160,26 @@
           </div>
         </div>
 
-        <PaymentStatus
-          :request="statusRequest"
-          @pay="continuePurchase"
-          @cancel="cancelPurchase"
-          @iap="setIap"
-          :cancel="true"
-          v-else
-        >
-          <div class="width-100 flex flex-space-evenly font-size-18">
-            <div
-              class="flex flex-column width-45"
-              v-for="(iapMeta, index) in iaps"
-              :key="iapMeta.iap"
+        <div class="width-100 flex flex-space-evenly font-size-18">
+          <div
+            class="flex flex-column width-45"
+            v-for="(iapMeta, index) in iaps"
+            :key="index"
+          >
+            <span>{{
+              $t("beast-souls", { count: iapMeta.ticketsCount })
+            }}</span>
+            <PromisedButton
+              :promise="request"
+              type="green"
+              @click="purchaseBoostItems(index)"
             >
-              <span>{{
-                $t("beast-souls", { count: iapMeta.ticketsCount })
-              }}</span>
-              <PromisedButton
-                :promise="request"
-                type="green"
-                @click="purchaseBoostItems(index)"
-              >
-                <PriceTag :dark="true" :iap="iapMeta.iap"></PriceTag>
-              </PromisedButton>
-            </div>
+              <IconWithValue iconClass="icon-premium">{{
+                iapMeta.price
+              }}</IconWithValue>
+            </PromisedButton>
           </div>
-        </PaymentStatus>
+        </div>
       </div>
 
       <div v-else-if="canEvolve" class="flex flex-center width-100">
@@ -204,26 +197,22 @@ import Beasts from "@/beasts";
 import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import PromisedButton from "@/components/PromisedButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue";
-import PaymentStatus from "@/components/PaymentStatus.vue";
-import PriceTag from "@/components/PriceTag.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
 import EnemyView from "@/components/EnemyView.vue";
 import Title from "@/components/Title.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const Events = require("@/../../knightlands-shared/events");
 
 const MaxBoostSize = 50;
 
 export default {
-  mixins: [AppSection, PaymentHandler, PromptMixin],
+  mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   components: {
     PromisedButton,
     IconWithValue,
-    PaymentStatus,
-    PriceTag,
     ProgressBar,
     FloatingTextContainer,
     EnemyView,
@@ -245,7 +234,6 @@ export default {
   },
   activated() {
     this.$set(this, "beast", this.$game.beast());
-    this.fetchPaymentStatus();
   },
   computed: {
     beastItemName() {
@@ -335,10 +323,6 @@ export default {
     totalSouls() {
       return this.$game.inventory.getItemsCountByTemplate(Beasts.ticketItem);
     },
-    async fetchPaymentStatus() {
-      this.statusRequest = this.$game.fetchBeastBoostPurchase();
-      await this.statusRequest;
-    },
     evolve() {
       this.request = this.$game.evolveBeast();
     },
@@ -355,8 +339,9 @@ export default {
       this.handleBoostResult(result);
     },
     async purchaseBoostItems(iapIndex) {
-      this.request = this.$game.purchaseBeastBoost(iapIndex);
-      await this.purchaseRequest(this.request);
+      this.handleBoostResult(
+        await this.performRequest(this.$game.purchaseBeastBoost(iapIndex))
+      );
     },
     handleBoostResult(result) {
       this.$refs.floatingText.addFloatingText(

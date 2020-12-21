@@ -59,41 +59,37 @@
         </div>
       </div>
 
-      <PaymentStatus
-        ref="status"
-        :request="fetchPayment"
-        @pay="continuePurchase"
-        @iap="setIap"
+      <div
+        class="flex flex-center flex-items-end flex-column"
         v-else-if="chest.meta.iaps.length > 0"
       >
-        <div class="flex flex-center flex-items-end flex-column">
-          <span
-            class="font-size-18 margin-bottom-half"
-            v-show="timer.timeLeft > 0"
-            >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
-          >
+        <span
+          class="font-size-18 margin-bottom-half"
+          v-show="timer.timeLeft > 0"
+          >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
+        >
 
-          <PromisedButton
-            v-for="iap in chest.meta.iaps"
-            :key="iap.iap"
-            :promise="request"
-            :forceLoading="pending"
-            type="yellow"
-            @click="purchaseChestOpening(iap.iap)"
-            class="margin-bottom-1"
-          >
-            <div class="flex flex-items-center">
-              <span>{{ $t("btn-open") }}</span>
-              <span
-                v-if="iap.count > 1"
-                class="margin-left-half margin-right-half"
-                >x{{ iap.count }}</span
-              >
-              <PriceTag :dark="true" :iap="iap.iap" :flip="false"></PriceTag>
-            </div>
-          </PromisedButton>
-        </div>
-      </PaymentStatus>
+        <PromisedButton
+          v-for="(iap, index) in chest.meta.iaps"
+          :key="index"
+          :promise="request"
+          type="yellow"
+          @click="$emit('purchase', chest.name, index)"
+          class="margin-bottom-1"
+        >
+          <div class="flex flex-items-center">
+            <span>{{ $t("btn-open") }}</span>
+            <span
+              v-if="iap.count > 1"
+              class="margin-left-half margin-right-half"
+              >x{{ iap.count }}</span
+            >
+            <IconWithValue iconClass="icon-premium">{{
+              iap.price
+            }}</IconWithValue>
+          </div>
+        </PromisedButton>
+      </div>
       <span
         class="font-size-18 margin-bottom-half"
         v-else
@@ -105,64 +101,31 @@
 </template>
 
 <script>
-import StripedPanel from "@/components/StripedPanel.vue";
-import StripedContent from "@/components/StripedContent.vue";
 import CustomButton from "@/components/Button.vue";
 import Timer from "@/timer";
-import PriceTag from "@/components/PriceTag.vue";
-import PaymentStatus from "@/components/PaymentStatus.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue";
-import Events from "@/../../knightlands-shared/events";
+import IconWithValue from "@/components/IconWithValue.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 
 export default {
-  props: ["chest", "pending"],
-  mixins: [PaymentHandler],
+  props: ["chest"],
   components: {
-    StripedPanel,
-    StripedContent,
     CustomButton,
-    PriceTag,
-    PaymentStatus,
+    IconWithValue,
     PromisedButton
-  },
-  created() {
-    this.$options.paymentEvents = [Events.ChestOpened];
   },
   data: () => ({
     timer: new Timer(true),
-    fetchPayment: null,
     request: null
   }),
   mounted() {
     this.updateAll();
-    this.fetchPaymentStatus();
   },
   watch: {
     chest() {
       this.updateAll();
-      this.fetchPaymentStatus();
     }
   },
   methods: {
-    purchaseChestOpening(iap) {
-      this.request = this.$game.openChest(this.chest.name, iap);
-      this.purchaseRequest(this.request);
-    },
-    async fetchPaymentStatus() {
-      if (this.chest.meta.iaps.length > 0) {
-        this.fetchPayment = this.$game.getchChestOpenStatus(this.chest.name);
-        await this.fetchPayment;
-        if (this.$refs.status && this.$refs.status.pending) {
-          this.$emit("wait");
-        }
-      }
-    },
-    handlePaymentComplete(iap, context) {
-      if (this.chest.meta.iaps.find(x => x.iap == iap)) {
-        this.$emit("open", this.chest.name, null, context);
-      }
-    },
     updateAll() {
       if (this.chest.meta.freeOpens > 0) {
         let resetCycle = 86400000 / this.chest.meta.freeOpens;

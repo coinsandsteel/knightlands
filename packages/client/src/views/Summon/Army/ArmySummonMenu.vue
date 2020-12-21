@@ -1,99 +1,75 @@
 <template>
-  <Promised :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <loading-screen :loading="isPending && isDelayOver"></loading-screen>
-      <div class="screen-content">
-        <div class="screen-background"></div>
+  <div class="screen-content">
+    <div class="screen-background"></div>
 
-        <div v-bar>
-          <div>
-            <div class="summon-panel">
-              <Title :stackBottom="true">{{ $t("basic-summon") }}</Title>
-              <div class="side-grid">
-                <img src="../../../assets/backgrounds/basic_summon.png" />
+    <div v-bar>
+      <div>
+        <div class="summon-panel">
+          <Title :stackBottom="true">{{ $t("basic-summon") }}</Title>
+          <div class="side-grid">
+            <img src="../../../assets/backgrounds/basic_summon.png" />
 
-                <ArmySummonElement
-                  :info="basicSummon"
-                  :summonType="ArmySummonType.Normal"
-                  :fetchRequest="fetchRequest"
-                  @summon="summon"
-                  @purchaseSummon="purchaseSummon"
-                  @continuePurchase="continuePurchase"
-                  @iap="setIap"
-                />
-              </div>
-            </div>
+            <ArmySummonElement
+              :info="basicSummon"
+              :summonType="ArmySummonType.Normal"
+              @summon="summon"
+              @purchaseSummon="purchaseSummon"
+            />
+          </div>
+        </div>
 
-            <div class="summon-panel">
-              <Title :stackBottom="true">{{ $t("advanced-summon") }}</Title>
-              <div class="side-grid">
-                <img src="../../../assets/backgrounds/advanced_summon.png" />
+        <div class="summon-panel">
+          <Title :stackBottom="true">{{ $t("advanced-summon") }}</Title>
+          <div class="side-grid">
+            <img src="../../../assets/backgrounds/advanced_summon.png" />
 
-                <ArmySummonElement
-                  :info="advancedSummon"
-                  :summonType="ArmySummonType.Advanced"
-                  :fetchRequest="fetchRequest"
-                  @summon="summon"
-                  @purchaseSummon="purchaseSummon"
-                  @continuePurchase="continuePurchase"
-                  @iap="setIap"
-                />
-              </div>
-            </div>
+            <ArmySummonElement
+              :info="advancedSummon"
+              :summonType="ArmySummonType.Advanced"
+              @summon="summon"
+              @purchaseSummon="purchaseSummon"
+            />
           </div>
         </div>
       </div>
-    </template>
-  </Promised>
+    </div>
+  </div>
 </template>
 
 <script>
-import { Promised } from "vue-promised";
 import AppSection from "@/AppSection.vue";
 import ArmySummonElement from "./ArmySummonElement.vue";
 import Title from "@/components/Title.vue";
 import ArmySummonMeta from "@/army_summon_meta";
 import ArmySummonType from "@/../../knightlands-shared/army_summon_type";
-import LoadingScreen from "@/components/LoadingScreen.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue";
-import Events from "@/../../knightlands-shared/events";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [AppSection, PaymentHandler],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   created() {
     this.title = "army-gate";
-    this.$options.paymentEvents = [Events.UnitSummoned];
   },
-  components: { Title, ArmySummonElement, Promised, LoadingScreen },
+  components: { Title, ArmySummonElement },
   data: () => ({
     ArmySummonType,
     basicSummon: {},
-    advancedSummon: {},
-    request: null,
-    fetchRequest: null
+    advancedSummon: {}
   }),
   mounted() {
     this.update();
-    this.fetchPaymentStatus();
   },
   methods: {
-    async fetchPaymentStatus() {
-      this.fetchRequest = this.$game.fetchArmySummonStatus();
-      this.request = this.fetchRequest;
-      // ugly
-      const status = await this.request;
-      if (status) {
-        this.setIap(status.iap);
-      }
-    },
     async purchaseSummon(summonType, iap) {
-      this.request = this.$game.summonUnits(iap, summonType);
-      this.purchaseRequest(this.request);
+      const results = await this.performRequest(
+        this.$game.summonUnits(iap, summonType)
+      );
+      this.showSummoning(results);
+      this.update();
     },
     async summon(summonType, count) {
-      this.request = this.$game.summonUnits(null, summonType, count);
-
-      let results = await this.request;
+      let results = await this.performRequest(
+        this.$game.summonUnits(null, summonType, count)
+      );
       this.showSummoning(results);
       this.update();
     },
@@ -117,9 +93,6 @@ export default {
           info.lastSummon[ArmySummonType.Advanced] || 0
         );
       }
-    },
-    handlePaymentComplete(iap, context) {
-      this.showSummoning(context);
     },
     showSummoning(units) {
       this.$router.push({ name: "army-summon", params: { units } });

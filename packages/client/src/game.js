@@ -105,7 +105,10 @@ class Game {
     this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
     this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
     this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
-    this._socket.on(Events.ItemPurchased, this._handleItemPurchased.bind(this));
+    this._socket.on(
+      Events.PurchaseComplete,
+      this._handlePurchaseComplete.bind(this)
+    );
     this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
     this._socket.on(
       Events.DailyTaskComplete,
@@ -366,12 +369,8 @@ class Game {
     ).response;
   }
 
-  async paymentStatus(iap) {
-    return (
-      await this._request(Operations.PurchaseStatus, {
-        iap
-      })
-    ).response;
+  async paymentStatus() {
+    return (await this._request(Operations.PurchaseStatus)).response;
   }
 
   async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {
@@ -491,8 +490,8 @@ class Game {
     // this._character.mergeData(data);
   }
 
-  _handleItemPurchased(data) {
-    this._vm.$emit(Events.ItemPurchased, data);
+  _handlePurchaseComplete(data) {
+    this._vm.$emit(Events.PurchaseComplete, data);
   }
 
   _handleTrialAttemptsPurchase(data) {
