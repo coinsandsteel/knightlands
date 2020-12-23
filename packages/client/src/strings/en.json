@@ -3022,7 +3022,15 @@
     "s-daily": "Daily",
     "s-sub": "Subscription",
     "s-packs": "Packs",
+    "s-gold": "Gold",
     "no-shinies": "Out of shinies?",
     "no-shinies-m": "It looks like you are out of <span class='icon-premium'></span>. Would you like to top up your balance?",
-    "buy-shinies": "Top up"
+    "buy-shinies": "Top up",
+    "no-gold": "Out of gold?",
+    "no-gold-m": "It looks like you are out of <span class='icon-gold'></span>. Would you like to purchase more?",
+    "buy-gold": "Buy gold",
+    "d-pur-left": "Purchases left: {left}",
+    "d-pur-lim": "Limited: {left}",
+    "btn-r-shop": "Refresh {price}",
+    "auto-r-d": "Auto refresh in {v}"
 }

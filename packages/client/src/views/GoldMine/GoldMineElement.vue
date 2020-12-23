@@ -7,28 +7,27 @@
       <span class="font-size-20 font-outline font-weight-900">{{
         $t("mine-rate", { rate: rate, lvl: rateLvl })
       }}</span>
-      <CustomButton
+      <PurchaseButton
         type="grey"
+        :soft="true"
         class="margin-top-1"
         @click="$emit('upgrade-rate', idx)"
-        :disabled="cantUpgradeRate"
+        :price="ratePrice"
       >
         {{ $t("btn-upgrade") }}
-        <IconWithValue iconClass="icon-gold">{{ ratePrice }}</IconWithValue>
-      </CustomButton>
+      </PurchaseButton>
     </div>
   </div>
 </template>
 
 <script>
-import CustomButton from "@/components/Button.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 import MinesMeta from "@/mines_meta";
 import ItemProperties from "@/../../knightlands-shared/item_properties";
-import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["mine", "idx"],
-  components: { CustomButton, IconWithValue },
+  components: { PurchaseButton },
   computed: {
     cantUpgradeRate() {
       return this.ratePrice > this.$game.softCurrency;
@@ -42,15 +41,18 @@ export default {
     ratePrice() {
       const item = this.$game.inventory.getItemByTemplate(MinesMeta.priceCharm);
       const template = this.$game.itemsDB.getTemplate(item);
-      const prop = template.properties.find(
-        x =>
-          this.$game.itemsDB.getProperty(x).type ==
-          ItemProperties.GoldMineUpgradeDiscount
-      );
+      let discount = 100;
+      if (template) {
+        const prop = template.properties.find(
+          x =>
+            this.$game.itemsDB.getProperty(x).type ==
+            ItemProperties.GoldMineUpgradeDiscount
+        );
+
+        discount -= item.count * this.$game.itemsDB.getProperty(prop).value;
+      }
       return Math.floor(
-        (MinesMeta.mines[this.mine.level].price *
-          (item.count * this.$game.itemsDB.getProperty(prop).value)) /
-          100
+        (MinesMeta.mines[this.mine.level].price * discount) / 100
       );
     },
     rate() {

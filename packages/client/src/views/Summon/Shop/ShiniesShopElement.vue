@@ -7,14 +7,13 @@
 </template>
 
 <script>
-import Loot from "@/components/Loot.vue";
 import PriceTag from "@/components/PriceTag.vue";
 import CustomButton from "@/components/Button.vue";
 import HintHandler from "@/components/HintHandler.vue";
 
 export default {
   mixins: [HintHandler],
-  components: { Loot, CustomButton, PriceTag },
+  components: { CustomButton, PriceTag },
   props: ["data"]
 };
 </script>

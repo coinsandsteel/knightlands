@@ -24,7 +24,8 @@ const TabIds = {
   TopUp: "s-top-up",
   Subscription: "s-sub",
   Packs: "s-packs",
-  Daily: "s-daily"
+  Daily: "s-daily",
+  Gold: "s-gold"
 };
 
 export default {
@@ -36,7 +37,6 @@ export default {
     Tabs
   },
   data: () => ({
-    currentTabComponent: "",
     currentTab: TabIds.Daily,
     tabs: [
       {
@@ -60,18 +60,17 @@ export default {
         title: TabIds.Subscription,
         value: TabIds.Subscription,
         to: { name: "sub-shop" }
+      },
+      {
+        title: TabIds.Gold,
+        value: TabIds.Gold,
+        to: { name: "shop-gold" }
       }
     ]
   }),
   methods: {
     handleTab(newTab) {
       this.currentTab = newTab;
-
-      switch (newTab) {
-        case TabIds.TopUp:
-          this.currentTabComponent = "ShopTopUp";
-          break;
-      }
     }
   }
 };

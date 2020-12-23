@@ -347,6 +347,11 @@ const router = new Router({
                   component: () => import("./views/Summon/Shop/ShopTopUp.vue")
                 },
                 {
+                  path: "gold",
+                  name: "shop-gold",
+                  component: () => import("./views/Summon/Shop/ShopGold.vue")
+                },
+                {
                   path: "sub-shop",
                   name: "sub-shop",
                   component: () =>

@@ -55,7 +55,8 @@ class Game {
         goldExchange: {},
         dailyQuests: {},
         goldMines: {},
-        dividends: {}
+        dividends: {},
+        dailyShop: {}
       })
     });
 
@@ -262,6 +263,10 @@ class Game {
     return this._character;
   }
 
+  get dailyShop() {
+    return this._vm.dailyShop;
+  }
+
   get blockchainClient() {
     return this._blockchainClient;
   }
@@ -360,17 +365,34 @@ class Game {
     });
   }
 
+  async purchasePack(packId, address) {
+    return (
+      await this._wrapOperation(Operations.Purchase, {
+        packId,
+        address
+      })
+    ).response;
+  }
+
   async purchase(iap, address) {
     return (
-      await this._request(Operations.Purchase, {
+      await this._wrapOperation(Operations.Purchase, {
         iap,
         address
       })
     ).response;
   }
 
+  async purchaseGold(goldIndex) {
+    return (
+      await this._wrapOperation(Operations.Purchase, {
+        goldIndex
+      })
+    ).response;
+  }
+
   async paymentStatus() {
-    return (await this._request(Operations.PurchaseStatus)).response;
+    return (await this._wrapOperation(Operations.PurchaseStatus)).response;
   }
 
   async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {
@@ -656,6 +678,10 @@ class Game {
       this.mergeObjects(this._vm, this._vm.beast, changes.beast);
     }
 
+    if (changes.dailyShop) {
+      this.mergeObjects(this._vm, this._vm.dailyShop, changes.dailyShop);
+    }
+
     if (changes.tower) {
       if (changes.tower.hasOwnProperty("freeAttemps")) {
         this._vm.towerFreeAttempts = changes.tower.freeAttemps;
@@ -762,6 +788,8 @@ class Game {
         this._vm.dailyQuests = info.dailyQuests;
         this._vm.goldMines = info.goldMines;
         this._vm.dividends = info.dividends;
+        this._vm.dailyShop = info.dailyShop;
+        this._vm.purchasedIaps = info.purchasedIaps;
 
         if (!this._vm.loaded) {
           this._checkClassChoice();
@@ -1765,6 +1793,17 @@ class Game {
   async unlockItem(item) {
     return (await this._wrapOperation(Operations.UnlockItem, { item }))
       .response;
+  }
+
+  // Daily Shop
+  async refreshDailyShop() {
+    return (await this._wrapOperation(Operations.RefreshDailyShop)).response;
+  }
+
+  async purchaseDailyItem(itemIndex) {
+    return (
+      await this._wrapOperation(Operations.PurchaseDailyItem, { itemIndex })
+    ).response;
   }
 }
 

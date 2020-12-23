@@ -30,7 +30,7 @@
           @click="handleBackButton"
         ></span>
         <portal-target
-          class="footer-container flex flex-end full-flex"
+          class="footer-container flex flex-end flex-items-center full-flex"
           name="footer"
           :multiple="true"
         ></portal-target>

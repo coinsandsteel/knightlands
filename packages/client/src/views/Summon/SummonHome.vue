@@ -18,17 +18,20 @@
 
       <CustomButton type="green" @click="goTo('army-summon-menu')">Summon Gates</CustomButton> -->
 
-      <div class="army-summon flex flex-center" @click="goTo('army-summon-menu')">
+      <div
+        class="army-summon flex flex-center pointer"
+        @click="goTo('army-summon-menu')"
+      >
         <img src="../../assets/ui/01_summon.png" />
         <span>{{ $t("shop-summon") }}</span>
       </div>
 
-      <div class="shop flex flex-center" @click="goTo('shop')">
+      <div class="shop flex flex-center pointer" @click="goTo('shop')">
         <img src="../../assets/ui/02_MARKET.png" />
         <span>{{ $t("shop-shop") }}</span>
       </div>
 
-      <div class="chests flex flex-center" @click="goTo('chests')">
+      <div class="chests flex flex-center pointer" @click="goTo('chests')">
         <img src="../../assets/ui/03_chests.png" />
         <span>{{ $t("shop-chests") }}</span>
       </div>
