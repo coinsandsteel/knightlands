@@ -3,7 +3,11 @@
     <div class="screen-background"></div>
     <div v-bar>
       <div>
-        <raids-summon-list-element v-for="(raid, raidId) in raids" :key="raidId" :raid="raidId" />
+        <raids-summon-list-element
+          v-for="(raid, raidId) in raids"
+          :key="raidId"
+          :raid="raidId"
+        />
       </div>
     </div>
   </div>
@@ -32,5 +36,3 @@ export default {
   }
 };
 </script>
-
-

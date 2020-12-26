@@ -4,15 +4,16 @@
     :cancel="true"
     @iap="setIap"
     @pay="continuePurchase"
-    class="width-100"
   >
-    <div class="fle flex-column widht-100">
-      <PremiumPackElement
-        v-for="(pack, idx) in packs"
-        :key="idx"
-        :pack="pack"
-        @purchase="handlePurchase(pack)"
-      />
+    <div class="height-100" v-bar>
+      <div class="flex flex-column width-100">
+        <PremiumPackElement
+          v-for="(pack, idx) in packs"
+          :key="idx"
+          :pack="pack"
+          @purchase="handlePurchase(pack)"
+        />
+      </div>
     </div>
   </PaymentStatus>
 </template>
@@ -44,7 +45,19 @@ export default {
   },
   computed: {
     packs() {
-      return Meta.packs;
+      const packs = Meta.packs;
+      return packs
+        .filter(pack => {
+          if (pack.max) {
+            return (
+              pack.max - (this.$game.dailyShop.singlePurchases[pack.id] || 0) >
+              0
+            );
+          }
+
+          return true;
+        })
+        .sort((x, y) => x.order - y.order);
     }
   },
   methods: {
@@ -52,7 +65,7 @@ export default {
       this.request = this.$game.paymentStatus();
     },
     async handlePurchase(pack) {
-      const request = this.$game.purchasePack(pack.id, this.$game.account);
+      const request = this.$game.purchasePack(pack.id, this.$game.address);
 
       if (pack.iap) {
         this.setIap(pack.iap);

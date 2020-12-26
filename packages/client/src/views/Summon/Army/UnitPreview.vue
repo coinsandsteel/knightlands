@@ -130,7 +130,6 @@ export default {
   },
   methods: {
     handleImageLoaded(p) {
-      console.log("image loaded");
       // if (!this.resolveTimeout) {
       //   return;
       // }

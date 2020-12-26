@@ -95,6 +95,7 @@ export default {
       }
     },
     showSummoning(units) {
+      this.$game.handleArmySummoned(units);
       this.$router.push({ name: "army-summon", params: { units } });
     }
   }

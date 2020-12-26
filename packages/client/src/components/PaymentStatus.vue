@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-column relative width-100 full-flex">
+  <div class="relative width-100 overflow-hidden full-flex">
     <slot></slot>
 
     <div
-      class="absolute-stretch overlay-color flex flex-center"
+      class="absolute-stretch overlay-color purchase-overlay flex flex-center"
       v-if="pending || waitingForPayment"
     >
       <keep-alive>
@@ -86,5 +86,6 @@ export default {
 
 <style lang="less" scoped>
 .purchase-overlay {
+  z-index: 100;
 }
 </style>

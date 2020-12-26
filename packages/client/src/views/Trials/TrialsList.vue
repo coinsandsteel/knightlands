@@ -2,12 +2,7 @@
   <div v-bar>
     <div>
       <div class="flex flex-column">
-        <slot
-          v-if="state"
-          :open="openTrial"
-          :unlockedTrials="state.unlockedTrials"
-          :trialType="trialType"
-        ></slot>
+        <slot :open="openTrial" :trialType="trialType"></slot>
       </div>
     </div>
   </div>
@@ -15,6 +10,6 @@
 
 <script>
 export default {
-  props: ["openTrial", "state", "trialType"]
+  props: ["openTrial", "trialType"]
 };
 </script>

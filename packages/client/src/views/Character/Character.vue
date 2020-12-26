@@ -18,6 +18,7 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
+import Tabs from "@/components/Tabs.vue";
 
 const EquipmentTab = "equipment";
 const StatsTab = "training";
@@ -27,7 +28,7 @@ const MiscTab = "misc";
 export default {
   mixins: [AppSection],
   components: {
-    Tabs: () => import("@/components/Tabs.vue")
+    Tabs
   },
   data() {
     return {

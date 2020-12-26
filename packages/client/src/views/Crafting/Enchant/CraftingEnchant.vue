@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     equippedItemsFilter(item) {
-      return true;
+      return !item.locked;
     },
     openEnchant(item) {
       this.$router.push({ name: "enchant-item", params: { itemId: item.id } });

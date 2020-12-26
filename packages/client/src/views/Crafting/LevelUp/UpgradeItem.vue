@@ -59,7 +59,6 @@
                   :key="mat.id"
                   :item="mat"
                   @hint="selectMaterial(index)"
-                  :locked="!selectedMaterials[index] && lockRest"
                   :selected="index == selectedMaterial"
                 >
                   <div
@@ -216,6 +215,9 @@ export default {
       this.selectedMaterial = index;
       if (!this.materialsCount[index]) {
         this.incMaterialCount();
+      } else {
+        this.materialsCount[index] = 0;
+        this.selectedMaterial = 0;
       }
     },
     async confirmUpgrade() {

@@ -1,135 +1,97 @@
 <template>
-  <Promised
-    class="screen-content flex-start relative"
-    :promise="raidStatusRequest"
-  >
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <loading-screen :loading="isPending && isDelayOver"></loading-screen>
-      <div class="screen-background"></div>
-      <!-- <AnimatedBackgroundUnits></AnimatedBackgroundUnits> -->
-      <div v-bar v-show="!showChart">
-        <div>
-          <boss-view
-            v-if="raid"
-            :raidTemplateId="raid"
-            :navigation="true"
-            @next="goToNext"
-            @previous="goToPrevious"
-          >
-            <div class="height-100 flex flex-items-end">
-              <div
-                class="width-100 flex flex-space-evenly overlay-color padding-1"
-              >
-                <span class="font-size-25 font-weight-900">{{
-                  $t("unit-lvl", { lvl: raidLevel })
-                }}</span>
-                <IconWithValue
-                  iconClass="icon-health"
-                  valueClass="font-size-25 font-weight-900"
-                  >{{ raidMaxHealth }}</IconWithValue
-                >
-                <IconWithValue
-                  iconClass="icon-damage"
-                  valueClass="font-size-25 font-weight-900"
-                  >{{ raidAttack }}</IconWithValue
-                >
-              </div>
-            </div>
-          </boss-view>
-
-          <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-
-          <div class="margin-1">
-            <div class="flex flex-space-evenly width-100">
-              <custom-button type="grey" @click="showRewards">
-                <span class="icon-loot"></span>
-              </custom-button>
-
-              <custom-button type="grey" @click="showInfo">
-                <span class="icon-info dark"></span>
-              </custom-button>
-
-              <custom-button type="grey" @click="showChart = true">
-                <span class="icon-chart"></span>
-              </custom-button>
-            </div>
-
-            <div class="margin-top-3" v-if="$game.load">
-              <div class="flex flex-center margin-top-1">
-                <crafting-ingridient
-                  v-for="essence in requiredEssences"
-                  :key="essence.itemId"
-                  :ingridient="essence"
-                />
-              </div>
-            </div>
-
+  <div class="screen-content">
+    <div class="screen-background"></div>
+    <!-- <AnimatedBackgroundUnits></AnimatedBackgroundUnits> -->
+    <div v-bar v-show="!showChart">
+      <div>
+        <boss-view
+          v-if="raid"
+          :raidTemplateId="raid"
+          :navigation="true"
+          @next="goToNext"
+          @previous="goToPrevious"
+        >
+          <div class="height-100 flex flex-items-end">
             <div
-              class="margin-top-2 flex flex-column flex-center"
-              v-if="isFreeRaid"
+              class="width-100 flex flex-space-evenly overlay-color padding-1"
             >
-              <span
-                v-if="!levelRequirementMet"
-                class="font-error font-size-18"
-                >{{ $t("no-raid-level", { level: raidLevel }) }}</span
+              <span class="font-size-25 font-weight-900">{{
+                $t("unit-lvl", { lvl: raidLevel })
+              }}</span>
+              <IconWithValue
+                iconClass="icon-health"
+                valueClass="font-size-25 font-weight-900"
+                >{{ raidMaxHealth }}</IconWithValue
               >
-              <CustomButton type="yellow" @click="confirmSummon">{{
-                $t("btn-summon")
-              }}</CustomButton>
+              <IconWithValue
+                iconClass="icon-damage"
+                valueClass="font-size-25 font-weight-900"
+                >{{ raidAttack }}</IconWithValue
+              >
             </div>
+          </div>
+        </boss-view>
 
-            <PaymentStatus
-              v-else
-              class="margin-top-2"
-              :request="fetchPayment"
-              @pay="continuePurchase"
-              @iap="setIap"
+        <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+
+        <div class="margin-1">
+          <div class="flex flex-space-evenly width-100">
+            <custom-button type="grey" @click="showRewards">
+              <span class="icon-loot"></span>
+            </custom-button>
+
+            <custom-button type="grey" @click="showInfo">
+              <span class="icon-info dark"></span>
+            </custom-button>
+
+            <custom-button type="grey" @click="showChart = true">
+              <span class="icon-chart"></span>
+            </custom-button>
+          </div>
+
+          <div class="margin-top-3" v-if="$game.load">
+            <div class="flex flex-center margin-top-1">
+              <crafting-ingridient
+                v-for="essence in requiredEssences"
+                :key="essence.itemId"
+                :ingridient="essence"
+              />
+            </div>
+          </div>
+
+          <div class="margin-top-2 flex flex-column flex-center">
+            <span v-if="!levelRequirementMet" class="font-error font-size-18">{{
+              $t("no-raid-level", { level: raidLevel })
+            }}</span>
+            <CustomButton
+              :disabled="!canSummon"
+              type="yellow"
+              @click="confirmSummon"
             >
-              <div class="flex flex-column flex-center">
-                <span
-                  v-if="!levelRequirementMet"
-                  class="font-error font-size-18"
-                  >{{ $t("no-raid-level", { level: raidLevel }) }}</span
-                >
-                <CustomButton
-                  :disabled="!canSummon"
-                  type="yellow"
-                  @click="confirmSummon"
-                >
-                  <span>{{ $t("btn-summon") }}</span>
-                  <price-tag :iap="iap" :dark="true"></price-tag>
-                </CustomButton>
-              </div>
-            </PaymentStatus>
+              <span>{{ $t("btn-summon") }}</span>
+            </CustomButton>
           </div>
         </div>
       </div>
+    </div>
 
-      <keep-alive>
-        <TokenChart v-if="showChart" :raidTemplateId="raid"></TokenChart>
-      </keep-alive>
-    </template>
-  </Promised>
+    <keep-alive>
+      <TokenChart v-if="showChart" :raidTemplateId="raid"></TokenChart>
+    </keep-alive>
+  </div>
 </template>
 
 <script>
 import RaidsMeta from "@/raids_meta";
 import AppSection from "@/AppSection.vue";
-import AnimatedBackgroundUnits from "@/components/AnimatedBackgroundUnits.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
-import PriceTag from "@/components/PriceTag.vue";
-import PaymentStatus from "@/components/PaymentStatus.vue";
-import Events from "@/../../knightlands-shared/events";
 import BossView from "./BossView.vue";
 import Rewards from "./Rewards.vue";
 import RaidInfo from "./RaidInfo.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue";
-import throttle from "lodash.throttle";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
-import LoadingScreen from "@/components/LoadingScreen.vue";
-import { Promised } from "vue-promised";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 
@@ -154,32 +116,20 @@ const PayedRaid = "paid_raid";
 
 export default {
   name: "raid-summon",
-  mixins: [AppSection, PaymentHandler, RaidGetterMixin],
+  mixins: [AppSection, RaidGetterMixin, NetworkRequestErrorMixin],
   props: {
     raid: [String, Number]
   },
   components: {
-    LoadingScreen,
-    Promised,
     CraftingIngridient,
     CustomButton,
-    PriceTag,
     BossView,
-    PaymentStatus,
     IconWithValue,
     Tabs,
     TokenChart: () => import("./TokenChart.vue")
   },
   created() {
     this.title = "window-summon-raid";
-    this.$options.paymentEvents = [Events.RaidSummonStatus];
-    this._fetchSummonStatus = throttle(this.fetchSummonStatus.bind(this), 500, {
-      leading: false
-    });
-  },
-  mounted() {
-    this._fetchSummonStatus();
-    this.fetchPaymentStatus();
   },
   data() {
     return {
@@ -197,12 +147,6 @@ export default {
         { title: FreeRaid, value: FreeRaid }
       ]
     };
-  },
-  watch: {
-    raid() {
-      this._fetchSummonStatus();
-      this.fetchPaymentStatus();
-    }
   },
   computed: {
     weakness() {
@@ -248,14 +192,6 @@ export default {
     switchTab(newTab) {
       this.currentTab = newTab;
     },
-    async handlePaymentComplete(iap, item) {
-      console.log(iap, item);
-      // if (item) {
-      //   console.log(item);
-      //   await ShowItemCreated(item.recipe.resultItem, item.amount);
-      //   this.ingridientsKey++;
-      // }
-    },
     handleBackButton() {
       if (this.showChart) {
         this.showChart = false;
@@ -265,25 +201,14 @@ export default {
       this.$router.back();
       return true;
     },
-    async fetchPaymentStatus() {
-      this.fetchPayment = this.$game.fetchRaidSummonStatus(this.raid);
-    },
-    async fetchSummonStatus() {
-      this.raidStatusRequest = this.$game.fetchRaidSummonStatus(this.raid);
-      this.raidStatus = await this.raidStatusRequest;
-    },
     async confirmSummon() {
-      this.request = this.purchaseRequest(
+      const data = await this.performRequest(
         this.$game.summonRaid(this.raid, this.isFreeRaid)
       );
-
-      if (this.isFreeRaid) {
-        const data = await this.request;
-        this.$router.push({
-          name: "view-raid",
-          params: { raidId: data.raid }
-        });
-      }
+      this.$router.push({
+        name: "view-raid",
+        params: { raidId: data.raid }
+      });
     }
   }
 };

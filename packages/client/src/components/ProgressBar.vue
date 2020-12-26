@@ -61,7 +61,7 @@
       </div>
       <div
         v-if="plusButton"
-        class="btn-plus"
+        class="btn-plus pointer"
         :class="`${plusButton}-btn`"
       ></div>
     </div>

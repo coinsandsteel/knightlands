@@ -1,12 +1,13 @@
 <script>
 import PromptMixin from "@/components/PromptMixin.vue";
+import Events from "@/../../knightlands-shared/events";
 
 export default {
   mixins: [PromptMixin],
   data: () => ({
     _internalIap: null
   }),
-  paymentEvents: [],
+  paymentEvents: [Events.PurchaseComplete],
   mounted() {
     this.listener = this._handlePaymentComplete.bind(this);
     this.$options.paymentEvents.forEach(evt => {

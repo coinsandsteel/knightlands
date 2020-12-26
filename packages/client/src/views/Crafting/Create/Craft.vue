@@ -40,39 +40,32 @@
               ></NumericValue>
 
               <div>
-                <CustomButton
-                  :disabled="
-                    !canCraft() && $game.softCurrency >= recipe.softCurrencyFee
-                  "
+                <PurchaseButton
+                  :disabled="!canCraft()"
                   type="yellow"
                   v-if="recipe.softCurrencyFee > 0"
                   @click="craftWithSoft()"
+                  :price="softPrice"
+                  :soft="true"
                 >
                   <div class="flex flex-center">
                     <span class="margin-right-half">{{
                       $t("btn-build", { count: itemsToCraft })
                     }}</span>
-                    <IconWithValue iconClass="icon-gold">{{
-                      softPrice
-                    }}</IconWithValue>
                   </div>
-                </CustomButton>
+                </PurchaseButton>
 
-                <CustomButton
-                  :disabled="
-                    !canCraft() && $game.hardCurrency >= recipe.hardCurrencyFee
-                  "
+                <PurchaseButton
+                  :disabled="!canCraft()"
                   type="grey"
                   v-if="recipe.hardCurrencyFee > 0"
                   @click="craftWithHard()"
+                  :price="hardPrice"
                 >
                   <div class="flex flex-center">
                     {{ $t("btn-build", { count: itemsToCraft }) }}
-                    <IconWithValue iconClass="icon-premium">{{
-                      hardPrice
-                    }}</IconWithValue>
                   </div>
-                </CustomButton>
+                </PurchaseButton>
               </div>
             </div>
           </div>
@@ -90,7 +83,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
-import CustomButton from "@/components/Button.vue";
+import PurchaseButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
@@ -110,7 +103,7 @@ export default {
   mixins: [AppSection, CraftingIngridientHintHandler],
   components: {
     CraftingIngridient,
-    CustomButton,
+    PurchaseButton,
     IconWithValue,
     ItemInfo,
     Promised,

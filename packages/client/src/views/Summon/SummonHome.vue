@@ -26,7 +26,7 @@
         <span>{{ $t("shop-summon") }}</span>
       </div>
 
-      <div class="shop flex flex-center pointer" @click="goTo('shop')">
+      <div class="shop flex flex-center pointer" @click="goTo('daily-shop')">
         <img src="../../assets/ui/02_MARKET.png" />
         <span>{{ $t("shop-shop") }}</span>
       </div>
@@ -41,14 +41,9 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import CustomButton from "@/components/Button.vue";
-import FreeChestsMarker from "@/components/Markers/FreeChestsMarker.vue";
-import MenuIcon from "@/components/MenuIcon.vue";
-import MenuIconRow from "@/components/MenuIconRow.vue";
 
 export default {
   mixins: [AppSection],
-  components: { FreeChestsMarker, MenuIcon, MenuIconRow, CustomButton },
   created() {
     this.title = this.$t("window-title-summon");
   },

@@ -1,5 +1,9 @@
 <template>
-  <div class="lock-btn" :class="{ locked: locked }" @click="toggleLock"></div>
+  <div
+    class="lock-btn pointer"
+    :class="{ locked: locked }"
+    @click="toggleLock"
+  ></div>
 </template>
 
 <script>

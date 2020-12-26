@@ -7,7 +7,6 @@
         <slot
           v-if="trialId !== null"
           name="trial"
-          :state="state"
           :id="trialId"
           :trialIndex="trialIndex"
           :mountCallback="addBackButtonListener"
@@ -16,7 +15,6 @@
         <slot
           v-else
           name="list"
-          :state="state"
           :openTrial="openTrial"
           :trialType="trialType"
         ></slot>
@@ -25,7 +23,6 @@
     <portal to="footer" :slim="true" v-if="isActive && !showCards">
       <TrialFooter
         :trialType="trialType"
-        :state="state"
         @open="openCards"
         @purchaseAttempts="purchaseAttempts"
       ></TrialFooter>
@@ -39,6 +36,7 @@ import TrialFooter from "./TrialFooter.vue";
 import Cards from "./Cards/Cards.vue";
 import Errors from "@/../../knightlands-shared/errors";
 import PromptMixin from "@/components/PromptMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import PurchaseAttempts from "./PurchaseAttempts.vue";
 import { create } from "vue-modal-dialogs";
@@ -46,19 +44,19 @@ import { create } from "vue-modal-dialogs";
 const ShowPurchaseAttempts = create(PurchaseAttempts);
 
 export default {
-  mixins: [AppSection, PromptMixin],
+  mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   props: ["titleStr", "trialType"],
   components: { Cards, TrialFooter },
   data: () => ({
-    request: null,
     state: null,
+    request: null,
     trialId: null,
     trialIndex: 0,
     showCards: false
   }),
   activated() {
+    this.state = this.$game.getTrialState(this.trialType);
     this.title = this.titleStr;
-    this.fetchRemoteState();
   },
   deactivated() {
     this.showCards = false;
@@ -125,9 +123,6 @@ export default {
       }
 
       return false;
-    },
-    async fetchRemoteState() {
-      this.state = this.$game.getTrialState(this.trialType);
     },
     openCards() {
       this.showCards = true;

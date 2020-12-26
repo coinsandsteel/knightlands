@@ -1,6 +1,7 @@
 <template>
-  <div class="flex flex-column flex-center margin-1 padding-1">
-    <div class="flex flex-center">
+  <div class="flex flex-column flex-center padding-top-1 padding-bottom-1">
+    <Title>{{ $t(pack.title) }}</Title>
+    <div class="flex flex-center margin-top-2">
       <Loot
         v-for="item in items"
         :key="item.itemId"
@@ -14,8 +15,10 @@
       class="font-size-20 font-weight-900 font-outline margin-top-1 margin-bottom-1"
       >{{
         pack.max
-          ? $t("d-pur-lim", { left: purchasesLeft })
-          : $t("d-pur-left", { left: purchasesLeft })
+          ? $t("d-pur-lim", { left: purchasesLeft, max: pack.max })
+          : pack.dailyMax
+          ? $t("d-pur-daily", { left: purchasesLeft, max: pack.dailyMax })
+          : $t("d-pur-weekly", { left: purchasesLeft, max: pack.weeklyMax })
       }}</span
     >
 
@@ -41,13 +44,14 @@
 <script>
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
+import Title from "@/components/Title.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import PriceTag from "@/components/PriceTag.vue";
 
 export default {
   mixins: [HintHandler],
-  components: { CustomButton, PurchaseButton, Loot, PriceTag },
+  components: { CustomButton, PurchaseButton, Loot, PriceTag, Title },
   props: ["pack"],
   data: () => ({
     request: null

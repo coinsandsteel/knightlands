@@ -69,10 +69,10 @@
           >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
         >
 
-        <PromisedButton
+        <PurchaseButton
           v-for="(iap, index) in chest.meta.iaps"
           :key="index"
-          :promise="request"
+          :price="iap.price"
           type="yellow"
           @click="$emit('purchase', chest.name, index)"
           class="margin-bottom-1"
@@ -84,11 +84,8 @@
               class="margin-left-half margin-right-half"
               >x{{ iap.count }}</span
             >
-            <IconWithValue iconClass="icon-premium">{{
-              iap.price
-            }}</IconWithValue>
           </div>
-        </PromisedButton>
+        </PurchaseButton>
       </div>
       <span
         class="font-size-18 margin-bottom-half"
@@ -103,19 +100,16 @@
 <script>
 import CustomButton from "@/components/Button.vue";
 import Timer from "@/timer";
-import IconWithValue from "@/components/IconWithValue.vue";
-import PromisedButton from "@/components/PromisedButton.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 
 export default {
   props: ["chest"],
   components: {
     CustomButton,
-    IconWithValue,
-    PromisedButton
+    PurchaseButton
   },
   data: () => ({
-    timer: new Timer(true),
-    request: null
+    timer: new Timer(true)
   }),
   mounted() {
     this.updateAll();

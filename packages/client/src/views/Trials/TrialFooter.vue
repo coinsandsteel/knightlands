@@ -6,7 +6,7 @@
       <div class="item-icon" :class="trialType"></div>
       <span>{{ totalTickets }}</span>
       <span
-        class="item-icon icon-plus margin-left-half"
+        class="item-icon icon-plus margin-left-half pointer"
         @click="$emit('purchaseAttempts')"
       ></span>
     </div>
@@ -21,9 +21,12 @@
 import CustomButton from "@/components/Button.vue";
 
 export default {
-  props: ["trialType", "state"],
+  props: ["trialType"],
   components: { CustomButton },
   computed: {
+    state() {
+      return this.$game.getTrialState(this.trialType);
+    },
     ticketItemName() {
       return this.$t(`trial-attempt-${this.trialType}`);
     },

@@ -13,6 +13,9 @@
     <Promised :promise="request">
       <template class="flex-full" v-slot:combined="{ isPending }">
         <loading-screen :loading="isPending"></loading-screen>
+
+        <div @click="handleContinue" class="continueButton"></div>
+
         <Flipper :flipKey="lootFlipKey">
           <h1
             class="chest-title font-weight-700"
@@ -46,8 +49,6 @@
             </div>
           </Flipped>
         </Flipper>
-
-        <div @click="handleContinue" class="continueButton"></div>
 
         <div
           class="gacha-continue pointer pointer-events-none"
@@ -419,7 +420,7 @@ export default {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 35vh;
+  height: 100vh;
 }
 
 .gacha-container {

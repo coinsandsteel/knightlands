@@ -1,6 +1,6 @@
 <template>
   <div
-    class="btn relative"
+    class="btn relative pointer"
     :class="[
       btnType,
       { disabled: disabled || locked },
@@ -164,7 +164,6 @@ export default {
   min-width: @width;
   font-size: @fontSize;
   font-weight: 700;
-  cursor: pointer;
   user-select: none;
   color: #4e3948;
   height: 5rem;

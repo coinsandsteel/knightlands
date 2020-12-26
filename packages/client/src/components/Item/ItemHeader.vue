@@ -17,6 +17,7 @@
 
       <div
         class="flex flex-items-center flex-no-wrap margin-top-half margin-bottom-1"
+        :class="{ pointer: stars < 2 }"
         v-if="isEquipment && !isPreview"
       >
         <span class="star" :class="{ active: stars >= 1 }"></span>

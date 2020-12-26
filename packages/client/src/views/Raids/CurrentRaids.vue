@@ -16,14 +16,23 @@
           </div>
         </div>
 
-        <div class="flex flex-column flex-center height-100 width-100" v-show="raids.length == 0">
-          <span class="font-size-22 margin-bottom-2">{{$t("raids-empty")}}</span>
-          <CustomButton type="yellow" @click="summonRaid">{{$t("raid-summon-now")}}</CustomButton>
+        <div
+          class="flex flex-column flex-center height-100 width-100"
+          v-show="raids.length == 0"
+        >
+          <span class="font-size-22 margin-bottom-2">{{
+            $t("raids-empty")
+          }}</span>
+          <CustomButton type="yellow" @click="summonRaid">{{
+            $t("raid-summon-now")
+          }}</CustomButton>
         </div>
       </div>
 
       <portal to="footer" v-if="isActive">
-        <CustomButton type="yellow" @click="summonRaid">{{$t("btn-summon")}}</CustomButton>
+        <CustomButton type="yellow" @click="summonRaid">{{
+          $t("btn-summon")
+        }}</CustomButton>
       </portal>
     </template>
   </Promised>
@@ -79,4 +88,3 @@ export default {
   min-height: 0;
 }
 </style>
-

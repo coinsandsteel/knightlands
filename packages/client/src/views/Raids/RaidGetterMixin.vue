@@ -30,6 +30,13 @@ export default {
         this.raidData.summonRecipe
       );
     },
+    requiredJoinEssences() {
+      if (!this.raidData) {
+        return [];
+      }
+
+      return this.$game.crafting.getRecipeIngridients(this.raidData.joinRecipe);
+    },
     levelRequirementMet() {
       return this.$game.character.level >= this.raidLevel;
     },

@@ -70,9 +70,6 @@ const CraftingDisenchant = () =>
 const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
 const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
-const ShopRoot = () => import("./views/Summon/Shop/ShopRoot.vue");
-const ShopHome = () => import("./views/Summon/Shop/ShopHome.vue");
-
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
 const ChooseChest = () => import("./views/Summon/Chests/ChooseChest.vue");
 const OpenChest = () => import("./views/Summon/Chests/OpenChest.vue");
@@ -324,40 +321,34 @@ const router = new Router({
         },
         {
           path: "shop",
-          component: ShopRoot,
+          name: "shop",
+          component: () => import("./views/Summon/Shop/ShopHome.vue"),
           children: [
             {
-              path: "",
-              name: "shop",
-              component: ShopHome,
-              children: [
-                {
-                  path: "",
-                  name: "daily-shop",
-                  component: () => import("./views/Summon/Shop/ShopDaily.vue")
-                },
-                {
-                  path: "packs",
-                  name: "packs",
-                  component: () => import("./views/Summon/Shop/ShopPacks.vue")
-                },
-                {
-                  path: "top-up",
-                  name: "top-up",
-                  component: () => import("./views/Summon/Shop/ShopTopUp.vue")
-                },
-                {
-                  path: "gold",
-                  name: "shop-gold",
-                  component: () => import("./views/Summon/Shop/ShopGold.vue")
-                },
-                {
-                  path: "sub-shop",
-                  name: "sub-shop",
-                  component: () =>
-                    import("./views/Summon/Shop/ShopSubscription.vue")
-                }
-              ]
+              path: "/",
+              name: "daily-shop",
+              component: () => import("./views/Summon/Shop/ShopDaily.vue")
+            },
+            {
+              path: "packs",
+              name: "packs",
+              component: () => import("./views/Summon/Shop/ShopPacks.vue")
+            },
+            {
+              path: "top-up",
+              name: "top-up",
+              component: () => import("./views/Summon/Shop/ShopTopUp.vue")
+            },
+            {
+              path: "gold",
+              name: "shop-gold",
+              component: () => import("./views/Summon/Shop/ShopGold.vue")
+            },
+            {
+              path: "cards",
+              name: "sub-shop",
+              component: () =>
+                import("./views/Summon/Shop/ShopSubscription.vue")
             }
           ]
         },
@@ -651,11 +642,6 @@ const router = new Router({
         {
           component: () => import("./views/Account/Account.vue"),
           path: ""
-        },
-        {
-          component: () => import("./views/Account/TopUp.vue"),
-          path: "top-up",
-          name: "top-up"
         }
       ]
     },

@@ -29,6 +29,8 @@
           </div>
         </template>
         <template v-else>
+          <div @click="handleContinue" class="continueButton"></div>
+
           <Flipper :flipKey="lootFlipKey">
             <!-- <h1
             class="chest-title font-weight-700"
@@ -64,8 +66,6 @@
               </div>
             </Flipped>
           </Flipper>
-
-          <div @click="handleContinue" class="continueButton"></div>
 
           <div
             class="gacha-continue pointer pointer-events-none"
@@ -304,7 +304,7 @@ export default {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 35vh;
+  height: 100vh;
   left: 0;
   right: 0;
 }

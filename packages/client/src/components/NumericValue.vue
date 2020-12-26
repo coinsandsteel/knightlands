@@ -1,7 +1,9 @@
 <template>
-  <div class="flex flex-no-wrap font-size-18 flex-center digit-font flex-space-between">
+  <div
+    class="flex flex-no-wrap font-size-20 flex-center font-weight-900 font-outline flex-space-between"
+  >
     <i
-      :class="{'disabled-btn':!decreaseCondition}"
+      :class="{ 'disabled-btn': !decreaseCondition }"
       class="pointer att-minus"
       @click="decreaseAttribute"
       @mousedown="startAttributeDecrease"
@@ -12,12 +14,12 @@
       @touchcancel="stopAttributeModify"
     ></i>
     <slot name="between">
-      <span class="att-name" v-if="caption">{{caption}}</span>
-      <span class="att-value" v-if="showMax">{{value}}/{{maxValue}}</span>
-      <span class="att-value" v-else>{{value}}</span>
+      <span class="att-name" v-if="caption">{{ caption }}</span>
+      <span class="att-value" v-if="showMax">{{ value }}/{{ maxValue }}</span>
+      <span class="att-value" v-else>{{ value }}</span>
     </slot>
     <i
-      :class="{'disabled-btn' : !increaseCondition}"
+      :class="{ 'disabled-btn': !increaseCondition }"
       class="pointer att-plus"
       @click="increaseAttribute"
       @mousedown="startAttributeIncrease"
@@ -105,16 +107,9 @@ export default {
 };
 </script>
 
-
 <style lang="less" scoped>
 .att-name {
   width: 20%;
-  // text-align: right;
-}
-
-.att-value {
-  // width: 30%;
-  // text-align: right;
 }
 
 .disabled-btn {
@@ -126,8 +121,8 @@ export default {
   background-image: url("../assets/ui/@{filename}.png");
   background-size: contain;
   background-repeat: no-repeat;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   margin: 0 1rem;
 }
 

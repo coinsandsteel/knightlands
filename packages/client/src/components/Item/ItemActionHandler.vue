@@ -67,6 +67,7 @@ export default {
             this.request = this.$game.useItem(item.id, count);
 
             const units = await this.request;
+            this.$game.handleArmySummoned(units);
             await ShowUnitsSummoned(units);
           }
           break;

@@ -75,36 +75,36 @@
         <div
           class="width-100 flex flex-space-evenly font-size-18 margin-bottom-2"
         >
-          <div class="flex flex-column width-45">
-            <span>{{ $t("beast-boost", { count: 1 }) }}</span>
-            <PromisedButton
-              :promise="request"
-              type="yellow"
-              @click="regularBoost(1)"
-              :disabled="!canBoost(1)"
-            >
-              <IconWithValue iconClass="icon-gold">{{
-                softPrice
-              }}</IconWithValue>
-            </PromisedButton>
-          </div>
+          <PurchaseButton
+            class="width-45"
+            type="grey"
+            @click="regularBoost(1)"
+            :soft="true"
+            :price="softPrice"
+          >
+            <span class="margin-right-1">{{
+              $t("beast-boost", { count: 1 })
+            }}</span>
+          </PurchaseButton>
 
-          <div class="flex flex-column width-45">
-            <span>{{ $t("beast-boost", { count: 50 }) }}</span>
-            <PromisedButton
-              :promise="request"
-              type="yellow"
-              @click="regularBoost(50)"
-              :disabled="!canBoost(50)"
-            >
-              <IconWithValue iconClass="icon-gold">{{
-                softPrice * 50
-              }}</IconWithValue>
-            </PromisedButton>
-          </div>
+          <PurchaseButton
+            class="width-45"
+            type="grey"
+            @click="regularBoost(50)"
+            :soft="true"
+            :price="softPrice * 50"
+          >
+            <span class="margin-right-1">{{
+              $t("beast-boost", { count: 50 })
+            }}</span>
+          </PurchaseButton>
         </div>
 
-        <Title class="margin-bottom-1" @click="showAdvancedBoostInfo">
+        <Title
+          :stackBottom="true"
+          class="margin-bottom-1"
+          @click="showAdvancedBoostInfo"
+        >
           <IconWithValue
             iconClass="icon-info"
             :flip="true"
@@ -114,11 +114,11 @@
         </Title>
 
         <div
-          class="width-100 flex flex-column flex-center"
+          class="width-100 flex flex-column flex-center color-panel-1"
           v-if="totalSouls() > 0"
         >
           <div
-            class="flex flex-center padding-left-1 padding-right-1 font-size-18"
+            class="flex flex-center padding-left-1 padding-right-1 font-size-18 margin-bottom-1"
           >
             <span>{{ $t(beastItemName) }}</span>
             <div class="item-icon" :class="ticketIcon"></div>
@@ -126,66 +126,61 @@
           </div>
 
           <div class="width-100 flex flex-space-evenly font-size-18">
-            <div class="flex flex-column width-45">
-              <span>{{ $t("beast-boost", { count: 1 }) }}</span>
-              <PromisedButton
-                :promise="request"
-                type="green"
-                @click="advancedBoost(1)"
+            <CustomButton
+              type="yellow"
+              class="width-45"
+              @click="advancedBoost(1)"
+            >
+              <div
+                class="flex flex-items-center padding-left-1 padding-right-1"
               >
-                <div
-                  class="flex flex-items-center padding-left-1 padding-right-1"
-                >
-                  <div class="item-icon" :class="ticketIcon"></div>
-                  <span class="font-size-18">1</span>
-                </div>
-              </PromisedButton>
-            </div>
+                <span class="margin-right-1">{{
+                  $t("beast-boost", { count: 1 })
+                }}</span>
+                <div class="item-icon" :class="ticketIcon"></div>
+                <span>1</span>
+              </div>
+            </CustomButton>
 
-            <div class="flex flex-column width-45" v-if="batchBoost() > 1">
-              <span>{{ $t("beast-boost", { count: batchBoost() }) }}</span>
-              <PromisedButton
-                :promise="request"
-                type="green"
-                @click="advancedBoost(batchBoost())"
+            <CustomButton
+              class="width-45"
+              v-if="batchBoost() > 1"
+              type="yellow"
+              @click="advancedBoost(batchBoost())"
+            >
+              <div
+                class="flex flex-items-center padding-left-1 padding-right-1"
               >
-                <div
-                  class="flex flex-items-center padding-left-1 padding-right-1"
-                >
-                  <div class="item-icon" :class="ticketIcon"></div>
-                  <span class="font-size-18">{{ batchBoost() }}</span>
-                </div>
-              </PromisedButton>
-            </div>
+                <span class="margin-right-1">{{
+                  $t("beast-boost", { count: batchBoost() })
+                }}</span>
+                <div class="item-icon" :class="ticketIcon"></div>
+                <span>{{ batchBoost() }}</span>
+              </div>
+            </CustomButton>
           </div>
         </div>
 
-        <div class="width-100 flex flex-space-evenly font-size-18">
-          <div
-            class="flex flex-column width-45"
+        <div class="width-100 flex flex-space-evenly font-size-18 margin-top-2">
+          <PurchaseButton
             v-for="(iapMeta, index) in iaps"
             :key="index"
+            :price="iapMeta.price"
+            class="width-45 margin-bottom-1"
+            type="green"
+            @click="purchaseBoostItems(index)"
           >
-            <span>{{
-              $t("beast-souls", { count: iapMeta.ticketsCount })
+            <span class="margin-right-1">{{
+              $t("beast-boost", { count: iapMeta.ticketsCount })
             }}</span>
-            <PromisedButton
-              :promise="request"
-              type="green"
-              @click="purchaseBoostItems(index)"
-            >
-              <IconWithValue iconClass="icon-premium">{{
-                iapMeta.price
-              }}</IconWithValue>
-            </PromisedButton>
-          </div>
+          </PurchaseButton>
         </div>
       </div>
 
       <div v-else-if="canEvolve" class="flex flex-center width-100">
-        <PromisedButton type="green" @click="evolve">{{
+        <CustomButton type="green" @click="evolve">{{
           $t("beast-evolve")
-        }}</PromisedButton>
+        }}</CustomButton>
       </div>
     </div>
   </div>
@@ -195,7 +190,7 @@
 import AppSection from "@/AppSection.vue";
 import Beasts from "@/beasts";
 import CharacterStats from "@/../../knightlands-shared/character_stat.js";
-import PromisedButton from "@/components/PromisedButton.vue";
+import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -203,6 +198,7 @@ import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
 import EnemyView from "@/components/EnemyView.vue";
 import Title from "@/components/Title.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 
 const Events = require("@/../../knightlands-shared/events");
 
@@ -211,7 +207,8 @@ const MaxBoostSize = 50;
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   components: {
-    PromisedButton,
+    PurchaseButton,
+    CustomButton,
     IconWithValue,
     ProgressBar,
     FloatingTextContainer,
@@ -219,8 +216,6 @@ export default {
     Title
   },
   data: () => ({
-    request: null,
-    statusRequest: null,
     beast: {
       level: 0,
       index: 0,
@@ -327,16 +322,14 @@ export default {
       this.request = this.$game.evolveBeast();
     },
     async regularBoost(count) {
-      this.request = this.$game.beastRegularBoost(count);
-
-      const result = await this.request;
-      this.handleBoostResult(result);
+      this.handleBoostResult(
+        await this.performRequest(this.$game.beastRegularBoost(count))
+      );
     },
     async advancedBoost(count) {
-      this.request = this.$game.beastAdvancedBoost(count);
-
-      const result = await this.request;
-      this.handleBoostResult(result);
+      this.handleBoostResult(
+        await this.performRequest(this.$game.beastAdvancedBoost(count))
+      );
     },
     async purchaseBoostItems(iapIndex) {
       this.handleBoostResult(

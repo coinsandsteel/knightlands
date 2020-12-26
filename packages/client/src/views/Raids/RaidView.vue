@@ -154,7 +154,7 @@
           </div>
 
           <!--NOT IN RAID YET-->
-          <div class="flex-center" v-else>
+          <div class="flex flex-column flex-center" v-else>
             <div class="color-panel-2">
               <span class="font-size-20">
                 {{ $t("time-left") }}
@@ -163,7 +163,7 @@
             </div>
 
             <div
-              class="margin-top-3 flex flex-center width-100 margin-bottom-3 flex-space-around full-flex"
+              class="margin-top-3 flex flex-center width-100 flex-space-around full-flex"
             >
               <custom-button
                 v-if="hasChallenges"
@@ -186,23 +186,19 @@
               </CustomButton>
             </div>
 
-            <PaymentStatus
-              :request="statusRequest"
-              @pay="continuePurchase"
-              @iap="setIap"
-            >
-              <PromisedButton
-                :promise="purchasePromise"
-                width="16rem"
-                type="yellow"
-                @click="join"
-              >
-                <div class="flex flex-no-wrap">
-                  <span class="margin-right-half">{{ $t("join") }}</span>
-                  <PriceTag :dark="true" :iap="raidData.joinIap"></PriceTag>
-                </div>
-              </PromisedButton>
-            </PaymentStatus>
+            <div class="margin-top-2 margin-bottom-2" v-if="$game.load">
+              <div class="flex flex-center margin-top-1">
+                <crafting-ingridient
+                  v-for="essence in requiredJoinEssences"
+                  :key="essence.itemId"
+                  :ingridient="essence"
+                />
+              </div>
+            </div>
+
+            <PromisedButton width="16rem" type="yellow" @click="join">
+              <span class="margin-right-half">{{ $t("join") }}</span>
+            </PromisedButton>
           </div>
         </div>
 
@@ -240,7 +236,6 @@
 </template>
 
 <script>
-import PaymentHandler from "@/components/PaymentHandler.vue";
 import CopyButton from "@/components/CopyButton.vue";
 import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
@@ -253,9 +248,7 @@ import ClaimedReward from "./ClaimedReward.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat";
 import Errors from "@/../../knightlands-shared/errors";
 import Prompt from "@/components/Prompt.vue";
-import PaymentStatus from "@/components/PaymentStatus.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
-import PriceTag from "@/components/PriceTag.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 import RaidArmy from "./Army/RaidArmy.vue";
 import RaidOptions from "./RaidOptions.vue";
@@ -267,6 +260,8 @@ import SpriteAnimator from "@/components/SpriteAnimator.vue";
 import Timer from "@/timer.js";
 import Title from "@/components/Title.vue";
 import RaidsMeta from "@/raids_meta";
+import CraftingIngridient from "@/components/CraftingIngridient.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
@@ -311,6 +306,7 @@ const MAX_LAST_DAMAGES = 10;
 export default {
   name: "raid",
   components: {
+    CraftingIngridient,
     LoadingScreen,
     Promised,
     CustomButton,
@@ -319,9 +315,7 @@ export default {
     DamageText,
     CopyButton,
     Challenges: () => import("./Challenges/Challenges.vue"),
-    PaymentStatus,
     PromisedButton,
-    PriceTag,
     BossAnimation,
     RaidArmy,
     RaidOptions,
@@ -331,11 +325,10 @@ export default {
     RewardsPreview,
     TokenChart: () => import("./TokenChart.vue")
   },
-  mixins: [AppSection, PaymentHandler, RaidGetterMixin],
+  mixins: [AppSection, RaidGetterMixin, NetworkRequestErrorMixin],
   props: ["raidId"],
   data: () => ({
     attackInProgress: false,
-    statusRequest: null,
     purchasePromise: null,
     showChallenges: false,
     showChart: false,
@@ -409,7 +402,7 @@ export default {
       if (!this.raidState) {
         return false;
       }
-      return this.raidState.participants[this.$game.account] !== undefined;
+      return this.raidState.participants[this.$game.id] !== undefined;
     },
     currentDamage() {
       return this.raidState.currentDamage;
@@ -451,11 +444,6 @@ export default {
     },
     async init() {
       await this.getRaid();
-
-      if (!this.participant) {
-        this.fetchPaymentStatus();
-      }
-
       this.bossViewCenter = this.$refs.bossView.center;
       this.checkIfRaidWon();
     },
@@ -503,17 +491,13 @@ export default {
         this.raidState.isFirst
       );
     },
-    fetchPaymentStatus() {
-      this.statusRequest = this.$game.fetchRaidJoinStatus(this.raidId);
-    },
     async fetchRewards() {
       this.rewards = await this.$game.fetchRaidRewards(this.raidId);
     },
-    async handlePaymentComplete(iap, context) {
-      await this.getRaid();
-    },
     async join() {
-      this.purchasePromise = this.$game.joinRaid(this.raidId);
+      this.purchasePromise = this.performRequest(
+        this.$game.joinRaid(this.raidId)
+      );
       await this.purchaseRequest(this.purchasePromise);
     },
     async claimReward() {
@@ -702,7 +686,6 @@ export default {
       if (this.lastDamages.length > MAX_LAST_DAMAGES) {
         this.lastDamages.splice(0, 1);
       }
-
       if (data.by == this.$game.account) {
         // increase current damage
         this.raidState.currentDamage += data.damage;

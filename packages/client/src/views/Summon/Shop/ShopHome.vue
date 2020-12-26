@@ -32,6 +32,7 @@ export default {
   mixins: [AppSection],
   created() {
     this.title = "w-shop";
+    this.$options.useRouterBack = true;
   },
   components: {
     Tabs

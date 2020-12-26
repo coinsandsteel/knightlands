@@ -21,9 +21,14 @@ import CustomButton from "@/components/Button.vue";
 import TrialBackground from "./trialBackgrounds";
 
 export default {
-  props: ["trialType", "index", "trial", "locked"],
+  props: ["trialType", "index", "trial"],
   components: { CustomButton },
   computed: {
+    locked() {
+      return !this.$game.getTrialState(this.trialType).unlockedTrials[
+        this.trial.id
+      ];
+    },
     background() {
       return {
         "background-image": `url(${TrialBackground.getBackground(

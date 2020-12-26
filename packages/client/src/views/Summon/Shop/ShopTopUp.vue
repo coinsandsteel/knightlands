@@ -7,8 +7,17 @@
     class="width-100"
   >
     <div class="shop-container">
-      <ShiniesShopElement
+      <TopUpShopElement
         v-for="entry in shinies"
+        :key="entry.iap"
+        :data="entry"
+        @purchase="handlePurchase"
+      />
+    </div>
+
+    <div class="shop-container margin-top-2">
+      <TopUpShopElement
+        v-for="entry in tickets"
         :key="entry.iap"
         :data="entry"
         @purchase="handlePurchase"
@@ -18,33 +27,42 @@
 </template>
 
 <script>
-import ShiniesShopElement from "./ShiniesShopElement.vue";
+import TopUpShopElement from "./TopUpShopElement.vue";
 import Meta from "@/top_up_shop";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
-import Events from "@/../../knightlands-shared/events";
+
+import ItemsReceived from "@/components/ItemsReceived.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowDialog = create(ItemsReceived, "items", "soft", "hard");
 
 export default {
   mixins: [NetworkRequestErrorMixin, PaymentHandler],
-  components: { ShiniesShopElement, PaymentStatus },
+  components: { TopUpShopElement, PaymentStatus },
   data: () => ({
     shinies: Meta.shinies,
+    tickets: Meta.raidTickets,
     request: null
   }),
-  created() {
-    this.$options.paymentEvents = [Events.PurchaseComplete];
-  },
   activated() {
     this.fetchPaymentStatus();
   },
   methods: {
+    handlePaymentComplete(iap, context) {
+      if (context.item) {
+        ShowDialog([context]);
+      } else {
+        ShowDialog([], 0, context.hard);
+      }
+    },
     async fetchPaymentStatus() {
       this.request = this.$game.paymentStatus();
     },
     async handlePurchase(iap) {
       this.setIap(iap);
-      await this.purchaseRequest(this.$game.purchase(iap, this.$game.account));
+      await this.purchaseRequest(this.$game.purchase(iap));
     }
   }
 };

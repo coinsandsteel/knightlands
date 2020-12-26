@@ -7,7 +7,6 @@
         :index="index"
         :trial="trial"
         :trialType="scope.trialType"
-        :locked="!scope.unlockedTrials[trial.id]"
         @click="scope.open(trial.id, index)"
       ></TrialListElement>
     </template>

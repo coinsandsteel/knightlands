@@ -45,6 +45,8 @@ class Game {
         authenticated: false,
         questsProgress: {},
         account: undefined,
+        _id: null,
+        address: undefined,
         ready: false,
         walletReady: false,
         loaded: false,
@@ -56,7 +58,8 @@ class Game {
         dailyQuests: {},
         goldMines: {},
         dividends: {},
-        dailyShop: {}
+        dailyShop: {},
+        subscriptions: {}
       })
     });
 
@@ -102,7 +105,6 @@ class Game {
     this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
     this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
     this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
-    this._socket.on(Events.UnitSummoned, this._handleArmySummoned.bind(this));
     this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
     this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
     this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
@@ -180,7 +182,7 @@ class Game {
   }
 
   get isAdmin() {
-    return this.account === "TL58CLCzVVr9x4GoBPDxz7VW3Hko9oqrGi";
+    return this.address === "TL58CLCzVVr9x4GoBPDxz7VW3Hko9oqrGi";
   }
 
   hasWallet() {
@@ -259,8 +261,16 @@ class Game {
     return this._vm.account;
   }
 
+  get id() {
+    return this._vm._id;
+  }
+
   get character() {
     return this._character;
+  }
+
+  get subscriptions() {
+    return this._vm.subscriptions;
   }
 
   get dailyShop() {
@@ -284,18 +294,18 @@ class Game {
 
     if (this._blockchainClient.isReady()) {
       this._vm.walletReady = true;
-      this._vm.account = this._blockchainClient.getAddress();
+      this._vm.address = this._blockchainClient.getAddress();
     }
 
     setInterval(() => {
       if (this._blockchainClient.isReady()) {
         this._vm.walletReady = true;
 
-        if (!this._vm.account) {
-          this._vm.account = this._blockchainClient.getAddress();
-        } else if (this._vm.account !== this._blockchainClient.getAddress()) {
+        if (!this._vm.address) {
+          this._vm.address = this._blockchainClient.getAddress();
+        } else if (this._vm.address !== this._blockchainClient.getAddress()) {
           this.logout();
-          this._vm.account = this._blockchainClient.getAddress();
+          this._vm.address = this._blockchainClient.getAddress();
           this._vm.$emit(
             this.WalletChanged,
             this._blockchainClient.getAddress()
@@ -319,11 +329,11 @@ class Game {
     this._vm.$off(evt);
   }
 
-  shortAccount(account) {
-    if (!account) {
-      account = this.account;
+  shortAccount(address) {
+    if (!address) {
+      address = this.address;
     }
-    return `${account.substr(0, 4)}...${account.substr(-4)}`;
+    return `${address.substr(0, 4)}...${address.substr(-4)}`;
   }
 
   connect() {
@@ -365,6 +375,15 @@ class Game {
     });
   }
 
+  async purchaseCard(cardId, address) {
+    return (
+      await this._wrapOperation(Operations.Purchase, {
+        cardId,
+        address
+      })
+    ).response;
+  }
+
   async purchasePack(packId, address) {
     return (
       await this._wrapOperation(Operations.Purchase, {
@@ -378,7 +397,7 @@ class Game {
     return (
       await this._wrapOperation(Operations.Purchase, {
         iap,
-        address
+        address: this._blockchainClient.getAddress()
       })
     ).response;
   }
@@ -493,11 +512,8 @@ class Game {
     this._army.updateReserve(data);
   }
 
-  _handleArmySummoned(data) {
-    this._vm.$emit(Events.UnitSummoned, data);
-    if (!data.reason) {
-      this._army.addUnits(data.context);
-    }
+  handleArmySummoned(units) {
+    this._army.addUnits(units);
   }
 
   _handleUnitsRemoved(data) {
@@ -674,6 +690,14 @@ class Game {
       this.mergeObjects(this._vm, this._vm.goldMines, changes.goldMines);
     }
 
+    if (changes.subscriptions) {
+      this.mergeObjects(
+        this._vm,
+        this._vm.subscriptions,
+        changes.subscriptions
+      );
+    }
+
     if (changes.beast) {
       this.mergeObjects(this._vm, this._vm.beast, changes.beast);
     }
@@ -782,6 +806,8 @@ class Game {
           this._vm.classInited = info.classInited;
         }
 
+        this._vm._id = info._id;
+        this._vm.account = info.address;
         this._vm.beast = info.beast;
         this._vm.towerFreeAttempts = info.tower.freeAttemps;
         this._vm.trials = info.trials;
@@ -790,6 +816,7 @@ class Game {
         this._vm.dividends = info.dividends;
         this._vm.dailyShop = info.dailyShop;
         this._vm.purchasedIaps = info.purchasedIaps;
+        this._vm.subscriptions = info.subscriptions;
 
         if (!this._vm.loaded) {
           this._checkClassChoice();
@@ -1056,18 +1083,12 @@ class Game {
   }
 
   async fetchCurrentRaids() {
-    return await this._request(Operations.FetchRaidsList);
-  }
-
-  async fetchRaidJoinStatus(raidId) {
-    return await this._request(Operations.FetchRaidJoinStatus, {
-      raidId
-    });
+    return (await this._wrapOperation(Operations.FetchRaidsList)).response;
   }
 
   async joinRaid(raidId, isFree = false) {
     return (
-      await this._request(Operations.JoinRaid, {
+      await this._wrapOperation(Operations.JoinRaid, {
         raidId,
         isFree
       })
@@ -1075,27 +1096,25 @@ class Game {
   }
 
   async fetchRaid(raidId) {
-    return await this._request(Operations.FetchRaidInfo, {
-      raidId
-    });
-  }
-
-  async fetchRaidSummonStatus(raid) {
-    return await this._request(Operations.FetchRaidSummonStatus, {
-      raid
-    });
+    return (
+      await this._wrapOperation(Operations.FetchRaidInfo, {
+        raidId
+      })
+    ).response;
   }
 
   async summonRaid(raid, free) {
-    return await this._request(Operations.SummonRaid, {
-      raid,
-      free
-    });
+    return (
+      await this._wrapOperation(Operations.SummonRaid, {
+        raid,
+        free
+      })
+    ).response;
   }
 
   async fetchRaidRewards(raidId) {
     return (
-      await this._request(Operations.FetchRaidRewards, {
+      await this._wrapOperation(Operations.FetchRaidRewards, {
         raidId
       })
     ).response;

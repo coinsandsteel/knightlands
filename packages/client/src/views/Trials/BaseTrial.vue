@@ -55,7 +55,7 @@ import { create } from "vue-modal-dialogs";
 const ShowRewards = create(ItemsReceived, "items", "soft", "exp");
 
 export default {
-  props: ["trialType", "meta", "mountCallback", "state", "trialIndex"],
+  props: ["trialType", "meta", "mountCallback", "trialIndex"],
   mixins: [HintHandler, PromptMixin],
   components: {
     TrialStageListElement,
@@ -71,6 +71,11 @@ export default {
   }),
   mounted() {
     this.mountCallback(this.handleBackButton.bind(this));
+  },
+  computed: {
+    state() {
+      return this.$game.getTrialState(this.trialType);
+    }
   },
   watch: {
     selectedStage: {

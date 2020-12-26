@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column flex-center margin-1 padding-1">
     <Loot :item="data.item" :quantity="data.count" @hint="handleHint" />
-    <span class="font-size-20 font-weight-900 font-outline">{{
+    <span class="font-size-18 font-weight-900 font-outline margin-half">{{
       $t("d-pur-left", { left: purchasesLeft })
     }}</span>
     <PurchaseButton
