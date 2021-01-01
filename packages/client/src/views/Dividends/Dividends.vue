@@ -150,7 +150,6 @@ export default {
   },
   data: () => ({
     divsInfo: null,
-    request: null,
     nextPayoutTimer: new Timer(true),
     seasonTimer: new Timer(true)
   }),
@@ -161,13 +160,10 @@ export default {
       this.handlePayoutTimerFinished.bind(this)
     );
   },
-  mounted() {
-    this.init();
-  },
   activated() {
     this.init();
   },
-  destroyed() {
+  deactivated() {
     this.$game.removeAllListeners(Events.DivTokenWithdrawal);
   },
   computed: {
@@ -258,24 +254,24 @@ export default {
       }
     },
     async fetchDividendsInfo() {
-      this.request = this.$game.getDivsStatus();
-
       try {
-        this.divsInfo = await this.request;
+        this.divsInfo = await this.performRequest(this.$game.getDivsStatus());
 
         this.nextPayoutTimer.timeLeft =
           this.divsInfo.nextPayout - this.$game.nowSec;
 
         this.seasonTimer.timeLeft =
           this.divsInfo.season.finishAt - this.$game.nowSec;
-      } catch {
+      } catch (exc) {
         // possible stack overflow
         await this.fetchDividendsInfo();
       }
     },
     async withdrawToken() {
-      this.request = this.$game.requestDividendTokenWithdrawal(this.dkt);
-      const { nonce, signature, amount } = await this.request;
+      console.log(3);
+      const { nonce, signature, amount } = await this.performRequest(
+        this.$game.requestDividendTokenWithdrawal(this.dkt)
+      );
 
       this.nonce = nonce;
       this.signature = signature;
@@ -284,12 +280,14 @@ export default {
       await this.confirmWithdrawal();
     },
     async confirmWithdrawal() {
-      this.request = this.$game.sendDividendTokenWithdrawal(
-        this.amount,
-        this.nonce,
-        this.signature
+      console.log(4);
+      await this.performRequest(
+        this.$game.sendDividendTokenWithdrawal(
+          this.amount,
+          this.nonce,
+          this.signature
+        )
       );
-      await this.request;
     },
     handleWithdrawal(data) {
       if (data.success) {

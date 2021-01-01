@@ -6,8 +6,10 @@
       <div v-bar>
         <div>
           <GoldStorageElement
+            v-if="mines.length > 0"
             @upgrade-storage="handleStorageUpgrade"
             @collect="handleCollectGold"
+            :disabled="mines.length == 0"
           />
           <GoldMineElement
             v-for="(mine, idx) in mines"
@@ -53,14 +55,14 @@ export default {
   },
   computed: {
     hasExpandableSlots() {
-      return MinesMeta.addMines.length > this.mines.length - 1;
+      return MinesMeta.addMines.length > this.mines.length;
     },
     expandPrice() {
       if (!this.hasExpandableSlots) {
         return 0;
       }
 
-      return MinesMeta.addMines[this.mines.length - 1];
+      return MinesMeta.addMines[this.mines.length];
     },
     mines() {
       return this.$game.goldMines.mines;

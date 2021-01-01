@@ -17,7 +17,7 @@
     >
       <div
         :class="{ hidden: questIndex <= 0 }"
-        class="quest-nav flex flex-item-center"
+        class="quest-nav flex flex-item-center pointer padding-left-2"
         @click="goToPrev"
       >
         <div class="nav-arrow left"></div>
@@ -44,7 +44,7 @@
 
       <div
         :class="{ hidden: questIndex >= maxQuestIndex }"
-        class="quest-nav right flex flex-item-center"
+        class="quest-nav right flex flex-item-center pointer padding-right-2"
         @click="goToNext"
       >
         <div class="nav-arrow"></div>
@@ -70,9 +70,9 @@
 
     <div class="color-panel-1 flex flex-column full-flex">
       <progress-bar
-        :percentMode="true"
-        v-model="progress.current"
-        :maxValue="progress.max"
+        :percentMode="!isBoss"
+        v-model="currentProgress"
+        :maxValue="maxProgress"
         height="0.75rem"
         width="80%"
         valuePosition="top"
@@ -85,19 +85,19 @@
         <div
           class="width-50 font-size-25 flex flex-column flex-center flex-justify-start"
         >
-          <span class="margin-bottom-1 yellow-title font-weight-900"
-            >Rewards</span
-          >
+          <span class="margin-bottom-1 yellow-title font-weight-900">{{
+            $t("rewards")
+          }}</span>
           <div class="flex flex-column flex-start">
             <icon-with-value
               class="flex-start margin-bottom-half"
               iconClass="icon-exp"
-              :value="quest.exp"
+              :value="exp"
             ></icon-with-value>
             <icon-with-value
               class="flex-start"
               iconClass="icon-gold"
-              :value="`${quest.goldMin}-${quest.goldMax}`"
+              :value="goldValue"
             ></icon-with-value>
           </div>
         </div>
@@ -136,7 +136,7 @@
           }}</AttackButton>
           <PromisedButton
             :promise="request"
-            :locked="!$game.hasPremiumAccount"
+            :locked="!hasFastQuests"
             @click="engage(true)"
             >{{ isBoss ? $t("q-att-m") : $t("q-prog-m") }}</PromisedButton
           >
@@ -144,7 +144,7 @@
       </div>
     </div>
 
-    <Title class="margin-top-2">Loot</Title>
+    <Title class="margin-top-2">{{ $t("loot") }}</Title>
 
     <div class="flex full-flex padding-left-1 padding-right-1 margin-top-1">
       <loot
@@ -173,6 +173,7 @@ import Title from "@/components/Title.vue";
 import NewLoot from "@/components/Item/NewLoot.vue";
 import DamageText from "@/views/Raids/DamageText.vue";
 import Errors from "@/../../knightlands-shared/errors";
+import QuestGetterMixin from "./QuestGetterMixin.vue";
 
 import { create } from "vue-modal-dialogs";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
@@ -186,7 +187,7 @@ const DAMAGE_DELAY = 200;
 
 export default {
   name: "quest-mission",
-  mixins: [HintHandler, NetworkRequestErrorMixin],
+  mixins: [HintHandler, NetworkRequestErrorMixin, QuestGetterMixin],
   props: ["zone", "questIndex", "maxQuestIndex", "stage"],
   components: {
     Loot,
@@ -226,6 +227,14 @@ export default {
     this.lootHash = {};
   },
   computed: {
+    maxProgress() {
+      return this.progress.max;
+    },
+    currentProgress() {
+      return this.isBoss
+        ? this.progress.max - this.progress.current
+        : this.progress.current;
+    },
     enemyList() {
       return [0, 1, 2, 3, 4, 5];
     },
@@ -234,9 +243,6 @@ export default {
     },
     progress() {
       return this.$game.getQuestProgress(this.zone._id, this.questIndex);
-    },
-    quest() {
-      return this.zone.quests[this.questIndex].stages[this.stage];
     },
     zoneBackground() {
       return UiConstants.backgroundImage(Zones.getBackground(this.zone._id));
@@ -426,14 +432,6 @@ export default {
   background-size: cover;
   background-position: center;
   margin-bottom: 1rem;
-
-  .quest-nav:first-child {
-    padding-left: 1rem;
-  }
-
-  .quest-nav:last-child {
-    padding-right: 1rem;
-  }
 }
 
 .quest-enemies {
@@ -466,14 +464,13 @@ export default {
 }
 
 .hidden {
-  opacity: 0;
+  display: none;
 }
 
 .quest-nav {
   left: 0;
   position: absolute;
-  z-index: 2;
-  cursor: pointer;
+  z-index: 100;
   height: 14rem;
   transition: all 0.2s ease;
 

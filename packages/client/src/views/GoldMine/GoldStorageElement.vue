@@ -42,6 +42,7 @@ export default {
     CustomButton,
     IconWithValue
   },
+  props: ["disabled"],
   data: () => ({
     gold: 0
   }),
@@ -64,7 +65,7 @@ export default {
   },
   computed: {
     cantUpgradeStorage() {
-      return this.storagePrice > this.$game.softCurrency;
+      return !this.disabled && this.storagePrice > this.$game.softCurrency;
     }
   },
   methods: {

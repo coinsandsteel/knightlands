@@ -13,7 +13,6 @@
 
 <script>
 import PurchaseButton from "@/components/PurchaseButton.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["price"],

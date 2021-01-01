@@ -40,6 +40,14 @@ export default {
     this.$game.off(this.$game.SignUp, this.cb);
   },
   mounted() {
+    // if (window.location.search.includes("magic_credential")) {
+    //   this.performRequest(this.$game.trySignIn());
+    // } else {
+    //   if (this.$game.authenticated) {
+    //     this.redirectToNextPage();
+    //   }
+    // }
+
     if (this.$game.authenticated) {
       this.redirectToNextPage();
     }
@@ -53,7 +61,7 @@ export default {
         this.$router.replace({ name: "home" });
       }
     },
-  async signIn() {
+    async signIn() {
       this.request = this.performRequest(this.$game.signIn(this.email));
 
       try {

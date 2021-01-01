@@ -1,5 +1,5 @@
 <template>
-  <div class="dummy-height width-100 padding-top-1">
+  <div class="dummy-height width-100" :class="{ 'padding-top-1': hasItems }">
     <div class="height-100" v-bar>
       <div class="flex flex-column">
         <template v-if="characterItems.length > 0">
@@ -100,6 +100,13 @@ export default {
     },
     generalsItems() {
       return this.getArmyEquippedItems(false);
+    },
+    hasItems() {
+      return (
+        this.characterItems.length > 0 ||
+        this.troopsItems.length > 0 ||
+        this.generalsItems.length > 0
+      );
     }
   },
   methods: {

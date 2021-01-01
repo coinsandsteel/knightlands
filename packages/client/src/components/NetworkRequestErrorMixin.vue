@@ -3,15 +3,14 @@ import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
   mixins: [PromptMixin],
-  data: () => ({
-    _request: null
-  }),
   methods: {
     async performRequest(request) {
+      let timeout;
       try {
-        this._showLoading();
+        timeout = this._showLoading();
         return await request;
       } catch (exc) {
+        console.error(exc);
         this.showPrompt(
           this.$t("request-error-title"),
           this.$t("request-desc"),
@@ -26,20 +25,22 @@ export default {
 
         throw exc;
       } finally {
-        this._hideLoading();
+        this._hideLoading(timeout);
       }
     },
     async performRequestNoCatch(request) {
+      let timeout;
+
       try {
-        this._showLoading();
+        timeout = this._showLoading();
 
         return await request;
       } finally {
-        this._hideLoading();
+        this._hideLoading(timeout);
       }
     },
     _showLoading() {
-      this._timeout = setTimeout(() => {
+      return setTimeout(() => {
         this.$notify({
           group: "loading",
           duration: -1,
@@ -47,8 +48,8 @@ export default {
         });
       }, 200);
     },
-    _hideLoading() {
-      clearTimeout(this._timeout);
+    _hideLoading(timeout) {
+      clearTimeout(timeout);
       this.$notify({
         group: "loading",
         clean: true

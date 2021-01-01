@@ -807,17 +807,18 @@ const router = new Router({
         skipReady: true
       }
     },
-    {
-      path: "/",
-      alias: "/inventory",
-      name: "inventory",
-      component: PrelaunchInventory,
-      meta: {
-        skipReady: true
-      }
-    },
+    // {
+    //   path: "/",
+    //   alias: "/inventory",
+    //   name: "inventory",
+    //   component: PrelaunchInventory,
+    //   meta: {
+    //     skipReady: true
+    //   }
+    // },
     {
       path: "/home",
+      alias: "/",
       name: "home",
       component: Home,
       meta: {

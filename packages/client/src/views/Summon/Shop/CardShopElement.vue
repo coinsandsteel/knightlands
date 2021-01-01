@@ -37,6 +37,8 @@
         v-html="$t('sub-6', { c: card.addGold })"
       ></div>
 
+      <span class="line" v-if="card.fastQuests">{{ $t("sub-11") }}</span>
+
       <span class="line" v-if="card.towerAttempts">{{
         $t("sub-1", { c: card.towerAttempts })
       }}</span>

@@ -100,20 +100,33 @@ export default {
     },
     damageThresholds() {
       return this.loot.damageThresholds;
+    },
+    subBonuses() {
+      return this.$game.subscription.cardBonuses;
+    },
+    computedDktFactor() {
+      return (this.dktFactor * (100 + this.subBonuses.dkt)) / 100;
     }
   },
   methods: {
     getMinDkt(threshold) {
       return (
         Math.floor(
-          this.data.maxDkt * 0.7 * threshold.dktReward * this.dktFactor * 10000
+          this.data.maxDkt *
+            0.7 *
+            threshold.dktReward *
+            this.computedDktFactor *
+            10000
         ) / 10000
       );
     },
     getMaxDkt(threshold) {
       return (
         Math.floor(
-          this.data.maxDkt * threshold.dktReward * this.dktFactor * 10000
+          this.data.maxDkt *
+            threshold.dktReward *
+            this.computedDktFactor *
+            10000
         ) / 10000
       );
     },

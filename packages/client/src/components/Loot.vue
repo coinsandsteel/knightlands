@@ -42,17 +42,15 @@
       </div>
 
       <div
-        class="loot-quantity"
+        class="loot-quantity flex flex-end flex-items-center"
         :class="{ bottom: gacha }"
         v-if="!hideQuantity && (gacha || (itemData && !equipment && count > 0))"
       >
-        <span class="font-size-18 font-weight-700 font-shadow">{{
-          countCompact
-        }}</span>
+        <span class="font-size-18 font-weight-700">{{ countCompact }}</span>
       </div>
 
       <div v-if="showLevel && itemData" class="item-level">
-        <span class="font-size-18 digit-font font-shadow font-weight-700">{{
+        <span class="font-size-18 font-weight-700">{{
           $t("level", { lvl: itemData.level || 1 })
         }}</span>
       </div>
@@ -224,11 +222,22 @@ export default {
 @import (reference) "../style/common.less";
 
 .loot-quantity {
+  background: rgba(33, 0, 40, 0.7);
+  background: linear-gradient(
+    90deg,
+    rgba(33, 0, 40, 0) 0%,
+    rgba(33, 0, 40, 0.7) 80%,
+    rgba(33, 0, 40, 0.3) 100%
+  );
+
   position: absolute;
   bottom: 0.2rem;
-  right: 0.6rem;
+  right: 0;
+  padding-top: 0.2rem;
+  padding-right: 0.6rem;
+  left: 0;
 
-  .mobile({bottom: 0.4rem; right: 0.8rem;});
+  .mobile({bottom: 0.4rem;});
 
   &.bottom {
     position: relative;

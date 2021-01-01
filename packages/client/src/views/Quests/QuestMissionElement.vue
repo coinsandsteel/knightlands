@@ -27,31 +27,35 @@
         class="flex-5 font-size-18 right-column flex-column flex-item-center"
       >
         <div class="info flex margin-top-small">
-          <div class="flex-3 flex flex-column flex-items-start">
-            <div class="margin-bottom-small yellow-title margin-bottom-half">
-              Rewards
+          <div class="flex-2 flex flex-column flex-items-start">
+            <div
+              class="margin-bottom-small yellow-title margin-bottom-2 font-outline font-weight-900"
+            >
+              {{ $t("rew") }}
             </div>
             <div class="flex flex-column digit-font font-outline">
               <icon-with-value
                 class="flex-start"
                 iconClass="icon-exp small margin-right-1"
-                :value="quest.exp"
+                :value="exp"
                 valueClass="info-font"
               ></icon-with-value>
               <icon-with-value
                 class="flex-start"
                 iconClass="icon-gold small margin-right-1"
-                :value="`${quest.goldMin}-${quest.goldMax}`"
+                :value="goldValue"
                 valueClass="info-font"
               ></icon-with-value>
             </div>
           </div>
           <div
-            class="flex-1 flex flex-column flex-items-start"
+            class="flex-2 flex flex-column flex-items-start"
             v-show="quest.energy > 0"
           >
-            <div class="margin-bottom-small blue-title margin-bottom-half">
-              Cost
+            <div
+              class="margin-bottom-small blue-title margin-bottom-2 font-outline font-weight-900"
+            >
+              {{ $t("energy-r") }}
             </div>
             <div class="list digit-font font-outline">
               <icon-with-value
@@ -64,11 +68,11 @@
         </div>
 
         <div
-          class="grey-title font-size-20 flex-basis-50"
+          class="yellow-title font-size-20 flex-basis-50"
           v-if="!isBossUnlocked"
         >
           <div class="center-transform-vertical font-outline">
-            Kill previous enemies
+            {{ $t("f-prev-q") }}
           </div>
         </div>
 
@@ -79,9 +83,9 @@
           <div class="center-transform-vertical font-outline">Complete</div>
         </div>
 
-        <custom-button size="small" v-else @click="$emit('engage')"
-          >Engage</custom-button
-        >
+        <custom-button size="small" v-else @click="$emit('engage')">{{
+          $t("btn-s-q")
+        }}</custom-button>
       </div>
     </div>
   </div>
@@ -89,6 +93,7 @@
 
 <script>
 import ProgressBar from "@/components/ProgressBar.vue";
+import QuestGetterMixin from "./QuestGetterMixin.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import UiConstants from "@/ui_constants";
@@ -96,6 +101,7 @@ import Zones from "@/campaign_database";
 import Title from "@/components/Title.vue";
 
 export default {
+  mixins: [QuestGetterMixin],
   components: {
     ProgressBar,
     IconWithValue,

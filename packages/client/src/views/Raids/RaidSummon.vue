@@ -148,6 +148,14 @@ export default {
       ]
     };
   },
+  watch: {
+    currentTab: {
+      immediate: true,
+      handler() {
+        this.fetchInfo();
+      }
+    }
+  },
   computed: {
     weakness() {
       return this.raidStatus.weakness;
@@ -163,6 +171,11 @@ export default {
     }
   },
   methods: {
+    async fetchInfo() {
+      this.raidStatus = await this.performRequest(
+        this.$game.fetchRaidSummonStatus(this.raid, this.isFreeRaid)
+      );
+    },
     goToNext() {
       let newRaidId = this.raid * 1 + 1;
       if (RaidsMeta.max < newRaidId) {

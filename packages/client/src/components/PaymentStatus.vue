@@ -67,7 +67,6 @@ export default {
   methods: {
     async waitForStatus() {
       this.status = await this.request;
-      console.log(this.status);
       if (this.status) {
         this.$emit("iap", this.status.iap);
       }

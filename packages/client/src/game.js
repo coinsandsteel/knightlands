@@ -19,6 +19,7 @@ import TrialCardsResolver from "@/../../knightlands-shared/trial_cards_resolver"
 import TrialsMeta from "@/trials_meta";
 import ArmyDB from "@/army/armyDB";
 import Army from "@/army/army";
+import Subscription from "./subscription";
 
 import { Magic } from "magic-sdk";
 const magic = new Magic("pk_test_55236F76ECAF72CF");
@@ -63,6 +64,7 @@ class Game {
       })
     });
 
+    this._subscription = new Subscription(this, this._vm.subscriptions);
     this._inventory = new Inventory(this._items);
     this._crafting = new Crafting(CraftingRecipes, this._inventory);
     this._serverTimeDiff = 0;
@@ -173,12 +175,20 @@ class Game {
     return this._vm.goldExchange;
   }
 
+  get subscription() {
+    return this._subscription;
+  }
+
   get dailyQuests() {
     return this._vm.dailyQuests;
   }
 
   get trialCardsResolver() {
     return this._trialCardsResolver;
+  }
+
+  get address() {
+    return this._vm.address;
   }
 
   get isAdmin() {
@@ -348,12 +358,22 @@ class Game {
     return await this._blockchainClient.sign(message);
   }
 
+  async trySignIn() {
+    const didToken = await magic.auth.loginWithCredential();
+    return this._signIn(didToken);
+  }
+
   async signIn(email) {
     const didToken = await magic.auth.loginWithMagicLink({
       email: email,
-      showUI: true
+      showUI: true,
+      redirectURI: window.location.href
     });
 
+    return this._signIn(didToken);
+  }
+
+  async _signIn(didToken) {
     return new Promise(async (resolve, reject) => {
       try {
         await this._request(Operations.Auth, {
@@ -370,7 +390,9 @@ class Game {
           this._vm.walletReady = false;
         }
 
-        reject();
+        if (!exc.message && !exc.includes("authenticated")) {
+          reject();
+        }
       }
     });
   }
@@ -816,7 +838,14 @@ class Game {
         this._vm.dividends = info.dividends;
         this._vm.dailyShop = info.dailyShop;
         this._vm.purchasedIaps = info.purchasedIaps;
-        this._vm.subscriptions = info.subscriptions;
+
+        if (info.subscriptions) {
+          this.mergeObjects(
+            this._vm,
+            this._vm.subscriptions,
+            info.subscriptions
+          );
+        }
 
         if (!this._vm.loaded) {
           this._checkClassChoice();
@@ -1070,7 +1099,15 @@ class Game {
     return response.response;
   }
 
-  // Raida
+  // Raids
+  async fetchRaidSummonStatus(raid, free) {
+    return (
+      await this._request(Operations.FetchRaidSummonStatus, {
+        raid,
+        free
+      })
+    ).response;
+  }
 
   async fetchRaidTokenRates(raid, from, to) {
     return (

@@ -22,8 +22,10 @@
       >
         <slider-item v-for="zone in zones" :key="zone._id" class="zone-picture">
           <div class="zone-picture">
-            <div class="height-100 pixelated" :style="getZoneImage(zone._id)" />
-            <div class="font-size-30 overlay-title font-outline">
+            <div class="height-100" :style="getZoneImage(zone._id)" />
+            <div
+              class="font-size-30 uppercase overlay-title font-outline font-weight-900"
+            >
               {{ $t(getZoneName(zone._id)) }}
             </div>
           </div>
@@ -39,9 +41,7 @@
       <div class="nav-arrow"></div>
     </span>
 
-    <div
-      class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap"
-    >
+    <div class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap">
       <div
         :class="{ hidden: currentZone == 1 }"
         class="zone-id-dots left"
@@ -217,6 +217,6 @@ export default {
 }
 
 .hidden {
-  opacity: 0 !important;
+  display: none !important;
 }
 </style>

@@ -7,7 +7,11 @@
         :filter="equippedAccessoriesFilter"
         :hintHandler="_handleHint"
       />
-      <ItemList v-else :items="items" @hint="_handleHint" />
+      <ItemList
+        v-else-if="items.length > 0"
+        :items="items"
+        @hint="_handleHint"
+      />
     </keep-alive>
 
     <ScrollableItemHint
@@ -19,6 +23,8 @@
       :showButtons="false"
       @action="handleItemAction"
     ></ScrollableItemHint>
+
+    <NoAccessoriesMessage v-if="items.length == 0" />
 
     <portal to="footer" v-if="isActive">
       <Toggle
@@ -43,9 +49,17 @@ const {
   getSlot
 } = require("@/../../knightlands-shared/equipment_slot");
 
+import NoAccessoriesMessage from "../NoAccessoriesMessage.vue";
+
 export default {
   mixins: [AppSection, HintHandler],
-  components: { ItemList, EquippedItemList, Toggle, ScrollableItemHint },
+  components: {
+    ItemList,
+    EquippedItemList,
+    Toggle,
+    ScrollableItemHint,
+    NoAccessoriesMessage
+  },
   created() {
     this.title = "btn-reroll-acc";
     this.$options.useRouterBack = true;

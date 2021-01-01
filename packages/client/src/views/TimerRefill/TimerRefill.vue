@@ -136,6 +136,11 @@ export default {
         return this.hardCost <= this.$game.hardCurrency;
       }
 
+      if (this.methodChosen == 1) {
+        console.log(this.items);
+        return this.items && Object.keys(this.items).length > 0;
+      }
+
       return false;
     },
     canProcceed() {

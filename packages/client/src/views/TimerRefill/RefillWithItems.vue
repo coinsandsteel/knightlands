@@ -1,14 +1,21 @@
 <template>
-  <div class="flex full-flex padding-bottom-1 width-100 flex-column flex-no-wrap flex-items-center">
+  <div
+    class="flex full-flex padding-bottom-1 width-100 flex-column flex-no-wrap flex-items-center"
+  >
     <div class="margin-bottom-2 width-75">
-      <progress-bar :maxValue="maxStat" :hideMaxValue="true" v-model="barValue" :barType="color"></progress-bar>
+      <progress-bar
+        :maxValue="maxStat"
+        :hideMaxValue="true"
+        v-model="barValue"
+        :barType="color"
+      ></progress-bar>
     </div>
 
     <div
       class="width-100"
       v-bar="{
-          preventParentScroll: true,
-          scrollThrottle: 30,
+        preventParentScroll: true,
+        scrollThrottle: 30
       }"
     >
       <div>
@@ -42,7 +49,6 @@ export default {
   mixins: [HintHandler],
   components: { ItemSelector, ProgressBar },
   data: () => ({
-    items: [],
     restoredValue: 0
   }),
   mounted() {
@@ -68,12 +74,10 @@ export default {
           return "yellow";
       }
       return "";
-    }
-  },
-  methods: {
-    updateItems() {
+    },
+    items() {
       let itemsDB = this.$game.itemsDB;
-      this.items = this.$game.inventory.filterItems(x => {
+      return this.$game.inventory.filterItems(x => {
         if (x.unique) {
           return false;
         }
@@ -91,7 +95,9 @@ export default {
 
         return false;
       });
-    },
+    }
+  },
+  methods: {
     handleItemSelected(count, item) {
       const action = this.$game.itemsDB.getTemplate(item).action;
       this.selectedItems[item.id] = {
