@@ -52,7 +52,6 @@ export default {
     restoredValue: 0
   }),
   mounted() {
-    this.updateItems();
     this.selectedItems = {};
     this.usedItems = {};
   },

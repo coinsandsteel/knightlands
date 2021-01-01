@@ -240,6 +240,9 @@ export default {
   .mobile({bottom: 0.4rem;});
 
   &.bottom {
+    padding-right: 0;
+    background: none;
+    justify-content: center;
     position: relative;
     transform: translateX(-50%);
     left: 50%;

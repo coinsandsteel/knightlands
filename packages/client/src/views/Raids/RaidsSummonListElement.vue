@@ -6,7 +6,10 @@
       titleClass="font-weight-700 enemy-title-font"
       >{{ $t(raidName) }} {{ $t("unit-lvl", { lvl: raidLevel }) }}</Title
     >
-    <div class="flex full-flex color-panel-2">
+    <div
+      class="flex full-flex color-panel-1"
+      :class="{ 'color-panel-2': index % 2 }"
+    >
       <div class="flex-basis-50 boss-image" :style="raidImage" />
       <div
         class="flex-basis-50 flex flex-column flex-items-center flex-end full-flex"
@@ -22,7 +25,7 @@
         </div> -->
         <span
           v-if="!levelRequirementMet"
-          class="font-error font-size-20 font-outline margin-bottom-3"
+          class="font-error font-size-22 font-weight-900 margin-bottom-3"
           >{{ $t("no-raid-level", { level: raidLevel }) }}</span
         >
         <custom-button type="yellow" @click="openSummon">{{
@@ -41,7 +44,7 @@ import Title from "@/components/Title.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 
 export default {
-  props: ["raid", "pendingList"],
+  props: ["raid", "pendingList", "index"],
   mixins: [RaidGetterMixin],
   components: { CustomButton, Title },
   methods: {

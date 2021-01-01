@@ -315,11 +315,17 @@ export default {
       );
       try {
         let { damages, items } = await this.request;
-        let delay = 0;
+        let totalDamage = 0;
+        let isCrit = false;
         for (let i = 0; i < damages.length; ++i) {
-          this.handleDamage(damages[i].damage, damages[i].crit, delay);
-          delay += DAMAGE_DELAY;
+          isCrit |= damages[i].crit;
+          totalDamage += damages[i].damage;
         }
+
+        if (totalDamage > 0) {
+          this.handleDamage(totalDamage, isCrit, 0);
+        }
+
         this.handleLoot(items);
       } catch (exc) {
         await this._handleQuestError(exc);

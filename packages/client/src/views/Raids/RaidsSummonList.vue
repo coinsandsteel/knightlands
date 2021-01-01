@@ -7,6 +7,7 @@
           v-for="(raid, raidId) in raids"
           :key="raidId"
           :raid="raidId"
+          :index="raidId"
         />
       </div>
     </div>
