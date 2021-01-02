@@ -1,20 +1,13 @@
 <template>
-  <div v-if="active" class="marker marker-pos"></div>
+  <div v-if="active" class="marker"></div>
 </template>
 
 <script>
-export default {
-  data: () => ({
-    active: false
-  })
-};
+export default {};
 </script>
 
 <style lang="less" scoped>
-.marker-pos {
-  position: absolute;
-  top: 0;
-  right: 0rem;
+.marker {
   width: 3rem !important;
   height: 3rem !important;
 }

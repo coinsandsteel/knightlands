@@ -60,7 +60,8 @@ class Game {
         goldMines: {},
         dividends: {},
         dailyShop: {},
-        subscriptions: {}
+        subscriptions: {},
+        chests: {}
       })
     });
 
@@ -173,6 +174,10 @@ class Game {
 
   getGoldExchange() {
     return this._vm.goldExchange;
+  }
+
+  get chests() {
+    return this._vm.chests;
   }
 
   get subscription() {
@@ -746,6 +751,10 @@ class Game {
       this.mergeObjects(this._vm, this._vm.dividends, changes.dividends);
     }
 
+    if (changes.chests) {
+      this.mergeObjects(this._vm, this._vm.chests, changes.chests);
+    }
+
     if (changes.questsProgress) {
       for (let zone in changes.questsProgress.zones) {
         let quests = changes.questsProgress.zones[zone];
@@ -838,6 +847,10 @@ class Game {
         this._vm.dividends = info.dividends;
         this._vm.dailyShop = info.dailyShop;
         this._vm.purchasedIaps = info.purchasedIaps;
+
+        if (info.chests) {
+          this.mergeObjects(this._vm, this._vm.chests, info.chests);
+        }
 
         if (info.subscriptions) {
           this.mergeObjects(

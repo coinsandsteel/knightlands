@@ -1,12 +1,13 @@
 <script>
 import Marker from "./Marker.vue";
+import BeastMarkerMixin from "./BeastMarkerMixin.vue";
 
 export default {
   extends: Marker,
+  mixins: [BeastMarkerMixin],
   asyncComputed: {
     async active() {
-      const dailyRewardStatus = await this.$game.fetchDailyRewardStatus();
-      return dailyRewardStatus.readyToCollect;
+      return this.beastCanBeBoosted;
     }
   }
 };

@@ -16,10 +16,12 @@ import PortalVue from "portal-vue";
 import VueVirtualScroller from "vue-virtual-scroller";
 import Vue2TouchEvents from "vue2-touch-events";
 import EasySlider from "vue-easy-slider";
+import AsyncComputed from "vue-async-computed";
 
 import RecipeScheme from "@/views/Crafting/RecipeBook/RecipeScheme.vue";
 Vue.component("recipe-scheme", RecipeScheme);
 
+Vue.use(AsyncComputed);
 Vue.use(EasySlider);
 Vue.use(Vue2TouchEvents);
 Vue.use(VueVirtualScroller);

@@ -7,9 +7,11 @@
     >
       <RankingsMenu />
       <MenuIconRow>
-        <MenuIcon icon="skewed_icon_quest" to="daily-tasks" :append="true">{{
-          $t("btn-daily-quests")
-        }}</MenuIcon>
+        <MenuIcon icon="skewed_icon_quest" to="daily-tasks" :append="true"
+          >{{ $t("btn-daily-quests") }}
+
+          <template v-slot:marker> <DailyTasksMarker /> </template
+        ></MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
@@ -76,6 +78,7 @@
 import AppSection from "@/AppSection.vue";
 import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
 import CheckinMarker from "@/components/Markers/CheckinMarker.vue";
+import DailyTasksMarker from "@/components/Markers/DailyTasksMarker.vue";
 import GoldMinesMarker from "@/components/Markers/GoldMinesMarker.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
@@ -90,7 +93,8 @@ export default {
     MenuIcon,
     MenuIconRow,
     RankingsMenu,
-    GoldMinesMarker
+    GoldMinesMarker,
+    DailyTasksMarker
   },
   created() {
     this.title = this.$t("window-title-home");

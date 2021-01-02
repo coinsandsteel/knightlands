@@ -47,12 +47,12 @@ class Inventory {
         items: [],
         currencies: {},
         emptyItem: dummyItem,
-        equippedItems: {}
+        equippedItems: {},
+        itemsBytemplate: {}
       })
     });
 
     // lookup tables
-    this._itemsBytemplate = new Map();
     this._itemsById = new Map();
     this._sort = throttle(this._doSort.bind(this), 0, { leading: false });
   }
@@ -86,13 +86,13 @@ class Inventory {
 
   clear() {
     this._vm.items = [];
-    this._itemsBytemplate.clear();
+    this._vm.itemsBytemplate = {};
     this._itemsById.clear();
   }
 
   load(data) {
     this._vm.items = [];
-    this._itemsBytemplate.clear();
+    this._vm.itemsBytemplate = {};
 
     let i = 0;
     const length = data.items.length;
@@ -108,7 +108,7 @@ class Inventory {
   _indexItemByTemplate(item) {
     let itemsByTemplate = this._getItemsByTemplate(item.template);
     if (!itemsByTemplate || itemsByTemplate.length == 0) {
-      this._itemsBytemplate.set(item.template, [item]);
+      this._vm.$set(this._vm.itemsBytemplate, item.template, [item]);
     } else {
       itemsByTemplate.push(item);
     }
@@ -225,7 +225,7 @@ class Inventory {
 
   // returns reference to the array of items
   _getItemsByTemplate(templateId) {
-    return this._itemsBytemplate.get(+templateId);
+    return this._vm.itemsBytemplate[+templateId];
   }
 
   mergeData(inventoryChanges) {
@@ -332,6 +332,8 @@ class Inventory {
     this._vm.$set(this._vm.items, item.index, lastItem);
     this._vm.items.pop();
     this._sort();
+
+    this._vm.emptyItem = { ...dummyItem };
   }
 
   _addItem(item) {

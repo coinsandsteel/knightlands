@@ -136,9 +136,12 @@ export default {
         return this.hardCost <= this.$game.hardCurrency;
       }
 
-      if (this.methodChosen == 1) {
-        console.log(this.items);
-        return this.items && Object.keys(this.items).length > 0;
+      if (this.methodChosen == 1 && this.items) {
+        for (let i in this.items) {
+          if (this.items[i].count > 0) {
+            return true;
+          }
+        }
       }
 
       return false;
@@ -179,6 +182,7 @@ export default {
       await this.performRequest(
         this.$game.refillTimer(this.stat, this.methodChosen, this.items)
       );
+      this.items = null;
     },
     async fetchInfo() {
       this.infoRequest = this.$game.getTimerRefillInfo(this.stat);

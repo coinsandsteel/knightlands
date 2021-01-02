@@ -5,19 +5,6 @@
     <div
       class="flex flex-column width-100 flex-center flex-space-evenly margin-bottom-5"
     >
-      <!-- <MenuIconRow>
-        <MenuIcon icon="icon-chests" to="chests" :append="true">
-          {{$t("btn-chests")}}
-          <template v-slot:marker>
-            <FreeChestsMarker></FreeChestsMarker>
-          </template>
-        </MenuIcon>
-
-        <MenuIcon icon="icon-shop" to="shop" :append="true">{{$t("btn-shop")}}</MenuIcon>
-      </MenuIconRow>
-
-      <CustomButton type="green" @click="goTo('army-summon-menu')">Summon Gates</CustomButton> -->
-
       <div
         class="army-summon flex flex-center pointer"
         @click="goTo('army-summon-menu')"
@@ -34,6 +21,7 @@
       <div class="chests flex flex-center pointer" @click="goTo('chests')">
         <img src="../../assets/ui/03_chests.png" />
         <span>{{ $t("shop-chests") }}</span>
+        <ChestsMarker class="marker-pos" />
       </div>
     </div>
   </div>
@@ -41,9 +29,11 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
+import ChestsMarker from "@/components/Markers/ChestsMarker.vue";
 
 export default {
   mixins: [AppSection],
+  components: { ChestsMarker },
   created() {
     this.title = this.$t("window-title-summon");
   },
@@ -56,6 +46,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.marker-pos {
+  position: absolute;
+  top: 2.5rem;
+  right: 5rem;
+}
+
 .shop-btn() {
   position: relative;
   width: 100%;

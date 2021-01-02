@@ -33,8 +33,11 @@
         >
 
         <MenuIcon icon="skewed_icon_beast" :to="{ name: 'beast' }"
-          >Beast</MenuIcon
-        >
+          >Beast
+          <template v-slot:marker>
+            <BeastMarker />
+          </template>
+        </MenuIcon>
       </MenuIconRow>
     </div>
   </div>
@@ -44,13 +47,15 @@
 import MenuIcon from "@/components/MenuIcon.vue";
 import AppSection from "@/AppSection.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
+import BeastMarker from "@/components/Markers/BeastMarker.vue";
 
 export default {
   name: "castle",
   mixins: [AppSection],
   components: {
     MenuIcon,
-    MenuIconRow
+    MenuIconRow,
+    BeastMarker
   },
   created() {
     this.title = this.$t("window-title-castle");

@@ -1,12 +1,13 @@
 <script>
 import Marker from "./Marker.vue";
+import ChestsMarkerMixin from "./ChestsMarkerMixin.vue";
 
 export default {
   extends: Marker,
+  mixins: [ChestsMarkerMixin],
   asyncComputed: {
     async active() {
-      const dailyRewardStatus = await this.$game.fetchDailyRewardStatus();
-      return dailyRewardStatus.readyToCollect;
+      return this.chestsCanBeOpened;
     }
   }
 };

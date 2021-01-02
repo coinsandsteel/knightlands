@@ -59,12 +59,20 @@
           </router-link>
 
           <router-link class="flex flex-center" to="/castle">
-            <span class="menu-icon crafting pointer-events-none"></span>
+            <span class="menu-icon crafting pointer-events-none">
+              <div class="marker-pos">
+                <CastleMarker></CastleMarker>
+              </div>
+            </span>
             <span class="menu-title">{{ $t("menu-castle") }}</span>
           </router-link>
 
           <router-link class="flex flex-center" to="/summon">
-            <span class="menu-icon shop pointer-events-none"></span>
+            <span class="menu-icon shop pointer-events-none">
+              <div class="marker-pos">
+                <ShopMarker></ShopMarker>
+              </div>
+            </span>
             <span class="menu-title">{{ $t("menu-shop") }}</span>
           </router-link>
 
@@ -97,7 +105,8 @@
 
 <script>
 import StatusBar from "./components/StatusBar.vue";
-import { Promise } from "q";
+import ShopMarker from "@/components/Markers/ShopMarker.vue";
+import CastleMarker from "@/components/Markers/CastleMarker.vue";
 import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
@@ -117,7 +126,9 @@ export default {
     StatusBar,
     RaidStatusNotification,
     LoadingNotification,
-    DailyQuestCompleteNotification
+    DailyQuestCompleteNotification,
+    ShopMarker,
+    CastleMarker
   },
   data() {
     return {
@@ -307,6 +318,13 @@ export default {
 
 @sectionPaddingRight: 4rem;
 @sectionPaddingTop: 0.4rem;
+
+.marker-pos {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  z-index: 10;
+}
 
 .section-name {
   pointer-events: none;

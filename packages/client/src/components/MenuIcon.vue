@@ -7,7 +7,9 @@
   >
     <div class="flex flex-column flex-center pointer relative bg">
       <span :class="icon" class="icon-menu relative">
-        <slot name="marker"></slot>
+        <div class="marker-pos">
+          <slot name="marker"></slot>
+        </div>
         <span class="overlay absolute-stretch" v-if="locked">
           <span class="font-size-20 font-weight-900"
             >Lvl: {{ levelRequired }}</span
@@ -69,5 +71,11 @@ export default {
   * > {
     white-space: normal !important;
   }
+}
+
+.marker-pos {
+  position: absolute;
+  top: 0;
+  right: 0rem;
 }
 </style>

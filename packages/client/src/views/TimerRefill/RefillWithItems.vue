@@ -67,6 +67,8 @@ export default {
     },
     color() {
       switch (this.stat) {
+        case CharacterStats.Health:
+          return "red";
         case CharacterStats.Energy:
           return "blue";
         case CharacterStats.Stamina:

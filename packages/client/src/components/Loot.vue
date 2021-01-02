@@ -418,6 +418,14 @@ export default {
 }
 
 .item-level {
+  background: rgba(33, 0, 40, 0.7);
+  background: linear-gradient(
+    90deg,
+    rgba(33, 0, 40, 0.3) 0%,
+    rgba(33, 0, 40, 0.7) 80%,
+    rgba(33, 0, 40, 0.3) 100%
+  );
+
   position: absolute;
   bottom: 0.2rem;
   width: 100%;
