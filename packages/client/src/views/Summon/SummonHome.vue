@@ -29,7 +29,7 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import ChestsMarker from "@/components/Markers/ChestsMarker.vue";
+import ChestsMarker from "@/components/Markers/Shop/ChestsMarker.vue";
 
 export default {
   mixins: [AppSection],
@@ -48,7 +48,7 @@ export default {
 <style lang="less" scoped>
 .marker-pos {
   position: absolute;
-  top: 2.5rem;
+  top: 3.5rem;
   right: 5rem;
 }
 

@@ -49,12 +49,20 @@
       <div class="root-menu flex" v-if="$game.authenticated">
         <div id="nav">
           <router-link class="flex flex-center" to="/home">
-            <span class="menu-icon home pointer-events-none"></span>
+            <span class="menu-icon home pointer-events-none">
+              <div class="marker-pos">
+                <HomeMarker></HomeMarker>
+              </div>
+            </span>
             <span class="menu-title">{{ $t("menu-home") }}</span>
           </router-link>
 
           <router-link class="flex flex-center" to="/character">
-            <span class="menu-icon character pointer-events-none"></span>
+            <span class="menu-icon character pointer-events-none">
+              <div class="marker-pos">
+                <!-- <HomeMarker></HomeMarker> -->
+              </div>
+            </span>
             <span class="menu-title">{{ $t("menu-character") }}</span>
           </router-link>
 
@@ -105,8 +113,9 @@
 
 <script>
 import StatusBar from "./components/StatusBar.vue";
-import ShopMarker from "@/components/Markers/ShopMarker.vue";
-import CastleMarker from "@/components/Markers/CastleMarker.vue";
+import ShopMarker from "@/components/Markers/Shop/ShopMarker.vue";
+import CastleMarker from "@/components/Markers/Castle/CastleMarker.vue";
+import HomeMarker from "@/components/Markers/Home/HomeMarker.vue";
 import Vue from "vue";
 import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
@@ -123,6 +132,7 @@ const ShowSelectClass = create(SelectClass);
 
 export default {
   components: {
+    HomeMarker,
     StatusBar,
     RaidStatusNotification,
     LoadingNotification,
@@ -192,6 +202,9 @@ export default {
     });
 
     // show login page when user signed out
+    this.$game.on(this.$game.SignUp, async () => {
+      await this.$game.notifications.init();
+    });
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));
 
     this.$game.on(this.$game.Disconnected, () => {

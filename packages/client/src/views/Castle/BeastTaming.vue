@@ -3,6 +3,7 @@
     <div class="screen-content">
       <div class="screen-background"></div>
       <EnemyView
+        class="beast-image"
         :name="name"
         background="/images/beast_bg.png"
         :image="enemyImage"
@@ -139,6 +140,7 @@
                 }}</span>
                 <div class="item-icon" :class="ticketIcon"></div>
                 <span>1</span>
+                <BeastMarker class="marker-pos" />
               </div>
             </CustomButton>
 
@@ -156,6 +158,7 @@
                 }}</span>
                 <div class="item-icon" :class="ticketIcon"></div>
                 <span>{{ batchBoost() }}</span>
+                <BeastMarker class="marker-pos" />
               </div>
             </CustomButton>
           </div>
@@ -189,6 +192,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import Beasts from "@/beasts";
+import BeastMarker from "@/components/Markers/Castle/BeastMarker.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
@@ -207,9 +211,9 @@ const MaxBoostSize = 50;
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   components: {
+    BeastMarker,
     PurchaseButton,
     CustomButton,
-    IconWithValue,
     ProgressBar,
     FloatingTextContainer,
     EnemyView,
@@ -359,3 +363,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.beast-image {
+  max-height: 20vh;
+}
+.marker-pos {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+</style>

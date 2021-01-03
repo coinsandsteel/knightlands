@@ -1,12 +1,12 @@
 <script>
-import Marker from "./Marker.vue";
+import Marker from "./../Marker.vue";
 import BeastMarkerMixin from "./BeastMarkerMixin.vue";
 
 export default {
   extends: Marker,
   mixins: [BeastMarkerMixin],
-  asyncComputed: {
-    async active() {
+  computed: {
+    active() {
       return this.beastCanBeBoosted;
     }
   }

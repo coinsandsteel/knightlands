@@ -32,12 +32,13 @@ import HintHandler from "@/components/HintHandler.vue";
 export default {
   mixins: [HintHandler],
   components: { Loot, PurchaseButton },
-  props: ["data", "index"],
+  props: ["data", "index", "fixed"],
   computed: {
     purchasesLeft() {
-      return (
-        this.data.max - (this.$game.dailyShop.purchasedItems[this.index] || 0)
-      );
+      const purchaseData = this.fixed
+        ? this.$game.dailyShop.fixedItems
+        : this.$game.dailyShop.purchasedItems;
+      return this.data.max - (purchaseData[this.index] || 0);
     }
   }
 };

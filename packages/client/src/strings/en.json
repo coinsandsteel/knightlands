@@ -3070,5 +3070,7 @@
     "btn-s-q": "Start Quest",
     "f-prev-q": "Finish previous quests",
     "rew": "Rewards",
-    "energy-r": "Energy required"
+    "energy-r": "Energy required",
+    "no-lvl-mat": "No leveling material. Open chests to get equipment to use for leveling",
+    "goto-ch": "Open Chests"
 }

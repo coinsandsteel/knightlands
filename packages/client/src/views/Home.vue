@@ -66,9 +66,9 @@
           {{ $t("btn-divs") }}
         </MenuIcon>
 
-        <!-- <MenuIcon icon="skewed_icon_settings" to="settings" :append="true">
+        <MenuIcon icon="skewed_icon_settings" to="settings" :append="true">
           {{ $t("btn-settings") }}
-        </MenuIcon> -->
+        </MenuIcon>
       </MenuIconRow>
     </div>
   </div>
@@ -76,10 +76,10 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import AdventuresMarker from "@/components/Markers/AdventuresMarker.vue";
-import CheckinMarker from "@/components/Markers/CheckinMarker.vue";
-import DailyTasksMarker from "@/components/Markers/DailyTasksMarker.vue";
-import GoldMinesMarker from "@/components/Markers/GoldMinesMarker.vue";
+import AdventuresMarker from "@/components/Markers/Home/AdventuresMarker.vue";
+import CheckinMarker from "@/components/Markers/Home/CheckinMarker.vue";
+import DailyTasksMarker from "@/components/Markers/Home/DailyTasksMarker.vue";
+import GoldMinesMarker from "@/components/Markers/Home/GoldMinesMarker.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 import RankingsMenu from "./Rankings/RankingsMenu.vue";

@@ -8,6 +8,15 @@
       @purchase="purchase(idx)"
     />
 
+    <DailyShopElement
+      v-for="(item, idx) in fixedItems"
+      :key="item.item"
+      :index="idx"
+      :data="item"
+      :fixed="true"
+      @purchase="purchase(idx, true)"
+    />
+
     <portal to="footer" v-if="isActive">
       <span class="font-size-18">
         {{ $t("auto-r-d", { v: timer.value }) }}
@@ -40,6 +49,9 @@ export default {
     timer: new Timer(true)
   }),
   computed: {
+    fixedItems() {
+      return DailyShopMeta.fixedItems;
+    },
     items() {
       return this.$game.dailyShop.items;
     },
@@ -62,9 +74,9 @@ export default {
     async refresh() {
       await this.performRequest(this.$game.refreshDailyShop());
     },
-    async purchase(itemIndex) {
+    async purchase(itemIndex, fixed = false) {
       const item = await this.performRequest(
-        this.$game.purchaseDailyItem(itemIndex)
+        this.$game.purchaseDailyItem(itemIndex, fixed)
       );
       await ShowDialog([item]);
     }

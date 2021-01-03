@@ -87,7 +87,7 @@ export default {
     },
     canEquip() {
       if (this.leftItem && this.rightItem) {
-        return this.leftItem.holder != this.rightItem.holder;
+        return this.leftItem.id != this.rightItem.id;
       }
 
       return false;

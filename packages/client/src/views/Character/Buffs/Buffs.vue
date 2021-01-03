@@ -10,8 +10,10 @@
       ></BuffSlot>
     </template>
     <div v-else class="flex flex-column flex-center width-100 height-100">
-      <span class="font-size-22 margin-bottom-2">{{$t("buffs-empty")}}</span>
-      <CustomButton type="yellow" @click="goToShop">{{$t("buff-now")}}</CustomButton>
+      <span class="font-size-22 margin-bottom-2">{{ $t("buffs-empty") }}</span>
+      <CustomButton type="yellow" @click="goToShop">{{
+        $t("buff-now")
+      }}</CustomButton>
     </div>
   </div>
 </template>
@@ -48,7 +50,7 @@ export default {
   },
   methods: {
     goToShop() {
-      this.$router.push({ name: "shop" });
+      this.$router.push({ name: "daily-shop" });
     },
     refreshBuffs() {
       const buffs = [];
@@ -111,4 +113,3 @@ export default {
   }
 };
 </script>
-

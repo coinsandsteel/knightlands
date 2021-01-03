@@ -116,6 +116,7 @@ export default {
       let { items, adventure } = await this.request;
       if (items) {
         this.$set(this.adventures, slot, adventure);
+        await this.$game.notifications.updateAdventures();
         await ShowRewards(items);
       }
     },

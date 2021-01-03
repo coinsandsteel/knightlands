@@ -1,9 +1,7 @@
 <script>
-import Marker from "./Marker.vue";
 import DailyQuestsMeta from "@/daily_quests";
 
 export default {
-  extends: Marker,
   computed: {
     meta() {
       let quest;
@@ -17,7 +15,7 @@ export default {
       }
       return quest;
     },
-    active() {
+    canClaimDailyTask() {
       for (const task of this.meta.rewards) {
         if (this.isFinished(task)) {
           return true;

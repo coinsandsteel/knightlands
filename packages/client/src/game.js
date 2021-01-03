@@ -20,6 +20,7 @@ import TrialsMeta from "@/trials_meta";
 import ArmyDB from "@/army/armyDB";
 import Army from "@/army/army";
 import Subscription from "./subscription";
+import Notifications from "./notifications";
 
 import { Magic } from "magic-sdk";
 const magic = new Magic("pk_test_55236F76ECAF72CF");
@@ -34,6 +35,8 @@ class Game {
     this.WalletSignedOut = "wallet_sign_out";
     this.WalletChanged = "wallet_changed";
     this.$store = store;
+
+    this.notifications = new Notifications(store);
     this._items = new ItemDatabase();
     this._armyDb = new ArmyDB(this._items, this._items.itemStatResolver);
     this._army = new Army(this, this._items.itemStatResolver, this._armyDb);
@@ -1869,9 +1872,12 @@ class Game {
     return (await this._wrapOperation(Operations.RefreshDailyShop)).response;
   }
 
-  async purchaseDailyItem(itemIndex) {
+  async purchaseDailyItem(itemIndex, fixed) {
     return (
-      await this._wrapOperation(Operations.PurchaseDailyItem, { itemIndex })
+      await this._wrapOperation(Operations.PurchaseDailyItem, {
+        itemIndex,
+        fixed
+      })
     ).response;
   }
 }

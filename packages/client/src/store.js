@@ -10,6 +10,9 @@ import Blockchains from "@/../../knightlands-shared/blockchains";
 const Rarity = require("@/../../knightlands-shared/rarity");
 import EquipmentType from "@/../../knightlands-shared/equipment_type";
 
+import DailyLoginStore from "@/store/dailyLogin";
+import adventures from "./store/adventures";
+
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
@@ -22,7 +25,7 @@ for (let i in EquipmentSlots) {
   equipmentDefaultFilters[EquipmentSlots[i]] = true;
 }
 
-const miscDefaultFilters = {}
+const miscDefaultFilters = {};
 for (let i in ItemType) {
   if (i == "Equipment") {
     continue;
@@ -47,7 +50,7 @@ const weaponDefaultFilters = {
   [EquipmentType.Knive]: true,
   [EquipmentType.Scythe]: true,
   [EquipmentType.Whip]: true
-}
+};
 
 const FiltersVersion = 3;
 
@@ -237,7 +240,11 @@ const store = new Vuex.Store({
     }
   },
   plugins: [vuexPersist.plugin],
-  strict: false
+  strict: false,
+  modules: {
+    dailyLogin: DailyLoginStore,
+    adventures: adventures
+  }
 });
 
 export default store;

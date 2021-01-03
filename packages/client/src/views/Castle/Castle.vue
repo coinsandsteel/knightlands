@@ -47,7 +47,7 @@
 import MenuIcon from "@/components/MenuIcon.vue";
 import AppSection from "@/AppSection.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
-import BeastMarker from "@/components/Markers/BeastMarker.vue";
+import BeastMarker from "@/components/Markers/Castle/BeastMarker.vue";
 
 export default {
   name: "castle",

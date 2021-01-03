@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative margin-1 slot-effect padding-half"
+    class="relative margin-1 slot-effect padding-half pointer"
     @click="$emit('info', buff, item)"
     :class="{ active: timer.timeLeft > 0 }"
   >

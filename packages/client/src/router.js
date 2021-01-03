@@ -325,7 +325,8 @@ const router = new Router({
           component: () => import("./views/Summon/Shop/ShopHome.vue"),
           children: [
             {
-              path: "/",
+              path: "",
+              alias: "/",
               name: "daily-shop",
               component: () => import("./views/Summon/Shop/ShopDaily.vue")
             },

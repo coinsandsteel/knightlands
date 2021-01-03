@@ -51,7 +51,19 @@
           $t("upgrade-materials")
         }}</Title>
         <div class="flex full-flex dummy-height">
-          <div v-bar class="width-100 height-100 dummy-height">
+          <div
+            class="flex flex-full flex-column flex-center"
+            v-if="Object.keys(upgradeMaterials).length == 0"
+          >
+            <span
+              class="font-size-20 font-weight-900 font-outline margin-bottom-2"
+              >{{ $t("no-lvl-mat") }}</span
+            >
+            <CustomButton type="grey" @click="goToChests">{{
+              $t("goto-ch")
+            }}</CustomButton>
+          </div>
+          <div v-else v-bar class="width-100 height-100 dummy-height">
             <div>
               <div class="material-container dummy-height">
                 <loot
@@ -60,6 +72,7 @@
                   :item="mat"
                   @hint="selectMaterial(index)"
                   :selected="index == selectedMaterial"
+                  :locked="lockRest"
                 >
                   <div
                     class="absolute-stretch select-overlay flex flex-center"
@@ -167,6 +180,9 @@ export default {
     }
   },
   methods: {
+    goToChests() {
+      this.$router.push({ name: "chests" });
+    },
     resetSelection() {
       this.materialsCount = {};
     },
@@ -304,6 +320,9 @@ export default {
   },
   computed: {
     canIncreaseMaterial() {
+      if (!this.upgradeMaterials[this.selectedMaterial]) {
+        return false;
+      }
       return (
         this.currentMaterialCount <
           this.upgradeMaterials[this.selectedMaterial].count && !this.lockRest

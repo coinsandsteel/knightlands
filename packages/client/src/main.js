@@ -41,6 +41,10 @@ Vue.use(LoadScript);
 Vue.config.debug = true;
 Vue.config.productionTip = false;
 
+// Vue.config.optionMergeStrategies.myOption = function(toVal, fromVal) {
+//   console.log(toVal, fromVal);
+// };
+
 import router from "./router";
 
 import localisationSetup from "./strings/setup";
