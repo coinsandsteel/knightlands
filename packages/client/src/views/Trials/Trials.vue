@@ -13,9 +13,10 @@
         >{{ $t(`window-trials-${trial}`) }}</span
       >
       <div class="flex margin-1">
-        <CustomButton type="red" @click="goTo(trial)">{{
-          $t("btn-enter")
-        }}</CustomButton>
+        <CustomButton minWidth="15rem" type="red" @click="goTo(trial)"
+          >{{ $t("btn-enter") }}
+          <TrialsMarker class="marker-pos" :trialType="trial" />
+        </CustomButton>
       </div>
     </div>
   </div>
@@ -26,12 +27,13 @@ import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import TrialType from "@/../../knightlands-shared/trial_type";
 import TrialBackgrounds from "./trialBackgrounds";
+import TrialsMarker from "@/components/Markers/Home/TrialsMarker.vue";
 
 const trials = [TrialType.Armour, TrialType.Weapon, TrialType.Accessory];
 
 export default {
   mixins: [AppSection],
-  components: { CustomButton },
+  components: { CustomButton, TrialsMarker },
   data: () => ({
     trials
   }),
@@ -75,6 +77,12 @@ export default {
 </style>
 
 <style lang="less" scoped>
+.marker-pos {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 .trials-bg {
   height: 20vh;
   background-size: cover;

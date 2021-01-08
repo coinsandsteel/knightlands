@@ -3072,5 +3072,15 @@
     "rew": "Rewards",
     "energy-r": "Energy required",
     "no-lvl-mat": "No leveling material. Open chests to get equipment to use for leveling",
-    "goto-ch": "Open Chests"
+    "goto-ch": "Open Chests",
+    "main_hands": "Main Hands",
+    "off_hands": "Off Hands",
+    "s-ele": "Select Element",
+    "s-item": "Select Item",
+    "no-items": "There are no items found",
+    "char": "Character",
+    "gen": "Generals",
+    "tro": "Troops",
+    "other-items": "Inventory items",
+    "only-equipped-items": "Equipped items"
 }

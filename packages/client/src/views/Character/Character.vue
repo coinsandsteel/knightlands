@@ -8,7 +8,11 @@
         :currentTab="currentTab"
         @onClick="switchTab"
         :replace="true"
-      />
+      >
+        <template v-slot:slot3>
+          <TrainingMarker class="marker-pos" />
+        </template>
+      </tabs>
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
@@ -19,6 +23,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import Tabs from "@/components/Tabs.vue";
+import TrainingMarker from "@/components/Markers/Character/TrainingMarker.vue";
 
 const EquipmentTab = "equipment";
 const StatsTab = "training";
@@ -28,7 +33,8 @@ const MiscTab = "misc";
 export default {
   mixins: [AppSection],
   components: {
-    Tabs
+    Tabs,
+    TrainingMarker
   },
   data() {
     return {
@@ -60,4 +66,10 @@ export default {
 <!--Rest of the style-->
 <style lang="less">
 @import "./style.less";
+
+.marker-pos {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 </style>

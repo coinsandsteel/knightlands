@@ -40,9 +40,9 @@
 import AppSection from "@/AppSection.vue";
 import ArmySummonElement from "./ArmySummonElement.vue";
 import Title from "@/components/Title.vue";
-import ArmySummonMeta from "@/army_summon_meta";
 import ArmySummonType from "@/../../knightlands-shared/army_summon_type";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import { mapState } from "vuex";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -51,13 +51,12 @@ export default {
   },
   components: { Title, ArmySummonElement },
   data: () => ({
-    ArmySummonType,
-    basicSummon: {},
-    advancedSummon: {}
+    ArmySummonType
   }),
-  mounted() {
-    this.update();
-  },
+  computed: mapState({
+    basicSummon: state => state.summon.basicSummon,
+    advancedSummon: state => state.summon.advancedSummon
+  }),
   methods: {
     async purchaseSummon(summonType, iap) {
       const results = await this.performRequest(
@@ -74,25 +73,7 @@ export default {
       this.update();
     },
     async update() {
-      this.basicSummon = { meta: ArmySummonMeta.normalSummon, lastSummon: 0 };
-      this.advancedSummon = {
-        meta: ArmySummonMeta.advancedSummon,
-        lastSummon: 0
-      };
-
-      const info = await this.$game.getArmySummonInfo();
-      if (info) {
-        this.$set(
-          this.basicSummon,
-          "lastSummon",
-          info.lastSummon[ArmySummonType.Normal] || 0
-        );
-        this.$set(
-          this.advancedSummon,
-          "lastSummon",
-          info.lastSummon[ArmySummonType.Advanced] || 0
-        );
-      }
+      await this.$game.notifications.updateSummon();
     },
     showSummoning(units) {
       this.$game.handleArmySummoned(units);

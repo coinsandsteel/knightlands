@@ -3,14 +3,14 @@ import Beasts from "@/beasts";
 
 export default {
   data: () => ({
-    item: null
+    beastItem: null
   }),
   mounted() {
-    this.item = this.$game.inventory.getItemByTemplate(Beasts.ticketItem);
+    this.beastItem = this.$game.inventory.getItemByTemplate(Beasts.ticketItem);
   },
   computed: {
     beastCanBeBoosted() {
-      if (!this.item) {
+      if (!this.beastItem) {
         return false;
       }
       return (

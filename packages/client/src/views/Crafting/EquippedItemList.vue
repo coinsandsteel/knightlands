@@ -3,7 +3,7 @@
     <div class="height-100" v-bar>
       <div class="flex flex-column">
         <template v-if="characterItems.length > 0">
-          <Title>Character</Title>
+          <Title>{{ $t("char") }}</Title>
           <LootContainer
             class="margin-top-1 margin-bottom-1"
             :items="characterItems"
@@ -21,7 +21,7 @@
         </template>
 
         <template v-if="generalsItems.length > 0">
-          <Title>Generals</Title>
+          <Title>{{ $t("gen") }}</Title>
           <LootContainer
             class="margin-top-1 margin-bottom-1"
             :items="generalsItems"
@@ -39,7 +39,7 @@
         </template>
 
         <template v-if="troopsItems.length > 0">
-          <Title>Troops</Title>
+          <Title>{{ $t("tro") }}</Title>
           <LootContainer
             class="margin-top-1 margin-bottom-1"
             :items="troopsItems"

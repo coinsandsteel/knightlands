@@ -23,9 +23,11 @@
           $t("btn-raids")
         }}</MenuIcon>
 
-        <MenuIcon icon="skewed_icon_portal" to="trials" :append="true">{{
-          $t("btn-trials")
-        }}</MenuIcon>
+        <MenuIcon icon="skewed_icon_portal" to="trials" :append="true"
+          >{{ $t("btn-trials") }}
+
+          <template v-slot:marker> <TrialsMarker></TrialsMarker> </template
+        ></MenuIcon>
       </MenuIconRow>
 
       <MenuIconRow>
@@ -39,9 +41,11 @@
           </template>
         </MenuIcon>
 
-        <MenuIcon icon="skewed_icon_tower" to="onyx-tower" :append="true">{{
-          $t("btn-tower")
-        }}</MenuIcon>
+        <MenuIcon icon="skewed_icon_tower" to="onyx-tower" :append="true"
+          >{{ $t("btn-tower") }}
+          <template v-slot:marker>
+            <OnyxTowerMarker></OnyxTowerMarker> </template
+        ></MenuIcon>
 
         <MenuIcon icon="skewed_icon_adventures" to="adventures" :append="true">
           {{ $t("btn-adventures") }}
@@ -80,6 +84,9 @@ import AdventuresMarker from "@/components/Markers/Home/AdventuresMarker.vue";
 import CheckinMarker from "@/components/Markers/Home/CheckinMarker.vue";
 import DailyTasksMarker from "@/components/Markers/Home/DailyTasksMarker.vue";
 import GoldMinesMarker from "@/components/Markers/Home/GoldMinesMarker.vue";
+import OnyxTowerMarker from "@/components/Markers/Home/OnyxTowerMarker.vue";
+import TrialsMarker from "@/components/Markers/Home/TrialsMarker.vue";
+
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 import RankingsMenu from "./Rankings/RankingsMenu.vue";
@@ -88,6 +95,8 @@ export default {
   name: "home",
   mixins: [AppSection],
   components: {
+    TrialsMarker,
+    OnyxTowerMarker,
     AdventuresMarker,
     CheckinMarker,
     MenuIcon,

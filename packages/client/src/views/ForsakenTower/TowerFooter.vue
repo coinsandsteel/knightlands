@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import CustomButton from "@/components/Button.vue";
 import TowerMeta from "@/tower_meta";
 
 export default {
@@ -24,7 +23,7 @@ export default {
       );
     },
     freeTickets() {
-      return this.$game.towerFreeAttempts();
+      return this.$game.towerFreeAttempts;
     },
     ticketIcon() {
       return `background-image: url(${this.$game.itemsDB.getIcon(

@@ -247,7 +247,7 @@ class Game {
     return this._vm.walletReady;
   }
 
-  towerFreeAttempts() {
+  get towerFreeAttempts() {
     return this._vm.towerFreeAttempts;
   }
 
@@ -374,8 +374,7 @@ class Game {
   async signIn(email) {
     const didToken = await magic.auth.loginWithMagicLink({
       email: email,
-      showUI: true,
-      redirectURI: window.location.href
+      showUI: true
     });
 
     return this._signIn(didToken);

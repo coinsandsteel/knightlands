@@ -1,13 +1,13 @@
 <script>
 import Marker from "./../Marker.vue";
-import TrainingMarkerMixin from "./TrainingMarkerMixin.vue";
+import OnyxTowerMarkerMixin from "./OnyxTowerMarkerMixin.vue";
 
 export default {
   extends: Marker,
-  mixins: [TrainingMarkerMixin],
+  mixins: [OnyxTowerMarkerMixin],
   computed: {
     active() {
-      return this.anyStatCanBeTrained;
+      return this.canEngageTower;
     }
   }
 };

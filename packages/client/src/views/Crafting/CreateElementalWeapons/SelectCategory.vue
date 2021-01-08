@@ -7,7 +7,7 @@
       <OptionItem
         v-for="option in options"
         :key="option.id"
-        class="option"
+        class="option pointer"
         @click="createNew(option.id)"
         >{{ $t(option.title) }}</OptionItem
       >

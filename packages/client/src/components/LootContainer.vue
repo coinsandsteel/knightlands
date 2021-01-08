@@ -32,7 +32,6 @@ export default {
     CustomButton,
     ItemList
   },
-
   props: {
     inventory: {
       type: Boolean,

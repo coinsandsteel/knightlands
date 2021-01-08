@@ -7,15 +7,15 @@
       :filters="filters"
       :filtersStore="filtersStore"
       :commitCmd="commitCmd"
+      :items="computedItems"
+      v-model="resultItems"
       @hint="_showHint"
-      v-model="items"
-      class="height-100"
     ></LootContainer>
 
     <!-- Loot hints -->
     <ScrollableItemHint
       ref="scrollHint"
-      :items="items"
+      :items="resultItems"
       @action="handleItemAction"
       :getHintButtons="getHintButtons"
     ></ScrollableItemHint>
@@ -45,13 +45,17 @@ export default {
     LootContainer,
     ScrollableItemHint
   },
-  props: ["hideBg", "filters", "commitCmd", "filtersStore"],
+  props: ["hideBg", "filters", "commitCmd", "filtersStore", "items"],
   data: () => ({
     showHintItems: false,
-    request: null,
     showDetails: false,
-    items: []
+    resultItems: []
   }),
+  computed: {
+    computedItems() {
+      return this.items || this.$game.inventory.items;
+    }
+  },
   methods: {
     _showHint(item, index) {
       if (!item) {
@@ -92,6 +96,6 @@ export default {
 
 <style scoped>
 .inv-root {
-  overflow: hidden;
+  overflow: scroll;
 }
 </style>

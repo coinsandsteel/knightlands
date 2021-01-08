@@ -18,7 +18,7 @@
       <ItemStats :item="selectedItemId" />
     </div>
 
-    <Title :stackTop="true" :stackBottom="true">Select element:</Title>
+    <Title :stackTop="true" :stackBottom="true">{{ $t("s-ele") }}</Title>
 
     <div class="flex width-100 flex-space-evenly color-panel-1">
       <div class="selector" v-for="element in elements" :key="element">
@@ -30,7 +30,11 @@
           :value="element"
           v-model="selectedElement"
         />
-        <label class="relative" :for="element" :class="`icon-${element} huge`">
+        <label
+          class="relative pointer"
+          :for="element"
+          :class="`icon-${element} huge`"
+        >
           <div :class="{ 'selector-border': selectedElement == element }"></div>
         </label>
       </div>

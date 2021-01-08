@@ -43,6 +43,9 @@ export default {
     width: {
       type: String
     },
+    minWidth: {
+      type: String
+    },
     cb: {
       type: Function
     },
@@ -66,11 +69,17 @@ export default {
   },
   computed: {
     sizeStyle() {
-      if (!this.width || this.width == "") {
-        return "";
+      let style = "";
+
+      if (this.width) {
+        style += `width: ${this.width};`;
       }
 
-      return `width: ${this.width}`;
+      if (this.minWidth) {
+        style += `min-width: ${this.minWidth};`;
+      }
+
+      return style;
     },
     btnType() {
       return this.skewed ? `${this.type}-skewed` : this.type;

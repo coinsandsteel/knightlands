@@ -3,18 +3,10 @@
     <div class="screen-background"></div>
     <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
     <div v-bar>
-    <div>
-      <!-- <RecipeBookListElement
-        v-for="(page, index) in pages"
-        :key="index"
-        :page="page"
-      ></RecipeBookListElement> -->
-
-      <RecipeCategory>
-
-      </RecipeCategory>
+      <div>
+        <RecipeCategory> </RecipeCategory>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -22,8 +14,6 @@
 import AppSection from "@/AppSection.vue";
 import RecipeCategory from "./RecipeCategory.vue";
 import RecipeBookPages from "@/crafting_book";
-import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
-import ItemType from "@/../../knightlands-shared/item_type";
 import Tabs from "@/components/Tabs.vue";
 
 const MainHands = "main_hands";

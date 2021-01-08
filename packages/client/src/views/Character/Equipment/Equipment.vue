@@ -86,7 +86,7 @@
             :translate="true"
           >
             <Inventory
-              class="full-flex width-100"
+              class="full-flex width-100 height-100"
               commitCmd="setEquipmentFilters"
               :hideBg="true"
               :filters="forceFilters"

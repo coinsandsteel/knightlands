@@ -4,6 +4,9 @@ import GoldMinesMarkerMixin from "./GoldMinesMarkerMixin.vue";
 import CheckinMarkerMixin from "./CheckinMarkerMixin.vue";
 import AdventuresMarkerMixin from "./AdventuresMarkerMixin.vue";
 import DailyTasksMarkerMixin from "./DailyTasksMarkerMixin.vue";
+import OnyxTowerMarkerMixin from "./OnyxTowerMarkerMixin.vue";
+import TrialsMarkerMixin from "./TrialsMarkerMixin.vue";
+import TrialType from "@/../../knightlands-shared/trial_type";
 
 export default {
   extends: Marker,
@@ -11,15 +14,22 @@ export default {
     GoldMinesMarkerMixin,
     CheckinMarkerMixin,
     AdventuresMarkerMixin,
-    DailyTasksMarkerMixin
+    DailyTasksMarkerMixin,
+    OnyxTowerMarkerMixin,
+    TrialsMarkerMixin
   ],
+  mounted() {
+    this.trialTypes = [TrialType.Armour, TrialType.Weapon, TrialType.Accessory];
+  },
   computed: {
     active() {
       return (
         this.canCollectGold ||
         this.canCollectDailyRewards ||
         this.canCollectAdventures ||
-        this.canClaimDailyTask
+        this.canClaimDailyTask ||
+        this.canEngageTower ||
+        this.canEngageTrial
       );
     }
   }

@@ -3,7 +3,7 @@
     <template v-if="router">
       <router-link
         class="tabs__item white-space-no-wrap"
-        v-for="tab in tabs"
+        v-for="(tab, idx) in tabs"
         :ref="tab.value"
         :key="tab.title"
         :to="tab.to"
@@ -13,13 +13,15 @@
         :replace="replace"
         exact
         @click="handleClick(tab.value)"
-        >{{ $t(tab.title) }}</router-link
       >
+        {{ $t(tab.title) }}
+        <slot :name="`slot${idx}`"></slot>
+      </router-link>
     </template>
     <template v-else>
       <div
         class="tabs__item white-space-no-wrap"
-        v-for="tab in tabs"
+        v-for="(tab, idx) in tabs"
         :ref="tab.value"
         :key="tab.title"
         :class="[
@@ -31,6 +33,7 @@
         @click="handleClick(tab.value)"
       >
         {{ $t(tab.title) }}
+        <slot :name="`slot${idx}`"></slot>
       </div>
     </template>
   </nav>

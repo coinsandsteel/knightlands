@@ -6,6 +6,7 @@ export default class Notifications {
   async init() {
     await this.updateDailyLogin();
     await this.updateAdventures();
+    await this.updateSummon();
   }
 
   async updateAdventures() {
@@ -14,5 +15,9 @@ export default class Notifications {
 
   async updateDailyLogin() {
     await this.store.dispatch("dailyLogin/update");
+  }
+
+  async updateSummon() {
+    await this.store.dispatch("summon/update");
   }
 }

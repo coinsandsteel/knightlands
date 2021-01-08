@@ -60,7 +60,7 @@
           <router-link class="flex flex-center" to="/character">
             <span class="menu-icon character pointer-events-none">
               <div class="marker-pos">
-                <!-- <HomeMarker></HomeMarker> -->
+                <CharacterMarker />
               </div>
             </span>
             <span class="menu-title">{{ $t("menu-character") }}</span>
@@ -113,6 +113,7 @@
 
 <script>
 import StatusBar from "./components/StatusBar.vue";
+import CharacterMarker from "@/components/Markers/Character/CharacterMarker.vue";
 import ShopMarker from "@/components/Markers/Shop/ShopMarker.vue";
 import CastleMarker from "@/components/Markers/Castle/CastleMarker.vue";
 import HomeMarker from "@/components/Markers/Home/HomeMarker.vue";
@@ -132,6 +133,7 @@ const ShowSelectClass = create(SelectClass);
 
 export default {
   components: {
+    CharacterMarker,
     HomeMarker,
     StatusBar,
     RaidStatusNotification,
@@ -254,7 +256,7 @@ export default {
       //   }, 200);
       // });
     } catch (e) {
-      this.redirectToLogin();
+      // this.redirectToLogin();
     }
   },
   methods: {

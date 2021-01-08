@@ -39,14 +39,14 @@
         </div>
       </div>
 
-      <div class="flex flex-center color-panel-2">
+      <!-- <div class="flex flex-center color-panel-2">
         <div class="flex flex-no-wrap flex-item-center">
           <span class="icon-gold margin-right-half"></span>
           <span class="status-bar-font font-size-20">{{
             $game.softCurrency
           }}</span>
         </div>
-      </div>
+      </div> -->
 
       <div
         v-show="attributesNeedReset"

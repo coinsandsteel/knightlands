@@ -8,7 +8,7 @@ export default {};
 
 <style lang="less" scoped>
 .marker {
-  width: 3rem !important;
-  height: 3rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
 }
 </style>

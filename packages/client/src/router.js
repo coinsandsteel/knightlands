@@ -831,8 +831,7 @@ const router = new Router({
       component: Character,
       meta: {
         requiresAuth: true,
-        noBackButton: true,
-        noTopBar: true
+        noBackButton: true
       },
       children: [
         {

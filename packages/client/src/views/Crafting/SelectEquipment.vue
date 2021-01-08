@@ -1,8 +1,13 @@
 <template>
   <div class="screen-content padding-top-1">
     <div class="screen-background"></div>
-    <Title class="margin-bottom-2">Select item:</Title>
+    <Title class="margin-bottom-2">{{ $t("s-item") }}</Title>
+
+    <div class="full-flex flex flex-center" v-if="items.length == 0">
+      <span class="font-size-20 font-weight-900">{{ $t("no-items") }}</span>
+    </div>
     <ItemList
+      v-else
       @hint="handleHint"
       :selecteItem="false"
       :items="items"
@@ -59,6 +64,10 @@ export default {
       const filteredItems = this.$game.inventory.getItemsByTemplate(
         this.itemTemplate
       );
+
+      if (!filteredItems) {
+        return [];
+      }
 
       const targetRarity = this.rarity;
       const length = filteredItems.length;

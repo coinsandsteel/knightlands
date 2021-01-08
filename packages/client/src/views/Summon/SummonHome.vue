@@ -11,6 +11,7 @@
       >
         <img src="../../assets/ui/01_summon.png" />
         <span>{{ $t("shop-summon") }}</span>
+        <SummonMarker class="marker-pos" />
       </div>
 
       <div class="shop flex flex-center pointer" @click="goTo('daily-shop')">
@@ -30,10 +31,11 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import ChestsMarker from "@/components/Markers/Shop/ChestsMarker.vue";
+import SummonMarker from "@/components/Markers/Shop/SummonMarker.vue";
 
 export default {
   mixins: [AppSection],
-  components: { ChestsMarker },
+  components: { ChestsMarker, SummonMarker },
   created() {
     this.title = this.$t("window-title-summon");
   },

@@ -5,24 +5,40 @@ import TrainingCampMeta from "@/training_camp";
 
 export default {
   data: () => ({
-    item: null,
     resourceItems: {}
   }),
   mounted() {
-    this.item = this.$game.inventory.getItemByTemplate(Beasts.ticketItem);
-
     for (let statKey in UpgradableCharacterStats) {
       const stat = UpgradableCharacterStats[statKey];
 
-      this.$set(this.upgradePrice, stat, 0);
-      this.$set(this.purchasedAttributes, stat, 0);
-      this.$set(this.upgradeResources, stat, 0);
-      this.resourceItems[stat] = this.$game.inventory.getItemByTemplate(
-        TrainingCampMeta.find(x => x.stat == stat).resource
+      this.$set(
+        this.resourceItems,
+        stat,
+        this.$game.inventory.getItemByTemplate(
+          TrainingCampMeta.find(x => x.stat == stat).resource
+        )
       );
     }
   },
   methods: {
+    getResource(stat) {
+      return {
+        itemId: TrainingCampMeta.find(x => x.stat == stat).resource,
+        quantity: TrainingCamp.getStatResourceCost(
+          stat,
+          this.getAttributeValue(stat)
+        )
+      };
+    },
+    getAttributeValue(stat) {
+      return this.$character.getAttribute(stat);
+    },
+    hasEnoughGold(stat) {
+      return this.getUpgradePrice(stat) <= this.$game.softCurrency;
+    },
+    getUpgradePrice(stat) {
+      return TrainingCamp.getStatCost(stat, this.getAttributeValue(stat));
+    },
     hasEnoughResource(stat) {
       const res = this.getResource(stat);
       return (
@@ -32,11 +48,15 @@ export default {
     }
   },
   computed: {
-    beastCanBeBoosted() {
-      if (!this.item) {
-        return false;
+    anyStatCanBeTrained() {
+      for (let statKey in UpgradableCharacterStats) {
+        const stat = UpgradableCharacterStats[statKey];
+        if (this.hasEnoughResource(stat) && this.hasEnoughGold(stat)) {
+          return true;
+        }
       }
-      return this.$game.inventory.getItemByTemplate(1).count > 0;
+
+      return false;
     }
   }
 };

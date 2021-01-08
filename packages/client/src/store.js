@@ -11,7 +11,8 @@ const Rarity = require("@/../../knightlands-shared/rarity");
 import EquipmentType from "@/../../knightlands-shared/equipment_type";
 
 import DailyLoginStore from "@/store/dailyLogin";
-import adventures from "./store/adventures";
+import Adventures from "@/store/adventures";
+import Summon from "@/store/summon";
 
 Vue.use(Vuex);
 
@@ -243,7 +244,8 @@ const store = new Vuex.Store({
   strict: false,
   modules: {
     dailyLogin: DailyLoginStore,
-    adventures: adventures
+    adventures: Adventures,
+    summon: Summon
   }
 });
 
