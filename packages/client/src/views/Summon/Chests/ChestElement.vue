@@ -12,7 +12,7 @@
       <div>
         <div class="flex flex-center">
           <div class="flex flex-items-center panel-input padding-1">
-            <div class="item-icon" :class="keyIcon"></div>
+            <div class="item-icon-atlas" :class="keyIcon"></div>
             <span class="font-size-18">{{ totalKeys }}</span>
           </div>
         </div>

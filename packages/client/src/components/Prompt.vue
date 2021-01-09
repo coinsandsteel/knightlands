@@ -10,7 +10,8 @@
           :key="index"
           :class="btn.type"
           @click="$close(btn.response)"
-        >{{$t(btn.title)}}</custom-button>
+          >{{ $t(btn.title) }}</custom-button
+        >
       </div>
     </template>
   </user-dialog>
@@ -35,4 +36,3 @@ export default {
   justify-content: space-evenly;
 }
 </style>
-

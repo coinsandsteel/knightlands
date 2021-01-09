@@ -204,7 +204,7 @@ class Game {
   }
 
   hasWallet() {
-    return this._blockchainClient.isInited();
+    return this._blockchainClient && this._blockchainClient.isInited();
   }
 
   get itemsDB() {
@@ -295,7 +295,7 @@ class Game {
     return this._vm.dailyShop;
   }
 
-  get blockchainClient() {
+  get blockchain() {
     return this._blockchainClient;
   }
 
@@ -311,28 +311,8 @@ class Game {
     this._blockchainClient = value;
 
     if (this._blockchainClient.isReady()) {
-      this._vm.walletReady = true;
       this._vm.address = this._blockchainClient.getAddress();
     }
-
-    setInterval(() => {
-      if (this._blockchainClient.isReady()) {
-        this._vm.walletReady = true;
-
-        if (!this._vm.address) {
-          this._vm.address = this._blockchainClient.getAddress();
-        } else if (this._vm.address !== this._blockchainClient.getAddress()) {
-          this.logout();
-          this._vm.address = this._blockchainClient.getAddress();
-          this._vm.$emit(
-            this.WalletChanged,
-            this._blockchainClient.getAddress()
-          );
-        }
-      } else {
-        this._vm.walletReady = false;
-      }
-    }, 500);
   }
 
   on(event, callback) {

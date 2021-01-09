@@ -7,6 +7,7 @@ const Presale = require("./Presale.json");
 const Dividends = require("./Dividends.json");
 const TronWeb = require("tronweb");
 import { toDecimal, toBigNumber } from "../utils";
+import WalletLockedError from "../WalletLockedError";
 
 const getParamTypes = params => {
   return params.map(({ type }) => type);
@@ -42,6 +43,20 @@ class TronBlockchainClient extends BlockchainClient {
     return await this._tronWeb.trx.sign(this._tronWeb.toHex(nonce));
   }
 
+  async unlocked(cancellationToken) {
+    console.log("unlocking...");
+    // wait for wallet to be unlocked
+    return new Promise(resolve => {
+      const interval = setInterval(() => {
+        if (this.isReady() || cancellationToken.cancelled) {
+          console.log("UNlocked");
+          clearInterval(interval);
+          resolve(true);
+        }
+      }, 500);
+    });
+  }
+
   async init() {
     try {
       await new Promise((resolve, reject) => {
@@ -62,25 +77,16 @@ class TronBlockchainClient extends BlockchainClient {
       throw exc;
     }
 
+    if (!this.isReady()) {
+      throw new WalletLockedError();
+    }
+
     this._tronWasInited = true;
 
     await this._initContracts();
   }
 
   async _initContracts() {
-    await new Promise((resolve, reject) => {
-      let tries = 0;
-      // is it possible that injection can be delayed?
-      let interval = setInterval(() => {
-        if (this._tronWeb.ready) {
-          clearInterval(interval);
-          resolve();
-        } else if (tries++ > 2) {
-          reject();
-        }
-      }, 500);
-    });
-
     try {
       this._paymentContract = this._tronWeb.contract(
         PaymentGateway.abi,

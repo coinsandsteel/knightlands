@@ -985,7 +985,7 @@
     "prompt-snap-msg": "Something went wrong. Try again later.",
     "prompt-success-title": "Success!",
     "tower-no-keys": "No Onyx Keys!",
-    "trials-no-keys": "No trial tickets!",
+    "trials-no-keys": "Out of attempts!",
     "trials-purchase-attempts": "Purchase Attempts",
     "btn-reset": "Reset",
     "task-complete": "Task {task} complete!",
@@ -3082,5 +3082,8 @@
     "gen": "Generals",
     "tro": "Troops",
     "other-items": "Inventory items",
-    "only-equipped-items": "Equipped items"
+    "only-equipped-items": "Equipped items",
+    "ch-wal": "Connect Wallet",
+    "un-wal-t": "Wallet is locked!",
+    "un-wal": "Please, unlock your wallet to proceed"
 }

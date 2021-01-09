@@ -36,16 +36,13 @@
                 ></loot>
               </div>
 
-              <div class="flex flex-column">
-                <span
-                  class="font-size-20 font-shadow padding-top-1 flex-self-start"
-                  >{{
-                    $t("character-level", { level: $game.character.level })
-                  }}</span
-                >
+              <div class="flex flex-column padding-top-1">
+                <span class="font-size-20 font-shadow flex-self-start">{{
+                  $t("character-level", { level: $game.character.level })
+                }}</span>
 
                 <span
-                  class="font-size-20 font-shadow rarity-legendary padding-top-1 margin-bottom-1 font-weight-900 flex-self-start"
+                  class="font-size-20 font-shadow rarity-legendary margin-top-1 font-weight-900 flex-self-start"
                   >{{ $t("character-power", { power: totalPower() }) }}</span
                 >
 

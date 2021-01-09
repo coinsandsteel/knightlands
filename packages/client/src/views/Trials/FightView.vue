@@ -96,6 +96,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import CardSelector from "./Cards/CardSelector.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import TrialCardsEffect from "@/../../knightlands-shared/trial_cards_effect";
 import Errors from "@/../../knightlands-shared/errors";
 import TrialsMeta from "@/trials_meta";
@@ -107,7 +108,7 @@ const ShowPurchaseAttempts = create(PurchaseAttempts);
 
 export default {
   props: ["state", "meta", "trialIndex", "trialType", "trialMeta"],
-  mixins: [PromptMixin],
+  mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
     EnemyView,
     FloatingTextContainer,
@@ -170,15 +171,19 @@ export default {
   },
   methods: {
     async summonCards() {
-      this.request = await this.$game.summonTrialCards(this.trialType);
+      this.request = this.performRequest(
+        this.$game.summonTrialCards(this.trialType)
+      );
       this.cards = await this.request;
     },
     async fetchRemoteData() {
-      this.request = this.$game.fetchTrialFightMeta(
-        this.trialType,
-        this.trialMeta.id,
-        this.state.stageId,
-        this.state.index
+      this.request = this.performRequest(
+        this.$game.fetchTrialFightMeta(
+          this.trialType,
+          this.trialMeta.id,
+          this.state.stageId,
+          this.state.index
+        )
       );
       this.additionalFightMeta = await this.request;
     },
@@ -205,12 +210,12 @@ export default {
       }
     },
     async attack() {
-      this.request = await this.$game.attackTrial(this.trialType);
+      this.request = this.performRequestNoCatch(
+        this.$game.attackTrial(this.trialType)
+      );
 
       try {
-        const response = await this.request;
-
-        const { attackResult } = response;
+        const { attackResult } = await this.request;
         this.$refs.floatingText.addFloatingText(
           attackResult.damage,
           attackResult.crit

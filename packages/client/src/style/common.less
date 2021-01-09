@@ -926,13 +926,18 @@ span {
 
 .item-icon() {
     background-repeat: no-repeat;
-    background-size: contain;
+    
     width: 3rem !important;
     height: 3rem !important;
     display: inline-block;
 }
 
+.item-icon-atlas {
+    .item-icon();
+}
+
 .item-icon {
+    background-size: contain;
     .item-icon();
 }
 

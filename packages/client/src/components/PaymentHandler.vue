@@ -61,8 +61,10 @@ export default {
         return response;
       }
     },
+    async beforePurchase() {},
     async purchase(signature, price, iap, paymentId, nonce, timestamp) {
       try {
+        await this.beforePurchase();
         console.log("purchase....");
         await this.$game.purchaseIAP(
           iap,
@@ -72,7 +74,6 @@ export default {
           timestamp,
           signature
         );
-        await this.fetchPaymentStatus(iap);
       } catch (exc) {
         console.log("Payment failed with exception", exc);
         this.showPrompt(
@@ -86,6 +87,8 @@ export default {
             }
           ]
         );
+      } finally {
+        await this.fetchPaymentStatus(iap);
       }
     },
     async continuePurchase(paymentStatus) {

@@ -4,6 +4,7 @@
     :cancel="true"
     @iap="setIap"
     @pay="continuePurchase"
+    @cancel="cancelPurchase"
     class="width-100"
   >
     <div class="shop-container">
@@ -32,11 +33,13 @@ import Meta from "@/top_up_shop";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
+import ConnectWallet from "@/views/Account/ConnectWallet.vue";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
 
 const ShowDialog = create(ItemsReceived, "items", "soft", "hard");
+const ShowWallet = create(ConnectWallet);
 
 export default {
   mixins: [NetworkRequestErrorMixin, PaymentHandler],
@@ -60,8 +63,12 @@ export default {
     async fetchPaymentStatus() {
       this.request = this.$game.paymentStatus();
     },
+    async beforePurchase() {
+      await ShowWallet();
+    },
     async handlePurchase(iap) {
       this.setIap(iap);
+      await this.beforePurchase();
       await this.purchaseRequest(this.$game.purchase(iap));
     }
   }

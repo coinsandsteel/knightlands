@@ -10,7 +10,7 @@ import AppSection from "@/AppSection.vue";
 export default {
   mixins: [AppSection],
   created() {
-    this.title = "w-top-up";
+    this.title = "w-block";
   }
 };
 </script>

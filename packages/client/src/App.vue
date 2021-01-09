@@ -230,34 +230,34 @@ export default {
       this.showBackButton();
     });
 
-    this._blockchainClient = BlockchainFactory(this.$store.state.blockchain);
+    // this._blockchainClient = BlockchainFactory(this.$store.state.blockchain);
     this.$game.connect();
 
-    try {
-      Vue.prototype.$game.blockchain = this._blockchainClient;
-      await this._blockchainClient.init();
+    // try {
+    //   Vue.prototype.$game.blockchain = this._blockchainClient;
+    //   await this._blockchainClient.init();
 
-      // wait for wallet to be unlocked
-      // await new Promise(resolve => {
-      //   let tries = 0;
-      //   let interval;
-      //   interval = setInterval(() => {
-      //     if (tries++ > 10) {
-      //       // redirect to login page
-      //       if (this.$route.matched.some(record => record.meta.requiresAuth)) {
-      //         if (!this.$game.authenticated) {
-      //           this.redirectToLogin();
-      //         }
-      //       }
-      //       this.loading = false;
-      //       clearInterval(interval);
-      //       return;
-      //     }
-      //   }, 200);
-      // });
-    } catch (e) {
-      // this.redirectToLogin();
-    }
+    //   // wait for wallet to be unlocked
+    //   // await new Promise(resolve => {
+    //   //   let tries = 0;
+    //   //   let interval;
+    //   //   interval = setInterval(() => {
+    //   //     if (tries++ > 10) {
+    //   //       // redirect to login page
+    //   //       if (this.$route.matched.some(record => record.meta.requiresAuth)) {
+    //   //         if (!this.$game.authenticated) {
+    //   //           this.redirectToLogin();
+    //   //         }
+    //   //       }
+    //   //       this.loading = false;
+    //   //       clearInterval(interval);
+    //   //       return;
+    //   //     }
+    //   //   }, 200);
+    //   // });
+    // } catch (e) {
+    //   // this.redirectToLogin();
+    // }
   },
   methods: {
     getStatusBar() {

@@ -641,7 +641,7 @@ const router = new Router({
       },
       children: [
         {
-          component: () => import("./views/Account/Account.vue"),
+          component: () => import("./views/Account/BlockchainWallet.vue"),
           path: ""
         }
       ]
