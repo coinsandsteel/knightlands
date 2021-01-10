@@ -19,7 +19,7 @@
             >
           </transition>
         </div>
-        <PurchaseButton :price="price" @click="submit">{{
+        <PurchaseButton type="yellow" :price="price" @click="submit">{{
           $t("sub-nick")
         }}</PurchaseButton>
       </div>

@@ -2,8 +2,14 @@
   <CustomButton v-bind="$attrs" @click="handleClick">
     <slot></slot>
 
-    <IconWithValue iconClass="icon-gold" v-if="soft">{{ price }}</IconWithValue>
-    <IconWithValue iconClass="icon-premium" v-else>{{ price }}</IconWithValue>
+    <template v-if="price > 0">
+      <IconWithValue iconClass="icon-gold" :iconMargin="false" v-if="soft">{{
+        price
+      }}</IconWithValue>
+      <IconWithValue iconClass="icon-premium" :iconMargin="false" v-else>{{
+        price
+      }}</IconWithValue>
+    </template>
   </CustomButton>
 </template>
 

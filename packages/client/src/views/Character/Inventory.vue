@@ -8,6 +8,7 @@
       :filtersStore="filtersStore"
       :commitCmd="commitCmd"
       :items="computedItems"
+      :hideFilters="hideFilters"
       v-model="resultItems"
       @hint="_showHint"
     ></LootContainer>
@@ -45,7 +46,14 @@ export default {
     LootContainer,
     ScrollableItemHint
   },
-  props: ["hideBg", "filters", "commitCmd", "filtersStore", "items"],
+  props: [
+    "hideBg",
+    "filters",
+    "commitCmd",
+    "filtersStore",
+    "items",
+    "hideFilters"
+  ],
   data: () => ({
     showHintItems: false,
     showDetails: false,

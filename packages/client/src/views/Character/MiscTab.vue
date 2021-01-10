@@ -5,6 +5,7 @@
       commitCmd="setMiscFilters"
       :items="consumables"
       :filtersStore="$store.getters.getMiscFilters"
+      :hideFilters="true"
     ></Inventory>
 
     <Inventory
@@ -56,9 +57,8 @@ export default {
         }
 
         if (
-          template.action.action == ItemActions.OpenBox ||
-          template.action.action == ItemActions.AddExperience ||
-          template.action.action == ItemActions.RefillTimer
+          template.action.action != ItemActions.Buff &&
+          template.action.action != ItemActions.RaidBuff
         ) {
           filteredItems.push(item);
         }
