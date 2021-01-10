@@ -1,6 +1,10 @@
 <template>
   <div class="relative">
-    <PromisedButton v-bind="$attrs" @click="handleClick" @promiseFinished="startCooldown">
+    <PromisedButton
+      v-bind="$attrs"
+      @click="handleClick"
+      @promiseFinished="startCooldown"
+    >
       <slot></slot>
     </PromisedButton>
     <div ref="overlay" class="cooldown-overlay"></div>

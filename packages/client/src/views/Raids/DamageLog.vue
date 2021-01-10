@@ -1,20 +1,25 @@
 <template>
-  <div class="flex flex-column flex-items-end flex-end width-100 height-100 flex-start">
-    <div class="mask width-100 height-100 flex flex-column flex-no-wrap flex-items-center flex-end">
+  <div
+    class="flex flex-column flex-items-end flex-end width-100 height-100 flex-start"
+  >
+    <div
+      class="mask width-100 height-100 flex flex-column flex-no-wrap flex-items-center flex-end"
+    >
       <div class="close-btn" @click="$emit('close')"></div>
 
-      <div v-bar>
+      <div class="width-100" v-bar>
         <div>
           <div
-            class="font-size-15 margin-top-1 font-weight-700 flex flex-start width-100"
-            v-for="(record) in log"
+            class="font-size-18 margin-top-1 font-weight-700 flex flex-start flex-items-center width-100"
+            v-for="record in log"
             :key="record.id"
-            :class="{'new-line': record.new}"
+            :class="{ 'new-line': record.new }"
           >
-            <span class="damage trim-text width-50">{{record.by}}</span>
+            <span class="damage trim-text width-50">{{ record.name }}</span>
             <IconWithValue iconClass="icon-attack small">
-              <span class="margin-right-1">{{record.damage}}</span>
-              <span>(x{{record.hits}})</span>
+              <span class="margin-right-1"
+                >{{ record.damage }} x{{ record.hits }}</span
+              >
             </IconWithValue>
           </div>
         </div>

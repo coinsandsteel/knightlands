@@ -14,7 +14,8 @@
           type="red"
           @click="$emit('attack', attacks)"
           :disabled="disabled"
-        >Attack: x{{attacks}}</AttackButton>
+          >Attack: x{{ attacks }}</AttackButton
+        >
       </template>
     </NumericValue>
   </div>

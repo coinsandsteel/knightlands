@@ -211,7 +211,7 @@ export default {
       }
       const offset = UI.offset(el);
       const to = {
-        x: offset.width / 2,
+        x: offset.left,
         y: offset.top + offset.height / 2
       };
       await this.attract(instance, at, to, container);

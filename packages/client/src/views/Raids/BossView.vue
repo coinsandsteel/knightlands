@@ -155,7 +155,7 @@ export default {
   > .nav-arrow {
     grid-row: ~"2/5";
     grid-column: ~"3";
-    z-index: 1;
+    z-index: 151;
 
     &.left {
       grid-column: ~"1";

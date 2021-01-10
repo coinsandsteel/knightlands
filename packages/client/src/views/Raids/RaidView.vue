@@ -677,6 +677,7 @@ export default {
     },
     _handleRaidDamage(data) {
       this.lastDamages.push({
+        name: data.name,
         by: data.by,
         damage: data.damage,
         id: this.damageLogId++,
@@ -686,7 +687,7 @@ export default {
       if (this.lastDamages.length > MAX_LAST_DAMAGES) {
         this.lastDamages.splice(0, 1);
       }
-      if (data.by == this.$game.account) {
+      if (data.by == this.$game.id) {
         // increase current damage
         this.raidState.currentDamage += data.damage;
         return;

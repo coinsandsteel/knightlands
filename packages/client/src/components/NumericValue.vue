@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-no-wrap font-size-20 flex-center font-weight-900 font-outline flex-space-between"
+    class="flex flex-no-wrap font-size-20 flex-center font-weight-900 flex-space-between"
   >
     <i
       :class="{ 'disabled-btn': !decreaseCondition }"
