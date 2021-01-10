@@ -31,7 +31,7 @@
         class="width-100 height-100"
         :items="records"
         :item-size="itemSize"
-        key-field="id"
+        key-field="name"
         v-slot="{ item, index }"
         :emitUpdate="records.length > 0 && !fetchedAll"
         @update="scrollUpdated"
@@ -39,7 +39,7 @@
         <LeaderboardListElement
           :index="index"
           :rank="index + 1"
-          :id="item.id"
+          :id="item.name"
           :score="item.score"
           :height="itemSize"
           :you="isYou(item.id)"
@@ -110,6 +110,7 @@ export default {
           this.records.push(...newRecords.records);
           this.currentPage++;
         }
+        console.log(this.records);
       } finally {
         this.fetchInProcess = false;
       }

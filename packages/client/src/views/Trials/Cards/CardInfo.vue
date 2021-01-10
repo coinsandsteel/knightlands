@@ -3,7 +3,7 @@ import TrialsMeta from "@/trials_meta";
 
 export default {
   props: ["effect", "fightMeta"],
-  data:()=>({
+  data: () => ({
     overriddenEffect: null
   }),
   computed: {
@@ -17,7 +17,9 @@ export default {
       );
     },
     cardEffect() {
-      return this.overriddenEffect != null ? this.overriddenEffect : this.effect;
+      return this.overriddenEffect != null
+        ? this.overriddenEffect
+        : this.effect;
     }
   },
   methods: {
@@ -25,7 +27,9 @@ export default {
       return this.$game.trialCardsResolver.getModifierValue(this.cardEffect);
     },
     nextModiferValue() {
-      return this.$game.trialCardsResolver.getNextModifierValue(this.cardEffect);
+      return this.$game.trialCardsResolver.getNextModifierValue(
+        this.cardEffect
+      );
     }
   }
 };

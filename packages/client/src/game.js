@@ -384,6 +384,12 @@ class Game {
     });
   }
 
+  async loadUserPreview(id) {
+    return this._request(Operations.FetchCharacter, {
+      id
+    });
+  }
+
   async purchaseCard(cardId, address) {
     return (
       await this._wrapOperation(Operations.Purchase, {
@@ -402,11 +408,12 @@ class Game {
     ).response;
   }
 
-  async purchase(iap, address) {
+  async purchase(iap) {
     return (
       await this._wrapOperation(Operations.Purchase, {
         iap,
-        address: this._blockchainClient.getAddress()
+        address: this._blockchainClient.getAddress(),
+        chain: this._blockchainClient.id
       })
     ).response;
   }
@@ -1017,6 +1024,12 @@ class Game {
       console.error(exc);
     }
     setTimeout(this._syncTime.bind(this), 5000);
+  }
+
+  async changeName(nickname) {
+    await this._wrapOperation(Operations.ChangeNickname, {
+      nickname
+    });
   }
 
   async resetZone(zone) {

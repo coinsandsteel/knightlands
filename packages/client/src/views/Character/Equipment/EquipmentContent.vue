@@ -1,0 +1,175 @@
+<template>
+  <div
+    key="slots"
+    class="equipment-container flex flex-space-evenly flex-no-wrap"
+  >
+    <div class="equipment-slots relative flex">
+      <img class="heroImage" src="/images/portraits/test.png" />
+      <loot
+        v-for="slot in equipment"
+        :key="slot"
+        :class="slot"
+        :item="itemsInSlots[slot]"
+        :equipment="true"
+        :equipmentSlot="slot"
+        :showLevel="true"
+        @hint="$emit('hint', slot)"
+      ></loot>
+    </div>
+
+    <div class="flex flex-column padding-top-1">
+      <div class="flex flex-items-center flex-self-start margin-bottom-2">
+        <span class="font-size-22 font-weight-900 font-shadow">{{
+          nickname
+        }}</span>
+        <span
+          class="icon-edit"
+          v-if="nickname == $game.character.nickname"
+          @click="$emit('changeName')"
+        ></span>
+      </div>
+
+      <span class="font-size-20 font-shadow flex-self-start">{{
+        $t("character-level", { level: level })
+      }}</span>
+
+      <span
+        class="font-size-20 font-shadow rarity-legendary margin-top-1 font-weight-900 flex-self-start"
+        >{{ $t("character-power", { power: totalPower() }) }}</span
+      >
+
+      <div
+        class="flex flex-no-wrap font-shadow full-flex flex-space-around font-size-20"
+      >
+        <div
+          class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
+        >
+          <span v-for="stat in statsToShow" :key="stat" class>{{
+            $t(stat)
+          }}</span>
+        </div>
+
+        <div
+          class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
+        >
+          <span
+            v-for="stat in statsToShow"
+            :key="stat"
+            class="attribute"
+            :class="{ 'rarity-rare': hasBonus[stat] }"
+            >{{ stats[stat] }}</span
+          >
+        </div>
+      </div>
+
+      <CustomButton v-if="showDetails" type="grey" @click="$emit('details')">{{
+        $t("btn-details")
+      }}</CustomButton>
+    </div>
+  </div>
+</template>
+
+<script>
+import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
+import CharacterStat from "@/../../knightlands-shared/character_stat";
+import Loot from "@/components/Loot.vue";
+import CustomButton from "@/components/Button.vue";
+
+export default {
+  props: [
+    "itemsInSlots",
+    "level",
+    "stats",
+    "showDetails",
+    "hasBonus",
+    "nickname"
+  ],
+  components: { CustomButton, Loot },
+  computed: {
+    equipment() {
+      return [
+        EquipmentSlots.Necklace,
+        EquipmentSlots.Ring,
+        EquipmentSlots.Pet,
+        EquipmentSlots.MainHand,
+        EquipmentSlots.Helmet,
+        EquipmentSlots.OffHand,
+        EquipmentSlots.Chest,
+        EquipmentSlots.Cape,
+        EquipmentSlots.Gloves,
+        EquipmentSlots.Boots
+      ];
+    },
+    statsToShow() {
+      let stats = [];
+      stats.push(CharacterStat.Health);
+      stats.push(CharacterStat.Attack);
+      stats.push(CharacterStat.Defense);
+
+      return stats;
+    }
+  },
+  methods: {
+    totalPower() {
+      return this.$game.itemsDB.getPower(this.stats);
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+@import (reference) "./../../../style/common.less";
+
+.attribute {
+  margin-left: 1rem;
+}
+
+.heroImage {
+  max-width: 8rem;
+}
+
+.equipment-slots {
+  display: grid;
+  place-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+
+  & .heroImage {
+    grid-row: ~"2/4";
+    grid-column: 2;
+  }
+
+  & .mainHand {
+    grid-row: 4;
+    grid-column: 1;
+  }
+  & .offHand {
+    grid-row: 4;
+    grid-column: 2;
+  }
+  & .ring {
+    grid-row: 4;
+    grid-column: 3;
+  }
+  & .necklace {
+    grid-row: 3;
+    grid-column: 3;
+  }
+  & .helmet {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  & .boots {
+    grid-row: 2;
+    grid-column: 3;
+  }
+  & .chest {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  & .cape {
+    grid-row: 1;
+    grid-column: 3;
+  }
+}
+</style>

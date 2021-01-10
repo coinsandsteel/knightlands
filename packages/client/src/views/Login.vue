@@ -3,7 +3,6 @@
     <div class="screen-background"></div>
 
     <input
-      data-v-25441fae=""
       id="input"
       type="email"
       placeholder="Your email address"

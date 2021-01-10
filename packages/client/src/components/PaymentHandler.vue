@@ -1,6 +1,10 @@
 <script>
 import PromptMixin from "@/components/PromptMixin.vue";
 import Events from "@/../../knightlands-shared/events";
+import ConnectWallet from "@/views/Account/ConnectWallet.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowWallet = create(ConnectWallet, "chain");
 
 export default {
   mixins: [PromptMixin],
@@ -64,7 +68,6 @@ export default {
     async beforePurchase() {},
     async purchase(signature, price, iap, paymentId, nonce, timestamp) {
       try {
-        await this.beforePurchase();
         console.log("purchase....");
         await this.$game.purchaseIAP(
           iap,
@@ -98,9 +101,13 @@ export default {
         iap,
         paymentId,
         nonce,
-        timestamp
+        timestamp,
+        chain
       } = paymentStatus;
-      await this.purchase(signature, price, iap, paymentId, nonce, timestamp);
+      const result = await ShowWallet(chain);
+      if (result) {
+        await this.purchase(signature, price, iap, paymentId, nonce, timestamp);
+      }
     },
     async cancelPurchase(paymentStatus) {
       await this.$game.cancelPurchase(paymentStatus.id);

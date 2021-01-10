@@ -11,7 +11,7 @@
     <CraftingIngridient :ingridient="ingridient" />
 
     <div class="flex flex-center margin-top-2">
-      <CustomButton type="yellow" @click="craft">{{
+      <CustomButton type="yellow" @click="craft" :disabled="!canCraft">{{
         $t("btn-craft")
       }}</CustomButton>
     </div>
@@ -40,6 +40,9 @@ export default {
     this.title = "win-create-acc";
   },
   computed: {
+    canCraft() {
+      return this.$game.inventory.hasEnoughIngridient(this.ingridient);
+    },
     isRing() {
       if (typeof this.ring === "string") {
         return this.ring === "true";

@@ -63,13 +63,19 @@
             <span v-if="!levelRequirementMet" class="font-error font-size-18">{{
               $t("no-raid-level", { level: raidLevel })
             }}</span>
-            <CustomButton
-              :disabled="!canSummon"
-              type="yellow"
-              @click="confirmSummon"
-            >
-              <span>{{ $t("btn-summon") }}</span>
-            </CustomButton>
+
+            <div class="flex flex-center">
+              <CustomButton
+                :disabled="!canSummon"
+                type="yellow"
+                @click="confirmSummon"
+              >
+                <span>{{ $t("btn-summon") }}</span>
+              </CustomButton>
+              <CustomButton type="grey" @click="goToShop">
+                {{ $t("pur-tickets") }}
+              </CustomButton>
+            </div>
           </div>
         </div>
       </div>
@@ -171,6 +177,11 @@ export default {
     }
   },
   methods: {
+    goToShop() {
+      this.$router.push({
+        name: "top-up"
+      });
+    },
     async fetchInfo() {
       this.raidStatus = await this.performRequest(
         this.$game.fetchRaidSummonStatus(this.raid, this.isFreeRaid)

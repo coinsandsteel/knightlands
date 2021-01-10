@@ -8,6 +8,7 @@ const Dividends = require("./Dividends.json");
 const TronWeb = require("tronweb");
 import { toDecimal, toBigNumber } from "../utils";
 import WalletLockedError from "../WalletLockedError";
+import Blockchains from "@/../../knightlands-shared/blockchains.js";
 
 const getParamTypes = params => {
   return params.map(({ type }) => type);
@@ -31,6 +32,10 @@ class TronBlockchainClient extends BlockchainClient {
     return this._tronWeb.defaultAddress.base58;
   }
 
+  get id() {
+    return Blockchains.Tron;
+  }
+
   isInited() {
     return this._tronWasInited;
   }
@@ -44,12 +49,10 @@ class TronBlockchainClient extends BlockchainClient {
   }
 
   async unlocked(cancellationToken) {
-    console.log("unlocking...");
     // wait for wallet to be unlocked
     return new Promise(resolve => {
       const interval = setInterval(() => {
         if (this.isReady() || cancellationToken.cancelled) {
-          console.log("UNlocked");
           clearInterval(interval);
           resolve(true);
         }

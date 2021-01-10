@@ -655,6 +655,12 @@ const router = new Router({
       }
     },
     {
+      path: "/player/:id",
+      name: "preview-char",
+      component: () => import("./views/Character/PlayerPreview.vue"),
+      props: true
+    },
+    {
       path: "/castle/army",
       name: "",
       component: () => import("./views/Army/ArmyRoot.vue"),
@@ -926,7 +932,7 @@ const router = new Router({
         },
         {
           name: "divs-shop",
-          path: "divs-shop",
+          path: "shop",
           component: () => import("./views/Dividends/DividendsShop.vue")
         }
       ]

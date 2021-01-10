@@ -107,7 +107,7 @@
     <DailyQuestCompleteNotification />
     <LoadingNotification />
 
-    <dialogs-wrapper wrapper-name="default" />
+    <dialogs-wrapper transition-name="fade" />
   </div>
 </template>
 
@@ -118,7 +118,6 @@ import ShopMarker from "@/components/Markers/Shop/ShopMarker.vue";
 import CastleMarker from "@/components/Markers/Castle/CastleMarker.vue";
 import HomeMarker from "@/components/Markers/Home/HomeMarker.vue";
 import Vue from "vue";
-import BlockchainFactory from "./blockchain/blockchainFactory";
 import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
 import LoadingNotification from "./components/Notifications/LoadingNotification.vue";
 import DailyQuestCompleteNotification from "./components/Notifications/DailyQuestCompleteNotification.vue";
@@ -130,6 +129,9 @@ const ShowLevelUp = create(LevelUp, "data");
 
 import SelectClass from "@/views/SelectClass/SelectClass.vue";
 const ShowSelectClass = create(SelectClass);
+
+import ChangeNickname from "@/views/Character/ChangeNickname.vue";
+const ShowChangeNickname = create(ChangeNickname);
 
 export default {
   components: {
@@ -206,6 +208,10 @@ export default {
     // show login page when user signed out
     this.$game.on(this.$game.SignUp, async () => {
       await this.$game.notifications.init();
+
+      if (!this.$game.character.nickname) {
+        await ShowChangeNickname();
+      }
     });
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));
 
@@ -230,34 +236,7 @@ export default {
       this.showBackButton();
     });
 
-    // this._blockchainClient = BlockchainFactory(this.$store.state.blockchain);
     this.$game.connect();
-
-    // try {
-    //   Vue.prototype.$game.blockchain = this._blockchainClient;
-    //   await this._blockchainClient.init();
-
-    //   // wait for wallet to be unlocked
-    //   // await new Promise(resolve => {
-    //   //   let tries = 0;
-    //   //   let interval;
-    //   //   interval = setInterval(() => {
-    //   //     if (tries++ > 10) {
-    //   //       // redirect to login page
-    //   //       if (this.$route.matched.some(record => record.meta.requiresAuth)) {
-    //   //         if (!this.$game.authenticated) {
-    //   //           this.redirectToLogin();
-    //   //         }
-    //   //       }
-    //   //       this.loading = false;
-    //   //       clearInterval(interval);
-    //   //       return;
-    //   //     }
-    //   //   }, 200);
-    //   // });
-    // } catch (e) {
-    //   // this.redirectToLogin();
-    // }
   },
   methods: {
     getStatusBar() {

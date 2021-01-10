@@ -34,16 +34,23 @@ import BlockchainFactory from "@/blockchain/blockchainFactory";
 import WalletLockedError from "@/blockchain/WalletLockedError";
 import UnlockWallet from "./UnlockWallet.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 import { create } from "vue-modal-dialogs";
 const ShowUnlockWallet = create(UnlockWallet, "chain");
 
 export default {
-  mixins: [NetworkRequestErrorMixin],
+  mixins: [NetworkRequestErrorMixin, PromptMixin],
   components: { CustomButton, Title, IconWithValue },
+  props: ["chain"],
   data: () => ({
     availableChains: [Blockchains.Tron]
   }),
+  mounted() {
+    if (this.chain) {
+      this.connectWallet(this.chain);
+    }
+  },
   methods: {
     icon(chain) {
       switch (chain) {
@@ -62,6 +69,14 @@ export default {
         if (e instanceof WalletLockedError) {
           await ShowUnlockWallet(chain);
           await this.connectWallet(chain);
+        } else {
+          this.showPrompt(this.$t("no-wa-title"), this.$t("no-wa-desc"), [
+            {
+              type: "green",
+              title: this.$t("btn-ok"),
+              response: true
+            }
+          ]);
         }
       }
     }

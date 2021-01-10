@@ -122,7 +122,7 @@
             class="flex flex-center padding-left-1 padding-right-1 font-size-18 margin-bottom-1"
           >
             <span>{{ $t(beastItemName) }}</span>
-            <div class="item-icon" :class="ticketIcon"></div>
+            <div class="item-icon-atlas" :class="ticketIcon"></div>
             <span>{{ totalSouls() }}</span>
           </div>
 
@@ -138,7 +138,7 @@
                 <span class="margin-right-1">{{
                   $t("beast-boost", { count: 1 })
                 }}</span>
-                <div class="item-icon" :class="ticketIcon"></div>
+                <div class="item-icon-atlas" :class="ticketIcon"></div>
                 <span>1</span>
                 <BeastMarker class="marker-pos" />
               </div>
@@ -156,7 +156,7 @@
                 <span class="margin-right-1">{{
                   $t("beast-boost", { count: batchBoost() })
                 }}</span>
-                <div class="item-icon" :class="ticketIcon"></div>
+                <div class="item-icon-atlas" :class="ticketIcon"></div>
                 <span>{{ batchBoost() }}</span>
                 <BeastMarker class="marker-pos" />
               </div>
@@ -211,6 +211,7 @@ const MaxBoostSize = 50;
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   components: {
+    IconWithValue,
     BeastMarker,
     PurchaseButton,
     CustomButton,

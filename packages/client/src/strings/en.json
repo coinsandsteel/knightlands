@@ -3085,5 +3085,12 @@
     "only-equipped-items": "Equipped items",
     "ch-wal": "Connect Wallet",
     "un-wal-t": "Wallet is locked!",
-    "un-wal": "Please, unlock your wallet to proceed"
+    "un-wal": "Please, unlock your wallet to proceed",
+    "no-wa-title": "No wallet",
+    "no-wa-desc": "It looks like there is no wallet required is installed.",
+    "ch-nick": "Choose your name",
+    "sub-nick": "Submit name",
+    "nick-max": "3-16 symbols. Only letters, numbers, _, -.",
+    "nick-busy": "Name is occupied",
+    "pur-tickets": "Buy Tickets"
 }

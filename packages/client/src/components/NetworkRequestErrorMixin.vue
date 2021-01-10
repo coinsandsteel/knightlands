@@ -12,8 +12,8 @@ export default {
       } catch (exc) {
         console.error(exc);
         this.showPrompt(
-          this.$t("request-error-title"),
-          this.$t("request-desc"),
+          this.$t("prompt-snap-title"),
+          this.$t("prompt-snap-msg"),
           [
             {
               type: "green",

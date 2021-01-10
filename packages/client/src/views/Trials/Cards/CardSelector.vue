@@ -20,7 +20,7 @@
     </div>
 
     <span
-      class="cards-footer center-transform rarity-common font-outline"
+      class="cards-footer center-transform rarity-common font-outline text-align-center"
       :class="{ show: showContinue }"
       >{{ $t("tap-to-continue") }}</span
     >

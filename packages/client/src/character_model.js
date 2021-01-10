@@ -37,7 +37,8 @@ class CharacterModel {
         level: 1,
         exp: 0,
         buffResolver: null,
-        buffs: []
+        buffs: [],
+        nickname: null
       })
     });
 
@@ -58,6 +59,10 @@ class CharacterModel {
 
   get alive() {
     return this._vm.timers[CharacterStats.Health].value >= 1;
+  }
+
+  get nickname() {
+    return this._vm.nickname;
   }
 
   get equipment() {
@@ -122,6 +127,7 @@ class CharacterModel {
     }
 
     this._vm.level = data.level;
+    this._vm.nickname = data.nickname;
     this._vm.exp = data.exp;
     this._vm.freeAttributePoints = data.freeAttributePoints;
 

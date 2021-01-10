@@ -63,13 +63,12 @@ export default {
     async fetchPaymentStatus() {
       this.request = this.$game.paymentStatus();
     },
-    async beforePurchase() {
-      await ShowWallet();
-    },
     async handlePurchase(iap) {
       this.setIap(iap);
-      await this.beforePurchase();
-      await this.purchaseRequest(this.$game.purchase(iap));
+      const result = await ShowWallet();
+      if (result) {
+        await this.purchaseRequest(this.$game.purchase(iap));
+      }
     }
   }
 };
