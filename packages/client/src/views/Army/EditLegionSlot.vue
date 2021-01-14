@@ -1,30 +1,27 @@
 <template>
-  <Promised :promised="request" class="screen-content">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
-      <UnitView :unit="unit" :showEquipment="true" />
-      <div class="flex-full relative dummy-height">
-        <div class="element-background" :class="element"></div>
-        <UnitInventory
-          :remove="true"
-          :units="units"
-          @removed="handleUnitRemove"
-          :autoselect="false"
-          :selectedUnit="unit"
-          @unitSelect="selectUnit"
-        />
-      </div>
+  <div class="screen-content">
+    <UnitView :unit="unit" :showEquipment="true" />
+    <div class="flex-full relative dummy-height">
+      <div class="element-background" :class="element"></div>
+      <UnitInventory
+        :remove="true"
+        :units="units"
+        @removed="handleUnitRemove"
+        :autoselect="false"
+        :selectedUnit="unit"
+        @unitSelect="selectUnit"
+      />
+    </div>
 
-      <portal to="footer" v-if="isActive">
-        <CustomButton
-          type="green"
-          @click="saveAndExit(true)"
-          :disabled="!canConfirm"
-          >{{ $t("btn-confirm") }}</CustomButton
-        >
-      </portal>
-    </template>
-  </Promised>
+    <portal to="footer" v-if="isActive">
+      <CustomButton
+        type="green"
+        @click="saveAndExit(true)"
+        :disabled="!canConfirm"
+        >{{ $t("btn-confirm") }}</CustomButton
+      >
+    </portal>
+  </div>
 </template>
 
 <script>
@@ -32,8 +29,6 @@ import AppSection from "@/AppSection";
 import UnitView from "./UnitView.vue";
 import UnitInventory from "./UnitInventory.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import CustomButton from "@/components/Button.vue";
 
@@ -43,14 +38,14 @@ export default {
   components: {
     UnitView,
     UnitInventory,
-    LoadingScreen,
-    Promised,
     CustomButton
   },
   data: () => ({
-    unit: null,
     request: null,
-    units: []
+    units: [],
+    tempSlots: {
+      deadbeef: 1
+    }
   }),
   created() {
     this.$options.useRouterBack = true;
@@ -88,11 +83,9 @@ export default {
       return this.type == "troops";
     },
     canConfirm() {
-      return this.originalUnit != this.unit;
-    }
-  },
-  methods: {
-    load() {
+      return this.unit != this.originalUnit;
+    },
+    originalUnit() {
       let slots = this.$game.army.getSlots(this.legion, this.isTroops);
 
       let foundSlot = slots.find(s => s.id == this.slotId);
@@ -101,13 +94,15 @@ export default {
         foundSlot = slots.find(s => s.id == this.slotId);
       }
 
-      let unit = foundSlot.unit;
-
-      if (!this.unit) {
-        this.originalUnit = unit;
-      }
-
-      this.unit = unit;
+      return foundSlot.unit;
+    },
+    unit() {
+      return this.tempSlots[this.slotId] || this.originalUnit;
+    }
+  },
+  methods: {
+    load() {
+      this.tempSlots = this.$game.army.tempSlots;
 
       const legion = this.$game.army.getLegion(this.legion);
       const exceptUnits = {};
@@ -115,11 +110,11 @@ export default {
       for (const slotId in legion.units) {
         const unitId = legion.units[slotId];
 
-        if (!this.unit || unitId != this.unit.id) {
+        if (!this.originalUnit || unitId != this.originalUnit.id) {
           exceptUnits[unitId] = true;
 
           const template = this.$game.army.getUnit(unitId).template;
-          if (!this.unit || template != this.unit.template) {
+          if (!this.unit || template != this.originalUnit.template) {
             exceptTemplates[template] = true;
           }
         }
@@ -131,15 +126,13 @@ export default {
     },
     selectUnit(unit) {
       // set as active unit in slot
-      this.$game.army.setInSlot(this.legion, this.slotId, unit);
-      this.unit = unit;
+      this.$game.army.setTempSlot(this.slotId, unit);
     },
     handleUnitRemove() {
-      this.$game.army.setInSlot(this.legion, this.slotId, null);
-      this.unit = null;
+      this.$game.army.setTempSlot(this.slotId, null);
     },
     handleBackButton() {
-      if (this.unit != this.originalUnit) {
+      if (this.canConfirm) {
         this.saveAndExit();
         return true;
       }
@@ -168,19 +161,17 @@ export default {
         );
       }
 
-      if (confirmation === false) {
-        this.$game.army.setInSlot(this.legion, this.slotId, this.originalUnit);
-        this.unit = this.originalUnit;
-      } else {
+      if (confirmation) {
         this.request = this.$game.setLegionSlot(
           this.legion,
           this.slotId,
           this.unit ? this.unit.id : 0
         );
         await this.performRequest(this.request);
-        this.originalUnit = this.unit;
+        this.$game.army.setInSlot(this.legion, this.slotId, this.unit);
       }
 
+      this.tempSlots = this.$game.army.resetTempSlots();
       this.$app.handleBackButton();
     }
   }

@@ -23,6 +23,7 @@
       <span
         v-if="showEquipped && itemData && itemData.equipped"
         class="equipped"
+        :class="{ 'on-unit': isEquippedOnUnit }"
       ></span>
       <span v-else-if="itemData" :class="`icon-${element} element`"></span>
 
@@ -137,6 +138,13 @@ export default {
     this.updateItemData();
   },
   computed: {
+    isEquippedOnUnit() {
+      if (!this.itemData) {
+        return false;
+      }
+
+      return this.itemData.holder != -1;
+    },
     itemKey() {
       return !this.itemData ? "" : `${this.itemData.template}`;
     },
@@ -409,6 +417,10 @@ export default {
   position: absolute;
   top: 0.4rem;
   left: 0rem;
+
+  &.on-unit {
+    background-image: url("../assets/ui/icon_equipped.png");
+  }
 }
 
 .element {

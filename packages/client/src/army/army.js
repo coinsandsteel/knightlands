@@ -40,10 +40,24 @@ export default class Army {
         legions: [],
         troops: [],
         generals: [],
-        emptyUnit: dummyUnit
+        emptyUnit: dummyUnit,
+        tempSlots: {}
       })
     });
     this._sort = throttle(this._doSort.bind(this), 0, { leading: false });
+  }
+
+  resetTempSlots() {
+    this._vm.tempSlots = {};
+    return this.tempSlots;
+  }
+
+  setTempSlot(slotId, unit) {
+    this._vm.$set(this._vm.tempSlots, slotId, unit);
+  }
+
+  get tempSlots() {
+    return this._vm.tempSlots;
   }
 
   totalLegions() {
