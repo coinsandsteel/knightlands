@@ -3092,5 +3092,8 @@
     "sub-nick": "Submit name",
     "nick-max": "3-16 symbols. Only letters, numbers, _, -.",
     "nick-busy": "Name is occupied",
-    "pur-tickets": "Buy Tickets"
+    "pur-tickets": "Buy Tickets",
+    "rt-reached": "Race target is reached!",
+    "o-race": "Open race",
+    "o-fin": "Race finished!"
 }

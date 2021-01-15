@@ -92,6 +92,24 @@ export default {
       this.races = info.list;
       this.current = info.currentRace;
       this.cooldownTimer.timeLeft = info.cooldown;
+
+      this.races.sort((x, y) => {
+        let subject = x.config.tier - y.config.tier;
+
+        if (info.currentRace && x._id == info.currentRace.id) {
+          return -1;
+        }
+
+        if (info.currentRace && y._id == info.currentRace.id) {
+          return 1;
+        }
+
+        if (subject == 0) {
+          subject = x._id.localeCompare(y._id);
+        }
+
+        return subject;
+      });
     },
     goToShop() {
       this.$router.push({ name: "race-shop" });

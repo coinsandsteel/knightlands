@@ -108,6 +108,7 @@ class Game {
       Events.RaidJoinStatus,
       this._handleRaidJoinStatus.bind(this)
     );
+    this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
     this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
     this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
     this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
@@ -616,6 +617,15 @@ class Game {
 
   _handleChartUpdate(data) {
     this._vm.$emit(Events.TokenChartUpdate, data);
+  }
+
+  _handleRaceFinished(data) {
+    console.log(data);
+    Vue.notify({
+      group: "race",
+      data,
+      duration: -1
+    });
   }
 
   _handleCraftStatus(data) {

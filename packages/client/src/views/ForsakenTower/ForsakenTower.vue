@@ -41,9 +41,10 @@ import TowerFooter from "./TowerFooter.vue";
 import ForsakenTowerFloor from "./ForsakenTowerFloor.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Errors from "@/../../knightlands-shared/errors";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [AppSection, HintHandler, PromptMixin],
+  mixins: [AppSection, HintHandler, PromptMixin, NetworkRequestErrorMixin],
   components: { FloorListElement, ForsakenTowerFloor, TowerFooter },
   data: () => ({
     floors: [],
@@ -72,7 +73,9 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(async vm => {
       // check if floor is challenged / unclaimed
-      const currentFloor = await vm.$game.fetchCurrentFloor();
+      const currentFloor = await vm.performRequest(
+        vm.$game.fetchCurrentFloor()
+      );
       if (currentFloor) {
         vm.$nextTick(() => {
           vm.openFloor(currentFloor);

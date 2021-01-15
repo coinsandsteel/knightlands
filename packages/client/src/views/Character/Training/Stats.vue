@@ -72,8 +72,10 @@ import NumericValue from "@/components/NumericValue.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import TrainingCampMeta from "@/training_camp";
 import IconWithValue from "@/components/IconWithValue.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
+  mixins: [NetworkRequestErrorMixin],
   components: { CustomButton, NumericValue, CraftingIngridient, IconWithValue },
   data: () => ({
     Attributes: UpgradableCharacterStats,
@@ -120,6 +122,11 @@ export default {
       };
     },
     getAttributeValue(stat) {
+      console.log(
+        this.purchasedAttributes[stat],
+        this.$character.getAttribute(stat)
+      );
+
       return (
         this.$character.getAttribute(stat) +
         (this.purchasedAttributes[stat] || 0)
@@ -141,6 +148,7 @@ export default {
     },
     hasEnoughResource(stat) {
       const res = this.getResource(stat);
+      console.log(res, this.resourceItems[stat]);
       return (
         this.resourceItems[stat] &&
         this.resourceItems[stat].count >= res.quantity
@@ -207,7 +215,7 @@ export default {
       return true;
     },
     async confirmAttributes() {
-      await this.$game.buyStats(this.purchasedAttributes);
+      await this.performRequest(this.$game.buyStats(this.purchasedAttributes));
 
       for (let i in this.purchasedAttributes) {
         this.purchasedAttributes[i] = 0;

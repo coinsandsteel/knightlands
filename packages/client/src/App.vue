@@ -106,6 +106,7 @@
     <RaidStatusNotification />
     <DailyQuestCompleteNotification />
     <LoadingNotification />
+    <RaceFinishedNotification />
 
     <dialogs-wrapper transition-name="fade" />
   </div>
@@ -118,9 +119,10 @@ import ShopMarker from "@/components/Markers/Shop/ShopMarker.vue";
 import CastleMarker from "@/components/Markers/Castle/CastleMarker.vue";
 import HomeMarker from "@/components/Markers/Home/HomeMarker.vue";
 import Vue from "vue";
-import RaidStatusNotification from "./components/Notifications/RaidStatusNotification.vue";
-import LoadingNotification from "./components/Notifications/LoadingNotification.vue";
-import DailyQuestCompleteNotification from "./components/Notifications/DailyQuestCompleteNotification.vue";
+import RaidStatusNotification from "@/components/Notifications/RaidStatusNotification.vue";
+import LoadingNotification from "@/components/Notifications/LoadingNotification.vue";
+import DailyQuestCompleteNotification from "@/components/Notifications/DailyQuestCompleteNotification.vue";
+import RaceFinishedNotification from "@/components/Notifications/RaceFinishedNotification.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -141,6 +143,7 @@ export default {
     RaidStatusNotification,
     LoadingNotification,
     DailyQuestCompleteNotification,
+    RaceFinishedNotification,
     ShopMarker,
     CastleMarker
   },
