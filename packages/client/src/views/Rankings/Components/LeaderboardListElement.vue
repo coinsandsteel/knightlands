@@ -8,12 +8,13 @@
     <span class="flex-1">#{{ rank }}</span>
     <span class="flex-8">{{ id }}</span>
     <span class="flex-3">{{ score }}</span>
+    <span @click="preview" class="icon-preview flex-1"></span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["index", "id", "rank", "score", "height", "you", "target"],
+  props: ["index", "id", "rank", "score", "height", "you", "target", "pId"],
   computed: {
     rankIcon() {
       if (this.target && this.score >= this.target) {
@@ -23,6 +24,14 @@ export default {
       }
 
       return "";
+    }
+  },
+  methods: {
+    preview() {
+      this.$router.push({
+        name: "preview-char",
+        params: { id: this.pId }
+      });
     }
   }
 };

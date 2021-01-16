@@ -245,7 +245,10 @@ export default {
 
           for (; i < length; ++i) {
             let item = items[i];
-            if (this.$game.itemsDB.getRarity(item) != targetRarity) {
+            if (
+              this.$game.itemsDB.getRarity(item) != targetRarity ||
+              item.equipped
+            ) {
               continue;
             }
 

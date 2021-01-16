@@ -40,6 +40,7 @@
           :index="index"
           :rank="index + 1"
           :id="item.name"
+          :pId="item.id"
           :score="item.score"
           :height="itemSize"
           :you="isYou(item.id)"

@@ -3095,5 +3095,6 @@
     "pur-tickets": "Buy Tickets",
     "rt-reached": "Race target is reached!",
     "o-race": "Open race",
-    "o-fin": "Race finished!"
+    "o-fin": "Race finished!",
+    "w-p-char": "Preview Player"
 }

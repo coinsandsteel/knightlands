@@ -1,5 +1,10 @@
 <template>
-  <UserDialog title="ch-nick" :hideCloseBtn="!hasName" @close="handleClose">
+  <UserDialog
+    title="ch-nick"
+    :hideCloseBtn="!hasName"
+    @close="handleClose"
+    :emitClose="true"
+  >
     <template v-slot:content>
       <div class="flex flex-center flex-column">
         <input

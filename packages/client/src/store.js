@@ -13,6 +13,7 @@ import EquipmentType from "@/../../knightlands-shared/equipment_type";
 import DailyLoginStore from "@/store/dailyLogin";
 import Adventures from "@/store/adventures";
 import Summon from "@/store/summon";
+import Training from "@/store/training";
 
 Vue.use(Vuex);
 
@@ -53,7 +54,7 @@ const weaponDefaultFilters = {
   [EquipmentType.Whip]: true
 };
 
-const FiltersVersion = 3;
+const FiltersVersion = 4;
 
 const store = new Vuex.Store({
   state: {
@@ -245,7 +246,8 @@ const store = new Vuex.Store({
   modules: {
     dailyLogin: DailyLoginStore,
     adventures: Adventures,
-    summon: Summon
+    summon: Summon,
+    training: Training
   }
 });
 

@@ -87,17 +87,7 @@ export default {
   }),
   created() {
     this.resourceItems = {};
-
-    for (let statKey in UpgradableCharacterStats) {
-      const stat = UpgradableCharacterStats[statKey];
-
-      this.$set(this.upgradePrice, stat, 0);
-      this.$set(this.purchasedAttributes, stat, 0);
-      this.$set(this.upgradeResources, stat, 0);
-      this.resourceItems[stat] = this.$game.inventory.getItemByTemplate(
-        TrainingCampMeta.find(x => x.stat == stat).resource
-      );
-    }
+    this.init();
   },
   deactivated() {
     this.resetAttributes();
@@ -113,6 +103,18 @@ export default {
     }
   },
   methods: {
+    init() {
+      for (let statKey in UpgradableCharacterStats) {
+        const stat = UpgradableCharacterStats[statKey];
+
+        this.$set(this.upgradePrice, stat, 0);
+        this.$set(this.purchasedAttributes, stat, 0);
+        this.$set(this.upgradeResources, stat, 0);
+        this.resourceItems[stat] = this.$game.inventory.getItemByTemplate(
+          TrainingCampMeta.find(x => x.stat == stat).resource
+        );
+      }
+    },
     getResource(stat) {
       return {
         itemId: TrainingCampMeta.find(x => x.stat == stat).resource,
@@ -122,11 +124,6 @@ export default {
       };
     },
     getAttributeValue(stat) {
-      console.log(
-        this.purchasedAttributes[stat],
-        this.$character.getAttribute(stat)
-      );
-
       return (
         this.$character.getAttribute(stat) +
         (this.purchasedAttributes[stat] || 0)
@@ -148,7 +145,7 @@ export default {
     },
     hasEnoughResource(stat) {
       const res = this.getResource(stat);
-      console.log(res, this.resourceItems[stat]);
+
       return (
         this.resourceItems[stat] &&
         this.resourceItems[stat].count >= res.quantity
@@ -170,10 +167,6 @@ export default {
         this.purchasedAttributes[i] = 0;
         this.$game.softCurrency += this.upgradePrice[i];
         this.upgradePrice[i] = 0;
-
-        if (this.resourceItems[i]) {
-          // this.resourceItems[i].count += this.upgradeResources[i];
-        }
         this.upgradeResources[i] = 0;
       }
     },
@@ -187,10 +180,6 @@ export default {
         this.getAttributeValue(attr)
       );
       this.upgradeResources[attr] += resUpgradePrice;
-      if (this.resourceItems[attr]) {
-        // this.resourceItems[attr].count -= resUpgradePrice;
-      }
-
       this.purchasedAttributes[attr]++;
 
       return true;
@@ -208,20 +197,12 @@ export default {
       );
       this.upgradeResources[attr] -= resUpgradePrice;
 
-      if (this.resourceItems[attr]) {
-        // this.resourceItems[attr].count += resUpgradePrice;
-      }
-
       return true;
     },
     async confirmAttributes() {
       await this.performRequest(this.$game.buyStats(this.purchasedAttributes));
-
-      for (let i in this.purchasedAttributes) {
-        this.purchasedAttributes[i] = 0;
-        this.upgradePrice[i] = 0;
-        this.upgradeResources[i] = 0;
-      }
+      await this.$game.notifications.updateTraining();
+      this.init();
     }
   }
 };

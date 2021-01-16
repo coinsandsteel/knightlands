@@ -61,6 +61,10 @@ class Inventory {
     return "changed";
   }
 
+  get dummyItem() {
+    return this._vm.emptyItem;
+  }
+
   get items() {
     return this._vm.items;
   }
