@@ -9,6 +9,7 @@
       :hasBonus="{}"
       :showDetails="true"
       :nickname="character.nickname"
+      :classIcon="character.class"
       @details="showDetails"
     />
   </div>

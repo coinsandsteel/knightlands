@@ -1,30 +1,38 @@
 <template>
   <div
-    class="flex flex-space-between flex-no-wrap flex-items-end color-panel-2 padding-left-2 padding-right-2"
+    class="flex flex-space-between flex-no-wrap flex-column color-panel-2 padding-left-2 padding-right-2"
   >
-    <div class="flex flex-column">
+    <div class="flex">
       <span class="font-size-20 font-outline font-weight-900">{{
         $t("mine-rate", { rate: rate, lvl: rateLvl })
       }}</span>
+
+      <span class="nav-arrow margin-left-1 margin-right-1"></span>
+
+      <span class="font-size-20 font-outline font-weight-900">{{
+        $t("mine-rate-n", { rate: nextRate })
+      }}</span>
+    </div>
+
+    <div class="flex flex-space-between width-100 margin-top-1">
       <CustomButton
         type="grey"
-        class="margin-top-1"
         @click="$emit('upgradeMining')"
         :disabled="cantUpgradeRate"
       >
         {{ $t("btn-upgrade") }}
         <IconWithValue iconClass="icon-dkt">{{ ratePrice }}</IconWithValue>
       </CustomButton>
-    </div>
 
-    <CustomButton
-      type="yellow"
-      @click="$emit('collect')"
-      :disabled="mined <= 0"
-    >
-      {{ $t("btn-collect") }}
-      <IconWithValue iconClass="icon-dkt">{{ mined }}</IconWithValue>
-    </CustomButton>
+      <CustomButton
+        type="yellow"
+        @click="$emit('collect')"
+        :disabled="mined <= 0"
+      >
+        {{ $t("btn-collect") }}
+        <IconWithValue iconClass="icon-dkt">{{ mined }}</IconWithValue>
+      </CustomButton>
+    </div>
   </div>
 </template>
 
@@ -46,6 +54,19 @@ export default {
     clearInterval(this.interval);
   },
   computed: {
+    nextRate() {
+      return (
+        Math.floor(
+          (Math.pow(
+            DividendsMeta.mining.rate.base *
+              (this.$game.dividends.miningLevel + 1),
+            DividendsMeta.mining.rate.factor
+          ) /
+            24) *
+            10000
+        ) / 10000
+      );
+    },
     rate() {
       return (
         Math.floor(

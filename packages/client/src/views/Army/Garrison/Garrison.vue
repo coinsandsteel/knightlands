@@ -28,7 +28,7 @@ export default {
   data: () => ({
     tabs: [
       {
-        title: "w-banishment",
+        title: "w-banish",
         value: Dismiss,
         to: { name: "units-dismiss" }
       },
@@ -41,6 +41,7 @@ export default {
     currentTab: Dismiss
   }),
   created() {
+    this.title = "w-garr";
     this.$options.useRouterBack = true;
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content">
-    <UnitView :unit="unit" :showEquipment="true" />
+    <UnitView :unit="unit" :showEquipment="true" :units="units" />
     <div class="flex-full relative dummy-height">
       <div class="element-background" :class="element"></div>
       <UnitInventory

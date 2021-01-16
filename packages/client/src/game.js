@@ -519,6 +519,7 @@ class Game {
 
   _handleInventoryUpdate(data) {
     this._inventory.mergeData(data);
+    this.notifications.updateTraining();
   }
 
   _handleUnitUpdate(data) {
@@ -1814,9 +1815,9 @@ class Game {
     ).response;
   }
 
-  async unitEquipItem(unitId, itemId) {
+  async unitEquipItem(unitId, itemIds) {
     return (
-      await this._wrapOperation(Operations.UnitEquipItem, { unitId, itemId })
+      await this._wrapOperation(Operations.UnitEquipItem, { unitId, itemIds })
     ).response;
   }
 

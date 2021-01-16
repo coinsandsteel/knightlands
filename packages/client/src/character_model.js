@@ -29,6 +29,7 @@ class CharacterModel {
 
     this._vm = new Vue({
       data: () => ({
+        class: "",
         equipment: {},
         timers: timers, // timers for health, energy, stamina etc.
         stats: Object.assign({}, DefaultStats), // final stats
@@ -47,6 +48,10 @@ class CharacterModel {
 
   get buffResolver() {
     return this._vm.buffResolver;
+  }
+
+  get class() {
+    return this._vm.class;
   }
 
   get buffs() {
@@ -128,6 +133,7 @@ class CharacterModel {
 
     this._vm.level = data.level;
     this._vm.nickname = data.nickname;
+    this._vm.class = data.class;
     this._vm.exp = data.exp;
     this._vm.freeAttributePoints = data.freeAttributePoints;
 

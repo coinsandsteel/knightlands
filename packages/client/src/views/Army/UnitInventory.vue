@@ -3,7 +3,12 @@
     <div class="flex-full">
       <div class="padding-half">
         <div class="width-100 flex">
-          <UnitItem class="width-20" v-if="remove" @click="handleRemove" :empty="false" />
+          <UnitItem
+            class="width-20"
+            v-if="remove"
+            @click="handleRemove"
+            :empty="false"
+          />
           <UnitItem
             class="width-20"
             v-for="unit in filteredUnits"
@@ -17,7 +22,9 @@
     </div>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="grey" @click="showUnitFilters">{{$t("btn-filter")}}</CustomButton>
+      <CustomButton type="grey" @click="showUnitFilters">{{
+        $t("btn-filter")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -66,6 +73,9 @@ export default {
     }
   },
   methods: {
+    getUnits() {
+      return this.filteredUnits;
+    },
     resetSelection() {
       this.selectedSlots = {};
     },

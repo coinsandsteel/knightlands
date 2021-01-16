@@ -3,11 +3,17 @@ import MinesMeta from "@/mines_meta";
 
 export default {
   computed: {
+    storageAtMaxLvl() {
+      return this.storageLvl >= MinesMeta.storage.length;
+    },
     storageLvl() {
       return this.$game.goldMines.storage.level;
     },
     maxStorage() {
       return MinesMeta.storage[this.storageLvl].size;
+    },
+    nextMaxStorage() {
+      return MinesMeta.storage[this.storageLvl + 1].size;
     },
     storagePrice() {
       return MinesMeta.storage[this.storageLvl].price;

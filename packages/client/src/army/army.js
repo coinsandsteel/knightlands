@@ -323,7 +323,7 @@ export default class Army {
         }
       }
 
-      this._vm.reserve = army.reserve;
+      this._vm.reserve = army.reserve || this._vm.reserve;
     } else {
       this._loaded = false;
     }

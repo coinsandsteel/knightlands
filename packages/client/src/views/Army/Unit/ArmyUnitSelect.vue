@@ -1,7 +1,7 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
-    <UnitView :unit="unit" />
+    <UnitView :unit="unit" :units="filteredUnits()" />
     <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
 
     <div class="flex-full relative dummy-height">
@@ -13,11 +13,11 @@
       />
     </div>
 
-    <portal to="footer" v-if="isActive">
+    <!-- <portal to="footer" v-if="isActive">
       <CustomButton type="green" @click="editUnit">{{
         $t("btn-select")
       }}</CustomButton>
-    </portal>
+    </portal> -->
   </div>
 </template>
 
@@ -25,7 +25,6 @@
 import AppSection from "@/AppSection";
 import UnitInventory from "../UnitInventory.vue";
 import Tabs from "@/components/Tabs.vue";
-import CustomButton from "@/components/Button.vue";
 import UnitView from "../UnitView.vue";
 
 const Troops = "troops";
@@ -33,7 +32,7 @@ const Generals = "generals";
 
 export default {
   mixins: [AppSection],
-  components: { UnitInventory, Tabs, UnitView, CustomButton },
+  components: { UnitInventory, Tabs, UnitView },
   created() {
     this.title = "w-select-unit";
     this.$options.useRouterBack = true;
@@ -63,6 +62,12 @@ export default {
     }
   },
   methods: {
+    filteredUnits() {
+      if (!this.$refs.inventory) {
+        return [];
+      }
+      return this.$refs.inventory.getUnits();
+    },
     switchTab(newTab) {
       this.currentTab = newTab;
       this.units = this.$game.army.getUnits(this.currentTab == Troops);

@@ -36,10 +36,10 @@
 
       <portal to="footer" v-if="isActive">
         <CustomButton type="yellow" @click="reserve" :disabled="!canReserve">{{
-          $t("btn-reserve")
+          $t("btn-confirm")
         }}</CustomButton>
-        <CustomButton type="yellow" @click="viewReserve">{{
-          $t("btn-reserve-view")
+        <CustomButton type="grey" @click="viewReserve">{{
+          $t("btn-view-res")
         }}</CustomButton>
         <CustomButton type="grey" @click="reset" :disabled="!canReserve">{{
           $t("btn-reset")

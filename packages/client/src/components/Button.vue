@@ -203,15 +203,15 @@ export default {
 }
 
 .skewed-stripes {
-  background: no-repeat url("./../assets/ui/buttons/skewed_button_glow.png");
-  background-repeat: no-repeat;
-  background-position: right;
-  background-size: contain;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0.25rem;
-  bottom: 0.7rem;
+  // background: no-repeat url("./../assets/ui/buttons/skewed_button_glow.png");
+  // background-repeat: no-repeat;
+  // background-position: right;
+  // background-size: contain;
+  // position: absolute;
+  // left: 0;
+  // right: 0;
+  // top: 0.25rem;
+  // bottom: 0.7rem;
 }
 
 .locked {

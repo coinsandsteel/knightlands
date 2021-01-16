@@ -9,18 +9,31 @@
     />
 
     <div class="flex flex-column flex-center margin-top-2">
-      <span class="font-size-20 font-outline font-weight-900">{{
-        $t("mine-strg", { size: maxStorage, lvl: storageLvl + 1 })
-      }}</span>
+      <div class="flex">
+        <span class="font-size-20 font-outline font-weight-900">{{
+          $t("mine-strg", { size: maxStorage, lvl: storageLvl + 1 })
+        }}</span>
+        <template v-if="!storageAtMaxLvl">
+          <span class="nav-arrow margin-left-1 margin-right-1"></span>
+          <span class="font-size-20 font-outline font-weight-900">{{
+            $t("mine-strg-n", { size: nextMaxStorage })
+          }}</span>
+        </template>
+      </div>
+
       <CustomButton
+        v-if="!storageAtMaxLvl"
         type="grey"
-        class="margin-top-1"
+        class="margin-top-1 flex-self-start"
         @click="$emit('upgrade-storage')"
         :disabled="cantUpgradeStorage"
       >
         {{ $t("btn-upgrade") }}
         <IconWithValue iconClass="icon-gold">{{ storagePrice }}</IconWithValue>
       </CustomButton>
+      <CustomButton v-else type="grey" :disabled="true">{{
+        $t("mine-max")
+      }}</CustomButton>
     </div>
 
     <CustomButton type="yellow" @click="$emit('collect')" :disabled="gold < 1">

@@ -3,6 +3,7 @@
     <Loot :item="item" :quantity="quantity" @hint="handleHint" />
     <CustomButton
       type="grey"
+      minWidth="8rem"
       @click="$emit('purchase', item, price)"
       :disabled="locked"
     >

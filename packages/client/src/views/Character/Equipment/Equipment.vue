@@ -5,7 +5,7 @@
       <AnimatedBackground></AnimatedBackground>
       <Flipper :flipKey="slotPreview" class="full-flex dummy-height width-100">
         <div
-          class="width-100 height-100 dummy-height flex flex-column font-weight-900"
+          class="width-100 height-100 dummy-height flex flex-column flex-no-wrap font-weight-900"
         >
           <div class="width-100 equipment" :class="{ preview: slotPreview }">
             <EquipmentPreview
@@ -24,9 +24,11 @@
               :stats="$game.character.maxStats"
               :itemsInSlots="itemsInSlots"
               :nickname="$game.character.nickname"
+              :classIcon="$game.character.class"
               @hint="showEquipmentHint"
               @details="openDetails"
               @changeName="changeName"
+              @changeClass="changeClass"
             ></EquipmentContent>
           </div>
 
@@ -72,6 +74,9 @@ const ShowChangeNickname = CreateDialog({
   wrapper: "equipment"
 });
 const ShowDetails = CreateDialog(StatDetails);
+
+import SelectClass from "@/views/SelectClass/SelectClass.vue";
+const ShowSelectClass = CreateDialog(SelectClass);
 
 export default {
   mixins: [ActivityMixin, HintHandler, ItemActionHandler],
@@ -140,15 +145,12 @@ export default {
     hasBonus(stat) {
       return !!this.$game.character.buffResolver.bonuses[stat];
     },
+    async changeClass() {
+      ShowSelectClass();
+    },
     async showEquipmentHint(slot) {
       this.slotPreview = true;
       this.selectedSlot = slot;
-      // if (!item) {
-      //   return;
-      // }
-
-      // let action = await this.showHint(item);
-      // await this.handleItemAction(item, action);
     }
   }
 };

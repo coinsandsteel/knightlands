@@ -71,9 +71,16 @@
       </div>
 
       <div
-        class="width-60 flex flex-items-end flex-center padding-top-3 height-100"
+        class="width-60 flex flex-items-end flex-center padding-top-3 height-100 unit-view relative"
+        v-touch:swipe="swipeHandler"
       >
+        <span
+          class="nav-arrow left"
+          v-if="showNavigation"
+          @click="emitPrevious"
+        ></span>
         <img class="unit-image" :src="$game.armyDB.getImage(unit)" />
+        <span class="nav-arrow" v-if="showNavigation" @click="emitNext"></span>
       </div>
     </template>
     <div v-else>
@@ -92,12 +99,14 @@ import IconWithValue from "@/components/IconWithValue.vue";
 export default {
   props: {
     unit: Object,
+    units: Array,
     showEquipment: {
       type: Boolean,
       default: true
     },
     showSelect: Boolean,
-    garrison: Boolean
+    garrison: Boolean,
+    showNavigation: Boolean
   },
   mixins: [UnitGetter],
   components: { UnitTitle, UnitStars, CustomButton, IconWithValue },
@@ -108,26 +117,52 @@ export default {
     goToEquipment() {
       this.$router.push({
         name: "unit-equip",
-        params: { unitId: this.unit.id }
+        params: { unitId: this.unit.id, units: this.units }
       });
+    },
+    emitNext() {
+      this.$emit("next");
+    },
+    emitPrevious() {
+      this.$emit("prev");
+    },
+    swipeHandler(direction) {
+      if (direction == "left") {
+        this.emitNext();
+      } else if (direction == "right") {
+        this.emitPrevious();
+      }
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+.unit-view {
+  & .nav-arrow {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+
+  & .nav-arrow.left {
+    position: absolute;
+    left: 0;
+  }
+}
+
 .bg {
   background-image: url("../../assets/backgrounds/1674_1057934862.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   image-rendering: pixelated;
+  z-index: -1;
   position: absolute !important;
   top: -4rem !important;
   left: 0 !important;
   right: 0 !important;
   bottom: 0rem !important;
-  z-index: -1;
 }
 
 .unit-view-container {

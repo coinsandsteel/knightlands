@@ -72,7 +72,8 @@ export default {
       default: "disabled-tabs__item_active"
     },
     append: Boolean,
-    replace: Boolean
+    replace: Boolean,
+    params: Object
   },
   data: () => ({
     newTab: ""

@@ -621,6 +621,22 @@ span {
         width: @iconSize * 1.25 !important;
         height: @iconSize * 1.25 !important;
     }
+
+    &.orange {
+        .icon_star_empy1;
+
+        &.active {
+            .icon_star1;
+        }
+
+        &.mini, &.small {
+            .troops_mini_star_orange1;
+
+            &.active {
+                .troops_mini_star_orange;
+            }
+        }
+    }
 }
 
 .weapon-badge {

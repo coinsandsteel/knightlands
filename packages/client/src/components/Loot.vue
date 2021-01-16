@@ -178,13 +178,13 @@ export default {
 
       if (Math.floor(count / 1e9) > 0) {
         loc = "cb";
-        value = Math.floor((count / 1e9) * 100) / 100;
+        value = Math.floor((count / 1e9) * 10) / 10;
       } else if (Math.floor(count / 1e6) > 0) {
         loc = "cm";
-        value = Math.floor((count / 1e6) * 100) / 100;
+        value = Math.floor((count / 1e6) * 10) / 10;
       } else if (Math.floor(count / 1e3) > 0) {
         loc = "ck";
-        value = Math.floor((count / 1e3) * 100) / 100;
+        value = Math.floor((count / 1e3) * 10) / 10;
       }
 
       if (loc) {

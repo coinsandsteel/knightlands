@@ -15,30 +15,34 @@
     <template v-slot:footer>
       <div class="flex flex-center flex-column">
         <div class="flex">
-          <PromisedButton
+          <PurchaseButton
             :promise="request"
-            :disabled="!selectedClass"
+            :disabled="!selectedClass || !canConfirm"
+            :price="price"
             type="yellow"
             @click="confirm"
-            >{{ $t("choose-class") }}</PromisedButton
+            >{{ firstSelection ? $t("cho-cls") : $t("ch-cls") }}</PurchaseButton
           >
         </div>
-        <span class="font-size-18 margin-top-2">{{ $t("class-footer") }}</span>
+        <span class="font-size-18 margin-top-2" v-if="firstSelection">{{
+          $t("class-footer")
+        }}</span>
       </div>
     </template>
   </UserDialog>
 </template>
 
 <script>
-import PromisedButton from "@/components/PromisedButton.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 import UserDialog from "@/components/UserDialog.vue";
 import ClassSelector from "./ClassSelector.vue";
 import Classes from "@/classes";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Meta from "@/meta";
 
 export default {
   mixins: [PromptMixin],
-  components: { UserDialog, PromisedButton, ClassSelector },
+  components: { UserDialog, PurchaseButton, ClassSelector },
   data: () => ({
     selectedClass: "",
     classes: [],
@@ -56,6 +60,18 @@ export default {
     }
 
     this.classes = selection;
+    this.selectedClass = this.$character.class;
+  },
+  computed: {
+    firstSelection() {
+      return !this.$character.class;
+    },
+    price() {
+      return this.firstSelection ? 0 : Meta.classPrice;
+    },
+    canConfirm() {
+      return this.$character.class != this.selectedClass;
+    }
   },
   methods: {
     async confirm() {

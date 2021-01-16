@@ -1,7 +1,7 @@
 <template>
   <div
     key="slots"
-    class="equipment-container flex flex-space-evenly flex-no-wrap"
+    class="equipment-container flex flex-space-evenly flex-no-wrap font-weight-900"
   >
     <div class="equipment-slots relative flex">
       <img class="heroImage" src="/images/portraits/test.png" />
@@ -19,6 +19,7 @@
 
     <div class="flex flex-column padding-top-1">
       <div class="flex flex-items-center flex-self-start margin-bottom-2">
+        <span :class="classIcon" @click="$emit('changeClass')"></span>
         <span class="font-size-22 font-weight-900 font-shadow">{{
           nickname
         }}</span>
@@ -44,9 +45,7 @@
         <div
           class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-50 text-align-left"
         >
-          <span v-for="stat in statsToShow" :key="stat" class>{{
-            $t(stat)
-          }}</span>
+          <span v-for="stat in statsToShow" :key="stat">{{ $t(stat) }}</span>
         </div>
 
         <div
@@ -82,7 +81,8 @@ export default {
     "stats",
     "showDetails",
     "hasBonus",
-    "nickname"
+    "nickname",
+    "classIcon"
   ],
   components: { CustomButton, Loot },
   computed: {
@@ -171,5 +171,27 @@ export default {
     grid-row: 1;
     grid-column: 3;
   }
+}
+
+@iconSize: 3rem;
+
+.classIcon(@class) {
+  background-image: url("../../../assets/ui/@{class}.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: @iconSize;
+  height: @iconSize;
+}
+
+.barbarian {
+  .classIcon("class1");
+}
+
+.archer {
+  .classIcon("class2");
+}
+
+.mage {
+  .classIcon("class3");
 }
 </style>

@@ -8,7 +8,7 @@
     <span class="flex-1">#{{ rank }}</span>
     <span class="flex-8">{{ id }}</span>
     <span class="flex-3">{{ score }}</span>
-    <span @click="preview" class="icon-preview flex-1"></span>
+    <span @click="preview" class="icon-preview flex-1 pointer"></span>
   </div>
 </template>
 

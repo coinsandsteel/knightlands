@@ -1,5 +1,5 @@
 <template>
-  <div class="inv-root">
+  <div class="inv-root dummy-height">
     <AnimatedBackground v-if="!hideBg"></AnimatedBackground>
     <!-- Inventory  -->
     <LootContainer
@@ -104,6 +104,6 @@ export default {
 
 <style scoped>
 .inv-root {
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 </style>

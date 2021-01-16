@@ -1,6 +1,11 @@
 <template>
   <div class="flex flex-center flex-no-wrap">
-    <span class="star active" :class="size" v-for="star in parseInt(computedStars)" :key="star"></span>
+    <span
+      class="active"
+      :class="[size, starsClass]"
+      v-for="star in parseInt(computedStars)"
+      :key="star"
+    ></span>
   </div>
 </template>
 
@@ -12,6 +17,9 @@ export default {
   computed: {
     computedStars() {
       return this.stars > 5 ? this.stars - 5 : this.stars;
+    },
+    starsClass() {
+      return this.stars > 5 ? "star orange" : "star";
     }
   },
   methods: {
@@ -37,7 +45,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 .star {

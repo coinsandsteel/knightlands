@@ -9,18 +9,18 @@
         class="army-summon flex flex-center pointer"
         @click="goTo('army-summon-menu')"
       >
-        <img src="../../assets/ui/01_summon.png" />
+        <img src="../../assets/ui/summon.png" />
         <span>{{ $t("shop-summon") }}</span>
         <SummonMarker class="marker-pos" />
       </div>
 
       <div class="shop flex flex-center pointer" @click="goTo('daily-shop')">
-        <img src="../../assets/ui/02_MARKET.png" />
+        <img src="../../assets/ui/MARKET.png" />
         <span>{{ $t("shop-shop") }}</span>
       </div>
 
       <div class="chests flex flex-center pointer" @click="goTo('chests')">
-        <img src="../../assets/ui/03_chests.png" />
+        <img src="../../assets/ui/chests.png" />
         <span>{{ $t("shop-chests") }}</span>
         <ChestsMarker class="marker-pos" />
       </div>

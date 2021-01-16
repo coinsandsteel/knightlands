@@ -56,7 +56,7 @@ import ArmyMeta from "@/army_meta";
 import TroopsMeta from "@/troops_meta";
 import GeneralsMeta from "@/generals_meta";
 
-import AppSection from "@/AppSection.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
 import UnitItem from "../../UnitItem.vue";
 import UnitInventory from "../../UnitInventory.vue";
@@ -71,7 +71,7 @@ const Troops = "troops";
 const Generals = "generals";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin],
   components: {
     UnitItem,
     Tabs,
@@ -83,8 +83,6 @@ export default {
     Title
   },
   created() {
-    this.title = "window-banishment";
-    this.$options.useRouterBack = true;
     this.filtersStore = this.$store.getters.getUnitFilters;
   },
   data: () => ({
