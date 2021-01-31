@@ -1,58 +1,52 @@
 <template>
-  <Promised :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <div class="screen-content">
-        <div class="screen-background"></div>
-        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
-        <div
-          class="font-size-20 panel-input pdding-1 margin-2"
-          v-if="cooldownTimer.timeLeft > 0"
-          v-html="$t('race-cooldown', { time: cooldownTimer.value })"
-        ></div>
-        <div v-bar>
-          <div class="padding-top-2">
-            <RaceListElement
-              v-for="r in races"
-              :key="r.id"
-              :race="r"
-              :currentRank="joined(r) ? current : null"
-              :cooldown="cooldownTimer.timeLeft"
-              @join="join(r)"
-              @ranks="showRanks(r)"
-              @rewards="showRewards(r)"
-              @finished="fetchList"
-            ></RaceListElement>
-          </div>
-        </div>
-
-        <portal to="footer" :slim="true" v-if="isActive">
-          <CustomButton type="yellow" @click="goToShop">{{
-            $t("race-shop")
-          }}</CustomButton>
-          <CustomButton
-            type="green"
-            @click="previewRewards"
-            :disabled="finishedRaces.length == 0"
-            >{{ $t("claim-rewards") }}</CustomButton
-          >
-        </portal>
+  <div class="screen-content">
+    <div class="screen-background"></div>
+    <div
+      class="font-size-20 panel-input pdding-1 margin-2"
+      v-if="cooldownTimer.timeLeft > 0"
+      v-html="$t('race-cooldown', { time: cooldownTimer.value })"
+    ></div>
+    <div v-bar>
+      <div class="padding-top-2">
+        <RaceListElement
+          v-for="r in races"
+          :key="r.id"
+          :race="r"
+          :currentRank="joined(r) ? current : null"
+          :cooldown="cooldownTimer.timeLeft"
+          @join="join(r)"
+          @ranks="showRanks(r)"
+          @rewards="showRewards(r)"
+          @finished="fetchList"
+        ></RaceListElement>
       </div>
-    </template>
-  </Promised>
+    </div>
+
+    <portal to="footer" :slim="true" v-if="isActive">
+      <CustomButton type="yellow" @click="goToShop">{{
+        $t("race-shop")
+      }}</CustomButton>
+      <CustomButton
+        type="green"
+        @click="previewRewards"
+        :disabled="finishedRaces.length == 0"
+        >{{ $t("claim-rewards") }}</CustomButton
+      >
+    </portal>
+  </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import RaceListElement from "./RaceListElement.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import Timer from "@/timer";
 
 export default {
-  mixins: [AppSection, PromptMixin],
-  components: { Promised, LoadingScreen, RaceListElement, CustomButton },
+  mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
+  components: { RaceListElement, CustomButton },
   created() {
     this.title = "window-races";
     this.$options.useRouterBack = true;
@@ -67,7 +61,6 @@ export default {
     this.cooldownTimer.off("finsihed", this.listener);
   },
   data: () => ({
-    request: null,
     races: [],
     current: null,
     finishedRaces: [],
@@ -83,12 +76,12 @@ export default {
       });
     },
     async fetchFinishedRaces() {
-      this.finishedRaces = await this.$game.getFinishedRaces();
+      this.finishedRaces = await this.performRequest(
+        this.$game.getFinishedRaces()
+      );
     },
     async fetchList() {
-      this.request = this.$game.fetchRaces();
-
-      const info = await this.request;
+      const info = await this.performRequest(this.$game.fetchRaces());
       this.races = info.list;
       this.current = info.currentRace;
       this.cooldownTimer.timeLeft = info.cooldown;
@@ -143,8 +136,7 @@ export default {
         }
       }
 
-      this.request = this.$game.joinRace(race._id);
-      await this.request;
+      await this.performRequest(this.$game.joinRace(race._id));
       await this.fetchList();
     },
     async showRanks(race) {

@@ -16,6 +16,7 @@
             <CompareItems
               v-if="!noComparison && isComparable(slide.item)"
               :leftItem="slide.item"
+              :index="index"
               :rightItem="itemFromMatchingSlot(slide.item)"
               :hideMask="true"
               :equippedItems="equippedItems"
@@ -24,6 +25,7 @@
             <LootHint
               v-else
               :item="slide.item"
+              :index="index"
               :hideMask="true"
               :showButtons="showButtons"
               :showLocked="showLocked"

@@ -131,6 +131,7 @@
               type="yellow"
               class="width-45"
               @click="advancedBoost(1)"
+              id="boost-0"
             >
               <div
                 class="flex flex-items-center padding-left-1 padding-right-1"

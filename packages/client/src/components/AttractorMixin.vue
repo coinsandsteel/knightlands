@@ -11,8 +11,8 @@ export default {
       overlay.appendChild(el);
 
       anime.set(el, {
-        translateX: at.x - el.offsetWidth / 2,
-        translateY: at.y - el.offsetHeight / 2
+        translateX: at.x,
+        translateY: at.y
       });
 
       await attractable.show();

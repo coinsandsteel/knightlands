@@ -6,8 +6,11 @@
       class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5"
     >
       <MenuIconRow>
-        <MenuIcon icon="skewed_icon_garisson" :to="{ name: 'garrison' }"
-          >Garrison</MenuIcon
+        <MenuIcon
+          icon="skewed_icon_garisson"
+          :to="{ name: 'garrison' }"
+          section="garrison"
+          >{{ $t("garrison") }}</MenuIcon
         >
       </MenuIconRow>
 
@@ -16,11 +19,15 @@
           icon="skewed_icon_army_edit_units"
           :to="{ name: 'edit-unit' }"
           :append="true"
-          >Units</MenuIcon
+          section="units"
+          >{{ $t("units") }}</MenuIcon
         >
 
-        <MenuIcon icon="skewed_icon_summon" :to="{ name: 'alchemy-lab' }"
-          >Alchemy Lab</MenuIcon
+        <MenuIcon
+          icon="skewed_icon_summon"
+          :to="{ name: 'alchemy-lab' }"
+          section="alchemyLab"
+          >{{ $t("alch-lab") }}</MenuIcon
         >
       </MenuIconRow>
 
@@ -29,11 +36,16 @@
           icon="skewed_icon_army_composition"
           :to="{ name: 'army-composition' }"
           :append="true"
-          >Legions</MenuIcon
+          section="legions"
+          >{{ $t("legions") }}</MenuIcon
         >
 
-        <MenuIcon icon="skewed_icon_beast" :to="{ name: 'beast' }"
-          >Beast
+        <MenuIcon
+          icon="skewed_icon_beast"
+          :to="{ name: 'beast' }"
+          section="beast"
+          id="beast"
+          >{{ $t("beast") }}
           <template v-slot:marker>
             <BeastMarker />
           </template>

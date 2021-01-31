@@ -1,12 +1,12 @@
 <template>
-  <div class="cards-container flex" @click="handleContinue">
+  <div class="cards-container flex relative" @click="handleContinue">
     <!-- <span
       class="cards-title center-transform rarity-legendary font-outline"
       :class="{show: choice}"
     >{{$t("trial-choose-cards-title")}}</span> -->
 
     <div
-      class="flex flex-center flex-space-evenly width-100 height-100 flex-self-end"
+      class="flex flex-center flex-space-evenly width-100 height-100 flex-self-end relative"
     >
       <Card
         v-for="(card, index) in cards"
@@ -205,7 +205,10 @@ export default {
       // set chosen card effect type
       const card = this.$refs.cards[cardIndex];
       card.overriddenEffect = this.cardEffectData.effect;
-      const cardPosition = card.$el.getBoundingClientRect();
+      const cardPosition = {
+        left: card.$el.offsetLeft,
+        top: card.$el.offsetTop
+      };
       const duration = 600;
 
       // hide rest of the cards

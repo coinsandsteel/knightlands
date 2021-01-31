@@ -183,6 +183,7 @@ export default {
         this.$game.refillTimer(this.stat, this.methodChosen, this.items)
       );
       this.items = null;
+      this.$close();
     },
     async fetchInfo() {
       this.infoRequest = this.$game.getTimerRefillInfo(this.stat);

@@ -107,7 +107,7 @@ export default {
   border-image-source: url("../assets/ui/@{name}_active.png");
 
   & > .btn-content {
-    transform: translateY(0.1rem);
+    transform: translateY(0rem);
   }
 }
 
@@ -192,7 +192,7 @@ export default {
 
   & > .btn-content {
     height: 100%;
-    transform: translateY(-0.1rem);
+    transform: translateY(-0.2rem);
   }
 }
 

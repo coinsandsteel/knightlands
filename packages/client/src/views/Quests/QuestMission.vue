@@ -131,7 +131,7 @@
         </div>
 
         <div v-else class="flex flex-center width-100 flex-space-evenly">
-          <AttackButton :promise="request" @click="engage(false)">{{
+          <AttackButton :promise="request" @click="engage(false)" id="engage-q">{{
             isBoss ? $t("q-att-s") : $t("q-prog-s")
           }}</AttackButton>
           <PromisedButton

@@ -1,30 +1,25 @@
 <template>
-  <Promised :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <div class="screen-content">
-        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
-        <RaceRewardListElement
-          v-for="r in localRaces"
-          :key="r._id"
-          :race="r"
-          @claim="claimRewards"
-        />
-      </div>
-    </template>
-  </Promised>
+  <div class="screen-content">
+    <div class="screen-background"></div>
+    <RaceRewardListElement
+      v-for="r in localRaces"
+      :key="r._id"
+      :race="r"
+      @claim="claimRewards"
+    />
+  </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
-import LoadingScreen from "@/components/LoadingScreen.vue";
-import { Promised } from "vue-promised";
 import RaceRewardListElement from "./RaceRewardListElement.vue";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [AppSection, ShowItemsMixin],
+  mixins: [AppSection, ShowItemsMixin, NetworkRequestErrorMixin],
   props: ["race"],
-  components: { RaceRewardListElement, LoadingScreen, Promised },
+  components: { RaceRewardListElement },
   data: () => ({
     request: null,
     localRaces: []
@@ -34,16 +29,18 @@ export default {
   },
   async mounted() {
     if (!this.race) {
-      this.request = this.$game.getFinishedRaces();
-      this.localRaces = await this.request;
+      this.localRaces = await this.performRequest(
+        this.$game.getFinishedRaces()
+      );
     } else {
       this.localRaces.push(...this.race);
     }
   },
   methods: {
     async claimRewards(race) {
-      this.request = this.$game.claimRaceRewards(race._id);
-      let rewards = await this.request;
+      let rewards = await this.performRequest(
+        this.$game.claimRaceRewards(race._id)
+      );
 
       this.localRaces.splice(
         this.localRaces.findIndex(x => x == race),

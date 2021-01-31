@@ -1,70 +1,67 @@
 <template>
-  <Promised class="screen-content" :promise="request" :pendingDelay="200">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <div class="screen-background"></div>
-      <loading-screen :loading="isDelayOver && isPending"></loading-screen>
-      <div class="height-100 relative">
-        <div
-          class="flex relative flex-column flex-no-wrap height-100"
-          v-if="raidState"
-          v-show="mainViewNotHidden"
-        >
-          <boss-view
-            ref="bossView"
-            class="margin-bottom-1"
-            :progress="raidProgress"
-            :raidTemplateId="raidState.raidTemplateId"
-            :timeLeft="timeLeft"
+  <div class="screen-content">
+    <div class="screen-background"></div>
+    <div
+      class="flex relative flex-column flex-no-wrap height-100"
+      v-if="raidState"
+      v-show="mainViewNotHidden"
+    >
+      <boss-view
+        ref="bossView"
+        class="margin-bottom-1"
+        :progress="raidProgress"
+        :raidTemplateId="raidState.raidTemplateId"
+        :timeLeft="timeLeft"
+      >
+        <template v-slot:view>
+          <BossAnimation :raid="raid" ref="bossAnimation" />
+        </template>
+
+        <template v-slot:default>
+          <DamageText
+            v-for="damage in playerDamages"
+            :key="damage.id"
+            :crit="damage.crit"
+            :local="damage.local"
+            >{{ damage.damage }}</DamageText
           >
-            <template v-slot:view>
-              <BossAnimation :raid="raid" ref="bossAnimation" />
-            </template>
 
-            <template v-slot:default>
-              <DamageText
-                v-for="damage in playerDamages"
-                :key="damage.id"
-                :crit="damage.crit"
-                :local="damage.local"
-                >{{ damage.damage }}</DamageText
-              >
+          <DamageLog
+            :log="lastDamages"
+            v-show="showLog"
+            @close="showLog = false"
+          ></DamageLog>
+        </template>
 
-              <DamageLog
-                :log="lastDamages"
-                v-show="showLog"
-                @close="showLog = false"
-              ></DamageLog>
-            </template>
+        <template v-slot:overlay>
+          <div class="height-100 width-100 impact-container">
+            <SpriteAnimator
+              :id="'sprite'"
+              :spritesheet="[
+                require('../../assets/fx/impact1/impact1.png'),
+                require('../../assets/fx/impact1/impact2.png'),
+                require('../../assets/fx/impact1/exp7.png'),
+                require('../../assets/fx/impact1/exp8.png')
+              ]"
+              :json="[
+                require('../../assets/fx/impact1/impact1.json'),
+                require('../../assets/fx/impact1/impact2.json'),
+                require('../../assets/fx/impact1/exp7.json'),
+                require('../../assets/fx/impact1/exp8.json')
+              ]"
+              :fps="24"
+              ref="impact"
+            ></SpriteAnimator>
+          </div>
+        </template>
+      </boss-view>
 
-            <template v-slot:overlay>
-              <div class="height-100 width-100 impact-container">
-                <SpriteAnimator
-                  :id="'sprite'"
-                  :spritesheet="[
-                    require('../../assets/fx/impact1/impact1.png'),
-                    require('../../assets/fx/impact1/impact2.png'),
-                    require('../../assets/fx/impact1/exp7.png'),
-                    require('../../assets/fx/impact1/exp8.png')
-                  ]"
-                  :json="[
-                    require('../../assets/fx/impact1/impact1.json'),
-                    require('../../assets/fx/impact1/impact2.json'),
-                    require('../../assets/fx/impact1/exp7.json'),
-                    require('../../assets/fx/impact1/exp8.json')
-                  ]"
-                  :fps="24"
-                  ref="impact"
-                ></SpriteAnimator>
-              </div>
-            </template>
-          </boss-view>
-
-          <!--COMBAT VIEW-->
-          <div
-            class="raid-controls full-flex width-100"
-            v-if="participant && !raidWon"
-          >
-            <!-- <div class="margin-top-3">
+      <!--COMBAT VIEW-->
+      <div
+        class="raid-controls full-flex width-100"
+        v-if="participant && !raidWon"
+      >
+        <!-- <div class="margin-top-3">
                 <div class="flex flex-column flex-center font-size-20 white-font font-outline">
                   <span
                     class="yellow-title white-space-wide margin-bottom-2"
@@ -78,168 +75,151 @@
                   :hideMaxValue="lootProgress.current >= lootProgress.max"
                 ></ProgressBar>
             </div>-->
-            <RaidAttackPanel
-              class="attack"
-              @attack="handleAttack"
-              :disabled="attackInProgress"
-            />
+        <RaidAttackPanel
+          class="attack"
+          @attack="handleAttack"
+          :disabled="attackInProgress"
+        />
 
-            <RaidArmy
-              ref="army"
-              class="raid-army margin-top-1"
-              :legionIndex="$store.state.selectedLegion"
-              :attackPoint="bossViewCenter"
-              @damage="_handleArmyDamage"
-            />
+        <RaidArmy
+          ref="army"
+          class="raid-army margin-top-1"
+          :legionIndex="$store.state.selectedLegion"
+          :attackPoint="bossViewCenter"
+          @damage="_handleArmyDamage"
+        />
 
-            <RaidOptions
-              class="raid-options-left"
-              :left="true"
-              :isFreeRaid="isFreeRaid"
-              @log="handleShowLogs"
-              @rewards="handleShowRewards"
-              @info="handleShowInfo"
-              @legion="selectLegion"
-              @chart="handleShowChart"
-              @challenges="handleShowChallenges"
-            />
+        <RaidOptions
+          class="raid-options-left"
+          :left="true"
+          :isFreeRaid="isFreeRaid"
+          @log="handleShowLogs"
+          @rewards="handleShowRewards"
+          @info="handleShowInfo"
+          @legion="selectLegion"
+          @chart="handleShowChart"
+          @challenges="handleShowChallenges"
+        />
 
-            <RaidOptions
-              class="raid-options-right"
-              :isFreeRaid="isFreeRaid"
-              @log="handleShowLogs"
-              @rewards="handleShowRewards"
-              @info="handleShowInfo"
-              @legion="selectLegion"
-              @chart="handleShowChart"
-              @challenges="handleShowChallenges"
-            />
-          </div>
+        <RaidOptions
+          class="raid-options-right"
+          :isFreeRaid="isFreeRaid"
+          @log="handleShowLogs"
+          @rewards="handleShowRewards"
+          @info="handleShowInfo"
+          @legion="selectLegion"
+          @chart="handleShowChart"
+          @challenges="handleShowChallenges"
+        />
+      </div>
 
-          <!--RAID WON-->
-          <div class="margin-top-2 flex flex-center" v-else-if="raidWon">
-            <Title>{{ $t("raid-victory") }}</Title>
+      <!--RAID WON-->
+      <div class="margin-top-2 flex flex-center" v-else-if="raidWon">
+        <Title>{{ $t("raid-victory") }}</Title>
 
-            <template v-if="participant">
-              <RewardsPreview
-                class="margin-top-2"
-                :rewards="rewards"
-              ></RewardsPreview>
+        <template v-if="participant">
+          <RewardsPreview
+            class="margin-top-2"
+            :rewards="rewards"
+          ></RewardsPreview>
 
-              <custom-button
-                class="raid-mid-btn margin-top-2"
-                @click="claimReward"
-              >
-                {{ $t("claim-reward") }}
-              </custom-button>
-            </template>
-          </div>
+          <custom-button class="raid-mid-btn margin-top-2" @click="claimReward">
+            {{ $t("claim-reward") }}
+          </custom-button>
+        </template>
+      </div>
 
-          <!--RAID LOST-->
-          <div
-            class="flex-center"
-            v-else-if="
-              raidState &&
-                raidState.finished &&
-                !raidState.defeat &&
-                participant
-            "
+      <!--RAID LOST-->
+      <div
+        class="flex-center"
+        v-else-if="
+          raidState && raidState.finished && !raidState.defeat && participant
+        "
+      >
+        <div class="width-100 margin-top-2 margin-bottom-2">
+          <span
+            class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
+            >{{ $t("raid-lose", { boss: bossName }) }}</span
           >
-            <div class="width-100 margin-top-2 margin-bottom-2">
-              <span
-                class="flex font-size-20 flex-center width-100 flex-space-around full-flex"
-                >{{ $t("raid-lose", { boss: bossName }) }}</span
-              >
-            </div>
-          </div>
+        </div>
+      </div>
 
-          <!--NOT IN RAID YET-->
-          <div class="flex flex-column flex-center" v-else>
-            <div class="color-panel-2">
-              <span class="font-size-20">
-                {{ $t("time-left") }}
-                <span class="enemy-title-font">{{ timer.value }}</span>
-              </span>
-            </div>
+      <!--NOT IN RAID YET-->
+      <div class="flex flex-column flex-center" v-else>
+        <div class="color-panel-2">
+          <span class="font-size-20">
+            {{ $t("time-left") }}
+            <span class="enemy-title-font">{{ timer.value }}</span>
+          </span>
+        </div>
 
-            <div
-              class="margin-top-3 flex flex-center width-100 flex-space-around full-flex"
-            >
-              <custom-button
-                v-if="hasChallenges"
-                type="grey"
-                @click="handleShowChallenges"
-              >
-                <span class="icon-challenge"></span>
-              </custom-button>
+        <div
+          class="margin-top-3 flex flex-center width-100 flex-space-around full-flex"
+        >
+          <custom-button
+            v-if="hasChallenges"
+            type="grey"
+            @click="handleShowChallenges"
+          >
+            <span class="icon-challenge"></span>
+          </custom-button>
 
-              <custom-button type="grey" @click="handleShowRewards">
-                <span class="icon-loot"></span>
-              </custom-button>
+          <custom-button type="grey" @click="handleShowRewards">
+            <span class="icon-loot"></span>
+          </custom-button>
 
-              <custom-button type="grey" @click="handleShowInfo">
-                <span class="icon-info dark"></span>
-              </custom-button>
+          <custom-button type="grey" @click="handleShowInfo">
+            <span class="icon-info dark"></span>
+          </custom-button>
 
-              <CustomButton type="grey" @click="handleShowChart">
-                <span class="icon-chart"></span>
-              </CustomButton>
-            </div>
+          <CustomButton type="grey" @click="handleShowChart">
+            <span class="icon-chart"></span>
+          </CustomButton>
+        </div>
 
-            <div class="margin-top-2 margin-bottom-2" v-if="$game.load">
-              <div class="flex flex-center margin-top-1">
-                <crafting-ingridient
-                  v-for="essence in requiredJoinEssences"
-                  :key="essence.itemId"
-                  :ingridient="essence"
-                />
-              </div>
-            </div>
-
-            <PromisedButton width="16rem" type="yellow" @click="join">
-              <span class="margin-right-half">{{ $t("join") }}</span>
-            </PromisedButton>
+        <div class="margin-top-2 margin-bottom-2" v-if="$game.load">
+          <div class="flex flex-center margin-top-1">
+            <crafting-ingridient
+              v-for="essence in requiredJoinEssences"
+              :key="essence.itemId"
+              :ingridient="essence"
+            />
           </div>
         </div>
 
-        <keep-alive>
-          <Challenges v-if="showChallenges" :raidState="raidState"></Challenges>
-
-          <TokenChart
-            v-if="showChart"
-            :raidTemplateId="raidState.raidTemplateId"
-          ></TokenChart>
-        </keep-alive>
+        <PromisedButton width="16rem" type="yellow" @click="join">
+          <span class="margin-right-half">{{ $t("join") }}</span>
+        </PromisedButton>
       </div>
+    </div>
 
-      <portal to="footer" v-if="isActive">
-        <CopyButton
-          v-if="!isFreeRaid"
-          :data="href"
-          caption="btn-share"
-        ></CopyButton>
-      </portal>
+    <keep-alive>
+      <Challenges v-if="showChallenges" :raidState="raidState"></Challenges>
 
-      <div
-        ref="overlay"
-        class="absolute-stretch pointer-events-none text-align-left"
-      ></div>
-    </template>
+      <TokenChart
+        v-if="showChart"
+        :raidTemplateId="raidState.raidTemplateId"
+      ></TokenChart>
+    </keep-alive>
 
-    <template v-slot:rejected>
-      <div class="full-flex flex flex-center">
-        <p class="font-size-20 font-error">{{ $t("unknown-error-msg") }}</p>
-        <custom-button @click="getRaid">{{ $t("try-again") }}</custom-button>
-      </div>
-    </template>
-  </Promised>
+    <portal to="footer" v-if="isActive">
+      <CopyButton
+        v-if="!isFreeRaid"
+        :data="href"
+        caption="btn-share"
+      ></CopyButton>
+    </portal>
+
+    <div
+      ref="overlay"
+      class="absolute-stretch pointer-events-none text-align-left"
+    ></div>
+  </div>
 </template>
 
 <script>
 import CopyButton from "@/components/CopyButton.vue";
 import AppSection from "@/AppSection.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import BossView from "./BossView.vue";
 import RewardsPreview from "./RewardsPreview.vue";
@@ -307,8 +287,6 @@ export default {
   name: "raid",
   components: {
     CraftingIngridient,
-    LoadingScreen,
-    Promised,
     CustomButton,
     BossView,
     DamageLog,
@@ -334,7 +312,6 @@ export default {
     showChart: false,
     showLog: false,
     raidState: null,
-    request: null,
     attackCount: 1,
     raidProgress: {
       current: 1,
@@ -536,10 +513,11 @@ export default {
         return;
       }
 
-      this.request = this.$game.fetchRaid(this.raidId);
       this.raidFetchingInProcess = true;
       try {
-        this.raidState = await this.request;
+        this.raidState = await this.performRequest(
+          this.$game.fetchRaid(this.raidId)
+        );
         this.raid = this.raidState.raidTemplateId;
         this.raidProgress.current = this.raidState.bossState.health;
         this.raidProgress.max = this.raidMaxHealth;
@@ -559,16 +537,16 @@ export default {
       }
     },
     async handleAttack(hits) {
-      this.request = this.$game.attackRaidBoss(
-        this.raidId,
-        hits,
-        this.$store.state.selectedLegion
-      );
-
       try {
         this.$app.getStatusBar().setDelayResourceUpdate(true);
 
-        await this.request;
+        await this.performRequestNoCatch(
+          this.$game.attackRaidBoss(
+            this.raidId,
+            hits,
+            this.$store.state.selectedLegion
+          )
+        );
 
         if (!this.$game.character.alive) {
           let reponse = await ShowPrompt(
@@ -588,6 +566,7 @@ export default {
           }
         }
       } catch (error) {
+        this.$app.getStatusBar().setDelayResourceUpdate(false);
         console.error(error);
         this._handleAttackRaidError(error);
       }

@@ -14,6 +14,7 @@ import DailyLoginStore from "@/store/dailyLogin";
 import Adventures from "@/store/adventures";
 import Summon from "@/store/summon";
 import Training from "@/store/training";
+import Tutorial from "@/store/tutorial";
 
 Vue.use(Vuex);
 
@@ -247,7 +248,8 @@ const store = new Vuex.Store({
     dailyLogin: DailyLoginStore,
     adventures: Adventures,
     summon: Summon,
-    training: Training
+    training: Training,
+    tutorial: Tutorial
   }
 });
 

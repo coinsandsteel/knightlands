@@ -1,0 +1,144 @@
+<template>
+  <div
+    class="absolute-stretch pointer-events-none t-root"
+    v-if="conditionPassed"
+  >
+    <TutorialForcedElement
+      v-show="isPointer"
+      :data="pointerData"
+      @continue="handlePointer"
+    />
+    <TutorialDialog
+      v-show="isDialog"
+      :data="dialogData"
+      @continue="handleDialog"
+    />
+  </div>
+</template>
+
+<script>
+import TutorialForcedElement from "./TutorialForcedElement.vue";
+import TutorialDialog from "./TutorialDialog.vue";
+import { mapState } from "vuex";
+import Scenario from "@/store/scenario";
+
+export default {
+  components: { TutorialForcedElement, TutorialDialog },
+  data: () => ({}),
+  watch: {
+    "$character.level": {
+      handler() {
+        this.checkConditions();
+      }
+    },
+    step: {
+      immediate: true,
+      handler() {
+        this.checkConditions();
+      }
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch("tutorial/checkConditions", true);
+    await this.trySkipAction();
+  },
+  computed: {
+    ...mapState({
+      step: state => state.tutorial.step,
+      conditionPassed: state => state.tutorial.conditionPassed,
+      actionIndex: state => state.tutorial.actionIndex
+    }),
+    isFinished() {
+      return this.step + 1 > Scenario.length;
+    },
+    pointerData() {
+      if (this.isFinished) {
+        return null;
+      }
+      return this.actionData.pointer;
+    },
+    isPointer() {
+      if (this.isFinished) {
+        return false;
+      }
+
+      return !!this.pointerData;
+    },
+    dialogData() {
+      if (this.isFinished) {
+        return null;
+      }
+
+      return this.actionData.dialog;
+    },
+    actionData() {
+      if (this.isFinished) {
+        return null;
+      }
+
+      return this.stepData.actions[this.actionIndex];
+    },
+    isDialog() {
+      if (this.isFinished) {
+        return false;
+      }
+
+      return !!this.dialogData;
+    },
+    stepData() {
+      if (this.isFinished) {
+        return null;
+      }
+
+      return Scenario[this.step];
+    }
+  },
+  methods: {
+    async checkConditions() {
+      await this.$store.dispatch("tutorial/checkConditions");
+
+      const redirect = await this.$store.dispatch("tutorial/getRedirectUrl", {
+        route: this.$route
+      });
+
+      if (redirect) {
+        this.$router.replace(redirect);
+      }
+    },
+    handleDialog() {
+      this.advance();
+    },
+    async trySkipAction() {
+      if (
+        this.actionData &&
+        this.actionData.lock &&
+        this.actionData.lock.skip
+      ) {
+        const redirect = await this.$store.dispatch("tutorial/getRedirectUrl", {
+          route: this.$route
+        });
+
+        if (!redirect) {
+          this.advance();
+        }
+      }
+    },
+    handlePointer() {
+      this.advance();
+    },
+    async advance() {
+      this.$store.commit("tutorial/setActionIndex", {
+        index: this.actionIndex + 1
+      });
+
+      this.trySkipAction();
+    }
+  }
+};
+</script>
+
+<style scoped>
+.t-root {
+  z-index: 101;
+}
+</style>

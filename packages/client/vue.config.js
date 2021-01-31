@@ -1,7 +1,7 @@
 let optimization;
 
 if (process.env.NODE_ENV !== "dev") {
-  const TerserPlugin = require('terser-webpack-plugin');
+  const TerserPlugin = require("terser-webpack-plugin");
 
   // optimization = {
   //   minimize: true,
@@ -68,17 +68,22 @@ if (process.env.NODE_ENV !== "dev") {
 }
 
 module.exports = {
-    configureWebpack: {
-        devtool: "source-map",
-        optimization: optimization
-    },
-    // css: {
-    //     loaderOptions: {
-    //         postcss: {
-    //             plugins: [],
-    //         }
-    //     }
-    // },
-    lintOnSave: false,
-    productionSourceMap: false
+  configureWebpack: {
+    devtool: "source-map",
+    optimization: optimization
+  },
+  chainWebpack: config => { 
+    config.output 
+      .filename(`js/[name].[hash:8].js`)
+      .chunkFilename(`js/[name].[hash:8].js`) 
+  }, 
+  // css: {
+  //     loaderOptions: {
+  //         postcss: {
+  //             plugins: [],
+  //         }
+  //     }
+  // },
+  lintOnSave: false,
+  productionSourceMap: false
 };

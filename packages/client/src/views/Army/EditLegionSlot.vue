@@ -1,9 +1,10 @@
 <template>
   <div class="screen-content">
-    <UnitView :unit="unit" :showEquipment="true" :units="units" />
+    <UnitView :unit="unit" :showEquipment="true" :units="filteredUnits()" />
     <div class="flex-full relative dummy-height">
       <div class="element-background" :class="element"></div>
       <UnitInventory
+        ref="inventory"
         :remove="true"
         :units="units"
         @removed="handleUnitRemove"
@@ -32,6 +33,8 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import CustomButton from "@/components/Button.vue";
 
+const NO_UNIT = null;
+
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   props: ["legion", "slotId", "type"],
@@ -41,7 +44,6 @@ export default {
     CustomButton
   },
   data: () => ({
-    request: null,
     units: [],
     tempSlots: {
       deadbeef: 1
@@ -73,7 +75,7 @@ export default {
   },
   computed: {
     element() {
-      if (this.unit) {
+      if (this.unit && this.unit != NO_UNIT) {
         return this.$game.armyDB.getElement(this.unit);
       }
 
@@ -97,10 +99,16 @@ export default {
       return foundSlot.unit;
     },
     unit() {
-      return this.tempSlots[this.slotId] || this.originalUnit;
+      return this.tempSlots[this.slotId];
     }
   },
   methods: {
+    filteredUnits() {
+      if (!this.$refs.inventory) {
+        return [];
+      }
+      return this.$refs.inventory.getUnits();
+    },
     load() {
       this.tempSlots = this.$game.army.tempSlots;
 
@@ -114,7 +122,7 @@ export default {
           exceptUnits[unitId] = true;
 
           const template = this.$game.army.getUnit(unitId).template;
-          if (!this.unit || template != this.originalUnit.template) {
+          if (!this.originalUnit || template != this.originalUnit.template) {
             exceptTemplates[template] = true;
           }
         }
@@ -123,13 +131,15 @@ export default {
       this.units = this.$game.army.getUnitsWithFilter(this.isTroops, x => {
         return !exceptUnits[x.id] && !exceptTemplates[x.template];
       });
+
+      this.selectUnit(this.originalUnit);
     },
     selectUnit(unit) {
       // set as active unit in slot
       this.$game.army.setTempSlot(this.slotId, unit);
     },
     handleUnitRemove() {
-      this.$game.army.setTempSlot(this.slotId, null);
+      this.$game.army.setTempSlot(this.slotId, NO_UNIT);
     },
     handleBackButton() {
       if (this.canConfirm) {
@@ -162,16 +172,22 @@ export default {
       }
 
       if (confirmation) {
-        this.request = this.$game.setLegionSlot(
+        let unitId = 0;
+        if (this.unit && this.unit != NO_UNIT) {
+          unitId = this.unit.id;
+        }
+
+        await this.performRequest(
+          this.$game.setLegionSlot(this.legion, this.slotId, unitId)
+        );
+        this.$game.army.setInSlot(
           this.legion,
           this.slotId,
-          this.unit ? this.unit.id : 0
+          unitId == 0 ? null : this.unit
         );
-        await this.performRequest(this.request);
-        this.$game.army.setInSlot(this.legion, this.slotId, this.unit);
       }
 
-      this.tempSlots = this.$game.army.resetTempSlots();
+      this.load();
       this.$app.handleBackButton();
     }
   }

@@ -2972,7 +2972,7 @@
     "extraStatWhenItemOwned": "extraStatWhenItemOwned",
     "extraDamageVsRaidWeapon": "extraDamageVsRaidWeapon",
     "increasedDamageVsRaidWeapon": "increasedDamageVsRaidWeapon",
-    "extraDamageChance": "<span class='rarity-rare'>{chance}</span> chance of <span class='rarity-mythical'>{value}</span> extra damage",
+    "extraDamageChance": "<span class='rarity-rare'>{chance}%</span> chance of <span class='rarity-mythical'>{value}</span> extra damage",
     "increasedDamageWhenEnoughUnitTypes": "increasedDamageWhenEnoughUnitTypes",
     "extraDamageWhenEnoughUnitTypes": "extraDamageWhenEnoughUnitTypes",
     "increasedDamageWhenEnoughElements": "increasedDamageWhenEnoughElements",
@@ -3102,5 +3102,16 @@
     "o-race": "Open race",
     "o-fin": "Race finished!",
     "w-p-char": "Preview Player",
-    "eq-all": "Auto Equip"
+    "eq-all": "Auto Equip",
+    "alch-lab": "Alchemy Lab",
+    "s-locked": "Requires level {lvl}!",
+    "t-d-1": "Greetings Rookie! I am the First Knight of the Kingdom.",
+    "t-d-2": "Let's start your first Adventure.",
+    "t-d-3": "To progress fast you must wear the best gear you can find.",
+    "t-d-4": "Let me show how to equip it.",
+    "t-d-5": "Don't forget to grab your daily reward!",
+    "t-d-6": "<span class='rarity-legendary'>Onyx Tower</span> is the main source of useful items which are gonig to help you to get stronger.",
+    "t-d-7": "Your health and damage will be locked once you start a floor and can't be changed untill your exit or finish it.",
+    "t-d-8": "Your free tries will be replenished every day.",
+    "t-d-9": "Let me show you something within the walls of your castle..."
 }

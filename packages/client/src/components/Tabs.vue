@@ -7,6 +7,7 @@
         :ref="tab.value"
         :key="tab.title"
         :to="tab.to"
+        :id="`t-${tab.title}`"
         tag="div"
         :disabled="tab.disabled"
         :append="append"
@@ -24,6 +25,7 @@
         v-for="(tab, idx) in tabs"
         :ref="tab.value"
         :key="tab.title"
+        :id="`t-${tab.title}`"
         :class="[
           { tabs__item_active: tab.value === currentTab },
           tab.value === currentTab && tabActiveClass ? tabActiveClass : '',

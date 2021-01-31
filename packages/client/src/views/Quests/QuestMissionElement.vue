@@ -83,9 +83,13 @@
           <div class="center-transform-vertical font-outline">Complete</div>
         </div>
 
-        <custom-button size="small" v-else @click="$emit('engage')">{{
-          $t("btn-s-q")
-        }}</custom-button>
+        <custom-button
+          size="small"
+          v-else
+          @click="$emit('engage')"
+          :id="`quest-${questIndex}`"
+          >{{ $t("btn-s-q") }}</custom-button
+        >
       </div>
     </div>
   </div>

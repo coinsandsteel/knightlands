@@ -24,8 +24,10 @@
           :ref="`damage${unitId}`"
           class="absolute font-outline font-weight-900 flex flex-column flex-center"
         >
-          <span class="damage-text">{{damage}}</span>
-          <span class="damage-text proc" v-if="procs[unitId]">+{{procs[unitId]}}</span>
+          <span class="damage-text">{{ damage }}</span>
+          <span class="damage-text proc" v-if="procs[unitId]"
+            >+{{ procs[unitId] }}</span
+          >
         </div>
       </div>
     </div>
@@ -35,7 +37,6 @@
 <script>
 import RaidArmySlot from "./RaidArmySlot.vue";
 import resize from "vue-resize-directive";
-import Vue from "vue";
 import anime from "animejs/lib/anime.es.js";
 import UI from "@/ui_constants";
 
@@ -166,9 +167,24 @@ export default {
 
       await animationToWait.finished;
 
-      await this._playResources("health", health, byVerticalPosition, container);
-      await this._playResources("energy", energy, byVerticalPosition, container);
-      await this._playResources("stamina", stamina, byVerticalPosition, container);
+      await this._playResources(
+        "health",
+        health,
+        byVerticalPosition,
+        container
+      );
+      await this._playResources(
+        "energy",
+        energy,
+        byVerticalPosition,
+        container
+      );
+      await this._playResources(
+        "stamina",
+        stamina,
+        byVerticalPosition,
+        container
+      );
 
       slotsTimeline = anime.timeline({
         targets: slotTargets
@@ -189,12 +205,12 @@ export default {
         if (!values[unitId]) {
           continue;
         }
-        const offset = UI.offset(slotEl);
+        const offset = UI.offsetTo(slotEl, document.getElementById("overlay"));
         promises.push(
           this.$app.getStatusBar().showResourceGained(
             resourceName,
             {
-              x: offset.left + offset.width / 2 - el.offsetWidth / 2,
+              x: offset.left + el.offsetWidth / 2,
               y: offset.top + offset.height / 2
             },
             values[unitId],

@@ -13,6 +13,7 @@
         :equipment="true"
         :equipmentSlot="slot"
         :showLevel="true"
+        :id="slot"
         @hint="$emit('hint', slot)"
       ></loot>
     </div>

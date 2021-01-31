@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-space-between flex-items-end margin-1 padding-1">
+  <div
+    class="flex flex-space-between flex-items-end margin-bottom-1 padding-1 color-panel-1"
+  >
     <div class="flex flex-column">
-      <div
-        class="flex font-size-25 margin-1 panel-dark padding-left-1 padding-right-1"
-      >
+      <div class="flex font-size-25 margin-1 padding-left-1 padding-right-1">
         <span class="margin-right-1">{{ $t("current-rank") }}</span>
         <span>{{ race.rank.rank }}</span>
       </div>

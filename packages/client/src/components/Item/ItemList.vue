@@ -7,6 +7,7 @@
       >
         <Loot
           v-for="(item, index) in items"
+          :id="`i-${item.template}`"
           :item="item"
           :key="index"
           :inventory="inventory"

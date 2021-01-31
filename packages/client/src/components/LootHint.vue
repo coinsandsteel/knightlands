@@ -24,6 +24,7 @@
           <custom-button
             type="yellow"
             v-if="canEquip"
+            :id="`btn-equip-${index}`"
             class="common-btn center"
             @click="handleClose(ItemActions.Equip)"
             >{{ $t("btn-equip") }}</custom-button
@@ -148,7 +149,8 @@ export default {
       type: Boolean,
       default: true
     },
-    equippedItems: Object
+    equippedItems: Object,
+    index: Number
   },
   data: () => ({
     ItemActions

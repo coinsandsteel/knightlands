@@ -63,7 +63,7 @@
         @click="showAbilities = false"
       >
         <div
-          class="flex flex-center whitespace-prewrap"
+          class="flex whitespace-prewrap padding-left-4 padding-right-4"
           v-for="(ability, idx) in abilities"
           :key="idx"
           v-html="getAbilityDesc(ability)"
@@ -163,6 +163,10 @@ export default {
   left: 0 !important;
   right: 0 !important;
   bottom: 0rem !important;
+}
+
+.overlay-color {
+  z-index: 1;
 }
 
 .unit-view-container {

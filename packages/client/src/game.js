@@ -119,6 +119,7 @@ class Game {
       Events.PurchaseComplete,
       this._handlePurchaseComplete.bind(this)
     );
+    this._socket.on(Events.CommitChanges, this._handleCommit.bind(this));
     this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
     this._socket.on(
       Events.DailyTaskComplete,
@@ -692,6 +693,10 @@ class Game {
   }
 
   _mergeData(changes) {
+    if (!changes) {
+      return;
+    }
+
     if (changes.classInited) {
       this._vm.classInited = changes.classInited;
     }
@@ -1014,13 +1019,17 @@ class Game {
   async _wrapOperation(operation, ...args) {
     try {
       let result = await this._request(operation, ...args);
-      this._mergeData(result.changes.changes);
-      this._removeData(result.changes.removals);
+      this._handleCommit(result.changes);
       return result;
     } catch (exc) {
       console.log(exc);
       throw exc;
     }
+  }
+
+  _handleCommit(commit) {
+    this._mergeData(commit.changes);
+    this._removeData(commit.removals);
   }
 
   async _syncTime() {

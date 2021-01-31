@@ -121,8 +121,8 @@ export default {
   background-image: url("../assets/ui/@{filename}.png");
   background-size: contain;
   background-repeat: no-repeat;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   margin: 0 1rem;
 }
 

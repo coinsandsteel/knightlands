@@ -24,9 +24,13 @@
     </div>
 
     <div class="dummy-height margin-top-2 flex flex-center width-100">
-      <PromisedButton type="green" @click="collect" v-if="!collected">{{
-        $t("claim-daily-bonus")
-      }}</PromisedButton>
+      <PromisedButton
+        type="green"
+        @click="collect"
+        v-if="!collected"
+        id="collect"
+        >{{ $t("claim-daily-bonus") }}</PromisedButton
+      >
       <div class="color-panel-1" v-else>
         <span class="font-size-18">{{
           $t("time-till-reward", { time: timer.value })

@@ -48,7 +48,7 @@
       </div>
       <div class="root-menu flex" v-if="$game.authenticated">
         <div id="nav">
-          <router-link class="flex flex-center" to="/home">
+          <router-link class="flex flex-center n-inner" to="/home">
             <span class="menu-icon home pointer-events-none">
               <div class="marker-pos">
                 <HomeMarker></HomeMarker>
@@ -57,39 +57,57 @@
             <span class="menu-title">{{ $t("menu-home") }}</span>
           </router-link>
 
-          <router-link class="flex flex-center" to="/character">
-            <span class="menu-icon character pointer-events-none">
-              <div class="marker-pos">
-                <CharacterMarker />
-              </div>
-            </span>
-            <span class="menu-title">{{ $t("menu-character") }}</span>
-          </router-link>
+          <LockedSection class="flex flex-center n-inner" section="character">
+            <router-link
+              class="flex flex-center n-inner w"
+              to="/character"
+              id="char-btn"
+            >
+              <span class="menu-icon character pointer-events-none">
+                <div class="marker-pos">
+                  <CharacterMarker />
+                </div>
+              </span>
+              <span class="menu-title">{{ $t("menu-character") }}</span>
+            </router-link>
+          </LockedSection>
 
-          <router-link class="flex flex-center" to="/castle">
-            <span class="menu-icon crafting pointer-events-none">
-              <div class="marker-pos">
-                <CastleMarker></CastleMarker>
-              </div>
-            </span>
-            <span class="menu-title">{{ $t("menu-castle") }}</span>
-          </router-link>
+          <LockedSection class="flex flex-center n-inner" section="castle">
+            <router-link
+              class="flex flex-center n-inner w"
+              to="/castle"
+              id="b-castle"
+            >
+              <span class="menu-icon crafting pointer-events-none">
+                <div class="marker-pos">
+                  <CastleMarker></CastleMarker>
+                </div>
+              </span>
+              <span class="menu-title">{{ $t("menu-castle") }}</span>
+            </router-link>
+          </LockedSection>
 
-          <router-link class="flex flex-center" to="/summon">
-            <span class="menu-icon shop pointer-events-none">
-              <div class="marker-pos">
-                <ShopMarker></ShopMarker>
-              </div>
-            </span>
-            <span class="menu-title">{{ $t("menu-shop") }}</span>
-          </router-link>
+          <LockedSection class="flex flex-center n-inner" section="shop">
+            <router-link
+              to="/summon"
+              class="flex flex-center n-inner w"
+              id="b-shop"
+            >
+              <span class="menu-icon shop pointer-events-none">
+                <div class="marker-pos">
+                  <ShopMarker></ShopMarker>
+                </div>
+              </span>
+              <span class="menu-title">{{ $t("menu-shop") }}</span>
+            </router-link>
+          </LockedSection>
 
-          <!-- <router-link  class="flex flex-center" to="/">
+          <!-- <router-link  class="flex flex-center n-inner" to="/">
             <span class="menu-icon guild pointer-events-none"></span>
             <span class="menu-title">{{$t("menu-guild")}}</span>
           </router-link>-->
 
-          <router-link class="flex flex-center" to="/social/chat">
+          <router-link class="flex flex-center n-inner" to="/social/chat">
             <span class="menu-icon chat pointer-events-none"></span>
             <span class="menu-title">{{ $t("menu-chat") }}</span>
           </router-link>
@@ -107,6 +125,9 @@
     <DailyQuestCompleteNotification />
     <LoadingNotification />
     <RaceFinishedNotification />
+    <SectionLockedNotification />
+
+    <Tutorial ref="tutorial" v-if="$game.authenticated" />
 
     <dialogs-wrapper transition-name="fade" />
   </div>
@@ -123,6 +144,9 @@ import RaidStatusNotification from "@/components/Notifications/RaidStatusNotific
 import LoadingNotification from "@/components/Notifications/LoadingNotification.vue";
 import DailyQuestCompleteNotification from "@/components/Notifications/DailyQuestCompleteNotification.vue";
 import RaceFinishedNotification from "@/components/Notifications/RaceFinishedNotification.vue";
+import SectionLockedNotification from "@/components/Notifications/SectionLockedNotification.vue";
+import LockedSection from "@/components/LockedSection.vue";
+import Tutorial from "@/views/Tutorial/Tutorial.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -137,15 +161,18 @@ const ShowChangeNickname = create(ChangeNickname);
 
 export default {
   components: {
+    Tutorial,
     CharacterMarker,
     HomeMarker,
     StatusBar,
     RaidStatusNotification,
     LoadingNotification,
     DailyQuestCompleteNotification,
+    SectionLockedNotification,
     RaceFinishedNotification,
     ShopMarker,
-    CastleMarker
+    CastleMarker,
+    LockedSection
   },
   data() {
     return {
@@ -186,6 +213,9 @@ export default {
       return !this.loading && this.$game.ready && this.$game.authenticated;
     }
   },
+  mounted() {
+    Vue.prototype.$tutorial = this.$refs.tutorial;
+  },
   async created() {
     Vue.prototype.$app = this;
 
@@ -201,6 +231,18 @@ export default {
 
     this.$game.on("level-up", async args => {
       await ShowLevelUp(args);
+    });
+
+    this.$router.beforeEach(async (to, from, next) => {
+      if (!this.$game.authenticated) {
+        next();
+        return;
+      }
+
+      const redirect = await this.$store.dispatch("tutorial/getRedirectUrl", {
+        route: to
+      });
+      next(redirect);
     });
 
     this.$router.beforeResolve((to, from, next) => {
@@ -390,7 +432,6 @@ export default {
 }
 
 .footer {
-  flex-basis: 0;
   display: flex;
   position: relative;
   justify-content: flex-start;
@@ -420,13 +461,20 @@ export default {
   height: 5rem;
 
   a {
+    background-image: url("./assets/ui/tabbar_bg.png");
+    background-size: 100% 100%;
+  }
+
+  .n-inner {
     display: inherit !important;
     text-align: center;
     position: relative;
     height: 100%;
     width: calc(100% - 30px);
-    background-image: url("./assets/ui/tabbar_bg.png");
-    background-size: 100% 100%;
+
+    &.w {
+      width: 100%;
+    }
 
     .menu-title {
       font-size: 1.5rem;

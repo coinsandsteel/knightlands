@@ -1,27 +1,34 @@
 <template>
   <div class="flex flex-space-evenly width-100 flex-no-wrap">
-    <div
-      class="rankings-bg flex flex-column flex-center flex-space-between margin-bottom-1 pointer"
+    <LockedSection
+      class="rankings-bg pointer"
       v-for="(rankingType, index) in rankings"
       :key="index"
-      :class="`color-${rankingType}`"
-      @click="goTo(rankingType)"
+      :section="sectionName(rankingType)"
     >
-      <span :class="icon(rankingType)" class="icon-menu"></span>
-      <span class="ranking-title font-outline padding-1 font-weight-900">{{
-        $t(`window-${rankingType}`)
-      }}</span>
-    </div>
+      <div
+        class="flex flex-column flex-center flex-space-between margin-bottom-1"
+        :class="`color-${rankingType}`"
+        @click="goTo(rankingType)"
+      >
+        <span :class="icon(rankingType)" class="icon-menu"></span>
+        <span class="ranking-title font-outline padding-1 font-weight-900">{{
+          $t(`window-${rankingType}`)
+        }}</span>
+      </div>
+    </LockedSection>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
+import LockedSection from "@/components/LockedSection.vue";
 
 const rankings = ["leaderboards", "tournaments", "races"];
 
 export default {
   mixins: [AppSection],
+  components: { LockedSection },
   data: () => ({
     rankings
   }),
@@ -32,6 +39,16 @@ export default {
     goTo(rankingType) {
       let name = rankingType;
       this.$router.push({ name });
+    },
+    sectionName(rankingType) {
+      switch (rankingType) {
+        case "tournaments":
+          return "tournament";
+        case "races":
+          return "sprints";
+      }
+
+      return "";
     },
     icon(rankingType) {
       switch (rankingType) {

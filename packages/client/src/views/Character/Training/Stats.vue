@@ -22,6 +22,7 @@
           >
           <numeric-value
             class="width-100"
+            :id="`num-${att}`"
             :showMax="true"
             :value="getStatValue(att)"
             :maxValue="getMaxStatValue(att)"
@@ -52,7 +53,7 @@
         v-show="attributesNeedReset"
         class="flex flex-center flex-full margin-top-3 flex-space-around margin-bottom-3"
       >
-        <custom-button type="green" @click="confirmAttributes">{{
+        <custom-button type="green" @click="confirmAttributes" id="apply-btn">{{
           $t("btn-apply")
         }}</custom-button>
         <custom-button @click="resetAttributes">{{

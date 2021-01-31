@@ -9,7 +9,7 @@
 
       <span class="nav-arrow margin-left-1 margin-right-1"></span>
 
-      <span class="font-size-20 font-outline font-weight-900">{{
+      <span class="font-size-20 font-outline font-weight-900 rarity-rare">{{
         $t("mine-rate-n", { rate: nextRate })
       }}</span>
     </div>

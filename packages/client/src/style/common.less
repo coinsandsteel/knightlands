@@ -551,9 +551,8 @@ span {
     }
 }
 
-.list-shadow {
-    > :last-child {
-        position: relative;
+.element-shadow {
+    position: relative;
         &::after {
             background: unset;
             content: "";
@@ -565,6 +564,11 @@ span {
             width: 150%;
             box-shadow: 0px 8px 12px -5px #060413;
         }
+}
+
+.list-shadow {
+    > :last-child {
+        .element-shadow;
     }
 }
 
@@ -598,7 +602,7 @@ span {
     }
 
     &.small {
-        .troops_mini_star1;
+        .troops_mini_star_empty;
         width: @iconSize * 0.75 !important;
         height: @iconSize * 0.75 !important;
 
@@ -608,7 +612,7 @@ span {
     }
 
     &.mini {
-        .troops_mini_star1;
+        .troops_mini_star_empty;
         width: @iconSize * 0.65 !important;
         height: @iconSize * 0.65 !important;
 
@@ -630,10 +634,10 @@ span {
         }
 
         &.mini, &.small {
-            .troops_mini_star_orange1;
+            .troops_mini_star_empty1;
 
             &.active {
-                .troops_mini_star_orange;
+                .troops_mini_star1;
             }
         }
     }
