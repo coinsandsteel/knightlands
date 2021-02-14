@@ -13,6 +13,15 @@ export default [
       },
       {
         lock: {
+          name: "home",
+          skip: true
+        },
+        pointer: {
+          target: "#home-btn"
+        }
+      },
+      {
+        lock: {
           name: "home"
         },
         pointer: {
@@ -204,7 +213,7 @@ export default [
   },
   {
     cond: {
-      item: 2925
+      items: [2925]
     },
     actions: [
       {
@@ -241,6 +250,268 @@ export default [
           target: "#boost-0"
         },
         return: 0
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 10
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-10"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "home",
+          skip: true
+        },
+        pointer: {
+          target: "#home-btn"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "home"
+        },
+        pointer: {
+          target: "#raids"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/home/raids"
+        },
+        pointer: {
+          target: "#btn-summon"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/home/raids/summon"
+        },
+        pointer: {
+          target: "#s-1"
+        },
+        return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-11"]
+          }
+        ]
+      },
+      {
+        lock: {
+          path: "/home/raids/summon/1"
+        },
+        pointer: {
+          target: "#btn-summon"
+        },
+        return: 0
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 10
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-12"]
+          },
+          {
+            text: ["t-d-13"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "summon",
+          skip: true
+        },
+        pointer: {
+          target: "#b-shop"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "summon"
+        },
+        pointer: {
+          target: "#summon"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/summon/army"
+        },
+        pointer: {
+          target: "#summon"
+        },
+        return: 0
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 10,
+      name: "army-summon-menu"
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-14"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "castle",
+          skip: true
+        },
+        pointer: {
+          target: "#b-castle"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "castle"
+        },
+        pointer: {
+          target: "#legions"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "army-composition"
+        },
+        pointer: {
+          target: "#s-0"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/castle/army/edit-legion/0/troops/0"
+        },
+        pointer: {
+          target: "#u-0"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/castle/army/edit-legion/0/troops/0"
+        },
+        pointer: {
+          target: "#confirm"
+        },
+        return: 0
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 15
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-15"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "home",
+          skip: true
+        },
+        pointer: {
+          target: "#home-btn"
+        }
+      },
+      {
+        lock: {
+          name: "home"
+        },
+        pointer: {
+          target: "#divs"
+        }
+      },
+      {
+        lock: {
+          name: "dividends"
+        },
+        dialog: [
+          {
+            text: ["t-d-16", "t-d-17", "t-d-18"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 16,
+      items: [3119]
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-19"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "castle",
+          skip: true
+        },
+        pointer: {
+          target: "#b-castle"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "castle"
+        },
+        pointer: {
+          target: "#lab"
+        }
+      },
+      {
+        lock: {
+          name: "alchemy-lab"
+        },
+        pointer: {
+          target: "#create-weapon"
+        }
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-20", "t-d-21"]
+          }
+        ]
       }
     ]
   }

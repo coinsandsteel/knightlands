@@ -6,7 +6,11 @@
       <div class="flex flex-column flex-items-center">
         <!-- SEASON INFO -->
         <div class="width-100 flex flex-column flex-center">
-          <Title :stackBottom="true">{{ $t("d-season", { season }) }}</Title>
+          <Title :stackBottom="true">
+            <HintButton title="div-seas" :texts="['div-seas-1', 'div-seas-2']">
+              {{ $t("d-season", { season }) }}
+            </HintButton>
+          </Title>
 
           <div class="color-panel-2 season-timer flex flex-center">
             <span class="font-size-22 font-weight-700">{{
@@ -17,9 +21,11 @@
 
         <!-- DIVIDENDS INFO -->
         <div class="width-100">
-          <Title :stackBottom="true" :stackTop="true">{{
-            $t("d-avai-d")
-          }}</Title>
+          <Title :stackBottom="true" :stackTop="true">
+            <HintButton title="divs-cl" :texts="['divs-cl-1', 'divs-cl-2']">
+              {{ $t("d-avai-d") }}
+            </HintButton></Title
+          >
           <div class="flex flex-column flex-center color-panel-1">
             <template v-if="hasPayouts">
               <div
@@ -81,7 +87,11 @@
           </Line3Element> -->
 
           <Line3Element class="width-25 margin-right-half">
-            <template v-slot:title>{{ $t("d-stake") }}</template>
+            <template v-slot:title>
+              <HintButton title="y-stake" :texts="['y-stake-1', 'y-stake-2']">
+                {{ $t("d-stake") }}
+              </HintButton>
+            </template>
             <template v-slot:value>
               <IconWithValue iconClass="icon-dkt" :flip="true">{{
                 dkt
@@ -90,7 +100,11 @@
           </Line3Element>
 
           <Line3Element class="width-25 margin-right-half">
-            <template v-slot:title>{{ $t("d-balance") }}</template>
+            <template v-slot:title>
+              <HintButton title="d-bal" :texts="['d-bal-1', 'd-bal-2']">
+                {{ $t("d-balance") }}
+              </HintButton>
+            </template>
             <template v-slot:value
               ><IconWithValue iconClass="icon-dkt" :flip="true">{{
                 unlockedDkt
@@ -120,6 +134,7 @@
 </template>
 
 <script>
+import HintButton from "@/components/HintButton.vue";
 import Title from "@/components/Title.vue";
 import AppSection from "@/AppSection.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
@@ -142,6 +157,7 @@ export default {
     NetworkRequestErrorMixin
   ],
   components: {
+    HintButton,
     IconWithValue,
     CustomButton,
     Title,

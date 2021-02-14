@@ -3,7 +3,13 @@
     <div class="art screen-background"></div>
 
     <MenuIconRow>
-      <MenuIcon icon="skewed_icon_craft" to="elemental" :append="true">
+      <MenuIcon
+        icon="skewed_icon_craft"
+        to="elemental"
+        :append="true"
+        section="createWeapon"
+        id="create-weapon"
+      >
         <span>{{ $t("btn-new-weapon") }}</span>
       </MenuIcon>
 

@@ -21,7 +21,7 @@
       :getHintButtons="getHintButtons"
     ></ScrollableItemHint>
 
-    <portal to="footer" :slim="true" v-if="isActive">
+    <portal to="footer" :slim="true" v-if="!hideFooter && isActive">
       <CustomButton type="yellow" @click="goToCraft">{{
         $t("btn-craft")
       }}</CustomButton>
@@ -52,7 +52,8 @@ export default {
     "commitCmd",
     "filtersStore",
     "items",
-    "hideFilters"
+    "hideFilters",
+    "hideFooter"
   ],
   data: () => ({
     showHintItems: false,

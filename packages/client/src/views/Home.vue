@@ -32,6 +32,7 @@
           to="raids"
           :append="true"
           section="raids"
+          id="raids"
           >{{ $t("btn-raids") }}</MenuIcon
         >
 
@@ -110,6 +111,7 @@
           to="dividends"
           :append="true"
           section="dividends"
+          id="divs"
         >
           {{ $t("btn-divs") }}
         </MenuIcon>

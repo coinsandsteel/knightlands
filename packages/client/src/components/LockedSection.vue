@@ -28,16 +28,16 @@ export default {
   methods: {
     handleClick(e) {
       if (this.isLocked) {
-        this.$notify({
-          group: "levelLock",
-          max: 2,
-          type: "error",
-          text: this.$t("s-locked", { lvl: this.levelRequired }),
-          data: {
-            level: this.levelRequired
-          },
-          duration: 500
-        });
+        // this.$notify({
+        //   group: "levelLock",
+        //   max: 2,
+        //   type: "error",
+        //   text: this.$t("s-locked", { lvl: this.levelRequired }),
+        //   data: {
+        //     level: this.levelRequired
+        //   },
+        //   duration: 500
+        // });
       } else {
         this.$slots["default"][0].elm.dispatchEvent(
           new e.constructor(e.type, e)

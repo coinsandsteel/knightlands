@@ -28,6 +28,7 @@ export default {
       if (actions.length <= state.actionIndex) {
         state.step++;
         state.actionIndex = 0;
+        state.conditionPassed = false;
       }
     }
   },
@@ -61,7 +62,11 @@ export default {
         }
       }
     },
-    checkConditions({ commit, state }, init) {
+    checkConditions({ commit, state }, { init, route }) {
+      if (state.conditionPassed) {
+        return;
+      }
+
       let passed = true;
 
       if (state.step >= Scenario.length) {
@@ -92,17 +97,30 @@ export default {
           passed = false;
         } else {
           const cond = Scenario[state.step].cond;
-
           if (cond.level && cond.level > Vue.prototype.$game.character.level) {
             passed = false;
           }
 
-          if (cond.item) {
-            if (
-              Vue.prototype.$game.inventory.getItemsCountByTemplate(
-                cond.item
-              ) == 0
-            ) {
+          if (cond.items) {
+            for (const item of cond.items) {
+              if (
+                Vue.prototype.$game.inventory.getItemsCountByTemplate(item) == 0
+              ) {
+                console.log("no item ", item);
+                passed = false;
+                break;
+              }
+            }
+          }
+
+          if (cond.path) {
+            if (route.fullPath != cond.path) {
+              passed = false;
+            }
+          }
+
+          if (cond.name) {
+            if (route.name != cond.name) {
               passed = false;
             }
           }

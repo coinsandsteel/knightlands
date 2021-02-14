@@ -250,6 +250,7 @@ const router = new Router({
           children: [
             {
               path: "",
+              name: "weapon-categories",
               component: () =>
                 import(
                   "./views/Crafting/CreateElementalWeapons/SelectCategory.vue"

@@ -32,7 +32,12 @@
           </div>
         </boss-view>
 
-        <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+        <Tabs
+          :tabs="tabs"
+          :currentTab="currentTab"
+          @onClick="switchTab"
+          v-if="showTabs"
+        />
 
         <div class="margin-1">
           <div class="flex flex-space-evenly width-100">
@@ -69,10 +74,11 @@
                 :disabled="!canSummon"
                 type="yellow"
                 @click="confirmSummon"
+                id="btn-summon"
               >
                 <span>{{ $t("btn-summon") }}</span>
               </CustomButton>
-              <CustomButton type="grey" @click="goToShop">
+              <CustomButton type="grey" @click="goToShop" v-if="isPayed">
                 {{ $t("pur-tickets") }}
               </CustomButton>
             </div>
@@ -98,6 +104,7 @@ import RaidInfo from "./RaidInfo.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
+import SectionsProgress from "@/sections_progress";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 
@@ -144,7 +151,7 @@ export default {
       fetchPayment: null,
       listener: undefined,
       raidStatus: {},
-      currentTab: PayedRaid,
+      currentTab: FreeRaid,
       tabs: [
         {
           title: PayedRaid,
@@ -163,6 +170,12 @@ export default {
     }
   },
   computed: {
+    isPayed() {
+      return this.currentTab == PayedRaid;
+    },
+    showTabs() {
+      return SectionsProgress["dividends"] <= this.$character.level;
+    },
     weakness() {
       return this.raidStatus.weakness;
     },

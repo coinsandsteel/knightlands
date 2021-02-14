@@ -38,7 +38,7 @@
             >{{ $t("btn-unequip") }}</custom-button
           >
 
-          <template v-if="isBox">
+          <template v-if="isBox && canOpen">
             <CustomButton
               type="yellow"
               @click="handleClose(ItemActions.OpenBox)"
@@ -64,6 +64,12 @@
               v-if="count >= 50"
               >{{ $t("btn-open-boxes", { count: count }) }}</CustomButton
             >
+          </template>
+
+          <template v-else-if="isBox && !canOpen">
+            <span class="font-size-20 font-error font-weight-900">{{
+              $t("box-lvl-req", { lvl: actionMinLevel })
+            }}</span>
           </template>
 
           <template v-else-if="maxSummons > 0">
@@ -161,6 +167,13 @@ export default {
     ItemInfo
   },
   computed: {
+    canOpen() {
+      if (this.template.action) {
+        return this.template.action.minLevel <= this.$character.level;
+      }
+
+      return true;
+    },
     canEquip() {
       let equippable = !this.item.equipped;
       if (this.equippedItems) {

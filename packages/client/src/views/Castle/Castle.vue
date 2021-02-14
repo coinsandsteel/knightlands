@@ -27,6 +27,7 @@
           icon="skewed_icon_summon"
           :to="{ name: 'alchemy-lab' }"
           section="alchemyLab"
+          id="lab"
           >{{ $t("alch-lab") }}</MenuIcon
         >
       </MenuIconRow>
@@ -37,6 +38,7 @@
           :to="{ name: 'army-composition' }"
           :append="true"
           section="legions"
+          id="legions"
           >{{ $t("legions") }}</MenuIcon
         >
 

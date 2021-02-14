@@ -198,7 +198,10 @@ export default {
         return SlotPlaceholders[this.equipmentSlot];
       }
       if (this.itemData) {
-        return this.$game.itemsDB.getIcon(this.itemData.template);
+        return this.$game.itemsDB.getIcon(
+          this.itemData.template,
+          this.$game.itemsDB.getRarity(this.itemData)
+        );
       }
 
       return "";

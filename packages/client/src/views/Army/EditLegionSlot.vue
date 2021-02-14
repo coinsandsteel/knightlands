@@ -19,6 +19,7 @@
         type="green"
         @click="saveAndExit(true)"
         :disabled="!canConfirm"
+        id="confirm"
         >{{ $t("btn-confirm") }}</CustomButton
       >
     </portal>

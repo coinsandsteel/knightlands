@@ -23,14 +23,14 @@
           <span class="font-size-22 margin-bottom-2">{{
             $t("raids-empty")
           }}</span>
-          <CustomButton type="yellow" @click="summonRaid">{{
+          <CustomButton type="yellow" @click="summonRaid" id="btn-summon">{{
             $t("raid-summon-now")
           }}</CustomButton>
         </div>
       </div>
 
       <portal to="footer" v-if="isActive">
-        <CustomButton type="yellow" @click="summonRaid">{{
+        <CustomButton type="yellow" @click="summonRaid" id="btn-summon">{{
           $t("btn-summon")
         }}</CustomButton>
       </portal>

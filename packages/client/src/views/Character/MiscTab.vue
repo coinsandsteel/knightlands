@@ -6,6 +6,7 @@
       :items="consumables"
       :filtersStore="$store.getters.getMiscFilters"
       :hideFilters="true"
+      :hideFooter="true"
     ></Inventory>
 
     <Inventory

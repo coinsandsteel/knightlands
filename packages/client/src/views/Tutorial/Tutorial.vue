@@ -36,10 +36,17 @@ export default {
       handler() {
         this.checkConditions();
       }
+    },
+    $route: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.checkConditions();
+      }
     }
   },
   async mounted() {
-    await this.$store.dispatch("tutorial/checkConditions", true);
+    await this.checkConditions();
     await this.trySkipAction();
   },
   computed: {
@@ -95,11 +102,21 @@ export default {
   },
   methods: {
     async checkConditions() {
-      await this.$store.dispatch("tutorial/checkConditions");
+      if (this._inProcess) {
+        return;
+      }
+
+      this._inProcess = true;
+
+      await this.$store.dispatch("tutorial/checkConditions", {
+        route: this.$route
+      });
 
       const redirect = await this.$store.dispatch("tutorial/getRedirectUrl", {
         route: this.$route
       });
+
+      this._inProcess = false;
 
       if (redirect) {
         this.$router.replace(redirect);
@@ -139,6 +156,6 @@ export default {
 
 <style scoped>
 .t-root {
-  z-index: 101;
+  z-index: 151;
 }
 </style>

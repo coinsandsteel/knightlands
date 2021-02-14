@@ -134,6 +134,12 @@ export default {
     },
     matchedWithOtherItem() {
       return this.matchItem && this.matchItem.id != this.item.id;
+    },
+    actionMinLevel() {
+      if (!this.template.action) {
+        return 0;
+      }
+      return this.template.action.minLevel;
     }
   }
 };

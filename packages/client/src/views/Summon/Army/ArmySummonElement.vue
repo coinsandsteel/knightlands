@@ -3,6 +3,7 @@
     <CustomButton
       class="margin-top-1"
       type="yellow"
+      id="summon"
       @click="summon(1)"
       v-if="freeSummonTimer.timeLeft <= 0"
     >

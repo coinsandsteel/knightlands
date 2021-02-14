@@ -8,6 +8,7 @@
       <div
         class="army-summon flex flex-center pointer"
         @click="goTo('army-summon-menu')"
+        id="summon"
       >
         <img src="../../assets/ui/summon.png" />
         <span>{{ $t("shop-summon") }}</span>

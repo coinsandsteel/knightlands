@@ -2,7 +2,10 @@
   <div class="screen-content">
     <div class="screen-background"></div>
 
-    <LegionSelector class="margin-bottom-half" @legionChange="onLegionChanged" />
+    <LegionSelector
+      class="margin-bottom-half"
+      @legionChange="onLegionChanged"
+    />
 
     <div class="dummy-height flex-full">
       <div class="width-100 height-100 dummy-height" v-bar>
@@ -23,6 +26,7 @@
 
             <div class="units-grid width-100">
               <UnitSlot
+                :id="`s-${slot.id}`"
                 v-for="slot in troops"
                 :key="slot.id"
                 :unit="slot.unit"
@@ -84,9 +88,9 @@ export default {
     goToSlot(slot) {
       this.$router.push({
         name: "edit-legion",
-        params: { 
-          legion: this.legionIndex, 
-          slotId: slot.id, 
+        params: {
+          legion: this.legionIndex,
+          slotId: slot.id,
           type: slot.troop ? "troops" : "generals"
         }
       });

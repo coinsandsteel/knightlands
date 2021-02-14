@@ -13,6 +13,7 @@ const Properties = require("./item_properties.json");
 const UpgradeMeta = require("./upgrade_meta.json");
 const EnchantingMeta = require("./enchanting_meta.json");
 import ItemStatResolver from "@/../../knightlands-shared/item_stat_resolver";
+import ItemIcons from "@/item_icons";
 
 class ItemDatabase {
   constructor() {
@@ -44,13 +45,22 @@ class ItemDatabase {
     return EnchantingMeta.maxEnchanting;
   }
 
-  getIcon(id) {
+  getIcon(id, rarity) {
     let template = this.getTemplate(id);
     // if (template.type == ItemType.Equipment) {
     //   return `/images/items/${template.type}/${template.equipmentType}/${template.icon}.png`;
     // }
 
     // return `/images/items/${template.type}/${template.icon}.png`;
+    if (rarity) {
+      if (ItemIcons[id]) {
+        const item = ItemIcons[id][rarity];
+        if (item) {
+          return this.getIcon(item);
+        }
+      }
+    }
+
     return `${template.icon}`;
   }
 

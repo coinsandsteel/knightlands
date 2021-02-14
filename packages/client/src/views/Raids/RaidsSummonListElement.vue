@@ -28,7 +28,7 @@
           class="font-error font-size-22 font-weight-900 margin-bottom-3"
           >{{ $t("no-raid-level", { level: raidLevel }) }}</span
         >
-        <custom-button type="yellow" @click="openSummon">{{
+        <custom-button type="yellow" @click="openSummon" :id="`s-${index}`">{{
           $t("btn-summon-raid")
         }}</custom-button>
       </div>

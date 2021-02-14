@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import HintButton from "@/components/HintButton.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import TrialType from "@/../../knightlands-shared/trial_type";
@@ -33,7 +34,7 @@ const trials = [TrialType.Armour, TrialType.Weapon, TrialType.Accessory];
 
 export default {
   mixins: [AppSection],
-  components: { CustomButton, TrialsMarker },
+  components: { CustomButton, TrialsMarker, HintButton },
   data: () => ({
     trials
   }),

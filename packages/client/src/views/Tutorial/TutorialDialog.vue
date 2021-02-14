@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute-stretch t-dialog">
+  <div class="absolute-stretch t-dialog" @click="handleContinue">
     <div class="t-bubble flex flex-column flex-center">
       <div
         class="color-panel-1 element-shadow padding-1 flex flex-column flex-center"
@@ -23,12 +23,6 @@
       </div>
     </div>
     <img src="../../assets/avatars/mordred.png" class="t-portrait" />
-    <!-- <div
-      class="uppercase font-weight-900 t-continue font-size-30 padding-2 pointer"
-      @click="handleContinue"
-    >
-      {{ $t("btn-continue") }}
-    </div> -->
   </div>
 </template>
 

@@ -11,7 +11,8 @@
           />
           <UnitItem
             class="width-20"
-            v-for="unit in filteredUnits"
+            v-for="(unit, idx) in filteredUnits"
+            :id="`u-${idx}`"
             :key="unit.id"
             :unit="unit"
             :selected="selectedSlots[unit.id]"

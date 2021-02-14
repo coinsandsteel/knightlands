@@ -48,7 +48,7 @@
       </div>
       <div class="root-menu flex" v-if="$game.authenticated">
         <div id="nav">
-          <router-link class="flex flex-center n-inner" to="/home">
+          <router-link class="flex flex-center n-inner" to="/home" id="home-btn">
             <span class="menu-icon home pointer-events-none">
               <div class="marker-pos">
                 <HomeMarker></HomeMarker>
