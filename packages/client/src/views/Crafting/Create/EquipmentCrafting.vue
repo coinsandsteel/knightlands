@@ -93,6 +93,8 @@ export default {
         }
       }
 
+      this.recipes.push(...CraftingRecipes[5]);
+
       this.updateRecipes();
     }
   }

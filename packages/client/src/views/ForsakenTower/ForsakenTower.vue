@@ -91,7 +91,7 @@ export default {
   methods: {
     handleFloorClosed(cancelled) {
       if (!cancelled) {
-        if (this.currentFloor.id == this.floorsCleared) {
+        if (this.currentFloor.id == this.floorsCleared) {d
           this.floorsCleared++;
           this.scrollToFloor(this.floorsCleared);
         } else {

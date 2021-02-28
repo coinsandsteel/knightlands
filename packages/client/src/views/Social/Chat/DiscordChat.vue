@@ -1,6 +1,9 @@
 <template>
-  <div class="root">
-    <iframe ref="iframe" class="embed" :src="url"></iframe>
+  <div class="screen-content">
+    <iframe
+      src="https://emerald.widgetbot.io/channels/694928249167282176/699540977773183066"
+      class="embed"
+    ></iframe>
   </div>
 </template>
 
