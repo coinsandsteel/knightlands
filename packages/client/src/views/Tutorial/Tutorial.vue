@@ -12,6 +12,7 @@
       v-show="isDialog"
       :data="dialogData"
       @continue="handleDialog"
+      @skip="handleSkip"
     />
   </div>
 </template>
@@ -121,6 +122,9 @@ export default {
       if (redirect) {
         this.$router.replace(redirect);
       }
+    },
+    handleSkip() {
+      this.$store.dispatch("tutorial/skipCurrentStep");
     },
     handleDialog() {
       this.advance();

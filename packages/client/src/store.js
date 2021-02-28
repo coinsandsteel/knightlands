@@ -15,6 +15,7 @@ import Adventures from "@/store/adventures";
 import Summon from "@/store/summon";
 import Training from "@/store/training";
 import Tutorial from "@/store/tutorial";
+import Settings from "@/store/settings";
 
 Vue.use(Vuex);
 
@@ -249,7 +250,8 @@ const store = new Vuex.Store({
     adventures: Adventures,
     summon: Summon,
     training: Training,
-    tutorial: Tutorial
+    tutorial: Tutorial,
+    settings: Settings
   }
 });
 

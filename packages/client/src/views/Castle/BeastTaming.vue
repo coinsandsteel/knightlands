@@ -101,17 +101,8 @@
           </PurchaseButton>
         </div>
 
-        <Title
-          :stackBottom="true"
-          class="margin-bottom-1"
-          @click="showAdvancedBoostInfo"
-        >
-          <IconWithValue
-            iconClass="icon-info"
-            :flip="true"
-            :iconMargin="true"
-            >{{ $t("adv-boost") }}</IconWithValue
-          >
+        <Title :stackBottom="true" class="margin-bottom-1">
+          {{ $t("adv-boost") }}
         </Title>
 
         <div
@@ -187,6 +178,16 @@
         }}</CustomButton>
       </div>
     </div>
+
+    <portal to="footer" v-if="isActive">
+      <CustomButton type="grey" width="5rem">
+        <HintButton
+          :dark="true"
+          title="h-beast"
+          :texts="['h-beast-1', 'h-beast-2', 'h-beast-3', 'h-beast-4']"
+        ></HintButton>
+      </CustomButton>
+    </portal>
   </div>
 </template>
 
@@ -204,7 +205,7 @@ import EnemyView from "@/components/EnemyView.vue";
 import Title from "@/components/Title.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
-
+import HintButton from "@/components/HintButton.vue";
 const Events = require("@/../../knightlands-shared/events");
 
 const MaxBoostSize = 50;
@@ -212,6 +213,7 @@ const MaxBoostSize = 50;
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   components: {
+    HintButton,
     IconWithValue,
     BeastMarker,
     PurchaseButton,
@@ -353,14 +355,6 @@ export default {
           true
         );
       }
-    },
-    showAdvancedBoostInfo() {
-      this.showPrompt("hint", "adv-boost-info", [
-        {
-          title: "btn-ok",
-          type: "grey"
-        }
-      ]);
     }
   }
 };

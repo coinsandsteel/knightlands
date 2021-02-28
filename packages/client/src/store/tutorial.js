@@ -15,6 +15,7 @@ export default {
     setStep(state, { step }) {
       state.step = step;
       state.actionIndex = 0;
+      state.conditionPassed = false;
     },
     setActionIndex(state, { index }) {
       state.actionIndex = index;
@@ -33,6 +34,11 @@ export default {
     }
   },
   actions: {
+    skipCurrentStep({ commit, state }) {
+      commit("setStep", {
+        step: state.step + 1
+      });
+    },
     async getRedirectUrl({ state }, { route }) {
       if (!state.conditionPassed || state.step >= Scenario.length) {
         return;
@@ -62,11 +68,7 @@ export default {
         }
       }
     },
-    checkConditions({ commit, state }, { init, route }) {
-      if (state.conditionPassed) {
-        return;
-      }
-
+    checkConditions({ commit, state }, { route }) {
       let passed = true;
 
       if (state.step >= Scenario.length) {
@@ -78,19 +80,24 @@ export default {
 
       if (passed) {
         const actions = Scenario[state.step].actions;
+        const actionData = actions[state.actionIndex];
+        if (actionData.return !== undefined) {
+          commit("setActionIndex", {
+            index: actionData.return
+          });
+        }
+      }
+
+      if (state.conditionPassed) {
+        return;
+      }
+
+      if (passed) {
+        const actions = Scenario[state.step].actions;
         if (state.actionIndex >= actions.length) {
           commit("setStep", {
             step: state.step + 1
           });
-        }
-
-        if (init) {
-          const actionData = actions[state.actionIndex];
-          if (actionData.return !== undefined) {
-            commit("setActionIndex", {
-              index: actionData.return
-            });
-          }
         }
 
         if (state.step >= Scenario.length) {

@@ -19,6 +19,12 @@
         </CustomButton>
       </div>
     </div>
+
+    <portal to="footer" v-if="isActive">
+      <CustomButton type="grey" width="5rem"
+        ><HintButton :component="hint"></HintButton
+      ></CustomButton>
+    </portal>
   </div>
 </template>
 
@@ -29,6 +35,8 @@ import CustomButton from "@/components/Button.vue";
 import TrialType from "@/../../knightlands-shared/trial_type";
 import TrialBackgrounds from "./trialBackgrounds";
 import TrialsMarker from "@/components/Markers/Home/TrialsMarker.vue";
+import TrialsOverview from "./Hints/TrialsOverview.vue";
+import { create } from "vue-modal-dialogs";
 
 const trials = [TrialType.Armour, TrialType.Weapon, TrialType.Accessory];
 
@@ -36,7 +44,8 @@ export default {
   mixins: [AppSection],
   components: { CustomButton, TrialsMarker, HintButton },
   data: () => ({
-    trials
+    trials,
+    hint: create(TrialsOverview)
   }),
   created() {
     this.title = "window-trials";

@@ -22,10 +22,15 @@ import { create } from "vue-modal-dialogs";
 const ShowHint = create(TutorialHint, "title", "texts");
 
 export default {
-  props: ["title", "texts"],
+  props: ["title", "texts", "component"],
   components: { IconWithValue },
   methods: {
     async showHint() {
+      if (this.component) {
+        await this.component();
+        return;
+      }
+
       if (this.texts) {
         await this.showTextHint();
       }

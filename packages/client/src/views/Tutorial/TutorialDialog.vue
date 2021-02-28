@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute-stretch t-dialog" @click="handleContinue">
+  <div class="absolute-stretch t-dialog" @click.self="handleContinue">
     <div class="t-bubble flex flex-column flex-center">
       <div
         class="color-panel-1 element-shadow padding-1 flex flex-column flex-center"
@@ -11,18 +11,28 @@
           v-html="$t(t)"
         ></div>
 
-        <CustomButton
-          height="3rem"
-          width="3rem"
-          class="t-continue"
-          type="grey"
-          @click="handleContinue"
-        >
-          <span class="nav-arrow"></span>
-        </CustomButton>
+        <div class="flex flex-end t-continue">
+          <CustomButton
+            height="3rem"
+            type="red"
+            @click="handleSkip"
+            v-if="showSkipButton"
+          >
+            <!-- <span class="nav-arrow"></span> -->
+            {{ $t("btn-skip-t") }}
+          </CustomButton>
+
+          <CustomButton height="3rem" type="grey" @click="handleContinue">
+            {{ $t("btn-next-t") }}
+            <span class="nav-arrow margin-left-half"></span>
+          </CustomButton>
+        </div>
       </div>
     </div>
-    <img src="../../assets/avatars/mordred.png" class="t-portrait" />
+    <img
+      src="../../assets/avatars/mordred.png"
+      class="pointer-events-none t-portrait"
+    />
   </div>
 </template>
 
@@ -41,6 +51,13 @@ export default {
     }
   },
   computed: {
+    showSkipButton() {
+      if (this.dialogFinished) {
+        return false;
+      }
+
+      return !this.data[this.step].hideSkip;
+    },
     text() {
       if (this.dialogFinished) {
         return "";
@@ -55,6 +72,9 @@ export default {
     }
   },
   methods: {
+    handleSkip() {
+      this.$emit("skip");
+    },
     handleContinue() {
       this.step++;
 
@@ -96,6 +116,5 @@ export default {
 .t-continue {
   position: absolute;
   bottom: 0;
-  right: 0;
 }
 </style>

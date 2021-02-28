@@ -8,7 +8,9 @@
         v-show="isBoss"
         >{{ $t("q-boss") }}</span
       >
-      <div class="enemy-title-font">{{ $t(missionName) }}</div>
+      <div>
+        <span class="enemy-title-font">{{ $t(missionName) }}</span>
+      </div>
     </div>
 
     <div
@@ -131,9 +133,12 @@
         </div>
 
         <div v-else class="flex flex-center width-100 flex-space-evenly">
-          <AttackButton :promise="request" @click="engage(false)" id="engage-q">{{
-            isBoss ? $t("q-att-s") : $t("q-prog-s")
-          }}</AttackButton>
+          <AttackButton
+            :promise="request"
+            @click="engage(false)"
+            id="engage-q"
+            >{{ isBoss ? $t("q-att-s") : $t("q-prog-s") }}</AttackButton
+          >
           <PromisedButton
             :promise="request"
             :locked="!hasFastQuests"
@@ -464,6 +469,9 @@ export default {
 }
 
 .enemy-title {
+  padding: 1rem;
+  background-color: #0d00287d;
+  border-radius: 2px;
   position: absolute;
   top: 0;
   z-index: 100;

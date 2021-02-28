@@ -55,7 +55,7 @@ class Game {
         walletReady: false,
         loaded: false,
         beast: {},
-        towerFreeAttempts: 0,
+        freeAttempts: 0,
         rank: 0,
         trials: {},
         goldExchange: {},
@@ -249,8 +249,14 @@ class Game {
     return this._vm.walletReady;
   }
 
-  get towerFreeAttempts() {
-    return this._vm.towerFreeAttempts;
+  get freeAttempts() {
+    return this._vm.freeAttempts;
+  }
+
+  tryDecTowerFreeAttempts() {
+    if (this._vm.freeAttempts > 0) {
+      this._vm.freeAttempts--;
+    }
   }
 
   get authenticated() {
@@ -740,7 +746,7 @@ class Game {
 
     if (changes.tower) {
       if (changes.tower.hasOwnProperty("freeAttemps")) {
-        this._vm.towerFreeAttempts = changes.tower.freeAttemps;
+        this._vm.freeAttempts = changes.tower.freeAttemps;
       }
     }
 
@@ -845,7 +851,7 @@ class Game {
         this._vm._id = info._id;
         this._vm.account = info.address;
         this._vm.beast = info.beast;
-        this._vm.towerFreeAttempts = info.tower.freeAttemps;
+        this._vm.freeAttempts = info.tower.freeAttemps;
         this._vm.trials = info.trials;
         this._vm.dailyQuests = info.dailyQuests;
         this._vm.goldMines = info.goldMines;

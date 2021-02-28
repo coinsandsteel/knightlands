@@ -3,9 +3,11 @@
     class="enemy-view relative height-100 width-100 flex flex-center"
     :style="backgroundImage"
   >
-    <span class="enemy-name font-size-30 enemy-title-font font-outline">{{
-      $t(name)
-    }}</span>
+    <div class="enemy-name">
+      <span class="font-size-30 enemy-title-font font-outline">{{
+        $t(name)
+      }}</span>
+    </div>
     <img ref="enemyView" :src="enemyImage" />
     <slot></slot>
   </div>
@@ -89,9 +91,12 @@ export default {
 }
 
 .enemy-name {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  padding: 1rem;
+  background-color: #0d00287d;
+  border-radius: 2px;
+  // position: absolute;
+  // top: 0;
+  // left: 50%;
+  // transform: translateX(-50%);
 }
 </style>

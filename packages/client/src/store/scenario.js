@@ -18,7 +18,8 @@ export default [
         },
         pointer: {
           target: "#home-btn"
-        }
+        },
+        return: 0
       },
       {
         lock: {
@@ -26,7 +27,8 @@ export default [
         },
         pointer: {
           target: "#quests"
-        }
+        },
+        return: 0
       },
       {
         lock: {
@@ -34,7 +36,8 @@ export default [
         },
         pointer: {
           target: "#quest-0"
-        }
+        },
+        return: 0
       },
       {
         lock: {
@@ -42,7 +45,8 @@ export default [
         },
         pointer: {
           target: "#engage-q"
-        }
+        },
+        return: 0
       }
     ]
   },
@@ -94,13 +98,21 @@ export default [
     },
     actions: [
       {
+        dialog: [
+          {
+            text: ["t-d-22"]
+          }
+        ]
+      },
+      {
         lock: {
           name: "home",
           skip: true
         },
         pointer: {
           target: "#char-btn"
-        }
+        },
+        return: 0
       },
       {
         lock: {
@@ -150,7 +162,8 @@ export default [
         },
         pointer: {
           target: "#char-btn"
-        }
+        },
+        return: 0
       },
       {
         lock: {
@@ -190,8 +203,9 @@ export default [
           skip: true
         },
         pointer: {
-          target: "#char-btn"
-        }
+          target: "#home-btn"
+        },
+        return: 0
       },
       {
         lock: {
@@ -199,15 +213,17 @@ export default [
         },
         pointer: {
           target: "#onyx-tower"
-        }
+        },
+        return: 0
       },
       {
         lock: {
           path: "/home/onyx-tower"
         },
         pointer: {
-          target: ".vue-recycle-scroller__item-view:last-child .btn"
-        }
+          target: ".btn:not(.disabled)"
+        },
+        return: 0
       }
     ]
   },

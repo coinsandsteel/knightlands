@@ -12,18 +12,26 @@
 import TowerMeta from "@/tower_meta";
 
 export default {
+  data: () => ({
+    towerItem: null
+  }),
+  mounted() {
+    this.towerItem = this.$game.inventory.getItemByTemplate(
+      TowerMeta.ticketItem
+    );
+  },
   computed: {
     ticketItemName() {
       return this.$game.itemsDB.getName(TowerMeta.ticketItem);
     },
     totalTickets() {
-      return (
-        this.$game.inventory.getItemsCountByTemplate(TowerMeta.ticketItem) +
-        this.freeTickets
-      );
+      if (!this.towerItem) {
+        return this.freeTickets;
+      }
+      return this.towerItem.count + this.freeTickets;
     },
     freeTickets() {
-      return this.$game.towerFreeAttempts;
+      return this.$game.freeAttempts;
     },
     ticketIcon() {
       return `background-image: url(${this.$game.itemsDB.getIcon(

@@ -79,7 +79,7 @@ export default {
 
 <style lang="less" scoped>
 .home-art {
-  background-image: url("../../assets/backgrounds/castle_bg.jpg");
+  background-image: url("../../assets/backgrounds/gates_bg.jpg");
   background-size: cover;
   background-position: bottom center;
 }

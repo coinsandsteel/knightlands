@@ -1044,6 +1044,19 @@ span {
     .icon("tabbar_character");
 }
 
+.icon-sounds {
+    .icon();
+    .skewed_icon_races;
+
+    &.enabled {
+        .skewed_icon_tournaments;
+    }
+}
+
+.icon-summon {
+
+}
+
 .icon-ability-transfer {
     .icon();
     .skewed_icon_army_ability_transfer;
@@ -1344,7 +1357,8 @@ span {
     margin: 5px 5px 5px 0;
     border-radius: 20px;
     height: calc(100% - 10px);
-    display: block;
+    // display: block;
+    display: none !important;
 }
 
 .vb.vb-scrolling-phantom>.vb-dragger>.vb-dragger-styler {

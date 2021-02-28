@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <MusicButton class="sounds-btn"></MusicButton>
+
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar
         v-if="$game.authenticated"
@@ -48,7 +50,11 @@
       </div>
       <div class="root-menu flex" v-if="$game.authenticated">
         <div id="nav">
-          <router-link class="flex flex-center n-inner" to="/home" id="home-btn">
+          <router-link
+            class="flex flex-center n-inner"
+            to="/home"
+            id="home-btn"
+          >
             <span class="menu-icon home pointer-events-none">
               <div class="marker-pos">
                 <HomeMarker></HomeMarker>
@@ -130,10 +136,12 @@
     <Tutorial ref="tutorial" v-if="$game.authenticated" />
 
     <dialogs-wrapper transition-name="fade" />
+    <AudioPlayer ref="audio" />
   </div>
 </template>
 
 <script>
+import AudioPlayer from "@/components/AudioPlayer.vue";
 import StatusBar from "./components/StatusBar.vue";
 import CharacterMarker from "@/components/Markers/Character/CharacterMarker.vue";
 import ShopMarker from "@/components/Markers/Shop/ShopMarker.vue";
@@ -147,6 +155,7 @@ import RaceFinishedNotification from "@/components/Notifications/RaceFinishedNot
 import SectionLockedNotification from "@/components/Notifications/SectionLockedNotification.vue";
 import LockedSection from "@/components/LockedSection.vue";
 import Tutorial from "@/views/Tutorial/Tutorial.vue";
+import MusicButton from "@/components/MusicButton.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -161,6 +170,8 @@ const ShowChangeNickname = create(ChangeNickname);
 
 export default {
   components: {
+    MusicButton,
+    AudioPlayer,
     Tutorial,
     CharacterMarker,
     HomeMarker,
@@ -278,6 +289,7 @@ export default {
     });
 
     this.$nextTick(() => {
+      this.playMenuMusic();
       this.showBackButton();
     });
 
@@ -322,6 +334,12 @@ export default {
     async updateUserData() {
       await this.$game.updateUserData();
       this.loading = false;
+    },
+    playCombatMusic() {
+      this.$refs.audio.play("combat");
+    },
+    playMenuMusic() {
+      this.$refs.audio.play("menu");
     }
   },
   watch: {
@@ -605,8 +623,16 @@ a:visited {
 
 .footer-container {
   height: 100%;
-  * > {
+  & > div,
+  span {
     margin-right: 0.3rem;
   }
+}
+
+.sounds-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
 }
 </style>

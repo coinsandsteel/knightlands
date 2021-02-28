@@ -97,6 +97,8 @@ export default {
         } else {
           this.scrollToFloor(this.currentFloor.id);
         }
+
+        this.$game.tryDecTowerFreeAttempts();
       }
 
       this.currentFloor = null;

@@ -28,9 +28,13 @@
       }}</span>
       <ProgressBar v-model="playerHealth" :maxValue="maxHealth"></ProgressBar>
 
-      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
-        $t("trial-player-mana")
-      }}</span>
+      <HintButton
+        class="margin-top-1 margin-bottom-1 font-size-22"
+        title="tr-f-1"
+        :texts="['tr-f-2', 'tr-f-3', 'tr-f-4']"
+      >
+        {{ $t("trial-player-mana") }}
+      </HintButton>
       <ProgressBar
         barType="blue"
         :value="mana"
@@ -100,6 +104,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import TrialCardsEffect from "@/../../knightlands-shared/trial_cards_effect";
 import Errors from "@/../../knightlands-shared/errors";
 import TrialsMeta from "@/trials_meta";
+import HintButton from "@/components/HintButton.vue";
 
 import PurchaseAttempts from "./PurchaseAttempts.vue";
 import { create } from "vue-modal-dialogs";
@@ -115,7 +120,8 @@ export default {
     PromisedButton,
     ProgressBar,
     CardSelector,
-    AttackButton
+    AttackButton,
+    HintButton
   },
   data: () => ({
     request: null,

@@ -13,7 +13,7 @@ export default {
   computed: {
     canEngageTower() {
       const towerKeys = this.towerItem ? this.towerItem.count : 0;
-      return towerKeys + this.$game.towerFreeAttempts > 0;
+      return towerKeys + this.$game.freeAttempts > 0;
     }
   }
 };

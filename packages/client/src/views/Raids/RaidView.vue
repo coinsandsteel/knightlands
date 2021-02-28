@@ -341,6 +341,9 @@ export default {
   },
   deactivated() {
     this.unsubscribe();
+    setTimeout(() => {
+      this.$app.playMenuMusic();
+    }, 5000);
   },
   destroyed() {
     this.unsubscribe();
@@ -420,6 +423,7 @@ export default {
         this.raidState && this.raidState.finished && this.raidState.defeat;
     },
     async init() {
+      this.$app.playCombatMusic();
       await this.getRaid();
       this.bossViewCenter = this.$refs.bossView.center;
       this.checkIfRaidWon();
