@@ -2,53 +2,57 @@
 import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
-    props: ["parent"],
-    mixins: [ActivityMixin],
-    useRouterBack: false,
-    data: () => ({
-        title: null,
-        footers: []
-    }),
-    created() {
-        this._title = this.title;
+  props: ["parent"],
+  mixins: [ActivityMixin],
+  useRouterBack: false,
+  data: () => ({
+    title: null,
+    footers: []
+  }),
+  created() {
+    this._title = this.title;
+  },
+  mounted() {
+    this._notifyApp();
+  },
+  activated() {
+    this._onActivated();
+    this._notifyApp();
+  },
+  deactivated() {
+    this._onDeactivated();
+    this.removeFooter();
+  },
+  destroyed() {
+    this.removeFooter();
+  },
+  methods: {
+    _onActivated() {},
+    _onDeactivated() {},
+    _notifyApp() {
+      this.$nextTick(() => {
+        this.$app.$emit("section", {
+          title: this.title,
+          handleBackButton: this.handleBackButton.bind(this)
+        });
+      });
     },
-    mounted() {
-        this._notifyApp();
+    addFooter(component, props) {
+      this.hasFooter = true;
+      this.$app.$emit("footer", component, props);
     },
-    activated() {
-        this._notifyApp();
+    removeFooter() {
+      if (this.hasFooter) {
+        this.$app.$emit("footer");
+      }
     },
-    deactivated() {
-        this.removeFooter();    
-    },
-    destroyed() {
-        this.removeFooter();
-    },
-    methods: {
-        _notifyApp() {
-            this.$nextTick(() => {
-                this.$app.$emit("section", {
-                    title: this.title,
-                    handleBackButton: this.handleBackButton.bind(this)
-                });
-            });
-        },
-        addFooter(component, props) {
-            this.hasFooter = true;
-            this.$app.$emit("footer", component, props);
-        },
-        removeFooter() {
-            if (this.hasFooter) {
-                this.$app.$emit("footer");
-            }
-        },
-        handleBackButton() {
-            if (this.$options.useRouterBack) {
-                this.$router.back();
-                return true;
-            }
-            return false;
-        }
+    handleBackButton() {
+      if (this.$options.useRouterBack) {
+        this.$router.back();
+        return true;
+      }
+      return false;
     }
-}
+  }
+};
 </script>

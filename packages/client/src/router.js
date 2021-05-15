@@ -92,7 +92,8 @@ const router = new Router({
       name: "",
       component: CraftingRoot,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        music: "lab"
       },
       children: [
         {
@@ -630,7 +631,8 @@ const router = new Router({
       name: "castle",
       component: () => import("./views/Castle/Castle.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        music: "castle"
       }
     },
     {
@@ -883,7 +885,10 @@ const router = new Router({
           path: "view/:raidId",
           props: true,
           name: "view-raid",
-          component: RaidView
+          component: RaidView,
+          meta: {
+            music: "combat"
+          }
         },
         {
           name: "select-legion",

@@ -6,9 +6,13 @@
 import anime from "animejs/lib/anime.es.js";
 import { mapState } from "vuex";
 
-const MAX_VOLUME = 0.4;
-
 export default {
+  props: {
+    volume: {
+      type: Number,
+      default: 0.4
+    }
+  },
   data: () => ({
     file: ""
   }),
@@ -25,7 +29,7 @@ export default {
       let volume = 0;
       if (this.computedMusic) {
         this.$refs.audio.play();
-        volume = MAX_VOLUME;
+        volume = this.volume;
       }
 
       await this.fade(volume);
@@ -58,8 +62,12 @@ export default {
       let exit = false;
       while (!exit) {
         try {
+          await this.$refs.audio.load();
           await this.$refs.audio.play();
-          this.fade(MAX_VOLUME);
+          anime.set(this.$refs.audio, {
+            volume: this.volume
+          });
+          // this.fade(this.volume);
           exit = true;
         } catch {
           await new Promise(resolve => {
@@ -72,7 +80,7 @@ export default {
       await anime({
         targets: this.$refs.audio,
         volume: volume,
-        duration: 2000,
+        duration: 1000,
         easing: "linear"
       }).finished;
     }

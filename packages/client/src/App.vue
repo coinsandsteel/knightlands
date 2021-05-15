@@ -136,10 +136,10 @@
     <Tutorial ref="tutorial" v-if="$game.authenticated" />
 
     <dialogs-wrapper transition-name="fade" />
-    <AudioPlayer ref="audio" />
-    <audio ref="sound_ui" type="audio/mpeg" />
-    <audio ref="sound_stinger" type="audio/mpeg" />
-    <audio ref="sound_fx" type="audio/mpeg" />
+    <AudioPlayer ref="audio" :volume="0.3" />
+    <audio ref="sound_ui" type="audio/mpeg" preload="auto" />
+    <audio ref="sound_stinger" type="audio/mpeg" preload="auto" />
+    <audio ref="sound_fx" type="audio/mpeg" preload="auto" />
     <SoundEffect ref="taskFx" :files="['quest_complete1']" channel="stinger" />
   </div>
 </template>
@@ -251,6 +251,18 @@ export default {
     });
 
     this.$router.beforeEach(async (to, from, next) => {
+      let playDefault = true;
+      for (const m of to.matched) {
+        if (m.meta.music) {
+          this.$refs.audio.play(m.meta.music);
+          playDefault = false;
+        }
+      }
+
+      if (playDefault) {
+        this.$refs.audio.play("menu");
+      }
+
       if (!this.$game.authenticated) {
         next();
         return;
@@ -264,6 +276,7 @@ export default {
 
     this.$router.beforeResolve((to, from, next) => {
       this.hideTopBar = to.matched.some(record => record.meta.noTopBar);
+
       next();
     });
 
@@ -295,7 +308,6 @@ export default {
     });
 
     this.$nextTick(() => {
-      this.playMenuMusic();
       this.showBackButton();
     });
 
@@ -347,12 +359,6 @@ export default {
     async updateUserData() {
       await this.$game.updateUserData();
       this.loading = false;
-    },
-    playCombatMusic() {
-      this.$refs.audio.play("combat");
-    },
-    playMenuMusic() {
-      this.$refs.audio.play("menu");
     }
   },
   watch: {

@@ -1,7 +1,6 @@
 <template>
   <div class="screen-content flex-end padding-bottom-5">
     <div class="art screen-background"></div>
-
     <MenuIconRow>
       <MenuIcon
         icon="skewed_icon_craft"

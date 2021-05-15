@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-column flex-end flex-items-center relative">
     <div class="home-art screen-background"></div>
-
     <div
       class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5"
     >
