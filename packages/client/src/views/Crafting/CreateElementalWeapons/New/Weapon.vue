@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content padding-top-1">
     <div class="screen-background"></div>
+    <SoundEffect ref="fx" :files="['wep_created']" channel="fx" />
 
     <Title :stackBottom="true">Select base:</Title>
 
@@ -70,6 +71,7 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import Title from "@/components/Title.vue";
 import Loot from "@/components/Loot.vue";
@@ -92,6 +94,7 @@ const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
+    SoundEffect,
     Title,
     Loot,
     ItemStats,
@@ -187,6 +190,7 @@ export default {
         )
       );
 
+      this.$refs.fx.play();
       await ShowItemCreated(item, 1);
     },
     selectBaseItem(itemId) {

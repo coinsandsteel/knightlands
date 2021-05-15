@@ -30,10 +30,13 @@
       @touchcancel="stopAttributeModify"
     ></i>
     <slot></slot>
+    <SoundEffect ref="fx" :files="['btn_click1']" channel="ui" />
   </div>
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
+
 const ContinuousEditingTimeout = 500;
 
 export default {
@@ -45,6 +48,7 @@ export default {
     "caption",
     "showMax"
   ],
+  components: { SoundEffect },
   methods: {
     increaseAttribute() {
       if (!this.increaseCondition) {
@@ -52,14 +56,16 @@ export default {
       }
 
       this.$emit("inc");
+      this.$refs.fx.play();
       return true;
     },
-    decreaseAttribute(attr) {
+    decreaseAttribute() {
       if (!this.decreaseCondition) {
         return false;
       }
 
       this.$emit("dec");
+      this.$refs.fx.play();
       return true;
     },
     startAttributeDecrease() {

@@ -1,6 +1,8 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
+    <SoundEffect ref="successFx" :files="['enchant_success']" channel="fx" />
+    <SoundEffect ref="failFx" :files="['enchant_fail']" channel="fx" />
 
     <div class="height-100" v-bar>
       <div>
@@ -164,14 +166,13 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import anime from "animejs/lib/anime.es.js";
 import ItemInfo from "@/components/ItemInfo.vue";
-import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import HintHandler from "@/components/HintHandler.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import Title from "@/components/Title.vue";
@@ -182,11 +183,10 @@ export default {
   mixins: [AppSection, PromptMixin, HintHandler],
   props: ["itemId"],
   components: {
+    SoundEffect,
     ItemInfo,
     PurchaseButton,
-    CustomButton,
     CraftingIngridient,
-    IconWithValue,
     Title
   },
   created() {
@@ -282,17 +282,20 @@ export default {
       let newItemId = await this.request;
       if (newItemId === false) {
         this.notifyEnchantingFailed();
-      } else if (newItemId && newItemId != this.itemId) {
-        this.$router.replace({
-          name: "enchant-item",
-          params: { itemId: newItemId }
-        });
+      } else {
+        this.$refs.successFx.play();
+        if (newItemId && newItemId != this.itemId) {
+          this.$router.replace({
+            name: "enchant-item",
+            params: { itemId: newItemId }
+          });
+        }
       }
 
       this.updateEnchantItemsList();
     },
     notifyEnchantingFailed() {
-      // failed
+      this.$refs.failFx.play();
       this.failed = true;
       clearTimeout(this.failedTimeout);
       this.failedTimeout = setTimeout(() => (this.failed = false), 2000);

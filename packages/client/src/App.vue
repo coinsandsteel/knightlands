@@ -137,10 +137,15 @@
 
     <dialogs-wrapper transition-name="fade" />
     <AudioPlayer ref="audio" />
+    <audio ref="sound_ui" type="audio/mpeg" />
+    <audio ref="sound_stinger" type="audio/mpeg" />
+    <audio ref="sound_fx" type="audio/mpeg" />
+    <SoundEffect ref="taskFx" :files="['quest_complete1']" channel="stinger" />
   </div>
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import AudioPlayer from "@/components/AudioPlayer.vue";
 import StatusBar from "./components/StatusBar.vue";
 import CharacterMarker from "@/components/Markers/Character/CharacterMarker.vue";
@@ -171,6 +176,7 @@ const ShowChangeNickname = create(ChangeNickname);
 export default {
   components: {
     MusicButton,
+    SoundEffect,
     AudioPlayer,
     Tutorial,
     CharacterMarker,
@@ -294,8 +300,15 @@ export default {
     });
 
     this.$game.connect();
+
+    this.$game.on("task_complete", () => {
+      this.$refs.taskFx.play();
+    });
   },
   methods: {
+    getSoundChannel(id) {
+      return this.$refs[`sound_${id}`];
+    },
     getStatusBar() {
       return this.$refs.statusBar;
     },

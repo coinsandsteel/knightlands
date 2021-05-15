@@ -1,0 +1,62 @@
+
+love.png
+size: 222,422
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 280
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+flash1
+  rotate: false
+  xy: 2, 146
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
+flash2
+  rotate: false
+  xy: 2, 28
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1
+love_0
+  rotate: true
+  xy: 144, 218
+  size: 100, 64
+  orig: 100, 64
+  offset: 0, 0
+  index: -1
+love_1
+  rotate: true
+  xy: 136, 116
+  size: 100, 58
+  orig: 100, 58
+  offset: 0, 0
+  index: -1
+love_2
+  rotate: false
+  xy: 120, 57
+  size: 100, 57
+  orig: 100, 57
+  offset: 0, 0
+  index: -1
+love_3
+  rotate: false
+  xy: 120, 2
+  size: 100, 53
+  orig: 100, 53
+  offset: 0, 0
+  index: -1
+love_base
+  rotate: true
+  xy: 144, 320
+  size: 100, 72
+  orig: 100, 72
+  offset: 0, 0
+  index: -1

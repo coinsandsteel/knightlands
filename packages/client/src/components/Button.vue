@@ -12,12 +12,7 @@
       { big: big }
     ]"
     :style="sizeStyle"
-    @click="
-      () => {
-        $emit('click');
-        if (cb) cb();
-      }
-    "
+    @click="handleClick"
   >
     <!-- <div class="btn-fill" :class="{skewed: skewed}"></div> -->
     <div
@@ -27,12 +22,21 @@
       <slot>{{ $t(caption) }}</slot>
     </div>
     <div v-if="locked" class="locked"></div>
+    <SoundEffect ref="fx" :files="sounds" channel="ui" />
   </div>
 </template>
 
 <script>
+import SoundEffect from "./SoundEffect.vue";
+
 export default {
   props: {
+    sounds: {
+      type: Array,
+      default() {
+        return ["btn_click2"];
+      }
+    },
     type: {
       type: String,
       default: "red"
@@ -67,6 +71,7 @@ export default {
       default: "font-size-20"
     }
   },
+  components: { SoundEffect },
   computed: {
     sizeStyle() {
       let style = "";
@@ -83,6 +88,15 @@ export default {
     },
     btnType() {
       return this.skewed ? `${this.type}-skewed` : this.type;
+    }
+  },
+  methods: {
+    handleClick() {
+      this.$refs.fx.play();
+      this.$emit("click");
+      if (this.cb) {
+        this.cb();
+      }
     }
   }
 };

@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content padding-top-1">
     <div class="screen-background"></div>
+    <SoundEffect ref="fx" :files="['item_reroll']" channel="fx" />
 
     <div class="flex flex-column flex-no-wrap relative item-info-container">
       <Title class="margin-bottom-1" :class="`rarity-${item.rarity}`">{{
@@ -51,13 +52,13 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import CraftAccessoriesMeta from "@/craft_accessories";
 import ItemProperties from "@/components/Item/ItemProperties.vue";
-import ItemStats from "@/components/Item/ItemStats.vue";
 import ItemHeader from "@/components/Item/ItemHeader.vue";
 import Title from "@/components/Title.vue";
 
@@ -65,10 +66,10 @@ export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   props: ["itemId"],
   components: {
+    SoundEffect,
     ItemProperties,
     CustomButton,
     IconWithValue,
-    ItemStats,
     ItemHeader,
     Title
   },
@@ -110,6 +111,7 @@ export default {
   methods: {
     async reroll() {
       await this.performRequest(this.$game.rerollAccessory(this.itemId));
+      this.$refs.fx.play();
     },
     async cancel() {
       await this.performRequest(this.$game.rollbackAccessory(this.itemId));

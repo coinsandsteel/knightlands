@@ -1,11 +1,15 @@
 <template>
   <LockedSection class="margin-bottom-2" :section="section">
+    <SoundEffect ref="fx" :files="['btn_click2']" channel="ui" />
     <router-link
       v-bind="$attrs"
       tag="div"
       :class="{ 'pointer-events-none': locked }"
     >
-      <div class="flex flex-column flex-center pointer relative bg">
+      <div
+        class="flex flex-column flex-center pointer relative bg"
+        @click="handleClick"
+      >
         <span :class="icon" class="icon-menu relative">
           <div class="marker-pos">
             <slot name="marker"></slot>
@@ -28,15 +32,21 @@
 
 <script>
 import LockedSection from "@/components/LockedSection.vue";
+import SoundEffect from "@/components/SoundEffect.vue";
 
 export default {
   props: ["icon", "levelRequired", "section"],
-  components: { LockedSection },
+  components: { LockedSection, SoundEffect },
   computed: {
     locked() {
       if (!this.levelRequired) return false;
 
       return this.levelRequired > this.$game.character.level;
+    }
+  },
+  methods: {
+    handleClick() {
+      this.$refs.fx.play();
     }
   }
 };

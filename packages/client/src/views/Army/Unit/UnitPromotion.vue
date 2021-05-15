@@ -2,6 +2,7 @@
   <Promised class="screen-content" :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+      <SoundEffect ref="fx" :files="['unit_promo']" channel="stinger" />
       <div v-bar>
         <div class="dummy-height">
           <div class="color-panel-2 stats-grid font-size-20">
@@ -64,6 +65,7 @@
 
 <script>
 import { Promised } from "vue-promised";
+import SoundEffect from "@/components/SoundEffect.vue";
 import UnitIngridient from "./UnitIngridient.vue";
 import UnitStars from "../UnitStars.vue";
 import UnitGetterMixin from "../UnitGetterMixin.vue";
@@ -97,6 +99,7 @@ export default {
     selectedUnits: {}
   }),
   components: {
+    SoundEffect,
     UnitStars,
     UnitIngridient,
     CraftingIngridient,
@@ -217,6 +220,7 @@ export default {
 
         try {
           await this.request;
+          this.$refs.fx.play();
           this.unitsPerIngridient = {};
           this.selectedUnits = {};
         } catch {}

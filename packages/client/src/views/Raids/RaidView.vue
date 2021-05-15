@@ -214,6 +214,13 @@
       ref="overlay"
       class="absolute-stretch pointer-events-none text-align-left"
     ></div>
+
+    <SoundEffect
+      ref="hitsFx"
+      :files="['hit1', 'hit2', 'hit3', 'hit4', 'hit5', 'hit6', 'hit7', 'hit8']"
+    />
+
+    <SoundEffect ref="winFx" :files="['combat_win1']" />
   </div>
 </template>
 
@@ -241,6 +248,7 @@ import Timer from "@/timer.js";
 import Title from "@/components/Title.vue";
 import RaidsMeta from "@/raids_meta";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
+import SoundEffect from "@/components/SoundEffect.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
@@ -301,6 +309,7 @@ export default {
     SpriteAnimator,
     Title,
     RewardsPreview,
+    SoundEffect,
     TokenChart: () => import("./TokenChart.vue")
   },
   mixins: [AppSection, RaidGetterMixin, NetworkRequestErrorMixin],
@@ -354,6 +363,7 @@ export default {
     },
     raidWon() {
       if (this.raidWon) {
+        this.$refs.winFx.play();
         this.fetchRewards();
       }
     }
@@ -689,6 +699,7 @@ export default {
     _handleArmyDamage(damage) {
       this.$refs.bossAnimation.playDamageTaken();
       this.$refs.impact.play();
+      this.$refs.hitsFx.play();
       this.raidProgress.current -= damage;
       if (this.raidProgress.current < 0) {
         this.raidProgress.current = 0;

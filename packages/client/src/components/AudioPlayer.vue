@@ -1,12 +1,12 @@
 <template>
-  <audio :src="source" loop ref="audio" />
+  <audio :src="source" loop ref="audio" type="audio/mpeg" />
 </template>
 
 <script>
 import anime from "animejs/lib/anime.es.js";
 import { mapState } from "vuex";
 
-const MAX_VOLUME = 0.5;
+const MAX_VOLUME = 0.4;
 
 export default {
   data: () => ({
@@ -55,11 +55,18 @@ export default {
         return;
       }
 
-      this.$nextTick(() => {
-        this.$refs.audio.play();
-
-        this.fade(MAX_VOLUME);
-      });
+      let exit = false;
+      while (!exit) {
+        try {
+          await this.$refs.audio.play();
+          this.fade(MAX_VOLUME);
+          exit = true;
+        } catch {
+          await new Promise(resolve => {
+            setTimeout(resolve, 1000);
+          });
+        }
+      }
     },
     async fade(volume) {
       await anime({

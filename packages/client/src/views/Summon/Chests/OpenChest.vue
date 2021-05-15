@@ -6,6 +6,7 @@
     <SpinePlayer
       class="canvas"
       ref="animation"
+      :binary="true"
       :skeletonFile="chestSkeleton"
       :skeletonName="chestSkeleton"
       atlas="chests_anim"
@@ -13,6 +14,9 @@
       @ready="handleAnimationReady"
       :class="{ hidden: hide }"
     ></SpinePlayer>
+
+    <SoundEffect ref="chestFx" :files="['chest1', 'chest2']" channel="fx" />
+    <SoundEffect ref="itemsFx" :files="['chest_items']" channel="fx" />
 
     <div class="close-btn" @click="handleBackButton"></div>
     <Promised :promise="request">
@@ -93,6 +97,7 @@ import anime from "animejs/lib/anime.es.js";
 import SpinePlayer from "@/components/SpinePlayer.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import ChestsMeta from "@/chests_meta";
+import SoundEffect from "@/components/SoundEffect.vue";
 
 const ChestSkeletons = {
   wooden_chest: "small",
@@ -111,6 +116,7 @@ export default {
     showContinue: false
   }),
   components: {
+    SoundEffect,
     Loot,
     Promised,
     LoadingScreen,
@@ -170,6 +176,7 @@ export default {
           if (event.data.name == "spawn_loot") {
             this.showLoot = true;
             this.showContinue = true;
+            this.$refs.itemsFx.play();
           }
         }
       });
@@ -239,6 +246,7 @@ export default {
     },
     async startOpening() {
       let state = this.$refs.animation.getState();
+      this.$refs.chestFx.play();
       state.setAnimation(0, "open3", false);
       state.setAnimation(1, "waiting3", true);
     }

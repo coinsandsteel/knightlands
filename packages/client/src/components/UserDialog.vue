@@ -18,11 +18,7 @@
         >
           <Title class="margin-top-3" v-if="title">{{ $t(title) }}</Title>
 
-          <div
-            v-if="!hideCloseBtn"
-            class="close-btn"
-            @click="handleClose"
-          ></div>
+          <CloseButton v-if="!hideCloseBtn" @click="handleClose"></CloseButton>
 
           <div class="margin-top-2 margin-bottom-2">
             <slot name="content"></slot>
@@ -39,6 +35,7 @@
 
 <script>
 import Title from "@/components/Title.vue";
+import CloseButton from "@/components/CloseButton.vue";
 
 export default {
   props: {
@@ -55,7 +52,7 @@ export default {
     disableScroll: Boolean,
     emitClose: Boolean
   },
-  components: { Title },
+  components: { Title, CloseButton },
   methods: {
     handleClose() {
       if (this.emitClose) {

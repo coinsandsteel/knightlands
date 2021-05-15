@@ -15,6 +15,7 @@
         :binary="true"
         :useTriangleRendering="false"
       ></SpinePlayer>
+      <SoundEffect ref="fx" :files="['char_lvl_up']" channel="fx" />
       <span ref="hook"></span>
       <div class="level-up-spacer"></div>
       <span class="grey-title font-size-20 font-weight-700">{{
@@ -65,6 +66,7 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import SpinePlayer from "@/components/SpinePlayer.vue";
 import CustomButton from "@/components/Button.vue";
 import LevelUpMeta from "@/levelup_meta";
@@ -73,6 +75,7 @@ import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
   components: {
+    SoundEffect,
     SpinePlayer,
     CustomButton,
     IconWithValue
@@ -100,6 +103,7 @@ export default {
     handleAnimationReady() {
       this.ready = true;
       this.$nextTick(() => {
+        this.$refs.fx.play();
         var state = this.$refs.animation.getState();
         state.setAnimation(0, "show", false);
         state.setAnimation(1, "loop", true);
@@ -130,8 +134,6 @@ export default {
           }
         }
       }
-
-      console.log(meta);
 
       return meta;
     },

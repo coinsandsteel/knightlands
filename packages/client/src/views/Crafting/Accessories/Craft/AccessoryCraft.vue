@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content padding-top-1">
     <div class="screen-background"></div>
+    <SoundEffect ref="fx" :files="['accessory_craft']" channel="fx" />
 
     <AccessoryTemplateInfo
       class="color-panel-1 margin-bottom-2"
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import AccessoryTemplateInfo from "./AccessoryTemplateInfo.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
@@ -34,7 +36,12 @@ const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   props: ["ring", "template"],
-  components: { AccessoryTemplateInfo, CraftingIngridient, CustomButton },
+  components: {
+    AccessoryTemplateInfo,
+    CraftingIngridient,
+    CustomButton,
+    SoundEffect
+  },
   created() {
     this.$options.useRouterBack = true;
     this.title = "win-create-acc";
@@ -68,6 +75,7 @@ export default {
       const items = await this.performRequest(
         this.$game.createAccessory(this.template, 1)
       );
+      this.$refs.fx.play();
       await ShowItemCreated(items[0], 1);
     }
   }

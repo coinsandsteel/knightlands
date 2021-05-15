@@ -4,6 +4,8 @@
     :promise="request"
   >
     <template v-slot:loaded>
+      <SoundEffect ref="fx" :files="['quest_complete2']" channel="stinger" />
+
       <keep-alive>
         <div class="width-100 height-100" v-bar v-if="!selectedStage">
           <div>
@@ -42,6 +44,7 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import PromisedView from "@/components/PromisedView.vue";
 import TrialStageListElement from "./TrialStageListElement.vue";
 import HintHandler from "@/components/HintHandler.vue";
@@ -58,6 +61,7 @@ export default {
   props: ["trialType", "meta", "mountCallback", "trialIndex"],
   mixins: [HintHandler, PromptMixin],
   components: {
+    SoundEffect,
     TrialStageListElement,
     TrialStage,
     PromisedView
@@ -139,6 +143,7 @@ export default {
           response: "ok"
         }
       ]);
+      this.$refs.fx.play();
       this.refresh();
     },
     getElement(stageId) {

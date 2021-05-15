@@ -202,7 +202,7 @@ export default {
       for (let record of byVerticalPosition) {
         const { unitId, el: slotEl } = record;
         const el = this.$refs[`damage${unitId}`][0];
-        if (!values[unitId]) {
+        if (!el || !values[unitId]) {
           continue;
         }
         const offset = UI.offsetTo(slotEl, document.getElementById("overlay"));

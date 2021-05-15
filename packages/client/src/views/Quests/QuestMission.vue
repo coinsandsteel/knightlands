@@ -53,6 +53,19 @@
       </div>
 
       <div class="absolute-stretch z-index-100 pointer-events-none">
+        <SoundEffect
+          ref="fx"
+          :files="[
+            'hit1',
+            'hit2',
+            'hit3',
+            'hit4',
+            'hit5',
+            'hit6',
+            'hit7',
+            'hit8'
+          ]"
+        />
         <DamageText
           v-for="damage in playerDamages"
           :local="true"
@@ -135,6 +148,7 @@
         <div v-else class="flex flex-center width-100 flex-space-evenly">
           <AttackButton
             :promise="request"
+            :noSound:="true"
             @click="engage(false)"
             id="engage-q"
             >{{ isBoss ? $t("q-att-s") : $t("q-prog-s") }}</AttackButton
@@ -179,6 +193,7 @@ import NewLoot from "@/components/Item/NewLoot.vue";
 import DamageText from "@/views/Raids/DamageText.vue";
 import Errors from "@/../../knightlands-shared/errors";
 import QuestGetterMixin from "./QuestGetterMixin.vue";
+import SoundEffect from "@/components/SoundEffect.vue";
 
 import { create } from "vue-modal-dialogs";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
@@ -203,7 +218,8 @@ export default {
     DamageText,
     AttackButton,
     Title,
-    NewLoot
+    NewLoot,
+    SoundEffect
   },
   data() {
     return {
@@ -328,6 +344,7 @@ export default {
         }
 
         if (totalDamage > 0) {
+          this.$refs.fx.play();
           this.handleDamage(totalDamage, isCrit, 0);
         }
 

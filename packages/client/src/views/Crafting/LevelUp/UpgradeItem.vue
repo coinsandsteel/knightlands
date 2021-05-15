@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
+    <SoundEffect ref="fx" :files="['item_lvl_up']" channel="fx" />
     <div
       class="padding-top-1 dummy-height full-flex flex flex-column flex-no-wrap"
       v-if="item"
@@ -132,6 +133,7 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import NumericValue from "@/components/NumericValue.vue";
@@ -146,6 +148,7 @@ export default {
   mixins: [AppSection, PromptMixin],
   props: ["itemId"],
   components: {
+    SoundEffect,
     ItemInfo,
     ProgressBar,
     Loot,
@@ -264,6 +267,7 @@ export default {
         materials[this.upgradeMaterials[i].id] = this.materialsCount[i];
       }
 
+      const prevLevel = this.item.level;
       let newItemId = await this.$game.upgradeItem(this.itemId, materials);
 
       if (newItemId != this.itemId) {
@@ -276,6 +280,8 @@ export default {
         this.prepareItemForUpgrading();
         this.updateMaterialList();
       }
+
+      this.$refs.fx.play();
     },
     updateMaterialList() {
       this.$set(this, "selectedMaterials", {});

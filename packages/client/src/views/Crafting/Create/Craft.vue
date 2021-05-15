@@ -2,6 +2,7 @@
   <Promised class="screen-content" :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
+      <SoundEffect ref="successFx" :files="['craft_success']" channel="fx" />
       <div class="screen-background"></div>
 
       <div v-bar v-if="recipe">
@@ -84,7 +85,6 @@
 import AppSection from "@/AppSection.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import PurchaseButton from "@/components/Button.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import { Promised } from "vue-promised";
@@ -93,6 +93,7 @@ import ItemCreatedPopup from "./ItemCreatedPopup.vue";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
 import NumericValue from "@/components/NumericValue.vue";
 import Title from "@/components/Title.vue";
+import SoundEffect from "@/components/SoundEffect.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -102,9 +103,9 @@ export default {
   props: ["recipeId"],
   mixins: [AppSection, CraftingIngridientHintHandler],
   components: {
+    SoundEffect,
     CraftingIngridient,
     PurchaseButton,
-    IconWithValue,
     ItemInfo,
     Promised,
     LoadingScreen,
@@ -184,6 +185,7 @@ export default {
     },
     async handlePaymentComplete(iap, item) {
       if (item) {
+        this.$refs.successFx.play();
         await ShowItemCreated(item.recipe.resultItem, item.amount);
         this.ingridientsKey++;
       }

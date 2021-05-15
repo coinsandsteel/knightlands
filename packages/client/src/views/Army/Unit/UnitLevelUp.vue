@@ -1,15 +1,23 @@
 <template>
   <div class="screen-content" v-if="unit">
     <div class="color-panel-2 stats-grid font-size-20">
-      <IconWithValue iconClass="icon-damage" class="left">{{damage}}</IconWithValue>
+      <IconWithValue iconClass="icon-damage" class="left">{{
+        damage
+      }}</IconWithValue>
       <span class="right-arrow"></span>
-      <span class="right rarity-mythical" v-if="isMaxLevel">{{$t("max-lv")}}</span>
-      <IconWithValue iconClass="icon-damage" class="right" v-else>{{nextDamage}}</IconWithValue>
+      <span class="right rarity-mythical" v-if="isMaxLevel">{{
+        $t("max-lv")
+      }}</span>
+      <IconWithValue iconClass="icon-damage" class="right" v-else>{{
+        nextDamage
+      }}</IconWithValue>
 
-      <span class="left">{{$t("unit-lvl", { lvl: level })}}</span>
+      <span class="left">{{ $t("unit-lvl", { lvl: level }) }}</span>
       <span class="right-arrow"></span>
-      <span class="right rarity-mythical" v-if="isMaxLevel">{{$t("max-lv")}}</span>
-      <span class="right" v-else>{{$t("unit-lvl", { lvl: level + 1 })}}</span>
+      <span class="right rarity-mythical" v-if="isMaxLevel">{{
+        $t("max-lv")
+      }}</span>
+      <span class="right" v-else>{{ $t("unit-lvl", { lvl: level + 1 }) }}</span>
     </div>
 
     <div class="flex flex-column margin-top-1 width-100 flex-center">
@@ -22,15 +30,18 @@
         @click="levelUp"
       >
         <div class="flex flex-center">
-          <span class="margin-right-half">{{$t("unit-lvl-up")}}</span>
-          <IconWithValue iconClass="icon-gold">{{goldPrice}}</IconWithValue>
+          <span class="margin-right-half">{{ $t("unit-lvl-up") }}</span>
+          <IconWithValue iconClass="icon-gold">{{ goldPrice }}</IconWithValue>
         </div>
       </CustomButton>
     </div>
+
+    <SoundEffect ref="fx" :files="['unit_lvl_up']" channel="fx" />
   </div>
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import UnitGetterMixin from "../UnitGetterMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CustomButton from "@/components/Button.vue";
@@ -46,6 +57,7 @@ export default {
     ready: false
   }),
   components: {
+    SoundEffect,
     CustomButton,
     IconWithValue,
     CraftingIngridient
@@ -97,6 +109,7 @@ export default {
     },
     async levelUp() {
       await this.$game.levelUpUnit(this.unit.id);
+      this.$refs.fx.play();
     }
   }
 };

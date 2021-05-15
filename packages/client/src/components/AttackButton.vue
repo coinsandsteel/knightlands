@@ -2,6 +2,7 @@
   <div class="relative">
     <PromisedButton
       v-bind="$attrs"
+      :sounds="sounds"
       @click="handleClick"
       @promiseFinished="startCooldown"
     >
@@ -20,9 +21,20 @@ export default {
     cooldown: {
       type: Number,
       default: 600
+    },
+    noSound: {
+      type: Boolean,
+      default: false
     }
   },
   components: { PromisedButton },
+  computed: {
+    sounds() {
+      return this.noSound
+        ? []
+        : ["hit1", "hit2", "hit3", "hit4", "hit5", "hit6", "hit7", "hit8"];
+    }
+  },
   methods: {
     startCooldown() {
       anime.set(this.$refs.overlay, {

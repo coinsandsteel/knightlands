@@ -587,6 +587,7 @@ class Game {
       },
       duration: 2000
     });
+    this._vm.$emit("task_complete");
   }
 
   _handleRaidJoinStatus(data) {

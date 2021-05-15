@@ -2,6 +2,8 @@
   <div v-bar>
     <div class="screen-content">
       <div class="screen-background"></div>
+      <SoundEffect ref="fx" :files="['beep1']" channel="fx" />
+
       <EnemyView
         class="beast-image"
         :name="name"
@@ -192,12 +194,12 @@
 </template>
 
 <script>
+import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import Beasts from "@/beasts";
 import BeastMarker from "@/components/Markers/Castle/BeastMarker.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import CustomButton from "@/components/Button.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
@@ -213,8 +215,8 @@ const MaxBoostSize = 50;
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   components: {
+    SoundEffect,
     HintButton,
-    IconWithValue,
     BeastMarker,
     PurchaseButton,
     CustomButton,
@@ -355,6 +357,8 @@ export default {
           true
         );
       }
+
+      // this.$refs.fx.play();
     }
   }
 };
