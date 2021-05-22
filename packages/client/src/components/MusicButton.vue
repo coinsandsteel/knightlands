@@ -1,6 +1,6 @@
 <template>
   <span
-    class="icon-sounds huge"
+    class="icon-sounds huge pointer"
     :class="{ enabled: sounds }"
     @click="sounds = !sounds"
   ></span>

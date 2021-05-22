@@ -70,7 +70,11 @@
       </div>
     </keep-alive>
 
-    <portal to="footer" v-if="isActive" :slim="true">
+    <portal
+      to="footer"
+      v-if="isActive && zone !== undefined && zones.length > 0"
+      :slim="true"
+    >
       <CustomButton
         v-if="allFinished"
         @click="handleResetProgress"
@@ -78,7 +82,6 @@
         >{{ $t("btn-reset") }}</CustomButton
       >
       <DifficultySwitch
-        v-if="zone !== undefined && zones.length > 0"
         :cb="handleDifficultySwitch"
         :stages="$game.getZoneStageStatuses(zone)"
         :current="zone"

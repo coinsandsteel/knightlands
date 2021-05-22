@@ -26,13 +26,14 @@ export default [
           name: "home"
         },
         pointer: {
-          target: "#quests"
+          target: "#quests > .link"
         },
         return: 0
       },
       {
         lock: {
-          path: "/home/quest/1"
+          path: "/home/quest/1",
+          skip: true
         },
         pointer: {
           target: "#quest-0"

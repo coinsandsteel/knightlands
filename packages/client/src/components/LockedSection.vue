@@ -39,9 +39,7 @@ export default {
         //   duration: 500
         // });
       } else {
-        this.$slots["default"][0].elm.dispatchEvent(
-          new e.constructor(e.type, e)
-        );
+        this.$slots["default"][0].elm.click();
       }
     }
   }

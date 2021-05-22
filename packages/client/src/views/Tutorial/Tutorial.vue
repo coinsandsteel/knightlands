@@ -6,12 +6,12 @@
     <TutorialForcedElement
       v-show="isPointer"
       :data="pointerData"
-      @continue="handlePointer"
+      @continue="handleContinue"
     />
     <TutorialDialog
       v-show="isDialog"
       :data="dialogData"
-      @continue="handleDialog"
+      @continue="handleContinue"
       @skip="handleSkip"
     />
   </div>
@@ -25,7 +25,9 @@ import Scenario from "@/store/scenario";
 
 export default {
   components: { TutorialForcedElement, TutorialDialog },
-  data: () => ({}),
+  data: () => ({
+    inited: false
+  }),
   watch: {
     "$character.level": {
       handler() {
@@ -83,7 +85,6 @@ export default {
       if (this.isFinished) {
         return null;
       }
-
       return this.stepData.actions[this.actionIndex];
     },
     isDialog() {
@@ -110,8 +111,11 @@ export default {
       this._inProcess = true;
 
       await this.$store.dispatch("tutorial/checkConditions", {
-        route: this.$route
+        route: this.$route,
+        isInit: !this.inited
       });
+
+      this.inited = true;
 
       const redirect = await this.$store.dispatch("tutorial/getRedirectUrl", {
         route: this.$route
@@ -126,8 +130,10 @@ export default {
     handleSkip() {
       this.$store.dispatch("tutorial/skipCurrentStep");
     },
-    handleDialog() {
-      this.advance();
+    handleContinue() {
+      this.$nextTick(() => {
+        this.advance();
+      });
     },
     async trySkipAction() {
       if (
@@ -143,9 +149,6 @@ export default {
           this.advance();
         }
       }
-    },
-    handlePointer() {
-      this.advance();
     },
     async advance() {
       this.$store.commit("tutorial/setActionIndex", {

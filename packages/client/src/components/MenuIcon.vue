@@ -1,13 +1,13 @@
 <template>
   <LockedSection class="margin-bottom-2" :section="section">
-    <SoundEffect ref="fx" :files="['btn_click2']" channel="ui" />
     <router-link
       v-bind="$attrs"
       tag="div"
       :class="{ 'pointer-events-none': locked }"
     >
+      <SoundEffect ref="fx" :files="['btn_click2']" channel="ui" />
       <div
-        class="flex flex-column flex-center pointer relative bg"
+        class="flex flex-column flex-center pointer relative bg link"
         @click="handleClick"
       >
         <span :class="icon" class="icon-menu relative">

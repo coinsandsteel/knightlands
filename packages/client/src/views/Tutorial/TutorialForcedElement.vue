@@ -48,6 +48,9 @@ export default {
   },
   computed: {
     elementId() {
+      if (!this.data) {
+        return null;
+      }
       return this.data.target;
     },
     pointerPosition() {
@@ -197,8 +200,12 @@ export default {
     },
     handleClick(e) {
       this.$emit("continue");
-      this.element.dispatchEvent(new e.constructor(e.type, e));
-      this.hide();
+
+      let element = this.element;
+      this.$nextTick(() => {
+        element.click();
+        this.hide();
+      });
     },
     hide() {
       if (this.animation) {

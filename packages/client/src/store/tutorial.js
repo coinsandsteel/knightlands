@@ -68,7 +68,7 @@ export default {
         }
       }
     },
-    checkConditions({ commit, state }, { route }) {
+    checkConditions({ commit, state }, { route, isInit }) {
       let passed = true;
 
       if (state.step >= Scenario.length) {
@@ -81,7 +81,7 @@ export default {
       if (passed) {
         const actions = Scenario[state.step].actions;
         const actionData = actions[state.actionIndex];
-        if (actionData.return !== undefined) {
+        if (isInit && actionData.return !== undefined) {
           commit("setActionIndex", {
             index: actionData.return
           });
@@ -113,7 +113,7 @@ export default {
               if (
                 Vue.prototype.$game.inventory.getItemsCountByTemplate(item) == 0
               ) {
-                console.log("no item ", item);
+                console.log("tutorial::checkConditions no item ", item);
                 passed = false;
                 break;
               }
