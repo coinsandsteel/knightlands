@@ -29,9 +29,7 @@ export default {
       this._internalIap = iap;
     },
     async _handlePaymentComplete(data) {
-      console.log("_handlePaymentComplete", data, this._internalIap);
       if (data.reason) {
-        console.log("Payment failed with exception", data);
         this.showPrompt(
           this.$t("prompt-snap-title"),
           this.$t("payment-failed"),

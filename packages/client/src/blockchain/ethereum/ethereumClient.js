@@ -34,8 +34,12 @@ export default class EthereumClient extends BlockchainClient {
   }
 
   async init() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const provider = new ethers.providers.Web3Provider(
+      window.ethereum,
+      "goerli"
+    );
     provider.on("network", (newNetwork, oldNetwork) => {
+      console.log("network change to", newNetwork);
       if (oldNetwork) {
         window.location.reload();
       }
@@ -43,6 +47,7 @@ export default class EthereumClient extends BlockchainClient {
 
     this._provider = provider;
     await provider.send("eth_requestAccounts", []);
+    console.log(await provider.getNetwork());
 
     this._address = await this._provider.getSigner().getAddress();
 
@@ -56,11 +61,11 @@ export default class EthereumClient extends BlockchainClient {
   }
 
   async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {
-    console.log(this._paymentContract);
     return await this._paymentContract
       .connect(this._provider.getSigner())
       .purchase(iap, paymentId, price, nonce, timestamp, signature, {
-        value: ethers.BigNumber.from(price)
+        value: ethers.BigNumber.from(price),
+        gasLimit: 100000
       });
   }
 }

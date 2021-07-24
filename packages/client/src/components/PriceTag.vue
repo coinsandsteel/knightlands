@@ -1,10 +1,5 @@
 <template>
-  <IconWithValue
-    :iconClass="dark ? 'icon-trx-dark' : 'icon-trx'"
-    :valueClass="valueClass"
-    :flip="flip"
-    >{{ price }}</IconWithValue
-  >
+  <span class="margin-left-1 margin-right-1">{{ price / 100 }}$ </span>
 </template>
 
 <script>

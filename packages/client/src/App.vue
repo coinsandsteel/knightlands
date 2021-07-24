@@ -157,7 +157,7 @@ import SectionLockedNotification from "@/components/Notifications/SectionLockedN
 import LockedSection from "@/components/LockedSection.vue";
 import Tutorial from "@/views/Tutorial/Tutorial.vue";
 import MusicButton from "@/components/MusicButton.vue";
-
+import Events from "@/../../knightlands-shared/events";
 import { create } from "vue-modal-dialogs";
 
 import LevelUp from "@/views/LevelUp.vue";
@@ -168,6 +168,9 @@ const ShowSelectClass = create(SelectClass);
 
 import ChangeNickname from "@/views/Character/ChangeNickname.vue";
 const ShowChangeNickname = create(ChangeNickname);
+
+import ItemsReceived from "@/components/ItemsReceived.vue";
+const ShowItemsReceived = create(ItemsReceived, "items", "soft", "hard");
 
 export default {
   components: {
@@ -200,6 +203,16 @@ export default {
   },
   sectionBackButton: null,
   beforeCreate() {
+    this.$game.on(Events.PurchaseComplete, context => {
+      context = context.context;
+      if (context.item) {
+        ShowItemsReceived([context]);
+      } else {
+        ShowItemsReceived([], 0, context.hard);
+      }
+      this.$store.commit("shop/setPurchaseComplete");
+    });
+
     this.$on("section", section => {
       this.sectionBackButton = section.handleBackButton;
       if (section.title) {
