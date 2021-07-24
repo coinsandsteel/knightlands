@@ -43,36 +43,20 @@
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 import PaymentStatus from "@/../../knightlands-shared/payment_status";
 import CustomButton from "@/components/Button.vue";
+import { mapState } from "vuex";
 
 export default {
   components: { LoadingIndicator, CustomButton },
   props: {
-    request: Promise,
     cancel: {
       type: Boolean,
       default: false
     }
   },
-  data: () => ({
-    status: null
-  }),
-  mounted() {
-    this.waitForStatus();
-  },
-  watch: {
-    request() {
-      this.waitForStatus();
-    }
-  },
-  methods: {
-    async waitForStatus() {
-      this.status = await this.request;
-      if (this.status) {
-        this.$emit("iap", this.status.iap);
-      }
-    }
-  },
   computed: {
+    ...mapState({
+      status: state => state.shop.status
+    }),
     pending() {
       return (this.status || {}).status === PaymentStatus.Pending;
     },

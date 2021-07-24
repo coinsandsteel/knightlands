@@ -26,6 +26,8 @@
 import AppSection from "@/AppSection.vue";
 import { mapState } from "vuex";
 
+let switchInProgress = false;
+
 export default {
   mixins: [AppSection],
   created() {
@@ -46,10 +48,29 @@ export default {
     this.sounds = this.computedSounds;
   },
   watch: {
+    "$store.state.settings": {
+      handler() {
+        switchInProgress = true;
+        this.$nextTick(()=>{
+          this.music = this.computedMusic;
+          this.sounds = this.computedSounds;
+          this.$nextTick(()=>{
+            switchInProgress = false;
+          });
+        })
+      },
+      deep: true
+    },
     music() {
+      if (switchInProgress) {
+        return;
+      }
       this.$game.$store.dispatch("settings/setMusicEnabled", this.music);
     },
     sounds() {
+      if (switchInProgress) {
+        return;
+      }
       this.$game.$store.dispatch("settings/setSoundsEnabled", this.sounds);
     }
   }

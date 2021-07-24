@@ -41,10 +41,20 @@ export default class Army {
         troops: [],
         generals: [],
         emptyUnit: dummyUnit,
-        tempSlots: {}
+        tempSlots: {},
+        freeSlots: 0,
+        maxSlots: 0
       })
     });
     this._sort = throttle(this._doSort.bind(this), 0, { leading: false });
+  }
+
+  get currentSlots() {
+    return this._vm.troops.length + this._vm.generals.length;
+  }
+
+  get maxSlots() {
+    return this._vm.maxSlots;
   }
 
   resetTempSlots() {
@@ -241,6 +251,10 @@ export default class Army {
     this._sort(unit.troop);
   }
 
+  updateMaxSlots(newMaxSlots) {
+    this._vm.maxSlots = newMaxSlots.maxSlots;
+  }
+
   updateReserve(newReserve) {
     for (const key in newReserve) {
       const newUnit = newReserve[key];
@@ -309,6 +323,7 @@ export default class Army {
 
     if (army) {
       this._vm.legions = army.legions;
+      this._vm.maxSlots = army.maxSlots;
 
       let i = 0;
       const length = army.units.length;

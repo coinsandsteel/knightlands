@@ -43,6 +43,12 @@ import Title from "@/components/Title.vue";
 import ArmySummonType from "@/../../knightlands-shared/army_summon_type";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
+import Errors from "@/../../knightlands-shared/errors";
+import PurchaseArmySlots from "./PurchaseArmySlots.vue";
+import { create } from "vue-modal-dialogs";
+import ArmyMeta from "@/army_meta.json";
+
+const ShowPurchaseArmySlots = create(PurchaseArmySlots);
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -59,18 +65,61 @@ export default {
   }),
   methods: {
     async purchaseSummon(summonType, iap) {
-      const results = await this.performRequest(
-        this.$game.summonUnits(iap, summonType)
-      );
-      this.showSummoning(results);
-      this.update();
+      await this.doSummon({ summonType, iap });
     },
     async summon(summonType, count) {
-      let results = await this.performRequest(
-        this.$game.summonUnits(null, summonType, count)
-      );
-      this.showSummoning(results);
-      this.update();
+      await this.doSummon({ summonType, count });
+    },
+    async doSummon({ summonType, iap = null, count = 1 }) {
+      try {
+        let results = await this.performRequestNoCatch(
+          this.$game.summonUnits(iap, summonType, count)
+        );
+        this.showSummoning(results);
+        this.update();
+      } catch (exc) {
+        if (exc.includes(Errors.NotEnoughArmySlots)) {
+          let availableSlots = Math.max(
+            this.$game.army.maxSlots - this.$game.army.currentSlots,
+            0
+          );
+
+          if (this.$game.army.maxSlots < ArmyMeta.maxSlots) {
+            const response = await this.showPrompt(
+              "army-no-slots",
+              this.$t("army-p-slots", { count: availableSlots }),
+              [
+                { type: "green", title: "btn-a-more", response: 2 },
+                { type: "red", title: "btn-cancel", response: 1 }
+              ]
+            );
+
+            if (response == 2) {
+              await ShowPurchaseArmySlots();
+            }
+          } else {
+            let requiredSlots = (count || 1) - availableSlots;
+            const response = await this.showPrompt(
+              "army-no-slots",
+              this.$t("army-p-no-slots", {
+                count: availableSlots,
+                count2: requiredSlots
+              }),
+              [
+                { type: "yellow", title: "dismiss", response: 2 },
+                { type: "grey", title: "reserve", response: 3 },
+                { type: "red", title: "btn-cancel", response: 1 }
+              ]
+            );
+
+            if (response == 2) {
+              this.$router.push({ name: "units-dismiss" });
+            } else if (response == 3) {
+              this.$router.push({ name: "units-reserve" });
+            }
+          }
+        }
+      }
     },
     async update() {
       await this.$game.notifications.updateSummon();

@@ -52,7 +52,7 @@ class ItemDatabase {
     // }
 
     // return `/images/items/${template.type}/${template.icon}.png`;
-    if (rarity) {
+    if (template.type == ItemType.Equipment && rarity) {
       if (ItemIcons[id]) {
         const item = ItemIcons[id][rarity];
         if (item) {

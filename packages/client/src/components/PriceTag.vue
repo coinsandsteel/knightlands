@@ -47,10 +47,9 @@ export default {
   },
   methods: {
     async refreshPrice() {
-      let conversion = await this.$game.getCurrencyConversionRate();
       let iapMeta = IAPs[this.iap];
       if (iapMeta) {
-        this.price = Math.floor(iapMeta.price * conversion.rate) / 100;
+        this.price = iapMeta.price;
       }
     }
   }

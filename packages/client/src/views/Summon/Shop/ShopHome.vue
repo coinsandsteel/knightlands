@@ -11,7 +11,11 @@
     />
 
     <keep-alive>
-      <router-view></router-view>
+      <router-view
+        @purchase="handlePurchase"
+        @pay="continuePurchase"
+        @cancel="cancelPurchase"
+      ></router-view>
     </keep-alive>
   </div>
 </template>
@@ -19,6 +23,14 @@
 <script>
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
+import PaymentHandler from "@/components/PaymentHandler.vue";
+import ConnectWallet from "@/views/Account/ConnectWallet.vue";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+import { create } from "vue-modal-dialogs";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+
+const ShowDialog = create(ItemsReceived, "items", "soft", "hard");
+const ShowWallet = create(ConnectWallet);
 
 const TabIds = {
   TopUp: "s-top-up",
@@ -29,7 +41,7 @@ const TabIds = {
 };
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin, PaymentHandler],
   created() {
     this.title = "w-shop";
     this.$options.useRouterBack = true;
@@ -69,9 +81,29 @@ export default {
       }
     ]
   }),
+  activated() {
+    this.fetchPaymentStatus();
+  },
   methods: {
     handleTab(newTab) {
       this.currentTab = newTab;
+    },
+    handlePaymentComplete(iap, context) {
+      if (context.item) {
+        ShowDialog([context]);
+      } else {
+        ShowDialog([], 0, context.hard);
+      }
+      this.$store.commit("shop/setPurchaseComplete");
+    },
+    async fetchPaymentStatus() {
+      await this.performRequest(this.$store.dispatch("shop/refreshStatus"));
+    },
+    async handlePurchase(request) {
+      const result = await ShowWallet();
+      if (result) {
+        await this.purchaseRequest(request());
+      }
     }
   }
 };

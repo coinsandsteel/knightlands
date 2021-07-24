@@ -79,8 +79,16 @@
             class="width-25 margin-right-half"
             v-if="pendingWithdrawal"
           >
-            <template v-slot:title>Withdrawn DKT</template>
-            <template v-slot:value>{{ pendingWithdrawal.amount }}</template>
+            <template v-slot:title>
+              <HintButton title="y-stake" :texts="['y-stake-1', 'y-stake-2']">
+                {{ $t("d-pending") }}
+              </HintButton>
+            </template>
+            <template v-slot:value>
+              <IconWithValue iconClass="icon-dkt" :flip="true">{{
+                dkt
+              }}</IconWithValue>
+            </template>
             <template>
               <CustomButton @click="confirmWithdrawal">Confirm</CustomButton>
             </template>
@@ -97,6 +105,9 @@
                 dkt
               }}</IconWithValue>
             </template>
+            <template>
+              <CustomButton @click="confirmWithdrawal">{{$t("btn-stake")}}</CustomButton>
+            </template>
           </Line3Element>
 
           <Line3Element class="width-25 margin-right-half">
@@ -110,6 +121,9 @@
                 unlockedDkt
               }}</IconWithValue></template
             >
+            <template>
+              <CustomButton @click="goToWithdrawal">{{$t("btn-withdraw")}}</CustomButton>
+            </template>
           </Line3Element>
         </div>
 
@@ -183,6 +197,9 @@ export default {
     this.$game.removeAllListeners(Events.DivTokenWithdrawal);
   },
   computed: {
+    pendingWithdrawal() {
+      return true;
+    },
     pools() {
       if (!this.divsInfo) {
         return {};
@@ -282,6 +299,9 @@ export default {
         // possible stack overflow
         await this.fetchDividendsInfo();
       }
+    },
+    async goToWithdrawal() {
+      this.$router.push({ name: "withdrawal", params: { currency: "div1" } });
     },
     async withdrawToken() {
       console.log(3);

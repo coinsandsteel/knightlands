@@ -16,16 +16,16 @@
     </EnemyView>
 
     <div class="color-panel-1 flex flex-column width-100 padding-1">
+      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
+        $t("tower-enemy-hp")
+      }}</span>
       <ProgressBar
-        valuePosition="top"
-        valueClass="white-font font-outline font-size-25"
         :thresholds="barThreshold"
         v-model="enemyHealth"
         :maxValue="floor.maxHealth"
-        height="1rem"
       ></ProgressBar>
 
-      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
+      <span class="margin-top-3 margin-bottom-1 font-size-22">{{
         $t("tower-player-hp")
       }}</span>
       <ProgressBar

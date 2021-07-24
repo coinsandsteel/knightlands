@@ -44,7 +44,7 @@ export default {
   components: { CustomButton, Title, IconWithValue },
   props: ["chain"],
   data: () => ({
-    availableChains: [Blockchains.Tron]
+    availableChains: [Blockchains.Ethereum]
   }),
   mounted() {
     if (this.chain) {
@@ -55,6 +55,9 @@ export default {
     icon(chain) {
       switch (chain) {
         case Blockchains.Tron:
+          return "icon-trx-dark";
+
+        case Blockchains.Ethereum:
           return "icon-trx-dark";
       }
 

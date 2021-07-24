@@ -121,6 +121,7 @@ class Game {
     );
     this._socket.on(Events.CommitChanges, this._handleCommit.bind(this));
     this._socket.on(Events.UnitUpdated, this._handleUnitUpdate.bind(this));
+    this._socket.on(Events.ArmySlots, this._handleArmySlots.bind(this));
     this._socket.on(
       Events.DailyTaskComplete,
       this._handleDailyTaskComplete.bind(this)
@@ -439,7 +440,7 @@ class Game {
   }
 
   async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {
-    let tx = await this._blockchainClient.purchaseIAP(
+    return this._blockchainClient.purchaseIAP(
       iap,
       paymentId,
       price,
@@ -447,7 +448,6 @@ class Game {
       timestamp,
       signature
     );
-    await this.sendPayment(paymentId, tx);
   }
 
   async sendPayment(paymentId, signedTransaction) {
@@ -527,6 +527,10 @@ class Game {
   _handleInventoryUpdate(data) {
     this._inventory.mergeData(data);
     this.notifications.updateTraining();
+  }
+
+  _handleArmySlots(data) {
+    this._army.updateMaxSlots(data);
   }
 
   _handleUnitUpdate(data) {
@@ -1411,6 +1415,11 @@ class Game {
       .response;
   }
 
+  async withdrawTokens(type, amount) {
+    return (await this._wrapOperation(Operations.DivsPurchaseShop, { itemId }))
+      .response;
+  }
+
   // Daily login
 
   async fetchDailyRewardStatus() {
@@ -1513,6 +1522,12 @@ class Game {
 
   async attackTowerFloor() {
     return (await this._wrapOperation(Operations.AttackTowerFloor)).response;
+  }
+
+  async purchaseTowerTickets(index) {
+    return (
+      await this._wrapOperation(Operations.PurchaseTowerAttempts, { index })
+    ).response;
   }
 
   // Trials
@@ -1856,6 +1871,12 @@ class Game {
   async reserveUnits(units) {
     return (await this._wrapOperation(Operations.UnitReserve, { units }))
       .response;
+  }
+
+  async expandArmySlots(byItem = false) {
+    return (
+      await this._wrapOperation(Operations.ExpandArmyInventory, { byItem })
+    ).response;
   }
 
   // Gold Mines

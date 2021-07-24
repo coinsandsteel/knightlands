@@ -4,7 +4,7 @@
       class="flex flex-center width-100 height-100 relative"
       :class="{ 'pointer-events-none': isLocked }"
     >
-      <div class="absolute-stretch locked-o" v-if="isLocked">
+      <div class="absolute-stretch locked-o flex flex-center" v-if="isLocked">
         <div></div>
       </div>
       <slot></slot>
@@ -55,7 +55,7 @@ export default {
 
   div {
     .icon_lock_big;
-    height: 100% !important;
+    height: 5rem !important;
     width: 4rem;
   }
 }

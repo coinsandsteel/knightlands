@@ -28,7 +28,7 @@
     </RecycleScroller>
 
     <portal to="footer" :slim="true" v-if="isActive">
-      <tower-footer></tower-footer>
+      <tower-footer @purchase="purchaseTickets"></tower-footer>
     </portal>
   </div>
 </template>
@@ -42,6 +42,10 @@ import ForsakenTowerFloor from "./ForsakenTowerFloor.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Errors from "@/../../knightlands-shared/errors";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import PurchaseTickets from "./PurchaseTickets.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowPurchaseTickets = create(PurchaseTickets);
 
 export default {
   mixins: [AppSection, HintHandler, PromptMixin, NetworkRequestErrorMixin],
@@ -91,7 +95,7 @@ export default {
   methods: {
     handleFloorClosed(cancelled) {
       if (!cancelled) {
-        if (this.currentFloor.id == this.floorsCleared) {d
+        if (this.currentFloor.id == this.floorsCleared) {
           this.floorsCleared++;
           this.scrollToFloor(this.floorsCleared);
         } else {
@@ -128,11 +132,23 @@ export default {
         }
       } catch (exc) {
         if (exc.includes(Errors.TowerNoTicket)) {
-          this.showPrompt("prompt-snap-title", "tower-no-keys", [
-            { type: "green", title: "Ok", response: true }
-          ]);
+          const response = await this.showPrompt(
+            "prompt-snap-title",
+            "tower-no-keys",
+            [
+              { type: "grey", title: "Ok", response: 1 },
+              { type: "green", title: "btn-p-more", response: 2 }
+            ]
+          );
+
+          if (response === 2) {
+            this.purchaseTickets();
+          }
         }
       }
+    },
+    purchaseTickets() {
+      ShowPurchaseTickets();
     },
     openFloor(floorState) {
       this.currentFloor = floorState;

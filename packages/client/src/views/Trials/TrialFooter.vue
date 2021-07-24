@@ -6,7 +6,7 @@
       <div class="item-icon" :class="trialType"></div>
       <span>{{ totalTickets }}</span>
       <span
-        class="item-icon icon-plus margin-left-half pointer"
+        class="item-icon button_plus_footer margin-left-half pointer"
         @click="$emit('purchaseAttempts')"
       ></span>
     </div>

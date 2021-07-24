@@ -33,7 +33,7 @@ export default {
   methods: {
     handleClick() {
       if (!this.loading) {
-        this.$emit('click');
+        this.$emit("click");
       }
     },
     async _await() {
@@ -43,7 +43,7 @@ export default {
 
       this.loading = true;
 
-      this._timeout = setTimeout(()=>{
+      this._timeout = setTimeout(() => {
         this.showLoading = true;
         this._timeout = null;
       }, 200);
@@ -51,7 +51,6 @@ export default {
       try {
         await this.promise;
       } finally {
-
         clearTimeout(this._timeout);
         this._timeout = null;
 

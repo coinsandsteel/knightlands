@@ -1,12 +1,7 @@
 <template>
-  <PaymentStatus
-    :request="request"
-    :cancel="true"
-    @iap="setIap"
-    @pay="continuePurchase"
-  >
-    <div class="height-100" v-bar>
-      <div class="flex flex-column width-100">
+  <PaymentStatus :cancel="true" v-on="$listeners">
+    <div class="height-100 " v-bar>
+      <div class="flex flex-column width-100 padding-top-2">
         <PremiumPackElement
           v-for="(pack, idx) in packs"
           :key="idx"
@@ -22,9 +17,7 @@
 import Meta from "@/premium_shop";
 import PremiumPackElement from "./PremiumPackElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
-import Events from "@/../../knightlands-shared/events";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
@@ -32,17 +25,8 @@ import { create } from "vue-modal-dialogs";
 const ShowDialog = create(ItemsReceived, "items");
 
 export default {
-  mixins: [NetworkRequestErrorMixin, PaymentHandler],
+  mixins: [NetworkRequestErrorMixin],
   components: { PremiumPackElement, PaymentStatus },
-  created() {
-    this.$options.paymentEvents = [Events.PurchaseComplete];
-  },
-  data: () => ({
-    request: null
-  }),
-  activated() {
-    this.fetchPaymentStatus();
-  },
   computed: {
     packs() {
       const packs = Meta.packs;
@@ -61,22 +45,18 @@ export default {
     }
   },
   methods: {
-    async fetchPaymentStatus() {
-      this.request = this.$game.paymentStatus();
-    },
     async handlePurchase(pack) {
-      const request = this.$game.purchasePack(pack.id, this.$game.address);
-
       if (pack.iap) {
-        this.setIap(pack.iap);
-        await this.purchaseRequest(request);
+        this.$emit("purchase", () => {
+          return this.$game.purchasePack(pack.id, this.$game.address);
+        });
       } else {
-        const items = await request;
-        this.handlePaymentComplete("", items);
+        const items = await this.$game.purchasePack(
+          pack.id,
+          this.$game.address
+        );
+        ShowDialog(items);
       }
-    },
-    handlePaymentComplete(iap, items) {
-      ShowDialog(items);
     }
   }
 };

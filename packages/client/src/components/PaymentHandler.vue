@@ -25,14 +25,11 @@ export default {
   },
   methods: {
     setIap(iap) {
+      console.log(iap);
       this._internalIap = iap;
     },
     async _handlePaymentComplete(data) {
-      console.log("handlePaymentComplete", data, this._internalIap);
-      if (data.iap != this._internalIap) {
-        return;
-      }
-
+      console.log("_handlePaymentComplete", data, this._internalIap);
       if (data.reason) {
         console.log("Payment failed with exception", data);
         this.showPrompt(
@@ -68,7 +65,6 @@ export default {
     async beforePurchase() {},
     async purchase(signature, price, iap, paymentId, nonce, timestamp) {
       try {
-        console.log("purchase....");
         await this.$game.purchaseIAP(
           iap,
           paymentId,

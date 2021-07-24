@@ -1,12 +1,5 @@
 <template>
-  <PaymentStatus
-    :request="request"
-    :cancel="true"
-    @iap="setIap"
-    @pay="continuePurchase"
-    @cancel="cancelPurchase"
-    class="width-100"
-  >
+  <PaymentStatus :cancel="true" v-on="$listeners" class="width-100">
     <div class="shop-container">
       <TopUpShopElement
         v-for="entry in shinies"
@@ -31,44 +24,20 @@
 import TopUpShopElement from "./TopUpShopElement.vue";
 import Meta from "@/top_up_shop";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
-import ConnectWallet from "@/views/Account/ConnectWallet.vue";
-
-import ItemsReceived from "@/components/ItemsReceived.vue";
-import { create } from "vue-modal-dialogs";
-
-const ShowDialog = create(ItemsReceived, "items", "soft", "hard");
-const ShowWallet = create(ConnectWallet);
 
 export default {
-  mixins: [NetworkRequestErrorMixin, PaymentHandler],
+  mixins: [NetworkRequestErrorMixin],
   components: { TopUpShopElement, PaymentStatus },
   data: () => ({
     shinies: Meta.shinies,
-    tickets: Meta.raidTickets,
-    request: null
+    tickets: Meta.raidTickets
   }),
-  activated() {
-    this.fetchPaymentStatus();
-  },
   methods: {
-    handlePaymentComplete(iap, context) {
-      if (context.item) {
-        ShowDialog([context]);
-      } else {
-        ShowDialog([], 0, context.hard);
-      }
-    },
-    async fetchPaymentStatus() {
-      this.request = this.$game.paymentStatus();
-    },
     async handlePurchase(iap) {
-      this.setIap(iap);
-      const result = await ShowWallet();
-      if (result) {
-        await this.purchaseRequest(this.$game.purchase(iap));
-      }
+      this.$emit("purchase", () => {
+        return this.$game.purchase(iap);
+      });
     }
   }
 };

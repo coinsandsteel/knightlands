@@ -8,11 +8,7 @@
         v-show="!hideTopBar"
         ref="statusBar"
       ></status-bar>
-      <div
-        class="flex flex-center section-name flex-no-wrap"
-        v-show="title"
-        :class="{ 'padding-top-1': hideTopBar }"
-      >
+      <div class="flex flex-center section-name flex-no-wrap" v-show="title">
         <div class="section-decor"></div>
         <div class="section-title font-size-20">{{ $t(title) }}</div>
         <div class="section-decor right"></div>
@@ -405,6 +401,7 @@ export default {
 .section-name {
   pointer-events: none;
   background-color: @footerColor;
+  height: 5rem;
   width: 200%;
   transform: translateX(-50%);
   right: -50%;
@@ -413,8 +410,8 @@ export default {
 
   & > .section-decor {
     .title_decor;
-    height: 100% !important;
-    width: 9rem !important;
+    max-height: 50%;
+    width: 10rem !important;
 
     &.right {
       transform: scaleX(-1);
@@ -651,7 +648,7 @@ a:visited {
 .sounds-btn {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   z-index: 1000;
 }
 </style>

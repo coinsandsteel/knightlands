@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column flex-center padding-top-1 padding-bottom-1">
+  <div class="flex flex-column flex-center">
     <Title :stackTop="true" :stackBottom="true">{{ $t(pack.title) }}</Title>
     <div class="content">
       <img class="banner" :src="`/images/banners/${bg}.jpg`" />
@@ -59,9 +59,6 @@ export default {
   mixins: [HintHandler],
   components: { CustomButton, PurchaseButton, Loot, PriceTag, Title },
   props: ["pack"],
-  data: () => ({
-    request: null
-  }),
   computed: {
     bg() {
       return this.pack.banner;

@@ -198,6 +198,13 @@ span {
     }
 }
 
+.flex-o-99 {
+    order: 99;
+    &.n {
+        order: -99;
+    }
+}
+
 .grid-center-self {
     align-self: center;
     justify-self: center;
@@ -364,7 +371,6 @@ span {
 .size(margin-left, 6);
 .size(margin-right, 6);
 
-
 .scroll-fix {
     overflow-y: auto !important;
 }
@@ -473,7 +479,7 @@ span {
 @panelColor2: #2E7285;
 @panelColor3: #00AC21;
 @panelColor4: #3D4A6A;
-@panelColor5: #245178;
+@panelColor5: rgb(36, 81, 120);
 
 .color-panel-1 {
     .color-panel();
@@ -722,6 +728,7 @@ span {
 .icon-exp {
     .icon_xp;
     .icon();
+    height: 1.9rem !important;
 }
 
 .icon-energy {
@@ -763,7 +770,7 @@ span {
 }
 
 .icon-dkt {
-    .icon("icon_dkt");
+    .icon("FLESH");
 }
 
 .icon-trx {
@@ -957,8 +964,6 @@ span {
 }
 
 .item-icon() {
-    background-repeat: no-repeat;
-    
     width: 3rem !important;
     height: 3rem !important;
     display: inline-block;
@@ -1411,21 +1416,6 @@ span {
     overflow: hidden;
 }
 
-.flex-1 {
-    flex-grow: 1;
-}
-
-.flex-2 {
-    flex-grow: 2;
-}
-
-.flex-3 {
-    flex-grow: 3;
-}
-
-.flex-4 {
-    flex-grow: 4;
-}
 
 .fade-enter-active,
 .fade-leave-active {
@@ -1434,4 +1424,16 @@ span {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.input {
+    height: 8rem;
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    padding: 2rem;
+
+    &::placeholder {
+        .grey-title;
+    }
 }

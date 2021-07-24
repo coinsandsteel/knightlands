@@ -1,33 +1,31 @@
 <template>
-  <PromisedView :promise="request" class="screen-content list-shadow">
-    <template v-slot:fixed>
-      <div class="screen-background"></div>
+  <div class="screen-content list-shadow">
+    <div class="screen-background"></div>
 
-      <div v-bar>
-        <div>
-          <GoldStorageElement
-            v-if="mines.length > 0"
-            @upgrade-storage="handleStorageUpgrade"
-            @collect="handleCollectGold"
-            :disabled="mines.length == 0"
-          />
-          <GoldMineElement
-            v-for="(mine, idx) in mines"
-            :key="idx"
-            :mine="mine"
-            :idx="idx"
-            @upgrade-rate="handleRateUpgrade"
-          />
+    <div v-bar>
+      <div>
+        <GoldStorageElement
+          v-if="mines.length > 0"
+          @upgrade-storage="handleStorageUpgrade"
+          @collect="handleCollectGold"
+          :disabled="mines.length == 0"
+        />
+        <GoldMineElement
+          v-for="(mine, idx) in mines"
+          :key="idx"
+          :mine="mine"
+          :idx="idx"
+          @upgrade-rate="handleRateUpgrade"
+        />
 
-          <GoldMineExpandElement
-            :price="expandPrice"
-            v-if="hasExpandableSlots"
-            @expand="handleExpansion"
-          />
-        </div>
+        <GoldMineExpandElement
+          :price="expandPrice"
+          v-if="hasExpandableSlots"
+          @expand="handleExpansion"
+        />
       </div>
-    </template>
-  </PromisedView>
+    </div>
+  </div>
 </template>
 
 <script>

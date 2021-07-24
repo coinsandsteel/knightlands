@@ -18,7 +18,7 @@
 
         <div
           class="flex flex-column flex-center height-100 width-100"
-          v-show="raids.length == 0"
+          v-if="raids.length == 0"
         >
           <span class="font-size-22 margin-bottom-2">{{
             $t("raids-empty")

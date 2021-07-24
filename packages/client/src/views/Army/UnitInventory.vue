@@ -26,6 +26,17 @@
       <CustomButton type="grey" @click="showUnitFilters">{{
         $t("btn-filter")
       }}</CustomButton>
+
+      <div class="flex flex-center">
+        <span class="font-size-20 flex-o-99 n">{{
+          $t("unit-slots", { c: currentSlots, t: maxSlots })
+        }}</span>
+        <span
+          v-if="notAtMaxSlots"
+          class="item-icon button_plus_footer margin-left-half pointer"
+          @click="expandArmy"
+        ></span>
+      </div>
     </portal>
   </div>
 </template>
@@ -38,6 +49,12 @@ import ItemFilterComponent from "@/components/ItemFilter.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 const ItemFilter = CreateDialog(ItemFilterComponent);
 import ActivityMixin from "@/components/ActivityMixin.vue";
+import ArmyMeta from "@/army_meta.json";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import PurchaseArmySlots from "@/views/Summon/Army/PurchaseArmySlots.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowPurchaseArmySlots = create(PurchaseArmySlots);
 
 export default {
   props: {
@@ -52,7 +69,7 @@ export default {
     }
   },
   components: { UnitItem, CustomButton },
-  mixins: [ActivityMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin],
   data: () => ({
     selectedSlots: {},
     filteredUnits: []
@@ -73,7 +90,21 @@ export default {
       }
     }
   },
+  computed: {
+    notAtMaxSlots() {
+      return this.maxSlots < ArmyMeta.maxSlots;
+    },
+    currentSlots() {
+      return this.$game.army.currentSlots;
+    },
+    maxSlots() {
+      return this.$game.army.maxSlots;
+    }
+  },
   methods: {
+    async expandArmy() {
+      await ShowPurchaseArmySlots();
+    },
     getUnits() {
       return this.filteredUnits;
     },

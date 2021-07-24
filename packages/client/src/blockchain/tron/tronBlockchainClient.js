@@ -6,6 +6,7 @@ const DKT = require("./DKT.json");
 const Presale = require("./Presale.json");
 const Dividends = require("./Dividends.json");
 const TronWeb = require("tronweb");
+const web3utls = require("web3-utils");
 import { toDecimal, toBigNumber } from "../utils";
 import WalletLockedError from "../WalletLockedError";
 import Blockchains from "@/../../knightlands-shared/blockchains.js";
@@ -26,6 +27,10 @@ class TronBlockchainClient extends BlockchainClient {
 
     this._tronWeb = null;
     this._tronWasInited = false;
+  }
+
+  static isAddress(addr) {
+    return web3utls.isAddress(addr);
   }
 
   getAddress() {

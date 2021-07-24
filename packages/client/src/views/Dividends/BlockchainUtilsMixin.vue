@@ -2,8 +2,17 @@
 import Blockchains from "@/../../knightlands-shared/blockchains";
 import { toDecimal } from "../../blockchain/utils";
 
+import Polygon from "../../blockchain/polygon/polygonClient";
+
 export default {
   methods: {
+    isAddress(blockchainId, addr) {
+      switch (blockchainId) {
+        case Blockchains.Polygon:
+        case Blockchains.Ethereum:
+          return Polygon.isAddress(addr);
+      }
+    },
     toDecimal(blockchainId, value) {
       let decimals = 6;
       switch (blockchainId) {

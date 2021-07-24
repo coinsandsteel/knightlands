@@ -1,54 +1,51 @@
 <template>
-  <Promised class="screen-content" tag="div" :promise="request">
-    <template v-slot:combined="{ isPending, isDelayOver }">
-      <div class="screen-background"></div>
-      <LoadingScreen :loading="isPending && isDelayOver" />
-      <div class="flex">
-        <UnitItem
-          class="width-20"
-          v-for="i in maxUnits"
-          :key="i"
-          :unit="getSelectedUnit(i)"
-          :empty="true"
-        />
-      </div>
-
-      <div class="color-panel-2 flex flex-space-evenly">
-        <Title :stackTop="true" class="margin-bottom-half">{{
-          $t("refund-items")
-        }}</Title>
-        <Loot
-          v-for="record in refundedItems"
-          :key="`${record.item}${record.quantity}`"
-          :gacha="true"
-          :item="record.item"
-          :quantity="record.quantity"
-        />
-      </div>
-
-      <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-      <UnitInventory
-        ref="units"
-        :units="units"
-        :autoselect="false"
-        :multiSelect="true"
-        :disableSelect="maxSelected"
-        @toggle="toggleUnitSelect"
+  <div class="screen-content">
+    <div class="screen-background"></div>
+    <div class="flex">
+      <UnitItem
+        class="width-20"
+        v-for="i in maxUnits"
+        :key="i"
+        :unit="getSelectedUnit(i)"
+        :empty="true"
       />
+    </div>
 
-      <portal to="footer" v-if="isActive">
-        <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{
-          $t("btn-banish")
-        }}</CustomButton>
-        <CustomButton type="green" @click="autofill">{{
-          $t("btn-autofill")
-        }}</CustomButton>
-        <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{
-          $t("btn-reset")
-        }}</CustomButton>
-      </portal>
-    </template>
-  </Promised>
+    <div class="color-panel-2 flex flex-space-evenly">
+      <Title :stackTop="true" class="margin-bottom-half">{{
+        $t("refund-items")
+      }}</Title>
+      <Loot
+        v-for="record in refundedItems"
+        :key="`${record.item}${record.quantity}`"
+        :gacha="true"
+        :item="record.item"
+        :quantity="record.quantity"
+      />
+    </div>
+
+    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+    <UnitInventory
+      ref="units"
+      :units="units"
+      :autoselect="false"
+      :multiSelect="true"
+      :disableSelect="maxSelected"
+      @toggle="toggleUnitSelect"
+    />
+
+    <portal to="footer" v-if="isActive">
+      <CustomButton type="yellow" @click="banish" :disabled="!canBanish">{{
+        $t("btn-banish")
+      }}</CustomButton>
+      <CustomButton type="green" @click="autofill">{{
+        $t("btn-autofill")
+      }}</CustomButton>
+      <CustomButton type="grey" @click="reset" :disabled="!canBanish">{{
+        $t("btn-reset")
+      }}</CustomButton>
+    </portal>
+  </div>
 </template>
 
 <script>
@@ -80,7 +77,7 @@ export default {
     LoadingScreen,
     Promised,
     Loot,
-    Title
+    Title,
   },
   created() {
     this.filtersStore = this.$store.getters.getUnitFilters;
@@ -91,16 +88,16 @@ export default {
       { title: Troops, value: Troops },
       {
         title: Generals,
-        value: Generals
-      }
+        value: Generals,
+      },
     ],
     currentTab: Troops,
     refundedItems: {
       troopEssence: { item: TroopsMeta.essenceItem, quantity: 0 },
       souls: { item: ArmyMeta.soulsItem, quantity: 0 },
-      gold: { item: GeneralsMeta.goldItem, quantity: 0 }
+      gold: { item: GeneralsMeta.goldItem, quantity: 0 },
     },
-    selectedUnits: []
+    selectedUnits: [],
   }),
   computed: {
     maxUnits() {
@@ -115,9 +112,9 @@ export default {
     units() {
       return this.$game.army.getUnitsWithFilter(
         this.currentTab == Troops,
-        unit => unit.legion == -1
+        (unit) => unit.legion == -1
       );
-    }
+    },
   },
   watch: {
     selectedUnits() {
@@ -140,7 +137,7 @@ export default {
         this.refundedItems.souls.quantity +=
           ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];
       }
-    }
+    },
   },
   methods: {
     getSelectedUnit(idx) {
@@ -156,13 +153,13 @@ export default {
       if (isSelected) {
         this.selectedUnits.push(unit);
       } else {
-        const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
+        const idx = this.selectedUnits.findIndex((x) => x.id === unit.id);
         this.selectedUnits.splice(idx, 1);
       }
     },
     async banish() {
       this.request = this.performRequest(
-        this.$game.banishUnits(this.selectedUnits.map(x => x.id))
+        this.$game.banishUnits(this.selectedUnits.map((x) => x.id))
       );
       try {
         await this.request;
@@ -185,14 +182,14 @@ export default {
         }
 
         const unit = this.units[i];
-        const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
+        const idx = this.selectedUnits.findIndex((x) => x.id === unit.id);
         if (idx != -1) {
           continue;
         }
 
         this.$refs.units.toggleSlot(unit);
       }
-    }
-  }
+    },
+  },
 };
 </script>
