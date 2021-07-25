@@ -1,5 +1,5 @@
 <template>
-  <div @click="showHint">
+  <div class="flex flex-center" @click="showHint">
     <IconWithValue
       :flip="true"
       :iconMargin="true"

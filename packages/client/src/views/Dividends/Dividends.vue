@@ -1,9 +1,9 @@
 <template>
-  <div class="screen-content padding-top-2">
+  <div class="screen-content">
     <div class="screen-background"></div>
 
     <div v-bar>
-      <div class="flex flex-column flex-items-center">
+      <div class="flex flex-column flex-items-center padding-top-1">
         <!-- SEASON INFO -->
         <div class="width-100 flex flex-column flex-center">
           <Title :stackBottom="true">
@@ -26,22 +26,23 @@
               {{ $t("d-avai-d") }}
             </HintButton></Title
           >
-          <div class="flex flex-column flex-center color-panel-1">
+          <div
+            class="flex flex-column flex-center color-panel-1 padding-left-2 padding-right-2"
+          >
             <template v-if="hasPayouts">
               <div
-                class="flex flex-center"
+                class="flex flex-space-between width-100"
                 v-for="(payout, bId) in payouts"
                 :key="bId"
               >
                 <IconWithValue
                   :iconClass="getIcon(bId)"
                   valueClass="font-size-30 font-weight-900"
-                  :flip="true"
                   >{{ toDecimal(bId, payout) }}</IconWithValue
                 >
                 <CustomButton
                   type="yellow"
-                  @click="claimDivs(bId)"
+                  @click="claimDivs(bId, payout)"
                   :disabled="!canClaim(bId)"
                   >{{ $t("btn-claim") }}</CustomButton
                 >
@@ -63,7 +64,6 @@
               class="margin-top-1 margin-bottom-1"
               iconClass="icon-dkt"
               valueClass="font-size-30 font-weight-900"
-              :flip="true"
               >{{ totalStaked }}</IconWithValue
             >
 
@@ -74,27 +74,53 @@
         </div>
 
         <!-- DIVIDENDS MANAGEMENT -->
-        <div class="flex flex-center width-100 margin-top-2 flex-space-evenly">
-          <!-- <Line3Element
-            class="width-25 margin-right-half"
-            v-if="pendingWithdrawal"
-          >
-            <template v-slot:title>
-              <HintButton title="y-stake" :texts="['y-stake-1', 'y-stake-2']">
-                {{ $t("d-pending") }}
-              </HintButton>
-            </template>
-            <template v-slot:value>
-              <IconWithValue iconClass="icon-dkt" :flip="true">{{
-                dkt
-              }}</IconWithValue>
-            </template>
-            <template>
-              <CustomButton @click="confirmWithdrawal">Confirm</CustomButton>
-            </template>
-          </Line3Element> -->
+        <div class="user-stats width-100 margin-top-2">
+          <div class="row">
+            <HintButton
+              class="hint"
+              title="y-stake"
+              :texts="['y-stake-1', 'y-stake-2']"
+            >
+              {{ $t("d-stake") }}
+            </HintButton>
+            <IconWithValue class="balance" iconClass="icon-dkt">{{
+              stakedDkt
+            }}</IconWithValue>
+            <CustomButton class="btn" type="yellow" @click="goToStake">{{
+              $t("btn-stake")
+            }}</CustomButton>
+          </div>
+          <div class="row">
+            <HintButton
+              class="hint"
+              title="y-stake"
+              :texts="['y-stake-1', 'y-stake-2']"
+            >
+              {{ $t("d-balance") }}
+            </HintButton>
+            <IconWithValue class="balance" iconClass="icon-dkt">{{
+              dkt
+            }}</IconWithValue>
 
-          <Line3Element class="width-25 margin-right-half">
+            <CustomButton class="btn" type="blue" @click="goToWithdrawal">{{
+              $t("btn-withdraw")
+            }}</CustomButton>
+          </div>
+
+          <div class="row">
+            <HintButton
+              class="hint"
+              title="d-bal"
+              :texts="['d-bal-1', 'd-bal-2']"
+            >
+              {{ $t("du-balance") }}
+            </HintButton>
+            <IconWithValue class="balance" iconClass="icon-dkt2">{{
+              unlockedDkt
+            }}</IconWithValue>
+          </div>
+
+          <!-- <Line3Element class="width-25 margin-right-half">
             <template v-slot:title>
               <HintButton title="y-stake" :texts="['y-stake-1', 'y-stake-2']">
                 {{ $t("d-stake") }}
@@ -106,11 +132,16 @@
               }}</IconWithValue>
             </template>
             <template>
-              <CustomButton @click="confirmWithdrawal">{{$t("btn-stake")}}</CustomButton>
+              <CustomButton @click="goToStake">{{
+                $t("btn-stake")
+              }}</CustomButton>
+              <CustomButton @click="goToWithdrawal">{{
+                $t("btn-withdraw")
+              }}</CustomButton>
             </template>
-          </Line3Element>
+          </Line3Element> -->
 
-          <Line3Element class="width-25 margin-right-half">
+          <!-- <Line3Element class="width-25 margin-right-half">
             <template v-slot:title>
               <HintButton title="d-bal" :texts="['d-bal-1', 'd-bal-2']">
                 {{ $t("d-balance") }}
@@ -122,9 +153,24 @@
               }}</IconWithValue></template
             >
             <template>
-              <CustomButton @click="goToWithdrawal">{{$t("btn-withdraw")}}</CustomButton>
+              <CustomButton @click="goToWithdrawal">{{
+                $t("btn-withdraw")
+              }}</CustomButton>
             </template>
-          </Line3Element>
+          </Line3Element> -->
+
+          <!-- <Line3Element class="width-25 margin-right-half">
+            <template v-slot:title>
+              <HintButton title="d-bal" :texts="['d-bal-1', 'd-bal-2']">
+                {{ $t("d-balance") }}
+              </HintButton>
+            </template>
+            <template v-slot:value
+              ><IconWithValue iconClass="icon-dkt" :flip="true">{{
+                unlockedDkt
+              }}</IconWithValue></template
+            >
+          </Line3Element> -->
         </div>
 
         <!-- PAYOUT POOL -->
@@ -152,9 +198,8 @@ import HintButton from "@/components/HintButton.vue";
 import Title from "@/components/Title.vue";
 import AppSection from "@/AppSection.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-import BlockchainUtilsMixin from "./BlockchainUtilsMixin";
-import Line3Element from "./Line3Element";
-import DividendsPools from "./DividendsPools";
+import BlockchainUtilsMixin from "./BlockchainUtilsMixin.vue";
+import DividendsPools from "./DividendsPools.vue";
 import CustomButton from "@/components/Button.vue";
 import Events from "@/../../knightlands-shared/events";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -175,7 +220,6 @@ export default {
     IconWithValue,
     CustomButton,
     Title,
-    Line3Element,
     DividendsPools
   },
   data: () => ({
@@ -194,6 +238,10 @@ export default {
     this.init();
   },
   deactivated() {
+    if (this._infoInterval) {
+      clearInterval(this._infoInterval);
+      this._infoInterval = null;
+    }
     this.$game.removeAllListeners(Events.DivTokenWithdrawal);
   },
   computed: {
@@ -214,19 +262,17 @@ export default {
       return this.divsInfo.season.season;
     },
     dkt() {
-      return this.$game.inventory.getCurrency(CurrencyType.Dkt, 8);
+      return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
     },
     totalStaked() {
-      if (this.divsInfo) return this.divsInfo.supply;
+      if (this.divsInfo) return this.divsInfo.totalStake;
       return 0;
     },
+    stakedDkt() {
+      return this.$game.inventory.getCurrency(CurrencyType.StakedDkt, 6);
+    },
     unlockedDkt() {
-      if (this.divsInfo)
-        return (
-          Math.floor(this.$game.dividends.unlockedTokens * Math.pow(10, 6)) /
-          Math.pow(10, 6)
-        );
-      return 0;
+      return this.$game.inventory.getCurrency(CurrencyType.Dkt2, 6);
     },
     payouts() {
       return this.$game.dividends.payouts;
@@ -268,43 +314,31 @@ export default {
       }
       return this.payouts[bId];
     },
-    async claimDivs(bid) {
-      try {
-        await this.performRequestNoCatch(this.$game.claimDividends(bid));
-        await this.fetchDividendsInfo();
-      } catch {
-        this.showPrompt(
-          this.$t("prompt-snap-title"),
-          this.$t("div-claim-failed"),
-          [
-            {
-              type: "red",
-              title: "btn-ok",
-              response: true
-            }
-          ]
-        );
-      }
+    async claimDivs(bid, amount) {
+      this.$router.push({ name: "divs-claim", params: { chain: bid, amount } });
     },
     async fetchDividendsInfo() {
       try {
-        this.divsInfo = await this.performRequest(this.$game.getDivsStatus());
+        this.divsInfo = await this.performRequestNoCatch(
+          this.$game.getDivsStatus()
+        );
 
         this.nextPayoutTimer.timeLeft =
           this.divsInfo.nextPayout - this.$game.nowSec;
 
         this.seasonTimer.timeLeft =
           this.divsInfo.season.finishAt - this.$game.nowSec;
-      } catch (exc) {
+      } finally {
         // possible stack overflow
-        await this.fetchDividendsInfo();
+        setTimeout(() => {
+          this.fetchDividendsInfo();
+        }, 3000);
       }
     },
     async goToWithdrawal() {
       this.$router.push({ name: "withdrawal", params: { currency: "div1" } });
     },
     async withdrawToken() {
-      console.log(3);
       const { nonce, signature, amount } = await this.performRequest(
         this.$game.requestDividendTokenWithdrawal(this.dkt)
       );
@@ -315,8 +349,10 @@ export default {
 
       await this.confirmWithdrawal();
     },
+    async goToStake() {
+      this.$router.push({ name: "stake" });
+    },
     async confirmWithdrawal() {
-      console.log(4);
       await this.performRequest(
         this.$game.sendDividendTokenWithdrawal(
           this.amount,
@@ -365,5 +401,50 @@ export default {
 <style lang="less" scoped>
 .season-timer {
   height: 8rem;
+}
+
+.user-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  & .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column: ~"1/4";
+    height: 5rem;
+    justify-items: start;
+
+    & .hint {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    & .balance {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    & .btn {
+      grid-column: 3;
+      grid-row: 1;
+      justify-self: stretch;
+    }
+  }
+
+  & .row:nth-child(1) {
+    grid-row: 1;
+  }
+
+  & .row:nth-child(2) {
+    grid-row: 2;
+  }
+
+  & .row:nth-child(3) {
+    grid-row: 3;
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="width-100 flex flex-center input-bg">
     <input
-      class="input flex-11 font-size-30 white-font text-center"
+      class="input flex-11 font-size-22 white-font text-center"
       placeholder="0x"
       v-model="valueInput"
     />

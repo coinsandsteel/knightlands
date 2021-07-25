@@ -23,7 +23,7 @@ import Subscription from "./subscription";
 import Notifications from "./notifications";
 
 import { Magic } from "magic-sdk";
-const magic = new Magic("pk_test_55236F76ECAF72CF");
+const magic = new Magic("pk_live_608834B699B14351");
 
 class Game {
   constructor(store) {
@@ -278,6 +278,14 @@ class Game {
 
   get dkt() {
     return this.inventory.getCurrency(CurrencyType.Dkt);
+  }
+
+  get dktStake() {
+    return this.dividends.stake;
+  }
+
+  get dkt2() {
+    return this.inventory.getCurrency(CurrencyType.Dkt2);
   }
 
   get ready() {
@@ -1405,9 +1413,10 @@ class Game {
     return (await this._wrapOperation(Operations.GetDivsStatus)).response;
   }
 
-  async claimDividends(blockchainId) {
-    return (await this._wrapOperation(Operations.ClaimDivs, { blockchainId }))
-      .response;
+  async claimDividends(to, blockchainId) {
+    return (
+      await this._wrapOperation(Operations.ClaimDivs, { to, blockchainId })
+    ).response;
   }
 
   async purchaseDktShopItem(itemId) {
@@ -1416,8 +1425,47 @@ class Game {
   }
 
   async withdrawTokens(type, amount) {
-    return (await this._wrapOperation(Operations.DivsPurchaseShop, { itemId }))
-      .response;
+    return (
+      await this._wrapOperation(Operations.WithdrawDividendToken, {
+        type,
+        amount
+      })
+    ).response;
+  }
+
+  async stakeTokens(amount) {
+    return (
+      await this._wrapOperation(Operations.StakeDivs, {
+        amount
+      })
+    ).response;
+  }
+
+  async requestDividendTokenWithdrawal(amount) {
+    return (
+      await this._wrapOperation(Operations.WithdrawDividendToken, {
+        amount
+      })
+    ).response;
+  }
+
+  async fetchPendingDividendTokenWithdrawal() {
+    return (
+      await this._wrapOperation(Operations.FetchPendingDividendTokenWithdrawal)
+    ).response;
+  }
+
+  async sendDividendTokenWithdrawal(amount, nonce, signature) {
+    const tx = await this.blockchainClient.dividendTokenWithdrawal(
+      amount,
+      nonce,
+      signature
+    );
+    return (
+      await this._wrapOperation(Operations.SendDividendTokenWithdrawal, {
+        tx
+      })
+    ).response;
   }
 
   // Daily login
@@ -1672,35 +1720,6 @@ class Game {
       await this._wrapOperation(Operations.ClaimDailyTasksRewards, { taskType })
     ).response;
   }
-
-  // Dividends
-  async requestDividendTokenWithdrawal(amount) {
-    return (
-      await this._wrapOperation(Operations.WithdrawDividendToken, {
-        amount
-      })
-    ).response;
-  }
-
-  async fetchPendingDividendTokenWithdrawal() {
-    return (
-      await this._wrapOperation(Operations.FetchPendingDividendTokenWithdrawal)
-    ).response;
-  }
-
-  async sendDividendTokenWithdrawal(amount, nonce, signature) {
-    const tx = await this.blockchainClient.dividendTokenWithdrawal(
-      amount,
-      nonce,
-      signature
-    );
-    return (
-      await this._wrapOperation(Operations.SendDividendTokenWithdrawal, {
-        tx
-      })
-    ).response;
-  }
-
   // Tournaments
   async fetchTournaments() {
     return (await this._wrapOperation(Operations.FetchTournaments)).response;

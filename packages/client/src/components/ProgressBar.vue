@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="bar" :style="barStyle()">
+      <div class="bar" :style="barStyle()" :class="{ top: isTop }">
         <div
           v-if="!hideMainBar"
           class="progress"
@@ -284,6 +284,10 @@ export default {
       z-index: -1;
       flex: 1;
       position: relative;
+
+      &.top {
+        flex-basis: unset;
+      }
 
       .progress {
         transition: width 0.2s ease;

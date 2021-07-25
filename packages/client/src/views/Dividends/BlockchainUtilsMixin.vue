@@ -19,6 +19,11 @@ export default {
         case Blockchains.Tron:
           decimals = 6;
           break;
+
+        case Blockchains.Ethereum:
+        case Blockchains.Polygon:
+          decimals = 18;
+          break;
       }
 
       return toDecimal(value, decimals);
@@ -26,6 +31,10 @@ export default {
     getIcon(blockchainId) {
       switch (blockchainId) {
         case Blockchains.Tron:
+          return "icon-trx";
+        case Blockchains.Ethereum:
+          return "icon-trx";
+        case Blockchains.Polygon:
           return "icon-trx";
       }
 

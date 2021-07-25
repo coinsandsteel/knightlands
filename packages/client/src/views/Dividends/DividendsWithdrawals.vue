@@ -19,11 +19,17 @@ import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import DividendsWithdrawalElement from "./DividendsWithdrawalElement.vue";
 
+import ConnectWallet from "@/views/Account/ConnectWallet.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowWallet = create(ConnectWallet, "chain");
+
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   components: { DividendsWithdrawalElement },
   created() {
     this.title = "w-divs-w";
+    this.$options.useRouterBack = true;
   },
   data: () => ({
     withdrawals: []
@@ -38,8 +44,9 @@ export default {
     },
     async handleWithdrawal(withdrawal) {
       try {
+        await ShowWallet(withdrawal.blockchainId);
         await this.performRequest(
-          this.$game.blockchainClient.finishDividendsWithdrawal(
+          this.$game.blockchain.finishDividendsWithdrawal(
             withdrawal._id,
             withdrawal.amount,
             withdrawal.nonce,

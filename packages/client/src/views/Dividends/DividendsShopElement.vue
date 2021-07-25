@@ -7,7 +7,7 @@
       @click="$emit('purchase', item, price)"
       :disabled="locked"
     >
-      <IconWithValue iconClass="icon-dkt">{{ price }}</IconWithValue>
+      <IconWithValue iconClass="icon-dkt2">{{ price }}</IconWithValue>
     </CustomButton>
   </div>
 </template>

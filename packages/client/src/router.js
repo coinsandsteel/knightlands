@@ -932,6 +932,17 @@ const router = new Router({
           component: () => import("./views/Dividends/Dividends.vue")
         },
         {
+          path: "claim/:chain",
+          name: "divs-claim",
+          component: () => import("./views/Dividends/ClaimDividends.vue"),
+          props: true
+        },
+        {
+          path: "stake",
+          name: "stake",
+          component: () => import("./views/Dividends/Stake.vue")
+        },
+        {
           path: "withdrawal",
           name: "withdrawal",
           component: () => import("./views/Dividends/Withdrawal.vue")

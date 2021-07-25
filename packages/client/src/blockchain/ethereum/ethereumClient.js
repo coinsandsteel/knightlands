@@ -68,4 +68,10 @@ export default class EthereumClient extends BlockchainClient {
         gasLimit: 100000
       });
   }
+
+  async finishDividendsWithdrawal(withdrawalId, amount, nonce, signature) {
+    await this._paymentContract
+      .connect(this._provider.getSigner())
+      .withdrawDivs(this.getAddress(), withdrawalId, amount, nonce, signature);
+  }
 }

@@ -7,7 +7,11 @@ export function toDecimal(num, decimals) {
       "." +
       str.slice(str.length - decimals);
   }
-  return Number(decimal);
+  if (decimal.match(/\./)) {
+    decimal = decimal.replace(/\.?0+$/, "");
+    decimal = "0" + decimal;
+  }
+  return decimal;
 }
 
 export function toBigNumber(num, decimals) {

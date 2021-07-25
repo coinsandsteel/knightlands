@@ -7,18 +7,25 @@
       <AddressInput v-model="address" />
 
       <InputLabel title="network" />
-      <NetworkSelector @confirm="handleNetwork" />
+      <NetworkSelector :lockTo="chain" />
 
       <InputLabel title="amount" />
-      <TokenInput v-model="amount" :currency="currencyType" />
+      <div class="flex flex-center input-bg width-100">
+        <input
+          class="input flex-11 font-size-30 white-font"
+          :value="formattedAmount"
+          :disabled="true"
+        />
+        <span class="flex-1" :class="getIcon(chain)"></span>
+      </div>
 
       <div class="flex flex-center width-100">
         <CustomButton
           class="margin-top-3"
           type="yellow"
-          :disabled="cantWithdraw"
-          @click="withdaw"
-          >{{ $t("btn-withdraw") }}</CustomButton
+          @click="claim"
+          :disabled="cantClaim"
+          >{{ $t("btn-claim") }}</CustomButton
         >
       </div>
     </div>
@@ -28,14 +35,12 @@
 <script>
 import PromptMixin from "@/components/PromptMixin.vue";
 import AppSection from "@/AppSection.vue";
-import TokenInput from "./TokenInput.vue";
 import AddressInput from "./AddressInput.vue";
 import InputLabel from "./InputLabel.vue";
 import NetworkSelector from "./NetworkSelector.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import CurrencyType from "@/../../knightlands-shared/currency_type";
-import BlockchainUtilsMixin from "./BlockchainUtilsMixin";
+import BlockchainUtilsMixin from "./BlockchainUtilsMixin.vue";
 
 export default {
   mixins: [
@@ -46,39 +51,35 @@ export default {
   ],
   components: {
     AddressInput,
-    TokenInput,
     CustomButton,
     NetworkSelector,
     InputLabel
   },
+  props: ["chain", "amount"],
   data: () => ({
-    amount: "0",
-    currencyType: CurrencyType.Dkt,
-    selectedNetwork: "",
     address: ""
   }),
   created() {
-    this.title = "w-token-withdrawal";
+    this.title = "w-divs-claim";
     this.$options.useRouterBack = true;
   },
   computed: {
-    cantWithdraw() {
+    cantClaim() {
       return (
-        this.selectedNetwork == "" ||
-        this.noAmount ||
+        this.chain == "" ||
         this.amount == "0" ||
-        !this.isAddress(this.selectedNetwork, this.address)
+        !this.isAddress(this.chain, this.address)
       );
     },
     noAmount() {
       return !/^((0(\.\d{1,18})?)|([1-9]\d*(\.\d{1,18})?))$/.test(this.amount);
+    },
+    formattedAmount() {
+      return this.toDecimal(this.chain, this.amount);
     }
   },
   methods: {
-    handleNetwork(network) {
-      this.selectedNetwork = network;
-    },
-    async withdaw() {
+    async claim() {
       let ok = await this.showPrompt(
         this.$t("cnfrm-wrawl-title"),
         this.$t("cnfrm-wrawl-msg"),
@@ -96,11 +97,30 @@ export default {
         ]
       );
       if (ok === true) {
-        await this.performRequest(
-          this.$game.withdrawTokens(this.currencyType, this.amount)
-        );
+        try {
+          await this.performRequestNoCatch(
+            this.$game.claimDividends(this.address, this.chain)
+          );
+          this.$router.back();
+        } catch {
+          this.showPrompt(
+            this.$t("prompt-snap-title"),
+            this.$t("div-claim-failed"),
+            [
+              {
+                type: "red",
+                title: "btn-ok",
+                response: true
+              }
+            ]
+          );
+        }
       }
     }
   }
 };
 </script>
+
+<style lang="less" scoped>
+@import "./style.less";
+</style>

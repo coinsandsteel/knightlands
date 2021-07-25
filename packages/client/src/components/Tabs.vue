@@ -122,7 +122,6 @@ export default {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: all 0.25s;
   font-size: 1.5rem;
   font-weight: 900;
 

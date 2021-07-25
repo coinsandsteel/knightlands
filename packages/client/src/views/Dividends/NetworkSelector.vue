@@ -7,7 +7,7 @@
     >
       {{ selectedNetwork == "" ? $t("empty-network") : $t(selectedNetwork) }}
     </span>
-    <span class="nav-arrow margin-right-2"></span>
+    <span v-show="!lockTo" class="nav-arrow margin-right-2"></span>
 
     <div
       class="overlay absolute-stretch flex flex-column flex-end"
@@ -43,13 +43,25 @@ import Blockchains from "@/../../knightlands-shared/blockchains";
 
 export default {
   components: { CustomButton, IconWithValue },
+  props: ["lockTo"],
   data: () => ({
     networksOverlay: false,
     availableChains: [Blockchains.Ethereum, Blockchains.Polygon],
     selectedNetwork: ""
   }),
+  watch: {
+    lockTo: {
+      immediate: true,
+      handler() {
+        this.selectedNetwork = this.lockTo;
+      }
+    }
+  },
   methods: {
     showNetworks() {
+      if (this.lockTo) {
+        return;
+      }
       this.networksOverlay = true;
     },
     icon(chain) {

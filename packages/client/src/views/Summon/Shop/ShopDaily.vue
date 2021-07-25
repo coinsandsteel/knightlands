@@ -1,21 +1,23 @@
 <template>
-  <div class="shop-container">
-    <DailyShopElement
-      v-for="(item, idx) in items"
-      :key="item.item"
-      :index="idx"
-      :data="item"
-      @purchase="purchase(idx)"
-    />
+  <div class="width-100" v-bar>
+    <div class="shop-container">
+      <DailyShopElement
+        v-for="(item, idx) in items"
+        :key="item.item"
+        :index="idx"
+        :data="item"
+        @purchase="purchase(idx)"
+      />
 
-    <DailyShopElement
-      v-for="(item, idx) in fixedItems"
-      :key="item.item"
-      :index="idx"
-      :data="item"
-      :fixed="true"
-      @purchase="purchase(idx, true)"
-    />
+      <DailyShopElement
+        v-for="(item, idx) in fixedItems"
+        :key="item.item"
+        :index="idx"
+        :data="item"
+        :fixed="true"
+        @purchase="purchase(idx, true)"
+      />
+    </div>
 
     <portal to="footer" v-if="isActive">
       <span class="font-size-18">
@@ -87,7 +89,7 @@ export default {
 <style lang="less" scoped>
 .shop-container {
   width: 100%;
-  display: grid;
+  display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   justify-items: center;
 }

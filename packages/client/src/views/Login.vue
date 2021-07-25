@@ -5,9 +5,9 @@
     <input
       id="input"
       type="email"
-      placeholder="Your email address"
+      :placeholder="$t('mail-pl')"
       aria-invalid="true"
-      class="email-input margin-bottom-2"
+      class="input email-input white-font margin-bottom-2"
       aria-describedby="input-email"
       v-model="email"
     />
@@ -31,7 +31,7 @@ export default {
     email: ""
   }),
   created() {
-    this.title = "Sign in";
+    this.title = "t-login";
     this.cb = this.redirectToNextPage.bind(this);
     this.$game.on(this.$game.SignUp, this.cb);
   },
@@ -88,7 +88,8 @@ export default {
   padding: 6px 151px;
   border-radius: 0;
   float: left;
-  border: 1px solid #666;
+  border: none;
   box-shadow: none;
+  background-color: #194368;
 }
 </style>
