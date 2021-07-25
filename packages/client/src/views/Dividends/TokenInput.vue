@@ -18,7 +18,12 @@
       >
     </div>
 
-    <AvailableLabel title="available" :currencyType="currency" @max="setMax" />
+    <AvailableLabel
+      class="margin-top-1"
+      title="available"
+      :currencyType="currency"
+      @max="setMax"
+    />
   </div>
 </template>
 

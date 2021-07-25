@@ -5,7 +5,11 @@
     <div class="flex flex-column widht-100 flex-items-start">
       <InputLabel title="amount" />
       <TokenInput ref="input" v-model="amount" :currency="currencyType" />
-      <AvailableLabel title="d-stake" :currencyType="stakedCurrency" />
+      <AvailableLabel
+        title="d-stake"
+        class="margin-top-1"
+        :currencyType="stakedCurrency"
+      />
 
       <div class="flex flex-center width-100">
         <CustomButton
