@@ -5,10 +5,10 @@
       >{{ $t(title) }}</span
     >
     <IconWithValue
-      iconClass="icon-dkt"
+      :iconClass="`icon-${currencyType}`"
       valueClass="grey-title font-size-18"
       :flip="true"
-      >{{ tokenBalance }}</IconWithValue
+      >{{ balance }}</IconWithValue
     >
   </div>
 </template>
@@ -17,12 +17,7 @@
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  props: ["currencyType", "title"],
-  components: { IconWithValue },
-  computed: {
-    tokenBalance() {
-      return this.$game.inventory.getCurrency(this.currencyType, 6);
-    }
-  }
+  props: ["currencyType", "title", "balance"],
+  components: { IconWithValue }
 };
 </script>

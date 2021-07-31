@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-inline flex-center flex-no-wrap">
+  <div class="flex-inline flex-items-center flex-no-wrap">
     <span
       v-if="!flip"
       class="value-icon"

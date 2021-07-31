@@ -31,9 +31,13 @@
         ></span>
       </div>
 
-      <span class="font-size-20 font-shadow flex-self-start">{{
-        $t("character-level", { level: level })
-      }}</span>
+      <span
+        class="font-size-20 font-shadow flex-self-start margin-bottom-half"
+        >{{ $t("character-level", { level: level }) }}</span
+      >
+      <IconWithValue iconClass="icon-exp" valueClass="font-size-15">
+        {{ $t("char-exp", { c: currentExp, n: nextExp }) }}
+      </IconWithValue>
 
       <span
         class="font-size-20 font-shadow rarity-legendary margin-top-1 font-weight-900 flex-self-start"
@@ -74,6 +78,7 @@ import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: [
@@ -85,8 +90,14 @@ export default {
     "nickname",
     "classIcon"
   ],
-  components: { CustomButton, Loot },
+  components: { CustomButton, Loot, IconWithValue },
   computed: {
+    currentExp() {
+      return this.$game.character.exp;
+    },
+    nextExp() {
+      return this.$game.getRequiredExperience(this.$game.character.level);
+    },
     equipment() {
       return [
         EquipmentSlots.Necklace,

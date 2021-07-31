@@ -1,17 +1,18 @@
 export function toDecimal(num, decimals) {
-  const str = num.toString().padStart(decimals, "0");
-  let decimal = "0";
+  let str = num.toString();
+  let decimal = "";
   if (str != "0") {
-    decimal =
-      str.slice(0, str.length - decimals) +
-      "." +
-      str.slice(str.length - decimals);
+    if (str.length < decimals) {
+      str = str.padStart(decimals - str.length, "0");
+      decimal = "0." + str.slice(0, str.length);
+    } else {
+      decimal =
+        str.slice(0, str.length - decimals) +
+        "." +
+        str.slice(str.length - decimals);
+    }
   }
-  if (decimal.match(/\./)) {
-    decimal = decimal.replace(/\.?0+$/, "");
-    decimal = "0" + decimal;
-  }
-  return decimal;
+  return decimal.replace(/(\.[0-9]*[1-9])0+$|\.0*$/, "$1");
 }
 
 export function toBigNumber(num, decimals) {

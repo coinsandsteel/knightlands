@@ -1,16 +1,13 @@
 <template>
   <div class="flex flex-center" @click="showHint">
     <IconWithValue
-      :flip="true"
+      :flip="flip"
       :iconMargin="true"
       iconClass="icon-info"
       class="pointer"
     >
       <slot></slot>
     </IconWithValue>
-    <!-- <portal to="overlay" v-if="showHint">
-      <slot name="hint"></slot>
-    </portal> -->
   </div>
 </template>
 
@@ -22,7 +19,7 @@ import { create } from "vue-modal-dialogs";
 const ShowHint = create(TutorialHint, "title", "texts");
 
 export default {
-  props: ["title", "texts", "component"],
+  props: ["title", "texts", "component", "flip"],
   components: { IconWithValue },
   methods: {
     async showHint() {

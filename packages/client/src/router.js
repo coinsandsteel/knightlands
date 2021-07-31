@@ -948,9 +948,14 @@ const router = new Router({
           component: () => import("./views/Dividends/Withdrawal.vue")
         },
         {
-          path: "divs-withdrawals",
-          name: "divs-withdrawals",
-          component: () => import("./views/Dividends/DividendsWithdrawals.vue")
+          path: "deposit",
+          name: "deposit",
+          component: () => import("./views/Dividends/Deposit.vue")
+        },
+        {
+          path: "history",
+          name: "history",
+          component: () => import("./views/Dividends/ActivityHistory.vue")
         },
         {
           name: "divs-shop",

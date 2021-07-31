@@ -3,6 +3,9 @@ import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
   mixins: [PromptMixin],
+  created() {
+    this._modalUp = false;
+  },
   methods: {
     async performRequest(request) {
       let timeout;
@@ -11,17 +14,24 @@ export default {
         return await request;
       } catch (exc) {
         console.error(exc);
-        this.showPrompt(
-          this.$t("prompt-snap-title"),
-          this.$t("prompt-snap-msg"),
-          [
-            {
-              type: "green",
-              title: this.$t("btn-ok"),
-              response: true
-            }
-          ]
-        );
+        if (!this._modalUp) {
+          let cb = async () => {
+            this._modalUp = true;
+            await this.showPrompt(
+              this.$t("prompt-snap-title"),
+              this.$t("prompt-snap-msg"),
+              [
+                {
+                  type: "green",
+                  title: this.$t("btn-ok"),
+                  response: true
+                }
+              ]
+            );
+            this._modalUp = false;
+          };
+          cb();
+        }
 
         throw exc;
       } finally {

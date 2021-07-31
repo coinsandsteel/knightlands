@@ -4,7 +4,7 @@
   >
     <span class="font-size-20 title">{{ $t(`l-type-${type}`) }}</span>
     <CustomButton type="grey" @click="$emit('view', type)">{{
-      $t("btn-preview")
+      $t("btn-inspect")
     }}</CustomButton>
   </div>
 </template>

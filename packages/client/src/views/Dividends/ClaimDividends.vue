@@ -22,6 +22,7 @@
       <div class="flex flex-center width-100">
         <CustomButton
           class="margin-top-3"
+          width="25rem"
           type="yellow"
           @click="claim"
           :disabled="cantClaim"

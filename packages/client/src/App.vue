@@ -158,6 +158,7 @@ import LockedSection from "@/components/LockedSection.vue";
 import Tutorial from "@/views/Tutorial/Tutorial.vue";
 import MusicButton from "@/components/MusicButton.vue";
 import Events from "@/../../knightlands-shared/events";
+import PromptMixin from "@/components/PromptMixin.vue";
 import { create } from "vue-modal-dialogs";
 
 import LevelUp from "@/views/LevelUp.vue";
@@ -190,6 +191,7 @@ export default {
     CastleMarker,
     LockedSection
   },
+  mixins: [PromptMixin],
   data() {
     return {
       showBackMenu: false,
@@ -306,6 +308,24 @@ export default {
         }
       }
     });
+
+    // this.$game.on(this.$game.ConnectionError, async () => {
+    //   this.$game.disconnect();
+
+    //   await this.showPrompt(
+    //     this.$t("prompt-conn-t"),
+    //     this.$t("prompt-conn-m"),
+    //     [
+    //       {
+    //         type: "green",
+    //         title: this.$t("btn-retry"),
+    //         response: true
+    //       }
+    //     ]
+    //   );
+
+    //   this.$game.connect();
+    // });
 
     this.$game.on(this.$game.Ready, () => {
       if (this.$route.matched.some(record => record.meta.requiresAuth)) {
@@ -620,7 +640,7 @@ export default {
 html {
   font-family: "Brandon", sans-serif;
   font-size: 8px;
-  line-height: 1;
+  line-height: 1.3;
   box-sizing: content-box;
 
   .fourk_screen({font-size: 10px;});
@@ -651,6 +671,7 @@ a:visited {
 }
 
 .footer-container {
+  position: sticky;
   height: 100%;
   & > div,
   span {

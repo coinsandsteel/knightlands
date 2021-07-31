@@ -34,6 +34,7 @@ class Game {
     this.WalletSignedIn = "wallet_sign_in";
     this.WalletSignedOut = "wallet_sign_out";
     this.WalletChanged = "wallet_changed";
+    this.ConnectionError = "conn_error";
     this.$store = store;
 
     this.notifications = new Notifications(store);
@@ -64,7 +65,8 @@ class Game {
         dividends: {},
         dailyShop: {},
         subscriptions: {},
-        chests: {}
+        chests: {},
+        depositorId: ""
       })
     });
 
@@ -94,6 +96,7 @@ class Game {
     this._socket.on("connect", this._handleConnection.bind(this));
     this._socket.on("disconnect", this._handleDisconnect.bind(this));
     this._socket.on("authStateChange", this._handleAuthentication.bind(this));
+    this._socket.on("error", this._handleSocketError.bind(this));
 
     this._socket.on(
       Events.InventoryUpdate,
@@ -156,6 +159,10 @@ class Game {
     this._character = new CharacterModel(this._socket, this);
 
     Vue.prototype.$character = this._character;
+  }
+
+  get depositorId() {
+    return this._vm.depositorId;
   }
 
   dailyRewardStep() {
@@ -351,6 +358,10 @@ class Game {
     return `${address.substr(0, 4)}...${address.substr(-4)}`;
   }
 
+  disconnect() {
+    this._socket.disconnect();
+  }
+
   connect() {
     this._socket.connect();
   }
@@ -387,16 +398,8 @@ class Game {
         this._signInResolve = resolve;
       } catch (exc) {
         // signing was rejected
-        console.log("signIn", exc);
-
-        if (exc.message && exc.message.includes("not unlocked")) {
-          //reset walletReady
-          this._vm.walletReady = false;
-        }
-
-        if (!exc.message && !exc.includes("authenticated")) {
-          reject();
-        }
+        this._vm.walletReady = false;
+        reject(exc);
       }
     });
   }
@@ -495,6 +498,10 @@ class Game {
     this._vm.$nextTick(() => {
       this._vm.$emit(this.Ready, data.isAuthenticated);
     });
+  }
+
+  _handleSocketError() {
+    this._vm.$emit(this.ConnectionError);
   }
 
   _handleDisconnect(errorCode) {
@@ -871,6 +878,7 @@ class Game {
         this._vm.dividends = info.dividends;
         this._vm.dailyShop = info.dailyShop;
         this._vm.purchasedIaps = info.purchasedIaps;
+        this._vm.depositorId = info.depositorId;
 
         if (info.chests) {
           this.mergeObjects(this._vm, this._vm.chests, info.chests);
@@ -1424,11 +1432,13 @@ class Game {
       .response;
   }
 
-  async withdrawTokens(type, amount) {
+  async withdrawTokens(to, type, chain, amount) {
     return (
-      await this._wrapOperation(Operations.WithdrawDividendToken, {
+      await this._wrapOperation(Operations.WithdrawTokens, {
+        to,
         type,
-        amount
+        amount,
+        chain
       })
     ).response;
   }
@@ -1449,10 +1459,9 @@ class Game {
     ).response;
   }
 
-  async fetchPendingDividendTokenWithdrawal() {
-    return (
-      await this._wrapOperation(Operations.FetchPendingDividendTokenWithdrawal)
-    ).response;
+  async fetchWithdrawTokensStatus() {
+    return (await this._wrapOperation(Operations.GetWithdrawTokensStatus))
+      .response;
   }
 
   async sendDividendTokenWithdrawal(amount, nonce, signature) {

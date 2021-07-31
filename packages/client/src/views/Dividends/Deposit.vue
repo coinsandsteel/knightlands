@@ -6,23 +6,20 @@
       <InputLabel title="token" />
       <TokenSelector v-model="selectedToken" />
 
-      <InputLabel title="address" />
-      <AddressInput v-model="address" />
-
       <InputLabel title="network" />
       <NetworkSelector v-model="selectedNetwork" />
 
       <InputLabel title="amount" />
-      <TokenInput v-model="amount" :currency="selectedToken" />
+      <TokenInput v-model="amount" :currency="selectedToken" :max="max" />
 
       <div class="flex flex-center width-100">
         <CustomButton
           class="margin-top-3"
           width="25rem"
           type="yellow"
-          :disabled="cantWithdraw"
-          @click="withdaw"
-          >{{ $t("btn-withdraw") }}</CustomButton
+          :disabled="cantDeposit"
+          @click="deposit"
+          >{{ $t("btn-deposit") }}</CustomButton
         >
       </div>
     </div>
@@ -33,14 +30,13 @@
 import PromptMixin from "@/components/PromptMixin.vue";
 import AppSection from "@/AppSection.vue";
 import TokenInput from "./TokenInput.vue";
-import AddressInput from "./AddressInput.vue";
 import InputLabel from "./InputLabel.vue";
 import NetworkSelector from "./NetworkSelector.vue";
 import TokenSelector from "./TokenSelector.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import BlockchainUtilsMixin from "./BlockchainUtilsMixin";
-
+import { toDecimal } from "../../blockchain/utils";
 import ConnectWallet from "@/views/Account/ConnectWallet.vue";
 import { create } from "vue-modal-dialogs";
 
@@ -54,7 +50,6 @@ export default {
     BlockchainUtilsMixin
   ],
   components: {
-    AddressInput,
     TokenInput,
     CustomButton,
     NetworkSelector,
@@ -64,65 +59,89 @@ export default {
   data: () => ({
     amount: "",
     selectedNetwork: "",
-    address: "",
-    selectedToken: ""
+    selectedToken: "",
+    balance: 0
   }),
   created() {
-    this.title = "w-token-withdrawal";
+    this.title = "w-token-deposit";
     this.$options.useRouterBack = true;
   },
+  activated() {
+    this.tryGetBalance();
+  },
+  watch: {
+    selectedNetwork: {
+      immediate: true,
+      async handler() {
+        if (!this.selectedNetwork) {
+          return;
+        }
+
+        await ShowWallet(this.selectedNetwork);
+        this.tryGetBalance();
+      }
+    },
+    selectedToken: {
+      immediate: true,
+      handler() {
+        this.tryGetBalance();
+      }
+    }
+  },
   computed: {
-    cantWithdraw() {
+    cantDeposit() {
       return (
         this.selectedNetwork == "" ||
         this.selectedToken == "" ||
         this.noAmount ||
-        this.amount == "0" ||
-        !this.isAddress(this.selectedNetwork, this.address) ||
-        this.amount > this.$game.inventory.getCurrency(this.selectedToken, 6)
+        this.amount == "0"
       );
     },
     noAmount() {
-      return !/^((0(\.\d{1,18})?)|([1-9]\d*(\.\d{1,18})?))$/.test(this.amount);
+      return !/^((0(\.\d{1,6})?)|([1-9]\d*(\.\d{1,6})?))$/.test(this.amount);
+    },
+    max() {
+      return this.balance;
     }
   },
   methods: {
-    async withdaw() {
-      let ok = await this.showPrompt(
-        this.$t("cnfrm-wrawl-title"),
-        this.$t("cnfrm-wrawl-msg"),
-        [
-          {
-            type: "green",
-            title: this.$t("btn-confirm"),
-            response: true
-          },
-          {
-            type: "red",
-            title: this.$t("btn-cancel"),
-            response: false
-          }
-        ]
-      );
+    async tryGetBalance() {
+      if (this.selectedToken && this.selectedNetwork) {
+        const bigAMount = await this.$game.blockchain.getTokenBalance(
+          this.selectedToken
+        );
+
+        this.balance = toDecimal(bigAMount.toString(), 6);
+      }
+    },
+    async deposit() {
+      let ok = true;
+      // let ok = await this.showPrompt(
+      //   this.$t("cnfrm-dpst-title"),
+      //   this.$t("cnfrm-wrawl-msg"),
+      //   [
+      //     {
+      //       type: "green",
+      //       title: this.$t("btn-confirm"),
+      //       response: true
+      //     },
+      //     {
+      //       type: "red",
+      //       title: this.$t("btn-cancel"),
+      //       response: false
+      //     }
+      //   ]
+      // );
       if (ok === true) {
-        const withdrawal = await this.performRequest(
-          this.$game.withdrawTokens(
-            this.address,
+        await this.performRequest(
+          this.$game.blockchain.depositTokens(
             this.selectedToken,
-            this.selectedNetwork,
+            this.$game.blockchain.getAddress(),
+            this.$game.depositorId,
             this.amount
           )
         );
-        await ShowWallet(this.selectedNetwork);
-        await this.performRequest(
-          this.$game.blockchain.finishTokenWithdrawal(
-            this.selectedToken,
-            withdrawal._id,
-            withdrawal.amount,
-            withdrawal.nonce,
-            withdrawal.signature
-          )
-        );
+
         this.amount = "";
       }
     }

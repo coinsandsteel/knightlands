@@ -8,6 +8,7 @@
       <AvailableLabel
         title="d-stake"
         class="margin-top-1"
+        :balance="stakeAmount"
         :currencyType="stakedCurrency"
       />
 
@@ -49,7 +50,7 @@ export default {
     AvailableLabel
   },
   data: () => ({
-    amount: "0",
+    amount: "",
     currencyType: CurrencyType.Dkt,
     stakedCurrency: CurrencyType.StakedDkt
   }),
@@ -57,6 +58,9 @@ export default {
     this.title = "w-token-stake";
   },
   computed: {
+    stakeAmount() {
+      return this.$game.inventory.getCurrency(CurrencyType.StakedDkt, 6);
+    },
     cantStake() {
       return this.noAmount || this.amount == "0";
     },
@@ -88,6 +92,7 @@ export default {
       if (ok === true) {
         await this.performRequest(this.$game.stakeTokens(this.amount));
         this.$refs.input.reset();
+        this.amount = "";
       }
     }
   }

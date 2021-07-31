@@ -9,7 +9,7 @@
         :disabled="disable"
       />
 
-      <span class="icon-dkt flex-1"></span>
+      <span class="flex-1" :class="`icon-${currency}`"></span>
       <span
         v-if="!disable"
         class="flex-2 font-size-25 font-weight-900 margin-right-2"
@@ -22,6 +22,7 @@
       class="margin-top-1"
       title="available"
       :currencyType="currency"
+      :balance="tokenBalance"
       @max="setMax"
     />
   </div>
@@ -32,7 +33,7 @@ import AvailableLabel from "./AvailableLabel.vue";
 
 export default {
   components: { AvailableLabel },
-  props: ["value", "currency", "disable"],
+  props: ["value", "currency", "disable", "max"],
   data: () => ({
     valueInput: 0
   }),
@@ -49,6 +50,9 @@ export default {
   },
   computed: {
     tokenBalance() {
+      if (this.max !== undefined && this.max !== null) {
+        return this.max;
+      }
       return this.$game.inventory.getCurrency(this.currency, 6);
     }
   },
@@ -57,7 +61,7 @@ export default {
       this.valueInput = 0;
     },
     setMax() {
-      this.valueInput = this.$game.inventory.getCurrency(this.currency, 6);
+      this.valueInput = this.tokenBalance;
     }
   }
 };

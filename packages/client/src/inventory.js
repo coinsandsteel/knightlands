@@ -70,10 +70,8 @@ class Inventory {
   }
 
   getCurrency(type, precision = 2) {
-    return (
-      Math.floor((this._vm.currencies[type] || 0) * Math.pow(10, precision)) /
-      Math.pow(10, precision)
-    );
+    const precc = Math.pow(10, precision);
+    return Math.floor((this._vm.currencies[type] || 0) * precc) / precc;
   }
 
   setCurrency(type, value) {
