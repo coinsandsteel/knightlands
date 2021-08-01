@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column flex-end flex-items-center relative">
+  <div class="screen-content flex-end flex-items-center full-flex">
     <div class="home-art screen-background"></div>
 
     <div

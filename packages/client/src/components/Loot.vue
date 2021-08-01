@@ -21,7 +21,7 @@
       ></span>
 
       <span
-        v-if="showEquipped && itemData && itemData.equipped"
+        v-if="showEquipped && itemData && itemData.equipped && !equipment"
         class="equipped"
         :class="{ 'on-unit': isEquippedOnUnit }"
       ></span>

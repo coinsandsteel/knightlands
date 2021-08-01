@@ -14,12 +14,16 @@
         <div class="section-decor right"></div>
       </div>
 
-      <keep-alive>
-        <router-view
-          class="content dummy-height flex flex-no-wrap flex-column"
-          v-if="showContent"
-        />
-      </keep-alive>
+      <div class="full-flex flex flex-column width-100" v-bar>
+        <div class="full-flex screen-content width-100">
+          <keep-alive>
+            <router-view
+              class="content dummy-height flex flex-no-wrap flex-column"
+              v-if="showContent"
+            />
+          </keep-alive>
+        </div>
+      </div>
 
       <div class="footer flex-item-center">
         <span
@@ -428,6 +432,10 @@ export default {
   height: 100%;
 }
 
+.content-wrapper {
+  align-items: stretch;
+}
+
 @sectionPaddingRight: 4rem;
 @sectionPaddingTop: 0.4rem;
 
@@ -520,7 +528,7 @@ export default {
 
 .content {
   min-height: 0; // fix for overflowed content inside flex item
-  flex: 1 1;
+  flex: 1;
 }
 
 .root-menu {
@@ -646,7 +654,6 @@ export default {
 @import (reference) "./style/common.less";
 
 html {
-  overscroll-behavior: none;
   font-family: "Brandon", sans-serif;
   font-size: 8px;
   line-height: 1.3;
@@ -670,7 +677,6 @@ body {
   min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   min-height: calc(var(--vh, 1vh) * 100);
   margin: auto;
-  overflow: scroll;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

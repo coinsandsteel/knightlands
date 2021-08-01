@@ -4,6 +4,7 @@ import { create as CreateDialog } from "vue-modal-dialogs";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import ItemEquipWarning from "./ItemEquipWarning.vue";
 import UnitSummoned from "./UnitSummoned.vue";
+import ArmySummonerResponseHandler from "@/views/Summon/Army/ArmySummonerResponseHandler.vue";
 
 const ShowItems = CreateDialog(
   ItemsReceived,
@@ -19,6 +20,7 @@ const ShowUnitsSummoned = CreateDialog(UnitSummoned, "units");
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
+  mixins: [ArmySummonerResponseHandler],
   methods: {
     async showEquipWarning(item) {
       return ShowEquipWarning(item);
@@ -65,10 +67,12 @@ export default {
           {
             const count = args[0] || 1;
             this.request = this.$game.useItem(item.id, count);
+            const units = await this.handleSummon(this.request, count);
 
-            const units = await this.request;
-            this.$game.handleArmySummoned(units);
-            await ShowUnitsSummoned(units);
+            if (units) {
+              this.$game.handleArmySummoned(units);
+              await ShowUnitsSummoned(units);
+            }
           }
           break;
       }

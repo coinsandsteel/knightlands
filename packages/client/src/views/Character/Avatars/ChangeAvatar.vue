@@ -63,12 +63,10 @@ export default {
         this.$game.setAvatar(this.$game.character.avatar)
       );
 
-      this.handleClose();
+      this.$close();
     },
-    handleClose() {
-      if (this.hasAvatar) {
-        this.$close();
-      }
+    async handleClose() {
+      await this.submit();
     },
     selectAvatar(level, id) {
       if (this.metLevel(level)) {

@@ -95,12 +95,6 @@
               v-if="maxSummons >= 10"
               >{{ $t("btn-open-shards", { count: 10 }) }}</CustomButton
             >
-            <CustomButton
-              type="yellow"
-              @click="handleClose(ItemActions.SummonUnit, count)"
-              v-if="maxSummons >= 50"
-              >{{ $t("btn-open-shards", { count: maxSummons }) }}</CustomButton
-            >
           </template>
 
           <CustomButton

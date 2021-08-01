@@ -78,7 +78,7 @@ export default {
 .enemy-view {
   width: 100%;
   min-height: 25vh;
-  max-height: 50vh;
+  max-height: 40vh;
   justify-content: center;
   background-repeat: no-repeat;
   background-position: center;
