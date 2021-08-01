@@ -49,11 +49,11 @@ export default {
   mixins: [HintHandler],
   components: { ItemSelector, ProgressBar },
   data: () => ({
-    restoredValue: 0
+    restoredValue: 0,
+    usedItems: {}
   }),
   mounted() {
     this.selectedItems = {};
-    this.usedItems = {};
   },
   computed: {
     maxStat() {
@@ -109,10 +109,10 @@ export default {
         stat: action.stat
       };
 
-      this.usedItems[item.template] = {
+      this.$set(this.usedItems, item.template, {
         count,
         id: item.id
-      };
+      });
 
       let restoredValue = 0;
       for (let itemId in this.selectedItems) {

@@ -111,7 +111,6 @@ export default {
           this.records.push(...newRecords.records);
           this.currentPage++;
         }
-        console.log(this.records);
       } finally {
         this.fetchInProcess = false;
       }

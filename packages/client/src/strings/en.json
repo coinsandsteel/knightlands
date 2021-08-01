@@ -3214,5 +3214,10 @@
     "btn-a-more": "Expand",
     "char-exp": "{c} / {n}",
     "prompt-conn-t": "Connection error",
-    "prompt-conn-m": "Connection was interrupted. Please try again later."
+    "prompt-conn-m": "Connection was interrupted. Please try again later.",
+    "btn-lck-drop": "Lucky loot",
+    "w-lucky-drops": "Quest lucky drops",
+    "window-summon-raid": "Raid summoning",
+    "paid_raid": "Group",
+    "lck-req": "Luck required: {luck}"
 }

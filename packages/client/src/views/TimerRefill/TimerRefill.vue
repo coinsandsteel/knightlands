@@ -135,10 +135,11 @@ export default {
       if (this.methodChosen == 0) {
         return this.hardCost <= this.$game.hardCurrency;
       }
-
+      console.log(this.items);
       if (this.methodChosen == 1 && this.items) {
         for (let i in this.items) {
           if (this.items[i].count > 0) {
+            console.log("true");
             return true;
           }
         }

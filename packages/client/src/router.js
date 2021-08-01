@@ -668,7 +668,8 @@ const router = new Router({
       name: "",
       component: () => import("./views/Army/ArmyRoot.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        music: "castle"
       },
       children: [
         {
@@ -870,6 +871,15 @@ const router = new Router({
       props: true,
       name: "quests",
       component: Quest,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/home/quest-drops/:stage",
+      props: true,
+      name: "lucky-drops",
+      component: () => import("./views/Quests/LuckyDrops.vue"),
       meta: {
         requiresAuth: true
       }

@@ -75,6 +75,10 @@
       v-if="isActive && zone !== undefined && zones.length > 0"
       :slim="true"
     >
+      <CustomButton type="yellow" @click="openLuckyDrops">{{
+        $t("btn-lck-drop")
+      }}</CustomButton>
+
       <CustomButton
         v-if="allFinished"
         @click="handleResetProgress"
@@ -150,17 +154,23 @@ export default {
     }
   },
   computed: {
-    currentStageStage() {
+    currentStage() {
       return this.$store.getters.getZoneStage;
     },
     isZoneLocked() {
-      return this.$game.getZoneLocked(this.zone, this.currentStageStage);
+      return this.$game.getZoneLocked(this.zone, this.currentStage);
     },
     showQuest() {
       return this.quest !== undefined && this.currentQuest;
     }
   },
   methods: {
+    openLuckyDrops() {
+      this.$router.push({
+        name: "lucky-drops",
+        params: { stage: this.currentStage }
+      });
+    },
     isLocked(zone) {
       return this.$game.isZoneLocked(zone._id);
     },

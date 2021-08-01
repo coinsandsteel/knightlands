@@ -1046,7 +1046,6 @@ class Game {
   async _wrapOperation(operation, ...args) {
     try {
       let result = await this._request(operation, ...args);
-      this._handleCommit(result.changes);
       return result;
     } catch (exc) {
       console.log(exc);

@@ -517,6 +517,7 @@ export default {
 }
 
 .root-menu {
+  width: 100%;
   justify-content: space-between;
   background-color: @footerColor;
 }
@@ -638,6 +639,7 @@ export default {
 @import (reference) "./style/common.less";
 
 html {
+  overscroll-behavior: none;
   font-family: "Brandon", sans-serif;
   font-size: 8px;
   line-height: 1.3;
@@ -656,9 +658,12 @@ html {
 }
 
 body {
-  height: 100vh;
-  min-height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+  min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  min-height: calc(var(--vh, 1vh) * 100);
   margin: auto;
+  overflow: scroll;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -671,7 +676,6 @@ a:visited {
 }
 
 .footer-container {
-  position: sticky;
   height: 100%;
   & > div,
   span {
