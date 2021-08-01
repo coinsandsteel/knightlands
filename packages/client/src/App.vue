@@ -14,16 +14,12 @@
         <div class="section-decor right"></div>
       </div>
 
-      <div class="full-flex flex flex-column width-100" v-bar>
-        <div class="full-flex screen-content width-100">
-          <keep-alive>
-            <router-view
-              class="content dummy-height flex flex-no-wrap flex-column"
-              v-if="showContent"
-            />
-          </keep-alive>
-        </div>
-      </div>
+      <keep-alive>
+        <router-view
+          class="content dummy-height flex flex-no-wrap flex-column"
+          v-if="showContent"
+        />
+      </keep-alive>
 
       <div class="footer flex-item-center">
         <span

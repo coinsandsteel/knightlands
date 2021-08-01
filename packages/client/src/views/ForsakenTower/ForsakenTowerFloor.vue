@@ -1,77 +1,82 @@
 <template>
-  <div class="relative flex flex-column flex-center flex-no-wrap">
-    <Title class="enemy-title-font font-outline" :stackBottom="true">{{
-      name
-    }}</Title>
-    <EnemyView
-      ref="enemyView"
-      :image="enemyImage"
-      background="/images/castle.png"
-    >
-      <FloatingTextContainer
-        ref="floatingText"
-        :enemyView="$refs.enemyView"
-        class="absolute-stretch"
-      ></FloatingTextContainer>
-    </EnemyView>
-
-    <div class="color-panel-1 flex flex-column width-100 padding-1">
-      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
-        $t("tower-enemy-hp")
-      }}</span>
-      <ProgressBar
-        :thresholds="barThreshold"
-        v-model="enemyHealth"
-        :maxValue="floor.maxHealth"
-      ></ProgressBar>
-
-      <span class="margin-top-3 margin-bottom-1 font-size-22">{{
-        $t("tower-player-hp")
-      }}</span>
-      <ProgressBar
-        v-model="playerHealth"
-        :maxValue="floor.userMaxHealth"
-      ></ProgressBar>
-
-      <div v-if="lost" class="flex margin-top-2 width-100 flex-center">
-        <PromisedButton
-          :promise="request"
-          @click="close(true)"
-          width="15rem"
-          type="red"
-          >{{ $t("continue") }}</PromisedButton
-        >
-      </div>
-
-      <div
-        v-else-if="!finished"
-        class="flex margin-top-2 flex-center width-100 flex-space-evenly"
+  <div
+    class="relative flex flex-column flex-center flex-no-wrap height-100"
+    v-bar
+  >
+    <div class="width-100">
+      <Title class="enemy-title-font font-outline" :stackBottom="true">{{
+        name
+      }}</Title>
+      <EnemyView
+        ref="enemyView"
+        :image="enemyImage"
+        background="/images/castle.png"
       >
-        <AttackButton
-          :promise="request"
-          @click="attack"
-          width="15rem"
-          type="yellow"
-          >{{ $t("btn-attack") }}</AttackButton
-        >
+        <FloatingTextContainer
+          ref="floatingText"
+          :enemyView="$refs.enemyView"
+          class="absolute-stretch"
+        ></FloatingTextContainer>
+      </EnemyView>
 
-        <PromisedButton
-          :promise="request"
-          @click="cancel"
-          width="15rem"
-          type="red"
-          >{{ $t("btn-cancel") }}</PromisedButton
-        >
-      </div>
+      <div class="color-panel-1 flex flex-column width-100 padding-1">
+        <span class="margin-top-1 margin-bottom-1 font-size-22">{{
+          $t("tower-enemy-hp")
+        }}</span>
+        <ProgressBar
+          :thresholds="barThreshold"
+          v-model="enemyHealth"
+          :maxValue="floor.maxHealth"
+        ></ProgressBar>
 
-      <div v-else class="flex margin-top-2 width-100 flex-center">
-        <PromisedButton
-          :promise="request"
-          @click="collect"
-          width="15rem"
-          type="green"
-          >{{ $t("claim-reward") }}</PromisedButton
+        <span class="margin-top-3 margin-bottom-1 font-size-22">{{
+          $t("tower-player-hp")
+        }}</span>
+        <ProgressBar
+          v-model="playerHealth"
+          :maxValue="floor.userMaxHealth"
+        ></ProgressBar>
+
+        <div v-if="lost" class="flex margin-top-2 width-100 flex-center">
+          <PromisedButton
+            :promise="request"
+            @click="close(true)"
+            width="15rem"
+            type="red"
+            >{{ $t("continue") }}</PromisedButton
+          >
+        </div>
+
+        <div
+          v-else-if="!finished"
+          class="flex margin-top-2 flex-center width-100 flex-space-evenly"
         >
+          <AttackButton
+            :promise="request"
+            @click="attack"
+            width="15rem"
+            type="yellow"
+            >{{ $t("btn-attack") }}</AttackButton
+          >
+
+          <PromisedButton
+            :promise="request"
+            @click="cancel"
+            width="15rem"
+            type="red"
+            >{{ $t("btn-cancel") }}</PromisedButton
+          >
+        </div>
+
+        <div v-else class="flex margin-top-2 width-100 flex-center">
+          <PromisedButton
+            :promise="request"
+            @click="collect"
+            width="15rem"
+            type="green"
+            >{{ $t("claim-reward") }}</PromisedButton
+          >
+        </div>
       </div>
     </div>
   </div>
