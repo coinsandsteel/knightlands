@@ -1,12 +1,13 @@
 <template>
   <div class="content">
+    <div class="screen-background"></div>
     <Title class="margin-top-2" :stackBottom="true">{{
       $t("dkt-chart")
     }}</Title>
     <VueApexCharts
       ref="chart"
       width="100%"
-      height="50%"
+      height="300rem"
       type="area"
       :options="chartOptions"
       :series="series"
@@ -178,7 +179,8 @@ export default {
 
 <style lang="less" scoped>
 .content {
-  position: absolute;
+  z-index: 50;
+  position: relative;
   left: 0;
   right: 0;
   bottom: 0;

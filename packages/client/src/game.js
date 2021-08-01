@@ -1078,6 +1078,12 @@ class Game {
     });
   }
 
+  async setAvatar(id) {
+    await this._wrapOperation(Operations.ChangeAvatar, {
+      id
+    });
+  }
+
   async resetZone(zone) {
     zone = zone * 1;
     let stage = this.$store.getters.getZoneStage;

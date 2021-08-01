@@ -11,6 +11,7 @@
       :item="item"
       :showLocked="showLocked"
       :itemProps="lootProps"
+      :preview="preview"
       class="margin-left-1 margin-right-1"
     >
       <template v-slot:level-bar>
@@ -52,7 +53,8 @@ export default {
     onlyStats: Boolean,
     lootProps: Object,
     quantity: Number,
-    showLocked: Boolean
+    showLocked: Boolean,
+    preview: Boolean
   },
   components: { ItemProperties, Title, ItemHeader, ItemStats },
   computed: {

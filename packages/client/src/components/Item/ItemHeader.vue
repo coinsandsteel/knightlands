@@ -40,7 +40,7 @@
             class="full-flex"
             barType="green"
             :maxValue="nextExp"
-            plusButton="green"
+            :plusButton="preview ? '' : 'green'"
             @refill="handleLevelProgressClick"
           ></ProgressBar>
         </div>
@@ -56,7 +56,7 @@ import LockToggle from "@/components/LockToggle.vue";
 import ItemGetterMixin from "./ItemGetterMixin.vue";
 
 export default {
-  props: ["itemProps", "showLocked"],
+  props: ["itemProps", "showLocked", "preview"],
   mixins: [ItemGetterMixin],
   components: {
     Loot,
@@ -79,12 +79,20 @@ export default {
   },
   methods: {
     upgradeItem() {
+      if (this.preview) {
+        return;
+      }
+
       this.$router.push({
         name: "unbind-item",
         params: { itemId: this.item.id }
       });
     },
     handleLevelProgressClick() {
+      if (this.preview) {
+        return;
+      }
+
       this.$router.push({
         name: "upgrade-item",
         params: { itemId: this.item.id }

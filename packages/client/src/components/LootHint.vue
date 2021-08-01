@@ -12,6 +12,7 @@
         :showLocked="showLocked"
         :item="item"
         :hideTitle="true"
+        :preview="preview"
         class="width-80 center"
       ></ItemInfo>
 
@@ -156,7 +157,8 @@ export default {
       default: true
     },
     equippedItems: Object,
-    index: Number
+    index: Number,
+    preview: Boolean
   },
   data: () => ({
     ItemActions

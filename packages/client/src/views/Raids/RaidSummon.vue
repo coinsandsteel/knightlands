@@ -49,7 +49,7 @@
               <span class="icon-info dark"></span>
             </custom-button>
 
-            <custom-button type="grey" @click="showChart = true">
+            <custom-button type="grey" @click="showChart = true" v-if="isPayed">
               <span class="icon-chart"></span>
             </custom-button>
           </div>
@@ -75,10 +75,16 @@
                 type="yellow"
                 @click="confirmSummon"
                 id="btn-summon"
+                width="20rem"
               >
                 <span>{{ $t("btn-summon") }}</span>
               </CustomButton>
-              <CustomButton type="grey" @click="goToShop" v-if="isPayed">
+              <CustomButton
+                type="grey"
+                @click="goToShop"
+                v-if="isPayed"
+                width="20rem"
+              >
                 {{ $t("pur-tickets") }}
               </CustomButton>
             </div>

@@ -39,7 +39,8 @@ class CharacterModel {
         exp: 0,
         buffResolver: null,
         buffs: [],
-        nickname: null
+        nickname: null,
+        avatar: 0
       })
     });
 
@@ -98,6 +99,14 @@ class CharacterModel {
     this._vm.exp = value;
   }
 
+  get avatar() {
+    return this._vm.avatar;
+  }
+
+  set avatar(v) {
+    this._vm.avatar = v;
+  }
+
   getMaxStat(stat) {
     return this._vm.stats[stat];
   }
@@ -135,6 +144,7 @@ class CharacterModel {
     this._vm.nickname = data.nickname;
     this._vm.class = data.class;
     this._vm.exp = data.exp;
+    this._vm.avatar = data.avatar || 0;
     this._vm.freeAttributePoints = data.freeAttributePoints;
 
     this._vm.buffs = data.buffs;

@@ -173,6 +173,9 @@ const ShowChangeNickname = create(ChangeNickname);
 import ItemsReceived from "@/components/ItemsReceived.vue";
 const ShowItemsReceived = create(ItemsReceived, "items", "soft", "hard");
 
+import ChangeAvatar from "@/views/Character/Avatars/ChangeAvatar.vue";
+const ShowChangeAvatar = create(ChangeAvatar);
+
 export default {
   components: {
     MusicButton,
@@ -297,6 +300,10 @@ export default {
 
       if (!this.$game.character.nickname) {
         await ShowChangeNickname();
+      }
+
+      if (!this.$game.character.avatar) {
+        await ShowChangeAvatar();
       }
     });
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));

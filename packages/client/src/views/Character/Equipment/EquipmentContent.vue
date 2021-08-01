@@ -4,7 +4,7 @@
     class="equipment-container flex flex-space-evenly flex-no-wrap font-weight-900"
   >
     <div class="equipment-slots relative flex">
-      <img class="heroImage" src="/images/portraits/test.png" />
+      <Avatar></Avatar>
       <loot
         v-for="slot in equipment"
         :key="slot"
@@ -19,7 +19,7 @@
     </div>
 
     <div class="flex flex-column padding-top-1">
-      <div class="flex flex-items-center flex-self-start margin-bottom-2">
+      <div class="flex flex-items-center flex-self-start margin-bottom-half">
         <span :class="classIcon" @click="$emit('changeClass')"></span>
         <span class="font-size-22 font-weight-900 font-shadow">{{
           nickname
@@ -79,6 +79,7 @@ import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import Avatar from "../Avatars/Avatar.vue";
 
 export default {
   props: [
@@ -90,7 +91,7 @@ export default {
     "nickname",
     "classIcon"
   ],
-  components: { CustomButton, Loot, IconWithValue },
+  components: { CustomButton, Loot, IconWithValue, Avatar },
   computed: {
     currentExp() {
       return this.$game.character.exp;
@@ -134,10 +135,6 @@ export default {
 
 .attribute {
   margin-left: 1rem;
-}
-
-.heroImage {
-  max-width: 8rem;
 }
 
 .equipment-slots {

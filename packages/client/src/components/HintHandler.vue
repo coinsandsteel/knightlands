@@ -10,7 +10,8 @@ const Hint = CreateDialog(
   "actions",
   "buttons",
   "showButtons",
-  "equippedItems"
+  "equippedItems",
+  "preview"
 );
 
 export default {
@@ -18,7 +19,7 @@ export default {
     async showHint(
       item,
       buttons,
-      options = { showButtons: true, actions: { equip: true } }
+      options = { showButtons: true, actions: { equip: true }, preview: false }
     ) {
       buttons = buttons || [];
 
@@ -34,11 +35,15 @@ export default {
         options.actions || {},
         buttons,
         showButtons,
-        options.equippedItems
+        options.equippedItems,
+        options.preview
       );
     },
     async handleHint(item) {
       return this.showHint(item, undefined, {});
+    },
+    async handlePreviewHint(items) {
+      return this.showHint(items, [], { preview: true });
     }
   }
 };
