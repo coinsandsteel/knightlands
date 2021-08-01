@@ -4,7 +4,7 @@
     :class="{ 'color-panel-2': odd }"
   >
     <span class="font-size-18 margin-bottom-1">{{
-      $t("with-id", { tx: withdrawal._id })
+      $t("with-id", { tx: id })
     }}</span>
 
     <span class="font-size-18 margin-bottom-1">{{
@@ -13,7 +13,7 @@
 
     <IconWithValue
       valueClass="font-size-18"
-      :iconClass="getIcon(withdrawal.blockchainId)"
+      :iconClass="getIcon(data.blockchainId)"
       :flip="true"
       >{{ amount }}</IconWithValue
     >
@@ -33,11 +33,11 @@ import WalletMixin from "@/components/WalletMixin.vue";
 
 export default {
   mixins: [BlockchainUtilsMixin, NetworkRequestErrorMixin, WalletMixin],
-  props: ["data", "odd"],
+  props: ["data", "odd", "id", "chain"],
   components: { CustomButton, IconWithValue },
   computed: {
     amount() {
-      return this.toDecimal(this.data.blockchainId, this.data.amount);
+      return this.toDecimal(this.chain, this.data.amount);
     },
     date() {
       return new Date(this.data.date);
@@ -45,19 +45,15 @@ export default {
   },
   methods: {
     async withdraw() {
-      try {
-        await this.showWallet(this.data.blockchainId);
-        await this.performRequest(
-          this.$game.blockchain.finishDividendsWithdrawal(
-            this.data._id,
-            this.data.amount,
-            this.data.nonce,
-            this.data.signature
-          )
-        );
-      } finally {
-        await this.fetchWithdrawals();
-      }
+      await this.showWallet(this.chain);
+      await this.performRequest(
+        this.$game.blockchain.finishDividendsWithdrawal(
+          this.id,
+          this.data.amount,
+          this.data.nonce,
+          this.data.signature
+        )
+      );
     }
   }
 };

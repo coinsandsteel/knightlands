@@ -40,7 +40,7 @@ export default {
   components: { CustomButton, IconWithValue },
   computed: {
     amount() {
-      return this.toDecimal(this.data.blockchainId, this.data.amount);
+      return this.toDecimal(this.chain, this.data.amount);
     },
     dateFormatted() {
       return new Date(this.date);

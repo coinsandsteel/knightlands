@@ -6,7 +6,7 @@
       @onClick="handleTab"
     ></IconTabs> -->
     <div class="full-flex height-100 dummy-height relative">
-      <div class="wrapper dummy-height">
+      <div class="wrapper dummy-height height-100">
         <RecycleScroller
           ref="scroller"
           class="width-100 height-100"
@@ -164,6 +164,8 @@ export default {
 
         return 0;
       });
+
+      console.log(recipes);
     },
     handleAvailableToggle(value) {
       this.$store.commit("setAvailableSwitchInCraftingList", {

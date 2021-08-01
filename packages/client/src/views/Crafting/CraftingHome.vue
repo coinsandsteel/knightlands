@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content flex-end padding-bottom-5">
+  <div class="screen-content flex-end padding-bottom-5 full-flex">
     <div class="art screen-background"></div>
     <MenuIconRow>
       <MenuIcon

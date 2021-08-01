@@ -81,7 +81,7 @@ export default {
     currentTab: MainHands
   }),
   created() {
-    this.title = "window-elem-weapons";
+    this.title = "window-new-elem";
     this.$options.useRouterBack = true;
   },
   computed: {

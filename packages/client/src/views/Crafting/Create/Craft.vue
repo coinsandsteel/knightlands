@@ -1,5 +1,5 @@
 <template>
-  <Promised class="screen-content" :promise="request">
+  <Promised class="screen-content full-flex" :promise="request">
     <template v-slot:combined="{ isPending, isDelayOver }">
       <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
       <SoundEffect ref="successFx" :files="['craft_success']" channel="fx" />

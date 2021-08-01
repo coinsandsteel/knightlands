@@ -42,13 +42,15 @@ import NetworkSelector from "./NetworkSelector.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import BlockchainUtilsMixin from "./BlockchainUtilsMixin.vue";
+import WalletMixin from "@/components/WalletMixin.vue";
 
 export default {
   mixins: [
     AppSection,
     NetworkRequestErrorMixin,
     PromptMixin,
-    BlockchainUtilsMixin
+    BlockchainUtilsMixin,
+    WalletMixin
   ],
   components: {
     AddressInput,
@@ -99,8 +101,17 @@ export default {
       );
       if (ok === true) {
         try {
-          await this.performRequestNoCatch(
+          const data = await this.performRequestNoCatch(
             this.$game.claimDividends(this.address, this.chain)
+          );
+          await this.showWallet(this.data.blockchainId);
+          await this.performRequest(
+            this.$game.blockchain.finishDividendsWithdrawal(
+              data._id,
+              data.amount,
+              data.nonce,
+              data.signature
+            )
           );
           this.$router.back();
         } catch {

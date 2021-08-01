@@ -565,7 +565,7 @@
     "btn-settings": "Settings",
     "window-title-home": "Home",
     "window-title-crafting": "Alchemy Lab",
-    "toggle-available-recipes": "enough items only",
+    "toggle-available-recipes": "Can craft now",
     "btn-signin": "Sign in",
     "btn-evolve": "Evolve",
     "window-evolve": "Evolve",
@@ -3222,5 +3222,8 @@
     "lck-req": "Luck required: {luck}",
     "ch-avatar": "Change avatar",
     "avatar-lvl": "Level {lvl}",
-    "no-char": "Account doesn't exist."
+    "no-char": "Account doesn't exist.",
+    "t-login": "Sign in",
+    "window-new-elem": "CREATE ELEMENTAL WEAPON",
+    "only-equipped": "Show equipped items"
 }

@@ -49,7 +49,7 @@ export default {
         case "token-d":
           return "HistoryTokenDeposit";
 
-        case "divs-s":
+        case "divs-w":
           return "HistoryDivsWithdrawal";
 
         case "token-w":
