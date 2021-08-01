@@ -1,6 +1,6 @@
 <template>
   <div class="avatar-entry relative" @click="handleClick">
-    <img :src="icon" />
+    <img v-lazy="icon" />
 
     <div
       class="selector-border panel-selected"

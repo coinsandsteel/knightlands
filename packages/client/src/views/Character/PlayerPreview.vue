@@ -3,6 +3,7 @@
     <div class="screen-background"></div>
     <EquipmentContent
       v-if="character"
+      :preview="true"
       :itemsInSlots="itemsInSlots"
       :level="character.level"
       :stats="character.stats"

@@ -7,12 +7,12 @@
           <router-link
             v-for="zone in zones"
             v-bind:key="zone._id"
-            class="element mission1 font-size-30"
+            class="element font-size-30"
             :class="{ 'zone-locked': isLocked(zone) }"
             :to="{ path: zone._id + '', append: true }"
           >
             <div class="zone-picture">
-              <img :src="getZoneImage(zone._id)" />
+              <img v-lazy="getZoneImage(zone._id)" />
               <div class="font-size-30 overlay-title font-outline">
                 {{ $t(getZoneName(zone._id)) }}
               </div>
@@ -321,6 +321,7 @@ export default {
 
 .zone-picture {
   margin-bottom: 1rem;
+  min-height: 178px;
 }
 
 .blocker {

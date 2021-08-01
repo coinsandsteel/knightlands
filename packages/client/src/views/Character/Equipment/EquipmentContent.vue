@@ -4,7 +4,7 @@
     class="equipment-container flex flex-space-evenly flex-no-wrap font-weight-900"
   >
     <div class="equipment-slots relative flex">
-      <Avatar></Avatar>
+      <Avatar :preview="preview"></Avatar>
       <loot
         v-for="slot in equipment"
         :key="slot"
@@ -89,7 +89,8 @@ export default {
     "showDetails",
     "hasBonus",
     "nickname",
-    "classIcon"
+    "classIcon",
+    "preview"
   ],
   components: { CustomButton, Loot, IconWithValue, Avatar },
   computed: {

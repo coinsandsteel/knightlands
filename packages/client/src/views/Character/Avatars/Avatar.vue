@@ -11,6 +11,7 @@ import ChangeAvatar from "./ChangeAvatar.vue";
 const ShowChangeAvatar = create(ChangeAvatar);
 
 export default {
+  props: ["preview"],
   computed: {
     activeAvatar() {
       const id = this.$game.character.avatar;
@@ -22,7 +23,9 @@ export default {
   },
   methods: {
     changeAvatar() {
-      ShowChangeAvatar();
+      if (!this.preview) {
+        ShowChangeAvatar();
+      }
     }
   }
 };
