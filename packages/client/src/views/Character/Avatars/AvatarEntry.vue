@@ -1,5 +1,9 @@
 <template>
-  <div class="avatar-entry relative" @click="handleClick">
+  <div
+    class="avatar-entry relative"
+    :class="{ disabled: disabled }"
+    @click="handleClick"
+  >
     <img v-lazy="icon" />
 
     <div
@@ -13,7 +17,7 @@
 import AvatarsMeta from "@/avatars";
 
 export default {
-  props: ["id"],
+  props: ["id", "disabled"],
   computed: {
     icon() {
       return `/images/avatars/${AvatarsMeta.avatars[this.id].icon}.jpg`;
@@ -37,6 +41,10 @@ export default {
   img {
     max-width: 10rem;
   }
+}
+
+.disabled {
+  opacity: 0.5;
 }
 
 .selector-border {

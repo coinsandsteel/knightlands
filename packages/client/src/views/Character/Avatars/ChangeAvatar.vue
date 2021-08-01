@@ -1,6 +1,6 @@
 <template>
   <UserDialog
-    title=""
+    title="ch-avatar"
     :hideCloseBtn="!hasAvatar"
     @close="handleClose"
     :emitClose="true"
@@ -12,16 +12,22 @@
           v-for="data in unlockableAvatars"
           :key="data.level"
         >
-          <Title
+          <!-- <Title
             class="margin-bottom-1"
             :titleClass="{ 'font-error': !metLevel(data.level) }"
             >{{ $t("avatar-lvl", { lvl: data.level }) }}</Title
+          > -->
+          <span
+            class="font-size-25 margin-bottom-1"
+            :class="{ 'font-error': !metLevel(data.level) }"
+            >{{ $t("avatar-lvl", { lvl: data.level }) }}</span
           >
           <div class="avatars margin-bottom-2">
             <AvatarEntry
               v-for="avatarId in data.ids"
               :key="avatarId"
               :id="avatarId"
+              :disabled="!metLevel(data.level)"
               @click="selectAvatar(data.level, avatarId)"
             ></AvatarEntry>
           </div>
@@ -66,6 +72,9 @@ export default {
       this.$close();
     },
     async handleClose() {
+      if (!this.hasAvatar) {
+        return;
+      }
       await this.submit();
     },
     selectAvatar(level, id) {
