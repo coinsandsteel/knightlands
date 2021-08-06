@@ -34,6 +34,7 @@ import UserDialog from "@/components/UserDialog.vue";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
+  props: ["maxStats"],
   components: { UserDialog },
   computed: {
     stats() {
@@ -59,9 +60,12 @@ export default {
       return stats;
     },
     finalStats() {
-      return this.$game.character.maxStats;
+      return this.maxStats || this.$game.character.maxStats;
     },
     bonusStats() {
+      if (this.maxStats) {
+        return {};
+      }
       return this.$game.character.buffResolver.bonuses;
     }
   }

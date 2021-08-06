@@ -11,10 +11,10 @@ import ChangeAvatar from "./ChangeAvatar.vue";
 const ShowChangeAvatar = create(ChangeAvatar);
 
 export default {
-  props: ["preview"],
+  props: ["preview", "avatar"],
   computed: {
     activeAvatar() {
-      const id = this.$game.character.avatar;
+      const id = this.avatar || this.$game.character.avatar;
       if (!id) {
         return "";
       }
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     changeAvatar() {
-      if (!this.preview) {
+      if (!this.avatar) {
         ShowChangeAvatar();
       }
     }

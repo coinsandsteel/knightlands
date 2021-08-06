@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <MusicButton class="sounds-btn"></MusicButton>
-
     <div class="content-wrap flex flex-column flex-no-wrap">
       <status-bar
         v-if="$game.authenticated"
@@ -690,12 +688,5 @@ a:visited {
   span {
     margin-right: 0.3rem;
   }
-}
-
-.sounds-btn {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000;
 }
 </style>

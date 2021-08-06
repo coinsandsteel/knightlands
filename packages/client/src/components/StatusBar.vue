@@ -225,7 +225,7 @@ export default {
 .status-bar {
   height: 7rem;
   background-color: #23354d;
-  padding-left: 5rem;
+  padding-left: 1rem;
 }
 
 .column {

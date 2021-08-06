@@ -3,7 +3,6 @@
     <div class="screen-background"></div>
     <EquipmentContent
       v-if="character"
-      :preview="true"
       :itemsInSlots="itemsInSlots"
       :level="character.level"
       :stats="character.stats"
@@ -11,6 +10,7 @@
       :showDetails="true"
       :nickname="character.nickname"
       :classIcon="character.class"
+      :avatar="character.avatar"
       @details="showDetails"
       @hint="handlePreviewSlot"
     />
@@ -28,7 +28,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import { create as CreateDialog } from "vue-modal-dialogs";
 import StatDetails from "./Equipment/StatDetails.vue";
 
-const ShowDetails = CreateDialog(StatDetails);
+const ShowDetails = CreateDialog(StatDetails, "maxStats");
 
 export default {
   mixins: [AppSection, HintHandler, NetworkRequestErrorMixin],
@@ -55,7 +55,7 @@ export default {
       this.handlePreviewHint(this.itemsInSlots[slot]);
     },
     showDetails() {
-      ShowDetails();
+      // ShowDetails();
     },
     async reload() {
       try {

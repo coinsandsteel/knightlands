@@ -3,6 +3,8 @@
     class="absolute-stretch pointer-events-none t-root"
     v-if="conditionPassed"
   >
+    <MusicButton class="sounds-btn"></MusicButton>
+
     <TutorialForcedElement
       v-show="isPointer"
       :data="pointerData"
@@ -22,9 +24,10 @@ import TutorialForcedElement from "./TutorialForcedElement.vue";
 import TutorialDialog from "./TutorialDialog.vue";
 import { mapState } from "vuex";
 import Scenario from "@/store/scenario";
+import MusicButton from "@/components/MusicButton.vue";
 
 export default {
-  components: { TutorialForcedElement, TutorialDialog },
+  components: { MusicButton, TutorialForcedElement, TutorialDialog },
   data: () => ({
     inited: false
   }),

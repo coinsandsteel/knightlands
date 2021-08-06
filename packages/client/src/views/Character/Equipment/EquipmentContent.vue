@@ -4,7 +4,7 @@
     class="equipment-container flex flex-space-evenly flex-no-wrap font-weight-900"
   >
     <div class="equipment-slots relative flex">
-      <Avatar :preview="preview"></Avatar>
+      <Avatar :avatar="avatar"></Avatar>
       <loot
         v-for="slot in equipment"
         :key="slot"
@@ -39,10 +39,19 @@
         {{ $t("char-exp", { c: currentExp, n: nextExp }) }}
       </IconWithValue>
 
-      <span
+      <!-- <span
         class="font-size-20 font-shadow rarity-legendary margin-top-1 font-weight-900 flex-self-start"
         >{{ $t("character-power", { power: totalPower() }) }}</span
+      > -->
+
+      <IconWithValue
+        @click="$emit('details')"
+        class="margin-top-1"
+        iconClass="icon-info"
+        valueClass="font-size-20 font-shadow rarity-legendary font-weight-900"
       >
+        {{ $t("character-power", { power: totalPower() }) }}
+      </IconWithValue>
 
       <div
         class="flex flex-no-wrap font-shadow full-flex flex-space-around font-size-20"
@@ -65,10 +74,6 @@
           >
         </div>
       </div>
-
-      <CustomButton v-if="showDetails" type="grey" @click="$emit('details')">{{
-        $t("btn-details")
-      }}</CustomButton>
     </div>
   </div>
 </template>
@@ -77,7 +82,6 @@
 import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Loot from "@/components/Loot.vue";
-import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Avatar from "../Avatars/Avatar.vue";
 
@@ -86,13 +90,12 @@ export default {
     "itemsInSlots",
     "level",
     "stats",
-    "showDetails",
     "hasBonus",
     "nickname",
     "classIcon",
-    "preview"
+    "avatar"
   ],
-  components: { CustomButton, Loot, IconWithValue, Avatar },
+  components: { Loot, IconWithValue, Avatar },
   computed: {
     currentExp() {
       return this.$game.character.exp;

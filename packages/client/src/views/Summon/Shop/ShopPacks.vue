@@ -5,6 +5,7 @@
         <PremiumPackElement
           v-for="(pack, idx) in packs"
           :key="idx"
+          :idx="idx"
           :pack="pack"
           @purchase="handlePurchase(pack)"
         />

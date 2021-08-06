@@ -2,6 +2,8 @@
   <div class="login-container flex flex-center">
     <div class="screen-background"></div>
 
+    <MusicButton class="sounds-btn"></MusicButton>
+
     <input
       id="input"
       type="email"
@@ -22,9 +24,10 @@
 import AppSection from "@/AppSection.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import MusicButton from "@/components/MusicButton.vue";
 
 export default {
-  components: { PromisedButton },
+  components: { PromisedButton, MusicButton },
   mixins: [AppSection, NetworkRequestErrorMixin],
   data: () => ({
     request: null,

@@ -25,6 +25,7 @@
               :itemsInSlots="itemsInSlots"
               :nickname="$game.character.nickname"
               :classIcon="$game.character.class"
+              :showDetails="true"
               @hint="showEquipmentHint"
               @details="openDetails"
               @changeName="changeName"

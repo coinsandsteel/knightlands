@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-column flex-center">
+  <div class="flex flex-column flex-center relative">
     <Title :stackTop="true" :stackBottom="true">{{ $t(pack.title) }}</Title>
-    <div class="content">
-      <img class="banner" :src="`/images/banners/${bg}.jpg`" />
-
+    <div class="banner absolute-stretch" :class="{ even: idx % 2 }"></div>
+    <div class="content width-100 relative">
+      <div class="icon" :style="icon" />
       <div class="items flex flex-column flex-center">
         <div class="flex flex-center margin-top-2">
           <Loot
@@ -58,10 +58,12 @@ import PriceTag from "@/components/PriceTag.vue";
 export default {
   mixins: [HintHandler],
   components: { CustomButton, PurchaseButton, Loot, PriceTag, Title },
-  props: ["pack"],
+  props: ["pack", "idx"],
   computed: {
-    bg() {
-      return this.pack.banner;
+    icon() {
+      return {
+        "background-image": `url(${`/images/banners/${this.pack.banner}.png`})`
+      };
     },
     purchasesLeft() {
       if (this.pack.max) {
@@ -91,16 +93,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.banner {
+  background-image: url("../../../assets/shop/shop_packs_pattern1.jpg");
+  background-repeat: repeat-x;
+  background-size: contain;
+
+  &.even {
+    background-image: url("../../../assets/shop/shop_packs_pattern2.jpg");
+  }
+}
+
 .content {
   display: grid;
   grid-template-columns: 50% 40% 10%;
   grid-template-rows: 1fr;
   align-items: stretch;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 
-  & .banner {
+  & .icon {
     grid-row: 1;
-    grid-column: ~"1/4";
-    max-width: 100%;
+    grid-column: 1;
+    background-repeat: no-repeat;
+    background-size: contain;
   }
 
   & .items {
