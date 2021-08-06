@@ -376,7 +376,7 @@ export default [
           path: "/summon/army"
         },
         pointer: {
-          target: "#summon"
+          target: "#do-summon"
         },
         return: 0
       }
