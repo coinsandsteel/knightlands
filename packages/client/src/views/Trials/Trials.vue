@@ -2,16 +2,18 @@
   <div class="flex flex-items-center flex-start">
     <div class="screen-background"></div>
     <div
-      class="trials-bg width-100 flex flex-column flex-end flex-items-end flex-space-between margin-bottom-1"
+      class="trials-bg width-100 flex flex-column flex-end flex-items-center flex-space-between margin-bottom-1"
       v-for="(trial, index) in trials"
       :key="index"
       :style="background(trial)"
       :class="`color-${trial}`"
     >
-      <span
-        class="trial-title text-align-right font-outline padding-1 font-weight-700"
-        >{{ $t(`window-trials-${trial}`) }}</span
-      >
+      <HintButton class="trial-title" :component="hint[trial]">
+        <span class="text-align-right font-outline padding-1 font-weight-700">{{
+          $t(`window-trials-${trial}`)
+        }}</span>
+      </HintButton>
+
       <div class="flex margin-1">
         <CustomButton minWidth="15rem" type="red" @click="goTo(trial)"
           >{{ $t("btn-enter") }}
@@ -19,12 +21,6 @@
         </CustomButton>
       </div>
     </div>
-
-    <portal to="footer" v-if="isActive">
-      <CustomButton type="grey" width="5rem"
-        ><HintButton :component="hint"></HintButton
-      ></CustomButton>
-    </portal>
   </div>
 </template>
 
@@ -35,7 +31,9 @@ import CustomButton from "@/components/Button.vue";
 import TrialType from "@/../../knightlands-shared/trial_type";
 import TrialBackgrounds from "./trialBackgrounds";
 import TrialsMarker from "@/components/Markers/Home/TrialsMarker.vue";
-import TrialsOverview from "./Hints/TrialsOverview.vue";
+import AccessoryTrialHint from "./Hints/AccessoryTrialHint.vue";
+import WeaponTrialHint from "./Hints/WeaponTrialHint.vue";
+import ArmourTrialHint from "./Hints/ArmourTrialHint.vue";
 import { create } from "vue-modal-dialogs";
 
 const trials = [TrialType.Armour, TrialType.Weapon, TrialType.Accessory];
@@ -45,7 +43,11 @@ export default {
   components: { CustomButton, TrialsMarker, HintButton },
   data: () => ({
     trials,
-    hint: create(TrialsOverview)
+    hint: {
+      [TrialType.Armour]: create(ArmourTrialHint),
+      [TrialType.Weapon]: create(WeaponTrialHint),
+      [TrialType.Accessory]: create(AccessoryTrialHint)
+    }
   }),
   created() {
     this.title = "window-trials";

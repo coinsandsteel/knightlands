@@ -118,7 +118,7 @@ export default class EthereumClient extends BlockchainClient {
   }
 
   async finishTokenWithdrawal(type, withdrawalId, amount, nonce, signature) {
-    const receipt = this._tokens[type]
+    const receipt = await this._tokens[type]
       .connect(this._provider.getSigner())
       .mint(this.getAddress(), amount, nonce, withdrawalId, signature);
 

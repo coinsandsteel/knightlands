@@ -14,7 +14,6 @@
     <IconWithValue
       valueClass="font-size-18"
       :iconClass="`icon-${data.currency}`"
-      :flip="true"
       >{{ amount }}</IconWithValue
     >
 
@@ -28,19 +27,19 @@
 </template>
 
 <script>
-import BlockchainUtilsMixin from "./BlockchainUtilsMixin";
+import { toDecimal } from "../../blockchain/utils";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import WalletMixin from "@/components/WalletMixin.vue";
 
 export default {
-  mixins: [BlockchainUtilsMixin, NetworkRequestErrorMixin, WalletMixin],
+  mixins: [NetworkRequestErrorMixin, WalletMixin],
   props: ["data", "odd", "date", "id", "chain"],
   components: { CustomButton, IconWithValue },
   computed: {
     amount() {
-      return this.toDecimal(this.chain, this.data.amount);
+      return toDecimal(this.data.amount, 6);
     },
     dateFormatted() {
       return new Date(this.date);
