@@ -235,7 +235,6 @@ export default {
         let interval;
         interval = setInterval(() => {
           this.element = document.querySelector(this.elementId);
-          console.log(this.element, this.elementId)
           if (this.element) {
             this.$nextTick(() => {
               this.selfBB = UI.offsetAbsolute(this.$el);

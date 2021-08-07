@@ -320,8 +320,7 @@ export default {
 }
 
 .zone-picture {
-  margin-bottom: 1rem;
-  min-height: 178px;
+  min-height: 130px;
 }
 
 .blocker {

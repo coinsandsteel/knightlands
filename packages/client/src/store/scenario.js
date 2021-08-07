@@ -132,15 +132,6 @@ export default [
           target: "#num-energy .att-plus"
         },
         return: 0
-      },
-      {
-        lock: {
-          path: "/character/training"
-        },
-        pointer: {
-          target: "#apply-btn"
-        },
-        return: 0
       }
     ]
   },
