@@ -1,6 +1,5 @@
 <template>
   <user-dialog
-    :title="$t(template.caption)"
     @close="handleClose"
     :titleClass="`rarity-${template.rarity}`"
     :compact="true"

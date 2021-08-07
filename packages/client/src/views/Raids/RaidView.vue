@@ -449,7 +449,7 @@ export default {
       );
     },
     handleShowLogs() {
-      this.showLog = true;
+      this.showLog = !this.showLog;
     },
     handleShowChallenges() {
       this.showChallenges = true;

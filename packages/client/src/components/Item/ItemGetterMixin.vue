@@ -61,6 +61,9 @@ export default {
 
       return this.element != "physical";
     },
+    name() {
+      return this.$t(this.template.caption);
+    },
     desc() {
       return this.$t(this.template.description, "");
     },

@@ -164,8 +164,6 @@ export default {
 
         return 0;
       });
-
-      console.log(recipes);
     },
     handleAvailableToggle(value) {
       this.$store.commit("setAvailableSwitchInCraftingList", {

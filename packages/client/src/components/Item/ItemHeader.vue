@@ -10,7 +10,7 @@
           v-if="item"
           class="font-size-20 nowrap font-weight-900 font-outline"
           :class="[{ 'margin-right-1': !hasElement }, rarityClass]"
-          >{{ type }}</span
+          >{{ $t(name) }}</span
         >
         <div v-if="hasElement" :class="elementIcon" class="big"></div>
       </div>

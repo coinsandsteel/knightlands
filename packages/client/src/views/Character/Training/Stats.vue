@@ -88,6 +88,8 @@ export default {
   }),
   created() {
     this.resourceItems = {};
+  },
+  activated() {
     this.init();
   },
   deactivated() {
