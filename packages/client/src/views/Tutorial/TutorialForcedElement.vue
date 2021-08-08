@@ -23,7 +23,7 @@
       <span class="font-size-30 margin-bottom-2">
         {{ $t("got-stuck") }}
       </span>
-      <CustomButton height="3rem" type="red" @click="emit('skip')">
+      <CustomButton height="3rem" type="red" @click="$emit('skip')">
         {{ $t("btn-skip-t") }}
       </CustomButton>
     </div>
