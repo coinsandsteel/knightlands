@@ -38,7 +38,7 @@ export default {
       const purchaseData = this.fixed
         ? this.$game.dailyShop.fixedItems
         : this.$game.dailyShop.purchasedItems;
-      return this.data.max - (purchaseData[this.index] || 0);
+      return this.data.max - (purchaseData[this.data.item] || 0);
     }
   }
 };
