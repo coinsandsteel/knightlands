@@ -8,7 +8,7 @@
       type="grey"
       :soft="true"
       :price="data.soft"
-      :disabled="purchasesLeft == 0"
+      :disabled="purchasesLeft <= 0"
       @click="$emit('purchase')"
       v-if="data.soft > 0"
     >
@@ -16,7 +16,7 @@
     <PurchaseButton
       type="grey"
       :price="data.hard"
-      :disabled="purchasesLeft == 0"
+      :disabled="purchasesLeft <= 0"
       @click="$emit('purchase')"
       v-if="data.hard > 0"
     >

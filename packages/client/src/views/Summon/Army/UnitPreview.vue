@@ -118,11 +118,11 @@ export default {
           this.waitForImage = new Promise(resolve => {
             this.resolve = resolve;
 
-            // this.resolveTimeout = setTimeout(() => {
-            //   this.resolveTimeout = null;
-            //   resolve();
-            //   this.animate();
-            // }, 2000);
+            this.resolveTimeout = setTimeout(() => {
+              this.resolveTimeout = null;
+              resolve();
+              this.animate();
+            }, 5000);
           });
         });
       }
@@ -130,12 +130,13 @@ export default {
   },
   methods: {
     handleImageLoaded(p) {
-      // if (!this.resolveTimeout) {
-      //   return;
-      // }
+      console.log("handle image loaded");
+      if (!this.resolveTimeout) {
+        return;
+      }
 
-      // clearTimeout(this.resolveTimeout);
-      // this.resolveTimeout = null;
+      clearTimeout(this.resolveTimeout);
+      this.resolveTimeout = null;
 
       this.resolve();
       this.animate();

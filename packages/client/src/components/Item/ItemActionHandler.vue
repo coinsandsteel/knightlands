@@ -16,7 +16,6 @@ const ShowItems = CreateDialog(
 );
 const ShowCompareItems = CreateDialog(CompareItems, "leftItem", "rightItem");
 const ShowEquipWarning = CreateDialog(ItemEquipWarning, "item");
-const ShowUnitsSummoned = CreateDialog(UnitSummoned, "units");
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
@@ -71,7 +70,7 @@ export default {
 
             if (units) {
               this.$game.handleArmySummoned(units);
-              await ShowUnitsSummoned(units);
+              this.$router.push({ name: "army-summon", params: { units } });
             }
           }
           break;
