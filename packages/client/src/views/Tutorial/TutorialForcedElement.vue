@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute-stretch" ref="root" v-show="element">
+  <div class="absolute-stretch flex flex-column" ref="root" v-show="element">
     <template v-if="start">
       <div class="focus-mask e d" :style="topStyle"></div>
       <div class="focus-mask e d" :style="bottomStyle"></div>
@@ -15,12 +15,27 @@
 
     <div class="t-circle" v-show="start" ref="circle"></div>
     <div class="t-pointer" v-show="start" ref="pointer"></div>
+
+    <div
+      class="flex flex-column flex-center stuck-dialog e color-panel-1"
+      v-if="showSkipButton"
+    >
+      <span class="font-size-30 margin-bottom-2">
+        {{ $t("got-stuck") }}
+      </span>
+      <CustomButton height="3rem" type="red" @click="emit('skip')">
+        {{ $t("btn-skip-t") }}
+      </CustomButton>
+    </div>
   </div>
 </template>
 
 <script>
 import UI from "@/ui_constants";
 import anime from "animejs/lib/anime.es.js";
+import CustomButton from "@/components/Button.vue";
+
+const SKIP_TIMEOUT = 4000;
 
 const DEFAULT_OFFSET = {
   left: 0,
@@ -33,7 +48,8 @@ export default {
     selfBB: null,
     element: null,
     start: false,
-    updStep: 0
+    updStep: 0,
+    showSkipButton: false
   }),
   watch: {
     data: {
@@ -46,6 +62,7 @@ export default {
       }
     }
   },
+  components: { CustomButton },
   computed: {
     elementId() {
       if (!this.data) {
@@ -226,23 +243,38 @@ export default {
         this.posInterval = null;
       }
 
+      if (this.searchInterval) {
+        clearInterval(this.searchInterval);
+        this.searchInterval = null;
+      }
+
+      if (this.skipTimeout) {
+        clearTimeout(this.skipTimeout);
+        this.skipTimeout = null;
+      }
+
       this.updStep = 0;
       this.element = null;
       this.start = false;
+      this.showSkipButton = false;
     },
     show() {
       this.$nextTick(() => {
-        let interval;
-        interval = setInterval(() => {
+        let found = false;
+        this.searchInterval = setInterval(() => {
           this.element = document.querySelector(this.elementId);
-          if (this.element) {
+          if (!found && this.element) {
+            found = true;
             this.$nextTick(() => {
               this.selfBB = UI.offsetAbsolute(this.$el);
             });
 
-            clearInterval(interval);
             setTimeout(() => {
               this.start = true;
+              this.skipTimeout = setTimeout(() => {
+                this.showSkipButton = true;
+              }, SKIP_TIMEOUT);
+
               this.$nextTick(() => {
                 this.animation = this.loop();
               });
@@ -253,6 +285,8 @@ export default {
     },
     loop() {
       this.posInterval = setInterval(() => {
+        this.selfBB = UI.offsetAbsolute(this.$el);
+
         this.updStep++;
 
         anime.set(this.$refs.circle, {
@@ -344,6 +378,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.stuck-dialog {
+  z-index: 151;
+}
+
 .focus-mask {
   z-index: 99;
   position: absolute;

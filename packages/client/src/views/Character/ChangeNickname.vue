@@ -11,7 +11,7 @@
           id="input"
           placeholder="Your name"
           aria-invalid="true"
-          class="input width-95 margin-bottom-1"
+          class="input white-font width-95 margin-bottom-1"
           aria-describedby="input"
           v-model="nickname"
         />

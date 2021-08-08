@@ -25,6 +25,11 @@ const vuexPersist = new VuexPersist({
   storage: localStorage
 });
 
+const DefaultRarityFilters = {};
+for (let i in Rarity) {
+  DefaultRarityFilters[Rarity[i]] = true;
+}
+
 const equipmentDefaultFilters = {};
 for (let i in EquipmentSlots) {
   equipmentDefaultFilters[EquipmentSlots[i]] = true;

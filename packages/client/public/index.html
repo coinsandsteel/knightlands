@@ -6,152 +6,158 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <!-- <link href="https://fonts.googleapis.com/css?family=Hind+Vadodara:500,700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Voltaire&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Reem+Kufi&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Mukta+Vaani&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Magra&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Saira+Condensed&display=swap" rel="stylesheet"> -->
   <link href="https://fonts.googleapis.com/css?family=Alef&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Overpass&display=swap" rel="stylesheet">
   <title>Knightlands: Crypto RPG</title>
 
   <style>
     /* :not(:required) hides this rule from IE9 and below */
-.inner-circles-loader:not(:required) {
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background: rgba(25, 165, 152, 0.5);
-  border-radius: 50%;
-  overflow: hidden;
-  text-indent: -9999px;
-  /* Hides inner circles outside base circle at safari */
-  -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-}
-.inner-circles-loader:not(:required):before, .inner-circles-loader:not(:required):after {
-  content: '';
-  position: absolute;
-  top: 0;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-.inner-circles-loader:not(:required):before {
-  -moz-animation: inner-circles-loader 3s infinite;
-  -webkit-animation: inner-circles-loader 3s infinite;
-  animation: inner-circles-loader 3s infinite;
-  -moz-transform-origin: 0 50%;
-  -ms-transform-origin: 0 50%;
-  -webkit-transform-origin: 0 50%;
-  transform-origin: 0 50%;
-  left: 0;
-  background: #c7efcf;
-}
-.inner-circles-loader:not(:required):after {
-  -moz-animation: inner-circles-loader 3s 0.2s reverse infinite;
-  -webkit-animation: inner-circles-loader 3s 0.2s reverse infinite;
-  animation: inner-circles-loader 3s 0.2s reverse infinite;
-  -moz-transform-origin: 100% 50%;
-  -ms-transform-origin: 100% 50%;
-  -webkit-transform-origin: 100% 50%;
-  transform-origin: 100% 50%;
-  right: 0;
-  background: #eef5db;
-}
+    .inner-circles-loader:not(:required) {
+      -moz-transform: translate3d(0, 0, 0);
+      -ms-transform: translate3d(0, 0, 0);
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background: rgba(25, 165, 152, 0.5);
+      border-radius: 50%;
+      overflow: hidden;
+      text-indent: -9999px;
+      /* Hides inner circles outside base circle at safari */
+      -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+    }
 
-@-moz-keyframes inner-circles-loader {
-  0% {
-    -moz-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  50% {
-    -moz-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-  100% {
-    -moz-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-}
-@-webkit-keyframes inner-circles-loader {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  50% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-  100% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-}
-@keyframes inner-circles-loader {
-  0% {
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  50% {
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-  100% {
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-}
+    .inner-circles-loader:not(:required):before,
+    .inner-circles-loader:not(:required):after {
+      content: '';
+      position: absolute;
+      top: 0;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
 
-.indicator {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .inner-circles-loader:not(:required):before {
+      -moz-animation: inner-circles-loader 3s infinite;
+      -webkit-animation: inner-circles-loader 3s infinite;
+      animation: inner-circles-loader 3s infinite;
+      -moz-transform-origin: 0 50%;
+      -ms-transform-origin: 0 50%;
+      -webkit-transform-origin: 0 50%;
+      transform-origin: 0 50%;
+      left: 0;
+      background: #c7efcf;
+    }
 
-body {
-  height: 100vh;
-  min-height: 100vh;
-  margin: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+    .inner-circles-loader:not(:required):after {
+      -moz-animation: inner-circles-loader 3s 0.2s reverse infinite;
+      -webkit-animation: inner-circles-loader 3s 0.2s reverse infinite;
+      animation: inner-circles-loader 3s 0.2s reverse infinite;
+      -moz-transform-origin: 100% 50%;
+      -ms-transform-origin: 100% 50%;
+      -webkit-transform-origin: 100% 50%;
+      transform-origin: 100% 50%;
+      right: 0;
+      background: #eef5db;
+    }
 
-#app {
-  overflow: hidden;
-  position: relative;
-  color: white;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-}
+    @-moz-keyframes inner-circles-loader {
+      0% {
+        -moz-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
 
-html {
-  background: #2a232b;
-  font-family: "Brandon", sans-serif;
-  font-size: 6px;
-  line-height: 1;
-  box-sizing: content-box;
-}
+      50% {
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+
+      100% {
+        -moz-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+    }
+
+    @-webkit-keyframes inner-circles-loader {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      50% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+    }
+
+    @keyframes inner-circles-loader {
+      0% {
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      50% {
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+
+      100% {
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+    }
+
+    .indicator {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body {
+      height: 100vh;
+      min-height: 100vh;
+      margin: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    #app {
+      overflow: hidden;
+      position: relative;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    html {
+      background: #2a232b;
+      font-family: "Brandon", sans-serif;
+      font-size: 6px;
+      line-height: 1;
+      box-sizing: content-box;
+    }
   </style>
 </head>
 
@@ -166,6 +172,15 @@ html {
     </div>
   </div>
   <!-- built files will be auto injected -->
+  <script>(function (d, t) {
+      var key = 'TBWM9';
+      var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      g.src = "https://gleam.io/" + key + "/trk.js"; s.parentNode.insertBefore(g, s);
+    }(document, "script"));
+  </script>
+  <script>
+    window.Gleam = window.Gleam || [];
+  </script>
 </body>
 
 </html>

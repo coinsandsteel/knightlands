@@ -141,14 +141,14 @@ export default {
     },
     async showRanks(race) {
       this.$router.push({ name: "race", params: { id: race._id } });
-      this.$router.replace({
+      this.$router.push({
         name: "race-ranks",
         params: { id: race._id }
       });
     },
     async showRewards(race) {
       this.$router.push({ name: "race", params: { id: race._id } });
-      this.$router.replace({
+      this.$router.push({
         name: "race-rewards",
         params: { id: race._id }
       });

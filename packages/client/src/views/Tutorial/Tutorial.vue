@@ -3,12 +3,13 @@
     class="absolute-stretch pointer-events-none t-root"
     v-if="conditionPassed"
   >
-    <MusicButton class="sounds-btn"></MusicButton>
+    <MusicButton class="sounds-btn e"></MusicButton>
 
     <TutorialForcedElement
       v-show="isPointer"
       :data="pointerData"
       @continue="handleContinue"
+      @skip="handleSkip"
     />
     <TutorialDialog
       v-show="isDialog"
@@ -167,5 +168,8 @@ export default {
 <style scoped>
 .t-root {
   z-index: 151;
+}
+.e {
+  pointer-events: all;
 }
 </style>

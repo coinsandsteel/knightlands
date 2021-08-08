@@ -13,7 +13,9 @@
           >
             <div class="zone-picture">
               <img v-lazy="getZoneImage(zone._id)" />
-              <div class="font-size-30 overlay-title font-outline">
+              <div
+                class="font-size-30 uppercase overlay-title font-outline font-weight-900"
+              >
                 {{ $t(getZoneName(zone._id)) }}
               </div>
             </div>

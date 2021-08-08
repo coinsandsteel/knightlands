@@ -6,6 +6,7 @@
       <div
         class="flex flex-column width-100 flex-items-end flex-space-evenly margin-bottom-5"
       >
+        <!-- <PrizePoolWidget /> -->
         <RankingsMenu />
         <MenuIconRow>
           <MenuIcon
@@ -139,10 +140,13 @@ import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 import RankingsMenu from "./Rankings/RankingsMenu.vue";
 
+import PrizePoolWidget from "@/views/PrizePool/PrizePoolWidget.vue";
+
 export default {
   name: "home",
   mixins: [AppSection],
   components: {
+    PrizePoolWidget,
     TrialsMarker,
     OnyxTowerMarker,
     AdventuresMarker,

@@ -18,7 +18,6 @@
             @click="handleSkip"
             v-if="showSkipButton"
           >
-            <!-- <span class="nav-arrow"></span> -->
             {{ $t("btn-skip-t") }}
           </CustomButton>
 

@@ -187,9 +187,15 @@
           </div>
         </div>
 
-        <PromisedButton width="16rem" type="yellow" @click="join">
-          <span class="margin-right-half">{{ $t("join") }}</span>
-        </PromisedButton>
+        <div class="flex flex-center">
+          <PromisedButton width="20rem" type="yellow" @click="join">
+            <span class="margin-right-half">{{ $t("join") }}</span>
+          </PromisedButton>
+
+          <CustomButton type="grey" @click="goToShop" width="20rem">
+            {{ $t("pur-tickets") }}
+          </CustomButton>
+        </div>
       </div>
     </div>
 
@@ -425,6 +431,11 @@ export default {
     }
   },
   methods: {
+    goToShop() {
+      this.$router.push({
+        name: "top-up"
+      });
+    },
     checkIfRaidWon() {
       this.raidWon =
         this.raidState && this.raidState.finished && this.raidState.defeat;
@@ -482,10 +493,8 @@ export default {
       this.rewards = await this.$game.fetchRaidRewards(this.raidId);
     },
     async join() {
-      this.purchasePromise = this.performRequest(
-        this.$game.joinRaid(this.raidId)
-      );
-      await this.purchaseRequest(this.purchasePromise);
+      await this.performRequest(this.$game.joinRaid(this.raidId));
+      await this.init();
     },
     async claimReward() {
       let rewards = await this.$game.claimRaidLoot(this.raidId);

@@ -259,6 +259,9 @@ export default {
     });
 
     this.$game.on("level-up", async args => {
+      if (this.$game.character.level == 20) {
+        Gleam.push(["userId", this.$game.address]);
+      }
       await ShowLevelUp(args);
     });
 
@@ -302,6 +305,11 @@ export default {
 
       if (!this.$game.character.avatar) {
         await ShowChangeAvatar();
+      }
+
+      if (this.$game.character.level == 16) {
+        console.log(this.$game.address);
+        Gleam.push(["userId", "moswartest@gmail.com"]);
       }
     });
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));

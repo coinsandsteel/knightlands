@@ -151,13 +151,30 @@ export default {
       return this.state.elements[stageId];
     },
     isStageLocked(stageIndex) {
+      const stageId = this.meta.stages[stageIndex].id;
+
       if (this.state.currentFight) {
-        return (
-          this.state.currentFight.stageId != this.meta.stages[stageIndex].id
-        );
+        return this.state.currentFight.stageId != stageId;
       }
 
-      return stageIndex > this.lastStageCleared + 1;
+      const trialState = this.state.trials[this.meta.id];
+
+      for (const stage of this.meta.stages) {
+        if (stage.id == stageId) {
+          return false;
+        }
+
+        if (!trialState) {
+          return true;
+        }
+
+        const stageState = trialState.stages[stage.id];
+        if (!stageState || !stageState.cleared) {
+          return true;
+        }
+      }
+
+      return true;
     },
     engageFight(stageId, fightIndex) {
       this.$emit("engage", this.meta.id, stageId, fightIndex, () => {});
