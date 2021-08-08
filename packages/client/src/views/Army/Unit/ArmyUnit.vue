@@ -1,22 +1,26 @@
 <template>
   <div class="screen-content">
     <div class="screen-background" :class="element"></div>
-    <UnitView
-      :unit="computedUnit"
-      :showEquipment="false"
-      :showNavigation="hasUnits"
-      @next="goToNext"
-      @prev="goToPrev"
-    />
-    <Tabs
-      :replace="true"
-      :router="true"
-      :tabs="tabs"
-      :currentTab="currentTab"
-    />
-    <keep-alive v-if="computedUnit">
-      <router-view :unit="computedUnit" :units="units"></router-view>
-    </keep-alive>
+    <div v-bar>
+      <div>
+        <UnitView
+          :unit="computedUnit"
+          :showEquipment="false"
+          :showNavigation="hasUnits"
+          @next="goToNext"
+          @prev="goToPrev"
+        />
+        <Tabs
+          :replace="true"
+          :router="true"
+          :tabs="tabs"
+          :currentTab="currentTab"
+        />
+        <keep-alive v-if="computedUnit">
+          <router-view :unit="computedUnit" :units="units"></router-view>
+        </keep-alive>
+      </div>
+    </div>
   </div>
 </template>
 

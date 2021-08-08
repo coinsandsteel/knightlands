@@ -634,7 +634,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-width: 35.625rem;
+  min-width: 33vw;
   margin: 0 auto;
   // background: @backgroundMainColor;
   // background: linear-gradient(0deg, #371c35 0%, #261034 100%);

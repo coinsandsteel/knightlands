@@ -597,63 +597,63 @@ export default {
 
       this.attackInProgress = true;
 
-      const bossDamageInstance = new (Vue.extend(BossDamageText))({
-        propsData: {
-          damage: data.boss.damage * -1
-        }
-      });
-      bossDamageInstance.$mount();
+      try {
+        const bossDamageInstance = new (Vue.extend(BossDamageText))({
+          propsData: {
+            damage: data.boss.damage * -1
+          }
+        });
+        bossDamageInstance.$mount();
+        this.$refs.bossAnimation.playAttack();
+        await Promise.all([
+          this.$app
+            .getStatusBar()
+            .attractToResource(
+              bossDamageInstance,
+              "health",
+              this.bossViewCenter,
+              data.boss.damage * -1,
+              this.$refs.overlay
+            )
+        ]);
 
-      await Promise.all([
-        this.$app
+        this._handleArmyDamage(data.player.damage);
+        await this._handlePlayerDamage(
+          data.player.damage,
+          data.player.crit,
+          true
+        );
+        await this.$app
           .getStatusBar()
-          .attractToResource(
-            bossDamageInstance,
-            "health",
+          .showResourceGained(
+            "softCurrency",
             this.bossViewCenter,
-            data.boss.damage * -1,
+            data.soft,
             this.$refs.overlay
-          ),
-        this.$refs.bossAnimation.playAttack()
-      ]);
+          );
 
-      this._handleArmyDamage(data.player.damage);
-      await this._handlePlayerDamage(
-        data.player.damage,
-        data.player.crit,
-        true
-      );
+        await this.$app
+          .getStatusBar()
+          .showResourceGained(
+            "exp",
+            this.bossViewCenter,
+            data.exp,
+            this.$refs.overlay
+          );
 
-      await this.$app
-        .getStatusBar()
-        .showResourceGained(
-          "softCurrency",
-          this.bossViewCenter,
-          data.soft,
+        await this.$refs.army.play(
+          data.armyDamage,
+          data.procs,
+          data.health,
+          data.energy,
+          data.stamina,
           this.$refs.overlay
         );
-
-      await this.$app
-        .getStatusBar()
-        .showResourceGained(
-          "exp",
-          this.bossViewCenter,
-          data.exp,
-          this.$refs.overlay
-        );
-
-      await this.$refs.army.play(
-        data.armyDamage,
-        data.procs,
-        data.health,
-        data.energy,
-        data.stamina,
-        this.$refs.overlay
-      );
-
-      this.$app.getStatusBar().setDelayResourceUpdate(false);
-      this.attackInProgress = false;
-      this.checkIfRaidWon();
+      } finally {
+        this.$app.getStatusBar().setDelayResourceUpdate(false);
+        this.attackInProgress = false;
+        this.checkIfRaidWon();
+      }
     },
     _handleEvents(data) {
       switch (data.event) {
@@ -689,9 +689,10 @@ export default {
         // increase current damage
         this.raidState.currentDamage += data.damage;
         return;
+      } else {
+        this._handleArmyDamage(data.damage);
       }
 
-      this.raidProgress.current = data.bossHp;
       this._handlePlayerDamage(data.damage, data.crit, false);
     },
     _handleRaidFinished(data) {
@@ -722,7 +723,7 @@ export default {
         this.playerDamages.splice(0, 1);
       }, 4000);
 
-      anime.remove(this.$refs.bossView.$refs.image);
+      // anime.remove(this.$refs.bossView.$refs.image);
 
       // shake boss image
       let timeline = anime.timeline({

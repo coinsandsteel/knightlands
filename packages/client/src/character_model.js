@@ -290,10 +290,10 @@ class CharacterModel {
     // console.log(`timer ${stat} value ${this.timers[stat].value} interval ${interval}`);
     this.timers[stat].timeout = setTimeout(() => {
       let now = Math.floor(this._game.now / 1000);
-      let pointsRegened = Math.round(
-        (now - this.timers[stat].lastRegenTime) / this.timers[stat].regenTime
-      );
+      let pointsRegened =
+        (now - this.timers[stat].lastRegenTime) / this.timers[stat].regenTime;
       this.timers[stat].value += pointsRegened;
+      this.timers[stat].value = Math.round(this.timers[stat].value);
       this.timers[stat].lastRegenTime = now;
       // console.log(`timer ${stat} has fired! New value ${this.timers[stat].value}`);
       this._scheduleTimer(stat);

@@ -17,13 +17,13 @@
     <CustomButton type="grey" v-if="!left" @click="$emit('rewards')">
       <span class="icon-loot"></span>
     </CustomButton>
-    <CustomButton
+    <!-- <CustomButton
       type="grey"
       v-if="!left && !isFreeRaid"
       @click="$emit('challenges')"
     >
       <span class="icon-challenge"></span>
-    </CustomButton>
+    </CustomButton> -->
     <CustomButton type="grey" v-if="!left" @click="$emit('legion')">
       <span class="icon-legion"></span>
     </CustomButton>

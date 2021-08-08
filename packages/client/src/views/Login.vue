@@ -12,6 +12,7 @@
       class="input email-input white-font margin-bottom-2"
       aria-describedby="input-email"
       v-model="email"
+      v-on:keyup.enter="onEnter"
     />
 
     <PromisedButton :promise="request" size="big" @click="signIn">{{
@@ -55,6 +56,9 @@ export default {
     }
   },
   methods: {
+    onEnter() {
+      this.signIn();
+    },
     redirectToNextPage() {
       let url = this.$route.query.url;
       if (typeof url == "string" && !url.includes("login")) {
