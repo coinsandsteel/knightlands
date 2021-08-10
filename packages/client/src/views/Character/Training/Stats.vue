@@ -6,20 +6,22 @@
         v-for="att in Attributes"
         :key="att"
       >
-        <div class="flex-2 flex flex-center margin-right-4">
+        <div class="flex-1 flex flex-center margin-right-4">
           <CraftingIngridient
             :ingridient="getResource(att)"
             :noLocking="true"
           ></CraftingIngridient>
         </div>
         <div class="flex flex-column flex-items-start flex-4 margin-right-2">
-          <span class="font-size-22 margin-bottom-1">{{ $t(att) }}</span>
-          <IconWithValue
-            class="margin-bottom-1"
-            iconClass="icon-gold"
-            :flip="true"
-            >{{ getUpgradePrice(att) }}</IconWithValue
-          >
+          <div class="flex width-100 flex-space-between margin-bottom-1">
+            <span class="font-size-22 margin-right-1">{{ $t(att) }}</span>
+            <IconWithValue
+              class="margin-bottom-1"
+              iconClass="icon-gold"
+              :flip="true"
+              >{{ getUpgradePrice(att) }}</IconWithValue
+            >
+          </div>
           <numeric-value
             class="width-100"
             :id="`num-${att}`"

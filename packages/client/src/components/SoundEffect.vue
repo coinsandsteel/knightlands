@@ -1,7 +1,3 @@
-<template>
-  <span></span>
-</template>
-
 <script>
 import anime from "animejs/lib/anime.es.js";
 import { mapState } from "vuex";

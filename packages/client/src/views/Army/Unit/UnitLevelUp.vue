@@ -23,17 +23,16 @@
     <div class="flex flex-column margin-top-1 width-100 flex-center">
       <CraftingIngridient :ingridient="levelItem" ref="levelIngridient" />
 
-      <CustomButton
+      <PurchaseButton
         class="margin-top-1"
         :disabled="!canLevel()"
         type="green"
+        :price="goldPrice"
+        :soft="true"
         @click="levelUp"
       >
-        <div class="flex flex-center">
-          <span class="margin-right-half">{{ $t("unit-lvl-up") }}</span>
-          <IconWithValue iconClass="icon-gold">{{ goldPrice }}</IconWithValue>
-        </div>
-      </CustomButton>
+        {{ $t("unit-lvl-up") }}
+      </PurchaseButton>
     </div>
 
     <SoundEffect ref="fx" :files="['unit_lvl_up']" channel="fx" />
@@ -44,7 +43,7 @@
 import SoundEffect from "@/components/SoundEffect.vue";
 import UnitGetterMixin from "../UnitGetterMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
-import CustomButton from "@/components/Button.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 import TroopsMeta from "@/troops_meta";
 import GeneralsMeta from "@/generals_meta";
 import IconWithValue from "@/components/IconWithValue.vue";
@@ -58,7 +57,7 @@ export default {
   }),
   components: {
     SoundEffect,
-    CustomButton,
+    PurchaseButton,
     IconWithValue,
     CraftingIngridient
   },
@@ -102,10 +101,7 @@ export default {
       if (this.isMaxLevel) {
         return false;
       }
-      return (
-        !this.$refs.levelIngridient.notEnoughMaterials &&
-        this.$game.softCurrency >= this.goldPrice
-      );
+      return !this.$refs.levelIngridient.notEnoughMaterials;
     },
     async levelUp() {
       await this.$game.levelUpUnit(this.unit.id);
