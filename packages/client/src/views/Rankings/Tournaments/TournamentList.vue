@@ -112,14 +112,14 @@ export default {
     },
     async showRanks(tournament) {
       this.$router.push({ name: "tournament", params: { id: tournament._id } });
-      this.$router.replace({
+      this.$router.push({
         name: "tournament-ranks",
         params: { id: tournament._id }
       });
     },
     async showRewards(tournament) {
       this.$router.push({ name: "tournament", params: { id: tournament._id } });
-      this.$router.replace({
+      this.$router.push({
         name: "tournament-rewards",
         params: { id: tournament._id }
       });
