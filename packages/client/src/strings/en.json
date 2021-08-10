@@ -1743,6 +1743,7 @@
     "race-title": "{type} <span class='margin-left-half {tierColor}'>Tier {tier}</span>",
     "your-rank": "Your rank:",
     "your-score": "Score:",
+    "att-max": "No more attempts left. Come back tomorrow.",
     "window-race-view": "Royal Sprint View",
     "race-shop": "Royal Shop",
     "race-target": "Minimum score to qualify:",

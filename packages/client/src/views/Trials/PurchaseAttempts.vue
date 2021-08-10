@@ -2,10 +2,16 @@
   <UserDialog title="trials-purchase-attempts" :compact="true" @close="$close">
     <template v-slot:content>
       <AttemptPurchaseElement
+        v-if="canPurchase"
         :trialType="trialType"
         :iaps="iaps"
         @purchase="purchaseAttempts"
       ></AttemptPurchaseElement>
+      <div class="flex flex-center" v-else>
+        <span class="text-warn font-size-22 font-weight-900">{{
+          $t("att-max")
+        }}</span>
+      </div>
     </template>
   </UserDialog>
 </template>
@@ -23,7 +29,7 @@ iapsByType[TrialType.Accessory] = require("@/trials_of_decay").iaps;
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  props: ["trialType"],
+  props: ["trialType", "canPurchase"],
   components: {
     UserDialog,
     AttemptPurchaseElement

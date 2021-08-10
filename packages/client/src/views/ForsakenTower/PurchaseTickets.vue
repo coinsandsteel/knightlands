@@ -1,10 +1,12 @@
 <template>
   <UserDialog title="tower-purchase-tickets" :compact="true" @close="$close">
     <template v-slot:content>
-      <div class="width-100 flex flex-column flex-center margin-bottom-1">
+      <div
+        class="width-100 flex flex-column flex-center margin-bottom-1"
+        v-if="!$game.towerPurchased"
+      >
         <PurchaseButton
           type="yellow margin-bottom-1"
-          width="20rem"
           v-for="(iap, index) in iaps"
           :key="index"
           :price="iap.price"
@@ -17,6 +19,11 @@
             >
           </div>
         </PurchaseButton>
+      </div>
+      <div class="flex flex-center" v-else>
+        <span class="text-warn font-size-22 font-weight-900">{{
+          $t("att-max")
+        }}</span>
       </div>
     </template>
   </UserDialog>

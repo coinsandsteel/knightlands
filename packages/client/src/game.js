@@ -66,7 +66,8 @@ class Game {
         dailyShop: {},
         subscriptions: {},
         chests: {},
-        depositorId: ""
+        depositorId: "",
+        towerPurchased: false
       })
     });
 
@@ -289,6 +290,10 @@ class Game {
 
   get dktStake() {
     return this.dividends.stake;
+  }
+
+  get towerPurchased() {
+    return this._vm.towerPurchased;
   }
 
   get dkt2() {
@@ -770,6 +775,8 @@ class Game {
       if (changes.tower.hasOwnProperty("freeAttemps")) {
         this._vm.freeAttempts = changes.tower.freeAttemps;
       }
+
+      this._vm.towerPurchased = changes.tower.purchased;
     }
 
     if (changes.dailyQuests) {
@@ -874,6 +881,7 @@ class Game {
         this._vm.account = info.address;
         this._vm.beast = info.beast;
         this._vm.freeAttempts = info.tower.freeAttemps;
+        this._vm.towerPurchased = info.tower.purchased;
         this._vm.trials = info.trials;
         this._vm.dailyQuests = info.dailyQuests;
         this._vm.goldMines = info.goldMines;

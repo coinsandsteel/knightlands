@@ -74,7 +74,8 @@ export default {
   methods: {
     async purchaseAttempts() {
       await ShowPurchaseAttempts({
-        trialType: this.trialType
+        trialType: this.trialType,
+        canPurchase: !this.state.purchased
       });
     },
     async engageFight(trialId, stageId, fightIndex) {
