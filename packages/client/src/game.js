@@ -410,20 +410,22 @@ class Game {
     });
   }
 
-  async purchaseCard(cardId, address) {
+  async purchaseCard(cardId, address, chain) {
     return (
       await this._wrapOperation(Operations.Purchase, {
         cardId,
-        address
+        address,
+        chain
       })
     ).response;
   }
 
-  async purchasePack(packId, address) {
+  async purchasePack(packId, address, chain) {
     return (
       await this._wrapOperation(Operations.Purchase, {
         packId,
-        address
+        address,
+        chain
       })
     ).response;
   }

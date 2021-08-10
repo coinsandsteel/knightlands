@@ -12,7 +12,7 @@
       <span class="flex-1" :class="`icon-${currency}`"></span>
       <span
         v-if="!disable"
-        class="flex-2 font-size-25 font-weight-900 margin-right-2"
+        class="flex-2 font-size-25 font-weight-900 margin-right-2 pointer"
         @click="setMax"
         >{{ $t("max") }}</span
       >

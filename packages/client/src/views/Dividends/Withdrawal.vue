@@ -79,7 +79,7 @@ export default {
         this.noAmount ||
         this.amount == "0" ||
         !this.isAddress(this.selectedNetwork, this.address) ||
-        this.amount > this.$game.inventory.getCurrency(this.selectedToken, 6)
+        +this.amount > +this.$game.inventory.getCurrency(this.selectedToken, 6)
       );
     },
     noAmount() {

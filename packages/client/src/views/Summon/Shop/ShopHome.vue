@@ -92,7 +92,7 @@ export default {
     async handlePurchase(request) {
       const result = await ShowWallet();
       if (result) {
-        await this.purchaseRequest(request());
+        await this.purchaseRequest(request(result));
       }
     }
   }

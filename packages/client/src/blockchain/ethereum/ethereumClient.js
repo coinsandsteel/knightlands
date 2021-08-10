@@ -8,6 +8,10 @@ const Flesh = require("./Flesh.json");
 const Ash = require("./Ash.json");
 const TokensDepositGateway = require("./TokensDepositGateway.json");
 
+import { IncorrectNetworkError } from "../WalletErrors";
+
+const NetworkName = process.env.NODE_ENV == "production" ? "mainnet" : "goerli";
+
 export default class EthereumClient extends BlockchainClient {
   constructor() {
     super();
@@ -39,13 +43,19 @@ export default class EthereumClient extends BlockchainClient {
   async init() {
     const provider = new ethers.providers.Web3Provider(
       window.ethereum,
-      "goerli"
+      NetworkName
     );
     provider.on("network", (newNetwork, oldNetwork) => {
       if (oldNetwork) {
         window.location.reload();
       }
     });
+
+    try {
+      await provider.getNetwork();
+    } catch (e) {
+      throw new IncorrectNetworkError(NetworkName);
+    }
 
     this._provider = provider;
     await provider.send("eth_requestAccounts", []);

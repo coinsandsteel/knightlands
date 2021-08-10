@@ -48,14 +48,11 @@ export default {
   methods: {
     async handlePurchase(pack) {
       if (pack.iap) {
-        this.$emit("purchase", () => {
-          return this.$game.purchasePack(pack.id, this.$game.address);
+        this.$emit("purchase", ({ chain, address }) => {
+          return this.$game.purchasePack(pack.id, address, chain);
         });
       } else {
-        const items = await this.$game.purchasePack(
-          pack.id,
-          this.$game.address
-        );
+        const items = await this.$game.purchasePack(pack.id);
         ShowDialog(items);
       }
     }

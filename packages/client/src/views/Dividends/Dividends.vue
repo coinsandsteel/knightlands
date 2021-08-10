@@ -19,8 +19,26 @@
           </div>
         </div>
 
+        <!-- PAYOUT POOL -->
+        <Title :stackTop="true" :stackBottom="true">{{ $t("d-pools") }}</Title>
+        <DividendsPools class="margin-top-2 margin-bottom-2" :pools="pools" />
+
         <!-- DIVIDENDS INFO -->
         <div class="width-100">
+          <Title :stackBottom="true">{{ $t("d-total-s") }}</Title>
+          <div class="color-panel-2 width-100 flex flex-column flex-center">
+            <IconWithValue
+              class="margin-top-1 margin-bottom-1"
+              iconClass="icon-dkt"
+              valueClass="font-size-30 font-weight-900"
+              >{{ totalStaked }}</IconWithValue
+            >
+
+            <span class="font-size-18">{{
+              $t("next-p", { timer: nextPayoutTimer.value })
+            }}</span>
+          </div>
+
           <Title :stackBottom="true" :stackTop="true">
             <HintButton title="divs-cl" :texts="['divs-cl-1', 'divs-cl-2']">
               {{ $t("d-avai-d") }}
@@ -54,22 +72,6 @@
                 >{{ $t("w-no-divs") }}</span
               >
             </template>
-          </div>
-
-          <Title :stackTop="true" :stackBottom="true">{{
-            $t("d-total-s")
-          }}</Title>
-          <div class="color-panel-2 width-100 flex flex-column flex-center">
-            <IconWithValue
-              class="margin-top-1 margin-bottom-1"
-              iconClass="icon-dkt"
-              valueClass="font-size-30 font-weight-900"
-              >{{ totalStaked }}</IconWithValue
-            >
-
-            <span class="font-size-18">{{
-              $t("next-p", { timer: nextPayoutTimer.value })
-            }}</span>
           </div>
         </div>
 
@@ -120,10 +122,6 @@
             }}</CustomButton>
           </div>
         </div>
-
-        <!-- PAYOUT POOL -->
-        <Title class="margin-top-2">{{ $t("d-pools") }}</Title>
-        <DividendsPools :pools="pools" />
       </div>
     </div>
 

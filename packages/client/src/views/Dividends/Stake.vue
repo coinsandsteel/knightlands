@@ -62,7 +62,11 @@ export default {
       return this.$game.inventory.getCurrency(CurrencyType.StakedDkt, 6);
     },
     cantStake() {
-      return this.noAmount || this.amount == "0";
+      return (
+        this.noAmount ||
+        this.amount == "0" ||
+        +this.amount > +this.$game.inventory.getCurrency(CurrencyType.Dkt, 6)
+      );
     },
     noAmount() {
       return !/^((0(\.\d{1,2})?)|([1-9]\d*(\.\d{1,6})?))$/.test(this.amount);

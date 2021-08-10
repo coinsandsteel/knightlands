@@ -31,7 +31,10 @@ import Title from "@/components/Title.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Blockchains from "@/../../knightlands-shared/blockchains";
 import BlockchainFactory from "@/blockchain/blockchainFactory";
-import WalletLockedError from "@/blockchain/WalletLockedError";
+import {
+  WalletLockedError,
+  IncorrectNetworkError
+} from "@/blockchain/WalletErrors";
 import UnlockWallet from "./UnlockWallet.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -64,14 +67,28 @@ export default {
       return "";
     },
     async connectWallet(chain) {
+      this.showIncorrectNetwork = false;
+
       this.$game.blockchain = BlockchainFactory(chain);
       try {
         await this.performRequestNoCatch(this.$game.blockchain.init());
-        this.$close(true);
+        this.$close({ chain, address: this.$game.blockchain.getAddress() });
       } catch (e) {
         if (e instanceof WalletLockedError) {
           await ShowUnlockWallet(chain);
           await this.connectWallet(chain);
+        } else if (e instanceof IncorrectNetworkError) {
+          this.showPrompt(
+            this.$t("w-net-title"),
+            this.$t("w-net-desc", { net: e.message }),
+            [
+              {
+                type: "green",
+                title: this.$t("btn-ok"),
+                response: true
+              }
+            ]
+          );
         } else {
           this.showPrompt(this.$t("no-wa-title"), this.$t("no-wa-desc"), [
             {

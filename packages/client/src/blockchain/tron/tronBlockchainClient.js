@@ -8,7 +8,7 @@ const Dividends = require("./Dividends.json");
 const TronWeb = require("tronweb");
 const web3utls = require("web3-utils");
 import { toDecimal, toBigNumber } from "../utils";
-import WalletLockedError from "../WalletLockedError";
+import { WalletLockedError } from "../WalletErrors";
 import Blockchains from "@/../../knightlands-shared/blockchains.js";
 
 const getParamTypes = params => {
