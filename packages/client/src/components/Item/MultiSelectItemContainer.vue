@@ -1,0 +1,146 @@
+<template>
+  <div class="height-100 flex flex-column">
+    <div v-bar class="width-100 height-100 dummy-height item-list">
+      <div>
+        <div class="item-container dummy-height">
+          <loot
+            v-for="mat in filteredItems"
+            :key="mat.id"
+            :item="mat"
+            @hint="selectItem(mat)"
+            :selected="itemsCount[mat.id] > 0"
+          >
+            <div
+              class="select-overlay flex flex-center"
+              :class="{ s: mat.id == selectedItem }"
+              v-if="itemsCount[mat.id]"
+            >
+              <span class="font-size-22 font-outline font-weight-900"
+                >x{{ itemsCount[mat.id] }}</span
+              >
+            </div>
+          </loot>
+        </div>
+      </div>
+    </div>
+
+    <slot name="content"></slot>
+
+    <div class="flex flex-center margin-top-1">
+      <NumericValue
+        class="margin-right-2"
+        :value="currentItemCount"
+        :decreaseCondition="currentItemCount >= 1"
+        :increaseCondition="canIncreaseItemCount"
+        @inc="incItemCount"
+        @dec="decItemCount"
+      ></NumericValue>
+
+      <slot name="footer"></slot>
+    </div>
+
+    <portal to="footer" :slim="true" v-if="isActive">
+      <CustomButton type="grey" @click="showItemFilter">{{
+        $t("btn-filter")
+      }}</CustomButton>
+    </portal>
+  </div>
+</template>
+
+<script>
+import CustomButton from "@/components/Button.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
+import FilteredLootMixin from "@/components/FilteredLootMixin.vue";
+import NumericValue from "@/components/NumericValue.vue";
+import Loot from "@/components/Loot.vue";
+
+export default {
+  mixins: [ActivityMixin, FilteredLootMixin],
+  components: { NumericValue, Loot, CustomButton },
+  data: () => ({
+    itemsCount: {},
+    selectedItem: null
+  }),
+  computed: {
+    canIncreaseItemCount() {
+      if (!this.itemsCount[this.selectedItem]) {
+        return false;
+      }
+      return this.currentItemCount < this.itemsCount[this.selectedItem];
+    },
+    currentItemCount() {
+      return this.itemsCount[this.selectedItem] || 0;
+    },
+    selectedItems() {
+      return this.itemsCount;
+    }
+  },
+  methods: {
+    resetSelectedItems() {
+      this.itemsCount = {};
+    },
+    incItemCount() {
+      if (!this.itemsCount[this.selectedItem]) {
+        this.$set(this.itemsCount, this.selectedItem, 1);
+      } else {
+        this.itemsCount[this.selectedItem]++;
+      }
+
+      let item = this.$game.inventory.getItem(this.selectedItem);
+      this.$emit("select", { item, count: 1, select: true });
+    },
+    decItemCount() {
+      this.itemsCount[this.selectedItem]--;
+      let item = this.$game.inventory.getItem(this.selectedItem);
+      this.$emit("select", { item, count: 1, select: false });
+    },
+    selectItem(item) {
+      let selected = this.selectedItem == item.id;
+      let count = 0;
+      if (selected) {
+        this.selectedItem = null;
+        count = this.itemsCount[item.id];
+        this.itemsCount[item.id] = 0;
+      } else {
+        this.selectedItem = item.id;
+
+        if (!this.itemsCount[item.id]) {
+          this.$set(this.itemsCount, item.id, item.count);
+          count = this.itemsCount[item.id];
+        }
+      }
+
+      this.$emit("select", { item, count, select: !selected });
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.item-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  justify-items: center;
+}
+
+.select-overlay {
+  background-color: #102a2491;
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  &.s {
+    top: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+  }
+}
+.item-list {
+  height: 60%;
+  overflow: hidden;
+}
+</style>

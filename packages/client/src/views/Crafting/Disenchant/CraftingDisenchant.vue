@@ -1,26 +1,15 @@
 <template>
   <div class="screen-content">
-    <Promised class="height-100 padding-top-1" :promise="request">
-      <template v-slot:combined="{ isPending, isDelayOver }">
-        <LoadingScreen :loading="isPending && isDelayOver"></LoadingScreen>
-        <div class="screen-background"></div>
+    <div class="screen-background"></div>
 
-        <LootContainer
-          ref="lootContainer"
-          class="item-list"
-          :items="items"
-          :selectSlots="true"
-          :multiSelect="true"
-          :lootProps="{
-            showUnbindLevels: true,
-            showLevel: true,
-            hideQuantity: true
-          }"
-          :filtersStore="$store.getters.getDisenchantFilters"
-          commitCmd="setDisenchantingFilters"
-          @selected="handleItemSelected"
-        ></LootContainer>
-
+    <MultiSelectItemContainer
+      ref="lootContainer"
+      :items="items"
+      :filtersStore="$store.getters.getDisenchantFilters"
+      commitCmd="setDisenchantingFilters"
+      @select="selectItem"
+    >
+      <template v-slot:content>
         <div class="color-panel-2 margin-top-1">
           <span
             class="font-size-22 margin-bottom-1 font-outline font-weight-900"
@@ -42,24 +31,19 @@
             }}</span>
           </div>
         </div>
-
-        <div class="flex flex-center margin-top-1">
-          <CustomButton
-            @click="disenchantItems"
-            :disabled="Object.keys(predictedMaterials).length == 0"
-            type="yellow"
-            >{{ $t("btn-disenchant") }}</CustomButton
-          >
-        </div>
       </template>
-    </Promised>
+
+      <template v-slot:footer>
+        <CustomButton
+          @click="disenchantItems"
+          :disabled="Object.keys(predictedMaterials).length == 0"
+          type="yellow"
+          >{{ $t("btn-disenchant") }}</CustomButton
+        >
+      </template>
+    </MultiSelectItemContainer>
 
     <portal to="footer" :slim="true" v-if="isActive">
-      <!-- <CustomButton
-        type="grey"
-        @click="showItemFilter({ customFilter: customFilter })"
-        >{{ $t("btn-filter") }}</CustomButton
-      > -->
       <CustomButton type="grey" @click="goToUpgrade">{{
         $t("btn-dis-upgrade")
       }}</CustomButton>
@@ -69,27 +53,23 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import { Promised } from "vue-promised";
 import PromptMixin from "@/components/PromptMixin.vue";
-import LootContainer from "@/components/LootContainer.vue";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import CustomButton from "@/components/Button.vue";
 import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 import DisenchantingMeta from "@/disenchanting_meta";
-import Loot from "@/components/Loot.vue";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
+import Loot from "@/components/Loot.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import MultiSelectItemContainer from "@/components/Item/MultiSelectItemContainer.vue";
 
 export default {
-  mixins: [AppSection, PromptMixin, ShowItemsMixin],
+  mixins: [AppSection, PromptMixin, ShowItemsMixin, NetworkRequestErrorMixin],
   components: {
-    LoadingScreen,
-    LootContainer,
-    Promised,
+    MultiSelectItemContainer,
     CustomButton,
     Loot
   },
   data: () => ({
-    request: null,
     predictedMaterials: {}
   }),
   created() {
@@ -127,39 +107,30 @@ export default {
   },
   methods: {
     async disenchantItems() {
-      const selectedItems = this.$refs.lootContainer.selectedItems();
+      const selectedItems = this.$refs.lootContainer.selectedItems;
       const payload = {};
       for (const itemId in selectedItems) {
-        payload[itemId] = 1;
+        payload[itemId] = selectedItems[itemId];
       }
 
-      try {
-        this.request = this.$game.disenchantItems(payload);
-        const items = await this.request;
-        this.predictedMaterials = {};
-        await this.showItems(items);
-      } catch {
-        this.showPrompt(
-          this.$t("prompt-snap-title"),
-          this.$t("prompt-snap-msg"),
-          [
-            {
-              type: "yellow",
-              title: "btn-ok",
-              response: true
-            }
-          ]
-        );
-      }
+      const items = await this.performRequest(
+        this.$game.disenchantItems(payload)
+      );
+      this.predictedMaterials = {};
+      this.$refs.lootContainer.resetSelectedItems();
+      await this.showItems(items);
     },
     customFilter(key) {
       return this.equipmentLookup[key];
     },
-    handleItemSelected(item, index, selected) {
+    selectItem({ item, count, select }) {
+      this.updateMaterialsForItem(item, count, select);
+    },
+    updateMaterialsForItem(item, count, add) {
       const rarity = this.$game.itemsDB.getRarity(item);
-      const quantity = DisenchantingMeta[rarity].dropAmountMin;
+      const quantity = DisenchantingMeta[rarity].dropAmountMin * count;
       // calculate total materials from selected items
-      if (selected) {
+      if (add) {
         if (!this.predictedMaterials[rarity]) {
           this.$set(this.predictedMaterials, rarity, {
             count: 0,
@@ -186,10 +157,5 @@ export default {
 <style lang="less" scoped>
 .materials-preview {
   height: 10rem;
-}
-
-.item-list {
-  height: 60%;
-  overflow: hidden;
 }
 </style>

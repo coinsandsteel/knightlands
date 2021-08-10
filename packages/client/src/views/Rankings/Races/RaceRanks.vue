@@ -142,7 +142,7 @@ export default {
               const record = newRecords.records[index];
               if (
                 this.qualified.length != this.currentRank.maxParticipants &&
-                record.score > this.currentRank.targetScore
+                record.score >= this.currentRank.target
               ) {
                 this.qualified.push(record);
               } else {

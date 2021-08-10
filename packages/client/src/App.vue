@@ -511,7 +511,7 @@ export default {
 }
 
 .vue-notification-group {
-  min-width: 35.625rem;
+  min-width: 33vw;
   width: 55vh;
 }
 
