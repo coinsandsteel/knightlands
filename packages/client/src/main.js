@@ -37,15 +37,10 @@ Vue.use(PrettyCheckbox);
 Vue.use(VueCollapse);
 Vue.use(ModalDialogs);
 Vue.use(VueAgile);
-Vue.use(Vuebar);
 Vue.use(LoadScript);
 
 Vue.config.debug = true;
 Vue.config.productionTip = false;
-
-// Vue.config.optionMergeStrategies.myOption = function(toVal, fromVal) {
-//   console.log(toVal, fromVal);
-// };
 
 import router from "./router";
 
@@ -68,6 +63,8 @@ router.beforeEach((to, from, next) => {
   }
   next();
 });
+
+Vue.use(Vuebar, { router });
 
 window.onload = async () => {
   let adjustViewport = () => {

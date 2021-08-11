@@ -1,3 +1,7 @@
+<template>
+  <span v-if="false"></span>
+</template>
+
 <script>
 import anime from "animejs/lib/anime.es.js";
 import { mapState } from "vuex";

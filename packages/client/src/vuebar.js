@@ -8,6 +8,23 @@
     \*------------------------------------*/
 var Vuebar = {};
 Vuebar.install = function(Vue, installOptions) {
+  if (installOptions?.router === undefined) return;
+  const findAndConfigScrollPostion = () => {
+    document
+      .querySelectorAll(`[data-vue-keep-scroll-position]`)
+      .forEach(element => {
+        const offset = element
+          .getAttribute("data-vue-keep-scroll-position")
+          ?.split("-");
+        if (offset === undefined) return;
+        element.scrollTop = Number.parseFloat(offset[1]);
+        element.scrollLeft = Number.parseFloat(offset[0]);
+      });
+  };
+
+  installOptions?.router.afterEach(() =>
+    Vue.nextTick(() => findAndConfigScrollPostion())
+  );
   /*------------------------------------*\
             Custom Directive Name
         \*------------------------------------*/
@@ -337,6 +354,10 @@ Vuebar.install = function(Vue, installOptions) {
           computeBarTop(el);
           updateDragger(el, { withScrollingClasses: true });
         }
+        state.el2.setAttribute(
+          "data-vue-keep-scroll-position",
+          state.el2.scrollLeft + "-" + state.el2.scrollTop
+        );
       }.bind(this),
       state.config.scrollThrottle
     );

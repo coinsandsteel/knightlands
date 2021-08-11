@@ -72,7 +72,8 @@ export default {
 
       if (response === true) {
         await this.$game.purchaseFromRaceShop(templateId);
-        await ShowItems([{ item: templateId, quantity: 1 }]);
+        const itemLot = this.shop.items[templateId];
+        await ShowItems([{ item: templateId, quantity: itemLot.quantity }]);
       }
     }
   }

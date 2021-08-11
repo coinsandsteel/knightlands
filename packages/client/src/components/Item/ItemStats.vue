@@ -12,7 +12,7 @@
         {{ $t(statId) }}
       </div>
     </div>
-    <div class="flex width-45 flex-column text-align-left">
+    <div class="flex width-15 flex-column text-align-left">
       <div
         v-for="(statValue, statId) in stats"
         :key="statId"

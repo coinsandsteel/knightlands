@@ -38,7 +38,7 @@ export default {
     this.title = "window-edit-unit";
     this.$options.useRouterBack = true;
   },
-  mounted() {
+  activated() {
     this.unit = this.$game.army.getUnit(this.unitId);
 
     if (this.units) {
@@ -52,19 +52,29 @@ export default {
         idx++;
       }
     }
-
+  },
+  mounted() {
     this.tabs = [
       {
         title: "level-up",
-        to: { name: "unit-level", params: { units: this.units } }
+        to: {
+          name: "unit-level",
+          params: { unitId: this.unitId, units: this.units }
+        }
       },
       {
         title: "equipment",
-        to: { name: "unit-equip", params: { units: this.units } }
+        to: {
+          name: "unit-equip",
+          params: { unitId: this.unitId, units: this.units }
+        }
       },
       {
         title: "promotion",
-        to: { name: "unit-promo", params: { units: this.units } }
+        to: {
+          name: "unit-promo",
+          params: { unitId: this.unitId, units: this.units }
+        }
       }
     ];
   },
