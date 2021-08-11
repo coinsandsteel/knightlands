@@ -807,6 +807,8 @@
     "with-id": "Withdrawal ID: {tx}",
     "with-date": "Time: {date}",
     "openBox": "Open box",
+    "quests-end": "Congratulations! You finished all quests.",
+    "btn-next-diff": "Next difficulty",
     "common_racecharm_12": "Monster Paw",
     "common_racecharm_12_desc": "You wonder who was the owner?",
     "rare_racecharm_13": "Thorny Thing",

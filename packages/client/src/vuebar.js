@@ -8,21 +8,21 @@
     \*------------------------------------*/
 var Vuebar = {};
 Vuebar.install = function(Vue, installOptions) {
-  if (installOptions?.router === undefined) return;
+  if (installOptions.router === undefined) return;
   const findAndConfigScrollPostion = () => {
     document
       .querySelectorAll(`[data-vue-keep-scroll-position]`)
       .forEach(element => {
         const offset = element
           .getAttribute("data-vue-keep-scroll-position")
-          ?.split("-");
+          .split("-");
         if (offset === undefined) return;
         element.scrollTop = Number.parseFloat(offset[1]);
         element.scrollLeft = Number.parseFloat(offset[0]);
       });
   };
 
-  installOptions?.router.afterEach(() =>
+  installOptions.router.afterEach(() =>
     Vue.nextTick(() => findAndConfigScrollPostion())
   );
   /*------------------------------------*\

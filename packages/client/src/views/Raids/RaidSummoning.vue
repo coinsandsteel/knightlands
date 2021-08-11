@@ -3,10 +3,9 @@
 </template>
 
 <script>
-
 export default {
   name: "raid-summoning",
-  data: ()=>({
+  data: () => ({
     armyLoaded: false
   }),
   async mounted() {

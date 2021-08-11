@@ -8,7 +8,7 @@
 
     <span
       class="raid-summon-title font-size-30 relative font-weight-700 enemy-title-font font-outline"
-      >{{ $t(name) }}</span
+      >{{ `${$t(name)} ${$t("unit-lvl", { lvl: level })}` }}</span
     >
 
     <div ref="image" class="flex flex-center relative unit-image">
@@ -105,6 +105,9 @@ export default {
       return UiConstants.backgroundImage(
         Campaign.getRaidBackground(this.raidTemplateId)
       );
+    },
+    level() {
+      return this.meta.level;
     },
     name() {
       return this.meta.name;
