@@ -1,10 +1,6 @@
 <template>
   <div class="zone-grid">
-    <span
-      class="zone-nav flex flex-center"
-      @click="goToPrev"
-      :class="{ hidden: currentZone == 1 }"
-    >
+    <span class="zone-nav flex flex-center" @click="goToPrev">
       <div class="nav-arrow left"></div>
     </span>
 
@@ -33,42 +29,22 @@
       </slider>
     </div>
 
-    <span
-      class="zone-nav right flex flex-center"
-      @click="goToNext"
-      :class="{ hidden: currentZone == zones.length }"
-    >
+    <span class="zone-nav right flex flex-center" @click="goToNext">
       <div class="nav-arrow"></div>
     </span>
 
     <div class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap">
-      <div
-        :class="{ hidden: currentZone == 1 }"
-        class="zone-id-dots left"
-        @click="goToPrev"
-      ></div>
-      <div
-        :class="{ hidden: currentZone == 1 }"
-        class="zone-id small"
-        @click="goToPrev"
-      >
-        {{ currentZone - 1 }}
+      <div class="zone-id-dots left"></div>
+      <div class="zone-id small">
+        {{ prevZone }}
       </div>
       <div class="zone-id flex flex-center">
         <span>{{ currentZone }}</span>
       </div>
-      <div
-        :class="{ hidden: currentZone == zones.length }"
-        class="zone-id small"
-        @click="goToNext"
-      >
-        {{ currentZone + 1 }}
+      <div class="zone-id small">
+        {{ nextZone }}
       </div>
-      <div
-        :class="{ hidden: currentZone == zones.length }"
-        class="zone-id-dots"
-        @click="goToNext"
-      ></div>
+      <div class="zone-id-dots"></div>
     </div>
   </div>
 </template>
@@ -98,6 +74,20 @@ export default {
   computed: {
     currentZone() {
       return this.sliderIndex + 1;
+    },
+    nextZone() {
+      if (this.currentZone == Zones.getLastZone()) {
+        return 1;
+      }
+
+      return this.currentZone + 1;
+    },
+    prevZone() {
+      if (this.currentZone == 1) {
+        return Zones.getLastZone();
+      }
+
+      return this.currentZone - 1;
     }
   },
   methods: {
@@ -116,10 +106,10 @@ export default {
       return Zones.getZoneName(zoneId);
     },
     goToNext() {
-      this.sliderIndex++;
+      this.sliderIndex = this.nextZone - 1;
     },
     goToPrev() {
-      this.sliderIndex--;
+      this.sliderIndex = this.prevZone - 1;
     },
     handleZoneChanged(event) {
       // v-model loopback
@@ -131,7 +121,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@zoneIdSize: 2.5rem;
+@zoneIdSize: 3rem;
 @dotsWidth: 3rem;
 @dotsHeight: @dotsWidth * 0.1891;
 @breadcrumbsHeight: @zoneIdSize * 0.8;

@@ -37,6 +37,7 @@
               :stage="zoneStage(zone)"
               @nextQuest="goToNextQuest"
               @prevQuest="goToPrevQuest"
+              @nextDifficulty="handleNextDifficulty"
             ></quest-mission>
 
             <div class="quest" v-else>
@@ -188,7 +189,6 @@ export default {
       }
 
       this.allFinished = true;
-      let stage = this.zoneStage(this.zone);
       this.currentZone.quests.forEach((quest, index) => {
         let progress = this.$game.getQuestProgress(this.zone, index);
         if (progress.current < progress.max) {
@@ -265,6 +265,19 @@ export default {
 
       // important to replace route instead of pushing to be able to move back in history freely
       this.$router.replace({ path: `${zoneId}` });
+    },
+    handleNextDifficulty() {
+      this.$router.replace({
+        name: "quests",
+        params: {
+          zone: 1,
+          quest: 0
+        }
+      });
+
+      this.$store.commit("setZoneStage", {
+        stage: this.zoneStage(this.zone) + 1
+      });
     }
   }
 };

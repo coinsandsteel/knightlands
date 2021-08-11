@@ -140,9 +140,21 @@
         </div>
 
         <div v-else-if="progress.current >= progress.max && hasNextZone">
-          <CustomButton type="yellow" @click="goToNextMission">{{
-            $t("btn-next-quest")
-          }}</CustomButton>
+          <CustomButton
+            type="yellow"
+            @click="goToNextMission"
+            v-if="!isBoss || (isBoss && isLastMission && !isLastZone)"
+            >{{ $t("btn-next-quest") }}</CustomButton
+          >
+          <CustomButton
+            type="yellow"
+            @click="nextDifficulty"
+            v-else-if="isBoss && isLastZone"
+            >{{ $t("btn-next-diff") }}</CustomButton
+          >
+          <span class="text-warn font-size-20 font-outline" v-else>{{
+            $t("quests-end")
+          }}</span>
         </div>
 
         <div v-else class="flex flex-center width-100 flex-space-evenly">
@@ -247,6 +259,11 @@ export default {
     this.newRewards = [];
     this.lootHash = {};
   },
+  watch: {
+    questIndex() {
+      this.sliderIndex = +this.questIndex;
+    }
+  },
   computed: {
     maxProgress() {
       return this.progress.max;
@@ -257,10 +274,10 @@ export default {
         : this.progress.current;
     },
     enemyList() {
-      return [0, 1, 2, 3, 4, 5];
+      return Zones.getEnemyList(this.zone._id);
     },
     isBoss() {
-      return this.questIndex == 5;
+      return this.questIndex == this.enemyList.length - 1;
     },
     progress() {
       return this.$game.getQuestProgress(this.zone._id, this.questIndex);
@@ -282,12 +299,32 @@ export default {
     missionName() {
       return Zones.getMissionName(this.zone._id, this.questIndex);
     },
+    isLastStage() {
+      return this.stage == 3;
+    },
+    isLastMission() {
+      return Zones.isLastMission(this.zone._id, this.questIndex);
+    },
+    isLastZone() {
+      return Zones.getLastZone() == this.zone._id;
+    },
     hasNextZone() {
-      return !Zones.isLastZone(this.zone._id);
+      if (!this.isLastStage) {
+        return true;
+      }
+      return !this.isLastMission;
     }
   },
   methods: {
+    nextDifficulty() {
+      this.$emit("nextDifficulty");
+    },
     goToNextMission() {
+      if (!this.isLastMission) {
+        this.sliderIndex++;
+        return;
+      }
+
       // find next unfinished quest
       let i = 0;
       const l = this.enemyList.length;
