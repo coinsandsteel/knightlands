@@ -26,7 +26,7 @@ export default {
     return ZonesMeta[+zoneId].questsId.map((_, idx) => idx);
   },
   isLastMission(zoneId, questIndex) {
-    return ZonesMeta[+zoneId].questsId.length <= questIndex;
+    return ZonesMeta[+zoneId].questsId.length == +questIndex + 1;
   },
   getLastZone() {
     // include zone count in ZonesMeta

@@ -147,11 +147,17 @@ export default {
         return true;
       }
 
-      let bossProgress = this.$game.getQuestBossProgress(
-        this.zone._id,
-        this.stage
-      );
-      return bossProgress.unlocked;
+      let bossUnlocked = true;
+
+      for (let i = 0; i < this.questIndex; ++i) {
+        const qProgress = this.$game.getQuestProgress(this.zone._id, i);
+
+        if (qProgress.current < qProgress.max) {
+          bossUnlocked = false;
+          break;
+        }
+      }
+      return bossUnlocked;
     },
     enemyImage() {
       return UiConstants.backgroundImage(

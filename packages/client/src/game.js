@@ -973,7 +973,8 @@ class Game {
     let progress = stages[stage];
     if (!progress) {
       progress = {
-        damageRecieved: 0
+        damageRecieved: 0,
+        unlocked: true
       };
       this._vm.$set(stages, stage, progress);
     }
@@ -1044,7 +1045,6 @@ class Game {
   }
 
   createChannel(name, waitForAuth = true) {
-    console.log("channel name: ", name);
     return this._socket.subscribe(name, {
       waitForAuth
     });
