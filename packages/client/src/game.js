@@ -655,11 +655,11 @@ class Game {
   }
 
   _handleRaceFinished(data) {
-    console.log(data);
+    this._vm.$emit(Events.RaceFinished);
     Vue.notify({
       group: "race",
       data,
-      duration: -1
+      duration: 5000
     });
   }
 

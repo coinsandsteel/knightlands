@@ -14,7 +14,7 @@
         <span class="yellow-title">{{ currentRank.rank.score }}</span>
       </div>
     </div>
-    <!-- <div class="full-flex width-100 dummy-height" v-bar>
+    <div class="full-flex width-100 dummy-height" v-bar>
       <div>
         <div v-for="(reward, index) in rewardsByTier" :key="index">
           <RankedRewardsListElement
@@ -25,9 +25,9 @@
             :dkt="reward.dkt"
             :you="isYou(reward.minRank, reward.maxRank)"
           />
-        </div> 
+        </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 

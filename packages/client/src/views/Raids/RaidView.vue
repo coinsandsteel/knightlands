@@ -211,7 +211,7 @@
     <portal to="footer" v-if="isActive">
       <CopyButton
         v-if="!isFreeRaid"
-        :data="href"
+        :data="getHref()"
         caption="btn-share"
       ></CopyButton>
     </portal>
@@ -382,9 +382,6 @@ export default {
       if (!this.raidState) return false;
       return Object.keys(this.raidState.challenges).length > 0;
     },
-    href() {
-      return window.location.href;
-    },
     slots() {
       return this.raidState.busySlots;
     },
@@ -431,6 +428,9 @@ export default {
     }
   },
   methods: {
+    getHref() {
+      return window.location.href;
+    },
     goToShop() {
       this.$router.push({
         name: "top-up"

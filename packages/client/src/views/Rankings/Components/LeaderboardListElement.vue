@@ -14,13 +14,25 @@
 
 <script>
 export default {
-  props: ["index", "id", "rank", "score", "height", "you", "target", "pId"],
+  props: [
+    "index",
+    "id",
+    "rank",
+    "score",
+    "height",
+    "you",
+    "target",
+    "pId",
+    "showRank"
+  ],
   computed: {
     rankIcon() {
-      if (this.target && this.score >= this.target) {
-        return `icon-rank${this.rank}`;
-      } else if (!this.target && this.rank < 4) {
-        return `icon-rank${this.rank}`;
+      if (this.showRank) {
+        if (this.target && this.score >= this.target) {
+          return `icon-rank${this.rank}`;
+        } else if (!this.target && this.rank < 4) {
+          return `icon-rank${this.rank}`;
+        }
       }
 
       return "";

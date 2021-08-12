@@ -22,6 +22,7 @@
       </div>
       <LeaderboardListElement
         v-for="(item, index) in qualified"
+        :showRank="true"
         :key="item.name"
         :index="index"
         :rank="index + 1"
@@ -104,7 +105,11 @@ export default {
     currentRank: null,
     fetchedAll: false
   }),
-  async mounted() {
+  async activated() {
+    this.qualified = [];
+    this.nonQualified = [];
+    this.fetchedAll = false;
+    this.currentPage = 0;
     this.currentRank = await this.getRank(this.id);
     this.fetchNextPage();
   },

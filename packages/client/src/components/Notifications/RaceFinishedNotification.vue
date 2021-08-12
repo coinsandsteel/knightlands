@@ -10,9 +10,14 @@
             {{ props.item.data.rank ? $t("rt-reached") : $t("rt-fin") }}
           </Title>
 
-          <custom-button @click="openRace(props.item.data.race)">{{
-            $t("o-race")
-          }}</custom-button>
+          <custom-button
+            @click="openRace(props.item.data.race)"
+            v-if="props.item.data.rank"
+            >{{ $t("o-race") }}</custom-button
+          >
+          <CustomButton @click="openRaceRewards" v-else>{{
+            $t("claim-rewards")
+          }}</CustomButton>
         </template>
       </div>
     </template>
@@ -27,10 +32,14 @@ export default {
   components: { CustomButton, Title },
   methods: {
     openRace(id) {
-      this.$router.push({ name: "race", params: { id } });
-      this.$router.replace({
+      this.$router.push({
         name: "race-ranks",
         params: { id }
+      });
+    },
+    openRaceRewards() {
+      this.$router.push({
+        name: "race-rewards"
       });
     }
   }

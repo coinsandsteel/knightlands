@@ -43,6 +43,7 @@ import RaceListElement from "./RaceListElement.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import Timer from "@/timer";
+import Events from "@/../../knightlands-shared/events";
 
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
@@ -52,12 +53,16 @@ export default {
     this.$options.useRouterBack = true;
   },
   mounted() {
-    this.fetchList();
-    this.fetchFinishedRaces();
     this.listener = this.fetchList.bind(this);
+    this.$game.on(Events.RaceFinished, this.listener);
     this.cooldownTimer.on("finished", this.listener);
   },
+  activated() {
+    this.fetchList();
+    this.fetchFinishedRaces();
+  },
   beforeDestroy() {
+    this.$game.off(Events.RaceFinished, this.listener);
     this.cooldownTimer.off("finsihed", this.listener);
   },
   data: () => ({
@@ -140,14 +145,12 @@ export default {
       await this.fetchList();
     },
     async showRanks(race) {
-      this.$router.push({ name: "race", params: { id: race._id } });
       this.$router.push({
         name: "race-ranks",
         params: { id: race._id }
       });
     },
     async showRewards(race) {
-      this.$router.push({ name: "race", params: { id: race._id } });
       this.$router.push({
         name: "race-rewards",
         params: { id: race._id }

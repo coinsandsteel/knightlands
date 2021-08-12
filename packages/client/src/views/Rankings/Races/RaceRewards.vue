@@ -10,7 +10,7 @@ export default {
   created() {
     this.showInfoButton = true;
   },
-  async mounted() {
+  async activated() {
     this.currentRank = await this.$game.getRaceInfo(this.id);
     this.rewards = await this.$game.getRaceRewards(this.id);
   },
