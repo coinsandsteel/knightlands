@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-column flex-center relative">
+  <div class="flex flex-column flex-items-center relative prem-p">
     <Title :stackTop="true" :stackBottom="true">{{ $t(pack.title) }}</Title>
-    <div class="banner absolute-stretch" :class="{ even: idx % 2 }"></div>
-    <div class="content width-100 relative">
+    <div class="banner absolute-stretch" :class="`b${idx}`"></div>
+    <div class="content width-100 relative full-flex">
       <div class="icon" :style="icon" />
       <div class="items flex flex-column flex-center">
         <div class="flex flex-center margin-top-2">
@@ -98,9 +98,25 @@ export default {
   background-repeat: repeat-x;
   background-size: contain;
 
-  &.even {
+  &.b1 {
     background-image: url("../../../assets/shop/shop_packs_pattern2.jpg");
   }
+
+  &.b2 {
+    background-image: url("../../../assets/shop/shop_packs_pattern3.jpg");
+  }
+
+  &.b3 {
+    background-image: url("../../../assets/shop/shop_packs_pattern4.jpg");
+  }
+
+  &.b4 {
+    background-image: url("../../../assets/shop/shop_packs_pattern5.jpg");
+  }
+}
+
+.prem-p {
+  height: 40rem;
 }
 
 .content {
@@ -116,6 +132,7 @@ export default {
     grid-column: 1;
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
   }
 
   & .items {

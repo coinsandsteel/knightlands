@@ -19,10 +19,22 @@
 
 <script>
 import CustomButton from "@/components/Button.vue";
+import TrialType from "@/../../knightlands-shared/trial_type";
+import TrialsOfHonorMeta from "@/trials_of_honor";
+import TrialsOfDecayMeta from "@/trials_of_decay";
+import ConjuredTrialsMeta from "@/conjured_trials";
+import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 
 export default {
+  mixins: [InventoryListenerMixin],
   props: ["trialType"],
   components: { CustomButton },
+  data: () => ({
+    totalTickets: 0
+  }),
+  mounted() {
+    this.update();
+  },
   computed: {
     state() {
       return this.$game.getTrialState(this.trialType);
@@ -30,7 +42,7 @@ export default {
     ticketItemName() {
       return this.$t(`trial-attempt-${this.trialType}`);
     },
-    totalTickets() {
+    nonItemAttempts() {
       if (!this.state) {
         return this.freeTickets;
       }
@@ -43,6 +55,33 @@ export default {
       }
 
       return this.state.freeAttempts;
+    },
+    meta() {
+      switch (this.trialType) {
+        case TrialType.Weapon:
+          return ConjuredTrialsMeta;
+        case TrialType.Armour:
+          return TrialsOfHonorMeta;
+        case TrialType.Accessory:
+          return TrialsOfDecayMeta;
+      }
+      return null;
+    }
+  },
+  methods: {
+    handleInventoryChanged() {
+      this.update();
+    },
+    update() {
+      const ticketItem = this.$game.inventory.getItemByTemplate(
+        this.meta.ticketItem
+      );
+
+      if (ticketItem) {
+        this.totalTickets = this.nonItemAttempts + ticketItem.count;
+      } else {
+        this.totalTickets = this.nonItemAttempts;
+      }
     }
   }
 };

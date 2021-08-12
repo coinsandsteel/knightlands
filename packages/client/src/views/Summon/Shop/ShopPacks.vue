@@ -19,14 +19,14 @@ import Meta from "@/premium_shop";
 import PremiumPackElement from "./PremiumPackElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
-
+import PaymentHandler from "@/components/PaymentHandler.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
 
 const ShowDialog = create(ItemsReceived, "items");
 
 export default {
-  mixins: [NetworkRequestErrorMixin],
+  mixins: [NetworkRequestErrorMixin, PaymentHandler],
   components: { PremiumPackElement, PaymentStatus },
   computed: {
     packs() {
@@ -46,6 +46,9 @@ export default {
     }
   },
   methods: {
+    handlePaymentComplete(iap, context) {
+      ShowDialog(context);
+    },
     async handlePurchase(pack) {
       if (pack.iap) {
         this.$emit("purchase", ({ chain, address }) => {

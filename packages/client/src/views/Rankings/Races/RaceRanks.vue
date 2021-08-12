@@ -16,62 +16,66 @@
       </div>
     </div>
 
-    <div class="width-100 dummy-height" v-if="qualified.length > 0">
-      <div class="color-panel-1">
-        <span class="font-size-22">{{ $t("quali") }}</span>
-      </div>
-      <LeaderboardListElement
-        v-for="(item, index) in qualified"
-        :showRank="true"
-        :key="item.name"
-        :index="index"
-        :rank="index + 1"
-        :id="item.name"
-        :pId="item.id"
-        :score="item.score"
-        :height="itemSize"
-        :you="isYou(item.id)"
-        :target="currentRank.target"
-      />
-    </div>
+    <div class="width-100" v-bar>
+      <div>
+        <div class="width-100 dummy-height" v-if="qualified.length > 0">
+          <div class="color-panel-1">
+            <span class="font-size-22">{{ $t("quali") }}</span>
+          </div>
+          <LeaderboardListElement
+            v-for="(item, index) in qualified"
+            :showRank="true"
+            :key="item.name"
+            :index="index"
+            :rank="index + 1"
+            :id="item.name"
+            :pId="item.id"
+            :score="item.score"
+            :height="itemSize"
+            :you="isYou(item.id)"
+            :target="currentRank.target"
+          />
+        </div>
 
-    <div
-      class="full-flex width-100 dummy-height"
-      v-if="nonQualified.length > 0 && currentRank"
-    >
-      <div class="color-panel-1">
-        <span class="font-size-22">{{ $t("non-quali") }}</span>
-      </div>
+        <div
+          class="full-flex width-100 dummy-height"
+          v-if="nonQualified.length > 0 && currentRank"
+        >
+          <div class="color-panel-1">
+            <span class="font-size-22">{{ $t("non-quali") }}</span>
+          </div>
 
-      <RecycleScroller
-        ref="scroller"
-        class="width-100 height-100"
-        :items="nonQualified"
-        :item-size="itemSize"
-        key-field="name"
-        v-slot="{ item, index }"
-        :emitUpdate="nonQualified.length > 0 && !fetchedAll"
-        @update="scrollUpdated"
-      >
-        <LeaderboardListElement
-          :index="index"
-          :rank="index + 1"
-          :id="item.name"
-          :pId="item.id"
-          :score="item.score"
-          :height="itemSize"
-          :you="isYou(item.id)"
-          :target="currentRank.target"
-        />
-      </RecycleScroller>
-    </div>
+          <RecycleScroller
+            ref="scroller"
+            class="width-100 height-100"
+            :items="nonQualified"
+            :item-size="itemSize"
+            key-field="name"
+            v-slot="{ item, index }"
+            :emitUpdate="nonQualified.length > 0 && !fetchedAll"
+            @update="scrollUpdated"
+          >
+            <LeaderboardListElement
+              :index="index"
+              :rank="index + 1"
+              :id="item.name"
+              :pId="item.id"
+              :score="item.score"
+              :height="itemSize"
+              :you="isYou(item.id)"
+              :target="currentRank.target"
+            />
+          </RecycleScroller>
+        </div>
 
-    <div class="flex flex-center full-flex" v-else>
-      <div class="panel-input padding-1">
-        <span
-          class="font-size-20 flex flex-center"
-          v-html="$t('empty-leaderboard')"
-        ></span>
+        <div class="flex flex-center full-flex" v-else>
+          <div class="panel-input padding-1">
+            <span
+              class="font-size-20 flex flex-center"
+              v-html="$t('empty-leaderboard')"
+            ></span>
+          </div>
+        </div>
       </div>
     </div>
 

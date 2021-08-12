@@ -60,8 +60,6 @@ import UnitInventory from "../../UnitInventory.vue";
 import Tabs from "@/components/Tabs.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import { Promised } from "vue-promised";
-import LoadingScreen from "@/components/LoadingScreen.vue";
 import Title from "@/components/Title.vue";
 
 const Troops = "troops";
@@ -74,10 +72,8 @@ export default {
     Tabs,
     UnitInventory,
     CustomButton,
-    LoadingScreen,
-    Promised,
     Loot,
-    Title,
+    Title
   },
   created() {
     this.filtersStore = this.$store.getters.getUnitFilters;
@@ -88,16 +84,16 @@ export default {
       { title: Troops, value: Troops },
       {
         title: Generals,
-        value: Generals,
-      },
+        value: Generals
+      }
     ],
     currentTab: Troops,
     refundedItems: {
       troopEssence: { item: TroopsMeta.essenceItem, quantity: 0 },
       souls: { item: ArmyMeta.soulsItem, quantity: 0 },
-      gold: { item: GeneralsMeta.goldItem, quantity: 0 },
+      gold: { item: GeneralsMeta.goldItem, quantity: 0 }
     },
-    selectedUnits: [],
+    selectedUnits: []
   }),
   computed: {
     maxUnits() {
@@ -112,9 +108,9 @@ export default {
     units() {
       return this.$game.army.getUnitsWithFilter(
         this.currentTab == Troops,
-        (unit) => unit.legion == -1
+        unit => unit.legion == -1
       );
-    },
+    }
   },
   watch: {
     selectedUnits() {
@@ -137,7 +133,7 @@ export default {
         this.refundedItems.souls.quantity +=
           ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];
       }
-    },
+    }
   },
   methods: {
     getSelectedUnit(idx) {
@@ -153,13 +149,13 @@ export default {
       if (isSelected) {
         this.selectedUnits.push(unit);
       } else {
-        const idx = this.selectedUnits.findIndex((x) => x.id === unit.id);
+        const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
         this.selectedUnits.splice(idx, 1);
       }
     },
     async banish() {
       this.request = this.performRequest(
-        this.$game.banishUnits(this.selectedUnits.map((x) => x.id))
+        this.$game.banishUnits(this.selectedUnits.map(x => x.id))
       );
       try {
         await this.request;
@@ -182,14 +178,14 @@ export default {
         }
 
         const unit = this.units[i];
-        const idx = this.selectedUnits.findIndex((x) => x.id === unit.id);
+        const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
         if (idx != -1) {
           continue;
         }
 
         this.$refs.units.toggleSlot(unit);
       }
-    },
-  },
+    }
+  }
 };
 </script>

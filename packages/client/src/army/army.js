@@ -79,8 +79,11 @@ export default class Army {
   }
 
   estimateDamage(unit) {
-    return this._armyResolver.estimateDamage(unit, this._unitsIndex)
-      .unitsDamageOutput[unit.id];
+    return this._armyResolver.estimateDamage(
+      unit,
+      this._unitsIndex,
+      this._game.character.maxStats
+    ).unitsDamageOutput[unit.id];
   }
 
   getDamage(unit) {

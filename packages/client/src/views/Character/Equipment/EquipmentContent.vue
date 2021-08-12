@@ -26,7 +26,7 @@
         }}</span>
         <span
           class="icon-edit"
-          v-if="nickname == $game.character.nickname"
+          v-if="!preview && nickname == $game.character.nickname"
           @click="$emit('changeName')"
         ></span>
       </div>
@@ -35,7 +35,11 @@
         class="font-size-20 font-shadow flex-self-start margin-bottom-half"
         >{{ $t("character-level", { level: level }) }}</span
       >
-      <IconWithValue iconClass="icon-exp" valueClass="font-size-15">
+      <IconWithValue
+        v-if="!preview"
+        iconClass="icon-exp"
+        valueClass="font-size-15"
+      >
         {{ $t("char-exp", { c: currentExp, n: nextExp }) }}
       </IconWithValue>
 
@@ -47,7 +51,7 @@
       <IconWithValue
         @click="$emit('details')"
         class="margin-top-1"
-        iconClass="icon-info"
+        :iconClass="preview ? '' : 'icon-info'"
         valueClass="font-size-20 font-shadow rarity-legendary font-weight-900"
       >
         {{ $t("character-power", { power: totalPower() }) }}
@@ -93,7 +97,8 @@ export default {
     "hasBonus",
     "nickname",
     "classIcon",
-    "avatar"
+    "avatar",
+    "preview"
   ],
   components: { Loot, IconWithValue, Avatar },
   computed: {

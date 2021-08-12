@@ -49,6 +49,7 @@ export default {
 
       await this.fetchPaymentStatus(data.iap);
     },
+    fetchPaymentStatus(iap) {},
     handlePaymentComplete(iap, context) {},
     handlePaymentFailed(iap, context) {},
     async purchaseRequest(purchaseRequest) {

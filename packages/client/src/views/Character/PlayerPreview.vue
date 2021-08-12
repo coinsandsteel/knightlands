@@ -7,7 +7,7 @@
       :level="character.level"
       :stats="character.stats"
       :hasBonus="{}"
-      :showDetails="true"
+      :preview="true"
       :nickname="character.nickname"
       :classIcon="character.class"
       :avatar="character.avatar"
