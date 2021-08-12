@@ -30,8 +30,10 @@ export default {
   },
   computed: {
     damage() {
-      return this.$game.army.getLegionDamage(this.legionIndex)
-        .totalDamageOutput;
+      return this.$game.army.getLegionDamage(
+        this.legionIndex,
+        this.$game.character.maxStats
+      ).totalDamageOutput;
     },
     totalLegions() {
       return this.$game.army.totalLegions();

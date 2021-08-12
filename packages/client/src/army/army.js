@@ -91,14 +91,19 @@ export default class Army {
     return this._armyResolver.getAbilityLevelValue(unit, abilityId);
   }
 
-  getLegionDamage(legionIndex) {
+  getLegionDamage(legionIndex, playerStats) {
     const legion = this.getLegion(legionIndex);
     const units = {};
     for (let slotId in legion.units) {
       const unitId = legion.units[slotId];
       units[unitId] = this.getUnit(unitId);
     }
-    return this._armyResolver.resolve(units, this._unitsIndex);
+    return this._armyResolver.resolve(
+      units,
+      this._unitsIndex,
+      null,
+      playerStats
+    );
   }
 
   filterIngridientUnits(referenceUnit, ingridient, selectedUnits) {
