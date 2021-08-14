@@ -290,11 +290,22 @@ export default {
         return true;
       }
 
-      let bossProgress = this.$game.getQuestBossProgress(
-        this.zone._id,
-        this.stage
-      );
-      return bossProgress.unlocked;
+      let allQuestsFinished = true;
+      for (let index = 0; index < this.questIndex; index++) {
+        let otherQuestProgress = this.$game.getQuestProgress(
+          this.zone._id,
+          index
+        );
+        if (
+          this.questIndex != index &&
+          otherQuestProgress.current < otherQuestProgress.max
+        ) {
+          allQuestsFinished = false;
+          break;
+        }
+      }
+
+      return allQuestsFinished;
     },
     missionName() {
       return Zones.getMissionName(this.zone._id, this.questIndex);
