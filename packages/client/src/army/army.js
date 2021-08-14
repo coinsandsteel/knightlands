@@ -86,8 +86,8 @@ export default class Army {
     ).unitsDamageOutput[unit.id];
   }
 
-  getDamage(unit) {
-    return this._armyResolver.getDamage(unit);
+  getDamage(unit, nextLevel, nextStar) {
+    return this._armyResolver.getDamage(unit, nextLevel, nextStar, 0);
   }
 
   getAbilityLevelValue(unit, abilityId) {

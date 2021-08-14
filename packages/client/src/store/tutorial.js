@@ -24,17 +24,24 @@ export default {
         state.actionIndex = 0;
         return;
       }
-
-      const actions = Scenario[state.step].actions;
-      if (actions.length <= state.actionIndex) {
-        state.step++;
-        state.actionIndex = 0;
-        state.conditionPassed = false;
-      }
     }
   },
   actions: {
-    skipCurrentStep({ commit, state }) {
+    async advanceAction({ dispatch, state }) {
+      await dispatch("moveToAction", { index: state.actionIndex + 1 });
+    },
+    async moveToAction({ commit, state }, { index }) {
+      commit("setActionIndex", { index: index });
+
+      const actions = Scenario[state.step].actions;
+      if (actions.length <= state.actionIndex) {
+        await Vue.prototype.$game.completeTutorial(state.step);
+        commit("setStep", { step: state.step + 1 });
+      }
+    },
+    async skipCurrentStep({ commit, state }) {
+      await Vue.prototype.$game.completeTutorial(state.step);
+
       commit("setStep", {
         step: state.step + 1
       });
@@ -68,8 +75,16 @@ export default {
         }
       }
     },
-    checkConditions({ commit, state }, { route, isInit }) {
+    async checkConditions({ commit, state, dispatch }, { route, isInit }) {
       let passed = true;
+
+      while (state.step < Scenario.length) {
+        if (Vue.prototype.$game.isTutorialFinished(state.step)) {
+          state.step++;
+        } else {
+          break;
+        }
+      }
 
       if (state.step >= Scenario.length) {
         // commit("setStep", {
@@ -82,7 +97,7 @@ export default {
         const actions = Scenario[state.step].actions;
         const actionData = actions[state.actionIndex];
         if (isInit && actionData.return !== undefined) {
-          commit("setActionIndex", {
+          await dispatch("moveToAction", {
             index: actionData.return
           });
         }
@@ -95,6 +110,7 @@ export default {
       if (passed) {
         const actions = Scenario[state.step].actions;
         if (state.actionIndex >= actions.length) {
+          await Vue.prototype.$game.completeTutorial(state.step);
           commit("setStep", {
             step: state.step + 1
           });

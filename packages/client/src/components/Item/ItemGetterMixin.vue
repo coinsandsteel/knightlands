@@ -75,6 +75,13 @@ export default {
 
       return `${this.$t(this.template.rarity)} ${this.$t(type)}`;
     },
+    enchant() {
+      if (!this.item) {
+        return 0;
+      }
+
+      return this.item.enchant || 0;
+    },
     stats() {
       if (!this.item) {
         return [];

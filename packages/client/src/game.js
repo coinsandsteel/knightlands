@@ -67,7 +67,8 @@ class Game {
         subscriptions: {},
         chests: {},
         depositorId: "",
-        towerPurchased: false
+        towerPurchased: false,
+        tutorial: {}
       })
     });
 
@@ -113,6 +114,9 @@ class Game {
       this._handleRaidJoinStatus.bind(this)
     );
     this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
+    // this.racesChannel = this.createChannel(Events.RaceFinished, false);
+    // this.racesChannel.watch(this._handleRaceFinished.bind(this));
+
     this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
     this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
     this._socket.on(Events.ChestOpened, this._handleChestOpened.bind(this));
@@ -354,6 +358,10 @@ class Game {
 
   removeAllListeners(evt) {
     this._vm.$off(evt);
+  }
+
+  isTutorialFinished(id) {
+    return this._vm.tutorial[id];
   }
 
   shortAccount(address) {
@@ -655,6 +663,7 @@ class Game {
   }
 
   _handleRaceFinished(data) {
+    console.log(data);
     this._vm.$emit(Events.RaceFinished);
     Vue.notify({
       group: "race",
@@ -753,6 +762,10 @@ class Game {
 
     if (changes.goldMines) {
       this.mergeObjects(this._vm, this._vm.goldMines, changes.goldMines);
+    }
+
+    if (changes.tutorial) {
+      this.mergeObjects(this._vm, this._vm.tutorial, changes.tutorial);
     }
 
     if (changes.subscriptions) {
@@ -885,6 +898,7 @@ class Game {
         this._vm.trials = info.trials;
         this._vm.dailyQuests = info.dailyQuests;
         this._vm.goldMines = info.goldMines;
+        this._vm.tutorial = info.tutorial;
         this._vm.dividends = info.dividends;
         this._vm.dailyShop = info.dailyShop;
         this._vm.purchasedIaps = info.purchasedIaps;
@@ -1465,6 +1479,12 @@ class Game {
         amount
       })
     ).response;
+  }
+
+  async completeTutorial(id) {
+    await this._wrapOperation(Operations.Tutorial, {
+      id
+    });
   }
 
   async requestDividendTokenWithdrawal(amount) {

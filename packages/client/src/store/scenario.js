@@ -86,7 +86,6 @@ export default [
           path: "/character"
         },
         pointer: {
-          delay: 1000,
           target: "#i-2045"
         },
         return: 0

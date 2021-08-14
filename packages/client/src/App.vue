@@ -643,7 +643,7 @@ export default {
   // .laptop_small({width: 60rem;});
   // .laptop({width: 60rem;});
   // width: 60rem;
-  width: 55vh;
+  max-width: 55vh;
 }
 
 .home-link {

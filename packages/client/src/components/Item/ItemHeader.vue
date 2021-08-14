@@ -9,10 +9,20 @@
         <span
           v-if="item"
           class="font-size-20 nowrap font-weight-900 font-outline"
-          :class="[{ 'margin-right-1': !hasElement }, rarityClass]"
+          :class="[rarityClass]"
           >{{ $t(name) }}</span
         >
-        <div v-if="hasElement" :class="elementIcon" class="big"></div>
+        <span
+          class="font-size-20 nowrap font-weight-900 font-outline margin-left-half"
+          v-if="enchant > 0"
+          :class="[rarityClass]"
+          >{{ `+${enchant}` }}</span
+        >
+        <div
+          v-if="hasElement"
+          :class="[{ 'margin-left-half': !hasElement }, elementIcon]"
+          class="big"
+        ></div>
       </div>
 
       <div

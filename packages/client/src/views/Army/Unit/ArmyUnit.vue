@@ -38,46 +38,6 @@ export default {
     this.title = "window-edit-unit";
     this.$options.useRouterBack = true;
   },
-  activated() {
-    this.unit = this.$game.army.getUnit(this.unitId);
-
-    if (this.units) {
-      let idx = 0;
-      for (const unit of this.units) {
-        if (unit.id == this.unit.id) {
-          this.unitIdx = idx;
-          break;
-        }
-
-        idx++;
-      }
-    }
-  },
-  mounted() {
-    this.tabs = [
-      {
-        title: "level-up",
-        to: {
-          name: "unit-level",
-          params: { unitId: this.unitId, units: this.units }
-        }
-      },
-      {
-        title: "equipment",
-        to: {
-          name: "unit-equip",
-          params: { unitId: this.unitId, units: this.units }
-        }
-      },
-      {
-        title: "promotion",
-        to: {
-          name: "unit-promo",
-          params: { unitId: this.unitId, units: this.units }
-        }
-      }
-    ];
-  },
   data: () => ({
     unitIdx: -1,
     unit: null,
@@ -85,8 +45,47 @@ export default {
     currentTab: "level-up"
   }),
   watch: {
-    unitId() {
-      this.unit = this.$game.army.getUnit(this.unitId);
+    unitId: {
+      immediate: true,
+      handler() {
+        this.unit = this.$game.army.getUnit(this.unitId);
+
+        if (this.units) {
+          let idx = 0;
+          for (const unit of this.units) {
+            if (unit.id == this.unit.id) {
+              this.unitIdx = idx;
+              break;
+            }
+
+            idx++;
+          }
+        }
+
+        this.tabs = [
+          {
+            title: "level-up",
+            to: {
+              name: "unit-level",
+              params: { unitId: this.unitId, units: this.units }
+            }
+          },
+          {
+            title: "equipment",
+            to: {
+              name: "unit-equip",
+              params: { unitId: this.unitId, units: this.units }
+            }
+          },
+          {
+            title: "promotion",
+            to: {
+              name: "unit-promo",
+              params: { unitId: this.unitId, units: this.units }
+            }
+          }
+        ];
+      }
     }
   },
   computed: {

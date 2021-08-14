@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute-stretch flex flex-column" ref="root" v-show="element">
+  <div class="absolute-stretch flex flex-column" ref="root">
     <template v-if="start">
       <div class="focus-mask e d" :style="topStyle"></div>
       <div class="focus-mask e d" :style="bottomStyle"></div>
@@ -63,6 +63,9 @@ export default {
     }
   },
   components: { CustomButton },
+  deactivated() {
+    this.hide();
+  },
   computed: {
     elementId() {
       if (!this.data) {
@@ -261,6 +264,12 @@ export default {
     show() {
       this.$nextTick(() => {
         let found = false;
+
+        this.skipTimeout = setTimeout(() => {
+          this.showSkipButton = true;
+          this.skipTimeout = false;
+        }, SKIP_TIMEOUT);
+
         this.searchInterval = setInterval(() => {
           this.element = document.querySelector(this.elementId);
           if (!found && this.element) {
@@ -271,10 +280,6 @@ export default {
 
             setTimeout(() => {
               this.start = true;
-              this.skipTimeout = setTimeout(() => {
-                this.showSkipButton = true;
-              }, SKIP_TIMEOUT);
-
               this.$nextTick(() => {
                 this.animation = this.loop();
               });

@@ -131,8 +131,8 @@ export default {
         this.$router.replace(redirect);
       }
     },
-    handleSkip() {
-      this.$store.dispatch("tutorial/skipCurrentStep");
+    async handleSkip() {
+      await this.$store.dispatch("tutorial/skipCurrentStep");
     },
     handleContinue() {
       this.$nextTick(() => {
@@ -155,9 +155,7 @@ export default {
       }
     },
     async advance() {
-      this.$store.commit("tutorial/setActionIndex", {
-        index: this.actionIndex + 1
-      });
+      await this.$store.dispatch("tutorial/advanceAction");
 
       this.trySkipAction();
     }

@@ -2,28 +2,30 @@
   <div class="screen-content">
     <div class="screen-background"></div>
 
-    <div
-      class="flex flex-column width-100 flex-center flex-space-evenly margin-bottom-5"
-    >
+    <div v-bar>
       <div
-        class="army-summon flex flex-center pointer"
-        @click="goTo('army-summon-menu')"
-        id="summon"
+        class="flex flex-column width-100 flex-center flex-space-evenly margin-bottom-5"
       >
-        <img src="../../assets/ui/summon.png" />
-        <span>{{ $t("shop-summon") }}</span>
-        <SummonMarker class="marker-pos" />
-      </div>
+        <div
+          class="army-summon flex flex-center pointer"
+          @click="goTo('army-summon-menu')"
+          id="summon"
+        >
+          <img src="../../assets/ui/summon.png" />
+          <span>{{ $t("shop-summon") }}</span>
+          <SummonMarker class="marker-pos" />
+        </div>
 
-      <div class="shop flex flex-center pointer" @click="goTo('daily-shop')">
-        <img src="../../assets/ui/MARKET.png" />
-        <span>{{ $t("shop-shop") }}</span>
-      </div>
+        <div class="shop flex flex-center pointer" @click="goTo('daily-shop')">
+          <img src="../../assets/ui/MARKET.png" />
+          <span>{{ $t("shop-shop") }}</span>
+        </div>
 
-      <div class="chests flex flex-center pointer" @click="goTo('chests')">
-        <img src="../../assets/ui/chests.png" />
-        <span>{{ $t("shop-chests") }}</span>
-        <ChestsMarker class="marker-pos" />
+        <div class="chests flex flex-center pointer" @click="goTo('chests')">
+          <img src="../../assets/ui/chests.png" />
+          <span>{{ $t("shop-chests") }}</span>
+          <ChestsMarker class="marker-pos" />
+        </div>
       </div>
     </div>
   </div>
@@ -51,8 +53,8 @@ export default {
 <style lang="less" scoped>
 .marker-pos {
   position: absolute;
-  top: 3.5rem;
-  right: 5rem;
+  top: 30%;
+  right: 10%;
 }
 
 .shop-btn() {
