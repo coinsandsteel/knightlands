@@ -23,7 +23,7 @@
               :level="$game.character.level"
               :stats="$game.character.maxStats"
               :itemsInSlots="itemsInSlots"
-              :nickname="$game.character.nickname"
+              :nickname="$game.character.nickname.v"
               :classIcon="$game.character.class"
               :showDetails="true"
               @hint="showEquipmentHint"

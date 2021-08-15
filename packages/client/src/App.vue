@@ -17,6 +17,7 @@
           class="content dummy-height flex flex-no-wrap flex-column"
           v-if="showContent"
         />
+        <div v-else class="full-flex flex flex-center"></div>
       </keep-alive>
 
       <div class="footer flex-item-center">
@@ -139,6 +140,7 @@
 </template>
 
 <script>
+// import * as LottiePlayer from "@lottiefiles/lottie-player";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AudioPlayer from "@/components/AudioPlayer.vue";
 import StatusBar from "./components/StatusBar.vue";
@@ -259,9 +261,9 @@ export default {
     });
 
     this.$game.on("level-up", async args => {
-      if (this.$game.character.level == 20) {
-        Gleam.push(["userId", this.$game.address]);
-      }
+      // if (this.$game.character.level == 20) {
+      //   Gleam.push(["userId", this.$game.address]);
+      // }
       await ShowLevelUp(args);
     });
 
@@ -299,7 +301,7 @@ export default {
     this.$game.on(this.$game.SignUp, async () => {
       await this.$game.notifications.init();
 
-      if (!this.$game.character.nickname) {
+      if (!this.$game.character.nickname || !this.$game.character.nickname.v) {
         await ShowChangeNickname();
       }
 
@@ -307,10 +309,10 @@ export default {
         await ShowChangeAvatar();
       }
 
-      if (this.$game.character.level == 16) {
-        console.log(this.$game.address);
-        Gleam.push(["userId", "moswartest@gmail.com"]);
-      }
+      // if (this.$game.character.level >= 20) {
+      //   console.log(this.$game.address);
+      //   Gleam.push(["userId", this.$game.address]);
+      // }
     });
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));
 
@@ -513,6 +515,8 @@ export default {
 .vue-notification-group {
   min-width: 33vw;
   max-width: 55vh;
+
+  .mobile({min-width: unset; max-width: unset; width: 100%;});
 }
 
 .footer {

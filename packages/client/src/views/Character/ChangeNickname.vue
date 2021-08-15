@@ -57,7 +57,13 @@ export default {
       return !!this.$game.character.nickname;
     },
     price() {
-      return this.hasName ? Meta.nicknamePrice : 0;
+      if (this.hasName) {
+        if (this.$game.character.nickname.changed) {
+          return Meta.nicknamePrice;
+        }
+      }
+
+      return 0;
     }
   },
   methods: {

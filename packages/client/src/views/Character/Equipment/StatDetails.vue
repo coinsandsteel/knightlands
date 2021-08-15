@@ -31,10 +31,12 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
+import StatsFormatter from "@/components/Item/StatsFormatter.vue";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
   props: ["maxStats"],
+  mixins: [StatsFormatter],
   components: { UserDialog },
   computed: {
     stats() {
@@ -70,21 +72,7 @@ export default {
       return this.$game.character.buffResolver.bonuses;
     }
   },
-  methods: {
-    format(stat, value) {
-      switch (stat) {
-        case CharacterStat.ExtraGold:
-        case CharacterStat.ExtraExp:
-          return `${value / 10}%`;
-
-        case CharacterStat.ExtraDkt:
-        case CharacterStat.DamageReduction:
-          return `${value}%`;
-      }
-
-      return value;
-    }
-  }
+  methods: {}
 };
 </script>
 

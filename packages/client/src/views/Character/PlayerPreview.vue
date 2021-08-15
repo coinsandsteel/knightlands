@@ -8,7 +8,7 @@
       :stats="character.stats"
       :hasBonus="{}"
       :preview="true"
-      :nickname="character.nickname"
+      :nickname="character.nickname.v"
       :classIcon="character.class"
       :avatar="character.avatar"
       @details="showDetails"

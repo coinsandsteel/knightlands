@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 480 480" style="enable-background:new 0 0 480 480;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.3;fill:none;stroke:#000000;stroke-width:40;stroke-miterlimit:10;}
+</style>
+<g id="ghost">
+	<circle class="st0" cx="240" cy="240" r="180"/>
+</g>
+<g id="loader">
+	<g>
+		<circle cx="240" cy="60" r="20"/>
+	</g>
+</g>
+<g id="loader_2">
+	<g>
+		<circle cx="150" cy="84.12" r="16"/>
+	</g>
+</g>
+<g id="loader_3">
+	<g>
+		<circle cx="84.12" cy="150" r="13"/>
+	</g>
+</g>
+<g id="loader_4">
+	<g>
+		<circle cx="60" cy="240" r="10"/>
+	</g>
+</g>
+<g id="loader_5">
+	<g>
+		<circle cx="84.12" cy="330" r="20"/>
+	</g>
+</g>
+<g id="loader_6">
+	<g>
+		<circle cx="150" cy="395.88" r="16"/>
+	</g>
+</g>
+<g id="loader_7">
+	<g>
+		<ellipse transform="matrix(0.5 -0.866 0.866 0.5 -243.7307 417.8461)" cx="240" cy="420" rx="13" ry="13"/>
+	</g>
+</g>
+<g id="loader_8">
+	<g>
+		<circle cx="330" cy="395.88" r="10"/>
+	</g>
+</g>
+<g id="loader_9">
+	<g>
+		<circle cx="395.88" cy="330" r="20"/>
+	</g>
+</g>
+<g id="loader_10">
+	<g>
+		<circle cx="420" cy="240" r="16"/>
+	</g>
+</g>
+<g id="loader_11">
+	<g>
+		<ellipse transform="matrix(0.5 -0.866 0.866 0.5 68.0385 417.8461)" cx="395.88" cy="150" rx="13" ry="13"/>
+	</g>
+</g>
+<g id="loader_12">
+	<g>
+		<circle cx="330" cy="84.12" r="10"/>
+	</g>
+</g>
+</svg>

@@ -1,6 +1,8 @@
 <template>
   <div class="color-panel-2 current-raid-cell flex flex-column">
-    <Title titleClass="font-weight-700 enemy-title-font">{{$t(raidName)}} {{$t("unit-lvl", { lvl: raidLevel })}}</Title>
+    <Title titleClass="font-weight-700 enemy-title-font"
+      >{{ $t(raidName) }} {{ $t("unit-lvl", { lvl: raidLevel }) }}</Title
+    >
 
     <div class="flex full-flex width-100">
       <div class="flex-basis-50 relative flex flex-column flex-no-wrap">
@@ -20,16 +22,33 @@
         ></progress-bar>
       </div>
 
-      <div class="flex-basis-50 flex flex-column flex-item-center flex-end" v-if="!finished">
+      <div
+        class="flex-basis-50 flex flex-column flex-item-center flex-end"
+        v-if="!finished"
+      >
+        <span
+          class="font-size-18 margin-bottom-1 font-outline"
+          v-if="!isFreeRaid"
+          >{{ $t("raid_slots", { s: slots, m: maxSlots }) }}</span
+        >
+        <span>{{ $t("") }}</span>
+
         <span class="font-size-20">
-          {{$t("time-left")}}
-          <span class="enemy-title-font">{{timer.value}}</span>
+          {{ $t("time-left") }}
+          <span class="enemy-title-font">{{ timer.value }}</span>
         </span>
-        <custom-button class="margin-top-half" type="grey" @click="viewRaid">{{$t("continue")}}</custom-button>
+        <custom-button class="margin-top-half" type="grey" @click="viewRaid">{{
+          $t("continue")
+        }}</custom-button>
       </div>
 
-      <div class="flex-basis-50 flex flex-column flex-item-center flex-end" v-else>
-        <custom-button type="green" @click="claimReward">{{$t("claim-reward")}}</custom-button>
+      <div
+        class="flex-basis-50 flex flex-column flex-item-center flex-end"
+        v-else
+      >
+        <custom-button type="green" @click="claimReward">{{
+          $t("claim-reward")
+        }}</custom-button>
       </div>
     </div>
   </div>
@@ -79,6 +98,9 @@ export default {
         current: this.raidState.bossState.health,
         max: this.raidMaxHealth
       };
+    },
+    slots() {
+      return Object.keys(this.raidState.participants).length;
     }
   },
   methods: {
@@ -122,5 +144,3 @@ export default {
 //   bottom: 0;
 // }
 </style>
-
-

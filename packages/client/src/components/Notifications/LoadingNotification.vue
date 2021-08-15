@@ -4,7 +4,14 @@
       <div class="full-height">
         <div class="flex flex-center loading padding-2 relative">
           <div class="bg-color"></div>
-          <GridLoader color="#fde648" :size="15" margin="1px" />
+          <lottie-player
+            autoplay
+            loop
+            mode="normal"
+            src="loaders/03_Fade Circles/JSON/07_white.json"
+            style="width: 64px; height: 64px;"
+          >
+          </lottie-player>
           <span class="font-size-30 relative margin-left-2">{{
             $t("loading")
           }}</span>

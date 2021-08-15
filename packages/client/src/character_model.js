@@ -39,7 +39,7 @@ class CharacterModel {
         exp: 0,
         buffResolver: null,
         buffs: [],
-        nickname: null,
+        name: null,
         avatar: 0
       })
     });
@@ -68,7 +68,7 @@ class CharacterModel {
   }
 
   get nickname() {
-    return this._vm.nickname;
+    return this._vm.name;
   }
 
   get equipment() {
@@ -141,7 +141,7 @@ class CharacterModel {
     }
 
     this._vm.level = data.level;
-    this._vm.nickname = data.nickname;
+    this._vm.name = data.name;
     this._vm.class = data.class;
     this._vm.exp = data.exp;
     this._vm.avatar = data.avatar || 0;

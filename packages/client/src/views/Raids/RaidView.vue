@@ -385,9 +385,6 @@ export default {
     slots() {
       return this.raidState.busySlots;
     },
-    maxSlots() {
-      return this.raidData.maxSlots;
-    },
     participant() {
       if (!this.raidState) {
         return false;

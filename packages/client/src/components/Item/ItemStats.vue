@@ -18,7 +18,7 @@
         :key="statId"
         class="margin-bottom-half width-100"
       >
-        {{ statValue }}
+        {{ format(statId, statValue) }}
       </div>
     </div>
   </div>
@@ -26,9 +26,10 @@
 
 <script>
 import ItemGetterMixin from "@/components/Item/ItemGetterMixin.vue";
+import StatsFormatter from "@/components/Item/StatsFormatter.vue";
 
 export default {
-  mixins: [ItemGetterMixin]
+  mixins: [ItemGetterMixin, StatsFormatter]
 };
 </script>
 

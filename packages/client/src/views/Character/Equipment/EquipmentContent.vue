@@ -26,7 +26,7 @@
         }}</span>
         <span
           class="icon-edit"
-          v-if="!preview && nickname == $game.character.nickname"
+          v-if="!preview && nickname == $game.character.nickname.v"
           @click="$emit('changeName')"
         ></span>
       </div>

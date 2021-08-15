@@ -62,6 +62,9 @@ export default {
     },
     raidImage() {
       return UiConstants.backgroundImage(Campaign.getRaidImage(this.raid));
+    },
+    maxSlots() {
+      return this.raidData.maxSlots;
     }
   }
 };
