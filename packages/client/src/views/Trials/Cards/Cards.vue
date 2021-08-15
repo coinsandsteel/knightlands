@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <portal to="footer" :slim="true">
+      <portal to="footer" :slim="true" v-if="isActive">
         <div class="flex flex-center margin-1 font-size-20">
           <span class="item-icon trials-points-item margin-right-half"></span>
           <span>{{ points }}</span>
@@ -38,9 +38,11 @@ import CardModifier from "./CardModifier.vue";
 import PromisedView from "@/components/PromisedView.vue";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
   name: "trial-cards",
+  mixins: [ActivityMixin],
   components: {
     CardModifier,
     CustomButton,

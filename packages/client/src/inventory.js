@@ -175,7 +175,6 @@ class Inventory {
         buffer.push(item);
       }
     }
-
     return buffer;
   }
 

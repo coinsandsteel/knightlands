@@ -21,18 +21,17 @@
       :getHintButtons="getHintButtons"
     ></ScrollableItemHint>
 
-    <portal to="footer" :slim="true" v-if="!hideFooter && isActive">
+    <!-- <portal to="footer" :slim="true" v-if="!hideFooter && isActive">
       <CustomButton type="yellow" @click="goToCraft">{{
         $t("btn-craft")
       }}</CustomButton>
-    </portal>
+    </portal> -->
   </div>
 </template>
 
 <script>
 import LootContainer from "@/components/LootContainer.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
-import CustomButton from "@/components/Button.vue";
 
 import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
@@ -42,7 +41,6 @@ export default {
   mixins: [ActivityMixin, ItemActionHandler],
   components: {
     AnimatedBackground,
-    CustomButton,
     LootContainer,
     ScrollableItemHint
   },

@@ -139,17 +139,20 @@
           {{ $t("clear-quests") }}
         </div>
 
-        <div v-else-if="progress.current >= progress.max && hasNextZone">
+        <div v-else-if="progress.current >= progress.max">
           <CustomButton
             type="yellow"
             @click="goToNextMission"
-            v-if="!isBoss || (isBoss && isLastMission && !isLastZone)"
+            v-if="
+              (!isBoss || (isBoss && isLastMission && !isLastZone)) &&
+                hasNextZone
+            "
             >{{ $t("btn-next-quest") }}</CustomButton
           >
           <CustomButton
             type="yellow"
             @click="nextDifficulty"
-            v-else-if="isBoss && isLastZone"
+            v-else-if="isBoss && isLastZone && hasNextZone"
             >{{ $t("btn-next-diff") }}</CustomButton
           >
           <span class="text-warn font-size-20 font-outline" v-else>{{

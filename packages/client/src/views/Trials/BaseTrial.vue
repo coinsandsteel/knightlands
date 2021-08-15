@@ -7,11 +7,11 @@
       <SoundEffect ref="fx" :files="['quest_complete2']" channel="stinger" />
 
       <keep-alive>
-        <div class="width-100 height-100" v-bar v-if="!selectedStage">
+        <div class="width-100 height-100" v-bar v-show="!selectedStage">
           <div>
             <div class="flex flex-column padding-top-2">
               <TrialStageListElement
-                v-for="(stage, index) in meta.stages"
+                v-for="(stage, index) in computedMeta.stages"
                 :key="stage.id"
                 :index="index"
                 :stage="stage"
@@ -28,7 +28,7 @@
         </div>
 
         <TrialStage
-          v-else
+          v-if="selectedStage"
           :trialMeta="meta"
           :trialType="trialType"
           :trialIndex="trialIndex"
@@ -79,6 +79,9 @@ export default {
   computed: {
     state() {
       return this.$game.getTrialState(this.trialType);
+    },
+    computedMeta() {
+      return this.meta ? this.meta : {};
     }
   },
   watch: {
@@ -89,11 +92,17 @@ export default {
             this.selectedStage.id
           ];
         }
+
+        setTimeout(this.findAndConfigScrollPostion.bind(this), 50);
       },
       immediate: true
     },
     trialType: {
       handler() {
+        if (!this.meta) {
+          return;
+        }
+
         if (this._stateWatcher) {
           this._stateWatcher();
         }
@@ -107,6 +116,19 @@ export default {
     }
   },
   methods: {
+    findAndConfigScrollPostion() {
+      document
+        .querySelectorAll(`[data-vue-keep-scroll-position]`)
+        .forEach(element => {
+          const offset = element
+            .getAttribute("data-vue-keep-scroll-position")
+            .split("-");
+          console.log(element);
+          if (offset === undefined) return;
+          element.scrollTop = Number.parseFloat(offset[1]);
+          element.scrollLeft = Number.parseFloat(offset[0]);
+        });
+    },
     refresh() {
       this.trialState = this.state.trials[this.meta.id];
 

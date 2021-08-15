@@ -1,9 +1,9 @@
 <template>
   <div class="height-100">
     <div class="screen-background"></div>
-    <keep-alive exclude="trial-cards">
+    <keep-alive>
       <Cards v-if="showCards"></Cards>
-      <template v-else>
+      <template>
         <slot
           v-if="trialId !== null"
           name="trial"
@@ -13,7 +13,7 @@
           :engage="engageFight"
         ></slot>
         <slot
-          v-else
+          v-show="trialId === null || trialId === undefined"
           name="list"
           :openTrial="openTrial"
           :trialType="trialType"

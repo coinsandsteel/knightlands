@@ -1451,7 +1451,6 @@ class Game {
   }
 
   async claimDividends(to, blockchainId) {
-    console.log(Operations.ClaimDivs, to);
     return (
       await this._wrapOperation(Operations.ClaimDivs, { to, blockchainId })
     ).response;

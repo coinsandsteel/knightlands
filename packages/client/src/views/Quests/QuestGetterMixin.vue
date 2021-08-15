@@ -1,4 +1,6 @@
 <script>
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
+
 export default {
   computed: {
     subBonuses() {
@@ -24,13 +26,28 @@ export default {
       return this.zone.quests[this.questIndex].stages[this.stage];
     },
     goldMin() {
-      return Math.floor((this.quest.goldMin * (100 + this.softBonus)) / 100);
+      return Math.floor(
+        ((this.quest.goldMin +
+          this.$game.character.getMaxStat(CharacterStats.ExtraGold)) *
+          (100 + this.softBonus)) /
+          100
+      );
     },
     goldMax() {
-      return Math.floor((this.quest.goldMax * (100 + this.softBonus)) / 100);
+      return Math.floor(
+        this.quest.goldMax *
+          (1 +
+            this.softBonus / 100 +
+            this.$game.character.getMaxStat(CharacterStats.ExtraGold) / 1000)
+      );
     },
     exp() {
-      return Math.floor((this.quest.exp * (100 + this.expBonus)) / 100);
+      return Math.floor(
+        this.quest.exp *
+          (1 +
+            this.expBonus / 100 +
+            this.$game.character.getMaxStat(CharacterStats.ExtraExp) / 1000)
+      );
     }
   }
 };

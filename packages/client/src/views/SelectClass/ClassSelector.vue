@@ -51,10 +51,14 @@ export default {
       return this.classData.name;
     },
     energyRegen() {
-      return this.convertToTime(this.classData.energyRegen);
+      return this.convertToTime(
+        this.classData.energyRegen - this.$game.character.level * 0.4
+      );
     },
     staminaRegen() {
-      return this.convertToTime(this.classData.staminaRegen);
+      return this.convertToTime(
+        this.classData.staminaRegen - this.$game.character.level * 0.4
+      );
     }
   },
   methods: {

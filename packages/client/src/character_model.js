@@ -195,6 +195,13 @@ class CharacterModel {
       this._vm.stats,
       this._vm.buffs
     );
+
+    const baseDefense = 10 * this._vm.level;
+    let damageReduction =
+      this._vm.stats[CharacterStats.Defense] /
+      (this._vm.stats[CharacterStats.Defense] + baseDefense);
+    this._vm.stats[CharacterStats.DamageReduction] =
+      Math.floor(damageReduction * 10000) / 100;
   }
 
   _removeData(currentData, dataToRemove, root) {

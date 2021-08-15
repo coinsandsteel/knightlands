@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-content dummy-height flex flex-column full-flex">
+  <div class="tab-content dummy-height flex flex-column full-flex flex-no-wrap">
     <Inventory
       class="width-100"
       commitCmd="setMiscFilters"
@@ -7,6 +7,7 @@
       :filtersStore="$store.getters.getMiscFilters"
       :hideFilters="true"
       :hideFooter="true"
+      :hideBg="true"
     ></Inventory>
 
     <Inventory

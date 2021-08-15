@@ -19,8 +19,8 @@
               :key="`${fight.id}_${lastClearedFight}`"
               :fight="fight"
               :index="index"
-              :completed="index < lastClearedFight+1"
-              :locked="index > lastClearedFight+1"
+              :completed="index < lastClearedFight + 1"
+              :locked="index > lastClearedFight + 1"
               @engage="engage(index)"
             ></TrialFightListElement>
           </div>
@@ -122,15 +122,15 @@ export default {
       } else {
         title = "trial-fight-lose-t";
         message = "trial-fight-lose-m";
-      }
 
-      this.showPrompt(this.$t(title), this.$t(message), [
-        {
-          type: "green",
-          title: this.$t("btn-ok"),
-          response: "ok"
-        }
-      ]);
+        this.showPrompt(this.$t(title), this.$t(message), [
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: "ok"
+          }
+        ]);
+      }
 
       this.refresh();
     }

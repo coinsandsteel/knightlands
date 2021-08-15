@@ -178,6 +178,7 @@ import CurrencyType from "@/../../knightlands-shared/currency_type";
 import Title from "@/components/Title.vue";
 
 const EnchantingMeta = require("@/enchanting_meta.json");
+const RollBackLevel = 9;
 
 export default {
   mixins: [AppSection, PromptMixin, HintHandler],
@@ -214,7 +215,7 @@ export default {
   },
   computed: {
     lvlWillReduce() {
-      return this.item.enchant > 4;
+      return this.item.enchant > RollBackLevel;
     },
     failLvl() {
       return this.item.enchant - 1;

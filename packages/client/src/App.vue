@@ -512,7 +512,7 @@ export default {
 
 .vue-notification-group {
   min-width: 33vw;
-  width: 55vh;
+  max-width: 55vh;
 }
 
 .footer {

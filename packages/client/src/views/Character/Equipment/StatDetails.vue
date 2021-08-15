@@ -18,9 +18,9 @@
           class="flex flex-no-wrap flex-column flex-space-evenly flex-start flex-basis-45 text-align-left"
         >
           <span v-for="stat in stats" :key="stat" class="margin-bottom-half">
-            {{ finalStats[stat] }}
+            {{ format(stat, finalStats[stat]) }}
             <span class="rarity-rare" v-if="bonusStats[stat] > 0"
-              >(+{{ bonusStats[stat] }})</span
+              >(+{{ format(stat, bonusStats[stat]) }})</span
             >
           </span>
         </div>
@@ -42,6 +42,7 @@ export default {
       stats.push(CharacterStat.Health);
       stats.push(CharacterStat.Attack);
       stats.push(CharacterStat.Defense);
+      stats.push(CharacterStat.DamageReduction);
 
       stats.push(CharacterStat.CriticalChance);
       stats.push(CharacterStat.CriticalDamage);
@@ -67,6 +68,21 @@ export default {
         return {};
       }
       return this.$game.character.buffResolver.bonuses;
+    }
+  },
+  methods: {
+    format(stat, value) {
+      switch (stat) {
+        case CharacterStat.ExtraGold:
+        case CharacterStat.ExtraExp:
+          return `${value / 10}%`;
+
+        case CharacterStat.ExtraDkt:
+        case CharacterStat.DamageReduction:
+          return `${value}%`;
+      }
+
+      return value;
     }
   }
 };

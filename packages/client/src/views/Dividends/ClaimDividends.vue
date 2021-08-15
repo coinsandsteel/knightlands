@@ -78,7 +78,7 @@ export default {
       return !/^((0(\.\d{1,18})?)|([1-9]\d*(\.\d{1,18})?))$/.test(this.amount);
     },
     formattedAmount() {
-      return this.toDecimal(this.chain, this.amount);
+      return this.toDecimal(this.chain, this.amount || "0");
     }
   },
   methods: {
@@ -104,7 +104,7 @@ export default {
           const data = await this.performRequestNoCatch(
             this.$game.claimDividends(this.address, this.chain)
           );
-          await this.showWallet(this.data.blockchainId);
+          await this.showWallet(this.chain);
           await this.performRequest(
             this.$game.blockchain.finishDividendsWithdrawal(
               data._id,
@@ -114,7 +114,8 @@ export default {
             )
           );
           this.$router.back();
-        } catch {
+        } catch (exc) {
+          console.log(exc);
           this.showPrompt(
             this.$t("prompt-snap-title"),
             this.$t("div-claim-failed"),

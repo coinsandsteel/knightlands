@@ -52,9 +52,8 @@ export default {
     // find closest class selection
     let selection;
     const selections = Classes;
-    const level = 5; //this.$game.character.level;
     for (let i = 0; i < selections.length; ++i) {
-      if (selections[i].minLevel <= level) {
+      if (selections[i].minLevel <= 5) {
         selection = selections[i].classes;
       }
     }
