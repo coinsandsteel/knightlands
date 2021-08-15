@@ -129,7 +129,6 @@ export default {
               if (
                 Vue.prototype.$game.inventory.getItemsCountByTemplate(item) == 0
               ) {
-                console.log("tutorial::checkConditions no item ", item);
                 passed = false;
                 break;
               }

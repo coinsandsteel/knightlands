@@ -1379,6 +1379,7 @@
     "common_consumable_box_ingridient2_desc": "Common material used in crafting",
     "common_consumable_box_ingridient3": "Empty Pouch",
     "common_consumable_box_ingridient3_desc": "Used to craft pouches and bags",
+    "online": "Players online: {online}",
     "tower_key_desc": "Required to enter Onyx Tower.",
     "lucky_wheel_ticket": "lucky_wheel_ticket",
     "lucky_wheel_ticket_desc": "lucky_wheel_ticket_desc",

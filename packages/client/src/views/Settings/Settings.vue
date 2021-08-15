@@ -2,6 +2,10 @@
   <div class="screen-content flex-center">
     <div class="screen-background"></div>
 
+    <span class="font-size-20 font-weight-900 margin-bottom-5">{{
+      $t("online", { online })
+    }}</span>
+
     <div
       class="flex flex-center flex-space-between flex-no-wrap font-size-22 width-50 center"
     >
@@ -35,7 +39,8 @@ export default {
   },
   data: () => ({
     music: true,
-    sounds: true
+    sounds: true,
+    online: 0
   }),
   computed: {
     ...mapState({
@@ -43,21 +48,32 @@ export default {
       computedSounds: state => state.settings.sounds
     })
   },
-  mounted() {
+  async mounted() {
     this.music = this.computedMusic;
     this.sounds = this.computedSounds;
+
+    const { online } = await this.$game.getOnline();
+    this.online = online;
+
+    this._updateOnlineCounter = this.updateOnlineCounter.bind(this);
+    this._onlineChannel = this.$game.createChannel("online", false);
+    this._onlineChannel.watch(this._updateOnlineCounter);
+  },
+  destroyed() {
+    this._onlineChannel.destroy();
+    this._onlineChannel = null;
   },
   watch: {
     "$store.state.settings": {
       handler() {
         switchInProgress = true;
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
           this.music = this.computedMusic;
           this.sounds = this.computedSounds;
-          this.$nextTick(()=>{
+          this.$nextTick(() => {
             switchInProgress = false;
           });
-        })
+        });
       },
       deep: true
     },
@@ -72,6 +88,11 @@ export default {
         return;
       }
       this.$game.$store.dispatch("settings/setSoundsEnabled", this.sounds);
+    }
+  },
+  methods: {
+    updateOnlineCounter(data) {
+      this.online = data.online;
     }
   }
 };
