@@ -3,6 +3,7 @@
     <AnimatedBackground v-if="!hideBg"></AnimatedBackground>
     <!-- Inventory  -->
     <LootContainer
+      class="height-100"
       :inventory="true"
       :filters="filters"
       :filtersStore="filtersStore"

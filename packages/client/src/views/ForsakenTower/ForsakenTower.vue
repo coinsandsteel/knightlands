@@ -172,7 +172,6 @@ export default {
       this.fetchInProcess = true;
 
       const page = forward ? this.endPage : this.startPage;
-
       const newFloors = await this.$game.fetchTowerFloors(page);
 
       if (newFloors) {
@@ -205,11 +204,11 @@ export default {
                 );
               }
             }
-
-            this.fetchInProcess = false;
           });
         }
       }
+
+      this.fetchInProcess = false;
     }
   }
 };

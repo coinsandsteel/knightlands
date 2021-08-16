@@ -1,5 +1,5 @@
 <template>
-  <div class="flex full-flex height-100">
+  <div class="flex full-flex">
     <ItemList
       ref="list"
       :lootClasses="lootClasses"

@@ -1,5 +1,12 @@
 <template>
-  <notifications group="loading" position="top" width="inherit" height="100%">
+  <notifications
+    animation-type="velocity"
+    :animation="animation"
+    group="loading"
+    position="top"
+    width="inherit"
+    height="100%"
+  >
     <template slot="body" slot-scope="props">
       <div class="full-height">
         <div class="flex flex-center loading padding-2 relative">
@@ -20,6 +27,33 @@
     </template>
   </notifications>
 </template>
+
+<script>
+export default {
+  computed: {
+    animation() {
+      return {
+        /**
+         * Animation function
+         *
+         * Runs before animating, so you can take the initial height, width, color, etc
+         * @param  {HTMLElement}  element  The notification element
+         */
+        enter() {
+          return {
+            // animates from 0 to random opacity (in range between 0.5 and 1)
+            opacity: 1
+          };
+        },
+        leave: {
+          height: 0,
+          opacity: 0
+        }
+      };
+    }
+  }
+};
+</script>
 
 <style lang="less" scoped>
 .bg-color {

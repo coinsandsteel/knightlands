@@ -1,6 +1,6 @@
 <template>
-  <div class="dummy-height width-100" :class="{ 'padding-top-1': hasItems }">
-    <div class="height-100" v-bar>
+  <div class="screen-content" :class="{ 'padding-top-1': hasItems }">
+    <div v-bar>
       <div class="flex flex-column">
         <template v-if="characterItems.length > 0">
           <Title>{{ $t("char") }}</Title>
@@ -127,6 +127,7 @@ export default {
       }
 
       this.$game.inventory.sortItems(items);
+      console.log(items);
 
       return items;
     }

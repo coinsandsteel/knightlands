@@ -171,7 +171,7 @@ export default {
   },
   computed: {
     hardCost() {
-      return this.restores * 
+      return 100;
     },
     canRestoreMore() {
       return true;

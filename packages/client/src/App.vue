@@ -140,7 +140,6 @@
 </template>
 
 <script>
-// import * as LottiePlayer from "@lottiefiles/lottie-player";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AudioPlayer from "@/components/AudioPlayer.vue";
 import StatusBar from "./components/StatusBar.vue";
