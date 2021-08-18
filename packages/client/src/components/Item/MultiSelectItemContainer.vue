@@ -1,5 +1,5 @@
 <template>
-  <div class="height-100 flex flex-column">
+  <div class="height-100 flex flex-column flex-no-wrap">
     <div v-bar class="width-100 height-100 dummy-height item-list">
       <div>
         <div class="item-container dummy-height">
