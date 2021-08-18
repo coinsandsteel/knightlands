@@ -512,7 +512,7 @@ export default {
 }
 
 .vue-notification-group {
-  min-width: 33vw;
+  min-width: ~"max(25vw, 50rem)";
   max-width: 55vh;
 
   .mobile({min-width: unset; max-width: unset; width: 100%;});
@@ -637,7 +637,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-width: 33vw;
+  min-width: ~"max(25vw, 50rem)";
   margin: 0 auto;
   // background: @backgroundMainColor;
   // background: linear-gradient(0deg, #371c35 0%, #261034 100%);

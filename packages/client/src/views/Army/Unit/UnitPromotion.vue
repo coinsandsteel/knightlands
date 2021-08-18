@@ -5,58 +5,68 @@
       <SoundEffect ref="fx" :files="['unit_promo']" channel="stinger" />
       <div v-bar>
         <div class="dummy-height">
-          <div class="color-panel-2 stats-grid font-size-20">
-            <IconWithValue iconClass="icon-damage" class="left">{{
-              damage
-            }}</IconWithValue>
-            <span class="right-arrow"></span>
-            <IconWithValue iconClass="icon-damage" class="right">{{
-              nextPromotionDamage
-            }}</IconWithValue>
+          <template v-if="!isAtMaxStars">
+            <div class="color-panel-2 stats-grid font-size-20">
+              <IconWithValue iconClass="icon-damage" class="left">{{
+                damage
+              }}</IconWithValue>
+              <span class="right-arrow"></span>
+              <IconWithValue iconClass="icon-damage" class="right">{{
+                nextPromotionDamage
+              }}</IconWithValue>
 
-            <span class="left">{{ $t("unit-max-lv", { lvl: maxLevel }) }}</span>
-            <span class="right-arrow"></span>
-            <span class="right">{{
-              $t("unit-max-lv", { lvl: nextMaxLevel })
-            }}</span>
+              <span class="left">{{
+                $t("unit-max-lv", { lvl: maxLevel })
+              }}</span>
+              <span class="right-arrow"></span>
+              <span class="right">{{
+                $t("unit-max-lv", { lvl: nextMaxLevel })
+              }}</span>
 
-            <UnitStars :stars="stars" class="left"></UnitStars>
-            <span class="right-arrow"></span>
-            <UnitStars :stars="starsNext" class="right"></UnitStars>
-          </div>
+              <UnitStars :stars="stars" class="left"></UnitStars>
+              <span class="right-arrow"></span>
+              <UnitStars :stars="starsNext" class="right"></UnitStars>
+            </div>
 
-          <div class="margin-top-1 flex flex-center">
-            <UnitIngridient
-              v-for="(ingr, idx) in ingridients"
-              :key="idx"
-              :ingridient="ingr"
-              :unit="unit"
-              :current="getCurrent(ingr.id)"
-              @click="selectUnits(unit, ingr)"
+            <div class="margin-top-1 flex flex-center">
+              <UnitIngridient
+                v-for="(ingr, idx) in ingridients"
+                :key="idx"
+                :ingridient="ingr"
+                :unit="unit"
+                :current="getCurrent(ingr.id)"
+                @click="selectUnits(unit, ingr)"
+              />
+            </div>
+
+            <CraftingIngridient
+              class="padding-top-2"
+              :ingridient="soulsIngridient"
             />
-          </div>
 
-          <CraftingIngridient
-            class="padding-top-2"
-            :ingridient="soulsIngridient"
-            v-if="readyToPromote"
-          />
+            <div class="flex flex-center margin-top-1" v-if="readyToPromote">
+              <CustomButton
+                type="yellow"
+                class="width-30"
+                @click="promote"
+                :disabled="!canPromote()"
+                >{{ $t("btn-promote") }}</CustomButton
+              >
+            </div>
 
-          <div class="flex flex-center margin-top-1" v-if="readyToPromote">
-            <CustomButton
-              type="yellow"
-              class="width-30"
-              @click="promote"
-              :disabled="!canPromote"
-              >{{ $t("btn-promote") }}</CustomButton
-            >
-          </div>
-
-          <div class="flex flex-center margin-top-2" v-else>
-            <span class="rarity-mythical font-size-25">{{
-              $t("unit-lvl-req", { level: maxLevel })
-            }}</span>
-          </div>
+            <div class="flex flex-center margin-top-2" v-else>
+              <span class="rarity-mythical font-size-25">{{
+                $t("unit-lvl-req", { level: maxLevel })
+              }}</span>
+            </div>
+          </template>
+          <template v-else>
+            <div class="flex flex-center margin-top-4">
+              <span class="rarity-rare font-size-25">{{
+                $t("unit-max-lvl")
+              }}</span>
+            </div>
+          </template>
         </div>
       </div>
     </template>
@@ -125,18 +135,8 @@ export default {
     }
   },
   computed: {
-    canPromote() {
-      for (const ingr of this.ingridients) {
-        const units = this.selectedUnits[ingr.id];
-        if (!units || units.length != ingr.amount) {
-          return false;
-        }
-      }
-
-      return this.$game.inventory.hasEnoughIngridient(this.soulsIngridient);
-    },
     starsNext() {
-      if (this.stars < 10) {
+      if (!this.isAtMaxStars) {
         return this.stars + 1;
       }
 
@@ -156,6 +156,9 @@ export default {
     soulsItem() {
       return ArmyMeta.soulsItem;
     },
+    isAtMaxStars() {
+      return this.stars == this.maxStars;
+    },
     soulsRequired() {
       return this.recipe.price;
     },
@@ -167,6 +170,16 @@ export default {
     }
   },
   methods: {
+    canPromote() {
+      for (const ingr of this.ingridients) {
+        const units = this.unitsPerIngridient[ingr.id];
+        if (!units || units.length != ingr.amount) {
+          return false;
+        }
+      }
+
+      return this.$game.inventory.hasEnoughIngridient(this.soulsIngridient);
+    },
     clearSelectedUnits(ingridient) {
       const units = this.unitsPerIngridient[ingridient.id];
       if (!units) {

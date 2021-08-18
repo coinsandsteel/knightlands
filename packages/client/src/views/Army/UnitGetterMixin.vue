@@ -25,6 +25,12 @@ export default {
       }
       return 0;
     },
+    maxStars() {
+      if (this.unit) {
+        return this.$game.armyDB.getMaxStars(this.unit);
+      }
+      return 0;
+    },
     maxLevel() {
       if (this.unit) {
         return this.$game.armyDB.getMaxLevel(this.unit);
@@ -73,13 +79,6 @@ export default {
       }
       return [];
     },
-    estimatedDamage() {
-      if (this.unit) {
-        return this.$game.army.estimateDamage(this.unit);
-      }
-
-      return 0;
-    },
     damage() {
       if (this.unit) {
         return this.$game.army.getDamage(this.unit);
@@ -103,6 +102,13 @@ export default {
     }
   },
   methods: {
+    estimatedDamage() {
+      if (this.unit) {
+        return this.$game.army.estimateDamage(this.unit);
+      }
+
+      return 0;
+    },
     getAbilityDesc(ability, overrideUnit) {
       const unit = this.unit || overrideUnit;
       const levelValue = this.$game.army.getAbilityLevelValue(unit, ability.id);

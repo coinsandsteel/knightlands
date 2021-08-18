@@ -9,7 +9,7 @@
         @toggle="toggleUnitSelect"
       />
       <div class="flex flex-center min-height-10r" v-else>
-        <span class="font-size-22">No suitable units</span>
+        <span class="font-size-22">{{ $t("promo-nothing") }}</span>
       </div>
     </template>
     <template v-slot:footer>
@@ -17,7 +17,8 @@
         type="yellow"
         :disabled="!isEnoughSelected"
         @click="handleClose"
-      >{{$t("btn-confirm")}}</CustomButton>
+        >{{ $t("btn-confirm") }}</CustomButton
+      >
     </template>
   </UserDialog>
 </template>

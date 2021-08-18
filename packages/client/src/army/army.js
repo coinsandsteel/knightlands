@@ -79,6 +79,7 @@ export default class Army {
   }
 
   estimateDamage(unit) {
+    this._updateUnitEquipment(unit);
     return this._armyResolver.estimateDamage(
       unit,
       this._unitsIndex,
@@ -87,6 +88,7 @@ export default class Army {
   }
 
   getDamage(unit, nextLevel, nextStar) {
+    this._updateUnitEquipment(unit);
     return this._armyResolver.getDamage(unit, nextLevel, nextStar, 0);
   }
 
@@ -100,6 +102,7 @@ export default class Army {
     for (let slotId in legion.units) {
       const unitId = legion.units[slotId];
       units[unitId] = this.getUnit(unitId);
+      this._updateUnitEquipment(units[unitId]);
     }
     return this._armyResolver.resolve(
       units,
@@ -107,6 +110,19 @@ export default class Army {
       null,
       playerStats
     );
+  }
+
+  _updateUnitEquipment(unit) {
+    // refresh unit's equipment
+    for (let slotId in unit.items) {
+      const item = unit.items[slotId];
+      if (item) {
+        const invItem = this._game.inventory.getItem(item.id);
+        if (invItem) {
+          unit.items[slotId] = invItem;
+        }
+      }
+    }
   }
 
   filterIngridientUnits(referenceUnit, ingridient, selectedUnits) {

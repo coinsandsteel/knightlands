@@ -9,7 +9,7 @@
           :selected="selectedSlot == slot"
           :equipment="true"
           :equipmentSlot="slot"
-          :item="unit.items[slot]"
+          :item="getItem(unit.items[slot])"
           @hint="handleSlotSelection(slot)"
         ></loot>
       </div>
@@ -110,6 +110,13 @@ export default {
     }
   },
   methods: {
+    getItem(item) {
+      if (!item) {
+        return item;
+      }
+
+      return this.$game.inventory.getItem(item.id);
+    },
     async autoEquip() {
       const itemsToEquip = [];
       for (const slotId of this.equipmentSlots) {
@@ -135,7 +142,9 @@ export default {
       );
     },
     async viewSelectedSlot() {
-      const item = this.unit.items[this.selectedSlot];
+      const item = this.$game.inventory.getItem(
+        this.unit.items[this.selectedSlot].id
+      );
       const action = await this.showHint(item, [], {
         showButtons: true,
         equippedItems: this.unit.items,

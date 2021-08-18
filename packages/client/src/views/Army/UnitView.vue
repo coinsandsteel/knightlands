@@ -25,7 +25,7 @@
             class="margin-top-1 margin-bottom-1 padding-half panel-input flex flex-center unit-view-param font-size-22"
           >
             <IconWithValue iconClass="icon-damage">{{
-              estimatedDamage
+              estimatedDamage()
             }}</IconWithValue>
           </div>
 

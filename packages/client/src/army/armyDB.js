@@ -72,6 +72,10 @@ export default class ArmyDB {
     return abilities;
   }
 
+  getMaxStars(unit) {
+    return this.getTemplate(unit).stars <= 3 ? 3 : 10;
+  }
+
   getMaxLevel(unit, next) {
     let meta = unit.troop ? troopsMeta.fusionMeta : generalsMeta.fusionMeta;
     let stars = this.getStars(unit) + (next ? 1 : 0);

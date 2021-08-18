@@ -172,6 +172,6 @@ export default {
 .home-art {
   background-image: url("../assets/backgrounds/castle_bg.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: bottom;
 }
 </style>
