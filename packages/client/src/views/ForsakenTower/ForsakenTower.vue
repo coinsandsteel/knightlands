@@ -118,6 +118,7 @@ export default {
     },
     async firstTimeFetch() {
       if (this.floors.length == 0) {
+        console.log("first page pull");
         await this.fetchNextPage();
       }
 
@@ -207,6 +208,8 @@ export default {
 
             this.fetchInProcess = false;
           });
+        } else {
+          this.fetchInProcess = false;
         }
       } else {
         this.fetchInProcess = false;
