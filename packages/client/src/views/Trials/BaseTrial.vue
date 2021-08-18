@@ -85,6 +85,9 @@ export default {
     }
   },
   watch: {
+    meta() {
+      this.refresh();
+    },
     selectedStage: {
       handler() {
         if (this.selectedStage && this.trialState) {
@@ -92,8 +95,6 @@ export default {
             this.selectedStage.id
           ];
         }
-
-        setTimeout(this.findAndConfigScrollPostion.bind(this), 50);
       },
       immediate: true
     },
@@ -116,19 +117,6 @@ export default {
     }
   },
   methods: {
-    findAndConfigScrollPostion() {
-      document
-        .querySelectorAll(`[data-vue-keep-scroll-position]`)
-        .forEach(element => {
-          const offset = element
-            .getAttribute("data-vue-keep-scroll-position")
-            .split("-");
-          console.log(element);
-          if (offset === undefined) return;
-          element.scrollTop = Number.parseFloat(offset[1]);
-          element.scrollLeft = Number.parseFloat(offset[0]);
-        });
-    },
     refresh() {
       this.trialState = this.state.trials[this.meta.id];
 

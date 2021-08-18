@@ -9,7 +9,7 @@
         >{{ $t("q-boss") }}</span
       >
       <div>
-        <span class="enemy-title-font">{{ $t(missionName) }}</span>
+        <span class="enemy-title-font capitalize">{{ $t(missionName) }}</span>
       </div>
     </div>
 

@@ -205,6 +205,7 @@
       <TokenChart
         v-if="showChart"
         :raidTemplateId="raidState.raidTemplateId"
+        @close="showChart = false"
       ></TokenChart>
     </keep-alive>
 

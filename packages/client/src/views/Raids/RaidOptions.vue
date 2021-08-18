@@ -6,13 +6,13 @@
     <CustomButton type="grey" v-if="left" @click="$emit('log')">
       <span class="icon-log"></span>
     </CustomButton>
-    <CustomButton
+    <!-- <CustomButton
       type="grey"
       v-if="left && !isFreeRaid"
       @click="$emit('chart')"
     >
       <span class="icon-chart"></span>
-    </CustomButton>
+    </CustomButton> -->
 
     <CustomButton type="grey" v-if="!left" @click="$emit('rewards')">
       <span class="icon-loot"></span>

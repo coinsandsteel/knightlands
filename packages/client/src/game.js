@@ -214,10 +214,6 @@ class Game {
     return this._vm.address;
   }
 
-  get isAdmin() {
-    return this.address === "TL58CLCzVVr9x4GoBPDxz7VW3Hko9oqrGi";
-  }
-
   hasWallet() {
     return this._blockchainClient && this._blockchainClient.isInited();
   }

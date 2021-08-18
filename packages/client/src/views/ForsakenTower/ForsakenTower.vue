@@ -204,11 +204,13 @@ export default {
                 );
               }
             }
+
+            this.fetchInProcess = false;
           });
         }
+      } else {
+        this.fetchInProcess = false;
       }
-
-      this.fetchInProcess = false;
     }
   }
 };

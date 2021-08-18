@@ -4,7 +4,7 @@
       :showMax="false"
       :value="attacks"
       :decreaseCondition="attacks > 1"
-      :increaseCondition="hasEnoughResource()"
+      :increaseCondition="canIncrease()"
       @inc="attacks++"
       @dec="attacks--"
     >
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import AttackButton from "@/components/AttackButton.vue";
 import NumericValue from "@/components/NumericValue.vue";
 
@@ -32,8 +33,11 @@ export default {
     attacks: 1
   }),
   methods: {
-    hasEnoughResource() {
-      return true;
+    canIncrease() {
+      return (
+        this.$game.character.maxStats[CharacterStats.Stamina] &&
+        this.attacks < 50
+      );
     }
   }
 };

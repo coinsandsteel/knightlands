@@ -30,14 +30,26 @@ export default {
   props: ["trialType"],
   components: { CustomButton },
   data: () => ({
-    totalTickets: 0
+    itemTickets: 0,
+    state: null
   }),
   mounted() {
     this.update();
   },
-  computed: {
+  watch: {
+    trialType: {
+      immediate: true,
+      handler() {
+        this.state = this.$game.getTrialState(this.trialType);
+      }
+    },
     state() {
-      return this.$game.getTrialState(this.trialType);
+      this.update();
+    }
+  },
+  computed: {
+    totalTickets() {
+      return this.nonItemAttempts + this.itemTickets;
     },
     ticketItemName() {
       return this.$t(`trial-attempt-${this.trialType}`);
@@ -78,9 +90,7 @@ export default {
       );
 
       if (ticketItem) {
-        this.totalTickets = this.nonItemAttempts + ticketItem.count;
-      } else {
-        this.totalTickets = this.nonItemAttempts;
+        this.itemTickets = ticketItem.count;
       }
     }
   }

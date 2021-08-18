@@ -32,6 +32,8 @@
         ></ProgressBar>
       </div>
 
+      <span class="font-size-22 margin-1">{{ $t("beast-ch") }}</span>
+
       <div
         class="width-100 margin-bottom-1 margin-top-half att-row flex flex-center font-size-20 flex-space-between color-panel-1"
       >
@@ -50,9 +52,9 @@
             <div
               v-for="(statValue, statId) in stats"
               :key="statId"
-              class="margin-bottom-half flex flex-center flex-end width-100"
+              class="margin-bottom-half flex flex-center flex-start width-100"
             >
-              {{ statValue }}
+              +{{ statValue }}
             </div>
           </div>
 
@@ -63,7 +65,7 @@
               class="margin-bottom-half flex flex-center flex-start width-100"
             >
               <span class="margin-left-2 margin-right-2 right-arrow"></span>
-              <span class="rarity-rare">{{ futureStats[statId] }}</span>
+              <span class="rarity-rare">+{{ futureStats[statId] }}</span>
             </div>
           </div>
         </div>
@@ -287,7 +289,7 @@ export default {
       return this.level >= Beasts.levels[this.beastIndex].levels.length;
     },
     canEvolve() {
-      return this.beastIndex < Beasts.levels.length + 1;
+      return this.beastIndex < Beasts.levels.length - 1;
     },
     nextExp() {
       return this.isMax

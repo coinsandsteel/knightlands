@@ -1,9 +1,10 @@
 <template>
-  <div class="content">
+  <div class="content flex flex-column flex-center">
     <div class="screen-background"></div>
     <Title class="margin-top-2" :stackBottom="true">{{
       $t("dkt-chart")
     }}</Title>
+    <CloseButton @click="$emit('close')"></CloseButton>
     <VueApexCharts
       ref="chart"
       width="100%"
@@ -21,6 +22,7 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import Title from "@/components/Title.vue";
+import CloseButton from "@/components/CloseButton.vue";
 
 const Events = require("@/../../knightlands-shared/events");
 
@@ -35,7 +37,7 @@ const SeriesLabel = "chart-label";
 
 export default {
   props: ["raidTemplateId"],
-  components: { VueApexCharts, Title },
+  components: { VueApexCharts, Title, CloseButton },
   data: function() {
     return {
       chartOptions: {
@@ -114,9 +116,7 @@ export default {
           data: []
         }
       ],
-      noData: {
-        text: "Loading..."
-      }
+      noData: {}
     };
   },
   activated() {
@@ -180,7 +180,7 @@ export default {
 <style lang="less" scoped>
 .content {
   z-index: 50;
-  position: relative;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;

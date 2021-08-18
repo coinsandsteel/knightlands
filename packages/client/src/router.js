@@ -323,7 +323,7 @@ const router = new Router({
         },
         {
           path: "shop",
-          name: "shop",
+          name: "",
           component: () => import("./views/Summon/Shop/ShopHome.vue"),
           children: [
             {

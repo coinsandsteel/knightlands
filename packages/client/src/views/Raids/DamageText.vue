@@ -64,7 +64,7 @@ export default {
     playLocal() {
       const offsetY = OffsetY.min + Math.random() * (OffsetY.max - OffsetY.min);
       const offsetX = OffsetX.min + Math.random() * (OffsetX.max - OffsetX.min);
-      const FontSize = this.crit ? 15 : 8;
+      const FontSize = this.crit ? 10 : 8;
       const color = this.crit ? "#fdc64f" : "#fff";
       const easing = this.crit ? "easeOutElastic" : "easeOutExpo";
 
