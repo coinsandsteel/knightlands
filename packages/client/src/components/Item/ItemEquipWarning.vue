@@ -22,11 +22,13 @@
             <span class="font-size-20 font-outline margin-bottom-1">{{
               $t("eq-on-unit")
             }}</span>
-            <UnitItem class="unit" :unit="unit" />
+            <UnitItem class="unit" :unit="unit" @click="goToUnit" />
           </template>
-          <span v-if="equippedOnCharacter" class="font-size-20 font-outline margin-bottom-1">{{
-            $t("eq-on-ch")
-          }}</span>
+          <span
+            v-if="equippedOnCharacter"
+            class="font-size-20 font-outline margin-bottom-1"
+            >{{ $t("eq-on-ch") }}</span
+          >
 
           <span class="font-size-20 font-outline color-panel-2">{{
             $t("eq-war-q")
@@ -66,7 +68,7 @@ export default {
       return this.item.holder > 0;
     },
     equippedOnCharacter() {
-        return this.item.equipped && this.item.holder < 0;
+      return this.item.equipped && this.item.holder < 0;
     }
   },
   methods: {
@@ -76,6 +78,13 @@ export default {
       } else {
         this.$emit("close", this.item, response, ...args);
       }
+    },
+    goToUnit() {
+      this.$router.push({
+        name: "unit-equip",
+        params: { unitId: this.unit.id }
+      });
+      this.$close(undefined);
     }
   }
 };

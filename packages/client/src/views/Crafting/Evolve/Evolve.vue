@@ -5,6 +5,8 @@
     <div class="margin-top-2 flex flex-items-center flex-space-evenly">
       <Loot
         :item="baseItem"
+        :showUnbindLevels="true"
+        :showLevel="true"
         :showEquipped="false"
         :hideQuantity="true"
         :showUnique="false"
@@ -13,6 +15,8 @@
       <span class="nav-arrow"></span>
       <Loot
         :item="nextItem"
+        :showUnbindLevels="true"
+        :showLevel="true"
         :showEquipped="false"
         :hideQuantity="true"
         :showUnique="false"
@@ -32,7 +36,7 @@
         v-if="isElemental"
         :item="nextItem"
         @select="selectItem"
-        :filled="!!selectedBaseItem"
+        :filled="isFilled"
       />
       <CraftingIngridient
         v-for="ingridient in recipe.ingridients"
@@ -89,7 +93,7 @@ const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, HintHandler],
-  props: ["itemId", "baseItemId"],
+  props: ["baseItemId"],
   components: {
     Loot,
     ItemStatsUpgraded,
@@ -123,11 +127,27 @@ export default {
       return this.$game.inventory.getItem(this.baseItemId);
     },
     item() {
-      return this.$game.inventory.getItem(this.itemId);
+      return +this.$route.query.item;
+    },
+    isFilled() {
+      if (!this.item) {
+        return false;
+      }
+
+      const fillerItem = this.$game.inventory.getItem(this.item);
+      if (!fillerItem) {
+        return false;
+      }
+
+      return this.nextItem.template == fillerItem.template;
     },
     nextItem() {
       let nextItem = { ...this.baseItem };
       nextItem.rarity = this.nextRarity;
+      nextItem.breakLimit = 0;
+      nextItem.template = this.$game.itemsDB.getEvolvedTemplate(
+        this.baseItem.template
+      );
       return nextItem;
     },
     isMaxLevel() {
@@ -174,7 +194,7 @@ export default {
   methods: {
     async evolve() {
       const { item } = await this.performRequest(
-        this.$game.evolveItem(this.baseItem.id)
+        this.$game.evolveItem(this.baseItem.id, this.item)
       );
 
       await ShowItemCreated(item, 1);
@@ -196,7 +216,7 @@ export default {
       this.$router.push({
         name: "select-for-elem",
         params: {
-          itemTemplate: this.baseItem.template,
+          itemTemplate: this.nextItem.template,
           rarity: this.nextRarity
         },
         query: { returnTo: this.$route.fullPath }

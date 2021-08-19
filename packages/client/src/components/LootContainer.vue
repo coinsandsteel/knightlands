@@ -11,6 +11,11 @@
       :items="filteredItems"
       v-on="$listeners"
     />
+    <div class="width-100 flex flex-center">
+      <span class="font-size-20 grey-title" v-show="hasHiddenItems">
+        {{ $t("hidden-items") }}
+      </span>
+    </div>
 
     <portal to="footer" :slim="true" v-if="isActive && !hideFilters">
       <CustomButton type="grey" @click="showItemFilter">{{
@@ -43,6 +48,11 @@ export default {
     lootClasses: String,
     selectedItem: Number,
     hideFilters: Boolean
+  },
+  computed: {
+    hasHiddenItems() {
+      return this.items.length > 0 && this.filteredItems.length == 0;
+    }
   },
   methods: {
     selectedItems() {

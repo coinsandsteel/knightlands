@@ -118,7 +118,12 @@ export default {
       for (let i = 0; i < length; ++i) {
         const unit = units[i];
         for (const slot in unit.items) {
-          const item = unit.items[slot];
+          let item = unit.items[slot];
+          if (!item) {
+            continue;
+          }
+          item = this.$game.inventory.getItem(item.id);
+
           const template = this.$game.itemsDB.getTemplate(item.template);
           if (this.filter(item, template)) {
             items.push(item);
@@ -127,7 +132,6 @@ export default {
       }
 
       this.$game.inventory.sortItems(items);
-      console.log(items);
 
       return items;
     }

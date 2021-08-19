@@ -13,7 +13,7 @@ const Properties = require("./item_properties.json");
 const UpgradeMeta = require("./upgrade_meta.json");
 const EnchantingMeta = require("./enchanting_meta.json");
 import ItemStatResolver from "@/../../knightlands-shared/item_stat_resolver";
-import ItemIcons from "@/item_icons";
+import EvolveData from "@/evolve";
 
 class ItemDatabase {
   constructor() {
@@ -51,17 +51,22 @@ class ItemDatabase {
     //   return `/images/items/${template.type}/${template.equipmentType}/${template.icon}.png`;
     // }
 
-    // return `/images/items/${template.type}/${template.icon}.png`;
-    if (template.type == ItemType.Equipment && rarity) {
-      if (ItemIcons[id]) {
-        const item = ItemIcons[id][rarity];
-        if (item) {
-          return this.getIcon(item);
-        }
-      }
-    }
+    // // return `/images/items/${template.type}/${template.icon}.png`;
+    // if (template.type == ItemType.Equipment && rarity) {
+    //   if (ItemIcons[id]) {
+    //     const item = ItemIcons[id][rarity];
+    //     if (item) {
+    //       return this.getIcon(item);
+    //     }
+    //   }
+    // }
 
     return `${template.icon}`;
+  }
+
+  getEvolvedTemplate(id) {
+    let template = this.getTemplate(id);
+    return EvolveData.templates[template.id];
   }
 
   getProperty(propId) {

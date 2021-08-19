@@ -1301,9 +1301,10 @@ class Game {
     return response.response;
   }
 
-  async evolveItem(itemId) {
+  async evolveItem(itemId, extraItem) {
     let response = await this._wrapOperation(Operations.Evolve, {
-      itemId
+      itemId,
+      extraItem
     });
     return response.response;
   }
