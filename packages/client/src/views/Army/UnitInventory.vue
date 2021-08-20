@@ -63,6 +63,7 @@ export default {
     selectedUnit: Object,
     remove: Boolean,
     disableSelect: Boolean,
+    unit: Object,
     autoselect: {
       type: Boolean,
       default: true
@@ -157,7 +158,8 @@ export default {
       this.filteredUnits = this.$game.army.filterProvidedUnits(
         this.units,
         this.filtersStore,
-        this.filteredUnitsBuffer.get()
+        this.filteredUnitsBuffer.get(),
+        this.unit
       );
 
       if (this.autoselect) {

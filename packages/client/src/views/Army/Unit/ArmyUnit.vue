@@ -17,7 +17,10 @@
           :currentTab="currentTab"
         />
         <keep-alive v-if="computedUnit">
-          <router-view :unit="computedUnit" :units="units"></router-view>
+          <router-view
+            :unit="computedUnit"
+            :units="computedUnits"
+          ></router-view>
         </keep-alive>
       </div>
     </div>
@@ -50,15 +53,19 @@ export default {
       handler() {
         this.unit = this.$game.army.getUnit(this.unitId);
 
-        if (this.units) {
+        if (this.computedUnits) {
           let idx = 0;
-          for (const unit of this.units) {
+          for (const unit of this.computedUnits) {
             if (unit.id == this.unit.id) {
               this.unitIdx = idx;
               break;
             }
 
             idx++;
+          }
+
+          if (this.unitIdx == -1) {
+            // we got filtered units, without selected unit
           }
         }
 
@@ -67,21 +74,21 @@ export default {
             title: "level-up",
             to: {
               name: "unit-level",
-              params: { unitId: this.unitId, units: this.units }
+              params: { unitId: this.unitId, units: this.computedUnits }
             }
           },
           {
             title: "equipment",
             to: {
               name: "unit-equip",
-              params: { unitId: this.unitId, units: this.units }
+              params: { unitId: this.unitId, units: this.computedUnits }
             }
           },
           {
             title: "promotion",
             to: {
               name: "unit-promo",
-              params: { unitId: this.unitId, units: this.units }
+              params: { unitId: this.unitId, units: this.computedUnits }
             }
           }
         ];
@@ -89,14 +96,19 @@ export default {
     }
   },
   computed: {
+    computedUnits() {
+      return this.units
+        ? this.units
+        : this.$game.army.getUnits(this.unit.troop);
+    },
     hasUnits() {
-      return !!this.units;
+      return !!this.computedUnits;
     },
     computedUnit() {
       if (!this.hasUnits) {
         return this.unit;
       } else {
-        return this.units[this.unitIdx];
+        return this.computedUnits[this.unitIdx];
       }
     }
   },
@@ -107,7 +119,7 @@ export default {
       }
 
       this.unitIdx++;
-      if (this.unitIdx == this.units.length) {
+      if (this.unitIdx == this.computedUnits.length) {
         this.unitIdx = 0;
       }
     },
@@ -118,7 +130,7 @@ export default {
 
       this.unitIdx--;
       if (this.unitIdx < 0) {
-        this.unitIdx = this.units.length - 1;
+        this.unitIdx = this.computedUnits.length - 1;
       }
     }
   }

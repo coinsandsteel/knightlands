@@ -6,6 +6,7 @@
       <UnitInventory
         ref="inventory"
         :remove="true"
+        :unit="unit"
         :units="units"
         @removed="handleUnitRemove"
         :autoselect="false"

@@ -7,6 +7,7 @@
     <div class="flex-full relative dummy-height">
       <UnitInventory
         ref="inventory"
+        :unit="unit"
         :units="units"
         :selectedUnit="unit"
         @unitSelect="selectUnit"

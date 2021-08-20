@@ -174,9 +174,15 @@ export default class Army {
     return this._vm.legions[legionIndex];
   }
 
-  filterProvidedUnits(units, filters, buffer) {
+  filterProvidedUnits(units, filters, buffer, toInsert) {
     buffer = buffer || [];
     buffer.length = 0;
+
+    if (toInsert) {
+      if (!filters[this.getStars(toInsert)]) {
+        buffer.push(toInsert);
+      }
+    }
 
     let i = 0;
     const length = units.length;
