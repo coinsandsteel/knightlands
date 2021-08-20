@@ -143,9 +143,16 @@ import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import ItemStatsUpgraded from "@/components/Item/ItemStatsUpgraded.vue";
 import Title from "@/components/Title.vue";
+import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [AppSection, PromptMixin],
+  mixins: [
+    AppSection,
+    PromptMixin,
+    InventoryListenerMixin,
+    NetworkRequestErrorMixin
+  ],
   props: ["itemId"],
   components: {
     SoundEffect,
@@ -168,6 +175,7 @@ export default {
     this.cancelUpgrading();
   },
   data: () => ({
+    newItemId: 0,
     selectedOption: 0,
     item: null,
     futureExp: 0,
@@ -267,15 +275,12 @@ export default {
         materials[this.upgradeMaterials[i].id] = this.materialsCount[i];
       }
 
-      const prevLevel = this.item.level;
-      let newItemId = await this.$game.upgradeItem(this.itemId, materials);
+      let newItemId = await this.performRequest(
+        this.$game.upgradeItem(this.itemId, materials)
+      );
 
       if (newItemId != this.itemId) {
-        this.item = null;
-        this.$router.replace({
-          name: "upgrade-item",
-          params: { itemId: newItemId }
-        });
+        this.newItemId = newItemId;
       } else {
         this.prepareItemForUpgrading();
         this.updateMaterialList();
@@ -322,6 +327,16 @@ export default {
       }
 
       this.upgradeMaterials = materials;
+    },
+    handleInventoryChanged() {
+      if (this.newItemId != 0) {
+        this.item = null;
+        this.$router.replace({
+          name: "upgrade-item",
+          params: { itemId: this.newItemId }
+        });
+        this.newItemId = 0;
+      }
     }
   },
   computed: {

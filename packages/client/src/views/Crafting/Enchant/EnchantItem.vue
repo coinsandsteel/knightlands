@@ -176,12 +176,20 @@ import HintHandler from "@/components/HintHandler.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import Title from "@/components/Title.vue";
+import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const EnchantingMeta = require("@/enchanting_meta.json");
 const RollBackLevel = 9;
 
 export default {
-  mixins: [AppSection, PromptMixin, HintHandler],
+  mixins: [
+    AppSection,
+    PromptMixin,
+    HintHandler,
+    InventoryListenerMixin,
+    NetworkRequestErrorMixin
+  ],
   props: ["itemId"],
   components: {
     SoundEffect,
@@ -201,11 +209,11 @@ export default {
   data: () => ({
     item: null,
     ingridients: [],
-    request: null,
     currencies: CurrencyType,
     fetchPayment: null,
     failed: false,
-    paymentInProcess: false
+    paymentInProcess: false,
+    newItemId: 0
   }),
   watch: {
     itemId() {
@@ -274,26 +282,28 @@ export default {
   },
   methods: {
     async enchant(currency) {
-      this.request = this.$game.enchantItem(this.itemId, currency);
-
-      if (currency == CurrencyType.Fiat) {
-        this.request = this.purchaseRequest(this.request);
-      }
-
-      let newItemId = await this.request;
+      let newItemId = await this.performRequest(
+        this.$game.enchantItem(this.itemId, currency)
+      );
       if (newItemId === false) {
         this.notifyEnchantingFailed();
       } else {
         this.$refs.successFx.play();
         if (newItemId && newItemId != this.itemId) {
-          this.$router.replace({
-            name: "enchant-item",
-            params: { itemId: newItemId }
-          });
+          this.newItemId = newItemId;
         }
       }
 
       this.updateEnchantItemsList();
+    },
+    handleInventoryChanged() {
+      if (this.newItemId != 0) {
+        this.$router.replace({
+          name: "enchant-item",
+          params: { itemId: this.newItemId }
+        });
+        this.newItemId = 0;
+      }
     },
     notifyEnchantingFailed() {
       this.$refs.failFx.play();

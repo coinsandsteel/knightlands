@@ -97,9 +97,16 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import Loot from "@/components/Loot.vue";
 import Title from "@/components/Title.vue";
 import DustRecipes from "@/dust_recipes";
+import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [AppSection, PromptMixin],
+  mixins: [
+    AppSection,
+    PromptMixin,
+    InventoryListenerMixin,
+    NetworkRequestErrorMixin
+  ],
   props: ["itemId"],
   components: { ItemInfo, CustomButton, Loot, Title },
   created() {
@@ -115,6 +122,7 @@ export default {
   },
   data: () => ({
     item: null,
+    newItemId: 0,
     selectedMaterial: null,
     unbindItems: [],
     selectedItems: {},
@@ -154,6 +162,16 @@ export default {
     }
   },
   methods: {
+    handleInventoryChanged() {
+      if (this.newItemId != 0) {
+        this.$router.replace({
+          name: "unbind-item",
+          params: { itemId: this.newItemId },
+          query: this.$route.query
+        });
+        this.newItemId = 0;
+      }
+    },
     craft() {
       let query = { returnTo: this.$route.fullPath };
       if (this.$route.query) {
@@ -197,13 +215,11 @@ export default {
           }
         }
 
-        let newItemId = await this.$game.unbindItem(this.itemId, items);
+        let newItemId = await this.performRequest(
+          this.$game.unbindItem(this.itemId, items)
+        );
         if (newItemId != this.itemId) {
-          this.$router.replace({
-            name: "unbind-item",
-            params: { itemId: newItemId },
-            query: this.$route.query
-          });
+          this.newItemId = newItemId;
         }
 
         this.updateUnbindItemsList();
