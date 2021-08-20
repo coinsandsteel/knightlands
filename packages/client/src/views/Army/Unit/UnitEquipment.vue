@@ -134,6 +134,7 @@ export default {
             continue;
           }
           itemsToEquip.push(item.id);
+          break;
         }
       }
 
