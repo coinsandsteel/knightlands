@@ -12,8 +12,10 @@ export default {
         case CharacterStat.ExtraDkt:
         case CharacterStat.DamageReduction:
         case CharacterStat.CriticalDamage:
-        case CharacterStat.CriticalChance:
           return `${value}%`;
+
+        case CharacterStat.CriticalChance:
+          return `${value / 100}%`;
       }
 
       return value;
