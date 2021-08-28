@@ -23,11 +23,23 @@
         >{{ "Sound" }}</p-check
       >
     </div>
+
+    <!-- <CopyButton
+      class="margin-top-5"
+      type="yellow"
+      :data="getReferral()"
+      caption="get-refer"
+    ></CopyButton> -->
+
+    <CustomButton type="grey" class="margin-top-3" @click="logout">{{
+      $t("logout")
+    }}</CustomButton>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
+import CustomButton from "@/components/Button.vue";
 import { mapState } from "vuex";
 
 let switchInProgress = false;
@@ -37,6 +49,7 @@ export default {
   created() {
     this.title = "w-settings";
   },
+  components: { CustomButton },
   data: () => ({
     music: true,
     sounds: true,
@@ -93,6 +106,12 @@ export default {
   methods: {
     updateOnlineCounter(data) {
       this.online = data.online;
+    },
+    logout() {
+      this.$game.logout();
+    },
+    getReferral() {
+      return `${window.location.host}/#/login?referral=${this.$game.id}`;
     }
   }
 };

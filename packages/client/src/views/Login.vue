@@ -68,7 +68,9 @@ export default {
       }
     },
     async signIn() {
-      this.request = this.performRequest(this.$game.signIn(this.email));
+      this.request = this.performRequest(
+        this.$game.signIn(this.email, this.$route.query.referral)
+      );
 
       try {
         await this.request;

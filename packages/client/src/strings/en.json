@@ -2124,5 +2124,7 @@
     "window-new-elem": "CREATE ELEMENTAL WEAPON",
     "only-equipped": "Show equipped items",
     "got-stuck": "Got stuck?",
-    "pp-track": "Check my rank"
+    "pp-track": "Check my rank",
+    "get-refer": "Get referral link",
+    "logout": "Logout"
 }

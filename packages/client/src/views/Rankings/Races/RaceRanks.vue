@@ -68,7 +68,12 @@
           </RecycleScroller>
         </div>
 
-        <div class="flex flex-center full-flex" v-else>
+        <div
+          class="flex flex-center full-flex"
+          v-else-if="
+            nonQualified.length == 0 && currentRank && !currentRank.rank
+          "
+        >
           <div class="panel-input padding-1">
             <span
               class="font-size-20 flex flex-center"
@@ -146,12 +151,13 @@ export default {
           this.fetchedAll = newRecords.finished;
           this.currentPage++;
 
-          if (this.qualified.length == 0) {
+          if (this.qualified.length != this.currentRank.winners.length) {
             for (let index = 0; index < newRecords.records.length; index++) {
               const record = newRecords.records[index];
               if (
-                this.qualified.length != this.currentRank.maxParticipants &&
-                record.score >= this.currentRank.target
+                this.qualified.length != this.currentRank.winners.length &&
+                record.score >= this.currentRank.target &&
+                this.currentRank.winners.find(x => x == record.id)
               ) {
                 this.qualified.push(record);
               } else {
