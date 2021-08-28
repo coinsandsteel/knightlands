@@ -49,9 +49,9 @@
               <span class="icon-info dark"></span>
             </custom-button>
 
-            <custom-button type="grey" @click="showChart = true" v-if="isPayed">
+            <!-- <custom-button type="grey" @click="showChart = true" v-if="isPayed">
               <span class="icon-chart"></span>
-            </custom-button>
+            </custom-button> -->
           </div>
 
           <div class="margin-top-3" v-if="$game.load">

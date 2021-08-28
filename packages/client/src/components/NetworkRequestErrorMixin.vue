@@ -56,7 +56,7 @@ export default {
           duration: -1,
           closeOnClick: false
         });
-      }, 200);
+      }, this.$options.loadingTimeout || 200);
     },
     _hideLoading(timeout) {
       clearTimeout(timeout);

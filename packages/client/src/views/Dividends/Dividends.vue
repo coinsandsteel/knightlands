@@ -179,6 +179,7 @@ export default {
     pendingWithdrawals: []
   }),
   created() {
+    this.$options.loadingTimeout = 1000;
     this.title = "w-divs";
     this.nextPayoutTimer.on(
       "finished",

@@ -179,9 +179,9 @@
                 <span class="icon-info dark"></span>
               </custom-button>
 
-              <CustomButton type="grey" @click="handleShowChart">
+              <!-- <CustomButton type="grey" @click="handleShowChart">
                 <span class="icon-chart"></span>
-              </CustomButton>
+              </CustomButton> -->
             </div>
 
             <div class="margin-top-2 margin-bottom-2" v-if="$game.load">

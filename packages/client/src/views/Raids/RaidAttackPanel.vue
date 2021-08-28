@@ -10,12 +10,19 @@
     >
       <template v-slot:between>
         <AttackButton
-          width="20rem"
           type="red"
           @click="$emit('attack', attacks)"
           :disabled="disabled"
-          >Attack: x{{ attacks }}</AttackButton
         >
+          <div class="flex flex-center">
+            <span class="margin-right-half">{{
+              $t("att-c", { dmg: attackDamage })
+            }}</span>
+            <IconWithValue iconClass="icon-stamina">{{
+              attacks
+            }}</IconWithValue>
+          </div>
+        </AttackButton>
       </template>
     </NumericValue>
   </div>
@@ -25,13 +32,19 @@
 import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import AttackButton from "@/components/AttackButton.vue";
 import NumericValue from "@/components/NumericValue.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  components: { AttackButton, NumericValue },
+  components: { AttackButton, NumericValue, IconWithValue },
   props: ["disabled"],
   data: () => ({
     attacks: 1
   }),
+  computed: {
+    attackDamage() {
+      return Math.floor(this.attacks * 100 * (1 + 0.01 * (this.attacks - 1)));
+    }
+  },
   methods: {
     canIncrease() {
       return (

@@ -2126,5 +2126,6 @@
     "got-stuck": "Got stuck?",
     "pp-track": "Check my rank",
     "get-refer": "Get referral link",
-    "logout": "Logout"
+    "logout": "Logout",
+    "att-c": "Attack {dmg}% DMG"
 }
