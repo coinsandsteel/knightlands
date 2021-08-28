@@ -143,10 +143,7 @@
           <CustomButton
             type="yellow"
             @click="goToNextMission"
-            v-if="
-              (!isBoss || (isBoss && isLastMission && !isLastZone)) &&
-                hasNextZone
-            "
+            v-if="!isBoss || (isBoss && isLastMission && !isLastZone)"
             >{{ $t("btn-next-quest") }}</CustomButton
           >
           <CustomButton
