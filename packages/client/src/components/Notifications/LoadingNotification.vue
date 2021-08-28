@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import * as LottiePlayer from "@lottiefiles/lottie-player";
+
 export default {
   computed: {
     animation() {
