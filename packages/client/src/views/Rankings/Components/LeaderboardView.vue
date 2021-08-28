@@ -35,6 +35,7 @@
           :rank="index + 1"
           :id="item.name"
           :pId="item.id"
+          :avatar="item.avatar"
           :score="item.score"
           :height="itemSize"
           :you="isYou(item.id)"
@@ -99,6 +100,7 @@ export default {
 
       try {
         let newRecords = await this.fetchRankings(this.id, this.currentPage);
+        console.log(newRecords);
 
         if (newRecords) {
           this.fetchedAll = newRecords.finished;

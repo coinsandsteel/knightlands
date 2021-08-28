@@ -6,13 +6,16 @@
   >
     <span :class="rankIcon" class="flex-1"></span>
     <span class="flex-1">#{{ rank }}</span>
-    <span class="flex-8">{{ id }}</span>
+    <Avatar :preview="true" :avatar="avatar" :mini="true"></Avatar>
+    <span class="flex-4">{{ id }}</span>
     <span class="flex-3">{{ score }}</span>
     <span @click="preview" class="icon-preview flex-1 pointer"></span>
   </div>
 </template>
 
 <script>
+import Avatar from "@/views/Character/Avatars/Avatar.vue";
+
 export default {
   props: [
     "index",
@@ -23,8 +26,10 @@ export default {
     "you",
     "target",
     "pId",
-    "showRank"
+    "showRank",
+    "avatar"
   ],
+  components: { Avatar },
   computed: {
     rankIcon() {
       if (this.showRank) {

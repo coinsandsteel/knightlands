@@ -1,5 +1,10 @@
 <template>
-  <img class="heroImage" @click="changeAvatar" :src="activeAvatar" />
+  <img
+    class="heroImage"
+    :class="{ mini }"
+    @click="changeAvatar"
+    :src="activeAvatar"
+  />
 </template>
 
 <script>
@@ -11,7 +16,7 @@ import ChangeAvatar from "./ChangeAvatar.vue";
 const ShowChangeAvatar = create(ChangeAvatar);
 
 export default {
-  props: ["preview", "avatar"],
+  props: ["preview", "avatar", "mini"],
   computed: {
     activeAvatar() {
       const id = this.avatar || this.$game.character.avatar;
@@ -34,5 +39,9 @@ export default {
 <style lang="less" scoped>
 .heroImage {
   max-width: 10rem;
+
+  &.mini {
+    max-width: 4rem;
+  }
 }
 </style>
