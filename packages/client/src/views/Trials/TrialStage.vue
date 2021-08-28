@@ -1,5 +1,5 @@
 <template>
-  <div class="dummy-height flex flex-column width-100">
+  <div class="dummy-height flex flex-column width-100 height-100">
     <keep-alive>
       <FightView
         v-if="fight"

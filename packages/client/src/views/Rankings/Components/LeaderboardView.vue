@@ -100,8 +100,6 @@ export default {
 
       try {
         let newRecords = await this.fetchRankings(this.id, this.currentPage);
-        console.log(newRecords);
-
         if (newRecords) {
           this.fetchedAll = newRecords.finished;
           this.records.push(...newRecords.records);

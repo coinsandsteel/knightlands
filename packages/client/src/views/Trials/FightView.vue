@@ -1,47 +1,48 @@
 <template>
-  <div class="relative flex flex-column flex-center flex-no-wrap">
-    <EnemyView
-      ref="enemyView"
-      :image="enemyImage"
-      :background="`${background}`"
-    >
-      <FloatingTextContainer
-        ref="floatingText"
-        :enemyView="$refs.enemyView"
-        class="absolute-stretch"
-      ></FloatingTextContainer>
-    </EnemyView>
-
-    <ProgressBar
-      valuePosition="top"
-      class="margin-top-1 margin-bottom-2"
-      valueClass="white-font font-outline font-size-25"
-      :thresholds="barThreshold"
-      v-model="enemyHealth"
-      :maxValue="state.maxHealth"
-      height="1rem"
-    ></ProgressBar>
-
-    <div class="color-panel-2 flex flex-column width-100 padding-1">
-      <span class="margin-top-1 margin-bottom-1 font-size-22">{{
-        $t("tower-player-hp")
-      }}</span>
-      <ProgressBar v-model="playerHealth" :maxValue="maxHealth"></ProgressBar>
-
-      <HintButton
-        class="margin-top-1 margin-bottom-1 font-size-22"
-        title="tr-f-1"
-        :texts="['tr-f-2', 'tr-f-3', 'tr-f-4']"
+  <div v-bar class="relative flex flex-column flex-center flex-no-wrap">
+    <div class="relative flex flex-column flex-center flex-no-wrap">
+      <EnemyView
+        ref="enemyView"
+        :image="enemyImage"
+        :background="`${background}`"
       >
-        {{ $t("trial-player-mana") }}
-      </HintButton>
+        <FloatingTextContainer
+          ref="floatingText"
+          :enemyView="$refs.enemyView"
+          class="absolute-stretch"
+        ></FloatingTextContainer>
+      </EnemyView>
+
       <ProgressBar
-        barType="blue"
-        :value="mana"
-        :maxValue="maxMana"
+        valuePosition="top"
+        class="margin-top-1 margin-bottom-2"
+        valueClass="white-font font-outline font-size-25"
+        :thresholds="barThreshold"
+        v-model="enemyHealth"
+        :maxValue="state.maxHealth"
+        height="1rem"
       ></ProgressBar>
 
-      <!-- <div v-if="lost" class="flex margin-top-2 width-100 flex-center">
+      <div class="color-panel-2 flex flex-column width-100 padding-1">
+        <span class="margin-top-1 margin-bottom-1 font-size-22">{{
+          $t("tower-player-hp")
+        }}</span>
+        <ProgressBar v-model="playerHealth" :maxValue="maxHealth"></ProgressBar>
+
+        <HintButton
+          class="margin-top-1 margin-bottom-1 font-size-22"
+          title="tr-f-1"
+          :texts="['tr-f-2', 'tr-f-3', 'tr-f-4']"
+        >
+          {{ $t("trial-player-mana") }}
+        </HintButton>
+        <ProgressBar
+          barType="blue"
+          :value="mana"
+          :maxValue="maxMana"
+        ></ProgressBar>
+
+        <!-- <div v-if="lost" class="flex margin-top-2 width-100 flex-center">
         <PromisedButton
           :promise="request"
           @click="close(true)"
@@ -49,26 +50,26 @@
         >{{$t("continue")}}</PromisedButton>
       </div>-->
 
-      <div class="flex margin-top-2 flex-center width-100 flex-space-evenly">
-        <AttackButton :promise="request" @click="attack" type="red">{{
-          $t("btn-attack")
-        }}</AttackButton>
+        <div class="flex margin-top-2 flex-center width-100 flex-space-evenly">
+          <AttackButton :promise="request" @click="attack" type="red">{{
+            $t("btn-attack")
+          }}</AttackButton>
 
-        <PromisedButton
-          :promise="request"
-          :disabled="!enoughManaToSummon"
-          @click="summonCards"
-          type="blue"
-          >{{ $t("btn-summon-trial-cards") }}</PromisedButton
-        >
+          <PromisedButton
+            :promise="request"
+            :disabled="!enoughManaToSummon"
+            @click="summonCards"
+            type="blue"
+            >{{ $t("btn-summon-trial-cards") }}</PromisedButton
+          >
 
-        <!-- <PromisedButton
+          <!-- <PromisedButton
           :promise="request"
           @click="cancel"
           :props="{width: '15rem', type:'red'}"
         >{{$t("btn-cancel")}}</PromisedButton>-->
-      </div>
-      <!-- 
+        </div>
+        <!-- 
       <div v-else class="flex margin-top-2 width-100 flex-center">
         <PromisedButton
           :promise="request"
@@ -76,17 +77,18 @@
           :props="{width: '15rem', type:'green'}"
         >{{$t("claim-reward")}}</PromisedButton>
       </div>-->
-    </div>
+      </div>
 
-    <portal to="overlay" :slim="true">
-      <CardSelector
-        v-show="cards"
-        :cards="cards"
-        :fightMeta="additionalFightMeta"
-        :trialType="trialType"
-        @cardEffect="handleCardEffect"
-      ></CardSelector>
-    </portal>
+      <portal to="overlay" :slim="true">
+        <CardSelector
+          v-show="cards"
+          :cards="cards"
+          :fightMeta="additionalFightMeta"
+          :trialType="trialType"
+          @cardEffect="handleCardEffect"
+        ></CardSelector>
+      </portal>
+    </div>
   </div>
 </template>
 
