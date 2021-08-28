@@ -388,20 +388,21 @@ class Game {
     return this._signIn(didToken);
   }
 
-  async signIn(email) {
+  async signIn(email, referral) {
     const didToken = await magic.auth.loginWithMagicLink({
       email: email,
       showUI: true
     });
 
-    return this._signIn(didToken);
+    return this._signIn(didToken, referral);
   }
 
-  async _signIn(didToken) {
+  async _signIn(didToken, referral) {
     return new Promise(async (resolve, reject) => {
       try {
         await this._request(Operations.Auth, {
-          token: didToken
+          token: didToken,
+          referral
         });
 
         this._signInResolve = resolve;
@@ -1065,8 +1066,8 @@ class Game {
   }
 
   /*
-          Server Operations
-      */
+                Server Operations
+            */
   async _wrapOperation(operation, ...args) {
     try {
       let result = await this._request(operation, ...args);
