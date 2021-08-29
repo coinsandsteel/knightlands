@@ -2,6 +2,7 @@
   <div class="dummy-height flex flex-column width-100 height-100">
     <keep-alive>
       <FightView
+        class="height-100"
         v-if="fight"
         :meta="fightMeta"
         :state="fight"
