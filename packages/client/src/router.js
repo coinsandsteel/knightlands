@@ -892,6 +892,11 @@ const router = new Router({
       },
       children: [
         {
+          path: "raid-points",
+          name: "raid-points",
+          component: () => import("./views/Raids/RaidPoints.vue")
+        },
+        {
           path: "view/:raidId",
           props: true,
           name: "view-raid",

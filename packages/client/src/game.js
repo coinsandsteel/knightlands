@@ -68,7 +68,8 @@ class Game {
         chests: {},
         depositorId: "",
         towerPurchased: false,
-        tutorial: {}
+        tutorial: {},
+        raidPoints: {}
       })
     });
 
@@ -164,6 +165,10 @@ class Game {
     this._character = new CharacterModel(this._socket, this);
 
     Vue.prototype.$character = this._character;
+  }
+
+  get raidPoints() {
+    return this._vm.raidPoints;
   }
 
   get depositorId() {
@@ -805,6 +810,10 @@ class Game {
       this.mergeObjects(this._vm, this._vm.chests, changes.chests);
     }
 
+    if (changes.raidPoints) {
+      this.mergeObjects(this._vm, this._vm.raidPoints, changes.raidPoints);
+    }
+
     if (changes.questsProgress) {
       for (let zone in changes.questsProgress.zones) {
         let quests = changes.questsProgress.zones[zone];
@@ -904,6 +913,7 @@ class Game {
         this._vm.dailyShop = info.dailyShop;
         this._vm.purchasedIaps = info.purchasedIaps;
         this._vm.depositorId = info.depositorId;
+        this._vm.raidPoints = info.raidPoints;
 
         if (info.chests) {
           this.mergeObjects(this._vm, this._vm.chests, info.chests);
@@ -1196,14 +1206,8 @@ class Game {
     ).response;
   }
 
-  async fetchRaidTokenRates(raid, from, to) {
-    return (
-      await this._request(Operations.FetchTokenRates, {
-        raid,
-        from,
-        to
-      })
-    ).response;
+  async fetchRaidPointsInfo() {
+    return (await this._request(Operations.FetchRaidPoints)).response;
   }
 
   async fetchCurrentRaids() {

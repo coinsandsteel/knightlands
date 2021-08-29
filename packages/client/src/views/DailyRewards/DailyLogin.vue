@@ -47,7 +47,7 @@ import PromisedButton from "@/components/PromisedButton.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
-
+import Timer from "@/timer";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
 const ShowItems = create(ItemsReceived, "items", "soft", "hard", "exp", "dkt");
@@ -56,13 +56,21 @@ export default {
   mixins: [HintHandler, NetworkRequestErrorMixin],
   components: { DailyReward, PromisedButton },
   data: () => ({
-    rewards: DailyRewards.rewards
+    rewards: DailyRewards.rewards,
+    timer: new Timer(true)
   }),
-  computed: mapState({
-    step: state => state.dailyLogin.step,
-    timer: state => state.dailyLogin.timer,
-    collected: state => !state.dailyLogin.readyToCollect
-  }),
+  computed: {
+    ...mapState({
+      step: state => state.dailyLogin.step,
+      timeLeft: state => state.dailyLogin.timeLeft,
+      collected: state => !state.dailyLogin.readyToCollect
+    })
+  },
+  watch: {
+    timeLeft() {
+      this.timer.timeLeft = this.timeLeft;
+    }
+  },
   methods: {
     isCollected(index) {
       return index <= this.step - 1;

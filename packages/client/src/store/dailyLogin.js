@@ -1,4 +1,3 @@
-import Timer from "../timer";
 import Vue from "vue";
 
 export default {
@@ -6,19 +5,18 @@ export default {
   state: {
     step: 0,
     readyToCollect: false,
-    timer: new Timer(true)
+    timeLeft: 0
   },
   mutations: {
     setAll(state, { step, readyToCollect, timeLeft }) {
       state.readyToCollect = readyToCollect;
       state.step = step;
-      state.timer.timeLeft = timeLeft;
+      state.timeLeft = timeLeft;
     }
   },
   actions: {
     async update(context) {
       const dailyRewardStatus = await Vue.prototype.$game.fetchDailyRewardStatus();
-
       context.commit("setAll", {
         step: dailyRewardStatus.step,
         readyToCollect: dailyRewardStatus.readyToCollect,

@@ -1,11 +1,11 @@
 <template>
   <div class="flex flex-column flex-items-center width-100" v-if="rewards">
     <IconWithValue
-      v-if="rewards.dkt > 0"
+      v-if="rewards.rp > 0"
       class="margin-bottom-1"
       valueClass="font-size-20 digit-font"
-      iconClass="icon-dkt"
-      >{{ rewards.dkt }}</IconWithValue
+      iconClass="icon-rp"
+      >{{ rewards.rp }}</IconWithValue
     >
 
     <IconWithValue

@@ -35,7 +35,7 @@
 
           <div class="flex flex-center flex-column margin-bottom-2">
             <IconWithValue
-              iconClass="icon-dkt"
+              iconClass="icon-rp"
               valueClass="font-weight-700"
               class="margin-top-1 margin-bottom-1 font-size-18"
               >{{ getMinDkt(threshold) }} -
@@ -67,6 +67,8 @@ import Title from "@/components/Title.vue";
 import LootHint from "@/components/LootHint.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
+import DividendsMeta from "@/dividends";
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 
 const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "hideButtons");
 
@@ -105,7 +107,16 @@ export default {
       return this.$game.subscription.cardBonuses;
     },
     computedDktFactor() {
-      return (this.dktFactor * (100 + this.subBonuses.dkt)) / 100;
+      let factor = 1;
+      const bonuses = this.$game.subscription.cardBonuses;
+      const dividends = this.$game.dividends;
+      factor += this.$game.character.maxStats[CharacterStats.ExtraDkt] / 1000;
+      if (dividends.dropRateLevel > 0) {
+        factor *= 1 + DividendsMeta.dropRates[dividends.dropRateLevel - 1].rate;
+      }
+
+      factor *= 1 + bonuses.dkt / 100;
+      return factor;
     }
   },
   methods: {

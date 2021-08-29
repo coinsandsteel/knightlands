@@ -30,6 +30,9 @@
       </div>
 
       <portal to="footer" v-if="isActive">
+        <CustomButton type="grey" @click="goToRp">{{
+          $t("b-rp")
+        }}</CustomButton>
         <CustomButton type="yellow" @click="summonRaid" id="btn-summon">{{
           $t("btn-summon")
         }}</CustomButton>
@@ -64,6 +67,9 @@ export default {
     this.fetchRaids();
   },
   methods: {
+    goToRp() {
+      this.$router.push({ name: "raid-points" });
+    },
     async fetchRaids() {
       this.request = this.$game.fetchCurrentRaids();
 

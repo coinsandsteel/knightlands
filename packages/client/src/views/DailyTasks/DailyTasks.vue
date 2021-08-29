@@ -32,6 +32,8 @@ import ItemsReceived from "@/components/ItemsReceived.vue";
 
 import DailyTaskType from "@/../../knightlands-shared/daily_quest_type";
 
+const PERIOD = 86400;
+
 const ShowItems = CreateDialog(
   ItemsReceived,
   "items",
@@ -54,7 +56,8 @@ export default {
       ...this.meta.allQuestsFinished,
       type: DailyTaskType.DailyAllTasks
     };
-    this.timer.timeLeft = Math.floor(this.$game.now % 86400000) / 1000;
+    this.timer.timeLeft = PERIOD - (this.$game.nowSec % PERIOD);
+    console.log(this.timer.timeLeft);
   },
   computed: {
     meta() {

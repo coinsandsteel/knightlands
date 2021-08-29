@@ -7,7 +7,7 @@
 <script>
 export default {
   name: "raids",
-  data: ()=>({
+  data: () => ({
     armyLoaded: false
   }),
   async mounted() {

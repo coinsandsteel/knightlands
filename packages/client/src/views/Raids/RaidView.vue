@@ -211,11 +211,11 @@
     <keep-alive>
       <Challenges v-if="showChallenges" :raidState="raidState"></Challenges>
 
-      <TokenChart
+      <!-- <TokenChart
         v-if="showChart"
         :raidTemplateId="raidState.raidTemplateId"
         @close="showChart = false"
-      ></TokenChart>
+      ></TokenChart> -->
     </keep-alive>
 
     <portal to="footer" v-if="isActive">
