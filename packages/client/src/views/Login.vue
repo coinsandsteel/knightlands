@@ -94,9 +94,10 @@ export default {
   text-align: center;
   font-size: 2rem;
   line-height: 24px;
-  padding: 6px 151px;
+  padding: 6px;
   border-radius: 0;
   float: left;
+  width: 80%;
   border: none;
   box-shadow: none;
   background-color: #194368;

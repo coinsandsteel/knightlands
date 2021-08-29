@@ -325,8 +325,7 @@ export default {
     SpriteAnimator,
     Title,
     RewardsPreview,
-    SoundEffect,
-    TokenChart: () => import("./TokenChart.vue")
+    SoundEffect
   },
   mixins: [AppSection, RaidGetterMixin, NetworkRequestErrorMixin],
   props: ["raidId"],
@@ -575,6 +574,7 @@ export default {
         );
 
         if (!alive) {
+          this.$app.getStatusBar().setDelayResourceUpdate(false);
           let reponse = await ShowPrompt(
             "player-raid-killed-title",
             this.$t("player-raid-killed-message", { boss: this.bossName }),
@@ -594,7 +594,6 @@ export default {
       } catch (error) {
         console.error(error);
         this._handleAttackRaidError(error);
-      } finally {
         this.$app.getStatusBar().setDelayResourceUpdate(false);
       }
     },
