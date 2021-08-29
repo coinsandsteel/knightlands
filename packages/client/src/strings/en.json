@@ -2023,6 +2023,7 @@
     "alch-lab": "Alchemy Lab",
     "s-locked": "Requires level {lvl}!",
     "free_raid": "Solo",
+    "rp-desc": "At the end of the day, you will get FLESH based on your RP score. Defeat group raids with your friends to earn RP!",
     "rp-d-b": "FLESH balance:",
     "rp-all-score": "Farmed RP by the server:",
     "time-till-rp": "will be distributed in {time}",

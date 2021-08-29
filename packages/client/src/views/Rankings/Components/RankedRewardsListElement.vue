@@ -4,10 +4,10 @@
     :class="[bgColor, { 'yellow-title': you }]"
   >
     <span :class="rankIcon" class="flex-1"></span>
-    <span class="flex-2">#{{ rank }}</span>
-    <span class="flex flex-center flex-8">
+    <span class="flex-5">#{{ rank }}</span>
+    <span class="flex flex-5">
       <IconWithValue iconClass="icon-dkt big" v-if="dkt > 0">
-        {{Math.floor(dkt * 10000)/1000}}
+        {{ Math.floor(dkt * 1000) / 1000 }}
       </IconWithValue>
       <Loot
         v-for="(r, index) in rewards"

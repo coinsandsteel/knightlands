@@ -17,7 +17,7 @@
         <span>
           {{ $t("rp-d-b") }}
         </span>
-        <IconWithValue iconClass="icon-dkt">{{ expectedDkt }}</IconWithValue>
+        <IconWithValue iconClass="icon-dkt">{{ dkt }}</IconWithValue>
       </div>
 
       <div class="row">
@@ -40,6 +40,12 @@
         </span>
         <IconWithValue iconClass="icon-rp">{{ totalSharesUI }}</IconWithValue>
       </div>
+    </div>
+
+    <div
+      class="color-panel-1 margin-top-4 flex flex-column padding-left-1 padding-right-1"
+    >
+      <span>{{ $t("rp-desc") }}</span>
     </div>
   </div>
 </template>

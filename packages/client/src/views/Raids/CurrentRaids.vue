@@ -30,9 +30,11 @@
       </div>
 
       <portal to="footer" v-if="isActive">
-        <CustomButton type="grey" @click="goToRp">{{
-          $t("b-rp")
-        }}</CustomButton>
+        <CustomButton type="grey" @click="goToRp"
+          ><IconWithValue iconClass="icon-rp">{{
+            $t("b-rp")
+          }}</IconWithValue></CustomButton
+        >
         <CustomButton type="yellow" @click="summonRaid" id="btn-summon">{{
           $t("btn-summon")
         }}</CustomButton>
@@ -47,11 +49,18 @@ import CustomButton from "@/components/Button.vue";
 import CurrentRaidElement from "./CurrentRaidElement.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   name: "current-raids",
   mixins: [AppSection],
-  components: { CurrentRaidElement, Promised, LoadingScreen, CustomButton },
+  components: {
+    CurrentRaidElement,
+    Promised,
+    LoadingScreen,
+    CustomButton,
+    IconWithValue
+  },
   data: () => ({
     raids: [],
     request: null
