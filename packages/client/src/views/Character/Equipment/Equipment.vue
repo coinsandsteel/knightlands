@@ -23,7 +23,7 @@
               :level="$game.character.level"
               :stats="$game.character.maxStats"
               :itemsInSlots="itemsInSlots"
-              :nickname="$game.character.nickname.v"
+              :nickname="name"
               :classIcon="$game.character.class"
               :showDetails="true"
               @hint="showEquipmentHint"
@@ -101,6 +101,11 @@ export default {
     };
   },
   computed: {
+    name() {
+      return this.$game.character.nickname
+        ? this.$game.character.nickname.v
+        : "";
+    },
     itemsInSlots() {
       let items = {};
       for (const slotId in this.$character.equipment) {
