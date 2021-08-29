@@ -28,6 +28,7 @@
             :key="item.name"
             :index="index"
             :rank="index + 1"
+            :avatar="item.avatar"
             :id="item.name"
             :pId="item.id"
             :score="item.score"
