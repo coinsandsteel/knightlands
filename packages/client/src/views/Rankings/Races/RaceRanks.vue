@@ -159,13 +159,23 @@ export default {
                 record.score >= this.currentRank.target &&
                 this.currentRank.winners.find(x => x == record.id)
               ) {
-                this.qualified.push(record);
+                continue;
               } else {
                 this.nonQualified.push(record);
               }
             }
           } else {
             this.nonQualified.push(...newRecords.records);
+          }
+        }
+
+        if (
+          this.currentRank.winners.length != 0 &&
+          this.qualified.length == 0
+        ) {
+          for (const winner of this.currentRank.winners) {
+            const data = newRecords.records.find(x => x.id == winner);
+            this.qualified.push(data);
           }
         }
       } finally {
