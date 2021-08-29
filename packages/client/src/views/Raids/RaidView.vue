@@ -566,7 +566,7 @@ export default {
       try {
         this.$app.getStatusBar().setDelayResourceUpdate(true);
 
-        await this.performRequestNoCatch(
+        const { alive } = await this.performRequestNoCatch(
           this.$game.attackRaidBoss(
             this.raidId,
             hits,
@@ -574,7 +574,7 @@ export default {
           )
         );
 
-        if (!this.$game.character.alive) {
+        if (!alive) {
           let reponse = await ShowPrompt(
             "player-raid-killed-title",
             this.$t("player-raid-killed-message", { boss: this.bossName }),
@@ -592,9 +592,10 @@ export default {
           }
         }
       } catch (error) {
-        this.$app.getStatusBar().setDelayResourceUpdate(false);
         console.error(error);
         this._handleAttackRaidError(error);
+      } finally {
+        this.$app.getStatusBar().setDelayResourceUpdate(false);
       }
     },
     async _handleRaidAttackDetails(data) {
