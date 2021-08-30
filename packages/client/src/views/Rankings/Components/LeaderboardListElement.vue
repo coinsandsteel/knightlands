@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-item-center font-size-20 width-100 text-align-left"
+    class="flex flex-item-center font-size-20 width-100 text-align-left pointer"
     :class="[{ 'even-bg': (index + 1) % 2 == 0 }, { 'yellow-title': you }]"
     :style="{ height: `${height}px` }"
     @click="preview"

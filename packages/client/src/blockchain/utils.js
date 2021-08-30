@@ -3,7 +3,7 @@ export function toDecimal(num, decimals) {
   let decimal = "";
   if (str != "0") {
     if (str.length < decimals) {
-      str = str.padStart(decimals - str.length, "0");
+      str = str.padStart(decimals, "0");
       decimal = "0." + str.slice(0, str.length);
     } else {
       decimal =

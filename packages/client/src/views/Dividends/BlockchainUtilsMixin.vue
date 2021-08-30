@@ -25,7 +25,6 @@ export default {
           decimals = 18;
           break;
       }
-
       return toDecimal(value, decimals);
     },
     getIcon(blockchainId) {
