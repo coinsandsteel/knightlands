@@ -4,6 +4,7 @@
 
     <LegionSelector
       class="margin-bottom-half"
+      :army="$game.army"
       @legionChange="onLegionChanged"
     />
 

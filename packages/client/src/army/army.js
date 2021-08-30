@@ -17,7 +17,9 @@ const dummyUnit = {
 };
 
 export default class Army {
-  constructor(game, itemsResolver, armyDb) {
+  constructor(game, itemsResolver, armyDb, inventory, character) {
+    this._inventory = inventory;
+    this._character = character;
     this._game = game;
     this._armyDb = armyDb;
     this._armyResolver = new ArmyResolver(
@@ -83,7 +85,7 @@ export default class Army {
     return this._armyResolver.estimateDamage(
       unit,
       this._unitsIndex,
-      this._game.character.maxStats
+      this._character.maxStats
     ).unitsDamageOutput[unit.id];
   }
 
@@ -117,7 +119,7 @@ export default class Army {
     for (let slotId in unit.items) {
       const item = unit.items[slotId];
       if (item) {
-        const invItem = this._game.inventory.getItem(item.id);
+        const invItem = this._inventory.getItem(item.id);
         if (invItem) {
           unit.items[slotId] = invItem;
         }
@@ -334,6 +336,43 @@ export default class Army {
     this._doSort(false);
   }
 
+  loadFromData(armyData, preview = false) {
+    const unitsDict = {};
+
+    this._vm.troops = [];
+    this._vm.generals = [];
+
+    if (armyData) {
+      this._vm.legions = armyData.legions;
+      this._vm.maxSlots = armyData.maxSlots;
+
+      let i = 0;
+      const length = armyData.units.length;
+      for (; i < length; ++i) {
+        const unit = armyData.units[i];
+        unitsDict[unit.id] = unit;
+
+        if (unit.troop) {
+          unit.idx = this._vm.troops.push(unit) - 1;
+        } else {
+          unit.idx = this._vm.generals.push(unit) - 1;
+        }
+      }
+
+      this._vm.reserve = armyData.reserve || this._vm.reserve;
+    } else {
+      this._loaded = false;
+    }
+
+    this._vm.units = unitsDict;
+
+    if (!preview) {
+      this._unitsIndex.update(unitsDict);
+      this._doSort(true);
+      this._doSort(false);
+    }
+  }
+
   async load() {
     if (this._loaded) {
       return this._loaded;
@@ -349,35 +388,7 @@ export default class Army {
     let army = await this._loadingRequest;
     this._loadingRequest = null;
 
-    const unitsDict = {};
-
-    if (army) {
-      this._vm.legions = army.legions;
-      this._vm.maxSlots = army.maxSlots;
-
-      let i = 0;
-      const length = army.units.length;
-      for (; i < length; ++i) {
-        const unit = army.units[i];
-        unitsDict[unit.id] = unit;
-
-        if (unit.troop) {
-          unit.idx = this._vm.troops.push(unit) - 1;
-        } else {
-          unit.idx = this._vm.generals.push(unit) - 1;
-        }
-      }
-
-      this._vm.reserve = army.reserve || this._vm.reserve;
-    } else {
-      this._loaded = false;
-    }
-
-    this._vm.units = unitsDict;
-    this._unitsIndex.update(unitsDict);
-
-    this._doSort(true);
-    this._doSort(false);
+    this.loadFromData(army);
 
     return true;
   }

@@ -365,6 +365,7 @@ export default {
   },
   deactivated() {
     this.unsubscribe();
+    this.$app.getStatusBar().setDelayResourceUpdate(false);
   },
   destroyed() {
     this.unsubscribe();
@@ -574,7 +575,6 @@ export default {
         );
 
         if (!alive) {
-          this.$app.getStatusBar().setDelayResourceUpdate(false);
           let reponse = await ShowPrompt(
             "player-raid-killed-title",
             this.$t("player-raid-killed-message", { boss: this.bossName }),

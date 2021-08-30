@@ -40,7 +40,6 @@ class Game {
     this.notifications = new Notifications(store);
     this._items = new ItemDatabase();
     this._armyDb = new ArmyDB(this._items, this._items.itemStatResolver);
-    this._army = new Army(this, this._items.itemStatResolver, this._armyDb);
     this._expTable = PlayerExpTable;
     this._requestInProgress = false;
 
@@ -73,9 +72,17 @@ class Game {
       })
     });
 
+    this._character = new CharacterModel(this);
     this._subscription = new Subscription(this, this._vm.subscriptions);
     this._inventory = new Inventory(this._items);
     this._crafting = new Crafting(CraftingRecipes, this._inventory);
+    this._army = new Army(
+      this,
+      this._items.itemStatResolver,
+      this._armyDb,
+      this._inventory,
+      this._character
+    );
     this._serverTimeDiff = 0;
 
     var options = {
@@ -160,9 +167,6 @@ class Game {
 
     // let's avoid using callbacks
     this._emitFn = pify(this._socket.emit);
-
-    // pass socket to make character model listen to certain events
-    this._character = new CharacterModel(this._socket, this);
 
     Vue.prototype.$character = this._character;
   }

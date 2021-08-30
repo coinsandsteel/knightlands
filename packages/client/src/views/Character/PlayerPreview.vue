@@ -1,19 +1,30 @@
 <template>
-  <div class="screen-content padding-top-1">
+  <div class="screen-content padding-top-1" v-if="character">
     <div class="screen-background"></div>
-    <EquipmentContent
-      v-if="character"
-      :itemsInSlots="itemsInSlots"
-      :level="character.level"
-      :stats="character.stats"
-      :hasBonus="{}"
-      :preview="true"
-      :nickname="character.nickname.v"
-      :classIcon="character.class"
-      :avatar="character.avatar"
-      @details="showDetails"
-      @hint="handlePreviewSlot"
-    />
+    <template v-if="character">
+      <div v-bar>
+        <div>
+          <EquipmentContent
+            :itemsInSlots="itemsInSlots"
+            :level="character.level"
+            :stats="character.stats"
+            :hasBonus="{}"
+            :preview="true"
+            :nickname="character.name.v"
+            :classIcon="character.class"
+            :avatar="character.avatar"
+            @details="showDetails"
+            @hint="handlePreviewSlot"
+          />
+          <LegionPreview
+            class="margin-top-2"
+            v-if="army"
+            :army="army"
+            :items="items"
+          ></LegionPreview>
+        </div>
+      </div>
+    </template>
     <div class="flex flex-center height-100" v-else>
       <span class="font-size-22">{{ $t("no-char") }}</span>
     </div>
@@ -27,12 +38,13 @@ import EquipmentContent from "./Equipment/EquipmentContent.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import StatDetails from "./Equipment/StatDetails.vue";
+import LegionPreview from "./LegionPreview.vue";
 
 const ShowDetails = CreateDialog(StatDetails, "maxStats");
 
 export default {
   mixins: [AppSection, HintHandler, NetworkRequestErrorMixin],
-  components: { EquipmentContent },
+  components: { EquipmentContent, LegionPreview },
   data: () => ({
     character: null,
     itemsInSlots: null
@@ -72,6 +84,11 @@ export default {
         }
 
         this.itemsInSlots = items;
+        this.items = data.items;
+
+        if (data.army) {
+          this.army = data.army;
+        }
       } catch (exc) {
         this.character = null;
       }

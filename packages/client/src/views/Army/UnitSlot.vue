@@ -50,7 +50,7 @@ export default {
     content: "";
     width: 100%;
     display: inline-block;
-    padding-bottom: calc(100% / (16 / 9));
+    padding-bottom: calc(100% / (9 / 12));
   }
 
   & > .inner {

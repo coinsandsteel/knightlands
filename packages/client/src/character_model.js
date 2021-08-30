@@ -6,8 +6,7 @@ import CharacterStats, {
 import Buffs from "@/../../knightlands-shared/buffs";
 
 class CharacterModel {
-  constructor(socket, game) {
-    this._socket = socket;
+  constructor(game) {
     this._game = game;
 
     let timers = {};
