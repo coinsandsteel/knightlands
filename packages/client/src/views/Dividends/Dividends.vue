@@ -188,8 +188,16 @@ export default {
   },
   activated() {
     this.init();
+    this.channel = this.$game.createChannel("divs_info", false);
+    this.channel.watch(divsInfo => {
+      this.divsInfo = divsInfo;
+    });
   },
   deactivated() {
+    if (this.channel) {
+      this.channel.destroy();
+      this.channel = null;
+    }
     this.$game.removeAllListeners(Events.DivTokenWithdrawal);
   },
   computed: {
@@ -266,24 +274,17 @@ export default {
         return;
       }
 
-      try {
-        this.divsInfo = await this.performRequestNoCatch(
-          this.$game.getDivsStatus()
-        );
+      this.divsInfo = await this.performRequestNoCatch(
+        this.$game.getDivsStatus()
+      );
 
-        this.nextPayoutTimer.timeLeft =
-          this.divsInfo.nextPayout - this.$game.nowSec;
+      this.nextPayoutTimer.timeLeft =
+        this.divsInfo.nextPayout - this.$game.nowSec;
 
-        this.seasonTimer.timeLeft =
-          this.divsInfo.season.finishAt - this.$game.nowSec;
+      this.seasonTimer.timeLeft =
+        this.divsInfo.season.finishAt - this.$game.nowSec;
 
-        this.pendingWithdrawals = await this.$game.fetchWithdrawTokensStatus();
-      } finally {
-        // possible stack overflow
-        setTimeout(() => {
-          this.fetchDividendsInfo();
-        }, 3000);
-      }
+      this.pendingWithdrawals = await this.$game.fetchWithdrawTokensStatus();
     },
     async withdraw() {
       this.$router.push({

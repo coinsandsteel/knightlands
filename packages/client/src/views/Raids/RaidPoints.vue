@@ -74,6 +74,12 @@ export default {
   mounted() {
     this.init();
   },
+  destroyed() {
+    if (this.channel) {
+      this.channel.destroy();
+      this.channel = null;
+    }
+  },
   computed: {
     dkt() {
       return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
@@ -103,7 +109,7 @@ export default {
   methods: {
     async init() {
       this.channel = this.$game.createChannel("total_rp", false);
-      this.channel.watch(this.updateShares);
+      this.channel.watch(this.updateShares.bind(this));
 
       const nextPayout = this.$game.raidPoints.lastClaimed + PAYOUT_PERIOD;
       this.nextPayout.timeLeft = nextPayout - this.$game.nowSec;

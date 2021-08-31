@@ -14,13 +14,21 @@
         ></loot>
       </div>
 
-      <CustomButton
-        class="margin-top-1"
-        type="grey"
-        @click="viewSelectedSlot"
-        :disabled="!unit.items[selectedSlot]"
-        >{{ $t("btn-view") }}</CustomButton
-      >
+      <div class="flex flex-center margin-top-1">
+        <CustomButton @click="autoEquip" type="grey">{{
+          $t("eq-all")
+        }}</CustomButton>
+
+        <CustomButton
+          type="yellow"
+          @click="viewSelectedSlot"
+          :disabled="!unit.items[selectedSlot]"
+          >{{ $t("btn-view") }}</CustomButton
+        >
+        <CustomButton @click="autoUnequip" type="red">{{
+          $t("uneq-all")
+        }}</CustomButton>
+      </div>
     </div>
 
     <LootContainer
@@ -37,12 +45,6 @@
       @action="handleEquipmentAction"
       :getHintButtons="getHintButtons"
     ></ScrollableItemHint>
-
-    <portal to="footer" v-if="isActive">
-      <CustomButton @click="autoEquip" type="grey">{{
-        $t("eq-all")
-      }}</CustomButton>
-    </portal>
   </div>
 </template>
 
@@ -55,7 +57,10 @@ import LootContainer from "@/components/LootContainer.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import CustomButton from "@/components/Button.vue";
 import ItemActionHandler from "@/components/Item/ItemActionHandler.vue";
-import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
+import {
+  EquipmentSlots,
+  getSlot
+} from "@/../../knightlands-shared/equipment_slot";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
@@ -130,7 +135,11 @@ export default {
         }
 
         for (const item of items) {
-          if (item.equipped) {
+          const template = this.$game.itemsDB.getTemplate(item.template);
+          if (
+            item.equipped ||
+            this.unit.items[getSlot(template.equipmentType)]
+          ) {
             continue;
           }
           itemsToEquip.push(item.id);
@@ -141,6 +150,9 @@ export default {
       await this.performRequest(
         this.$game.unitEquipItem(this.unit.id, itemsToEquip)
       );
+    },
+    async autoUnequip() {
+      await this.performRequest(this.$game.unitUnequipItem(this.unit.id));
     },
     async viewSelectedSlot() {
       const item = this.$game.inventory.getItem(
