@@ -260,9 +260,6 @@ export default {
     });
 
     this.$game.on("level-up", async args => {
-      if (this.$game.character.level == 20) {
-        Gleam.push(["userId", this.$game.address]);
-      }
       await ShowLevelUp(args);
     });
 
@@ -306,10 +303,6 @@ export default {
 
       if (!this.$game.character.avatar) {
         await ShowChangeAvatar();
-      }
-
-      if (this.$game.character.level >= 20) {
-        Gleam.push(["userId", this.$game.address]);
       }
     });
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));
@@ -659,13 +652,13 @@ export default {
 
 html {
   font-family: "Brandon", sans-serif;
-  font-size: 6px;
+  font-size: 8px;
   line-height: 1.3;
   box-sizing: content-box;
 
   .fourk_screen({font-size: 8px;});
   .mobile({font-size: 6px;});
-  .laptop({font-size: 7px;});
+  .laptop({font-size: 8px;});
 
   background: @backgroundOutsideColor;
 }
