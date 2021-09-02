@@ -67,8 +67,11 @@ export default {
     })
   },
   watch: {
-    timeLeft() {
-      this.timer.timeLeft = this.timeLeft;
+    timeLeft: {
+      immediate: true,
+      handler() {
+        this.timer.timeLeft = this.timeLeft;
+      }
     }
   },
   methods: {
