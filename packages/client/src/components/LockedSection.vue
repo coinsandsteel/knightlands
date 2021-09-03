@@ -1,5 +1,5 @@
 <template>
-  <div @click.self="handleClick" class="relative">
+  <div @click.self="handleClick" class="relative pointer">
     <div
       class="flex flex-center width-100 height-100 relative"
       :class="{ 'pointer-events-none': isLocked }"
@@ -28,16 +28,17 @@ export default {
   methods: {
     handleClick(e) {
       if (this.isLocked) {
-        // this.$notify({
-        //   group: "levelLock",
-        //   max: 2,
-        //   type: "error",
-        //   text: this.$t("s-locked", { lvl: this.levelRequired }),
-        //   data: {
-        //     level: this.levelRequired
-        //   },
-        //   duration: 500
-        // });
+        this.$notify({
+          group: "levelLock",
+          max: 2,
+          type: "error",
+          text: this.$t("s-locked", { lvl: this.levelRequired }),
+          data: {
+            level: this.levelRequired
+          },
+          duration: 500,
+          position: "bottom"
+        });
       } else {
         this.$slots["default"][0].elm.click();
       }

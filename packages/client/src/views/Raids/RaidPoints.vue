@@ -59,6 +59,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 const PAYOUT_PERIOD = 86400;
 const FLESH_EMISSION = 1000;
 const PRECISION = 10000;
+const FLASH_PRECISION = 1000000;
 
 export default {
   mixins: [AppSection],
@@ -100,7 +101,13 @@ export default {
       if (this.totalShares == 0) {
         return 0;
       }
-      return (this.$game.raidPoints.shares / this.totalShares) * FLESH_EMISSION;
+      return (
+        Math.floor(
+          (this.$game.raidPoints.shares / this.totalShares) *
+            FLESH_EMISSION *
+            FLASH_PRECISION
+        ) / FLASH_PRECISION
+      );
     },
     shares() {
       return Math.floor(this.$game.raidPoints.shares * PRECISION) / PRECISION;

@@ -1,5 +1,5 @@
 <template>
-  <notifications group="levelLock" position="top center">
+  <notifications group="levelLock" position="bottom center">
     <!-- <template v-slot:body="props">
       <div class="flex flex-center n-lock-s" @click="props.close">
         <div class="font-size-22 font-weight-900">
