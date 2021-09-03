@@ -19,7 +19,7 @@
               $t("att-c", { dmg: attackDamage })
             }}</span>
             <IconWithValue iconClass="icon-stamina">{{
-              attacks
+              attacks * staminaCost
             }}</IconWithValue>
           </div>
         </AttackButton>
@@ -36,7 +36,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   components: { AttackButton, NumericValue, IconWithValue },
-  props: ["disabled"],
+  props: ["disabled", "staminaCost"],
   data: () => ({
     attacks: 1
   }),

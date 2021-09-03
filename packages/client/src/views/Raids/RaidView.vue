@@ -80,6 +80,7 @@
               class="attack"
               @attack="handleAttack"
               :disabled="attackInProgress"
+              :staminaCost="staminaCost"
             />
 
             <RaidArmy

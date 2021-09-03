@@ -38,7 +38,7 @@
         <span>
           {{ $t("rp-s-total") }}
         </span>
-        <IconWithValue iconClass="icon-rp">{{ totalSharesUI }}</IconWithValue>
+        <IconWithValue iconClass="icon-rp">{{ totalPointsUI }}</IconWithValue>
       </div>
     </div>
 
@@ -94,7 +94,7 @@ export default {
       return Math.floor(this.totalShares * PRECISION) / PRECISION;
     },
     totalPointsUI() {
-      return Math.floor(this.totalShares * PRECISION) / PRECISION;
+      return Math.floor(this.totalPoints * PRECISION) / PRECISION;
     },
     expectedDkt() {
       if (this.totalShares == 0) {

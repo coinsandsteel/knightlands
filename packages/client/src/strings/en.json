@@ -895,7 +895,7 @@
     "btn-summon": "Summon",
     "raid-info": "Info",
     "raid-weak": "Weak against",
-    "raid-weak-next": "Next day weak against",
+    "raid-weak-next": "Next",
     "raid-weak-timer": "Activates in {time}",
     "next-p": "Next payout {timer}",
     "d-pending": "Pending",

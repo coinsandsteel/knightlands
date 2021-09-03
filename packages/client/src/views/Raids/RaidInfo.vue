@@ -2,12 +2,6 @@
   <UserDialog v-on="$listeners">
     <template v-slot:content>
       <div>
-        <Title class="margin-bottom-1 font-weight-700 rarity-mythical">
-          <span class="white-space">{{
-            $t("dkt-bonus", { bonus: dktFactorComputed })
-          }}</span>
-        </Title>
-
         <div class="flex flex-column flex-center width-100">
           <span class="font-size-20 width-100 weakness-title">{{
             $t("raid-weak")
@@ -57,14 +51,13 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import Title from "@/components/Title.vue";
 import RaidsMeta from "@/raids_meta";
 import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["raidTemplateId", "isFreeRaid", "weakness", "dktFactor"],
-  components: { UserDialog, IconWithValue, Title },
+  components: { UserDialog, IconWithValue },
   data: () => ({
     untilNextWeakness: new Timer(true)
   }),

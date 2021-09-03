@@ -7,6 +7,14 @@
     <div class="flex full-flex width-100">
       <div class="flex-basis-50 relative flex flex-column flex-no-wrap">
         <div class="current-raid-image full-flex" :style="raidImage"></div>
+        <div class="weakness flex flex-column" v-if="!isFreeRaid">
+          <IconWithValue :iconClass="`icon-${weakness.element}`">{{
+            $t(`el-${weakness.element}`)
+          }}</IconWithValue>
+          <IconWithValue class="margin-top-1" iconClass="icon-attack">{{
+            $t(weakness.weapon)
+          }}</IconWithValue>
+        </div>
 
         <progress-bar
           v-if="!raidData.finished"
@@ -63,6 +71,7 @@ import Timer from "@/timer.js";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import ClaimedReward from "./ClaimedReward.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 
@@ -71,7 +80,7 @@ const ShowReward = CreateDialog(ClaimedReward, "rewards", "raidTemplateId");
 export default {
   props: ["raidState"],
   mixins: [RaidGetterMixin],
-  components: { CustomButton, ProgressBar, Title },
+  components: { CustomButton, IconWithValue, ProgressBar, Title },
   data: () => ({
     timer: new Timer(true),
     thresholds: UiConstants.progressThresholds,
@@ -87,6 +96,10 @@ export default {
     }
   },
   computed: {
+    weakness() {
+      console.log(this.raidState);
+      return this.raidState.weakness.current;
+    },
     finished() {
       return this.raidState.finished;
     },
@@ -137,6 +150,12 @@ export default {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+}
+
+.weakness {
+  position: absolute;
+  top: 0;
+  left: 1rem;
 }
 
 // .raid-progress {

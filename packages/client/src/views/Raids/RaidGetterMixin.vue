@@ -65,6 +65,12 @@ export default {
     },
     maxSlots() {
       return this.raidData.maxSlots;
+    },
+    staminaCost() {
+      return this.raidData.staminaCost || 1;
+    },
+    healthBars() {
+      return this.raidData.healthBars || 1;
     }
   }
 };
