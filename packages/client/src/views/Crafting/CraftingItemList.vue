@@ -4,8 +4,9 @@
     <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
     <LootContainer
       class="height-100"
+      ref="allItems"
       :items="filteredItems"
-      @hint="hintHandler"
+      @hint="handleHint"
       :filtersStore="filtersStore"
       :commitCmd="commitCmd"
       :lootProps="{
@@ -22,7 +23,7 @@
       <EquippedItemList
         v-if="onlyEquippedItems"
         :filter="equippedItemsFilter"
-        :hintHandler="hintHandler"
+        :hintHandler="handleHint"
         :commitCmd="commitCmd"
         :filtersStore="filtersStore"
       />
@@ -73,6 +74,9 @@ export default {
   methods: {
     switchTab(tab) {
       this.currentTab = tab;
+    },
+    handleHint(item, index, items) {
+      this.hintHandler(item, index, items);
     }
   }
 };

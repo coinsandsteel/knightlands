@@ -1,14 +1,23 @@
 <template>
   <div class="screen-content">
     <CraftingItemList
+      ref="itemList"
       :items="items"
-      :hintHandler="openEnchant"
+      :hintHandler="handleHint"
       :equippedItemsFilter="equippedItemsFilter"
       :filtersStore="$store.getters.getEnchantFilters"
       commitCmd="setEnchantingFilters"
     >
       <span class="font-size-20">{{ $t("enchant-list-empty-msg") }}</span>
     </CraftingItemList>
+
+    <ScrollableItemHint
+      ref="scrollHint"
+      :items="filteredItems"
+      :showButtons="false"
+      @action="handleEquipmentAction"
+      :getHintButtons="getHintButtons"
+    ></ScrollableItemHint>
   </div>
 </template>
 
@@ -16,10 +25,14 @@
 import AppSection from "@/AppSection.vue";
 import CraftingItemList from "../CraftingItemList.vue";
 const ItemType = require("@/../../knightlands-shared/item_type");
+import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 
 export default {
   mixins: [AppSection],
-  components: { CraftingItemList },
+  components: { CraftingItemList, ScrollableItemHint },
+  data: () => ({
+    filteredItems: []
+  }),
   created() {
     this.title = "window-enchant-items-list";
   },
@@ -76,8 +89,28 @@ export default {
     equippedItemsFilter(item) {
       return !item.locked;
     },
-    openEnchant(item) {
-      this.$router.push({ name: "enchant-item", params: { itemId: item.id } });
+    handleHint(item, index, filteredItems) {
+      this.filteredItems = filteredItems;
+      this.$nextTick(() => {
+        this.$refs.scrollHint.showHint(index);
+      });
+    },
+    handleEquipmentAction(item, action) {
+      if (action === true) {
+        this.$router.push({
+          name: "enchant-item",
+          params: { itemId: item.id }
+        });
+      }
+    },
+    getHintButtons() {
+      return [
+        {
+          title: "btn-crafting-upgrade",
+          response: true,
+          type: "grey"
+        }
+      ];
     }
   }
 };

@@ -9,7 +9,7 @@
       :lootProps="lootProps"
       :inventory="inventory"
       :items="filteredItems"
-      v-on="$listeners"
+      @hint="handleHint"
     />
     <div class="width-100 flex flex-center">
       <span class="font-size-20 grey-title" v-show="hasHiddenItems">
@@ -55,6 +55,9 @@ export default {
     }
   },
   methods: {
+    handleHint(item, index) {
+      this.$emit("hint", item, index, this.filteredItems);
+    },
     selectedItems() {
       return this.$refs.list.selectedItems();
     }
