@@ -206,7 +206,7 @@
             </div>
           </div>
 
-          <div class="flex flex-column flex-center">
+          <div class="flex flex-column flex-center" v-else>
             <div class="color-panel-2">
               <span class="font-size-25 font-weight-900">
                 <span class="font-error">{{ $t("join-solo-r") }}</span>
