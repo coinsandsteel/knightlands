@@ -1197,6 +1197,10 @@ span {
     color: #ff002c;
 }
 
+.no-select {
+    user-select: none;
+}
+
 //width/height generator with 5% step
 .widthHeight(@size, @counter) when (@counter > 0) {
     .widthHeight(@size, (@counter - 5)); // next iteration

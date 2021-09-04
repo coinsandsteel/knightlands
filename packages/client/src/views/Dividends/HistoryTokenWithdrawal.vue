@@ -19,10 +19,18 @@
 
     <CustomButton
       class="margin-top-2 flex-self-end"
-      v-if="data.pending"
+      v-if="pending"
       @click="withdraw"
       >{{ $t("btn-withd") }}</CustomButton
     >
+    <CustomButton
+      @click="showTx"
+      v-else
+      type="grey"
+      class="margin-top-2 flex-self-end"
+    >
+      {{ $t("show-tx") }}
+    </CustomButton>
   </div>
 </template>
 
@@ -35,7 +43,7 @@ import WalletMixin from "@/components/WalletMixin.vue";
 
 export default {
   mixins: [NetworkRequestErrorMixin, WalletMixin],
-  props: ["data", "odd", "date", "id", "chain"],
+  props: ["data", "odd", "date", "id", "chain", "pending"],
   components: { CustomButton, IconWithValue },
   computed: {
     amount() {
@@ -46,6 +54,14 @@ export default {
     }
   },
   methods: {
+    showTx() {
+      window
+        .open(
+          `https://goerli.etherscan.io/tx/${this.data.transactionHash}`,
+          "_blank"
+        )
+        .focus();
+    },
     async withdraw() {
       await this.showWallet(this.chain);
       await this.performRequest(
@@ -57,8 +73,6 @@ export default {
           this.data.signature
         )
       );
-
-      this.data.pending = false;
     }
   }
 };

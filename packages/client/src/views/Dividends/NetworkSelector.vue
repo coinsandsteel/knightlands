@@ -16,7 +16,7 @@
     >
       <div class="flex flex-column color-panel-2 font-size-22">
         <div
-          class="margin-top-half margin-bottom-half net-elem padding-2"
+          class="margin-top-half margin-bottom-half net-elem padding-2 no-select"
           v-for="c in availableChains"
           :key="c"
           @click="preselectedNetwork = c"

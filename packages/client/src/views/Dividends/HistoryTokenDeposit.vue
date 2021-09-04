@@ -16,6 +16,14 @@
       :iconClass="`icon-${data.currency}`"
       >{{ amount }}</IconWithValue
     >
+    <CustomButton
+      @click="showTx"
+      v-if="!pending"
+      type="grey"
+      class="margin-top-2 flex-self-end"
+    >
+      {{ $t("show-tx") }}
+    </CustomButton>
   </div>
 </template>
 
@@ -27,7 +35,7 @@ import WalletMixin from "@/components/WalletMixin.vue";
 
 export default {
   mixins: [BlockchainUtilsMixin, NetworkRequestErrorMixin, WalletMixin],
-  props: ["data", "odd", "id", "date"],
+  props: ["data", "odd", "id", "date", "pending"],
   components: { IconWithValue },
   computed: {
     amount() {
@@ -35,6 +43,16 @@ export default {
     },
     dateFormatted() {
       return new Date(this.date);
+    }
+  },
+  methods: {
+    showTx() {
+      window
+        .open(
+          `https://goerli.etherscan.io/tx/${this.data.transactionHash}`,
+          "_blank"
+        )
+        .focus();
     }
   }
 };

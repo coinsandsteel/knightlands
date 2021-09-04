@@ -26,6 +26,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import HistoryDivsWithdrawal from "./HistoryDivsWithdrawal.vue";
 import HistoryTokenDeposit from "./HistoryTokenDeposit.vue";
 import HistoryTokenWithdrawal from "./HistoryTokenWithdrawal.vue";
+import Events from "@/../../knightlands-shared/events";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -37,12 +38,21 @@ export default {
   created() {
     this.title = "w-divs-w";
     this.$options.useRouterBack = true;
+    this._handler = async data => {
+      this.history.find(entry => entry._id == data.id).data.pending = false;
+    };
   },
   data: () => ({
     history: []
   }),
   activated() {
     this.fetchWithdrawals();
+    this.$game.on(Events.DivTokenWithdrawal, this._handler);
+    this.$game.on(Events.TokenWithdrawal, this._handler);
+  },
+  deactivated() {
+    this.$game.off(Events.DivTokenWithdrawal, this._handler);
+    this.$game.off(Events.TokenWithdrawal, this._handler);
   },
   methods: {
     getType(type) {
@@ -59,6 +69,7 @@ export default {
     },
     async fetchWithdrawals() {
       this.history = await this.$game.fetchWithdrawTokensStatus();
+      this.history = this.history.reverse();
     }
   }
 };
