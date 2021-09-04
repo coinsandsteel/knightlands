@@ -355,8 +355,22 @@ export default {
     returnTo() {
       return !!this.$route.query.returnTo;
     },
+    maxLevel() {
+      let holderLevel = this.$game.character.level;
+      if (this.item.holder != -1) {
+        const unit = this.$game.army.getUnit(this.item.holder);
+        if (unit) {
+          holderLevel = unit.level;
+        }
+      }
+
+      return Math.min(
+        this.$game.itemsDB.getMaxLevel(this.item),
+        Math.floor(holderLevel / 2)
+      );
+    },
     notAtMaxLevel() {
-      return this.item.level < this.$game.itemsDB.getMaxLevel(this.item);
+      return this.item.level < this.maxLevel;
     },
     totalMaterials() {
       return this.selectedMaterialsAsArray.length;
@@ -391,7 +405,7 @@ export default {
       return optionFactor;
     },
     lockRest() {
-      return this.level == this.$game.itemsDB.getMaxLevel(this.item);
+      return this.level == this.maxLevel;
     },
     level() {
       let materialExp = 0;
@@ -408,7 +422,7 @@ export default {
 
       let level = this.item.level;
       let exp = this.item.exp + materialExp * this.optionFactor;
-      let maxLevel = this.$game.itemsDB.getMaxLevel(this.item);
+      let maxLevel = this.maxLevel;
 
       if (maxLevel <= level) {
         exp = this.item.exp;
