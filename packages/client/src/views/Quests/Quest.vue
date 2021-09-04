@@ -68,7 +68,7 @@
                     {{ $t("prev-q-f") }}
                   </p>
                   <p class="font-error" v-if="levelLocked">
-                    {{ $t("ch-lvl-req", { level: $game.character.level }) }}
+                    {{ $t("ch-lvl-req", { level: levelRequired }) }}
                   </p>
                 </div>
               </div>
@@ -162,11 +162,11 @@ export default {
     }
   },
   computed: {
+    levelRequired() {
+      return Zones.getLastZone() * this.currentStage + +this.zone;
+    },
     levelLocked() {
-      return (
-        Zones.getLastZone() * this.currentStage + +this.zone >
-        this.$game.character.level
-      );
+      return this.levelRequired > this.$game.character.level;
     },
     currentStage() {
       return this.$store.getters.getZoneStage;

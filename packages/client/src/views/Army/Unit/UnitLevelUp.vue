@@ -36,7 +36,7 @@
       <span
         v-if="!meetLvlRequirement"
         class="font-error font-size-20 font-weight-900 margin-top-1"
-        >{{ $t("ch-lvl-req", { level: $game.character.level }) }}</span
+        >{{ $t("ch-lvl-req", { level: level + 1 }) }}</span
       >
     </div>
 
