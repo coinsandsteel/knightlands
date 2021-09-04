@@ -28,11 +28,15 @@
       <div
         class="flex flex-items-center flex-no-wrap margin-top-half margin-bottom-1"
         :class="{ pointer: stars < 2 }"
-        v-if="isEquipment && !isPreview"
       >
-        <span class="star" :class="{ active: stars >= 1 }"></span>
-        <span class="star" :class="{ active: stars >= 2 }"></span>
-        <span class="arrow-up" v-if="stars < 2" @click="upgradeItem"></span>
+        <span class="font-size-20 margin-right-1">
+          {{ type }}
+        </span>
+        <template v-if="isEquipment && !isPreview">
+          <span class="star" :class="{ active: stars >= 1 }"></span>
+          <span class="star" :class="{ active: stars >= 2 }"></span>
+          <span class="arrow-up" v-if="stars < 2" @click="upgradeItem"></span>
+        </template>
       </div>
 
       <slot name="level-bar">
