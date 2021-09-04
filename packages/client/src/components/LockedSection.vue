@@ -36,7 +36,7 @@ export default {
           data: {
             level: this.levelRequired
           },
-          duration: 500,
+          duration: 750,
           position: "bottom"
         });
       } else {

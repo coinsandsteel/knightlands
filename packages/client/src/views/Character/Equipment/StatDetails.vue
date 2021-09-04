@@ -65,7 +65,7 @@ export default {
       stats.push(CharacterStat.CriticalChance);
       stats.push(CharacterStat.CriticalDamage);
       stats.push(CharacterStat.Dodge);
-      stats.push(CharacterStat.HitRating);
+      // stats.push(CharacterStat.HitRating);
       stats.push(CharacterStat.ArmyDamage);
 
       stats.push(CharacterStat.Energy);
