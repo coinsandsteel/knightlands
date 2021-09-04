@@ -1828,6 +1828,7 @@
     "legion-slot-change-desc": "Do you want to save changes?",
     "free-summon-timer": "Free summon in {timer}",
     "unit-lvl-req": "Level required: {level}",
+    "ch-lvl-req": "Character level required: {level}",
     "unit-lvl-up": "Level Up",
     "unit-s-filter": "{filter} Stars",
     "max-lv": "Max Lv",

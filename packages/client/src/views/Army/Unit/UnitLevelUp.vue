@@ -33,6 +33,11 @@
       >
         {{ $t("unit-lvl-up") }}
       </PurchaseButton>
+      <span
+        v-if="!meetLvlRequirement"
+        class="font-error font-size-20 font-weight-900 margin-top-1"
+        >{{ $t("ch-lvl-req", { level: $game.character.level }) }}</span
+      >
     </div>
 
     <SoundEffect ref="fx" :files="['unit_lvl_up']" channel="fx" />
@@ -91,6 +96,9 @@ export default {
     nextPower() {
       let levelRecord = this.meta.leveling.levelingSteps[this.level - 1];
       return levelRecord.power;
+    },
+    meetLvlRequirement() {
+      return this.level < this.$game.character.level;
     }
   },
   methods: {
@@ -99,6 +107,9 @@ export default {
         return false;
       }
       if (this.isMaxLevel) {
+        return false;
+      }
+      if (!this.meetLvlRequirement) {
         return false;
       }
       return !this.$refs.levelIngridient.notEnoughMaterials;
