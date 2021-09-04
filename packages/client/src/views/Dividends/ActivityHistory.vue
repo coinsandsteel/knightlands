@@ -12,6 +12,7 @@
           :data="entry.data"
           :date="entry.date"
           :chain="entry.chain"
+          :pending="entry.data.pending"
           :odd="idx % 2 == 0"
         ></component>
       </div>

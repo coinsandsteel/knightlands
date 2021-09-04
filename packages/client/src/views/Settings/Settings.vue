@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content flex-center">
+  <div class="screen-content flex-center relative">
     <div class="screen-background"></div>
 
     <span class="font-size-20 font-weight-900 margin-bottom-5">{{
@@ -34,6 +34,10 @@
     <CustomButton type="grey" class="margin-top-3" @click="logout">{{
       $t("logout")
     }}</CustomButton>
+
+    <a href="http://www.akashics.moe" class="akashi" target="_blank">{{
+      $t("akashi")
+    }}</a>
   </div>
 </template>
 
@@ -116,3 +120,11 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.akashi {
+  position: absolute;
+  bottom: 2rem;
+  font-size: 2rem;
+}
+</style>

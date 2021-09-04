@@ -947,10 +947,9 @@ const router = new Router({
           component: () => import("./views/Dividends/Dividends.vue")
         },
         {
-          path: "claim/:chain",
+          path: "claim",
           name: "divs-claim",
-          component: () => import("./views/Dividends/ClaimDividends.vue"),
-          props: true
+          component: () => import("./views/Dividends/ClaimDividends.vue")
         },
         {
           path: "stake",

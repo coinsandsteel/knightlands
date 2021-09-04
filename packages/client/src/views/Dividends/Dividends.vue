@@ -114,11 +114,17 @@
             <CustomButton type="yellow" @click="goToStake">{{
               $t("btn-stake")
             }}</CustomButton>
+            <CustomButton type="green" @click="withdrawDivs">{{
+              $t("btn-withdraw-divs")
+            }}</CustomButton>
+          </div>
+
+          <div class="row flex">
             <CustomButton type="blue" @click="deposit">{{
               $t("btn-deposit")
             }}</CustomButton>
             <CustomButton type="blue" @click="withdraw">{{
-              $t("btn-withdraw")
+              $t("btn-withdraw-tokens")
             }}</CustomButton>
           </div>
         </div>
@@ -176,7 +182,8 @@ export default {
     divsInfo: null,
     nextPayoutTimer: new Timer(true),
     seasonTimer: new Timer(true),
-    pendingWithdrawals: []
+    pendingWithdrawals: [],
+    season: 0
   }),
   created() {
     this.$options.loadingTimeout = 1000;
@@ -190,7 +197,9 @@ export default {
     this.init();
     this.channel = this.$game.createChannel("divs_info", false);
     this.channel.watch(divsInfo => {
-      this.divsInfo = divsInfo;
+      for (let key in divsInfo) {
+        this.divsInfo[key] = divsInfo[key];
+      }
     });
   },
   deactivated() {
@@ -210,12 +219,6 @@ export default {
       }
 
       return this.divsInfo.pools;
-    },
-    season() {
-      if (!this.divsInfo) {
-        return 0;
-      }
-      return this.divsInfo.season.season;
     },
     dkt() {
       return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
@@ -267,7 +270,10 @@ export default {
       return this.payouts[bId];
     },
     async claimDivs(bid, amount) {
-      this.$router.push({ name: "divs-claim", params: { chain: bid, amount } });
+      await this.performRequest(this.$game.claimDividends(bid));
+    },
+    withdrawDivs() {
+      this.$router.push({ name: "divs-claim" });
     },
     async fetchDividendsInfo() {
       if (!this.isActive) {
@@ -277,6 +283,7 @@ export default {
       this.divsInfo = await this.performRequestNoCatch(
         this.$game.getDivsStatus()
       );
+      this.season = this.divsInfo.season.season;
 
       this.nextPayoutTimer.timeLeft =
         this.divsInfo.nextPayout - this.$game.nowSec;
@@ -386,8 +393,13 @@ export default {
   }
 
   & .row:nth-child(4) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-row: 4;
+  }
+
+  & .row:nth-child(5) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-row: 5;
   }
 }
 </style>

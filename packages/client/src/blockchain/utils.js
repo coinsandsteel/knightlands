@@ -12,7 +12,7 @@ export function toDecimal(num, decimals) {
         str.slice(str.length - decimals);
     }
   }
-  return decimal.replace(/(\.[0-9]*[1-9])0+$|\.0*$/, "$1");
+  return decimal.replace(/(\.[0-9]*[1-9])0+$|\.0*$/, "$1") || "0";
 }
 
 export function toBigNumber(num, decimals) {

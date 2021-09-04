@@ -132,6 +132,10 @@ class Game {
     this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
     this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
     this._socket.on(
+      Events.DivTokenWithdrawal,
+      this._handleDivTokenWithdrawal.bind(this)
+    );
+    this._socket.on(
       Events.PurchaseComplete,
       this._handlePurchaseComplete.bind(this)
     );
@@ -163,6 +167,10 @@ class Game {
     this._socket.on(
       Events.DivTokenWithdrawal,
       this._handleDivTokenWithdrawal.bind(this)
+    );
+    this._socket.on(
+      Events.TokenWithdrawal,
+      this._handleTokenWithdrawal.bind(this)
     );
 
     // let's avoid using callbacks
@@ -611,8 +619,11 @@ class Game {
     this._vm.$emit(Events.GoldExchangeBoostPurchased, data);
   }
 
+  _handleTokenWithdrawal(data) {
+    this._vm.$emit(Events.TokenWithdrawal, data);
+  }
+
   _handleDivTokenWithdrawal(data) {
-    this._inventory.setCurrency(CurrencyType.Dkt, data.dkt);
     this._vm.$emit(Events.DivTokenWithdrawal, data);
   }
 
@@ -1463,10 +1474,18 @@ class Game {
     return (await this._wrapOperation(Operations.GetDivsStatus)).response;
   }
 
-  async claimDividends(to, blockchainId) {
+  async withdrawDividends(to, blockchainId) {
     return (
-      await this._wrapOperation(Operations.ClaimDivs, { to, blockchainId })
+      await this._wrapOperation(Operations.WithdrawDividendToken, {
+        to,
+        blockchainId
+      })
     ).response;
+  }
+
+  async claimDividends(blockchainId) {
+    return (await this._wrapOperation(Operations.ClaimDivs, { blockchainId }))
+      .response;
   }
 
   async purchaseDktShopItem(itemId) {
@@ -1499,11 +1518,9 @@ class Game {
     });
   }
 
-  async requestDividendTokenWithdrawal(amount) {
+  async getPendingDivs(chain, tokens) {
     return (
-      await this._wrapOperation(Operations.WithdrawDividendToken, {
-        amount
-      })
+      await this._wrapOperation(Operations.PendingDivs, { chain, tokens })
     ).response;
   }
 
@@ -1511,20 +1528,6 @@ class Game {
     return (await this._wrapOperation(Operations.GetWithdrawTokensStatus))
       .response;
   }
-
-  async sendDividendTokenWithdrawal(amount, nonce, signature) {
-    const tx = await this.blockchainClient.dividendTokenWithdrawal(
-      amount,
-      nonce,
-      signature
-    );
-    return (
-      await this._wrapOperation(Operations.SendDividendTokenWithdrawal, {
-        tx
-      })
-    ).response;
-  }
-
   // Daily login
 
   async fetchDailyRewardStatus() {

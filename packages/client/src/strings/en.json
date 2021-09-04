@@ -1823,6 +1823,7 @@
     "basic-summon": "Basic Summon",
     "advanced-summon": "Advanced Summon",
     "unit-summon": "Summon x{count}",
+    "akashi": "Art from Ækashics at http://www.akashics.moe",
     "unit-summon-item": "Summon <span class='item-icon {icon}'></span> x{count}",
     "legion-slot-change-title": "Confirm unit change",
     "legion-slot-change-desc": "Do you want to save changes?",
@@ -2043,6 +2044,8 @@
     "b-rp": "Raid Points",
     "rp-score": "Your score:",
     "rp-bal": "Your score:",
+    "btn-withdraw-divs": "Withdraw Dividends",
+    "btn-withdraw-tokens": "Withdraw Tokens",
     "rp-s-total": "Today score by server:",
     "rp-emission": "Daily emission:",
     "box-lvl-req": "Reach level {lvl} to open",
@@ -2073,11 +2076,12 @@
     "div-seas-2": "At the end of the season all staked FLESH will be moved to your balance to be spent in <span class='rarity-rare'>Shop</span>.",
     "divs-cl": "Available dividends",
     "divs-cl-1": "This is dividends in the pool available for Knights to collect. It increases each time Knight purchase goods with crypto.",
-    "divs-cl-2": " 55% of all crypto purchases goes to the pool.",
+    "divs-cl-2": " 70% of all crypto purchases goes to the pool. 10% goes towards next season prize pool.",
     "y-stake": "Your stake",
     "y-stake-1": "This is your current staked FLESH.",
     "d-bal-1": "FLESH can be minted on the blockchan or staked to receive daily dividends.",
     "d-bal-2": "<span class='text-warn'>Note that your FLESH will be burnt into ASH if you stake it!</span>",
+    "show-tx": "Open in Explorer",
     "btn-deposit": "Deposit",
     "token": "Token",
     "t-dkt": "FLESH",
@@ -2149,5 +2153,6 @@
     "pp-track": "Check my rank",
     "get-refer": "Get referral link",
     "logout": "Logout",
-    "att-c": "Attack {dmg}% DMG"
+    "att-c": "Attack {dmg}% DMG",
+    "pen-withd": "Has pending withdrawal"
 }
