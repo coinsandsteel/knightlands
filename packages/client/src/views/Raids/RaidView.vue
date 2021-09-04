@@ -153,7 +153,7 @@
           </div>
 
           <!--NOT IN RAID YET-->
-          <div class="flex flex-column flex-center" v-else>
+          <div class="flex flex-column flex-center" v-else-if="!isFreeRaid">
             <div class="color-panel-2">
               <span class="font-size-20">
                 {{ $t("time-left") }}
@@ -203,6 +203,14 @@
               <CustomButton type="grey" @click="goToShop" width="20rem">
                 {{ $t("pur-tickets") }}
               </CustomButton>
+            </div>
+          </div>
+
+          <div class="flex flex-column flex-center">
+            <div class="color-panel-2">
+              <span class="font-size-25 font-weight-900">
+                <span class="font-error">{{ $t("join-solo-r") }}</span>
+              </span>
             </div>
           </div>
         </div>
