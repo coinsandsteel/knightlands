@@ -62,12 +62,13 @@ import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 const Troops = "troops";
 const Generals = "generals";
 
 export default {
-  mixins: [NetworkRequestErrorMixin, ActivityMixin],
+  mixins: [NetworkRequestErrorMixin, ActivityMixin, PromptMixin],
   components: {
     UnitItem,
     Tabs,
@@ -136,6 +137,27 @@ export default {
       }
     },
     async reserve() {
+      const confirm = await this.showPrompt(
+        this.$t("pr-rsv-title"),
+        this.$t("pr-rsv-msg"),
+        [
+          {
+            type: "grey",
+            title: this.$t("btn-ok"),
+            response: true
+          },
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          }
+        ]
+      );
+
+      if (!confirm) {
+        return;
+      }
+
       this.request = this.performRequest(
         this.$game.reserveUnits(this.selectedUnits.map(x => x.id))
       );

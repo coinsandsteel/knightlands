@@ -61,12 +61,13 @@ import Tabs from "@/components/Tabs.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import Title from "@/components/Title.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 const Troops = "troops";
 const Generals = "generals";
 
 export default {
-  mixins: [ActivityMixin, NetworkRequestErrorMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
   components: {
     UnitItem,
     Tabs,
@@ -154,6 +155,27 @@ export default {
       }
     },
     async banish() {
+      const confirm = await this.showPrompt(
+        this.$t("pr-rsv-title"),
+        this.$t("pr-dms-msg"),
+        [
+          {
+            type: "grey",
+            title: this.$t("btn-ok"),
+            response: true
+          },
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          }
+        ]
+      );
+
+      if (!confirm) {
+        return;
+      }
+
       this.request = this.performRequest(
         this.$game.banishUnits(this.selectedUnits.map(x => x.id))
       );
