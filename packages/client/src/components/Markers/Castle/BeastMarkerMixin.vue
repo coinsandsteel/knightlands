@@ -10,7 +10,11 @@ export default {
   },
   computed: {
     beastCanBeBoosted() {
-      if (!this.beastItem) {
+      let beast = this.$game.beast();
+      if (
+        !this.beastItem ||
+        beast.level >= Beasts.levels[beast.index].levels.length
+      ) {
         return false;
       }
       return (
