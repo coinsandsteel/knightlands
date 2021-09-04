@@ -61,10 +61,15 @@
                   ></quest-mission-element>
                 </div>
                 <div
-                  class="blocker center padding-top-2"
-                  v-if="loaded && isZoneLocked"
+                  class="blocker center padding-top-2 font-size-30 font-weight-900"
+                  v-if="loaded && (isZoneLocked || levelLocked)"
                 >
-                  <p class="yellow-title font-size-30">Finish Previous Zone</p>
+                  <p class="yellow-title" v-if="isZoneLocked">
+                    {{ $t("prev-q-f") }}
+                  </p>
+                  <p class="font-error" v-if="levelLocked">
+                    {{ $t("ch-lvl-req", { level: $game.character.level }) }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -157,6 +162,12 @@ export default {
     }
   },
   computed: {
+    levelLocked() {
+      return (
+        Zones.getLastZone() * this.currentStage + +this.zone >
+        this.$game.character.level
+      );
+    },
     currentStage() {
       return this.$store.getters.getZoneStage;
     },
@@ -345,5 +356,6 @@ export default {
   bottom: 0;
   left: 0;
   background-color: #353440cc;
+  z-index: 5;
 }
 </style>
