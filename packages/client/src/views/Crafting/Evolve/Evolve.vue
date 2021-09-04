@@ -187,7 +187,8 @@ export default {
       return (
         this.recipe.softCurrencyFee <= this.$game.softCurrency &&
         this.$game.itemsDB.getRarity(this.baseItem) != Rarity.Mythical &&
-        !this.baseItem.locked
+        !this.baseItem.locked &&
+        !this.$game.itemsDB.isAccessory(this.baseItem)
       );
     }
   },

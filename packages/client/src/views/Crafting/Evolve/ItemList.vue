@@ -78,6 +78,7 @@ import EquippedItemList from "../EquippedItemList.vue";
 import Elements from "@/../../knightlands-shared/elements";
 import Toggle from "@/components/Toggle.vue";
 import CustomButton from "@/components/Button.vue";
+import Rarity from "@/../../knightlands-shared/rarity";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import EquipmentIngridientHint from "./../EquipmentIngridientHint.vue";
@@ -145,6 +146,9 @@ export default {
         }
 
         const template = this.$game.itemsDB.getTemplate(item.template);
+        if (template.rarity == Rarity.Mythical) {
+          continue;
+        }
 
         const isElemental =
           this.$game.itemsDB.getElement(item) != Elements.Physical;
@@ -172,7 +176,12 @@ export default {
     filter(item, template) {
       const isElemental =
         this.$game.itemsDB.getElement(item) != Elements.Physical;
-      return template.unbindable && this.onlyElemental == isElemental;
+      return (
+        template.rarity != Rarity.Mythical &&
+        template.unbindable &&
+        this.onlyElemental == isElemental &&
+        !this.$game.itemsDB.isAccessory(item)
+      );
     },
     handleEquippedToggle(value) {
       this.$store.commit("setEvolveToggle", value);
