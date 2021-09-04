@@ -1190,11 +1190,12 @@ class Game {
     return response.response;
   }
 
-  async refillTimer(stat, refillType, items) {
+  async refillTimer(stat, refillType, items, restores) {
     let response = await this._wrapOperation(Operations.RefillTimer, {
       stat,
       refillType,
-      items
+      items,
+      restores
     });
 
     return response.response;

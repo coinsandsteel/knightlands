@@ -97,7 +97,6 @@ export default {
   },
   computed: {
     weakness() {
-      console.log(this.raidState);
       return this.raidState.weakness.current;
     },
     finished() {

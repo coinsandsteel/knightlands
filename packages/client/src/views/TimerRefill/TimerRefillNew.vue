@@ -45,13 +45,6 @@
               <div
                 class="flex flex-basis-100 height-100 flex-column flex-item-center"
               >
-                <div class="flex flex-center margin-bottom-2 font-size-20">
-                  <span>Price to restore 100 {{ $t(stat) }}:</span>
-                  <IconWithValue iconClass="icon-premium">
-                    {{ hardCost }}
-                  </IconWithValue>
-                </div>
-
                 <NumericValue
                   class="margin-2"
                   :value="restores"
@@ -59,7 +52,22 @@
                   :increaseCondition="canRestoreMore"
                   @inc="restores++"
                   @dec="restores--"
-                ></NumericValue>
+                >
+                  <template v-slot:between>
+                    <IconWithValue :iconClass="statIcon">{{
+                      restoreAmount
+                    }}</IconWithValue>
+                  </template>
+                </NumericValue>
+
+                <div class="flex flex-center margin-bottom-2 font-size-20">
+                  <span class="margin-right-1">
+                    {{ $t("total-cost") }}
+                  </span>
+                  <IconWithValue iconClass="icon-premium">
+                    {{ hardCost }}
+                  </IconWithValue>
+                </div>
 
                 <span class="flex flex-center font-size-20 margin-bottom-1"
                   >Refills today: {{ refillsToday }}</span
@@ -102,12 +110,13 @@
           </keep-alive>
 
           <div class="flex">
-            <PromisedButton
+            <PurchaseButton
               :disabled="!canProcceed"
-              width="16rem"
               type="yellow"
+              :soft="softCost > 0"
+              :price="hardCost || softCost"
               @click="confirm"
-              >{{ $t("btn-confirm") }}</PromisedButton
+              >{{ $t("btn-confirm") }}</PurchaseButton
             >
           </div>
         </div>
@@ -118,11 +127,12 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import PromisedButton from "@/components/PromisedButton.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 import ButtonBar from "@/components/ButtonBar.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Timer from "@/timer";
+import RefillMeta from "@/refill";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
@@ -143,7 +153,7 @@ export default {
     NumericValue,
     ProgressBar,
     UserDialog,
-    PromisedButton,
+    PurchaseButton,
     ButtonBar,
     IconWithValue,
     ItemSelector
@@ -157,7 +167,7 @@ export default {
       eventHandler: null,
       refillsToday: 0,
       resetTimer: new Timer(true),
-      softCost: 0,
+      soft: 0,
       selectedItems: {},
       restores: 0
     };
@@ -169,12 +179,42 @@ export default {
   mounted() {
     this.fetchInfo();
   },
+  watch: {
+    methodChosen() {
+      this.selectedItems = {};
+      this.restores = 0;
+      this.restoredValue = 0;
+    }
+  },
   computed: {
     hardCost() {
-      return 100;
+      let cost = 0;
+      for (let i = 0; i < this.restores; ++i) {
+        cost += this.calculateCost(i + this.refillsToday + 1);
+      }
+      return cost;
+    },
+    statIcon() {
+      switch (this.stat) {
+        case CharacterStats.Health:
+          return "icon-health";
+        case CharacterStats.Energy:
+          return "icon-energy";
+        case CharacterStats.Stamina:
+          return "icon-stamina";
+      }
+      return "";
+    },
+    restoreAmount() {
+      if (!RefillMeta[this.stat]) {
+        return 0;
+      }
+      return (
+        this.restores * RefillMeta[this.stat][this.$game.character.level - 1]
+      );
     },
     canRestoreMore() {
-      return true;
+      return this.barValue < this.maxStat;
     },
     maxStat() {
       return this.$game.character.maxStats[this.stat];
@@ -183,7 +223,7 @@ export default {
       return this.$game.character.getTimer(this.stat);
     },
     barValue() {
-      return Math.min(this.restoredValue + this.timer.value, this.maxStat);
+      return this.restoredValue + this.restoreAmount + this.timer.value;
     },
     color() {
       switch (this.stat) {
@@ -257,20 +297,29 @@ export default {
 
         return false;
       });
+    },
+    softCost() {
+      return this.methodChosen == 0 ? this.soft : 0;
     }
   },
   methods: {
+    calculateCost(count) {
+      return Math.round(
+        RefillMeta.cost.base * Math.pow(count, RefillMeta.cost.expScale)
+      );
+    },
     increstoreCount() {
       this.restores++;
     },
-    itemStateChanged(canProceed, items) {
-      this.items = items;
-    },
     async confirm() {
       await this.performRequest(
-        this.$game.refillTimer(this.stat, this.methodChosen, this.items)
+        this.$game.refillTimer(
+          this.stat,
+          this.methodChosen,
+          this.selectedItems,
+          this.restores
+        )
       );
-      this.items = null;
       this.$close();
     },
     async fetchInfo() {
@@ -279,15 +328,15 @@ export default {
       let info = await this.infoRequest;
       this.iap = info.iap;
       this.refillsToday = info.refills;
-      this.softCost = info.soft;
-      this.hardCost = info.hard;
+      this.soft = info.soft;
       this.resetTimer.timeLeft = info.timeTillReset / 1000;
     },
     handleItemSelected(count, item) {
       const action = this.$game.itemsDB.getTemplate(item).action;
 
-      if (!this.selectedItems[item.id]) {
-        this.$set(this.selectedItems, item.id, {
+      if (!this.selectedItems[item.template]) {
+        this.$set(this.selectedItems, item.template, {
+          id: item.id,
           template: item.template,
           value: action.value,
           relative: action.relative,
@@ -295,13 +344,13 @@ export default {
           stat: action.stat
         });
       } else {
-        this.selectedItems[item.id].count = count;
+        this.selectedItems[item.template].count = count;
       }
 
       let restoredValue = 0;
-      for (let itemId in this.selectedItems) {
+      for (let template in this.selectedItems) {
         // first relative bonuses
-        const consumable = this.selectedItems[itemId];
+        const consumable = this.selectedItems[template];
         if (consumable.relative) {
           restoredValue +=
             (this.$game.character.getMaxStat(consumable.stat) *
@@ -311,9 +360,9 @@ export default {
         }
       }
 
-      for (let itemId in this.selectedItems) {
+      for (let template in this.selectedItems) {
         // first relative bonuses
-        const consumable = this.selectedItems[itemId];
+        const consumable = this.selectedItems[template];
         if (!consumable.relative) {
           restoredValue += consumable.value * consumable.count;
         }
