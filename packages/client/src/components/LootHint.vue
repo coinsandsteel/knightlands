@@ -21,9 +21,14 @@
     <template v-slot:footer>
       <div class="flex width-100 flex-space-evenly">
         <template v-if="showButtons">
+          <div class="width-100 margin-bottom-1" v-if="!canWear">
+            <span class="font-error font-size-20 font-weight-900">{{
+              $t("unit-lvl-req", { level: levelRequired })
+            }}</span>
+          </div>
           <custom-button
             type="yellow"
-            v-if="canEquip"
+            v-else-if="canEquip"
             :id="`btn-equip-${index}`"
             class="common-btn center"
             @click="handleClose(ItemActions.Equip)"

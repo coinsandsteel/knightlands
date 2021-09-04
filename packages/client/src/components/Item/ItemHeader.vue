@@ -26,6 +26,7 @@
       </div>
 
       <div
+        v-if="item"
         class="flex flex-items-center flex-no-wrap margin-top-half margin-bottom-1"
         :class="{ pointer: stars < 2 }"
       >

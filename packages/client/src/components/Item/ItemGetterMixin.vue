@@ -150,6 +150,12 @@ export default {
         return 0;
       }
       return this.template.action.minLevel;
+    },
+    levelRequired() {
+      return this.level * 2;
+    },
+    canWear() {
+      return this.levelRequired <= this.$game.character.level;
     }
   }
 };
