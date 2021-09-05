@@ -7,7 +7,7 @@ const {
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
-  props: ["item", "matchItem"],
+  props: ["item", "matchItem", "target"],
   computed: {
     count() {
       if (!this.item) {
@@ -158,7 +158,8 @@ export default {
       return this.level * 2;
     },
     canWear() {
-      return this.levelRequired <= this.$game.character.level;
+      let level = (this.target || this.$game.character).level;
+      return this.levelRequired <= level;
     },
     maxStack() {
       return this.template.maxStack;

@@ -40,6 +40,7 @@
 
     <ScrollableItemHint
       ref="scrollHint"
+      :target="unit"
       :items="hintItems"
       :equippedItems="unit.items"
       @action="handleEquipmentAction"

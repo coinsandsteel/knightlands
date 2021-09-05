@@ -15,6 +15,7 @@
           <slide v-for="(slide, index) in hintItems" :key="index">
             <CompareItems
               v-if="!noComparison && isComparable(slide.item)"
+              :target="target"
               :leftItem="slide.item"
               :index="index"
               :rightItem="itemFromMatchingSlot(slide.item)"
@@ -24,6 +25,7 @@
             ></CompareItems>
             <LootHint
               v-else
+              :target="target"
               :item="slide.item"
               :index="index"
               :hideMask="true"
@@ -56,6 +58,7 @@ import CompareItems from "./CompareItems.vue";
 
 export default {
   props: {
+    target: Object,
     items: Array,
     getHintButtons: Function,
     equippedItems: Object,

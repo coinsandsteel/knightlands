@@ -16,6 +16,12 @@
             :showLocked="true"
           />
           <ItemStats :item="leftItem" :matchItem="matchedItem" />
+
+          <div class="width-100 margin-bottom-1" v-if="!canWear">
+            <span class="font-error font-size-20 font-weight-900">{{
+              $t("unit-lvl-req", { level: levelRequired })
+            }}</span>
+          </div>
         </div>
         <div class="flex-basis-50 margin-left-half">
           <ItemHeader
@@ -87,11 +93,22 @@ export default {
       return null;
     },
     canEquip() {
+      if (!this.canWear) {
+        return false;
+      }
+
       if (this.leftItem && this.rightItem) {
         return this.leftItem.id != this.rightItem.id;
       }
 
       return false;
+    },
+    levelRequired() {
+      return this.leftItem.level * 2;
+    },
+    canWear() {
+      let level = (this.target || this.$game.character).level;
+      return this.levelRequired <= level;
     }
   },
   methods: {

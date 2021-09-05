@@ -1832,6 +1832,7 @@
     "free-summon-timer": "Free summon in {timer}",
     "unit-lvl-req": "Level required: {level}",
     "ch-lvl-req": "Character level required: {level}",
+    "u-lvl-req": "Unit level required: {level}",
     "unit-lvl-up": "Level Up",
     "unit-s-filter": "{filter} Stars",
     "join-solo-r": "Can't join SOLO raid.",
