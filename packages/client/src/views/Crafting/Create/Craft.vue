@@ -84,7 +84,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
-import PurchaseButton from "@/components/Button.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import { Promised } from "vue-promised";

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="item-info-stats font-size-18 margin-bottom-2 margin-top-1 flex flex-center"
+    class="item-info-stats font-size-18 margin-bottom-2 margin-top-1 flex flex-center flex-no-wrap"
     :class="{ matched: matchedWithOtherItem }"
   >
     <div class="flex width-45 flex-column text-align-right margin-right-2">

@@ -44,17 +44,29 @@
               :ingridient="soulsIngridient"
             />
 
-            <div class="flex flex-center margin-top-1" v-if="readyToPromote">
+            <div class="flex flex-center margin-bottom-1 margin-top-2">
+              <span class="font-size-20">{{ $t("du-balance") }}</span>
+
+              <IconWithValue class="balance" iconClass="icon-dkt2">{{
+                $game.dkt2
+              }}</IconWithValue>
+            </div>
+
+            <div class="flex flex-center margin-top-1">
               <CustomButton
                 type="yellow"
                 class="width-30"
                 @click="promote"
                 :disabled="!canPromote()"
-                >{{ $t("btn-promote") }}</CustomButton
               >
+                <div class="flex flex-center">
+                  <span class="margin-right-1">{{ $t("btn-promote") }}</span>
+                  <AshTag :price="recipe.price" v-model="ashPrice"> </AshTag>
+                </div>
+              </CustomButton>
             </div>
 
-            <div class="flex flex-center margin-top-2" v-else>
+            <div class="flex flex-center margin-top-2" v-if="!readyToPromote">
               <span class="rarity-mythical font-size-25">{{
                 $t("unit-lvl-req", { level: maxLevel })
               }}</span>
@@ -88,6 +100,7 @@ import ArmyMeta from "@/army_meta";
 import IconWithValue from "@/components/IconWithValue.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import AshTag from "@/components/AshTag.vue";
 
 import { create as createDialog } from "vue-modal-dialogs";
 import ArmyIngridientSelector from "./ArmyIngridientSelector.vue";
@@ -106,9 +119,11 @@ export default {
     ingridients: [],
     request: null,
     unitsPerIngridient: {},
-    selectedUnits: {}
+    selectedUnits: {},
+    ashPrice: 0
   }),
   components: {
+    AshTag,
     SoundEffect,
     UnitStars,
     UnitIngridient,
@@ -160,7 +175,7 @@ export default {
       return this.stars == this.maxStars;
     },
     soulsRequired() {
-      return this.recipe.price;
+      return this.recipe.souls;
     },
     readyToPromote() {
       return this.level == this.maxLevel;

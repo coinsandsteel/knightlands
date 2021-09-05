@@ -11,7 +11,7 @@ export default {
       if (relative) {
         return Math.floor(value * 100 * 1000) / 1000;
       }
-      return value;
+      return Math.floor(value);
     },
     viewAccessoryProps(item, options = {}) {
       const isRing =
@@ -53,7 +53,7 @@ export default {
 
         if (options.showRange) {
           const option = meta.options[property.id];
-          const range = option.ranges.find(x => x.rarity == item.rarity);
+          const range = option.ranges.find(x => x.rarity == property.rarity);
           props[i] =
             rangesTemplate
               .replace("min", this._getPropValue(range.minValue, relative))

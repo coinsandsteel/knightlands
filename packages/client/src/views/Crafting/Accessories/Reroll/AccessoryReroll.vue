@@ -31,7 +31,11 @@
           $t("acc-new-prop")
         }}</Title>
         <div class="color-panel-2">
-          <ItemProperties :item="item" :onlyStats="false"></ItemProperties>
+          <ItemProperties
+            :item="item"
+            :onlyStats="false"
+            :accOptions="{ showRange: true }"
+          ></ItemProperties>
         </div>
       </div>
 

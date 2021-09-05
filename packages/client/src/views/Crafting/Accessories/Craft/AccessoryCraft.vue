@@ -11,10 +11,20 @@
 
     <CraftingIngridient :ingridient="ingridient" />
 
-    <div class="flex flex-center margin-top-2">
-      <CustomButton type="yellow" @click="craft" :disabled="!canCraft">{{
-        $t("btn-craft")
-      }}</CustomButton>
+    <div class="flex flex-column flex-center margin-top-2">
+      <div class="flex flex-center margin-bottom-1">
+        <span class="font-size-20">{{ $t("du-balance") }}</span>
+
+        <IconWithValue class="balance" iconClass="icon-dkt2">{{
+          $game.dkt2
+        }}</IconWithValue>
+      </div>
+
+      <CustomButton type="yellow" @click="craft" :disabled="!canCraft">
+        <div class="flex flex-center">
+          <span class="margin-right-1">{{ $t("btn-craft") }}</span>
+          <AshTag :price="recipe.price" v-model="ashPrice"> </AshTag></div
+      ></CustomButton>
     </div>
   </div>
 </template>
@@ -27,6 +37,8 @@ import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
 import CraftAccessories from "@/craft_accessories";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import AshTag from "@/components/AshTag.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 import ItemCreatedPopup from "../../Create/ItemCreatedPopup.vue";
 import { create } from "vue-modal-dialogs";
@@ -37,6 +49,8 @@ export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   props: ["ring", "template"],
   components: {
+    IconWithValue,
+    AshTag,
     AccessoryTemplateInfo,
     CraftingIngridient,
     CustomButton,
@@ -46,6 +60,9 @@ export default {
     this.$options.useRouterBack = true;
     this.title = "win-create-acc";
   },
+  data: () => ({
+    ashPrice: 0
+  }),
   computed: {
     canCraft() {
       return this.$game.inventory.hasEnoughIngridient(this.ingridient);

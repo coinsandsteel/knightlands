@@ -113,7 +113,7 @@ export default {
       return [
         EquipmentSlots.Necklace,
         EquipmentSlots.Ring,
-        EquipmentSlots.Pet,
+        // EquipmentSlots.Pet,
         EquipmentSlots.MainHand,
         EquipmentSlots.Helmet,
         EquipmentSlots.OffHand,
@@ -165,6 +165,10 @@ export default {
 
   & .mainHand {
     grid-row: 4;
+    grid-column: 1;
+  }
+  & .gloves {
+    grid-row: 3;
     grid-column: 1;
   }
   & .offHand {
