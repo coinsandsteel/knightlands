@@ -19,6 +19,8 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(2, 50%);
+  justify-items: stretch;
+
   & .element-flag {
     grid-column: 1;
     grid-row: ~"1 / 3";

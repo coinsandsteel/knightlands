@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     async show() {
-      console.log("show");
       anime({
         targets: ".preview-u",
         opacity: {
@@ -63,10 +62,8 @@ export default {
 <style lang="less" scoped>
 .results {
   display: grid;
-  grid-template-columns: repeat(3, 33%);
-  grid-auto-rows: 26rem;
-  justify-items: stretch;
-  column-gap: 0.5%;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   row-gap: 1rem;
+  column-gap: 1rem;
 }
 </style>
