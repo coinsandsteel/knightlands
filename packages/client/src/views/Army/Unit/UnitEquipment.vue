@@ -138,7 +138,8 @@ export default {
           const template = this.$game.itemsDB.getTemplate(item.template);
           if (
             item.equipped ||
-            this.unit.items[getSlot(template.equipmentType)]
+            this.unit.items[getSlot(template.equipmentType)] ||
+            item.level * 2 > this.unit.level
           ) {
             continue;
           }
