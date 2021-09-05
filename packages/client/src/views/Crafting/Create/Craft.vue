@@ -15,7 +15,9 @@
             class="width-100 full-flex"
           ></ItemInfo>
 
-          <div class="flex flex-column flex-items-center full-flex">
+          <div
+            class="flex flex-column flex-items-center full-flex margin-top-5"
+          >
             <Title :stackBottom="true">{{ $t("ingridients") }}</Title>
 
             <div class="color-panel-1 width-100 flex flex-space-evenly">
@@ -29,7 +31,7 @@
             </div>
 
             <div
-              class="flex flex-column flex-center width-100 flex-space-evenly margin-top-2"
+              class="flex flex-column flex-center width-100 flex-space-evenly margin-top-5"
             >
               <NumericValue
                 class="margin-bottom-2"
@@ -45,7 +47,7 @@
                   :disabled="!canCraft()"
                   type="yellow"
                   v-if="recipe.softCurrencyFee > 0"
-                  @click="craftWithSoft()"
+                  @click="craftWithSoft"
                   :price="softPrice"
                   :soft="true"
                 >
@@ -60,13 +62,38 @@
                   :disabled="!canCraft()"
                   type="grey"
                   v-if="recipe.hardCurrencyFee > 0"
-                  @click="craftWithHard()"
+                  @click="craftWithHard"
                   :price="hardPrice"
                 >
                   <div class="flex flex-center">
                     {{ $t("btn-build", { count: itemsToCraft }) }}
                   </div>
                 </PurchaseButton>
+
+                <template v-else-if="recipe.ashFee > 0">
+                  <div class="flex flex-center margin-bottom-1">
+                    <span class="font-size-20">{{ $t("du-balance") }}</span>
+
+                    <IconWithValue class="balance" iconClass="icon-dkt2">{{
+                      $game.dkt2
+                    }}</IconWithValue>
+                  </div>
+
+                  <CustomButton
+                    :disabled="!canCraft()"
+                    type="yellow"
+                    @click="craftWithAsh"
+                  >
+                    <div class="flex flex-center">
+                      <span class="margin-right-1">{{ $t("btn-evolve") }}</span>
+                      <AshTag
+                        :price="recipe.ashFee * itemsToCraft"
+                        v-model="ashPrice"
+                      >
+                      </AshTag>
+                    </div>
+                  </CustomButton>
+                </template>
               </div>
             </div>
           </div>
@@ -94,6 +121,9 @@ import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHa
 import NumericValue from "@/components/NumericValue.vue";
 import Title from "@/components/Title.vue";
 import SoundEffect from "@/components/SoundEffect.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
+import AshTag from "@/components/AshTag.vue";
+import CustomButton from "@/components/Button.vue";
 
 import { create } from "vue-modal-dialogs";
 
@@ -103,6 +133,9 @@ export default {
   props: ["recipeId"],
   mixins: [AppSection, CraftingIngridientHintHandler],
   components: {
+    CustomButton,
+    IconWithValue,
+    AshTag,
     SoundEffect,
     CraftingIngridient,
     PurchaseButton,
@@ -117,7 +150,8 @@ export default {
     request: null,
     ready: false,
     ingridientsKey: 0,
-    itemsToCraft: 1
+    itemsToCraft: 1,
+    ashPrice: 0
   }),
   created() {
     this.title = "window-craft";
@@ -181,6 +215,10 @@ export default {
         }
       }
 
+      if (this.ashPrice > 0) {
+        hasEnough &= this.$game.dkt2 >= this.ashPrice * itemsToCraft;
+      }
+
       return hasEnough;
     },
     async handlePaymentComplete(iap, item) {
@@ -198,6 +236,9 @@ export default {
     },
     craftWithFiat() {
       this.craft(CurrencyType.Fiat);
+    },
+    craftWithAsh() {
+      this.craft(CurrencyType.Dkt2);
     },
     async craft(currency) {
       this.request = this.$game.craftRecipe(

@@ -157,7 +157,7 @@ export default {
       fetchPayment: null,
       listener: undefined,
       raidStatus: {},
-      currentTab: FreeRaid,
+      currentTab: PayedRaid,
       tabs: [
         {
           title: PayedRaid,

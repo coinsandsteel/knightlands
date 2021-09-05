@@ -10,8 +10,10 @@
       <span v-if="isMax">{{ rate }}%</span>
       <div class="flex flex-center" v-else>
         <span>+{{ currentRate }}%</span>
+        <span class="icon-rp big"></span>
         <span class="nav-arrow margin-half"></span>
         <span class="rarity-rare">+{{ rate }}%</span>
+        <span class="icon-rp big"></span>
       </div>
     </div>
 
@@ -22,7 +24,7 @@
       :disabled="cantUpgradeRate"
     >
       {{ $t("btn-upgrade") }}
-      <IconWithValue iconClass="icon-dkt">{{ ratePrice }}</IconWithValue>
+      <IconWithValue iconClass="icon-dkt2">{{ ratePrice }}</IconWithValue>
     </CustomButton>
   </div>
 </template>
@@ -58,7 +60,7 @@ export default {
       return this.meta.price;
     },
     cantUpgradeRate() {
-      return this.ratePrice > this.$game.dividends.unlockedTokens;
+      return this.ratePrice > this.$game.dkt2;
     }
   }
 };

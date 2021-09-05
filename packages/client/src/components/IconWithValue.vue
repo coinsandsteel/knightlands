@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-items-center flex-no-wrap" @click="$emit('click')">
+  <div
+    class="flex-inline flex-items-center flex-no-wrap"
+    @click="$emit('click')"
+  >
     <span
       v-if="!flip"
       class="value-icon"

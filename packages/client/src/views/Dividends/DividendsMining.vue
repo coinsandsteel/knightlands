@@ -2,16 +2,18 @@
   <div
     class="flex flex-space-between flex-no-wrap flex-column color-panel-2 padding-left-2 padding-right-2"
   >
-    <div class="flex">
+    <div class="flex flex-items-center">
       <span class="font-size-20 font-outline font-weight-900">{{
         $t("mine-rate", { rate: rate, lvl: rateLvl })
       }}</span>
+      <span class="icon-rp big"></span>
 
       <span class="nav-arrow margin-left-1 margin-right-1"></span>
 
       <span class="font-size-20 font-outline font-weight-900 rarity-rare">{{
         $t("mine-rate-n", { rate: nextRate })
       }}</span>
+      <span class="icon-rp big"></span>
     </div>
 
     <div class="flex flex-space-between width-100 margin-top-1">
@@ -21,7 +23,7 @@
         :disabled="cantUpgradeRate"
       >
         {{ $t("btn-upgrade") }}
-        <IconWithValue iconClass="icon-dkt">{{ ratePrice }}</IconWithValue>
+        <IconWithValue iconClass="icon-dkt2">{{ ratePrice }}</IconWithValue>
       </CustomButton>
 
       <CustomButton
@@ -30,7 +32,7 @@
         :disabled="mined <= 0"
       >
         {{ $t("btn-collect") }}
-        <IconWithValue iconClass="icon-dkt">{{ mined }}</IconWithValue>
+        <IconWithValue iconClass="icon-rp big">{{ mined }}</IconWithValue>
       </CustomButton>
     </div>
   </div>

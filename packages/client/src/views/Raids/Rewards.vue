@@ -112,7 +112,7 @@ export default {
       const dividends = this.$game.dividends;
       factor += this.$game.character.maxStats[CharacterStats.ExtraDkt] / 1000;
       if (dividends.dropRateLevel > 0) {
-        factor *= 1 + DividendsMeta.dropRates[dividends.dropRateLevel - 1].rate;
+        factor *= 1 + DividendsMeta.dropRate[dividends.dropRateLevel - 1].rate;
       }
 
       factor *= 1 + bonuses.dkt / 100;
@@ -124,7 +124,7 @@ export default {
       return (
         Math.floor(
           this.data.maxDkt *
-            0.7 *
+            0.9 *
             threshold.dktReward *
             this.computedDktFactor *
             10000

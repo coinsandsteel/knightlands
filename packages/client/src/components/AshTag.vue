@@ -6,6 +6,8 @@
 import { toDecimal } from "@/blockchain/utils";
 import IconWithValue from "@/components/IconWithValue.vue";
 
+const THROTTLE = 30000;
+
 export default {
   props: {
     price: Number,
@@ -19,7 +21,9 @@ export default {
   components: { IconWithValue },
   data() {
     return {
-      convertedPrice: 0
+      convertedPrice: 0,
+      nextUpdate: 0,
+      rate: 0
     };
   },
   watch: {
@@ -32,11 +36,17 @@ export default {
   },
   methods: {
     async refreshPrice() {
-      const { rate } = await this.$game.getCurrencyConversionRate();
+      if (this.nextUpdate <= this.$game.nowSec) {
+        const { rate } = await this.$game.getCurrencyConversionRate();
+        this.rate = rate;
+        this.nextUpdate = this.$game.nowSec + THROTTLE;
+      }
+
       this.convertedPrice = toDecimal(
-        ((this.price * rate) / 100) * Math.pow(10, 6),
+        ((this.price * this.rate) / 100) * Math.pow(10, 6),
         6
       );
+
       this.$emit("input", this.convertedPrice);
     }
   }

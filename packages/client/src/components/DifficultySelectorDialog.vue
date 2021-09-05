@@ -15,6 +15,7 @@
             :disabled="!isUnlocked(index)"
             :lockPressed="index == current"
             @click="$close(index)"
+            width="20rem"
           ></custom-button>
           <span
             v-if="!isUnlocked(index)"
