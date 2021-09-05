@@ -98,7 +98,10 @@ export default {
       return levelRecord.power;
     },
     meetLvlRequirement() {
-      return this.level < this.$game.character.level;
+      return (
+        this.level < this.$game.character.level ||
+        this.$game.character.level == 200
+      );
     }
   },
   methods: {
