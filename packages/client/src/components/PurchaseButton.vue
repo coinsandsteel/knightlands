@@ -1,6 +1,8 @@
 <template>
   <CustomButton v-bind="$attrs" @click="handleClick">
-    <slot></slot>
+    <div class="margin-right-1">
+      <slot></slot>
+    </div>
 
     <template v-if="price > 0">
       <IconWithValue iconClass="icon-gold" :iconMargin="false" v-if="soft">{{

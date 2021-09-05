@@ -15,6 +15,7 @@
       ref="scrollHint"
       :items="filteredItems"
       :showButtons="false"
+      :noComparison="true"
       @action="handleEquipmentAction"
       :getHintButtons="getHintButtons"
     ></ScrollableItemHint>
@@ -106,7 +107,7 @@ export default {
     getHintButtons() {
       return [
         {
-          title: "btn-crafting-upgrade",
+          title: "btn-enchant",
           response: true,
           type: "grey"
         }

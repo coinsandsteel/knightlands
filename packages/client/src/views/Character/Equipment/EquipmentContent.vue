@@ -7,6 +7,7 @@
       <Avatar :avatar="avatar"></Avatar>
       <loot
         v-for="slot in equipment"
+        class="eq-slot"
         :key="slot"
         :class="slot"
         :item="itemsInSlots[slot]"
@@ -25,7 +26,7 @@
           nickname
         }}</span>
         <span
-          class="icon-edit"
+          class="icon-edit pointer"
           v-if="!preview && nickname == $game.character.nickname.v"
           @click="$emit('changeName')"
         ></span>
@@ -38,7 +39,7 @@
       <IconWithValue
         v-if="!preview"
         iconClass="icon-exp"
-        valueClass="font-size-15"
+        valueClass="font-size-18"
       >
         {{ $t("char-exp", { c: currentExp, n: nextExp }) }}
       </IconWithValue>
@@ -50,7 +51,7 @@
 
       <IconWithValue
         @click="$emit('details')"
-        class="margin-top-1"
+        class="margin-top-1 pointer"
         :iconClass="preview ? '' : 'icon-info'"
         valueClass="font-size-20 font-shadow rarity-legendary font-weight-900"
       >
@@ -144,6 +145,11 @@ export default {
 
 .attribute {
   margin-left: 1rem;
+}
+
+.eq-slot {
+  width: 7rem !important;
+  height: 7rem !important;
 }
 
 .equipment-slots {

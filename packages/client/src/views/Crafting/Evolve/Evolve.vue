@@ -45,7 +45,7 @@
       />
     </div>
 
-    <div class="flex flex-center margin-top-3" v-if="isMaxLevel">
+    <div class="flex flex-column flex-center margin-top-3" v-if="isMaxLevel">
       <CustomButton
         :disabled="!canEvolve"
         type="yellow"
@@ -59,6 +59,24 @@
           }}</IconWithValue>
         </div>
       </CustomButton>
+
+      <template v-else-if="recipe.hardCurrencyFee > 0">
+        <div class="flex flex-center margin-bottom-1">
+          <span class="font-size-20">{{ $t("du-balance") }}</span>
+
+          <IconWithValue class="balance" iconClass="icon-dkt2">{{
+            $game.dkt2
+          }}</IconWithValue>
+        </div>
+
+        <CustomButton :disabled="!canEvolve" type="yellow" @click="evolve">
+          <div class="flex flex-center">
+            <span class="margin-right-1">{{ $t("btn-evolve") }}</span>
+            <AshTag :price="recipe.hardCurrencyFee" v-model="ashPrice">
+            </AshTag>
+          </div>
+        </CustomButton>
+      </template>
     </div>
 
     <div v-else class="flex flex-column flex-center margin-top-3 color-panel-1">
@@ -85,6 +103,7 @@ import ItemPicker from "../ItemPicker.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
 import Elements from "@/../../knightlands-shared/elements";
 import EvolveMeta from "@/evolve";
+import AshTag from "@/components/AshTag.vue";
 
 import ItemCreatedPopup from "../Create/ItemCreatedPopup.vue";
 import { create } from "vue-modal-dialogs";
@@ -95,6 +114,7 @@ export default {
   mixins: [AppSection, NetworkRequestErrorMixin, HintHandler],
   props: ["baseItemId"],
   components: {
+    AshTag,
     Loot,
     ItemStatsUpgraded,
     CraftingIngridient,
@@ -109,7 +129,8 @@ export default {
   mounted() {},
   data: () => ({
     ingridientsKey: 0,
-    selectedBaseItem: null
+    selectedBaseItem: null,
+    ashPrice: 0
   }),
   computed: {
     isElemental() {
@@ -184,8 +205,15 @@ export default {
       return rarity;
     },
     canEvolve() {
+      let enoughCurrency =
+        this.recipe.softCurrencyFee <= this.$game.softCurrency;
+      if (this.recipe.hardCurrencyFee > 0) {
+        enoughCurrency = this.ashPrice <= this.$game.dkt2;
+      }
+
       return (
-        this.recipe.softCurrencyFee <= this.$game.softCurrency &&
+        this.$game.crafting.hasEnoughResourcesForRecipe(this.recipe) &&
+        enoughCurrency &&
         this.$game.itemsDB.getRarity(this.baseItem) != Rarity.Mythical &&
         !this.baseItem.locked &&
         !this.$game.itemsDB.isAccessory(this.baseItem)

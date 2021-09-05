@@ -4,8 +4,6 @@
 
 <script>
 const IAPs = require("@/iaps.json");
-import Blockchains from "@/../../knightlands-shared/blockchains";
-import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: {
@@ -18,7 +16,6 @@ export default {
       default: "font-size-20"
     }
   },
-  components: { IconWithValue },
   data() {
     return {
       price: 0
@@ -30,15 +27,7 @@ export default {
     }
   },
   mounted() {
-    if (this.overridePrice) {
-      switch (this.$store.state.blockchain) {
-        case Blockchains.Tron:
-          this.price = Math.floor((this.overridePrice / 1000000) * 100) / 100;
-          break;
-      }
-    } else {
-      this.refreshPrice();
-    }
+    this.refreshPrice();
   },
   methods: {
     async refreshPrice() {

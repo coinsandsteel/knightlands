@@ -52,14 +52,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .legion-grid {
   display: grid;
-  grid-template-columns: repeat(3, 33%);
-  grid-auto-rows: 26rem;
-  justify-items: stretch;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   column-gap: 0.5%;
   row-gap: 1rem;
 }
-
 </style>

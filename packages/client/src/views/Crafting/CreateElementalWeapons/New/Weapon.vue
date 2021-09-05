@@ -54,7 +54,7 @@
       />
     </div>
 
-    <div class="flex flex-center margin-top-3">
+    <div class="flex flex-column flex-center margin-top-3">
       <CustomButton
         :disabled="!canCraft"
         type="yellow"
@@ -66,6 +66,24 @@
           <IconWithValue iconClass="icon-gold">{{ craftingFee }}</IconWithValue>
         </div>
       </CustomButton>
+
+      <template v-else-if="recipe.hardCurrencyFee > 0">
+        <div class="flex flex-center margin-bottom-1">
+          <span class="font-size-20">{{ $t("du-balance") }}</span>
+
+          <IconWithValue class="balance" iconClass="icon-dkt2">{{
+            $game.dkt2
+          }}</IconWithValue>
+        </div>
+
+        <CustomButton :disabled="!canCraft" type="yellow" @click="craft">
+          <div class="flex flex-center">
+            <span class="margin-right-1">{{ $t("btn-craft") }}</span>
+            <AshTag :price="recipe.hardCurrencyFee" v-model="ashPrice">
+            </AshTag>
+          </div>
+        </CustomButton>
+      </template>
     </div>
   </div>
 </template>
@@ -85,6 +103,7 @@ import CurrencyType from "@/../../knightlands-shared/currency_type";
 import Rarity from "@/../../knightlands-shared/rarity";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ItemPicker from "../../ItemPicker.vue";
+import AshTag from "@/components/AshTag.vue";
 
 import ItemCreatedPopup from "../../Create/ItemCreatedPopup.vue";
 import { create } from "vue-modal-dialogs";
@@ -94,6 +113,7 @@ const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
+    AshTag,
     SoundEffect,
     Title,
     Loot,
@@ -112,6 +132,7 @@ export default {
     item: null,
     ingridientsKey: 0,
     selectedItemId: 0,
+    ashPrice: 0,
     selectedElement: Elements.Water,
     elements: Object.values(Elements).filter(x => x != Elements.Physical)
   }),
@@ -174,9 +195,7 @@ export default {
         }
       }
 
-      return (
-        this.$game.softCurrency >= this.craftingFee && this.item && hasEnough
-      );
+      return this.$game.dkt2 >= this.ashPrice && this.item && hasEnough;
     }
   },
   methods: {

@@ -141,21 +141,32 @@
 
             <div
               class="margin-top-3 flex flex-column margin-bottom-5 color-panel-3"
-              v-if="stepData.successRate < 100"
+              v-if="stepData.successRate < 100 && stepData.hard > 0"
             >
               <span
                 class="margin-top-1 margin-bottom-1 success-font font-outline font-size-20"
                 >{{ $t("enchant-success-rate", { rate: 100 }) }}</span
               >
 
+              <div class="flex flex-center margin-bottom-1">
+                <span class="font-size-20">{{ $t("du-balance") }}</span>
+
+                <IconWithValue class="balance" iconClass="icon-dkt2">{{
+                  ashBalance
+                }}</IconWithValue>
+              </div>
+
               <div class="flex flex-center width-100 flex-space-evenly">
-                <PurchaseButton
+                <CustomButton
                   type="grey"
                   @click="enchant(currencies.Hard)"
-                  :price="stepData.hard"
+                  :disabled="!enoughAsh"
                 >
-                  {{ $t("btn-enchant") }}
-                </PurchaseButton>
+                  <div class="flex flex-center">
+                    <span class="margin-right-1">{{ $t("btn-enchant") }}</span>
+                    <AshTag :price="stepData.hard" v-model="ashPrice"> </AshTag>
+                  </div>
+                </CustomButton>
               </div>
             </div>
           </template>
@@ -174,13 +185,16 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
+import CustomButton from "@/components/Button.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import Title from "@/components/Title.vue";
 import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
+import AshTag from "@/components/AshTag.vue";
 
 const EnchantingMeta = require("@/enchanting_meta.json");
-const RollBackLevel = 9;
+const RollBackLevel = 5;
 
 export default {
   mixins: [
@@ -192,11 +206,14 @@ export default {
   ],
   props: ["itemId"],
   components: {
+    IconWithValue,
     SoundEffect,
     ItemInfo,
     PurchaseButton,
     CraftingIngridient,
-    Title
+    Title,
+    AshTag,
+    CustomButton
   },
   created() {
     this.title = "window-enchant-item";
@@ -213,7 +230,8 @@ export default {
     fetchPayment: null,
     failed: false,
     paymentInProcess: false,
-    newItemId: 0
+    newItemId: 0,
+    ashPrice: 0
   }),
   watch: {
     itemId() {
@@ -236,8 +254,8 @@ export default {
     enoughSoft() {
       return this.stepData.soft <= this.$game.softCurrency;
     },
-    enoughHard() {
-      return this.stepData.soft <= this.$game.hardCurrency;
+    enoughAsh() {
+      return this.ashPrice <= this.$game.dkt2;
     },
     enoughResources() {
       return this.$game.crafting.hasEnoughIngridients(this.ingridients);
@@ -278,6 +296,9 @@ export default {
         null,
         this.currentEnchantingLevel + 1
       );
+    },
+    ashBalance() {
+      return this.$game.inventory.getCurrency(CurrencyType.Dkt2, 6);
     }
   },
   methods: {
