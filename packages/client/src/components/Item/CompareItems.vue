@@ -41,7 +41,7 @@
           :cb="switchPreviewMode"
           :startValue="sameLevel"
           caption="toggle-same-level"
-          class="margin-bottom-2"
+          class="margin-bottom-2 compare-font"
         ></Toggle>
         <custom-button
           type="yellow"
@@ -115,5 +115,8 @@ export default {
 <style lang="less" scoped>
 .item-title {
   background-color: #333333;
+}
+.compare-font {
+  color: #f9a0ff;
 }
 </style>

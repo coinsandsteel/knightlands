@@ -18,7 +18,7 @@
         :key="statId"
         class="margin-bottom-half width-100"
       >
-        {{ format(statId, statValue) }}
+        {{ format(statId, statValue, maxStack, count) }}
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@ export default {
   }
 
   &.matched {
-    color: #00ac21;
+    color: #f9a0ff;
   }
 }
 </style>

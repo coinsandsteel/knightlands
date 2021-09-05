@@ -46,6 +46,15 @@
           <ItemStatsUpgraded :item="item" :nextLevel="level" />
         </template>
       </ItemInfo>
+
+      <span
+        class="color-panel-2 font-size-20 text-warn font-weight-900"
+        v-if="
+          lockRest && currentExp != futureExp && maxCraftableLevel < maxLevel
+        "
+        >{{ $t("lvl-max-level-cr", { lvl: nextLevelRequired }) }}</span
+      >
+
       <!-- Upgrade Materials -->
       <template v-if="notAtMaxLevel">
         <Title class="margin-top-1 margin-bottom-1">{{
@@ -115,7 +124,24 @@
         </div>
       </template>
 
-      <div v-show="!notAtMaxLevel" class="flex flex-column flex-center">
+      <div
+        v-else-if="maxCraftableLevel < maxLevel"
+        class="flex flex-column flex-center"
+      >
+        <span class="color-panel-2 font-size-20 text-warn font-weight-900">{{
+          $t("lvl-max-level-cr", { lvl: nextLevelRequired })
+        }}</span>
+
+        <CustomButton
+          v-if="returnTo"
+          class="margin-top-2"
+          type="grey"
+          @click="returnBack"
+          >{{ $t("btn-return") }}</CustomButton
+        >
+      </div>
+
+      <div v-else class="flex flex-column flex-center">
         <span class="color-panel-2 font-size-20 yellow-title">{{
           $t("lvl-max-level")
         }}</span>
@@ -340,6 +366,9 @@ export default {
     }
   },
   computed: {
+    nextLevelRequired() {
+      return (this.level + 1) * 2;
+    },
     canIncreaseMaterial() {
       if (!this.upgradeMaterials[this.selectedMaterial]) {
         return false;
@@ -355,7 +384,7 @@ export default {
     returnTo() {
       return !!this.$route.query.returnTo;
     },
-    maxLevel() {
+    maxCraftableLevel() {
       let holderLevel = this.$game.character.level;
       if (this.item.holder != -1) {
         const unit = this.$game.army.getUnit(this.item.holder);
@@ -369,8 +398,11 @@ export default {
         Math.floor(holderLevel / 2)
       );
     },
+    maxLevel() {
+      return this.$game.itemsDB.getMaxLevel(this.item);
+    },
     notAtMaxLevel() {
-      return this.item.level < this.maxLevel;
+      return this.item.level < this.maxCraftableLevel;
     },
     totalMaterials() {
       return this.selectedMaterialsAsArray.length;
@@ -405,7 +437,7 @@ export default {
       return optionFactor;
     },
     lockRest() {
-      return this.level == this.maxLevel;
+      return this.level == this.maxCraftableLevel;
     },
     level() {
       let materialExp = 0;
@@ -422,7 +454,7 @@ export default {
 
       let level = this.item.level;
       let exp = this.item.exp + materialExp * this.optionFactor;
-      let maxLevel = this.maxLevel;
+      let maxLevel = this.maxCraftableLevel;
 
       if (maxLevel <= level) {
         exp = this.item.exp;

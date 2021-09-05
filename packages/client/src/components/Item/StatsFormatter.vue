@@ -3,22 +3,31 @@ import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
   methods: {
-    format(stat, value) {
+    format(stat, value, stack, count) {
+      let result = value;
       switch (stat) {
         case CharacterStat.ExtraGold:
         case CharacterStat.ExtraExp:
-          return `${value / 10}%`;
+          result = `${value / 10}%`;
+          break;
 
         case CharacterStat.ExtraDkt:
         case CharacterStat.DamageReduction:
         case CharacterStat.CriticalDamage:
-          return `${value}%`;
+          result = `${value}%`;
+          break;
 
         case CharacterStat.CriticalChance:
-          return `${value / 100}%`;
+          result = `${value / 100}%`;
+          break;
       }
 
-      return value;
+      if (stack) {
+        const max = Math.min(stack, count);
+        result += ` ( x${max} = ${this.format(stat, value * max)} )`;
+      }
+
+      return result;
     }
   }
 };

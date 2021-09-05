@@ -22,7 +22,10 @@ export default {
       }
 
       if (this.matchItem) {
-        return this.matchItem.level;
+        return Math.min(
+          this.matchItem.level,
+          this.$game.itemsDB.getMaxLevel(this.item, this.stars)
+        );
       }
 
       return this.item.level;
@@ -90,7 +93,7 @@ export default {
       let forceLevel = 0;
       let forceEnchanting = 0;
       if (this.matchItem) {
-        forceLevel = this.matchItem.level;
+        forceLevel = this.level;
         forceEnchanting = this.matchItem.enchanting;
       }
 
@@ -156,6 +159,9 @@ export default {
     },
     canWear() {
       return this.levelRequired <= this.$game.character.level;
+    },
+    maxStack() {
+      return this.template.maxStack;
     }
   }
 };

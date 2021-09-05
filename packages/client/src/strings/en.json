@@ -71,6 +71,7 @@
     "consumablesCrafting": "Consumables",
     "miscCrafting": "Misc",
     "lvl-max-level": "Item have reached maximum level",
+    "lvl-max-level-cr": "Reach level {lvl} with your character to continue.",
     "btn-craft": "Craft",
     "item-max-lvl": "Item is required to be level {lvl}",
     "btn-level-up": "Level up",
