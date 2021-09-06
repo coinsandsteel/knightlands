@@ -291,7 +291,7 @@ export default {
   .inner-border {
     position: relative;
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.7rem;
     height: @lootCellSize;
   }
 

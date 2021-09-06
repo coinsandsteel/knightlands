@@ -12,7 +12,7 @@
         <div class="section-decor right"></div>
       </div>
 
-      <keep-alive>
+      <keep-alive :exclude="['Rankings']">
         <router-view
           class="content dummy-height flex flex-no-wrap flex-column"
           v-if="showContent"

@@ -109,7 +109,7 @@ export default {
 <style lang="less" scoped>
 .items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
   justify-items: center;
   row-gap: 0.5rem;
 }
