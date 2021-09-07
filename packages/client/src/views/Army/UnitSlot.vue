@@ -1,5 +1,5 @@
 <template>
-  <div class="outer" @click="$emit('click')">
+  <div class="outer pointer" @click="$emit('click')">
     <div class="inner root font-size-18 relative padding-half">
       <div class="bg width-100 height-100" :style="unitImage"></div>
       <div class="absolute-stretch flex flex-center" v-if="!unit && !preview">

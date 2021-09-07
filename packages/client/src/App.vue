@@ -504,7 +504,7 @@ export default {
 }
 
 .vue-notification-group {
-  min-width: ~"max(25vw, 50rem)";
+  min-width: ~"max(25vw, 60rem)";
   max-width: 55vh;
 
   .mobile({min-width: unset; max-width: unset; width: 100%;});
@@ -629,7 +629,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-width: ~"max(25vw, 50rem)";
+  min-width: ~"max(25vw, 60rem)";
   margin: 0 auto;
   // background: @backgroundMainColor;
   // background: linear-gradient(0deg, #371c35 0%, #261034 100%);
@@ -658,7 +658,7 @@ html {
 
   .fourk_screen({font-size: 8px;});
   .mobile({font-size: 6px;});
-  .laptop({font-size: 8px;});
+  .big_retina({font-size: 6px;});
 
   background: @backgroundOutsideColor;
 }

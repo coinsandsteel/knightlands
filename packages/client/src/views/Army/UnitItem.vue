@@ -1,5 +1,5 @@
 <template>
-  <div class="outer unit-item relative" @click="$emit('click', unit)">
+  <div class="outer unit-item relative pointer" @click="$emit('click', unit)">
     <div class="inner relative">
       <template v-if="unit">
         <div class="bg absolute-stretch" :style="unitIcon"></div>

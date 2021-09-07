@@ -2,7 +2,7 @@
   <div class="bg flex flex-center width-100">
     <div class="width-80 flex flex-space-between flex-items-center">
       <span
-        class="nav-arrow left"
+        class="nav-arrow left pointer"
         @click="goToPreviousLegion"
         v-if="totalLegions > 1"
       ></span>
@@ -14,7 +14,7 @@
         <span class="font-size-20 font-weight-900">{{ damage }}</span>
       </div>
       <span
-        class="nav-arrow"
+        class="nav-arrow pointer"
         @click="goToNextLegion"
         v-if="totalLegions > 1"
       ></span>

@@ -17,11 +17,17 @@
     }
 }
 
-.laptop(@rules) {
-    @media only screen and (max-width: 2499px) and (min-width: 1920px) {
-        @rules();
-    }
-}
+// .laptop(@rules) {
+//     @media only screen and (max-width: 1399px) and (min-width: 1280px) {
+//         @rules();
+//     }
+// }
+
+// .laptop(@rules) {
+//    @media (aspect-ratio: 10/16) {
+//         @rules();
+//     }
+// }
 
 .laptop_small(@rules) {
     @media only screen and (max-width: 1024px) and (min-width: 768px) {
@@ -42,7 +48,7 @@
 }
 
 .big_retina(@rules) {
-    @media only screen and (min-resolution: 3dppx) {
+    @media only screen and (max-width: 1399px) and (min-width: 500px) {
         @rules();
     }
 }

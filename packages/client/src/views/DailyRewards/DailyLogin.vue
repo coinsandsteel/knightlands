@@ -5,7 +5,7 @@
         $t("daily-login-desc")
       }}</span>
       <div class="full-flex dummy-height margin-top-2">
-        <div class="width-100" v-bar>
+        <div class="width-100 height-100" v-bar>
           <div class="dummy-height height-100">
             <div class="width-100 login-rewards">
               <DailyReward
