@@ -327,6 +327,7 @@ export default class Army {
   }
 
   removeUnits(ids) {
+    console.log(ids);
     for (const id of ids) {
       const unit = this._vm.units[id];
       if (!unit) {
@@ -341,8 +342,9 @@ export default class Army {
 
       const lastUnit = units[units.length - 1];
       units[unit.idx] = lastUnit;
+      this._vm.$set(units, unit.idx, lastUnit);
       lastUnit.idx = unit.idx;
-      units.splice(unit.idx, 1);
+      units.splice(units.length - 1);
     }
 
     this._doSort(true);
