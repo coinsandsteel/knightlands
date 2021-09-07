@@ -104,7 +104,7 @@ export default {
       return false;
     },
     levelRequired() {
-      return this.leftItem.level * 2;
+      return this.leftItem.level;
     },
     canWear() {
       let level = (this.target || this.$game.character).level;

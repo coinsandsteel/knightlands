@@ -2015,6 +2015,8 @@
     "char": "Character",
     "gen": "Generals",
     "tro": "Troops",
+    "no-e-t": "Nothing to equip",
+    "no-e-m": "I didn't find anything to wear...",
     "other-items": "Inventory items",
     "only-equipped-items": "Equipped items",
     "ch-wal": "Connect Wallet",

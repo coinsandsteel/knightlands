@@ -155,7 +155,7 @@ export default {
       return this.template.action.minLevel;
     },
     levelRequired() {
-      return this.level * 2;
+      return this.level;
     },
     canWear() {
       let level = (this.target || this.$game.character).level;

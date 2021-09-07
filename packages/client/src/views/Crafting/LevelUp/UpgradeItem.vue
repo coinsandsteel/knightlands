@@ -367,7 +367,7 @@ export default {
   },
   computed: {
     nextLevelRequired() {
-      return (this.level + 1) * 2;
+      return this.level + 1;
     },
     canIncreaseMaterial() {
       if (!this.upgradeMaterials[this.selectedMaterial]) {

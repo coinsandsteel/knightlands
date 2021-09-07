@@ -140,7 +140,7 @@ export default {
           if (
             item.equipped ||
             this.unit.items[getSlot(template.equipmentType)] ||
-            item.level * 2 > this.unit.level
+            item.level > this.unit.level
           ) {
             continue;
           }
@@ -149,9 +149,19 @@ export default {
         }
       }
 
-      await this.performRequest(
-        this.$game.unitEquipItem(this.unit.id, itemsToEquip)
-      );
+      if (itemsToEquip.length == 0) {
+        await this.showPrompt(this.$t("no-e-t"), this.$t("no-e-m"), [
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]);
+      } else {
+        await this.performRequest(
+          this.$game.unitEquipItem(this.unit.id, itemsToEquip)
+        );
+      }
     },
     async autoUnequip() {
       await this.performRequest(this.$game.unitUnequipItem(this.unit.id));
