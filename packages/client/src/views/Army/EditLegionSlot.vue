@@ -135,7 +135,9 @@ export default {
       }
 
       this.units = this.$game.army.getUnitsWithFilter(this.isTroops, x => {
-        const isOriginal = x.id == this.originalUnit.id;
+        const isOriginal = this.originalUnit
+          ? x.id == this.originalUnit.id
+          : false;
         return (
           (isOriginal || x.legion == -1) &&
           !exceptUnits[x.id] &&

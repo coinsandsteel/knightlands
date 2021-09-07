@@ -124,6 +124,10 @@ export default {
           }
           item = this.$game.inventory.getItem(item.id);
 
+          if (!item) {
+            continue;
+          }
+
           const template = this.$game.itemsDB.getTemplate(item.template);
           if (this.filter(item, template)) {
             items.push(item);
