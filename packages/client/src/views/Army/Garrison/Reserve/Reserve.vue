@@ -80,6 +80,9 @@ export default {
   created() {
     this.filtersStore = this.$store.getters.getUnitFilters;
   },
+  activated() {
+    this.reset();
+  },
   data: () => ({
     maxUnits: 10,
     request: null,

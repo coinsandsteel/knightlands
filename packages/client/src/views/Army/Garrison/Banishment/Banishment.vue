@@ -79,6 +79,9 @@ export default {
   created() {
     this.filtersStore = this.$store.getters.getUnitFilters;
   },
+  activated() {
+    this.reset();
+  },
   data: () => ({
     request: null,
     tabs: [

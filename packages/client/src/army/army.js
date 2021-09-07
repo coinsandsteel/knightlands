@@ -81,6 +81,10 @@ export default class Army {
   }
 
   estimateDamage(unit) {
+    if (!unit) {
+      return 0;
+    }
+
     this._updateUnitEquipment(unit);
     return this._armyResolver.estimateDamage(
       unit,
@@ -90,6 +94,10 @@ export default class Army {
   }
 
   getDamage(unit, nextLevel, nextStar) {
+    if (!unit) {
+      return 0;
+    }
+
     this._updateUnitEquipment(unit);
     return this._armyResolver.getDamage(unit, nextLevel, nextStar, 0);
   }
@@ -103,7 +111,12 @@ export default class Army {
     const units = {};
     for (let slotId in legion.units) {
       const unitId = legion.units[slotId];
-      units[unitId] = this.getUnit(unitId);
+
+      const unit = this.getUnit(unitId);
+      if (!unit) {
+        continue;
+      }
+      units[unitId] = unit;
       this._updateUnitEquipment(units[unitId]);
     }
     return this._armyResolver.resolve(

@@ -123,7 +123,11 @@ export default {
         if (!this.originalUnit || unitId != this.originalUnit.id) {
           exceptUnits[unitId] = true;
 
-          const template = this.$game.army.getUnit(unitId).template;
+          const unit = this.$game.army.getUnit(unitId);
+          if (!unit) {
+            continue;
+          }
+          const template = unit.template;
           if (!this.originalUnit || template != this.originalUnit.template) {
             exceptTemplates[template] = true;
           }
