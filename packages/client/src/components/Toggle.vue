@@ -1,9 +1,6 @@
 <template>
-  <div
-    class="toggle-container flex flex-center flex-column pointer"
-    @click="toggle"
-  >
-    <span class="font-size-15">
+  <div class="flex flex-center flex-column pointer" @click="toggle">
+    <span class="font-size-18">
       {{ $t(caption) }}
     </span>
 

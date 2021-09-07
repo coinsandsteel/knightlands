@@ -327,7 +327,6 @@ export default class Army {
   }
 
   removeUnits(ids) {
-    console.log(ids);
     for (const id of ids) {
       const unit = this._vm.units[id];
       if (!unit) {

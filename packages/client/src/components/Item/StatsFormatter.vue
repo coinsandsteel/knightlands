@@ -22,7 +22,7 @@ export default {
           break;
       }
 
-      if (stack) {
+      if (stack && count > 0) {
         const max = Math.min(stack, count);
         result += ` ( x${max} = ${this.format(stat, value * max)} )`;
       }

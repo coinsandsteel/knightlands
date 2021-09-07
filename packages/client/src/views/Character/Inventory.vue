@@ -22,11 +22,17 @@
       :getHintButtons="getHintButtons"
     ></ScrollableItemHint>
 
-    <!-- <portal to="footer" :slim="true" v-if="!hideFooter && isActive">
-      <CustomButton type="yellow" @click="goToCraft">{{
+    <portal to="footer" :slim="true" v-if="!hideFooter && isActive">
+      <!-- <CustomButton type="yellow" @click="goToCraft">{{
         $t("btn-craft")
-      }}</CustomButton>
-    </portal> -->
+      }}</CustomButton> -->
+      <Toggle
+        :cb="() => (noEquipped = !noEquipped)"
+        :startValue="noEquipped"
+        caption="t-equipped"
+        class="margin-top-1 margin-bottom-1 compare-font"
+      ></Toggle>
+    </portal>
   </div>
 </template>
 
@@ -38,12 +44,15 @@ import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import ItemActionHandler from "@/components/Item/ItemActionHandler.vue";
 
+import Toggle from "@/components/Toggle.vue";
+
 export default {
   mixins: [ActivityMixin, ItemActionHandler],
   components: {
     AnimatedBackground,
     LootContainer,
-    ScrollableItemHint
+    ScrollableItemHint,
+    Toggle
   },
   props: [
     "hideBg",
@@ -57,11 +66,17 @@ export default {
   data: () => ({
     showHintItems: false,
     showDetails: false,
-    resultItems: []
+    resultItems: [],
+    noEquipped: true
   }),
   computed: {
     computedItems() {
-      return this.items || this.$game.inventory.items;
+      const items = this.items || this.$game.inventory.items;
+      if (this.noEquipped) {
+        return items.filter(x => !x.equipped);
+      }
+
+      return items;
     }
   },
   methods: {
