@@ -115,7 +115,6 @@ export default {
   }),
   methods: {
     goToEquipment() {
-      console.log(this.units.length);
       this.$router.push({
         name: "unit-equip",
         params: { unitId: this.unit.id, units: this.units }

@@ -135,8 +135,11 @@ export default {
       }
 
       this.units = this.$game.army.getUnitsWithFilter(this.isTroops, x => {
+        const isOriginal = x.id == this.originalUnit.id;
         return (
-          x.legion == -1 && !exceptUnits[x.id] && !exceptTemplates[x.template]
+          (isOriginal || x.legion == -1) &&
+          !exceptUnits[x.id] &&
+          !exceptTemplates[x.template]
         );
       });
 

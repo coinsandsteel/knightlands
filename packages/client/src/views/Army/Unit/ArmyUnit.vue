@@ -52,7 +52,6 @@ export default {
       immediate: true,
       handler() {
         this.unit = this.$game.army.getUnit(this.unitId);
-
         if (this.computedUnits) {
           let idx = 0;
           for (const unit of this.computedUnits) {
