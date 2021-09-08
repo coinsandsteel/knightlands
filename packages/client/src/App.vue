@@ -505,7 +505,7 @@ export default {
 
 .vue-notification-group {
   min-width: ~"max(25vw, 60rem)";
-  max-width: 55vh;
+  max-width: ~"max(55vh, 80rem)";
 
   .mobile({min-width: unset; max-width: unset; width: 100%;});
 }
@@ -638,7 +638,7 @@ export default {
   // .laptop_small({width: 60rem;});
   // .laptop({width: 60rem;});
   // width: 60rem;
-  max-width: 55vh;
+  max-width: ~"max(55vh, 80rem)";
 }
 
 .home-link {

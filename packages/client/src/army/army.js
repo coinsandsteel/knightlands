@@ -119,6 +119,7 @@ export default class Army {
       units[unitId] = unit;
       this._updateUnitEquipment(units[unitId]);
     }
+    console.log("get legion damage");
     return this._armyResolver.resolve(
       units,
       this._unitsIndex,
@@ -310,6 +311,8 @@ export default class Army {
         currentUnit.count = newReserve.count;
       }
     }
+
+    this._unitsIndex.update(null, this._vm.reserve);
   }
 
   addUnits(units) {
@@ -322,11 +325,13 @@ export default class Army {
       this._vm.$set(this._vm.units, unit.id, unit);
     }
 
+    this._unitsIndex.update(this._vm.units, null);
     this._doSort(true);
     this._doSort(false);
   }
 
   removeUnits(ids) {
+    const removed = {};
     for (const id of ids) {
       const unit = this._vm.units[id];
       if (!unit) {
@@ -343,9 +348,11 @@ export default class Army {
       units[unit.idx] = lastUnit;
       this._vm.$set(units, unit.idx, lastUnit);
       lastUnit.idx = unit.idx;
+      removed[unit.id] = unit;
       units.splice(units.length - 1);
     }
 
+    this._unitsIndex.update(this._vm.units, null);
     this._doSort(true);
     this._doSort(false);
   }
@@ -381,7 +388,7 @@ export default class Army {
     this._vm.units = unitsDict;
 
     if (!preview) {
-      this._unitsIndex.update(unitsDict);
+      this._unitsIndex.update(unitsDict, this._vm.reserve);
       this._doSort(true);
       this._doSort(false);
     }
