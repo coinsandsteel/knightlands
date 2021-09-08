@@ -2449,10 +2449,14 @@
     "dragon_lord": "dragon lord",
     "bug_originator": "originator",
     "cnrt-normal": "Convert to Normal account",
+    "cnrt-free": "Convert to Free account",
     "acc-free": "Account type: Free",
     "acc-norm": "Account type: Normal",
     "acc-u-t": "Are you sure?",
     "acc-u-d": "You will lose ability to earn FLESH for FREE! And you will lose ALL your current Raid Points!",
+    "acc-u-d2": "You will be able to play for FREE! And you will lose ALL your current Raid Points!",
     "co-acc-u": "I confirm!",
-    "c-acc-u": "Maybe later"
+    "c-acc-u": "Maybe later",
+    "log-discord": "Login with Discord",
+    "acc": "Your account: {m}"
 }

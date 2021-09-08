@@ -82,7 +82,7 @@
               <CustomButton
                 type="grey"
                 @click="goToShop"
-                v-if="isPayed"
+                v-if="isPayed && !$game.isFreeAccount"
                 width="20rem"
               >
                 {{ $t("pur-tickets") }}

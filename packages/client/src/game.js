@@ -23,7 +23,11 @@ import Subscription from "./subscription";
 import Notifications from "./notifications";
 
 import { Magic } from "magic-sdk";
-const magic = new Magic("pk_live_608834B699B14351");
+import { OAuthExtension } from "@magic-ext/oauth";
+
+const magic = new Magic("pk_live_608834B699B14351", {
+  extensions: [new OAuthExtension()]
+});
 
 class Game {
   constructor(store) {
@@ -358,14 +362,6 @@ class Game {
     return !this._vm.accountType;
   }
 
-  set blockchain(value) {
-    this._blockchainClient = value;
-
-    if (this._blockchainClient.isReady()) {
-      this._vm.address = this._blockchainClient.getAddress();
-    }
-  }
-
   on(event, callback) {
     this._vm.$on(event, callback);
   }
@@ -380,13 +376,6 @@ class Game {
 
   isTutorialFinished(id) {
     return this._vm.tutorial[id];
-  }
-
-  shortAccount(address) {
-    if (!address) {
-      address = this.address;
-    }
-    return `${address.substr(0, 4)}...${address.substr(-4)}`;
   }
 
   disconnect() {
@@ -406,8 +395,15 @@ class Game {
   }
 
   async trySignIn() {
-    const didToken = await magic.auth.loginWithCredential();
-    return this._signIn(didToken);
+    const didToken = await magic.oauth.getRedirectResult();
+    return this._signIn(didToken.magic.idToken);
+  }
+
+  async signInWith(provider) {
+    await magic.oauth.loginWithRedirect({
+      provider,
+      redirectURI: window.location.href + "&magic=true"
+    });
   }
 
   async signIn(email, referral) {
@@ -830,7 +826,7 @@ class Game {
       this.mergeObjects(this._vm, this._vm.chests, changes.chests);
     }
 
-    if (changes.accountType) {
+    if (changes.accountType !== undefined) {
       this._vm.accountType = changes.accountType;
     }
 
@@ -939,6 +935,7 @@ class Game {
         this._vm.depositorId = info.depositorId;
         this._vm.raidPoints = info.raidPoints;
         this._vm.accountType = info.accountType;
+        this._vm.address = info.address;
 
         if (info.chests) {
           this.mergeObjects(this._vm, this._vm.chests, info.chests);

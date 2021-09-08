@@ -51,8 +51,13 @@ export default {
         return false;
       }
 
+      const data =
+        this.isFreeRaid || this.$game.isFreeAccount
+          ? this.raidMeta.soloData
+          : this.raidMeta.data;
+
       const hasIngridients = this.$game.crafting.hasEnoughResourcesForRecipe(
-        this.raidData.summonRecipe
+        data.summonRecipe
       );
 
       return hasIngridients && this.levelRequirementMet;

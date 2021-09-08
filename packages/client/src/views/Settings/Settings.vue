@@ -3,6 +3,10 @@
     <div class="screen-background"></div>
 
     <span class="font-size-20 font-weight-900 margin-bottom-5">{{
+      $t("acc", { m: $game.account })
+    }}</span>
+
+    <span class="font-size-20 font-weight-900 margin-bottom-5">{{
       $t("online", { online })
     }}</span>
 

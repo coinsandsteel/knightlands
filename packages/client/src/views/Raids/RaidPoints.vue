@@ -43,14 +43,17 @@
     </div>
 
     <div class="color-panel-2">
-      <span v-if="$game.isFreeAccount">{{ $t("acc-free") }}</span>
+      <span v-if="isFreeAccount">{{ $t("acc-free") }}</span>
       <span v-else>{{ $t("acc-norm") }}</span>
     </div>
 
-    <div class="flex flex-center margin-top-2" v-if="$game.isFreeAccount">
+    <div class="flex flex-center margin-top-2" v-if="isFreeAccount">
       <CustomButton @click="upgradeAccount">{{
         $t("cnrt-normal")
       }}</CustomButton>
+    </div>
+    <div class="flex flex-center margin-top-2" v-else>
+      <CustomButton @click="upgradeAccount">{{ $t("cnrt-free") }}</CustomButton>
     </div>
 
     <div
@@ -68,6 +71,7 @@ import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const PAYOUT_PERIOD = 86400;
 const FLESH_EMISSION = 1000;
@@ -76,7 +80,7 @@ const PRECISION = 10000;
 const FLASH_PRECISION = 1000000;
 
 export default {
-  mixins: [AppSection, PromptMixin],
+  mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
   components: { IconWithValue, CustomButton },
   created() {
     this.title = "w-rp";
@@ -96,6 +100,9 @@ export default {
     }
   },
   computed: {
+    isFreeAccount() {
+      return this.$game.isFreeAccount;
+    },
     dkt() {
       return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
     },
@@ -135,30 +142,42 @@ export default {
       const nextPayout = this.$game.raidPoints.lastClaimed + PAYOUT_PERIOD;
       this.nextPayout.timeLeft = nextPayout - this.$game.nowSec;
 
-      const info = await this.$game.fetchRaidPointsInfo();
-
-      this.updateShares(info);
+      const info = await this.performRequest(this.$game.fetchRaidPointsInfo());
+      this.updateShares(info, this.isFreeAccount);
     },
-    updateShares(data) {
-      this.totalShares = data.totalShares;
-      this.totalPoints = data.totalPoints;
+    updateShares(data, isFree) {
+      if (isFree) {
+        this.totalShares = data.totalFreeShares;
+        this.totalPoints = data.totalFreePoints;
+      } else {
+        this.totalShares = data.totalShares;
+        this.totalPoints = data.totalPoints;
+      }
     },
     async upgradeAccount() {
-      const response = this.showPrompt(this.$t("acc-u-t"), this.$t("acc-u-d"), [
-        {
-          type: "grey",
-          title: this.$t("co-acc-u"),
-          response: true
-        },
-        {
-          type: "red",
-          title: this.$t("c-acc-u"),
-          response: false
-        }
-      ]);
-
+      const free = this.isFreeAccount;
+      const response = await this.showPrompt(
+        this.$t("acc-u-t"),
+        free ? this.$t("acc-u-d") : this.$t("acc-u-d2"),
+        [
+          {
+            type: "grey",
+            title: this.$t("co-acc-u"),
+            response: true
+          },
+          {
+            type: "red",
+            title: this.$t("c-acc-u"),
+            response: false
+          }
+        ]
+      );
       if (response === true) {
-        await this.$game.upgradeAccount();
+        await this.performRequest(this.$game.upgradeAccount());
+        const info = await this.performRequest(
+          this.$game.fetchRaidPointsInfo()
+        );
+        this.updateShares(info, !free);
       }
     }
   }

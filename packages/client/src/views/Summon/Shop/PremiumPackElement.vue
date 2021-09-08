@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-column flex-items-center relative prem-p">
+  <div class="flex flex-column flex-center relative prem-p flex-no-wrap">
     <Title :stackTop="true" :stackBottom="true">{{ $t(pack.title) }}</Title>
     <div class="banner absolute-stretch" :class="`b${idx}`"></div>
     <div class="content width-100 relative full-flex">
       <div class="icon" :style="icon" />
-      <div class="items flex flex-column flex-center">
+      <div class="items flex flex-column flex-center flex-no-wrap">
         <div class="flex flex-center margin-top-2">
           <Loot
             v-for="item in items"
@@ -116,7 +116,7 @@ export default {
 }
 
 .prem-p {
-  height: 40rem;
+  height: 45rem;
 }
 
 .content {

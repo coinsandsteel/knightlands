@@ -18,6 +18,19 @@
     <PromisedButton :promise="request" size="big" @click="signIn">{{
       $t("btn-signin")
     }}</PromisedButton>
+
+    <div class="flex flex-center margin-top-5">
+      <PromisedButton
+        type="grey"
+        :promise="request"
+        size="big"
+        @click="discord"
+      >
+        <div class="flex flex-center">
+          <span class="discord"></span>
+        </div>
+      </PromisedButton>
+    </div>
   </div>
 </template>
 
@@ -43,16 +56,8 @@ export default {
     this.$game.off(this.$game.SignUp, this.cb);
   },
   mounted() {
-    // if (window.location.search.includes("magic_credential")) {
-    //   this.performRequest(this.$game.trySignIn());
-    // } else {
-    //   if (this.$game.authenticated) {
-    //     this.redirectToNextPage();
-    //   }
-    // }
-
-    if (this.$game.authenticated) {
-      this.redirectToNextPage();
+    if (window.location.search.includes("provider")) {
+      this.performRequest(this.$game.trySignIn());
     }
   },
   methods: {
@@ -71,6 +76,15 @@ export default {
       this.request = this.performRequest(
         this.$game.signIn(this.email, this.$route.query.referral)
       );
+
+      try {
+        await this.request;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async discord() {
+      this.request = this.performRequest(this.$game.signInWith("discord"));
 
       try {
         await this.request;
@@ -99,5 +113,13 @@ export default {
   border: none;
   box-shadow: none;
   background-color: #194368;
+}
+
+.discord {
+  background-image: url("../assets/ui/discord.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 3.5rem;
+  width: 3.5rem;
 }
 </style>
