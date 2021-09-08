@@ -395,7 +395,7 @@ export default {
 
       return Math.min(
         this.$game.itemsDB.getMaxLevel(this.item),
-        Math.floor(holderLevel / 2)
+        Math.floor(holderLevel)
       );
     },
     maxLevel() {
