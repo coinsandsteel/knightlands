@@ -68,7 +68,8 @@ class Game {
         depositorId: "",
         towerPurchased: false,
         tutorial: {},
-        raidPoints: {}
+        raidPoints: {},
+        accountType: 0
       })
     });
 
@@ -351,6 +352,10 @@ class Game {
 
   get nowSec() {
     return Math.floor(this.now / 1000);
+  }
+
+  get isFreeAccount() {
+    return !this._vm.accountType;
   }
 
   set blockchain(value) {
@@ -825,6 +830,10 @@ class Game {
       this.mergeObjects(this._vm, this._vm.chests, changes.chests);
     }
 
+    if (changes.accountType) {
+      this._vm.accountType = changes.accountType;
+    }
+
     if (changes.raidPoints) {
       this.mergeObjects(this._vm, this._vm.raidPoints, changes.raidPoints);
     }
@@ -929,6 +938,7 @@ class Game {
         this._vm.purchasedIaps = info.purchasedIaps;
         this._vm.depositorId = info.depositorId;
         this._vm.raidPoints = info.raidPoints;
+        this._vm.accountType = info.accountType;
 
         if (info.chests) {
           this.mergeObjects(this._vm, this._vm.chests, info.chests);
@@ -1152,6 +1162,10 @@ class Game {
       max
     });
     return result.response;
+  }
+
+  async upgradeAccount() {
+    await this._wrapOperation(Operations.UpgradeAccount);
   }
 
   async equipItem(itemId) {

@@ -2447,5 +2447,12 @@
     "gob_reaper": "gob",
     "arcane_slime": "arcane slime",
     "dragon_lord": "dragon lord",
-    "bug_originator": "originator"
+    "bug_originator": "originator",
+    "cnrt-normal": "Convert to Normal account",
+    "acc-free": "Account type: Free",
+    "acc-norm": "Account type: Normal",
+    "acc-u-t": "Are you sure?",
+    "acc-u-d": "You will lose ability to earn FLESH for FREE! And you will lose ALL your current Raid Points!",
+    "co-acc-u": "I confirm!",
+    "c-acc-u": "Maybe later"
 }

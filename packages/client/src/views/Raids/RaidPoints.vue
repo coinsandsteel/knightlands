@@ -42,6 +42,17 @@
       </div>
     </div>
 
+    <div class="color-panel-2">
+      <span v-if="$game.isFreeAccount">{{ $t("acc-free") }}</span>
+      <span v-else>{{ $t("acc-norm") }}</span>
+    </div>
+
+    <div class="flex flex-center margin-top-2" v-if="$game.isFreeAccount">
+      <CustomButton @click="upgradeAccount">{{
+        $t("cnrt-normal")
+      }}</CustomButton>
+    </div>
+
     <div
       class="color-panel-1 margin-top-4 flex flex-column padding-left-1 padding-right-1"
     >
@@ -55,15 +66,18 @@ import CurrencyType from "@/../../knightlands-shared/currency_type";
 import AppSection from "@/AppSection.vue";
 import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
+import CustomButton from "@/components/Button.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 const PAYOUT_PERIOD = 86400;
 const FLESH_EMISSION = 1000;
+const FREE_FLESH_EMISSION = 35;
 const PRECISION = 10000;
 const FLASH_PRECISION = 1000000;
 
 export default {
-  mixins: [AppSection],
-  components: { IconWithValue },
+  mixins: [AppSection, PromptMixin],
+  components: { IconWithValue, CustomButton },
   created() {
     this.title = "w-rp";
   },
@@ -86,7 +100,7 @@ export default {
       return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
     },
     emission() {
-      return FLESH_EMISSION;
+      return this.$game.isFreeAccount ? FREE_FLESH_EMISSION : FLESH_EMISSION;
     },
     score() {
       return Math.floor(this.$game.raidPoints.score * PRECISION) / PRECISION;
@@ -104,7 +118,7 @@ export default {
       return (
         Math.floor(
           (this.$game.raidPoints.shares / this.totalShares) *
-            FLESH_EMISSION *
+            this.emission *
             FLASH_PRECISION
         ) / FLASH_PRECISION
       );
@@ -128,6 +142,24 @@ export default {
     updateShares(data) {
       this.totalShares = data.totalShares;
       this.totalPoints = data.totalPoints;
+    },
+    async upgradeAccount() {
+      const response = this.showPrompt(this.$t("acc-u-t"), this.$t("acc-u-d"), [
+        {
+          type: "grey",
+          title: this.$t("co-acc-u"),
+          response: true
+        },
+        {
+          type: "red",
+          title: this.$t("c-acc-u"),
+          response: false
+        }
+      ]);
+
+      if (response === true) {
+        await this.$game.upgradeAccount();
+      }
     }
   }
 };

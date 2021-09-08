@@ -26,9 +26,12 @@ export default {
         return [];
       }
 
-      return this.$game.crafting.getRecipeIngridients(
-        this.raidData.summonRecipe
-      );
+      const data =
+        this.isFreeRaid || this.$game.isFreeAccount
+          ? this.raidMeta.soloData
+          : this.raidMeta.data;
+
+      return this.$game.crafting.getRecipeIngridients(data.summonRecipe);
     },
     requiredJoinEssences() {
       if (!this.raidData) {
