@@ -20,16 +20,16 @@
     }}</PromisedButton>
 
     <div class="flex flex-center margin-top-5">
-      <PromisedButton
-        type="grey"
-        :promise="request"
-        size="big"
-        @click="discord"
-      >
-        <div class="flex flex-center">
-          <span class="discord"></span>
-        </div>
-      </PromisedButton>
+      <img
+        class="pointer discord"
+        @click="signWith('google')"
+        src="../assets/ui/Discord-Logo-Color.svg"
+      />
+      <img
+        class="pointer"
+        @click="signWith('google')"
+        src="../assets/ui/btn_google_light_normal_ios.svg"
+      />
     </div>
   </div>
 </template>
@@ -83,8 +83,8 @@ export default {
         console.error(e);
       }
     },
-    async discord() {
-      this.request = this.performRequest(this.$game.signInWith("discord"));
+    async signWith(provider) {
+      this.request = this.performRequest(this.$game.signInWith(provider));
 
       try {
         await this.request;
@@ -116,10 +116,10 @@ export default {
 }
 
 .discord {
-  background-image: url("../assets/ui/discord.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 3.5rem;
-  width: 3.5rem;
+  background-color: white;
+  border-radius: 2px;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
 }
 </style>

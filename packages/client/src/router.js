@@ -829,12 +829,15 @@ const router = new Router({
     // },
     {
       path: "/home",
-      alias: "/",
       name: "home",
       component: Home,
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: "/",
+      redirect: "/home"
     },
     {
       path: "/character",
