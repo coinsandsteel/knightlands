@@ -2,7 +2,7 @@
   <div class="outer unit-item relative" @click="$emit('click', unit)">
     <div class="inner relative">
       <template v-if="unit">
-        <div class="bg absolute-stretch" :style="unitImage"></div>
+        <div class="bg absolute-stretch" :style="unitIcon"></div>
         <div class="selected" v-show="selected"></div>
         <div
           class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"

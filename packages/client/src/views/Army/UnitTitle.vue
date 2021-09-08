@@ -11,7 +11,7 @@
           <span v-if="showLevel" class="title-level margin-right-1">{{
             $t("unit-lvl", { lvl: level })
           }}</span>
-          <span>{{ $t(name) }}</span>
+          <span class="capitalize">{{ $t(name) }}</span>
         </div>
       </div>
     </div>

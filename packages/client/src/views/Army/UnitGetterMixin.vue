@@ -154,14 +154,14 @@ export default {
       }
 
       if (ability.troop) {
-        localisationParams.name = this.$game.armyDB.getTemplate(
-          ability.troop
-        ).name;
+        localisationParams.name = this.$t(
+          this.$game.armyDB.getTemplate(ability.troop).name
+        );
       } else {
         if (ability.general) {
-          localisationParams.name = this.$game.armyDB.getTemplate(
-            ability.general
-          ).name;
+          localisationParams.name = this.$t(
+            this.$game.armyDB.getTemplate(ability.general).name
+          );
         }
       }
 
