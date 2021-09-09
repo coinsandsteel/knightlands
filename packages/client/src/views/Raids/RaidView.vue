@@ -200,7 +200,12 @@
                 <span class="margin-right-half">{{ $t("join") }}</span>
               </PromisedButton>
 
-              <CustomButton type="grey" @click="goToShop" width="20rem">
+              <CustomButton
+                type="grey"
+                @click="goToShop"
+                width="20rem"
+                v-if="!$game.isFreeAccount"
+              >
                 {{ $t("pur-tickets") }}
               </CustomButton>
             </div>

@@ -276,6 +276,14 @@ class Game {
     return false;
   }
 
+  set blockchain(value) {
+    this._blockchainClient = value;
+
+    if (this._blockchainClient.isReady()) {
+      this._vm.address = this._blockchainClient.getAddress();
+    }
+  }
+
   walletReady() {
     return this._vm.walletReady;
   }
@@ -935,7 +943,6 @@ class Game {
         this._vm.depositorId = info.depositorId;
         this._vm.raidPoints = info.raidPoints;
         this._vm.accountType = info.accountType;
-        this._vm.address = info.address;
 
         if (info.chests) {
           this.mergeObjects(this._vm, this._vm.chests, info.chests);

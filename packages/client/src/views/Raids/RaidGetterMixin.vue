@@ -38,7 +38,16 @@ export default {
         return [];
       }
 
-      return this.$game.crafting.getRecipeIngridients(this.raidData.joinRecipe);
+      const data =
+        this.isFreeRaid || this.$game.isFreeAccount
+          ? this.raidMeta.soloData
+          : this.raidMeta.data;
+
+      if (this.$game.isFreeAccount) {
+        return this.$game.crafting.getRecipeIngridients(data.summonRecipe);
+      }
+
+      return this.$game.crafting.getRecipeIngridients(data.joinRecipe);
     },
     levelRequirementMet() {
       return this.$game.character.level >= this.raidLevel;
