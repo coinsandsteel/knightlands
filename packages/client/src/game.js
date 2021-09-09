@@ -1257,6 +1257,14 @@ class Game {
     ).response;
   }
 
+  async fetchPlayersFromRaid(raid) {
+    return (
+      await this._wrapOperation(Operations.GetRaidPlayers, {
+        raid
+      })
+    ).response;
+  }
+
   async fetchRaid(raidId) {
     return (
       await this._wrapOperation(Operations.FetchRaidInfo, {

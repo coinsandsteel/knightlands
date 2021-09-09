@@ -112,6 +112,7 @@
               @legion="selectLegion"
               @chart="handleShowChart"
               @challenges="handleShowChallenges"
+              @players="showRaidPlayers"
             />
           </div>
 
@@ -172,14 +173,6 @@
             <div
               class="margin-top-3 flex flex-center width-100 flex-space-around full-flex"
             >
-              <!-- <custom-button
-                v-if="hasChallenges"
-                type="grey"
-                @click="handleShowChallenges"
-              >
-                <span class="icon-challenge"></span>
-              </custom-button> -->
-
               <custom-button type="grey" @click="handleShowRewards">
                 <span class="icon-loot"></span>
               </custom-button>
@@ -320,7 +313,7 @@ const ShowRaidInfo = CreateDialog(
   "isFirst"
 );
 
-const ShowRaidPlayers = CreateDialog(RaidPlayers, "participants");
+const ShowRaidPlayers = CreateDialog(RaidPlayers, "participants", "raidId");
 
 import anime from "animejs/lib/anime.es.js";
 
@@ -351,7 +344,6 @@ export default {
     DamageText,
     CopyButton,
     Challenges: () => import("./Challenges/Challenges.vue"),
-    PromisedButton,
     BossAnimation,
     RaidArmy,
     RaidOptions,
@@ -470,7 +462,7 @@ export default {
   },
   methods: {
     async showRaidPlayers() {
-      // await ShowRaidPlayers(this.raidState.participants);
+      await ShowRaidPlayers(this.raidState.participants, this.raidId);
     },
     getHref() {
       return window.location.href;
@@ -729,6 +721,9 @@ export default {
       if (this.lastDamages.length > MAX_LAST_DAMAGES) {
         this.lastDamages.splice(0, 1);
       }
+
+      this.raidState.participants[data.by] += data.damage;
+
       if (data.by == this.$game.id) {
         // increase current damage
         this.raidState.currentDamage += data.damage;
