@@ -35,7 +35,7 @@ export default {
   }),
   methods: {
     async handlePurchase(iap) {
-      this.$emit("purchase", () => {
+      this.$emit("purchase", async () => {
         return this.$game.purchase(iap);
       });
     }

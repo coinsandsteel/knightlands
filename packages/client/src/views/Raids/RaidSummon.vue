@@ -69,6 +69,18 @@
               $t("no-raid-level", { level: raidLevel })
             }}</span>
 
+            <div
+              class="flex flex-center flex-column margin-top-4 margin-bottom-4 font-size-22"
+            >
+              <p-check
+                class="checkbox margin-bottom-1"
+                name="check"
+                color="warning"
+                v-model="options.public"
+                >{{ $t("is-public") }}</p-check
+              >
+            </div>
+
             <div class="flex flex-center">
               <CustomButton
                 :disabled="!canSummon"
@@ -158,6 +170,10 @@ export default {
       listener: undefined,
       raidStatus: {},
       currentTab: PayedRaid,
+      options: {
+        public: false,
+        allowFree: false
+      },
       tabs: [
         {
           title: PayedRaid,
@@ -246,7 +262,7 @@ export default {
     },
     async confirmSummon() {
       const data = await this.performRequest(
-        this.$game.summonRaid(this.raid, this.isFreeRaid)
+        this.$game.summonRaid(this.raid, this.isFreeRaid, this.options)
       );
       this.$router.push({
         name: "view-raid",

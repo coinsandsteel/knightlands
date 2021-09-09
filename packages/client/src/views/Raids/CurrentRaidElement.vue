@@ -5,7 +5,9 @@
     >
 
     <div class="flex full-flex width-100">
-      <div class="flex-basis-50 relative flex flex-column flex-no-wrap">
+      <div
+        class="flex-basis-50 relative flex flex-column flex-no-wrap font-outline font-weight-900"
+      >
         <div class="current-raid-image full-flex" :style="raidImage"></div>
         <div class="weakness flex flex-column" v-if="!isFreeRaid">
           <IconWithValue :iconClass="`icon-${weakness.element}`">{{
@@ -34,20 +36,20 @@
         class="flex-basis-50 flex flex-column flex-item-center flex-end"
         v-if="!finished"
       >
-        <span
-          class="font-size-18 margin-bottom-1 font-outline"
-          v-if="!isFreeRaid"
-          >{{ $t("raid_slots", { s: slots, m: maxSlots }) }}</span
-        >
-        <span>{{ $t("") }}</span>
-
+        <span class="font-size-20 margin-bottom-1" v-if="!isFreeRaid">{{
+          $t("raid_slots", { s: slots, m: maxSlots })
+        }}</span>
         <span class="font-size-20">
           {{ $t("time-left") }}
           <span class="enemy-title-font">{{ timer.value }}</span>
         </span>
-        <custom-button class="margin-top-half" type="grey" @click="viewRaid">{{
-          $t("continue")
-        }}</custom-button>
+        <custom-button
+          class="margin-top-half"
+          type="grey"
+          @click="viewRaid"
+          minWidth="20rem"
+          >{{ join ? $t("join") : $t("continue") }}</custom-button
+        >
       </div>
 
       <div
@@ -78,7 +80,7 @@ import RaidGetterMixin from "./RaidGetterMixin.vue";
 const ShowReward = CreateDialog(ClaimedReward, "rewards", "raidTemplateId");
 
 export default {
-  props: ["raidState"],
+  props: ["raidState", "join"],
   mixins: [RaidGetterMixin],
   components: { CustomButton, IconWithValue, ProgressBar, Title },
   data: () => ({
@@ -136,7 +138,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@panelHeight: 24rem;
+@panelHeight: 200px;
 
 .current-raid-cell {
   height: @panelHeight;

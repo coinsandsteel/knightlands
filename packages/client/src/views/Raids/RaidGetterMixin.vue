@@ -55,6 +55,13 @@ export default {
     raidLoot() {
       return this.isFreeRaid ? this.raidData.freeLoot : this.raidData.paidLoot;
     },
+    canJoin() {
+      const hasIngridients = this.$game.crafting.hasEnoughIngridients(
+        this.requiredJoinEssences
+      );
+
+      return hasIngridients && this.levelRequirementMet;
+    },
     canSummon() {
       if (!this.raidData) {
         return false;

@@ -2458,5 +2458,9 @@
     "co-acc-u": "I confirm!",
     "c-acc-u": "Maybe later",
     "log-discord": "Login with Discord",
-    "acc": "Your account: {m}"
+    "acc": "Your account: {m}",
+    "is-public": "Show in public list",
+    "pub-raids": "Public Raids",
+    "your-raids": "Your Raids",
+    "raid-pl": "Raid Players"
 }

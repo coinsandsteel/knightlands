@@ -932,8 +932,19 @@ const router = new Router({
         },
         {
           path: "",
-          name: "raids",
-          component: CurrentRaids
+          component: () => import("./views/Raids/RaidList.vue"),
+          children: [
+            {
+              path: "",
+              name: "raids",
+              component: CurrentRaids
+            },
+            {
+              path: "public",
+              name: "pub-raids",
+              component: () => import("./views/Raids/PublicRaids.vue")
+            }
+          ]
         }
       ]
     },

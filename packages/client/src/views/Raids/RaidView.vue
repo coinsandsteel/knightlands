@@ -154,23 +154,31 @@
 
           <!--NOT IN RAID YET-->
           <div class="flex flex-column flex-center" v-else-if="!isFreeRaid">
-            <div class="color-panel-2">
+            <div class="color-panel-2 flex flex-center flex-column">
               <span class="font-size-20">
                 {{ $t("time-left") }}
                 <span class="enemy-title-font">{{ timer.value }}</span>
               </span>
+
+              <CustomButton
+                class="font-size-18 margin-bottom-1 margin-top-2"
+                type="grey"
+                v-if="!isFreeRaid"
+                @click="showRaidPlayers"
+                >{{ $t("raid_slots", { s: slots, m: maxSlots }) }}</CustomButton
+              >
             </div>
 
             <div
               class="margin-top-3 flex flex-center width-100 flex-space-around full-flex"
             >
-              <custom-button
+              <!-- <custom-button
                 v-if="hasChallenges"
                 type="grey"
                 @click="handleShowChallenges"
               >
                 <span class="icon-challenge"></span>
-              </custom-button>
+              </custom-button> -->
 
               <custom-button type="grey" @click="handleShowRewards">
                 <span class="icon-loot"></span>
@@ -195,10 +203,19 @@
               </div>
             </div>
 
+            <span v-if="!levelRequirementMet" class="font-error font-size-18">{{
+              $t("no-raid-level", { level: raidLevel })
+            }}</span>
+
             <div class="flex flex-center">
-              <PromisedButton width="20rem" type="yellow" @click="join">
+              <CustomButton
+                width="20rem"
+                type="yellow"
+                @click="join"
+                :disabled="!canJoin"
+              >
                 <span class="margin-right-half">{{ $t("join") }}</span>
-              </PromisedButton>
+              </CustomButton>
 
               <CustomButton
                 type="grey"
@@ -284,6 +301,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
 import RaidInfo from "./RaidInfo.vue";
+import RaidPlayers from "./RaidPlayers.vue";
 
 const ShowRewards = CreateDialog(
   Rewards,
@@ -301,6 +319,8 @@ const ShowRaidInfo = CreateDialog(
   "dktFactor",
   "isFirst"
 );
+
+const ShowRaidPlayers = CreateDialog(RaidPlayers, "participants");
 
 import anime from "animejs/lib/anime.es.js";
 
@@ -449,6 +469,9 @@ export default {
     }
   },
   methods: {
+    async showRaidPlayers() {
+      // await ShowRaidPlayers(this.raidState.participants);
+    },
     getHref() {
       return window.location.href;
     },

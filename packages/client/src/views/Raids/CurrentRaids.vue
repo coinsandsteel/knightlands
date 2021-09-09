@@ -28,57 +28,35 @@
           }}</CustomButton>
         </div>
       </div>
-
-      <portal to="footer" v-if="isActive">
-        <CustomButton type="grey" @click="goToRp"
-          ><IconWithValue iconClass="icon-rp">{{
-            $t("b-rp")
-          }}</IconWithValue></CustomButton
-        >
-        <CustomButton type="yellow" @click="summonRaid" id="btn-summon">{{
-          $t("btn-summon")
-        }}</CustomButton>
-      </portal>
     </template>
   </Promised>
 </template>
 
 <script>
-import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import CurrentRaidElement from "./CurrentRaidElement.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
+  mixins: [ActivityMixin],
   name: "current-raids",
-  mixins: [AppSection],
   components: {
     CurrentRaidElement,
     Promised,
     LoadingScreen,
-    CustomButton,
-    IconWithValue
+    CustomButton
   },
   data: () => ({
     raids: [],
     request: null
   }),
-  mounted() {
-    this.fetchRaids();
-  },
-  created() {
-    this.title = "Raids";
-  },
   activated() {
     // refresh raids list
     this.fetchRaids();
   },
   methods: {
-    goToRp() {
-      this.$router.push({ name: "raid-points" });
-    },
     async fetchRaids() {
       this.request = this.$game.fetchCurrentRaids();
 
@@ -88,11 +66,11 @@ export default {
         console.error(e);
       }
     },
-    summonRaid() {
-      this.$router.push({ name: "raids-for-summon" });
-    },
     handleRaidClaimed(raidIndex) {
       this.raids.splice(raidIndex, 1);
+    },
+    summonRaid() {
+      this.$router.push({ name: "raids-for-summon" });
     }
   }
 };

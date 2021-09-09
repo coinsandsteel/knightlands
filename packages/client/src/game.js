@@ -1265,11 +1265,12 @@ class Game {
     ).response;
   }
 
-  async summonRaid(raid, free) {
+  async summonRaid(raid, free, options) {
     return (
       await this._wrapOperation(Operations.SummonRaid, {
         raid,
-        free
+        free,
+        options
       })
     ).response;
   }
@@ -1280,6 +1281,11 @@ class Game {
         raidId
       })
     ).response;
+  }
+
+  async fetchPublicRaids(page) {
+    return (await this._wrapOperation(Operations.GetPublicRaids, { page }))
+      .response;
   }
 
   // Crafting
