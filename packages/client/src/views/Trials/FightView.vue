@@ -50,16 +50,29 @@
         >{{$t("continue")}}</PromisedButton>
       </div>-->
 
-        <div class="flex margin-top-2 flex-center width-100 flex-space-evenly">
-          <AttackButton :promise="request" @click="attack" type="red">{{
-            $t("btn-attack")
-          }}</AttackButton>
+        <div class="flex margin-top-3 flex-center width-100 flex-space-evenly">
+          <AttackButton
+            :promise="request"
+            @click="start"
+            type="yellow"
+            width="15rem"
+            >{{ $t("btn-attack") }}</AttackButton
+          >
+
+          <PromisedButton
+            @click="stop"
+            type="red"
+            width="15rem"
+            :disabled="paused"
+            >{{ $t("q-prog-m") }}</PromisedButton
+          >
 
           <PromisedButton
             :promise="request"
             :disabled="!enoughManaToSummon"
             @click="summonCards"
             type="blue"
+            minWidth="15rem"
             >{{ $t("btn-summon-trial-cards") }}</PromisedButton
           >
 
@@ -131,7 +144,8 @@ export default {
     enemyHealth: 0,
     playerHealth: 0,
     cards: null,
-    additionalFightMeta: null
+    additionalFightMeta: null,
+    paused: true
   }),
   computed: {
     background() {
@@ -177,8 +191,46 @@ export default {
     this.additionalFightMeta = null;
     this.fetchRemoteData();
   },
+  deactivated() {
+    this.stop();
+  },
   methods: {
+    start() {
+      if (!this.paused) {
+        return;
+      }
+
+      this.paused = false;
+      if (!this._autoCombat) {
+        this.autoCombat();
+      }
+    },
+    stop() {
+      if (this.paused) {
+        return;
+      }
+
+      this.paused = true;
+    },
+    async autoCombat() {
+      if (this.paused) {
+        this._autoCombat = null;
+        return;
+      }
+
+      await this.attack();
+
+      if (this.enemyHealth <= 0 || this.playerHealth <= 0) {
+        this._autoCombat = null;
+        return;
+      }
+
+      this._autoCombat = setTimeout(() => {
+        this.autoCombat();
+      }, 500);
+    },
     async summonCards() {
+      this.stop();
       this.request = this.performRequest(
         this.$game.summonTrialCards(this.trialType)
       );

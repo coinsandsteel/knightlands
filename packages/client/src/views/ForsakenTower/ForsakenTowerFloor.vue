@@ -59,9 +59,13 @@
             >{{ $t("btn-attack") }}</AttackButton
           >
 
-          <PromisedButton @click="stop" width="15rem" type="red">{{
-            $t("q-prog-m")
-          }}</PromisedButton>
+          <PromisedButton
+            @click="stop"
+            width="15rem"
+            type="red"
+            :disabled="paused"
+            >{{ $t("q-prog-m") }}</PromisedButton
+          >
 
           <PromisedButton @click="cancel" width="15rem" type="grey">{{
             $t("btn-leave")
