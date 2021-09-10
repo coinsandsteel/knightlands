@@ -419,7 +419,7 @@ export default {
       return Object.keys(this.raidState.challenges).length > 0;
     },
     slots() {
-      return this.raidState.busySlots;
+      return Object.keys(this.raidState.participants).length;
     },
     participant() {
       if (!this.raidState) {

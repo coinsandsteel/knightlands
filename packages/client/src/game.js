@@ -127,7 +127,7 @@ class Game {
       this._handleRaidJoinStatus.bind(this)
     );
     this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
-    this.racesChannel = this.createChannel(Events.RaceFinished, false);
+    this.racesChannel = this.createChannel(Events.RaceFinished, true);
     this.racesChannel.watch(this._handleRaceFinished.bind(this));
 
     this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));

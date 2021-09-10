@@ -22,7 +22,7 @@
     <div class="flex flex-center margin-top-5">
       <img
         class="pointer discord"
-        @click="signWith('google')"
+        @click="signWith('discord')"
         src="../assets/ui/Discord-Logo-Color.svg"
       />
       <img

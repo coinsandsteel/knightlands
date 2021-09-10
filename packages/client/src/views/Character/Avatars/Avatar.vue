@@ -1,6 +1,6 @@
 <template>
   <img
-    class="heroImage"
+    class="heroImage pointer"
     :class="{ mini }"
     @click="changeAvatar"
     :src="activeAvatar"

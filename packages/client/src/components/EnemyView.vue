@@ -4,7 +4,7 @@
     :style="backgroundImage"
   >
     <div class="enemy-name">
-      <span class="font-size-30 enemy-title-font font-outline">{{
+      <span class="font-size-30 enemy-title-font font-outline capitalize">{{
         $t(name)
       }}</span>
     </div>

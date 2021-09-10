@@ -7,15 +7,17 @@
             v-if="timer.timeLeft > 0"
             class="flex width-100 flex-space-evenly font-size-20 green-title margin-top-2 margin-bottom-2"
           >
-            <span>{{$t("buff-timer-left")}}</span>
-            <span>{{timer.value}}</span>
+            <span>{{ $t("buff-timer-left") }}</span>
+            <span>{{ timer.value }}</span>
           </div>
         </template>
       </ItemInfo>
     </template>
 
     <template v-if="hasItem" v-slot:footer>
-      <CustomButton type="yellow" @click="use">{{$t("btn-use")}}</CustomButton>
+      <CustomButton type="yellow" @click="use">{{
+        $t("btn-use")
+      }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -46,7 +48,8 @@ export default {
   computed: {
     hasItem() {
       return (
-        this.item || this.$game.inventory.getItemByTemplate(this.buff.template).id != -1
+        this.item ||
+        this.$game.inventory.getItemByTemplate(this.buff.template).id != -1
       );
     },
     itemData() {
