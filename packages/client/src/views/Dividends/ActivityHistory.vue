@@ -13,6 +13,7 @@
           :date="entry.date"
           :chain="entry.chain"
           :pending="entry.data.pending"
+          :cancelled="entry.cancelled"
           :odd="idx % 2 == 0"
         ></component>
       </div>
@@ -39,7 +40,16 @@ export default {
     this.title = "w-divs-w";
     this.$options.useRouterBack = true;
     this._handler = async data => {
-      this.history.find(entry => entry._id == data.id).data.pending = false;
+      const record = this.history.find(
+        entry => entry._id == data.id || entry._id == data.cancelled
+      );
+      if (record) {
+        if (data.cancelled) {
+          this.$set(record, "cancelled", true);
+        } else {
+          record.data.pending = false;
+        }
+      }
     };
   },
   data: () => ({

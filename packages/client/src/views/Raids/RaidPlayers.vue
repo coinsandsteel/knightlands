@@ -11,6 +11,7 @@
         >
           <!-- <span :class="rankIcon" class="flex-1"></span> -->
           <span class="flex-1">#{{ index + 1 }}</span>
+          <span class="flex-1">{{ $t("level", { lvl: player.level }) }}</span>
           <Avatar :preview="true" :avatar="player.avatar" :mini="true"></Avatar>
           <span class="flex-4">{{ player.name }}</span>
           <span class="flex-3">{{ player.damage }}</span>

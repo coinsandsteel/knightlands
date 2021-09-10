@@ -1490,6 +1490,18 @@ class Game {
   }
 
   // Dividends
+  async cancelTokenWithdrawal(id) {
+    return (
+      await this._wrapOperation(Operations.CancelAsset, { type: "token-w", id })
+    ).response;
+  }
+
+  async cancelDivsWithdrawal(id) {
+    return (
+      await this._wrapOperation(Operations.CancelAsset, { type: "divs-w", id })
+    ).response;
+  }
+
   async upgradeDktMining() {
     return (await this._wrapOperation(Operations.DivsMineUpgrade)).response;
   }

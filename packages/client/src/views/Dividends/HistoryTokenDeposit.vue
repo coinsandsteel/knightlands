@@ -32,11 +32,12 @@ import BlockchainUtilsMixin from "./BlockchainUtilsMixin";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import WalletMixin from "@/components/WalletMixin.vue";
+import CustomButton from "@/components/Button.vue";
 
 export default {
   mixins: [BlockchainUtilsMixin, NetworkRequestErrorMixin, WalletMixin],
   props: ["data", "odd", "id", "date", "pending"],
-  components: { IconWithValue },
+  components: { IconWithValue, CustomButton },
   computed: {
     amount() {
       return this.toDecimal(this.data.blockchainId, this.data.amount);

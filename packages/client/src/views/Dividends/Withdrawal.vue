@@ -118,7 +118,7 @@ export default {
       );
     },
     noAmount() {
-      return !/^((0(\.\d{1,18})?)|([1-9]\d*(\.\d{1,18})?))$/.test(this.amount);
+      return !/^((0(\.\d{1,6})?)|([1-9]\d*(\.\d{1,6})?))$/.test(this.amount);
     }
   },
   methods: {
@@ -137,6 +137,7 @@ export default {
           withdrawal._id,
           withdrawal.amount,
           withdrawal.nonce,
+          withdrawal.deadline,
           withdrawal.signature
         )
       );

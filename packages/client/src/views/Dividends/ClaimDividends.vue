@@ -129,6 +129,7 @@ export default {
           divs._id,
           divs.data.amount,
           divs.data.nonce,
+          divs.data.deadline,
           divs.data.signature
         )
       );
@@ -161,6 +162,7 @@ export default {
               data._id,
               data.amount,
               data.nonce,
+              data.deadline,
               data.signature
             )
           );

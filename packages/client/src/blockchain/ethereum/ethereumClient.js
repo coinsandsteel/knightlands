@@ -96,10 +96,23 @@ export default class EthereumClient extends BlockchainClient {
       });
   }
 
-  async finishDividendsWithdrawal(withdrawalId, amount, nonce, signature) {
+  async finishDividendsWithdrawal(
+    withdrawalId,
+    amount,
+    nonce,
+    deadline,
+    signature
+  ) {
     await this._paymentContract
       .connect(this._provider.getSigner())
-      .withdrawDivs(this.getAddress(), withdrawalId, amount, nonce, signature);
+      .withdrawDivs(
+        this.getAddress(),
+        withdrawalId,
+        amount,
+        nonce,
+        deadline,
+        signature
+      );
   }
 
   async getTokenBalance(type) {
@@ -127,10 +140,24 @@ export default class EthereumClient extends BlockchainClient {
     return this._tokens[type].address;
   }
 
-  async finishTokenWithdrawal(type, withdrawalId, amount, nonce, signature) {
+  async finishTokenWithdrawal(
+    type,
+    withdrawalId,
+    amount,
+    nonce,
+    deadline,
+    signature
+  ) {
     await this._tokens[type]
       .connect(this._provider.getSigner())
-      .mint(this.getAddress(), amount, nonce, withdrawalId, signature);
+      .mintWithSignature(
+        this.getAddress(),
+        amount,
+        nonce,
+        deadline,
+        withdrawalId,
+        signature
+      );
   }
 
   async depositTokens(type, to, depositorId, amount) {
