@@ -20,7 +20,7 @@ export default {
   props: {
     cooldown: {
       type: Number,
-      default: 600
+      default: 500
     },
     noSound: {
       type: Boolean,
@@ -45,7 +45,7 @@ export default {
         targets: this.$refs.overlay,
         left: "100%",
         duration: this.cooldown,
-        easing: "easeInCirc"
+        easing: "easeOutQuint"
       });
 
       this._cooldownTimer = setTimeout(() => {

@@ -142,12 +142,14 @@
         <div v-else-if="progress.current >= progress.max">
           <CustomButton
             type="yellow"
+            minWidth="20rem"
             @click="goToNextMission"
             v-if="!isBoss || (isBoss && isLastMission && !isLastZone)"
             >{{ $t("btn-next-quest") }}</CustomButton
           >
           <CustomButton
             type="yellow"
+            minWidth="20rem"
             @click="nextDifficulty"
             v-else-if="isBoss && isLastZone && hasNextZone"
             >{{ $t("btn-next-diff") }}</CustomButton
@@ -160,16 +162,19 @@
         <div v-else class="flex flex-center width-100 flex-space-evenly">
           <AttackButton
             :promise="request"
+            minWidth="20rem"
+            type="yellow"
             :noSound:="true"
-            @click="engage(false)"
+            @click="start"
             id="engage-q"
-            >{{ isBoss ? $t("q-att-s") : $t("q-prog-s") }}</AttackButton
+            >{{ $t("q-prog-s") }}</AttackButton
           >
           <PromisedButton
+            minWidth="20rem"
             :promise="request"
-            :locked="!hasFastQuests"
-            @click="engage(true)"
-            >{{ isBoss ? $t("q-att-m") : $t("q-prog-m") }}</PromisedButton
+            :disabled="paused"
+            @click="stop"
+            >{{ $t("q-prog-m") }}</PromisedButton
           >
         </div>
       </div>
@@ -241,12 +246,12 @@ export default {
       request: null,
       playerDamages: [],
       newRewards: [],
-      sliderIndex: 0
+      sliderIndex: 0,
+      paused: true
     };
   },
   mounted() {
     this.damageTextId = 0;
-
     this.sliderIndex = +this.questIndex;
   },
   activated() {
@@ -258,10 +263,12 @@ export default {
     this.rewards = [];
     this.newRewards = [];
     this.lootHash = {};
+    this.stop();
   },
   watch: {
     questIndex() {
       this.sliderIndex = +this.questIndex;
+      this.start();
     }
   },
   computed: {
@@ -327,6 +334,34 @@ export default {
     }
   },
   methods: {
+    start() {
+      if (!this.paused) {
+        return;
+      }
+
+      this.paused = false;
+      if (!this._autoCombat) {
+        this.autoCombat();
+      }
+    },
+    stop() {
+      if (this.paused) {
+        return;
+      }
+
+      this.paused = true;
+    },
+    async autoCombat() {
+      if (this.paused) {
+        this._autoCombat = null;
+        return;
+      }
+
+      await this.engage(this.hasFastQuests);
+      this._autoCombat = setTimeout(() => {
+        this.autoCombat();
+      }, 500);
+    },
     nextDifficulty() {
       this.$emit("nextDifficulty");
     },
@@ -378,9 +413,9 @@ export default {
     enemyImage(questIndex) {
       return Zones.getEnemyImage(this.zone._id, questIndex);
     },
-    async engage(max, boss) {
+    async engage() {
       this.request = this.performRequestNoCatch(
-        this.$game.engageQuest(this.zone._id * 1, this.questIndex * 1, max)
+        this.$game.engageQuest(this.zone._id * 1, this.questIndex * 1)
       );
       try {
         let { damages, items } = await this.request;
@@ -422,6 +457,7 @@ export default {
       }
     },
     async _handleQuestError(error) {
+      this.stop();
       switch (error) {
         case Errors.NoHealth:
           await ShowResourceRefill(Stat.Health);

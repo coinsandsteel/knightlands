@@ -27,7 +27,7 @@
     <keep-alive>
       <div class="height-100" v-if="zone" v-bar>
         <div class="height-100">
-          <keep-alive exclude="quest-mission">
+          <keep-alive>
             <quest-mission
               class="quest-view flex-no-wrap"
               v-if="showQuest"
