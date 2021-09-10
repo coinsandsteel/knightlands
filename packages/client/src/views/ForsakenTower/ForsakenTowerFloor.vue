@@ -49,23 +49,23 @@
 
         <div
           v-else-if="!finished"
-          class="flex margin-top-2 flex-center width-100 flex-space-evenly"
+          class="flex margin-top-3 flex-center width-100 flex-space-evenly"
         >
           <AttackButton
             :promise="request"
-            @click="attack"
+            @click="start"
             width="15rem"
             type="yellow"
             >{{ $t("btn-attack") }}</AttackButton
           >
 
-          <PromisedButton
-            :promise="request"
-            @click="cancel"
-            width="15rem"
-            type="red"
-            >{{ $t("btn-cancel") }}</PromisedButton
-          >
+          <PromisedButton @click="stop" width="15rem" type="red">{{
+            $t("q-prog-m")
+          }}</PromisedButton>
+
+          <PromisedButton @click="cancel" width="15rem" type="grey">{{
+            $t("btn-leave")
+          }}</PromisedButton>
         </div>
 
         <div v-else class="flex margin-top-2 width-100 flex-center">
@@ -92,6 +92,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import UiConstants from "@/ui_constants";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Title from "@/components/Title.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import { create } from "vue-modal-dialogs";
 import ClaimedReward from "./ClaimedReward.vue";
@@ -99,7 +100,7 @@ import ClaimedReward from "./ClaimedReward.vue";
 const ShowRewards = create(ClaimedReward, "rewards", "raidTemplateId");
 
 export default {
-  mixins: [PromptMixin],
+  mixins: [PromptMixin, NetworkRequestErrorMixin],
   props: ["floor"],
   components: {
     EnemyView,
@@ -113,7 +114,8 @@ export default {
     request: null,
     barThreshold: UiConstants.progressThresholds,
     enemyHealth: 0,
-    playerHealth: 0
+    playerHealth: 0,
+    paused: true
   }),
   watch: {
     floor() {
@@ -122,6 +124,9 @@ export default {
   },
   activated() {
     this.setHealth();
+  },
+  deactivated() {
+    this.stop();
   },
   mounted() {
     this.setHealth();
@@ -141,6 +146,40 @@ export default {
     }
   },
   methods: {
+    start() {
+      if (!this.paused) {
+        return;
+      }
+
+      this.paused = false;
+      if (!this._autoCombat) {
+        this.autoCombat();
+      }
+    },
+    stop() {
+      if (this.paused) {
+        return;
+      }
+
+      this.paused = true;
+    },
+    async autoCombat() {
+      if (this.paused) {
+        this._autoCombat = null;
+        return;
+      }
+
+      await this.attack();
+
+      if (this.lost || this.finished) {
+        this._autoCombat = null;
+        return;
+      }
+
+      this._autoCombat = setTimeout(() => {
+        this.autoCombat();
+      }, 500);
+    },
     setHealth() {
       this.enemyHealth = this.floor.health;
       this.playerHealth = this.floor.userHealth;
@@ -155,7 +194,7 @@ export default {
       }
     },
     async attack() {
-      this.request = await this.$game.attackTowerFloor();
+      this.request = await this.performRequest(this.$game.attackTowerFloor());
 
       const attackResult = await this.request;
       this.$refs.floatingText.addFloatingText(
@@ -167,7 +206,8 @@ export default {
       this.playerHealth = attackResult.playerHealth;
     },
     async cancel() {
-      await this.$game.cancelTowerFloor();
+      this.stop();
+      await this.performRequest(this.$game.cancelTowerFloor());
       this.close(true);
     },
     close(cancelled) {

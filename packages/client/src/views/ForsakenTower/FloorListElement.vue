@@ -45,6 +45,7 @@
             :disabled="locked"
             class="btn"
             type="yellow"
+            minWidth="20rem"
             @click="$emit('challenge', floor._id)"
             >{{ $t("tower-challenge") }}</CustomButton
           >

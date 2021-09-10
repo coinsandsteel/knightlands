@@ -2464,5 +2464,6 @@
     "your-raids": "Your Raids",
     "raid-pl": "Raid Players",
     "tx-cancel": "Cancelled",
-    "tx-canceli": "Can be cancelled in: {timer}"
+    "tx-canceli": "Can be cancelled in: {timer}",
+    "btn-leave": "Leave"
 }

@@ -357,7 +357,7 @@ export default {
         return;
       }
 
-      await this.engage(this.hasFastQuests);
+      await this.engage();
       this._autoCombat = setTimeout(() => {
         this.autoCombat();
       }, 500);
