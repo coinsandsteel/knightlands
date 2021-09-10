@@ -35,6 +35,13 @@
       caption="get-refer"
     ></CopyButton> -->
 
+    <CopyButton
+      class="margin-top-5"
+      type="yellow"
+      :data="$game.id"
+      caption="acc-id"
+    ></CopyButton>
+
     <CustomButton type="grey" class="margin-top-3" @click="logout">{{
       $t("logout")
     }}</CustomButton>
@@ -48,6 +55,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
+import CopyButton from "@/components/CopyButton.vue";
 import { mapState } from "vuex";
 
 let switchInProgress = false;
@@ -57,7 +65,7 @@ export default {
   created() {
     this.title = "w-settings";
   },
-  components: { CustomButton },
+  components: { CustomButton, CopyButton },
   data: () => ({
     music: true,
     sounds: true,

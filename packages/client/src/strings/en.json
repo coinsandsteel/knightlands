@@ -1964,7 +1964,7 @@
     "sub-8": "<span class='whitespace-prewrap'>Initial reward </span> <span class='icon-premium medium'></span><span class='whitespace-prewrap'> {c}</span>",
     "sub-9": "<span class='whitespace-prewrap'>Daily reward </span> <span class='icon-premium medium'></span><span class='whitespace-prewrap'> {c}</span>",
     "sub-10": "<span class='whitespace-prewrap'>Total </span> <span class='icon-premium medium'></span><span class='whitespace-prewrap'> {c}</span>",
-    "sub-11": "Quests MAX continue",
+    "sub-11": "Quests speed x3",
     "p_mega_1": "Potion Mega Pack",
     "lev_pack_1": "Leveling Pack",
     "b_pack_limited": "Beginner Pack 1",
@@ -2465,5 +2465,6 @@
     "raid-pl": "Raid Players",
     "tx-cancel": "Cancelled",
     "tx-canceli": "Can be cancelled in: {timer}",
-    "btn-leave": "Leave"
+    "btn-leave": "Leave",
+    "acc-id": "Copy account ID"
 }
