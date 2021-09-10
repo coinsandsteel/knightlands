@@ -54,22 +54,22 @@ export default {
     handlePaymentFailed(iap, context) {},
     async purchaseRequest(purchaseRequest) {
       let response = await purchaseRequest;
-      let { signature, price, iap, paymentId, nonce, timestamp } = response;
+      let { signature, price, iap, paymentId, nonce, deadline } = response;
       if (signature && price && iap && paymentId) {
-        await this.purchase(signature, price, iap, paymentId, nonce, timestamp);
+        await this.purchase(signature, price, iap, paymentId, nonce, deadline);
       } else {
         return response;
       }
     },
     async beforePurchase() {},
-    async purchase(signature, price, iap, paymentId, nonce, timestamp) {
+    async purchase(signature, price, iap, paymentId, nonce, deadline) {
       try {
         await this.$game.purchaseIAP(
           iap,
           paymentId,
           price,
           nonce,
-          timestamp,
+          deadline,
           signature
         );
       } catch (exc) {
@@ -96,12 +96,12 @@ export default {
         iap,
         paymentId,
         nonce,
-        timestamp,
+        deadline,
         chain
       } = paymentStatus;
       const result = await ShowWallet(chain);
       if (result) {
-        await this.purchase(signature, price, iap, paymentId, nonce, timestamp);
+        await this.purchase(signature, price, iap, paymentId, nonce, deadline);
       }
     },
     async cancelPurchase(paymentStatus) {

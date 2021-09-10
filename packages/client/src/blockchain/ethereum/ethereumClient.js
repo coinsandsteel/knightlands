@@ -87,12 +87,13 @@ export default class EthereumClient extends BlockchainClient {
     this._inited = true;
   }
 
-  async purchaseIAP(iap, paymentId, price, nonce, timestamp, signature) {
+  async purchaseIAP(iap, paymentId, price, nonce, deadline, signature) {
+    console.log(iap, paymentId, price, nonce, deadline);
     return await this._paymentContract
       .connect(this._provider.getSigner())
-      .purchase(iap, paymentId, price, nonce, timestamp, signature, {
+      .purchase(iap, paymentId, price, nonce, deadline, signature, {
         value: ethers.BigNumber.from(price),
-        gasLimit: 100000
+        gasLimit: 200000
       });
   }
 
