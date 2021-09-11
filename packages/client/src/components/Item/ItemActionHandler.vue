@@ -46,7 +46,10 @@ export default {
           break;
 
         case ItemActions.Use:
-          this.request = this.$game.useItem(item.id);
+          {
+            const count = args[0] || 1;
+            this.request = this.$game.useItem(item.id, count);
+          }
           break;
 
         case ItemActions.OpenBox:

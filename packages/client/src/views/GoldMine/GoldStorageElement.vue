@@ -67,6 +67,7 @@ export default {
     "$game.goldMines": {
       deep: true,
       handler() {
+        console.log("goldMines");
         this.updateGold();
       }
     }

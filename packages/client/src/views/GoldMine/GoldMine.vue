@@ -34,7 +34,6 @@ import GoldMineElement from "./GoldMineElement.vue";
 import GoldMineExpandElement from "./GoldMineExpandElement.vue";
 import GoldStorageElement from "./GoldStorageElement.vue";
 import MinesMeta from "@/mines_meta";
-import PromisedView from "@/components/PromisedView.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
@@ -42,7 +41,6 @@ export default {
   components: {
     GoldMineElement,
     GoldMineExpandElement,
-    PromisedView,
     GoldStorageElement
   },
   data: () => ({

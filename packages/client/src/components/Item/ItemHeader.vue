@@ -42,13 +42,14 @@
 
       <slot name="level-bar">
         <div
-          class="width-100 flex flex-center flex-no-wrap"
+          class="width-100 flex flex-items-center flex-no-wrap"
           v-if="isEquipment && !isPreview"
         >
           <span class="margin-right-1 font-size-18" v-if="level">{{
             $t("level", { lvl: level })
           }}</span>
           <ProgressBar
+            v-if="canBeUpgraded"
             v-model="item.exp"
             :expand="false"
             height="2rem"

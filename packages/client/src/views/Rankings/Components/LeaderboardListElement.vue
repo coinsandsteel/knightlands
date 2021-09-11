@@ -9,7 +9,7 @@
     <span class="flex-1">#{{ rank }}</span>
     <Avatar :preview="true" :avatar="avatar" :mini="true"></Avatar>
     <span class="flex-4">{{ id }}</span>
-    <span class="flex-3">{{ score }}</span>
+    <span class="flex-3">{{ scoreComputed }}</span>
     <!-- <span @click="preview" class="icon-preview flex-1 pointer"></span> -->
   </div>
 </template>
@@ -32,6 +32,10 @@ export default {
   ],
   components: { Avatar },
   computed: {
+    scoreComputed() {
+      const converted = Math.floor(this.score * 1000000) / 1000000;
+      return isNaN(converted) ? this.score : converted;
+    },
     rankIcon() {
       if (this.showRank) {
         if (this.target && this.score >= this.target) {

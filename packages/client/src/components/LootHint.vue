@@ -101,12 +101,22 @@
             >
           </template>
 
-          <CustomButton
-            v-else-if="isConsumable && !isSummon"
-            type="yellow"
-            @click="handleClose(ItemActions.Use)"
-            >{{ $t("btn-use-consumable") }}</CustomButton
-          >
+          <div class="flex flex-center" v-else-if="isConsumable && !isSummon">
+            <NumericValue
+              class=""
+              :value="useCount"
+              :decreaseCondition="useCount > 1"
+              :increaseCondition="useCount < count"
+              @inc="useCount++"
+              @dec="useCount--"
+            ></NumericValue>
+            <CustomButton
+              type="yellow"
+              @click="handleClose(ItemActions.Use, useCount)"
+              minWidth="15rem"
+              >{{ $t("btn-use-consumable") }}</CustomButton
+            >
+          </div>
         </template>
 
         <custom-button
@@ -128,6 +138,7 @@ import UserDialog from "./UserDialog.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import ItemGetterMixin from "@/components/Item/ItemGetterMixin.vue";
 import Stat from "@/../../knightlands-shared/character_stat";
+import NumericValue from "@/components/NumericValue.vue";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 export default {
@@ -159,9 +170,11 @@ export default {
     preview: Boolean
   },
   data: () => ({
-    ItemActions
+    ItemActions,
+    useCount: 1
   }),
   components: {
+    NumericValue,
     CustomButton,
     UserDialog,
     ItemInfo
@@ -202,6 +215,7 @@ export default {
   },
   methods: {
     handleClose(response, ...args) {
+      this.useCount = 1;
       if (this.$close) {
         this.$close(response, ...args);
       } else {

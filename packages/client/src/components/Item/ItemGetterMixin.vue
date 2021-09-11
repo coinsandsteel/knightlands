@@ -139,6 +139,9 @@ export default {
     maxLevel() {
       return this.$game.itemsDB.getMaxLevel(this.item);
     },
+    canBeUpgraded() {
+      return this.level < 200;
+    },
     caption() {
       return this.template.caption;
     },

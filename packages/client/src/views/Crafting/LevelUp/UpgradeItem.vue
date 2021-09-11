@@ -16,20 +16,23 @@
         <template v-slot:level-bar>
           <div class="width-100 flex flex-center flex-no-wrap">
             <div
-              class="text-align-left font-size-20 flex flex-no-wrap flex-center margin-right-2"
+              class="text-align-left font-size-20 flex flex-no-wrap flex-items-center margin-right-2"
             >
               <span>
                 {{ $t("level", { lvl: item.level }) }}
               </span>
-              <span
-                class="margin-left-half margin-right-half right-arrow"
-              ></span>
-              <span>
-                {{ level }}
-              </span>
+              <template v-if="canBeUpgraded">
+                <span
+                  class="margin-left-half margin-right-half right-arrow"
+                ></span>
+                <span>
+                  {{ level }}
+                </span>
+              </template>
             </div>
             <progress-bar
               v-model="item.exp"
+              v-if="canBeUpgraded"
               class="full-flex"
               height="2rem"
               barType="green"
@@ -43,7 +46,12 @@
 
         <!-- replace stats -->
         <template v-slot:stats>
-          <ItemStatsUpgraded :item="item" :nextLevel="level" />
+          <ItemStatsUpgraded
+            :item="item"
+            :nextLevel="level"
+            v-if="canBeUpgraded"
+          />
+          <ItemStats :item="item"></ItemStats>
         </template>
       </ItemInfo>
 
@@ -171,6 +179,7 @@ import ItemStatsUpgraded from "@/components/Item/ItemStatsUpgraded.vue";
 import Title from "@/components/Title.vue";
 import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import ItemStats from "@/components/Item/ItemStats.vue";
 
 export default {
   mixins: [
@@ -181,6 +190,7 @@ export default {
   ],
   props: ["itemId"],
   components: {
+    ItemStats,
     SoundEffect,
     ItemInfo,
     ProgressBar,
@@ -366,6 +376,9 @@ export default {
     }
   },
   computed: {
+    canBeUpgraded() {
+      return this.level < 200;
+    },
     nextLevelRequired() {
       return this.level + 1;
     },

@@ -486,8 +486,8 @@ export default {
   width: 80%;
 }
 
-@backButtonWidth: 4.2125rem;
-@backButtonHeight: 4.2125rem;
+@backButtonWidth: 6rem;
+@backButtonHeight: 6rem;
 @footerBottomPadding: 0.5rem;
 .back-button {
   display: block;

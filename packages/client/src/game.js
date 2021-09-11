@@ -96,8 +96,8 @@ class Game {
         process.env.NODE_ENV == "production" || process.env.NODE_ENV == "test",
       autoConnect: false,
       port: Config.gameServerPort,
-      connectTimeout: 10000,
-      ackTimeout: 10000,
+      connectTimeout: 15000,
+      ackTimeout: 15000,
       autoReconnectOptions: {
         initialDelay: 5000,
         randomness: 5000,
@@ -127,7 +127,7 @@ class Game {
       this._handleRaidJoinStatus.bind(this)
     );
     this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
-    this.racesChannel = this.createChannel(Events.RaceFinished, true);
+    this.racesChannel = this.createChannel(Events.RaceFinished, false);
     this.racesChannel.watch(this._handleRaceFinished.bind(this));
 
     this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
@@ -645,7 +645,7 @@ class Game {
       data: {
         type
       },
-      duration: 2000
+      duration: 5000
     });
     this._vm.$emit("task_complete");
   }
@@ -689,7 +689,6 @@ class Game {
   }
 
   _handleRaceFinished(data) {
-    console.log(data);
     this._vm.$emit(Events.RaceFinished);
     Vue.notify({
       group: "race",

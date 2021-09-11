@@ -57,7 +57,6 @@ export default {
       type: DailyTaskType.DailyAllTasks
     };
     this.timer.timeLeft = PERIOD - (this.$game.nowSec % PERIOD);
-    console.log(this.timer.timeLeft);
   },
   computed: {
     meta() {

@@ -1,7 +1,7 @@
 <template>
   <div
     class="loot-slot  flex relative flex-column "
-    @click="$emit('hint', itemData)"
+    @click="handleHint"
     :class="[{ interactible: interactible }, { bottom: gacha }, size]"
   >
     <div class="inner-border item_slot_dark" :class="rarity">
@@ -208,6 +208,13 @@ export default {
     }
   },
   methods: {
+    handleHint() {
+      if (this.locked) {
+        return;
+      }
+
+      this.$emit("hint", this.itemData);
+    },
     updateItemData() {
       if (this.item && typeof this.item !== "object") {
         // template
