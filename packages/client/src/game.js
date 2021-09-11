@@ -974,7 +974,10 @@ class Game {
   }
 
   getRequiredExperience(level) {
-    return this._expTable[level - 1];
+    if (this._expTable.length <= level) {
+      return 0;
+    }
+    return this._expTable[level];
   }
 
   getZoneCompletedRecords(zone, stage) {
@@ -1111,7 +1114,6 @@ class Game {
       let result = await this._request(operation, ...args);
       return result;
     } catch (exc) {
-      console.log(exc);
       throw exc;
     }
   }

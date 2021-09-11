@@ -63,12 +63,6 @@
               v-if="count >= 10"
               >{{ $t("btn-open-boxes", { count: 10 }) }}</CustomButton
             >
-            <CustomButton
-              type="yellow"
-              @click="handleClose(ItemActions.OpenBox, count)"
-              v-if="count >= 50"
-              >{{ $t("btn-open-boxes", { count: count }) }}</CustomButton
-            >
           </template>
 
           <template v-else-if="isBox && !canOpen">

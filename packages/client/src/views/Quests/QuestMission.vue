@@ -466,6 +466,10 @@ export default {
         case Errors.NoEnergy:
           await ShowResourceRefill(Stat.Energy);
           break;
+
+        case "quest is finished":
+          this.goToNextMission();
+          break;
       }
     },
     showNewLoot(loot, delay) {

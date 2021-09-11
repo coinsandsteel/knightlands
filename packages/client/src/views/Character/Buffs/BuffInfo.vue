@@ -15,7 +15,7 @@
     </template>
 
     <template v-if="hasItem" v-slot:footer>
-      <CustomButton type="yellow" @click="use">{{
+      <CustomButton type="yellow" @click="use" minWidth="15rem">{{
         $t("btn-use")
       }}</CustomButton>
     </template>
