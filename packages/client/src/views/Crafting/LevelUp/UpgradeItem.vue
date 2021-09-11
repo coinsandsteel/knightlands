@@ -51,7 +51,7 @@
             :nextLevel="level"
             v-if="canBeUpgraded"
           />
-          <ItemStats :item="item"></ItemStats>
+          <ItemStats :item="item" v-else></ItemStats>
         </template>
       </ItemInfo>
 

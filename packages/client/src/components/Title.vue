@@ -34,7 +34,7 @@ export default {
   padding: 0rem 2rem;
   align-self: center;
   height: @TitleHeight;
-  min-width: 10rem;
+  min-width: 20rem;
 }
 
 .title-side {

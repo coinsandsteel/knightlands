@@ -1,5 +1,34 @@
 <template>
-  <div v-bar class="center width-100 height-100 dummy-height">
+  <div class="center width-100 height-100 dummy-height" v-if="noScroll">
+    <div>
+      <div
+        class="loot-container width-100 dummy-height inventory-container"
+        v-if="items.length > 0"
+      >
+        <Loot
+          v-for="(item, index) in items"
+          :id="`i-${item.template}`"
+          :item="item"
+          :key="index"
+          :inventory="inventory"
+          :selected="
+            (selectSlots && selected[item.id]) || selectedItem == item.id
+          "
+          :class="lootClasses"
+          @hint="handleHint(item, index)"
+          v-bind="lootProps"
+        />
+      </div>
+
+      <div class="flex flex-center width-100 height-100 v-bar-fix" v-else>
+        <slot>
+          <div></div>
+        </slot>
+      </div>
+    </div>
+  </div>
+
+  <div v-bar class="center width-100 height-100 dummy-height" v-else>
     <div>
       <div
         class="loot-container width-100 dummy-height inventory-container"
@@ -40,7 +69,8 @@ export default {
     "lootProps",
     "multiSelect",
     "selectSlots",
-    "selectedItem"
+    "selectedItem",
+    "noScroll"
   ],
   components: { Loot },
   data: () => ({

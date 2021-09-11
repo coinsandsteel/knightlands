@@ -3,7 +3,6 @@ import CompareItems from "@/components/Item/CompareItems.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import ItemEquipWarning from "./ItemEquipWarning.vue";
-import UnitSummoned from "./UnitSummoned.vue";
 import ArmySummonerResponseHandler from "@/views/Summon/Army/ArmySummonerResponseHandler.vue";
 
 const ShowItems = CreateDialog(

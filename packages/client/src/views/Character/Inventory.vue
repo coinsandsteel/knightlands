@@ -5,6 +5,7 @@
     <LootContainer
       class="height-100"
       :inventory="true"
+      :noScroll="noScroll"
       :filters="filters"
       :filtersStore="filtersStore"
       :commitCmd="commitCmd"
@@ -61,7 +62,8 @@ export default {
     "filtersStore",
     "items",
     "hideFilters",
-    "hideFooter"
+    "hideFooter",
+    "noScroll"
   ],
   data: () => ({
     showHintItems: false,

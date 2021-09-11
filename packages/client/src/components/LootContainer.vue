@@ -9,6 +9,7 @@
       :lootProps="lootProps"
       :inventory="inventory"
       :items="filteredItems"
+      :noScroll="noScroll"
       @hint="handleHint"
     />
     <div class="width-100 flex flex-center">
@@ -47,7 +48,8 @@ export default {
     lootProps: Object,
     lootClasses: String,
     selectedItem: Number,
-    hideFilters: Boolean
+    hideFilters: Boolean,
+    noScroll: Boolean
   },
   computed: {
     hasHiddenItems() {
