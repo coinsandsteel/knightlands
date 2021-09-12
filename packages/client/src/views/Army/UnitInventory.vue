@@ -45,16 +45,17 @@
 import CustomButton from "@/components/Button.vue";
 import UnitItem from "./UnitItem.vue";
 import DoubleBuffer from "@/helpers/DoubleBuffer";
-import UnitFilter from "./UnitFilter.vue";
-import { create as CreateDialog } from "vue-modal-dialogs";
-const ShowUnitFilter = CreateDialog(UnitFilter);
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import ArmyMeta from "@/army_meta.json";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import PurchaseArmySlots from "@/views/Summon/Army/PurchaseArmySlots.vue";
-import { create } from "vue-modal-dialogs";
 
-const ShowPurchaseArmySlots = create(PurchaseArmySlots);
+import { create as CreateDialog } from "vue-modal-dialogs";
+
+import UnitFilter from "./UnitFilter.vue";
+const ShowUnitFilter = CreateDialog(UnitFilter);
+
+import PurchaseArmySlots from "@/views/Summon/Army/PurchaseArmySlots.vue";
+const ShowPurchaseArmySlots = CreateDialog(PurchaseArmySlots);
 
 export default {
   props: {
@@ -148,10 +149,6 @@ export default {
         commitCmd: "setUnitFilters",
         filterChangedCb: this.filterUnits.bind(this)
       });
-
-      // if (filters) {
-      //   this.filterUnits();
-      // }
     },
     filterUnits() {
       this.filteredUnits = this.$game.army.filterProvidedUnits(
