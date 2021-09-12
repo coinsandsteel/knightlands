@@ -138,6 +138,10 @@ export default {
       immediate: true,
       handler() {
         let recipe = this.recipe;
+        if (!recipe) {
+          return;
+        }
+
         this.ingridients = [];
 
         for (const ingrd of recipe.ingridients) {

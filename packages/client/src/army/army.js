@@ -39,6 +39,7 @@ export default class Army {
       data: () => ({
         reserve: {},
         units: {},
+        reserveUnits: [],
         legions: [],
         troops: [],
         generals: [],
@@ -119,7 +120,7 @@ export default class Army {
       units[unitId] = unit;
       this._updateUnitEquipment(units[unitId]);
     }
-    console.log("get legion damage");
+
     return this._armyResolver.resolve(
       units,
       this._unitsIndex,
@@ -190,12 +191,28 @@ export default class Army {
     return this._vm.legions[legionIndex];
   }
 
+  _testFilter(unit, filter) {
+    if (!filter.star[this.getStars(unit)]) {
+      return false;
+    }
+
+    if (!filter.element[this._armyDb.getElement(unit)]) {
+      return false;
+    }
+
+    if (!filter.type[this._armyDb.getUnitType(unit)]) {
+      return false;
+    }
+
+    return true;
+  }
+
   filterProvidedUnits(units, filters, buffer, toInsert) {
     buffer = buffer || [];
     buffer.length = 0;
 
     if (toInsert) {
-      if (!filters[this.getStars(toInsert)]) {
+      if (!this._testFilter(toInsert, filters)) {
         buffer.push(toInsert);
       }
     }
@@ -204,7 +221,7 @@ export default class Army {
     const length = units.length;
     for (; i < length; ++i) {
       const unit = units[i];
-      if (filters[this.getStars(unit)]) {
+      if (this._testFilter(unit, filters)) {
         buffer.push(unit);
       }
     }
@@ -245,7 +262,7 @@ export default class Army {
   }
 
   getReserve() {
-    return this._vm.reserve;
+    return this._vm.reserveUnits;
   }
 
   getUnits(troops) {
@@ -302,16 +319,16 @@ export default class Army {
   }
 
   updateReserve(newReserve) {
+    let added = false;
     for (const key in newReserve) {
       const newUnit = newReserve[key];
-      const currentUnit = this._vm.reserve[key];
-      if (!currentUnit) {
-        this._vm.$set(this._vm.reserve, key, newUnit);
-      } else {
-        currentUnit.count = newReserve.count;
+      if (!this._vm.reserve[key]) {
+        this._vm.reserveUnits.push(newUnit);
+        added = true;
       }
+      this._vm.$set(this._vm.reserve, key, newUnit);
     }
-
+    this._sort(this._vm.reserveUnits);
     this._unitsIndex.update(null, this._vm.reserve);
   }
 
@@ -326,8 +343,8 @@ export default class Army {
     }
 
     this._unitsIndex.update(this._vm.units, null);
-    this._doSort(true);
-    this._doSort(false);
+    this._doSort(this._vm.generals);
+    this._doSort(this._vm.troops);
   }
 
   removeUnits(ids) {
@@ -353,8 +370,8 @@ export default class Army {
     }
 
     this._unitsIndex.update(this._vm.units, null);
-    this._doSort(true);
-    this._doSort(false);
+    this._doSort(this._vm.generals);
+    this._doSort(this._vm.troops);
   }
 
   loadFromData(armyData, preview = false) {
@@ -381,6 +398,9 @@ export default class Army {
       }
 
       this._vm.reserve = armyData.reserve || this._vm.reserve;
+      for (let i in this._vm.reserve) {
+        this._vm.reserveUnits.push(this._vm.reserve[i]);
+      }
     } else {
       this._loaded = false;
     }
@@ -389,8 +409,9 @@ export default class Army {
 
     if (!preview) {
       this._unitsIndex.update(unitsDict, this._vm.reserve);
-      this._doSort(true);
-      this._doSort(false);
+      this._doSort(this._vm.reserveUnits);
+      this._doSort(this._vm.generals);
+      this._doSort(this._vm.troops);
     }
   }
 
@@ -414,8 +435,7 @@ export default class Army {
     return true;
   }
 
-  _doSort(troops) {
-    const units = troops ? this._vm.troops : this._vm.generals;
+  _doSort(units) {
     units.sort((x, y) => {
       let diff = this.getStars(y) - this.getStars(x);
       if (diff === 0) {

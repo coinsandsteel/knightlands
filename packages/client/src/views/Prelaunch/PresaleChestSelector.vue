@@ -36,76 +36,78 @@ export default {
 };
 </script>
 
+//
 <style lang="less" scoped>
-.chest-selector {
-  display: inline-grid;
+// .chest-selector {
+//   display: inline-grid;
 
-  & input {
-    appearance: none;
-    margin: 0;
-    padding: 0;
-  }
+//   & input {
+//     appearance: none;
+//     margin: 0;
+//     padding: 0;
+//   }
 
-  & label {
-    position: relative;
-    transition: all 100ms ease-in;
-    filter: brightness(1.8) grayscale(1) opacity(0.7);
-  }
+//   & label {
+//     position: relative;
+//     transition: all 100ms ease-in;
+//     filter: brightness(1.8) grayscale(1) opacity(0.7);
+//   }
 
-  & input:checked + label {
-    filter: none;
-  }
-}
+//   & input:checked + label {
+//     filter: none;
+//   }
+// }
 
-.selector-border {
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: no-repeat url("../../assets/ui/difficulty_selected.png");
-  background-size: contain;
-  background-position: center;
-  width: 100%;
-  height: 100%;
-}
+// .selector-border {
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   background: no-repeat url("../../assets/ui/difficulty_selected.png");
+//   background-size: contain;
+//   background-position: center;
+//   width: 100%;
+//   height: 100%;
+// }
 
-.chest-count {
-  position: absolute;
-  transform: translateX(-50%);
-  left: 50%;
-  bottom: 0;
-}
+// .chest-count {
+//   position: absolute;
+//   transform: translateX(-50%);
+//   left: 50%;
+//   bottom: 0;
+// }
 
-.chest-icon(@chest) {
-  background: no-repeat url("./../../assets/ui/game_@{chest}.png");
-  background-size: 80%;
-  background-position: center;
-  width: 8rem;
-  height: 12rem;
-  display: inline-block;
-  cursor: pointer;
+// .chest-icon(@chest) {
+//   background: no-repeat url("./../../assets/ui/game_@{chest}.png");
+//   background-size: 80%;
+//   background-position: center;
+//   width: 8rem;
+//   height: 12rem;
+//   display: inline-block;
+//   cursor: pointer;
 
-  &.disabled {
-    opacity: 0.3;
-  }
-}
+//   &.disabled {
+//     opacity: 0.3;
+//   }
+// }
 
-.chest0 {
-  .chest-icon("chest1");
-}
+// .chest0 {
+//   .chest-icon("chest1");
+// }
 
-.chest1 {
-  .chest-icon("chest2");
-}
+// .chest1 {
+//   .chest-icon("chest2");
+// }
 
-.chest2 {
-  .chest-icon("chest3");
-}
+// .chest2 {
+//   .chest-icon("chest3");
+// }
 
-.chest3 {
-  .chest-icon("chest4");
-}
+// .chest3 {
+//   .chest-icon("chest4");
+// }
 
-.chest4 {
-  .chest-icon("chest5");
-}
+// .chest4 {
+//   .chest-icon("chest5");
+// }
+//
 </style>

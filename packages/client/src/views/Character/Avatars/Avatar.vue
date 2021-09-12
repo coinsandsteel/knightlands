@@ -20,9 +20,10 @@ export default {
   computed: {
     activeAvatar() {
       const id = this.avatar || this.$game.character.avatar;
-      if (!id) {
+      if (!id || id < 1) {
         return "";
       }
+
       return `/images/avatars/${AvatarsMeta.avatars[id].icon}.jpg`;
     }
   },

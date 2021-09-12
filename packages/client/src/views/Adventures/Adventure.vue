@@ -107,17 +107,13 @@ export default {
 
 .random-loot {
   position: relative;
-  background-image: url("../../assets/ui/item_slot_dark.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+  .item_slot_dark;
 
   width: @lootCellSize;
   height: @lootCellSize;
 
   & > div {
-    background-image: url("../../assets/ui/icon_random.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+    .icon_random;
     width: @lootCellSize;
     height: @lootCellSize;
   }

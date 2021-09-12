@@ -121,6 +121,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../../style/common.less";
+
 @zoneIdSize: 3rem;
 @dotsWidth: 3rem;
 @dotsHeight: @dotsWidth * 0.1891;
@@ -135,9 +137,7 @@ export default {
 }
 
 .zone-id {
-  background-image: url("../../assets/ui/level_number_border.png");
-  background-size: cover;
-  background-position: center;
+  .level_number_border;
   width: @zoneIdSize;
   height: @zoneIdSize;
   line-height: @zoneIdSize;
@@ -151,7 +151,7 @@ export default {
 }
 
 .zone-id-dots {
-  background-image: url("../../assets/ui/level_number_crumbs.png");
+  .level_number_crumbs;
   background-size: cover;
   background-position: center;
   width: @dotsWidth;

@@ -14,17 +14,21 @@
 
       <!-- Unit -->
       <div
-        class="flex flex-column flex-full flex-space-between padding-top-5 font-size-18"
+        class="flex flex-column flex-full flex-center padding-top-5 font-size-18"
         v-if="!showAbilities && !garrison"
       >
         <div class="flex flex-center flex-column padding-left-3">
           <div class="padding-half panel-input unit-view-param center">
-            <UnitStars :stars="stars" size="small" />
+            <UnitStars
+              :stars="stars"
+              size="small"
+              class="u-stars flex-center"
+            />
           </div>
           <div
             class="margin-top-1 margin-bottom-1 padding-half panel-input flex flex-center unit-view-param font-size-22"
           >
-            <IconWithValue iconClass="icon-damage">{{
+            <IconWithValue iconClass="icon-damage" valueClass="font-size-22">{{
               estimatedDamage()
             }}</IconWithValue>
           </div>
@@ -185,5 +189,9 @@ export default {
 .unit-title {
   position: absolute;
   top: 0;
+}
+
+.u-stars {
+  height: 3rem;
 }
 </style>

@@ -42,7 +42,6 @@ export default {
     this.$options.useRouterBack = true;
   },
   data: () => ({
-    unitIdx: -1,
     unit: null,
     tabs: [],
     currentTab: "level-up"
@@ -52,21 +51,6 @@ export default {
       immediate: true,
       handler() {
         this.unit = this.$game.army.getUnit(this.unitId);
-        if (this.computedUnits) {
-          let idx = 0;
-          for (const unit of this.computedUnits) {
-            if (unit.id == this.unit.id) {
-              this.unitIdx = idx;
-              break;
-            }
-
-            idx++;
-          }
-
-          if (this.unitIdx == -1) {
-            // we got filtered units, without selected unit
-          }
-        }
 
         this.tabs = [
           {
@@ -95,6 +79,22 @@ export default {
     }
   },
   computed: {
+    unitIdx() {
+      let unitIdx = -1;
+      if (this.computedUnits) {
+        let idx = 0;
+        for (const unit of this.computedUnits) {
+          if (unit.id == this.unit.id) {
+            unitIdx = idx;
+            break;
+          }
+
+          idx++;
+        }
+      }
+
+      return unitIdx;
+    },
     computedUnits() {
       return this.units
         ? this.units

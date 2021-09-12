@@ -1,25 +1,33 @@
 <template>
-  <div class="flex flex-column flex-space-around flex-items-center card-modifier margin-1">
-    <span class="font-size-20 rarity-legendary font-outline">{{$t(name)}}</span>
+  <div
+    class="flex flex-column flex-space-around flex-items-center card-modifier margin-1"
+  >
+    <span class="font-size-20 rarity-legendary font-outline">{{
+      $t(name)
+    }}</span>
 
     <div class="flex flex-center font-size-18 font-outline">
       <span v-if="negative">-</span>
-      <span>{{modifierValue()}}</span>
+      <span>{{ modifierValue() }}</span>
       <span v-if="relative">%</span>
 
       <span class="margin-left-half margin-right-half right-arrow"></span>
 
       <span class="rarity-rare">
         <span v-if="negative">-</span>
-        <span>{{nextModiferValue()}}</span>
+        <span>{{ nextModiferValue() }}</span>
         <span v-if="relative">%</span>
       </span>
     </div>
 
-    <CustomButton type="yellow" @click="$emit('upgrade')" :disabled="!enoughPoints">
+    <CustomButton
+      type="yellow"
+      @click="$emit('upgrade')"
+      :disabled="!enoughPoints"
+    >
       <div class="flex flex-center">
-        <span class="item-icon trials-points-item margin-right-half"></span>
-        <span>{{upgradeCost}}</span>
+        <span class="item-icon ticket_blue margin-right-half"></span>
+        <span>{{ upgradeCost }}</span>
       </div>
     </CustomButton>
   </div>
@@ -28,7 +36,6 @@
 <script>
 import CardInfo from "./CardInfo.vue";
 import CustomButton from "@/components/Button.vue";
-import TrialsMeta from "@/trials_meta";
 import TrailCardModifer from "@/../../knightlands-shared/trial_card_modifiers";
 
 export default {
@@ -36,9 +43,9 @@ export default {
   mixins: [CardInfo],
   components: { CustomButton },
   computed: {
-      enoughPoints() {
-          return this.$game.getTrialsCard().points >= this.upgradeCost;
-      },
+    enoughPoints() {
+      return this.$game.getTrialsCard().points >= this.upgradeCost;
+    },
     relative() {
       return (
         this.type == TrailCardModifer.DecreaseRelatively ||

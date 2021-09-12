@@ -1,6 +1,4 @@
 <script>
-import TrialsMeta from "@/trials_meta";
-
 export default {
   props: ["effect", "fightMeta"],
   data: () => ({

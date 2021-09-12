@@ -43,6 +43,10 @@ export default {
       }
       return 0;
     },
+    maxPossibleLevel() {
+      console.log(this.nextMaxLevel);
+      return this.maxLevel == this.nextMaxLevel;
+    },
     unitImage() {
       if (this.unit) {
         return UiConstants.backgroundImage(

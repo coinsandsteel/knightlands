@@ -408,28 +408,24 @@ export default {
 }
 
 .unique {
-  background-image: url("../assets/ui/icon_moded4.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 2rem;
-  height: 2rem;
+  .icon_moded4;
+  width: 2rem !important;
+  height: 2rem !important;
   position: absolute;
   top: 0.5rem;
   right: 0rem;
 }
 
 .equipped {
-  background-image: url("../assets/ui/icon_equipped1.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 2rem;
-  height: 2rem;
+  .icon_equipped1;
+  width: 2rem !important;
+  height: 2rem !important;
   position: absolute;
   top: 0.4rem;
   left: 0rem;
 
   &.on-unit {
-    background-image: url("../assets/ui/icon_equipped.png");
+    .icon_equipped;
   }
 }
 

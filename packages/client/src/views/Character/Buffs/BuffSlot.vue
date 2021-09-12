@@ -94,16 +94,16 @@ export default {
 
 .slot-effect {
   position: relative;
-  background-image: url("../../../assets/ui/slot_effect.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+  .slot_effect;
+
+  &.active {
+    .slot_effect_active;
+    width: @lootCellSize;
+    height: @lootCellSize;
+  }
 
   width: @lootCellSize;
   height: @lootCellSize;
-
-  &.active {
-    background-image: url("../../../assets/ui/slot_effect_active.png");
-  }
 }
 
 .icon {

@@ -5,7 +5,7 @@
       :unit="garrisonUnits[selectedUnitKey]"
       :garrison="true"
     ></UnitView>
-    <div class="height-100" v-bar>
+    <div class="flex-full relative dummy-height" v-bar>
       <div class="flex-full">
         <div class="padding-half">
           <div class="width-100 flex">

@@ -8,11 +8,16 @@
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
       >
         <div class="unit-item-shadow absolute-stretch"></div>
-        <UnitStars class="stars width-100 relative" :stars="stars" size="small" />
+        <UnitStars
+          class="stars width-100 relative"
+          :stars="stars"
+          size="small"
+        />
         <Flag :weaponType="weaponType" :element="element" />
         <span
           class="width-100 font-size-18 font-weight-900 unit-item-lvl center-transform"
-        >{{$t("unit-lvl", {lvl: level})}}</span>
+          >{{ $t("unit-lvl", { lvl: level }) }}</span
+        >
       </div>
 
       <!-- <div class="absolute-stretch flex flex flex-center pointer-events-none">
@@ -118,7 +123,6 @@ export default {
 }
 
 .unit-item {
-  
   &:before {
     background-image: url("../../../assets/ui/troops_mini_bg.png");
     background-repeat: no-repeat;

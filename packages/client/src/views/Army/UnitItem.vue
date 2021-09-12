@@ -7,22 +7,25 @@
         <div
           class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
         >
-          <div class="unit-item-shadow"></div>
+          <!-- <div class="unit-item-shadow"></div> -->
           <UnitStars
             class="stars width-100 relative"
             :stars="stars"
             size="small"
           />
-          <Flag :weaponType="weaponType" :element="element" />
+          <Flag
+            class="flag"
+            :weaponType="weaponType"
+            :element="element"
+            :type="unitType"
+          />
           <span
-            class="width-100 font-size-18 font-weight-900 unit-item-lvl center-transform"
+            class="width-100 font-size-22 font-weight-900 unit-item-lvl font-outline center-transform"
             >{{ $t("unit-lvl", { lvl: level }) }}</span
           >
         </div>
       </template>
-      <div class="flex flex-center width-100 height-100" v-else-if="!empty">
-        <span class="font-size-22">{{ $t("unit-remove") }}</span>
-      </div>
+      <div class="absolute-stretch remove-u" v-else-if="!empty"></div>
     </div>
   </div>
 </template>
@@ -40,10 +43,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../../style/common.less";
+
 .selected {
-  background-image: url("../../assets/ui/troops_mini_bg_selected.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+  .troops_mini_bg_selected;
+  .icon-stretched;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -53,8 +57,8 @@ export default {
 
 .unit-item-content {
   display: grid;
-  grid-template-columns: 30% 1fr;
-  grid-template-rows: 20% 1fr 20%;
+  grid-template-columns: 30% 60% 10%;
+  grid-template-rows: 10% 1fr 30%;
   align-items: stretch;
 
   & .item-badge-grid {
@@ -63,8 +67,13 @@ export default {
   }
 
   & .stars {
-    grid-column: ~"1/3";
+    grid-column: ~"2/3";
     grid-row: 1;
+  }
+
+  & .flag {
+    grid-column: 1;
+    grid-row: ~"1/4";
   }
 }
 
@@ -92,17 +101,6 @@ export default {
   bottom: 10%;
 }
 
-.unit-item-shadow {
-  background-image: url("../../assets/ui/troops_mini_shadow.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  position: absolute;
-  left: 1%;
-  right: 1%;
-  top: 1%;
-  bottom: 1%;
-}
-
 .unit-item {
   & .bg {
     background-repeat: no-repeat;
@@ -115,5 +113,10 @@ export default {
   // & ::before {
   //   padding-top: 100%;
   // }
+}
+
+.remove-u {
+  .troops_mini_bg_remove;
+  .icon-stretched;
 }
 </style>

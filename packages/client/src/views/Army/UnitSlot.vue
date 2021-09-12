@@ -6,14 +6,14 @@
         <div class="empty"></div>
       </div>
       <template v-if="unit">
-        <UnitStars class="stars" :stars="stars" size="small" />
+        <UnitStars class="stars flex-center" :stars="stars" />
         <Flag
           class="item-badge-grid"
           :weaponType="weaponType"
           :element="element"
+          :type="unitType"
         />
-        <span class="unit-type font-size-20">{{ $t(unitType) }}</span>
-        <span class="unit-level font-size-20">{{
+        <span class="unit-level font-size-30 font-weight-900 font-outline">{{
           $t("unit-lvl", { lvl: level })
         }}</span>
       </template>
@@ -36,15 +36,6 @@ export default {
 <style lang="less" scoped>
 .outer {
   position: relative;
-  // padding-top: 75%;
-
-  // &:after {
-  //   display: block;
-  //   content: "";
-  //   // width: 100%;
-  //   // padding-top: (4 / 3) * 100%;
-  //   height: 15rem;
-  // }
 
   &:before {
     content: "";
@@ -69,27 +60,18 @@ export default {
   background-image: url("../../assets/ui/troops_bg.png");
 
   display: grid;
-  grid-template-columns: 20% 1fr;
+  grid-template-columns: 30% 1fr;
   grid-template-rows: 30% 30% 1fr 1fr 1fr;
   align-items: stretch;
 
   & .item-badge-grid {
     grid-column: 1;
-    grid-row: 1;
+    grid-row: ~"1/4";
   }
 
   & .stars {
     grid-column: ~"1/3";
-    grid-row: 3;
-  }
-
-  & .unit-type {
-    grid-column: ~"1/3";
     grid-row: 4;
-
-    background-color: rgba(0, 0, 0, 0.3);
-    width: 100%;
-    padding: 0 0.5rem 0 0.5rem;
   }
 
   & .unit-level {

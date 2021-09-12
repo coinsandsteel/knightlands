@@ -45,9 +45,9 @@
 import CustomButton from "@/components/Button.vue";
 import UnitItem from "./UnitItem.vue";
 import DoubleBuffer from "@/helpers/DoubleBuffer";
-import ItemFilterComponent from "@/components/ItemFilter.vue";
+import UnitFilter from "./UnitFilter.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
-const ItemFilter = CreateDialog(ItemFilterComponent);
+const ShowUnitFilter = CreateDialog(UnitFilter);
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import ArmyMeta from "@/army_meta.json";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
@@ -143,10 +143,9 @@ export default {
       this.$emit("removed");
     },
     async showUnitFilters() {
-      await ItemFilter({
-        stateFilters: this.filtersStore,
+      await ShowUnitFilter({
+        filter: this.filtersStore,
         commitCmd: "setUnitFilters",
-        filterLocalisation: "unit-s-filter",
         filterChangedCb: this.filterUnits.bind(this)
       });
 

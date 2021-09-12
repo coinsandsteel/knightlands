@@ -165,31 +165,35 @@ export default {
 };
 </script>
 
+//
 <style lang="less">
-@import "./styles.less";
+// @import "./styles.less";
+//
 </style>
 
+//
 <style lang="less" scoped>
-@import (reference) "./styles.less";
+// @import (reference) "./styles.less";
 
-@backButtonWidth: 6rem;
-@backButtonHeight: 4.2125rem;
-@footerBottomPadding: 2rem;
-.back-button {
-  position: absolute;
-  cursor: pointer;
-  width: @backButtonWidth;
-  height: @backButtonHeight;
-  left: 2rem;
-  // .mobile({width: @backButtonWidth/2; height: @backButtonHeight / 2});
-  bottom: @footerBottomPadding;
-  background: url("../../assets/ui/button_back.png") no-repeat;
-  background-size: contain;
-  z-index: 100;
+// @backButtonWidth: 6rem;
+// @backButtonHeight: 4.2125rem;
+// @footerBottomPadding: 2rem;
+// .back-button {
+//   position: absolute;
+//   cursor: pointer;
+//   width: @backButtonWidth;
+//   height: @backButtonHeight;
+//   left: 2rem;
+//   // .mobile({width: @backButtonWidth/2; height: @backButtonHeight / 2});
+//   bottom: @footerBottomPadding;
+//   // background: url("../../assets/ui/button_back.png") no-repeat;
+//   background-size: contain;
+//   z-index: 100;
 
-  &:active {
-    background: url("../../assets/ui/button_back_active.png") no-repeat;
-    background-size: contain;
-  }
-}
+//   &:active {
+//     background: url("../../assets/ui/button_back_active.png") no-repeat;
+//     background-size: contain;
+//   }
+// }
+//
 </style>

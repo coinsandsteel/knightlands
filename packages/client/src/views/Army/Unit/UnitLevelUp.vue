@@ -34,7 +34,7 @@
         {{ $t("unit-lvl-up") }}
       </PurchaseButton>
       <span
-        v-if="!meetLvlRequirement"
+        v-if="!meetLvlRequirement && !maxPossibleLevel"
         class="font-error font-size-20 font-weight-900 margin-top-1"
         >{{ $t("ch-lvl-req", { level: level + 1 }) }}</span
       >

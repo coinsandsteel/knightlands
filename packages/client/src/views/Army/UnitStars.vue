@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-center flex-no-wrap">
+  <div class="flex flex-items-center flex-no-wrap ustars">
     <span
-      class="active"
+      class="active full-flex"
       :class="[size, starsClass]"
       v-for="star in parseInt(computedStars)"
       :key="star"
@@ -48,8 +48,14 @@ export default {
 
 <style lang="less" scoped>
 .star {
-  &.mini {
-    margin-left: -0.5rem;
+  &.active {
+    width: unset !important;
+    max-width: ~"min(28px, 20%)";
+    height: 100% !important;
   }
+}
+
+.ustars {
+  max-height: 28px;
 }
 </style>

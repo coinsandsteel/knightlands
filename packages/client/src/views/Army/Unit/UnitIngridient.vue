@@ -1,18 +1,30 @@
 <template>
-  <div class="outer unit-ingr relative margin-right-half" @click="$emit('click')">
+  <div
+    class="outer unit-ingr relative margin-right-half"
+    @click="$emit('click')"
+  >
     <div class="inner" v-if="unit && ingridient">
-      <div v-if="ingridient.copy" class="bg absolute-stretch" :style="unitImage"></div>
-      <div v-else class="bg absolute-stretch unit-bg-any"></div>
+      <div
+        v-if="ingridient.copy"
+        class="bg absolute-stretch"
+        :style="unitImage"
+      ></div>
+      <div v-else class="bg absolute-stretch troops_any_unit"></div>
       <div
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-ingr-content"
       >
         <div class="unit-ingr-shadow absolute-stretch"></div>
-        <UnitStars class="stars relative" :stars="ingridient.stars" size="mini" />
+        <UnitStars
+          class="stars relative"
+          :stars="ingridient.stars"
+          size="mini"
+        />
         <Flag :element="element" />
 
         <span
           class="width-100 font-size-18 font-weight-900 unit-ingr-lvl center-transform"
-        >{{current}}/{{required}}</span>
+          >{{ current }}/{{ required }}</span
+        >
       </div>
     </div>
   </div>
@@ -110,7 +122,7 @@ export default {
 }
 
 .unit-bg-any {
-  background-image: url("../../../assets/ui/troops_any_unit.png");
+  // background-image: url("../../../assets/ui/troops_any_unit.png");
   background-repeat: no-repeat;
   background-size: cover;
 }

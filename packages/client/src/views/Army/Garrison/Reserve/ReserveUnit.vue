@@ -7,15 +7,19 @@
         <div
           class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
         >
-          <div class="unit-item-shadow absolute-stretch"></div>
           <UnitStars
-            class="stars width-100 relative"
+            class="stars width-90 relative"
             :stars="stars"
             size="small"
           />
-          <Flag :weaponType="weaponType" :element="element" />
+          <Flag
+            class="flag"
+            :weaponType="weaponType"
+            :element="element"
+            :type="unitType"
+          />
           <span
-            class="width-100 font-size-18 font-weight-900 unit-item-lvl center-transform"
+            class="width-100 font-size-22 font-weight-900 font-outline unit-item-lvl center-transform"
             >x{{ unit.count }}</span
           >
         </div>
@@ -60,8 +64,13 @@ export default {
   }
 
   & .stars {
-    grid-column: ~"1/3";
+    grid-column: ~"2/3";
     grid-row: 1;
+  }
+
+  & .flag {
+    grid-column: 1;
+    grid-row: ~"1/4";
   }
 }
 
@@ -86,13 +95,7 @@ export default {
 
 .unit-item-lvl {
   position: absolute;
-  bottom: 0;
-}
-
-.unit-item-shadow {
-  background-image: url("../../../../assets/ui/troops_mini_shadow.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+  bottom: 10%;
 }
 
 .unit-item {

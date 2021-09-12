@@ -4,7 +4,7 @@
     :class="{ slot_selected: active }"
     @click="$emit('hint', reward)"
   >
-    <div :class="[{ trans: collected }, icon]" class="icon" />
+    <div :class="[{ trans: collected }, icon]" class="iicon" />
 
     <span
       v-if="!collected"
@@ -49,10 +49,8 @@ export default {
 }
 
 .collected {
-  background-image: url("../../assets/ui/checkbox_tick.png");
-  background-size: 50%;
-  background-position: center;
-  background-repeat: no-repeat;
+  .checkbox_tick;
+  .icon();
 }
 
 .slot-daily-reward {
@@ -71,7 +69,7 @@ export default {
   }
 }
 
-.icon {
+.iicon {
   width: 100%;
   max-height: 100%;
   object-fit: contain;

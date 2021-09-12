@@ -23,12 +23,14 @@
 
       <div class="flex flex-column padding-right-2 flex-4 flex-center">
         <div class="flex font-size-18 margin-bottom-half">
-          <span class="margin-right-1">{{ $t("health") }}</span>
-          <span>{{ fight.health }}</span>
+          <IconWithValue iconClass="icon-health">
+            {{ fight.health }}
+          </IconWithValue>
         </div>
         <div class="flex font-size-18">
-          <span class="margin-right-1">{{ $t("attack") }}</span>
-          <span>{{ fight.attack }}</span>
+          <IconWithValue iconClass="icon-attack">
+            {{ fight.attack }}
+          </IconWithValue>
         </div>
 
         <div class="flex margin-top-2">
@@ -38,6 +40,7 @@
           <CustomButton
             v-show="!completed"
             :disabled="locked"
+            minWidth="20rem"
             type="yellow"
             @click="$emit('engage')"
             >{{ $t("tower-challenge") }}</CustomButton

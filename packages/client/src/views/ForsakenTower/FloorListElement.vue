@@ -31,14 +31,16 @@
         </div>
       </div>
 
-      <div class="flex flex-column padding-right-2">
+      <div class="flex flex-column padding-right-2 flex-items-center">
         <div class="flex font-size-20 margin-bottom-half">
-          <span class="margin-right-1">{{ $t("health") }}</span>
-          <span>{{ floor.health }}</span>
+          <IconWithValue iconClass="icon-health">
+            {{ floor.health }}
+          </IconWithValue>
         </div>
         <div class="flex font-size-20 margin-bottom-1">
-          <span class="margin-right-1">{{ $t("attack") }}</span>
-          <span>{{ floor.attack }}</span>
+          <IconWithValue iconClass="icon-attack">
+            {{ floor.attack }}
+          </IconWithValue>
         </div>
         <div class="flex">
           <CustomButton

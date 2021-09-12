@@ -1,5 +1,5 @@
 <template>
-  <div v-bar>
+  <div v-bar class="height-100">
     <div class="flex flex-column full-flex flex-no-wrap padding-top-1">
       <Title :stackBottom="true" v-if="consumables.length > 0">{{
         "Consumables"

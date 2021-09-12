@@ -18,7 +18,7 @@
 
       <portal to="footer" :slim="true" v-if="isActive">
         <div class="flex flex-center margin-1 font-size-20">
-          <span class="item-icon trials-points-item margin-right-half"></span>
+          <span class="item-icon ticket_blue margin-right-half"></span>
           <span>{{ points }}</span>
         </div>
 
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import "./style.less";
 import TrialsMeta from "@/trials_meta";
 import CardModifier from "./CardModifier.vue";
 import PromisedView from "@/components/PromisedView.vue";

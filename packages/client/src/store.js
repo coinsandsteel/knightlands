@@ -17,6 +17,8 @@ import Training from "@/store/training";
 import Tutorial from "@/store/tutorial";
 import Shop from "@/store/shop";
 import Settings from "@/store/settings";
+import Elements from "@/../../knightlands-shared/elements";
+import ArmyUnitTypes from "@/army_unit_types";
 
 Vue.use(Vuex);
 
@@ -43,10 +45,24 @@ for (let i in ItemType) {
   miscDefaultFilters[ItemType[i]] = true;
 }
 
-const defaultUnitFilters = {};
-// 10 stars maximum
-for (let i = 1; i <= 10; ++i) {
-  defaultUnitFilters[i] = true;
+const defaultUnitFilters = {
+  star: {},
+  element: {},
+  type: {}
+};
+{
+  // 10 stars maximum
+  for (let i = 1; i <= 10; ++i) {
+    defaultUnitFilters.star[i] = true;
+  }
+
+  for (let k in Elements) {
+    defaultUnitFilters.element[Elements[k]] = true;
+  }
+
+  for (let k in ArmyUnitTypes) {
+    defaultUnitFilters.type[k] = true;
+  }
 }
 
 const weaponDefaultFilters = {
@@ -62,7 +78,7 @@ const weaponDefaultFilters = {
   [EquipmentType.Whip]: true
 };
 
-const FiltersVersion = 5;
+const FiltersVersion = 9;
 
 const store = new Vuex.Store({
   state: {

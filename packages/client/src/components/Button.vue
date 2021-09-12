@@ -229,7 +229,7 @@ export default {
 }
 
 .locked {
-  background: no-repeat url("./../assets/ui/icon_lock_big.png");
+  .icon_lock_big;
   width: 2.5rem;
   height: 2.5rem;
   background-size: contain;

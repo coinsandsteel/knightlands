@@ -606,6 +606,7 @@ span {
 
 .star {
     .icon_star_empty;
+
     width: @iconSize !important;
     height: @iconSize !important;
 
@@ -656,27 +657,24 @@ span {
 }
 
 .weapon-badge {
-    width: @iconSize * 1.5 !important;
-    height: @iconSize * 1.5 !important;
-
     &.axe {
-        .troops_mini_weapon_axe;
+        .unit_weapon_axe;
     }
 
     &.sword {
-        .troops_mini_weapon_sword;
+        .unit_weapon_sword;
     }
 
     &.bow {
-        .troops_mini_weapon_bow;
+        .unit_weapon_bow;
     }
 
     &.wand {
-        .troops_mini_weapon_wand;
+        .unit_weapon_wand;
     }
 
     &.spear {
-        .troops_mini_weapon_spear;
+        .unit_weapon_spear;
     }
 }
 
@@ -706,6 +704,11 @@ span {
     }
 }
 
+.iconf {
+    width: @iconSize * 1.5 !important;
+    height: @iconSize * 1.5 !important;
+}
+
 .icon(@filename) {
     background: url("../assets/ui/@{filename}.png") no-repeat;
     background-size: contain;
@@ -726,7 +729,8 @@ span {
 }
 
 .icon-eth {
-    .icon("ethereum");
+    .ethereum;
+    .icon();
 }
 
 .icon-chart {
@@ -766,11 +770,13 @@ span {
 }
 
 .icon-challenge {
-    .icon("icon_cup");
+    .icon_cup;
+    .icon();
 }
 
 .icon-loot {
-    .icon("icon_chest");
+    .icon_chest;
+    .icon();
 }
 
 .icon-premium {
@@ -784,51 +790,64 @@ span {
 }
 
 .icon-dkt {
-    .icon("FLESH");
+    .FLESH;
+    .icon();
 }
 
 .icon-sDkt {
-    .icon("FLESH");
+    .FLESH;
+    .icon();
 }
 
 .icon-dkt2 {
-    .icon("ASH");
+    
+    .ASH;.icon();
 }
 
 .icon-trx {
-    .icon("icon_tron");
+    
+    .icon_tron;.icon();
 }
 
 .icon-trx-dark {
-    .icon("icon_tron_dark");
+    
+    .icon_tron_dark;.icon();
 }
 
 .icon-info {
-    .icon("icon_hint");
+    
+    .icon_hint;
 
     &.dark {
-        .icon("icon_hint_dark");
+        .icon_hint_dark;.icon();
     }
+
+    .icon();
 }
 
 .icon-mark {
-    .icon("checkbox_tick");
+    
+    .checkbox_tick;.icon();
 }
 
 .icon-user {
-    .icon("icon_user");
+    
+    .icon_user;.icon();
 }
 
 .icon-edit {
-    .icon("checkbox_tick");
+    
+    .checkbox_tick;.icon();
 }
 
 .icon-preview {
-    .icon("checkbox_tick");
+    
+    .checkbox_tick;.icon();
 }
 
 .icon-attack {
-    .icon("icon_attack");
+    
+    .icon_attack;.icon();
 }
 
 // .icon-raids {
@@ -892,105 +911,33 @@ span {
 }
 
 .icon-marker {
-    .icon("marker");
+    
+    .marker;.icon();
 }
 
 .icon-refresh {
-    .icon("icon_refresh");
+    
+    .icon_refresh;.icon();
 }
 
 .icon-water {
-    .icon("element_water");
+    
+    .element_water;.icon();
 }
 
 .icon-earth {
-    .icon("element_earth");
+    
+    .element_earth;.icon();
 }
 
 .icon-light {
-    .icon("element_light");
-}
-
-.icon-daily-acc-trial {
-    .DailyAccessoryTrial;
-    .icon();
-}
-
-.icon-daily-wep-trial {
-    .DailyWeaponTrial;
-    .icon();
-}
-
-.icon-daily-arm-trial {
-    .DailyArmourTrial;
-    .icon();
-}
-
-.icon-daily-boost-beast {
-    .DailyBoostBeast;
-    .icon();
-}
-
-.icon-daily-chest1 {
-    .DailyChest1;
-    .icon();
-}
-
-.icon-daily-chest2 {
     
-    .DailyChest2;
-    .icon();
-}
-
-.icon-daily-chest3 {
-    
-    .DailyChest3;
-    .icon();
+    .element_light;.icon();
 }
 
 .icon-rp {
-    .icon("icon_rp");
-}
-
-.icon-daily-chest4 {
     
-    .DailyChest4;
-    .icon();
-}
-
-.icon-daily-chest5 {
-    
-    .DailyChest5;
-    .icon();
-}
-
-.icon-daily-enchant {
-    
-    .DailyEnchantItem;.icon();
-}
-
-.icon-daily-quest {
-    
-    .DailyEngageQuest;.icon();
-}
-
-.icon-daily-lvl-item {
-    
-    .DailyLevelUpItem;.icon();
-}
-
-.icon-daily-spend-gold {
-    
-    .DailySpendGold;.icon();
-}
-
-.icon-daily-spend-prem {
-    
-    .DailySpendPremium;.icon();
-}
-
-.icon-daily-tower {
-    .icon("DailyTower");
+    .icon_rp;.icon();
 }
 
 .item-icon() {
@@ -1008,34 +955,38 @@ span {
 }
 
 .icon-refill-tower {
-    .icon();
-    .skewed_icon_tower;
+    
+    .skewed_icon_tower;.icon();
 }
 
 .icon-custom-unit {
-    .icon();
-    .icon_customize_unit;
+    
+    .icon_customize_unit;.icon();
 }
 
 .icon-pass-unit {
-    .icon();
-    .icon_passive_abilities;
+    
+    .icon_passive_abilities;.icon();
 }
 
 .icon-refill-armourTrials {
-    .icon("ticket_blue");
+    
+    .ticket_blue;.icon();
 }
 
 .icon-refill-weaponTrials {
-    .icon("ticket_red");
+    
+    .ticket_red;.icon();
 }
 
 .icon-refill-accessoryTrials {
-    .icon("ticket_yellow");
+    
+    .ticket_yellow;.icon();
 }
 
 .icon-darkness {
-    .icon("element_dark");
+    
+    .element_dark;.icon();
 }
 
 // .icon-calendar {
@@ -1043,15 +994,18 @@ span {
 // }
 
 .icon-rank1 {
-    .icon("icon_cup_gold");
+    
+    .icon_cup_gold;.icon();
 }
 
 .icon-rank2 {
-    .icon("icon_cup_silver");
+    
+    .icon_cup_silver;.icon();
 }
 
 .icon-rank3 {
-    .icon("icon_cup_bronze");
+    
+    .icon_cup_bronze;.icon();
 }
 
 .icon-rankings {
@@ -1065,32 +1019,30 @@ span {
 }
 
 .icon-tournaments {
-    
     .skewed_icon_tournaments;.icon();
 }
 
 .icon-races {
-    
     .skewed_icon_races;.icon();
 }
 
 .icon-usdc {
-    .icon("usdc");
+    
+    .usdc;.icon();
 }
 
 .icon-person {
-    .icon("tabbar_character");
+    
+    .tabbar_character;.icon();
 }
 
 .icon-sounds {
     
-    .icon("button_sound_off");
+    .button_sound_off;.icon();
 
     &.enabled {
-        .icon("button_sound_on");
+        .button_sound_on;
     }
-
-    .icon();
 }
 
 .icon-summon {
@@ -1116,7 +1068,13 @@ span {
 // }
 
 .icon-damage {
-    .icon("damage_icon");
+    .damage_icon;
+    .icon();
+}
+
+.icon-stretched {
+    width: unset !important;
+    height: unset !important;
 }
 
 .enemy-title-font {
@@ -1266,9 +1224,8 @@ span {
 }
 
 .close-btn {
-    background-image: url("../assets/ui/button_close.png");
-    background-repeat: no-repeat;
-    background-size: contain;
+    .icon();
+    .button_close;
     width: 4rem;
     height: 4rem;
     position: absolute;

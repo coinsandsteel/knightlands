@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div class="flex width-100 pixelated">
+    <div class="flex width-100">
       <div class="title-tip margin-left-2" :class="element"></div>
-      <div class="title-body flex-full flex" :class="element">
+      <div class="title-body flex-full flex flex-items-center" :class="element">
         <span class="title-icon" :class="`icon-unit-${element}`"></span>
         <span class="title-icon" :class="`icon-unit-${weaponType}`"></span>
+        <span class="title-icon" :class="`unit_type_${unitType}`"></span>
         <div
-          class="title-text-container flex flex-center font-size-22 font-outline font-weight-900"
+          class="title-text-container flex flex-center font-size-25 font-outline font-weight-900"
         >
           <span v-if="showLevel" class="title-level margin-right-1">{{
             $t("unit-lvl", { lvl: level })
@@ -87,8 +88,8 @@ export default {
 }
 
 .title-icon {
-  height: 3.5rem !important;
-  width: 3.5rem !important;
+  height: 5rem !important;
+  width: 5rem !important;
 }
 
 .title-level {

@@ -9,7 +9,7 @@
       >{{ $t(trial.rarity) }}</span
     >
     <div class="flex flex-end margin-1">
-      <CustomButton v-on="$listeners" :locked="locked">{{
+      <CustomButton v-on="$listeners" :locked="locked" minWidth="15rem">{{
         $t("btn-enter")
       }}</CustomButton>
     </div>
