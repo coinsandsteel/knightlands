@@ -91,6 +91,7 @@
                   @hint="selectMaterial(index)"
                   :selected="index == selectedMaterial"
                   :locked="lockRest"
+                  :interactible="!lockRest"
                 >
                   <div
                     class="absolute-stretch select-overlay flex flex-center"
@@ -114,6 +115,8 @@
             :increaseCondition="canIncreaseMaterial"
             @inc="incMaterialCount"
             @dec="decMaterialCount"
+            @max="setMaxMaterial"
+            @reset="resetMaterial"
           ></NumericValue>
 
           <CustomButton
@@ -242,6 +245,14 @@ export default {
       } else {
         this.materialsCount[this.selectedMaterial]++;
       }
+    },
+    setMaxMaterial() {
+      while (this.canIncreaseMaterial) {
+        this.incMaterialCount();
+      }
+    },
+    resetMaterial() {
+      this.materialsCount[this.selectedMaterial] = 0;
     },
     returnBack() {
       this.$router.replace({

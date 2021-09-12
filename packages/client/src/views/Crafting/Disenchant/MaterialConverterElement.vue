@@ -30,6 +30,8 @@
           :increaseCondition="canAdd()"
           @inc="inc"
           @dec="dec"
+          @max="setMax"
+          @reset="reset"
         >
           <template v-slot:between>
             <Loot :hideQuantity="true" :item="itemTo" @hint="onHint"></Loot>
@@ -64,6 +66,10 @@ export default {
     }
   },
   methods: {
+    setMax() {
+      this.resultCount = Math.floor(this.totalCount / this.conversionRate);
+      this.requiredCount += this.resultCount * this.conversionRate;
+    },
     reset() {
       this.requiredCount = 0;
       this.resultCount = 0;

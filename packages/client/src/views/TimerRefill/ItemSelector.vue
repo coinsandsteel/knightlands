@@ -8,6 +8,9 @@
       :increaseCondition="canAdd()"
       @inc="inc"
       @dec="dec"
+      @max="setMax"
+      @reset="reset"
+      :noExtra="true"
     >
       <template v-slot:between>
         <Loot
@@ -49,6 +52,17 @@ export default {
     },
     emitChanged() {
       this.$emit("changed", this.selected, this.item);
+    },
+    setMax() {
+      while (this.canAdd()) {
+        this.$nextTick(() => {
+          this.inc();
+        });
+      }
+    },
+    reset() {
+      this.selected = 0;
+      this.emitChanged();
     }
   }
 };

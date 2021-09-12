@@ -209,10 +209,6 @@ export default {
   },
   methods: {
     handleHint() {
-      if (this.locked) {
-        return;
-      }
-
       this.$emit("hint", this.itemData);
     },
     updateItemData() {

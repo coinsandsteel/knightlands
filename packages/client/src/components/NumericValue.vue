@@ -2,6 +2,9 @@
   <div
     class="flex flex-no-wrap font-size-20 flex-center font-weight-900 flex-space-between"
   >
+    <CustomButton v-if="!noExtra" type="blue" @click="$emit('reset')">{{
+      $t("reset")
+    }}</CustomButton>
     <i
       :class="{ 'disabled-btn': !decreaseCondition }"
       class="pointer att-minus"
@@ -29,6 +32,9 @@
       @touchend="stopAttributeModify"
       @touchcancel="stopAttributeModify"
     ></i>
+    <CustomButton v-if="!noExtra" type="blue" @click="$emit('max')">{{
+      $t("max")
+    }}</CustomButton>
     <slot></slot>
     <SoundEffect ref="fx" :files="['btn_click1']" channel="ui" />
   </div>
@@ -36,6 +42,7 @@
 
 <script>
 import SoundEffect from "@/components/SoundEffect.vue";
+import CustomButton from "@/components/Button.vue";
 
 const ContinuousEditingTimeout = 500;
 
@@ -46,9 +53,10 @@ export default {
     "value",
     "maxValue",
     "caption",
-    "showMax"
+    "showMax",
+    "noExtra"
   ],
-  components: { SoundEffect },
+  components: { SoundEffect, CustomButton },
   methods: {
     increaseAttribute() {
       if (!this.increaseCondition) {

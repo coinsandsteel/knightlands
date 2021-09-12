@@ -7,6 +7,8 @@
       :increaseCondition="canIncrease()"
       @inc="attacks++"
       @dec="attacks--"
+      @max="setMax"
+      @reset="attacks = 1"
     >
       <template v-slot:between>
         <AttackButton
@@ -46,10 +48,19 @@ export default {
     }
   },
   methods: {
+    setMax() {
+      this.attacks = Math.min(
+        50,
+        Math.floor(
+          this.$game.character.maxStats[CharacterStats.Stamina] /
+            this.staminaCost
+        )
+      );
+    },
     canIncrease() {
       return (
-        this.$game.character.maxStats[CharacterStats.Stamina] &&
-        this.attacks < 50
+        this.$game.character.maxStats[CharacterStats.Stamina] >
+          (this.attacks - 1) * this.staminaCost && this.attacks < 50
       );
     }
   }

@@ -34,6 +34,8 @@
         :increaseCondition="canIncreaseItemCount"
         @inc="incItemCount"
         @dec="decItemCount"
+        @max="setMax"
+        @min="reset"
       ></NumericValue>
 
       <slot name="footer"></slot>
@@ -76,6 +78,14 @@ export default {
     }
   },
   methods: {
+    setMax() {
+      while (this.canIncreaseItemCount) {
+        this.incItemCount();
+      }
+    },
+    reset() {
+      this.decItemCount(this.itemsCount[this.selectedItem]);
+    },
     resetSelectedItems() {
       this.itemsCount = {};
     },
@@ -89,10 +99,10 @@ export default {
       let item = this.$game.inventory.getItem(this.selectedItem);
       this.$emit("select", { item, count: 1, select: true });
     },
-    decItemCount() {
-      this.itemsCount[this.selectedItem]--;
+    decItemCount(count) {
+      this.itemsCount[this.selectedItem] -= count || 1;
       let item = this.$game.inventory.getItem(this.selectedItem);
-      this.$emit("select", { item, count: 1, select: false });
+      this.$emit("select", { item, count, select: false });
     },
     selectItem(item) {
       let selected = this.selectedItem == item.id;

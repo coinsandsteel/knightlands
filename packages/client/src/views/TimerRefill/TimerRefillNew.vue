@@ -52,6 +52,8 @@
                   :increaseCondition="canRestoreMore"
                   @inc="restores++"
                   @dec="restores--"
+                  @max="setMax"
+                  @reset="reset"
                 >
                   <template v-slot:between>
                     <IconWithValue :iconClass="statIcon">{{
@@ -69,9 +71,9 @@
                   </IconWithValue>
                 </div>
 
-                <span class="flex flex-center font-size-20 margin-bottom-1"
-                  >Refills today: {{ refillsToday }}</span
-                >
+                <span class="flex flex-center font-size-20 margin-bottom-1">{{
+                  $t("refill-today", { c: refillsToday })
+                }}</span>
                 <span class="flex flex-center font-size-18 margin-bottom-1"
                   >Time until reset: {{ resetTimer.value }}</span
                 >
@@ -303,6 +305,14 @@ export default {
     }
   },
   methods: {
+    setMax() {
+      while (this.canRestoreMore) {
+        this.increstoreCount();
+      }
+    },
+    reset() {
+      this.restores = 0;
+    },
     calculateCost(count) {
       return Math.round(
         RefillMeta.cost.base * Math.pow(count, RefillMeta.cost.expScale)

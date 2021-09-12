@@ -40,6 +40,8 @@
                 :increaseCondition="canCraftNext()"
                 @inc="craftMore"
                 @dec="craftLess"
+                @max="setMax"
+                @reset="reset"
               ></NumericValue>
 
               <div>
@@ -194,6 +196,14 @@ export default {
     },
     canCraftNext() {
       return this.canCraft(true);
+    },
+    setMax() {
+      while (this.canCraftNext()) {
+        this.craftMore();
+      }
+    },
+    reset() {
+      this.itemsToCraft = 1;
     },
     canCraft(next) {
       if (!this.ready) {
