@@ -28,16 +28,12 @@
             :showMax="true"
             :value="getStatValue(att)"
             :maxValue="getMaxStatValue(att)"
-            :decreaseCondition="
-              getEditedAttribute(att) > 0 && attributesNeedReset
-            "
-            :increaseCondition="
-              hasEnoughGold(att) &&
-                getAttributeValue(att) < getMaxStat(att) &&
-                hasEnoughResource(att)
-            "
+            :decreaseCondition="canDecrease(att)"
+            :increaseCondition="canIncrease(att)"
             @inc="increaseAttribute(att)"
             @dec="decreaseAttribute(att)"
+            @max="setMax(att)"
+            @reset="reset(att)"
           ></numeric-value>
         </div>
       </div>
@@ -108,6 +104,13 @@ export default {
     }
   },
   methods: {
+    canIncrease(att) {
+      return (
+        this.hasEnoughGold(att) &&
+        this.getAttributeValue(att) < this.getMaxStat(att) &&
+        this.hasEnoughResource(att)
+      );
+    },
     init() {
       for (let statKey in UpgradableCharacterStats) {
         const stat = UpgradableCharacterStats[statKey];
@@ -159,10 +162,8 @@ export default {
     getUpgradePrice(stat) {
       return TrainingCamp.getStatCost(stat, this.getAttributeValue(stat));
     },
-    canDecrease(attr) {
-      return (
-        this.$character.getAttribute(attr) > this.purchasedAttributes[attr]
-      );
+    canDecrease(att) {
+      return this.getEditedAttribute(att) > 0 && this.attributesNeedReset;
     },
     getEditedAttribute(attr) {
       return this.purchasedAttributes[attr];
@@ -173,6 +174,16 @@ export default {
         this.$game.softCurrency += this.upgradePrice[i];
         this.upgradePrice[i] = 0;
         this.upgradeResources[i] = 0;
+      }
+    },
+    setMax(att) {
+      while (this.canIncrease(att)) {
+        this.increaseAttribute(att);
+      }
+    },
+    reset(attr) {
+      while (this.canDecrease(attr)) {
+        this.decreaseAttribute(attr);
       }
     },
     increaseAttribute(attr) {

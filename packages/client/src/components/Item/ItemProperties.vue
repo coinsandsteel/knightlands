@@ -55,7 +55,7 @@ export default {
       let params = { ...action };
 
       if (action.action == ItemActions.Buff) {
-        params.duration = params.duration / 3600;
+        params.duration = Math.floor((params.duration / 3600) * 100) / 100;
       } else if (action.action == ItemActions.RaidBuff) {
         params.raid = this.$t(RaidsMeta[params.raid].name);
       }

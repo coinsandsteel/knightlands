@@ -74,9 +74,9 @@
                 <span class="flex flex-center font-size-20 margin-bottom-1">{{
                   $t("refill-today", { c: refillsToday })
                 }}</span>
-                <span class="flex flex-center font-size-18 margin-bottom-1"
-                  >Time until reset: {{ resetTimer.value }}</span
-                >
+                <span class="flex flex-center font-size-18 margin-bottom-1">{{
+                  $t("till-reset", { t: resetTimer.value })
+                }}</span>
               </div>
             </div>
           </keep-alive>
