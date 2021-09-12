@@ -103,6 +103,8 @@
               :increaseCondition="useCount < count"
               @inc="useCount++"
               @dec="useCount--"
+              @max="useCount = count"
+              @reset="useCount = 1"
             ></NumericValue>
             <CustomButton
               type="yellow"

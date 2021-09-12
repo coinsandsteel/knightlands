@@ -48,7 +48,14 @@ for (let i in ItemType) {
 const defaultUnitFilters = {
   star: {},
   element: {},
-  type: {}
+  type: {},
+  weapon: {
+    [EquipmentType.Axe]: true,
+    [EquipmentType.Bow]: true,
+    [EquipmentType.Spear]: true,
+    [EquipmentType.Sword]: true,
+    [EquipmentType.Wand]: true
+  }
 };
 {
   // 10 stars maximum
@@ -78,7 +85,7 @@ const weaponDefaultFilters = {
   [EquipmentType.Whip]: true
 };
 
-const FiltersVersion = 9;
+const FiltersVersion = 12;
 
 const store = new Vuex.Store({
   state: {

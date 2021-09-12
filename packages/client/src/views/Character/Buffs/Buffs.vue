@@ -1,5 +1,5 @@
 <template>
-  <div class="width-100 buffs-grid padding-2">
+  <div class="width-100 buffs-grid height-100 padding-2 relative">
     <template v-if="buffs.length > 0">
       <BuffSlot
         v-for="record in buffs"
@@ -9,7 +9,10 @@
         @info="handleInfo"
       ></BuffSlot>
     </template>
-    <div v-else class="flex flex-column flex-center width-100 height-100">
+    <div
+      v-else
+      class="flex flex-column flex-center width-100 height-100 absolute-stretch"
+    >
       <span class="font-size-22 margin-bottom-2">{{ $t("buffs-empty") }}</span>
       <CustomButton type="yellow" @click="goToShop">{{
         $t("buff-now")

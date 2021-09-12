@@ -32,7 +32,7 @@
                 <span
                   class="preview-title font-size-30 font-weight-900"
                   :class="{ show: showAnimation }"
-                  >{{ name }}</span
+                  >{{ $t(name) }}</span
                 >
               </Flipped>
 
@@ -42,14 +42,10 @@
                   :class="{ show: showAnimation }"
                   :weaponType="weaponType"
                   :element="element"
+                  :type="unitType"
                 ></Flag>
               </Flipped>
-              <UnitStars
-                ref="stars"
-                class="stars"
-                :stars="stars"
-                size="big"
-              ></UnitStars>
+              <UnitStars ref="stars" class="stars" :stars="stars"></UnitStars>
             </Flipper>
 
             <Flipper
@@ -173,7 +169,7 @@ export default {
 
 <style lang="less" scoped>
 .unit-height {
-  height: 45vh;
+  height: 40vh;
 }
 
 .unit-image {
@@ -185,9 +181,9 @@ export default {
   display: grid;
   padding: 0 2rem 0 2rem;
   grid-template-columns: 4rem 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   align-items: stretch;
-  height: 10rem;
+  height: 14rem;
   position: relative;
 
   & .preview-title {
@@ -212,7 +208,7 @@ export default {
     opacity: 0;
 
     &.show {
-      grid-row: ~"1/3";
+      grid-row: ~"1/4";
       grid-column: 1;
       opacity: 1;
       position: unset;
@@ -221,8 +217,7 @@ export default {
 
   & .stars {
     grid-row: 2;
-    grid-column: 2;
-    justify-self: start;
+    grid-column: ~"2/4";
   }
 }
 

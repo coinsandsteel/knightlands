@@ -34,6 +34,21 @@
         </IconCheckbox>
       </div>
 
+      <div class="flex flex-center margin-bottom-5">
+        <CustomButton type="blue" @click="toggleAll('weaponFilter')">{{
+          !all_weaponFilter ? $t("all") : $t("none")
+        }}</CustomButton>
+        <IconCheckbox
+          v-for="weapon in weapons"
+          :key="weapon"
+          class="margin-right-1"
+          v-model="weaponFilter[weapon]"
+          :onClass="`op unit_weapon_${weapon} active`"
+          :offClass="`op unit_weapon_${weapon}`"
+        >
+        </IconCheckbox>
+      </div>
+
       <div class="types-grid width-100 margin-bottom-5">
         <CustomButton type="blue" @click="toggleAll('typeFilter')">{{
           !all_typeFilter ? $t("all") : $t("none")
@@ -58,24 +73,44 @@ import IconCheckbox from "@/components/IconCheckbox.vue";
 import CustomButton from "@/components/Button.vue";
 import Elements from "@/../../knightlands-shared/elements";
 import ArmyUnitTypes from "@/army_unit_types";
+import EquipmentType from "@/../../knightlands-shared/equipment_type";
 
 export default {
-  props: ["filter", "filterChangedCb", "commitCmd"],
+  props: ["filter", "filterChangedCb", "commitCmd", "troops"],
   components: { UserDialog, IconCheckbox, CustomButton },
   data: () => ({
     stars: 10,
     elements: Elements,
     types: ArmyUnitTypes,
+    weapons: {
+      [EquipmentType.Axe]: EquipmentType.Axe,
+      [EquipmentType.Bow]: EquipmentType.Bow,
+      [EquipmentType.Spear]: EquipmentType.Spear,
+      [EquipmentType.Sword]: EquipmentType.Sword,
+      [EquipmentType.Wand]: EquipmentType.Wand
+    },
     starsFilter: {},
     elementFilter: {},
-    typeFilter: {}
+    typeFilter: {},
+    weaponFilter: {}
   }),
   mounted() {
     this.starsFilter = Object.assign({}, this.filter.star);
     this.elementFilter = Object.assign({}, this.filter.element);
     this.typeFilter = Object.assign({}, this.filter.type);
+    this.weaponFilter = Object.assign({}, this.filter.weapon);
   },
   computed: {
+    all_weaponFilter() {
+      let all = true;
+      for (const k in this.weaponFilter) {
+        if (!this.weaponFilter[k]) {
+          all = false;
+          break;
+        }
+      }
+      return all;
+    },
     all_starsFilter() {
       let all = true;
       for (const k in this.starsFilter) {
@@ -108,41 +143,41 @@ export default {
     }
   },
   watch: {
+    weaponFilter: {
+      deep: true,
+      handler() {
+        this.commitFilters();
+      }
+    },
     starsFilter: {
       deep: true,
       handler() {
-        this.$store.commit(this.commitCmd, {
-          star: this.starsFilter,
-          type: this.typeFilter,
-          element: this.elementFilter
-        });
-        this.onFilterChanged();
+        this.commitFilters();
       }
     },
     elementFilter: {
       deep: true,
       handler() {
-        this.$store.commit(this.commitCmd, {
-          star: this.starsFilter,
-          type: this.typeFilter,
-          element: this.elementFilter
-        });
-        this.onFilterChanged();
+        this.commitFilters();
       }
     },
     typeFilter: {
       deep: true,
       handler() {
-        this.$store.commit(this.commitCmd, {
-          star: this.starsFilter,
-          type: this.typeFilter,
-          element: this.elementFilter
-        });
-        this.onFilterChanged();
+        this.commitFilters();
       }
     }
   },
   methods: {
+    commitFilters() {
+      this.$store.commit(this.commitCmd, {
+        star: this.starsFilter,
+        type: this.typeFilter,
+        element: this.elementFilter,
+        weapon: this.weaponFilter
+      });
+      this.onFilterChanged();
+    },
     toggleAll(filterName) {
       const all = this[`all_${filterName}`];
       for (const k in this[filterName]) {
@@ -154,7 +189,8 @@ export default {
         this.filterChangedCb({
           star: this.starsFilter,
           type: this.typeFilter,
-          element: this.elementFilter
+          element: this.elementFilter,
+          weapon: this.weaponFilter
         });
       }
     }

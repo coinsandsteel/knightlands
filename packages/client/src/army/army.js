@@ -196,12 +196,18 @@ export default class Army {
       return false;
     }
 
-    if (!filter.element[this._armyDb.getElement(unit)]) {
+    if (!filter.type[this._armyDb.getUnitType(unit)]) {
       return false;
     }
 
-    if (!filter.type[this._armyDb.getUnitType(unit)]) {
-      return false;
+    if (unit.troop) {
+      if (!filter.element[this._armyDb.getElement(unit)]) {
+        return false;
+      }
+
+      if (!filter.weapon[this._armyDb.getWeaponType(unit)]) {
+        return false;
+      }
     }
 
     return true;
