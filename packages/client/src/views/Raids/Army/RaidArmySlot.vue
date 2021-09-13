@@ -7,13 +7,14 @@
       <div
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
       >
-        <div class="unit-item-shadow absolute-stretch"></div>
-        <UnitStars
-          class="stars width-100 relative"
-          :stars="stars"
-          size="small"
+        <!-- <div class="unit-item-shadow absolute-stretch"></div> -->
+        <UnitStars class="stars width-100 relative" :stars="stars" />
+        <Flag
+          class="item-badge-grid"
+          :weaponType="weaponType"
+          :element="element"
+          :type="unitType"
         />
-        <Flag :weaponType="weaponType" :element="element" />
         <span
           class="width-100 font-size-18 font-weight-900 unit-item-lvl center-transform"
           >{{ $t("unit-lvl", { lvl: level }) }}</span
@@ -102,11 +103,11 @@ export default {
 
   & .item-badge-grid {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: ~"1/4";
   }
 
   & .stars {
-    grid-column: ~"1/3";
+    grid-column: ~"2/3";
     grid-row: 1;
   }
 }

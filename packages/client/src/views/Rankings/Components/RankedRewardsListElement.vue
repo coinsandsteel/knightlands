@@ -3,7 +3,7 @@
     class="flex flex-item-center font-size-20 width-100 text-align-left padding-top-1 padding-bottom-1"
     :class="[bgColor, { 'yellow-title': you }]"
   >
-    <span :class="rankIcon" class="flex-1"></span>
+    <span :class="rankIcon" class="r"></span>
     <span class="flex-5">#{{ rank }}</span>
     <span class="flex flex-5">
       <IconWithValue iconClass="icon-dkt big" v-if="dkt > 0">
@@ -52,6 +52,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.r {
+  width: 2.5rem;
+}
 .even-bg {
   background-color: #193f5f;
 }
