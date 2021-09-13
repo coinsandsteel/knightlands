@@ -2,7 +2,7 @@
   <div
     class="flex flex-no-wrap font-size-20 flex-center font-weight-900 flex-space-between"
   >
-    <CustomButton v-if="!noExtra" type="blue" @click="$emit('reset')">{{
+    <CustomButton v-if="!noExtra" type="blue" @click="handleReset">{{
       $t("reset")
     }}</CustomButton>
     <i
@@ -32,7 +32,7 @@
       @touchend="stopAttributeModify"
       @touchcancel="stopAttributeModify"
     ></i>
-    <CustomButton v-if="!noExtra" type="blue" @click="$emit('max')">{{
+    <CustomButton v-if="!noExtra" type="blue" @click="handleMax">{{
       $t("max")
     }}</CustomButton>
     <slot></slot>
@@ -58,6 +58,16 @@ export default {
   ],
   components: { SoundEffect, CustomButton },
   methods: {
+    handleMax() {
+      if (this.increaseCondition) {
+        this.$emit("max");
+      }
+    },
+    handleReset() {
+      if (this.decreaseCondition) {
+        this.$emit("reset");
+      }
+    },
     increaseAttribute() {
       if (!this.increaseCondition) {
         return false;

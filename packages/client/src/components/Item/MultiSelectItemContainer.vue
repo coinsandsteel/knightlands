@@ -35,7 +35,7 @@
         @inc="incItemCount"
         @dec="decItemCount"
         @max="setMax"
-        @min="reset"
+        @reset="reset"
       ></NumericValue>
 
       <slot name="footer"></slot>
@@ -61,14 +61,15 @@ export default {
   components: { NumericValue, Loot, CustomButton },
   data: () => ({
     itemsCount: {},
-    selectedItem: null
+    selectedItem: null,
+    item: null
   }),
   computed: {
     canIncreaseItemCount() {
       if (!this.itemsCount[this.selectedItem]) {
         return false;
       }
-      return this.currentItemCount < this.itemsCount[this.selectedItem];
+      return this.item.count > this.itemsCount[this.selectedItem];
     },
     currentItemCount() {
       return this.itemsCount[this.selectedItem] || 0;
@@ -79,28 +80,29 @@ export default {
   },
   methods: {
     setMax() {
-      while (this.canIncreaseItemCount) {
-        this.incItemCount();
-      }
+      this.incItemCount(this.item.count - this.currentItemCount);
     },
     reset() {
-      this.decItemCount(this.itemsCount[this.selectedItem]);
+      this.decItemCount(this.currentItemCount);
     },
     resetSelectedItems() {
       this.itemsCount = {};
+      this.selectedItem = null;
     },
-    incItemCount() {
+    incItemCount(count) {
+      count = count || 1;
       if (!this.itemsCount[this.selectedItem]) {
-        this.$set(this.itemsCount, this.selectedItem, 1);
+        this.$set(this.itemsCount, this.selectedItem, count);
       } else {
-        this.itemsCount[this.selectedItem]++;
+        this.itemsCount[this.selectedItem] += count;
       }
 
       let item = this.$game.inventory.getItem(this.selectedItem);
-      this.$emit("select", { item, count: 1, select: true });
+      this.$emit("select", { item, count, select: true });
     },
     decItemCount(count) {
-      this.itemsCount[this.selectedItem] -= count || 1;
+      count = count || 1;
+      this.itemsCount[this.selectedItem] -= count;
       let item = this.$game.inventory.getItem(this.selectedItem);
       this.$emit("select", { item, count, select: false });
     },
@@ -110,9 +112,10 @@ export default {
       if (selected) {
         this.selectedItem = null;
         count = this.itemsCount[item.id];
-        this.itemsCount[item.id] = 0;
+        this.$delete(this.itemsCount, item.id);
       } else {
         this.selectedItem = item.id;
+        this.item = item;
 
         if (!this.itemsCount[item.id]) {
           this.$set(this.itemsCount, item.id, item.count);
