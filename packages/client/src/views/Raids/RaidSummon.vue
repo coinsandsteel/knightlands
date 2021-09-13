@@ -73,6 +73,7 @@
               class="flex flex-center flex-column margin-top-4 margin-bottom-4 font-size-22"
             >
               <p-check
+                v-if="isPayed"
                 class="checkbox margin-bottom-1"
                 name="check"
                 color="warning"
