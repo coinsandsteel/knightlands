@@ -651,6 +651,8 @@ export default {
 @import (reference) "./style/common.less";
 
 html {
+  perspective: 1px;
+  transform: translateZ(0);
   font-family: "Brandon", sans-serif;
   font-size: 8px;
   line-height: 1.3;
