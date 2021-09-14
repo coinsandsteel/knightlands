@@ -160,6 +160,9 @@ import Events from "@/../../knightlands-shared/events";
 import PromptMixin from "@/components/PromptMixin.vue";
 import { create } from "vue-modal-dialogs";
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
+
 import LevelUp from "@/views/LevelUp.vue";
 const ShowLevelUp = create(LevelUp, "data");
 
@@ -245,6 +248,22 @@ export default {
   },
   mounted() {
     Vue.prototype.$tutorial = this.$refs.tutorial;
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAXe3Bylo4xM-AzOPKAInwty1J5qLXNB4w",
+      authDomain: "knightlands-game.firebaseapp.com",
+      projectId: "knightlands-game",
+      storageBucket: "knightlands-game.appspot.com",
+      messagingSenderId: "1026181731607",
+      appId: "1:1026181731607:web:7289505a958e829c7f1352",
+      measurementId: "G-CCS5K5W7LN"
+    };
+
+    this.firebase = initializeApp(firebaseConfig);
+    this.analytics = getAnalytics(this.firebase);
+    this.logEvent = (name, params) => {
+      logEvent(this.analytics, name, params);
+    };
   },
   async created() {
     Vue.prototype.$app = this;
@@ -260,6 +279,7 @@ export default {
     });
 
     this.$game.on("level-up", async args => {
+      this.$app.logEvent("level-up", { level: args.new });
       await ShowLevelUp(args);
     });
 

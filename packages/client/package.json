@@ -24,6 +24,7 @@
     "core-js": "^3",
     "cssnano": "^4.1.10",
     "ethers": "^5.4.1",
+    "firebase": "^9.0.2",
     "fitty": "^2.2.6",
     "global": "^4.4.0",
     "hooper": "^0.3.4",

@@ -311,13 +311,12 @@ export default class Army {
   updateUnit(unit) {
     const currentUnit = this._vm.units[unit.id];
     if (!currentUnit) {
-      this._vm.$set(this._vm.units, unit.id, unit);
+      this.addUnits([unit]);
     } else {
       for (const prop in unit) {
         this._vm.$set(currentUnit, prop, unit[prop]);
       }
     }
-    this._sort(unit.troop);
   }
 
   updateMaxSlots(newMaxSlots) {
@@ -339,18 +338,27 @@ export default class Army {
   }
 
   addUnits(units) {
+    let addTroop = false;
+    let addGeneral = false;
     for (const unit of units) {
       if (unit.troop) {
         unit.idx = this._vm.troops.push(unit) - 1;
+        addTroop = true;
       } else {
         unit.idx = this._vm.generals.push(unit) - 1;
+        addGeneral = true;
       }
       this._vm.$set(this._vm.units, unit.id, unit);
     }
 
     this._unitsIndex.update(this._vm.units, null);
-    this._doSort(this._vm.generals);
-    this._doSort(this._vm.troops);
+    if (addGeneral) {
+      this._doSort(this._vm.generals);
+    }
+
+    if (addTroop) {
+      this._doSort(this._vm.troops);
+    }
   }
 
   removeUnits(ids) {

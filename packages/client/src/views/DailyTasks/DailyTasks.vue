@@ -65,7 +65,7 @@ export default {
       for (let i = 0; i < quests.length; ++i) {
         quest = quests[i];
 
-        if (quest.maximumLevel > this.$game.character.level) {
+        if (quest.maximumLevel >= this.$game.dailyQuests.playerLevel) {
           break;
         }
       }

@@ -96,6 +96,7 @@ export default {
       if (response === true) {
         this.request = this.$game.selectClass(this.selectedClass);
         await this.request;
+        this.$app.logEvent("change-class", { class: this.selectedClass });
         this.$close();
       }
     }
