@@ -324,6 +324,10 @@ export default {
       if (!this.$game.character.avatar) {
         await ShowChangeAvatar();
       }
+
+      this.logEvent("log", {
+        account: this.$game.account
+      });
     });
     this.$game.on(this.$game.SignedOut, this.redirectToLogin.bind(this));
 

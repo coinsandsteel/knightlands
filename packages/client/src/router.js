@@ -944,6 +944,24 @@ const router = new Router({
       ]
     },
     {
+      path: "/home/prize",
+      component: () => import("./views/PrizePool/PrizePoolRoot.vue"),
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          path: "",
+          name: "prize-pool",
+          component: () => import("./views/PrizePool/PrizePoolLeaderboard.vue")
+        },
+        {
+          path: "breakdown",
+          name: "prize-pool-bd"
+        }
+      ]
+    },
+    {
       path: "/home/account",
       component: () => import("./views/Dividends/DividendsRoot.vue"),
       meta: {
