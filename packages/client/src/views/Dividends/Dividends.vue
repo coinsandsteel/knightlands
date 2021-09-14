@@ -234,7 +234,7 @@ export default {
   },
   data: () => ({
     dktType: CurrencyType.Dkt,
-    dkt2Type: CurrencyType.Dkt2,
+    dkt2Type: CurrencyType.Dkt,
     divsInfo: null,
     pendingWithdrawals: [],
     nextPayoutTimer: new Timer(true),
@@ -273,7 +273,7 @@ export default {
       return this.$game.inventory.getCurrency(CurrencyType.StakedDkt, 6);
     },
     unlockedDkt() {
-      return this.$game.inventory.getCurrency(CurrencyType.Dkt2, 6);
+      return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
     },
     payouts() {
       return this.$game.dividends.payouts;
@@ -456,6 +456,9 @@ export default {
           ]
         );
       }
+    },
+    logout() {
+      this.$game.logout();
     }
   }
 };

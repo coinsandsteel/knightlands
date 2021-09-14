@@ -326,10 +326,6 @@ class Game {
     return this._vm.towerPurchased;
   }
 
-  get dkt2() {
-    return this.inventory.getCurrency(CurrencyType.Dkt2);
-  }
-
   get ready() {
     return this._vm.ready;
   }

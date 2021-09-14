@@ -72,7 +72,7 @@
           <span class="font-size-20">{{ $t("du-balance") }}</span>
 
           <IconWithValue class="balance" iconClass="icon-dkt2">{{
-            $game.dkt2
+            $game.dkt
           }}</IconWithValue>
         </div>
 
@@ -195,7 +195,7 @@ export default {
         }
       }
 
-      return this.$game.dkt2 >= this.ashPrice && this.item && hasEnough;
+      return this.$game.dkt >= this.ashPrice && this.item && hasEnough;
     }
   },
   methods: {

@@ -65,7 +65,7 @@
           <span class="font-size-20">{{ $t("du-balance") }}</span>
 
           <IconWithValue class="balance" iconClass="icon-dkt2">{{
-            $game.dkt2
+            $game.dkt
           }}</IconWithValue>
         </div>
 
@@ -208,7 +208,7 @@ export default {
       let enoughCurrency =
         this.recipe.softCurrencyFee <= this.$game.softCurrency;
       if (this.recipe.hardCurrencyFee > 0) {
-        enoughCurrency = this.ashPrice <= this.$game.dkt2;
+        enoughCurrency = this.ashPrice <= this.$game.dkt;
       }
 
       return (

@@ -255,7 +255,7 @@ export default {
       return this.stepData.soft <= this.$game.softCurrency;
     },
     enoughAsh() {
-      return this.ashPrice <= this.$game.dkt2;
+      return this.ashPrice <= this.$game.dkt;
     },
     enoughResources() {
       return this.$game.crafting.hasEnoughIngridients(this.ingridients);
@@ -298,7 +298,7 @@ export default {
       );
     },
     ashBalance() {
-      return this.$game.inventory.getCurrency(CurrencyType.Dkt2, 6);
+      return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
     }
   },
   methods: {

@@ -46,7 +46,7 @@ export default {
   components: { CustomButton, IconWithValue },
   data: () => ({
     tokensOverlay: false,
-    tokens: [CurrencyType.Dkt, CurrencyType.Dkt2],
+    tokens: [CurrencyType.Dkt],
     selectedToken: "",
     preselectedToken: ""
   }),

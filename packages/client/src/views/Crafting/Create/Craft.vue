@@ -77,7 +77,7 @@
                     <span class="font-size-20">{{ $t("du-balance") }}</span>
 
                     <IconWithValue class="balance" iconClass="icon-dkt2">{{
-                      $game.dkt2
+                      $game.dkt
                     }}</IconWithValue>
                   </div>
 
@@ -226,7 +226,7 @@ export default {
       }
 
       if (this.ashPrice > 0) {
-        hasEnough &= this.$game.dkt2 >= this.ashPrice * itemsToCraft;
+        hasEnough &= this.$game.dkt >= this.ashPrice * itemsToCraft;
       }
 
       return hasEnough;
@@ -248,7 +248,7 @@ export default {
       this.craft(CurrencyType.Fiat);
     },
     craftWithAsh() {
-      this.craft(CurrencyType.Dkt2);
+      this.craft(CurrencyType.Dkt);
     },
     async craft(currency) {
       this.request = this.$game.craftRecipe(

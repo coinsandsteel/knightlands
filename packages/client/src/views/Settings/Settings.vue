@@ -105,9 +105,6 @@ export default {
     updateOnlineCounter(data) {
       this.online = data.online;
     },
-    logout() {
-      this.$game.logout();
-    },
     getReferral() {
       return `${window.location.host}/#/login?referral=${this.$game.id}`;
     }

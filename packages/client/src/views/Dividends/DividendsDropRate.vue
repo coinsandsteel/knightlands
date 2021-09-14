@@ -60,7 +60,7 @@ export default {
       return this.meta.price;
     },
     cantUpgradeRate() {
-      return this.ratePrice > this.$game.dkt2;
+      return this.ratePrice > this.$game.dkt;
     }
   }
 };
