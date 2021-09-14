@@ -13,11 +13,6 @@
     </keep-alive>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="grey" @click="goToRp"
-        ><IconWithValue iconClass="icon-rp">{{
-          $t("b-rp")
-        }}</IconWithValue></CustomButton
-      >
       <CustomButton type="yellow" @click="summonRaid" id="btn-summon">{{
         $t("btn-summon")
       }}</CustomButton>
@@ -61,9 +56,6 @@ export default {
   methods: {
     handleTabChanged(tab) {
       this.currentTab = tab;
-    },
-    goToRp() {
-      this.$router.push({ name: "raid-points" });
     },
     summonRaid() {
       this.$router.push({ name: "raids-for-summon" });

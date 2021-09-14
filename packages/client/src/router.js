@@ -895,11 +895,6 @@ const router = new Router({
       },
       children: [
         {
-          path: "raid-points",
-          name: "raid-points",
-          component: () => import("./views/Raids/RaidPoints.vue")
-        },
-        {
           path: "view/:raidId",
           props: true,
           name: "view-raid",
@@ -949,7 +944,7 @@ const router = new Router({
       ]
     },
     {
-      path: "/home/dividends",
+      path: "/home/account",
       component: () => import("./views/Dividends/DividendsRoot.vue"),
       meta: {
         requiresAuth: true
@@ -957,7 +952,7 @@ const router = new Router({
       children: [
         {
           path: "",
-          name: "dividends",
+          name: "account",
           component: () => import("./views/Dividends/Dividends.vue")
         },
         {

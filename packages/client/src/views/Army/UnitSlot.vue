@@ -13,6 +13,10 @@
           :element="element"
           :type="unitType"
         />
+        <span
+          class="capitalize name font-size-30 font-weight-900 font-outline"
+          >{{ $t(name) }}</span
+        >
         <span class="unit-level font-size-30 font-weight-900 font-outline">{{
           $t("unit-lvl", { lvl: level })
         }}</span>
@@ -63,6 +67,11 @@ export default {
   grid-template-columns: 30% 1fr;
   grid-template-rows: 30% 30% 1fr 1fr 1fr;
   align-items: stretch;
+
+  & .name {
+    grid-column: ~"1/3";
+    grid-row: 3;
+  }
 
   & .item-badge-grid {
     grid-column: 1;

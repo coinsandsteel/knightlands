@@ -16,7 +16,6 @@
         :useTriangleRendering="false"
       ></SpinePlayer>
       <SoundEffect ref="fx" :files="['char_lvl_up']" channel="fx" />
-      <span ref="hook"></span>
       <div class="level-up-spacer"></div>
       <span class="grey-title font-size-20 font-weight-700">{{
         $t("level-up-title")
@@ -152,17 +151,16 @@ export default {
 
 <style lang="less" scoped>
 .level-up-animation {
-  transform: translateY(-50%);
+  transform: translateY(-40%);
   position: absolute;
-  width: 140%;
-  left: -20%;
+  width: 100rem;
   pointer-events: none;
   z-index: 1;
-  height: 100vh;
+  height: 100rem;
 }
 
 .level-up-spacer {
-  height: 15rem;
+  height: 30rem;
 }
 
 .level-up-list {

@@ -25,11 +25,11 @@ export default {
 @import (reference) "../style/common.less";
 
 .title- {
-  border-image-source: url("../assets/ui/title.png");
+  border-image-source: url("../assets/ui/title.svg");
   border-image-slice: 38 30 38 30 fill;
   border-image-width: 38px 30px 38px 30px;
   border-image-outset: 0px 0px 0px 0px;
-  border-image-repeat: round round;
+  border-image-repeat: stretch;
   border-style: none;
   padding: 0rem 2rem;
   align-self: center;

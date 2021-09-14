@@ -118,7 +118,7 @@ export default {
   //   background-position: left, right;
   // }
 
-  border-image-source: url("../assets/ui/@{name}_active.png");
+  border-image-source: url("../assets/ui/@{name}_active.svg");
 
   & > .btn-content {
     transform: translateY(0rem);
@@ -155,11 +155,11 @@ export default {
   //   background-position: left, right;
   // }
 
-  border-image-source: url("../assets/ui/@{name}.png");
-  border-image-slice: 50 70 50 70 fill;
-  border-image-width: 20px 20px 20px 20px;
+  border-image-source: url("../assets/ui/@{name}.svg");
+  border-image-slice: 25 35 25 35 fill;
+  border-image-width: 12px 20px 12px 20px;
   border-image-outset: 0px 0px 0px 0px;
-  border-image-repeat: round round;
+  border-image-repeat: stretch;
 }
 
 @btnFillExtrude: 3px;
@@ -245,22 +245,6 @@ export default {
     .pressed("button_red");
   }
 }
-
-// .red-skewed {
-//   .btn-bg("skewed_button_red");
-// }
-
-// .grey-skewed {
-//   .btn-bg("skewed_button_blue");
-// }
-
-// .green-skewed {
-//   .btn-bg("skewed_button_green");
-// }
-
-// .purple-skewed {
-//   .btn-bg("skewed_button_purple");
-// }
 
 .blue {
   .btn-bg("button_blue");

@@ -468,7 +468,10 @@ export default [
         },
         dialog: [
           {
-            text: ["t-d-16", "t-d-17", "t-d-18"]
+            text: ["t-d-16", "t-d-16i"]
+          },
+          {
+            text: ["t-d-17", "t-d-18"]
           }
         ]
       }
