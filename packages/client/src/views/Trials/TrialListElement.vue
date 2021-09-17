@@ -46,7 +46,6 @@ export default {
   background-position: center 25%;
   background-size: cover;
   background-repeat: no-repeat;
-  image-rendering: pixelated;
-  height: 20rem;
+  height: 30rem;
 }
 </style>
