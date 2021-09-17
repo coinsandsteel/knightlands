@@ -162,15 +162,24 @@
         <div v-else class="flex flex-center width-100 flex-space-evenly">
           <AttackButton
             :promise="request"
-            minWidth="20rem"
+            minWidth="15rem"
             type="yellow"
+            :noSound:="true"
+            @click="engage"
+            id="engage-q"
+            >{{ $t("btn-attack") }}</AttackButton
+          >
+          <AttackButton
+            :promise="request"
+            minWidth="15rem"
+            type="green"
             :noSound:="true"
             @click="start"
             id="engage-q"
             >{{ $t("q-prog-s") }}</AttackButton
           >
           <PromisedButton
-            minWidth="20rem"
+            minWidth="15rem"
             :promise="request"
             :disabled="paused"
             @click="stop"

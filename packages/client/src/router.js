@@ -958,6 +958,11 @@ const router = new Router({
         {
           path: "breakdown",
           name: "prize-pool-bd"
+        },
+        {
+          path: "",
+          name: "breakdown",
+          component: () => import("./views/PrizePool/PrizePoolBreakdown.vue")
         }
       ]
     },

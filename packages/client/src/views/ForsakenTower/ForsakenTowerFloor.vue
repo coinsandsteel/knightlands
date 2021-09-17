@@ -56,7 +56,7 @@
             @click="start"
             width="15rem"
             type="yellow"
-            >{{ $t("btn-attack") }}</AttackButton
+            >{{ $t("q-prog-s") }}</AttackButton
           >
 
           <PromisedButton

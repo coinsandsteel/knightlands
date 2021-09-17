@@ -1,7 +1,5 @@
 <template>
-  <div class="screen-content">
-    <div class="screen-background"></div>
-  </div>
+  <div></div>
 </template>
 
 <script>

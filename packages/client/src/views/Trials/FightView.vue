@@ -53,10 +53,18 @@
         <div class="flex margin-top-3 flex-center width-100 flex-space-evenly">
           <AttackButton
             :promise="request"
-            @click="start"
+            @click="attack"
             type="yellow"
             width="15rem"
             >{{ $t("btn-attack") }}</AttackButton
+          >
+
+          <AttackButton
+            :promise="request"
+            @click="start"
+            type="green"
+            width="15rem"
+            >{{ $t("q-prog-s") }}</AttackButton
           >
 
           <PromisedButton
@@ -285,6 +293,7 @@ export default {
         this.playerHealth = attackResult.playerHealth;
       } catch (exc) {
         if (exc.includes(Errors.TrialNoAttempts)) {
+          this.stop();
           const response = await this.showPrompt(
             "prompt-snap-title",
             "trials-no-keys",

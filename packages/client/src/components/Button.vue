@@ -157,8 +157,8 @@ export default {
 
   border-image-source: url("../assets/ui/@{name}.svg");
   border-image-slice: 25 35 25 35 fill;
-  border-image-width: 12px 20px 12px 20px;
-  border-image-outset: 0px 0px 0px 0px;
+  border-image-width: 20px;
+  border-image-outset: 0px;
   border-image-repeat: stretch;
 }
 

@@ -615,7 +615,7 @@
     "empty-network": "Select",
     "available": "Available: ",
     "q-att-s": "Attack x1",
-    "q-prog-s": "Continue",
+    "q-prog-s": "Auto",
     "q-att-m": "Attack MAX",
     "q-prog-m": "Stop",
     "shinies": "Shinies",
@@ -2227,5 +2227,6 @@
     "tx-cancel": "Cancelled",
     "tx-canceli": "Can be cancelled in: {timer}",
     "btn-leave": "Leave",
-    "acc-id": "Copy account ID"
+    "acc-id": "Copy account ID",
+    "w-prize": "Prize Pool"
 }
