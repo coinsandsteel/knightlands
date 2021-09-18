@@ -9,6 +9,10 @@
       >{{ $t("grand-prize", { n: 30000 }) }}</IconWithValue
     >
 
+    <span class="font-size-20 font-outline">{{
+      $t("d-s-f-at", { timer: timeLeft })
+    }}</span>
+
     <CustomButton class="margin-top-2" type="yellow" @click="goToPrizePool">{{
       $t("pp-track")
     }}</CustomButton>
@@ -18,12 +22,38 @@
 <script>
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
+import Timer from "@/timer";
 
 export default {
   components: { IconWithValue, CustomButton },
+  data: () => ({
+    timer: new Timer(true)
+  }),
+  async mounted() {
+    const status = await this.$game.getSeasonStatus();
+    this.timer.timeLeft = status.finishAt - this.$game.nowSec;
+  },
   methods: {
     goToPrizePool() {
       this.$router.push({ name: "prize-pool" });
+    }
+  },
+  computed: {
+    timeLeft() {
+      let timeLeft = this.timer.timeLeft;
+      let minutes = Math.floor(timeLeft / 60);
+
+      let hours = Math.floor(minutes / 60);
+      minutes -= hours * 60;
+
+      let days = Math.floor(hours / 24);
+      hours -= days * 24;
+
+      let seconds = Math.floor(timeLeft % 60);
+
+      return `${days}${this.$t("day")} ${hours}${this.$t(
+        "hour"
+      )} ${minutes}${this.$t("minute")} ${seconds}${this.$t("second")}`;
     }
   }
 };

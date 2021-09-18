@@ -1487,6 +1487,10 @@ class Game {
   }
 
   // Dividends
+  async getSeasonStatus() {
+    return (await this._wrapOperation(Operations.FetchSeason)).response;
+  }
+
   async cancelTokenWithdrawal(id) {
     return (
       await this._wrapOperation(Operations.CancelAsset, { type: "token-w", id })
