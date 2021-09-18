@@ -72,6 +72,7 @@ export default {
   async activated() {
     this.records = [];
     this.currentPage = 0;
+    this.fetchedAll = false;
     this.fetchNextPage();
   },
   methods: {
