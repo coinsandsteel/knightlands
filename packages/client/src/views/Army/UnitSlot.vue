@@ -14,7 +14,7 @@
           :type="unitType"
         />
         <span
-          class="capitalize name font-size-30 font-weight-900 font-outline"
+          class="capitalize name white-space-no-wrap font-size-30 font-weight-900 font-outline"
           >{{ $t(name) }}</span
         >
         <span class="unit-level font-size-30 font-weight-900 font-outline">{{
@@ -45,7 +45,7 @@ export default {
     content: "";
     width: 100%;
     display: inline-block;
-    padding-bottom: calc(100% / (9 / 12));
+    padding-bottom: calc(100% / (9 / 16));
   }
 
   & > .inner {
@@ -65,7 +65,7 @@ export default {
 
   display: grid;
   grid-template-columns: 30% 1fr;
-  grid-template-rows: 30% 30% 1fr 1fr 1fr;
+  grid-template-rows: 30% 30% 1fr 28px 1fr;
   align-items: stretch;
 
   & .name {
@@ -75,7 +75,7 @@ export default {
 
   & .item-badge-grid {
     grid-column: 1;
-    grid-row: ~"1/4";
+    grid-row: ~"1/3";
   }
 
   & .stars {
