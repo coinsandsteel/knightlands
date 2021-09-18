@@ -7,7 +7,10 @@
         $t("d-drop-rate")
       }}</span> -->
 
-      <span v-if="isMax">{{ rate }}%</span>
+      <div class="flex flex-center" v-if="isMax">
+        <span>+{{ currentRate }}%</span>
+        <span class="icon-rp big"></span>
+      </div>
       <div class="flex flex-center" v-else>
         <span>+{{ currentRate }}%</span>
         <span class="icon-rp big"></span>
@@ -21,6 +24,7 @@
       type="grey"
       class="margin-top-1"
       @click="$emit('upgrade')"
+      v-if="!isMax"
       :disabled="cantUpgradeRate"
     >
       {{ $t("btn-upgrade") }}
@@ -44,17 +48,22 @@ export default {
       return this.$game.dividends.dropRateLevel;
     },
     meta() {
+      if (this.isMax) {
+        return DividendsMeta.dropRate[DividendsMeta.dropRate.length - 1];
+      }
       return DividendsMeta.dropRate[this.level];
     },
     currentRate() {
       if (this.level > 0) {
-        return DividendsMeta.dropRate[this.level - 1].rate;
+        return (
+          Math.floor(DividendsMeta.dropRate[this.level - 1].rate * 10000) / 100
+        );
       }
 
       return 0;
     },
     rate() {
-      return this.meta.rate;
+      return Math.floor(this.meta.rate * 10000) / 100;
     },
     ratePrice() {
       return this.meta.price;

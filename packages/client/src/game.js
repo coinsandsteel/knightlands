@@ -406,7 +406,7 @@ class Game {
   async signInWith(provider) {
     await magic.oauth.loginWithRedirect({
       provider,
-      redirectURI: window.location.href + "&magic=true"
+      redirectURI: window.location.href
     });
   }
 
@@ -1499,15 +1499,15 @@ class Game {
     ).response;
   }
 
-  async upgradeDktMining() {
+  async upgradeRPMining() {
     return (await this._wrapOperation(Operations.DivsMineUpgrade)).response;
   }
 
-  async collectDktMining() {
+  async collectRPMining() {
     return (await this._wrapOperation(Operations.ClaimMinedDkt)).response;
   }
 
-  async upgradeDktDropRate() {
+  async upgradeRPDropRate() {
     return (await this._wrapOperation(Operations.DivsDropUpgrade)).response;
   }
 
@@ -1866,6 +1866,20 @@ class Game {
         tournamentId
       })
     ).response;
+  }
+
+  // Prize pool
+  async fetchPrizePool(page) {
+    return (await this._wrapOperation(Operations.FetchPrizePool, { page }))
+      .response;
+  }
+
+  async getPrizePoolRank() {
+    return (await this._wrapOperation(Operations.GetPrizePoolRank)).response;
+  }
+
+  async getPrizePoolRewards() {
+    return (await this._wrapOperation(Operations.GetPrizePoolRewards)).response;
   }
 
   // Races

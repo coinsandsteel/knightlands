@@ -87,7 +87,7 @@
                     @click="craftWithAsh"
                   >
                     <div class="flex flex-center">
-                      <span class="margin-right-1">{{ $t("btn-evolve") }}</span>
+                      <span class="margin-right-1">{{ $t("btn-craft") }}</span>
                       <AshTag
                         :price="recipe.ashFee * itemsToCraft"
                         v-model="ashPrice"

@@ -72,7 +72,7 @@
                 </div>
 
                 <span class="flex flex-center font-size-20 margin-bottom-1">{{
-                  $t("refill-today", { c: refillsToday })
+                  $t("refills-today", { c: refillsToday })
                 }}</span>
                 <span class="flex flex-center font-size-18 margin-bottom-1">{{
                   $t("till-reset", { t: resetTimer.value })

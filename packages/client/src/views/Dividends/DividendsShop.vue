@@ -2,11 +2,19 @@
   <div class="screen-content padding-top-1">
     <div class="screen-background"></div>
 
-    <div class="flex flex-center margin-bottom-2 margin-top-2">
-      <span class="font-size-20">{{ $t("du-balance") }}</span>
+    <div class="flex flex-center margin-bottom-1 margin-top-2">
+      <span class="font-size-20 margin-right-1">{{ $t("du-balance") }}</span>
 
       <IconWithValue class="balance" iconClass="icon-dkt2">{{
         $game.dkt
+      }}</IconWithValue>
+    </div>
+
+    <div class="flex flex-center margin-bottom-2 margin-top-1">
+      <span class="font-size-20 margin-right-1">{{ $t("rp-balance") }}</span>
+
+      <IconWithValue class="balance" iconClass="icon-rp">{{
+        score
       }}</IconWithValue>
     </div>
 
@@ -53,6 +61,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
 const ShowItems = create(ItemsReceived, "items");
+const PRECISION = 10000;
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -69,6 +78,9 @@ export default {
   computed: {
     shopItems() {
       return DividendsMeta.shop;
+    },
+    score() {
+      return Math.floor(this.$game.raidPoints.score * PRECISION) / PRECISION;
     }
   },
   methods: {
@@ -80,13 +92,13 @@ export default {
       return this.$game.dividends.unlockedTokens >= price;
     },
     async upgradeMining() {
-      await this.performRequest(this.$game.upgradeDktMining());
+      await this.performRequest(this.$game.upgradeRPMining());
     },
     async collectMining() {
-      await this.performRequest(this.$game.collectDktMining());
+      await this.performRequest(this.$game.collectRPMining());
     },
     async upgradeDktDrop() {
-      await this.performRequest(this.$game.upgradeDktDropRate());
+      await this.performRequest(this.$game.upgradeRPDropRate());
     }
   }
 };

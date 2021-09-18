@@ -150,7 +150,7 @@ import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 import RankingsMenu from "./Rankings/RankingsMenu.vue";
 
-import PrizePoolWidget from "@/views/PrizePool/PrizePoolWidget.vue";
+import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
 
 export default {
   name: "home",

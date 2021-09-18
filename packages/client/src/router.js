@@ -945,7 +945,7 @@ const router = new Router({
     },
     {
       path: "/home/prize",
-      component: () => import("./views/PrizePool/PrizePoolRoot.vue"),
+      component: () => import("./views/Rankings/PrizePool/PrizePoolRoot.vue"),
       meta: {
         requiresAuth: true
       },
@@ -953,16 +953,23 @@ const router = new Router({
         {
           path: "",
           name: "prize-pool",
-          component: () => import("./views/PrizePool/PrizePoolLeaderboard.vue")
+          props: true,
+          component: () =>
+            import("./views/Rankings/PrizePool/PrizePoolLeaderboard.vue")
         },
         {
           path: "breakdown",
-          name: "prize-pool-bd"
+          name: "breakdown",
+          props: true,
+          component: () =>
+            import("./views/Rankings/PrizePool/PrizePoolBreakdown.vue")
         },
         {
-          path: "",
-          name: "breakdown",
-          component: () => import("./views/PrizePool/PrizePoolBreakdown.vue")
+          path: "rewards",
+          name: "pool-rewards",
+          props: true,
+          component: () =>
+            import("./views/Rankings/PrizePool/PrizePoolRewards.vue")
         }
       ]
     },

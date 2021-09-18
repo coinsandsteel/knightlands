@@ -96,7 +96,7 @@ export default {
       );
     },
     cantUpgradeRate() {
-      return this.ratePrice > this.$game.dividends.unlockedTokens;
+      return this.ratePrice > this.$game.dkt;
     }
   },
   methods: {

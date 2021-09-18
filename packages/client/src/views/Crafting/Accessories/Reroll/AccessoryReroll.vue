@@ -42,6 +42,8 @@
       <slot name="footer"></slot>
     </div>
 
+    <CraftingIngridient class="margin-top-2" :ingridient="ingridient" />
+
     <div class="flex flex-center margin-top-2">
       <CustomButton type="yellow" :disabled="!canReroll" @click="reroll"
         >{{ $t("btn-reroll-acc") }}
@@ -65,11 +67,13 @@ import CraftAccessoriesMeta from "@/craft_accessories";
 import ItemProperties from "@/components/Item/ItemProperties.vue";
 import ItemHeader from "@/components/Item/ItemHeader.vue";
 import Title from "@/components/Title.vue";
+import CraftingIngridient from "@/components/CraftingIngridient.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   props: ["itemId"],
   components: {
+    CraftingIngridient,
     SoundEffect,
     ItemProperties,
     CustomButton,
@@ -87,14 +91,23 @@ export default {
     item() {
       return this.$game.inventory.getItem(this.itemId);
     },
-    price() {
-      let rerolls = this.item.rerolls || 1;
+    priceSettings() {
       let priceSettings = CraftAccessoriesMeta.reroll.find(
         x => x.rarity == this.$game.itemsDB.getRarity(this.item)
       );
+      return priceSettings;
+    },
+    price() {
+      let rerolls = this.item.rerolls || 1;
       return Math.floor(
-        Math.pow(rerolls, priceSettings.base) * priceSettings.scale
+        Math.pow(rerolls, this.priceSettings.base) * this.priceSettings.scale
       );
+    },
+    ingridient() {
+      return {
+        itemId: this.priceSettings.shardItem,
+        quantity: this.priceSettings.shards
+      };
     },
     canReroll() {
       return this.price <= this.$game.softCurrency;
