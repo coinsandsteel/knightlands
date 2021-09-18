@@ -3,6 +3,7 @@
     <GoldShopElement
       v-for="(entry, idx) in gold"
       :key="idx"
+      :index="idx"
       :data="entry"
       @purchase="handlePurchase(idx)"
     />
@@ -38,7 +39,7 @@ export default {
 .shop-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  justify-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(33%, 1fr));
+  justify-items: stretch;
 }
 </style>

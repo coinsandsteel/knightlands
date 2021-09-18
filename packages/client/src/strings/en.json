@@ -1818,7 +1818,7 @@
     "div-seas-2": "At the end of the season all staked FLESH will be moved to your balance to be spent in <span class='rarity-rare'>Shop</span>.",
     "divs-cl": "Available dividends",
     "divs-cl-1": "This is dividends in the pool available for Knights to collect. It increases each time Knight purchase goods with crypto.",
-    "divs-cl-2": " 70% of all crypto purchases goes to the pool. 10% goes towards next season prize pool.",
+    "divs-cl-2": " 70% of all crypto purchases goes to the pool. 10% goes towards next Grand Royale pool.",
     "y-stake": "Your stake",
     "y-stake-1": "This is your current staked FLESH.",
     "d-bal-1": "Free account can patricipate in group raids for free. All free accounts compete for 35 daily FLESH.",
@@ -2232,7 +2232,7 @@
     "tx-canceli": "Can be cancelled in: {timer}",
     "btn-leave": "Leave",
     "acc-id": "Copy account ID",
-    "w-prize": "Prize Pool",
+    "w-prize": "Grand Royale",
     "ppool-t": "Score breakdown",
     "prize-pool": "Ranks",
     "breakdown": "Your Rank",
@@ -2242,5 +2242,6 @@
     "pool-rewards": "Rewards",
     "pp_0": "Grand Royale Trophy",
     "pp_1": "Old Royale Trophy",
-    "pp_2": "Royal Ore"
+    "pp_2": "Royal Ore",
+    "your-reward": "Reward:"
 }

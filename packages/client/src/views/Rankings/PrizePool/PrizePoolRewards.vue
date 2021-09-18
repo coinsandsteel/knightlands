@@ -1,7 +1,7 @@
 <template>
   <div class="screen-content dummy-height">
     <div
-      class="title flex flex-center font-size-20 margin-bottom-1 margin-top-1"
+      class="title flex flex-center font-size-20 color-panel-2"
       v-if="participates"
     >
       <div class="flex margin-right-2">
@@ -9,9 +9,14 @@
         <span class="green-title">{{ rank }}</span>
       </div>
 
-      <div class="flex">
+      <div class="flex margin-right-2">
         <span class="margin-right-half">{{ $t("your-score") }}</span>
         <span class="yellow-title">{{ currentRank.score }}</span>
+      </div>
+
+      <div class="flex">
+        <span class="margin-right-half">{{ $t("your-reward") }}</span>
+        <IconWithValue iconClass="icon-usdc">{{ reward }}</IconWithValue>
       </div>
     </div>
     <div class="full-flex width-100 dummy-height" v-bar>
@@ -30,10 +35,11 @@
 
 <script>
 import PrizePoolRewardListElement from "./PrizePoolRewardListElement.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["currentRank"],
-  components: { PrizePoolRewardListElement },
+  components: { PrizePoolRewardListElement, IconWithValue },
   data: () => ({
     rewards: []
   }),
@@ -42,11 +48,14 @@ export default {
   },
   computed: {
     participates() {
-      if (this.currentRank && this.currentRank.rank) {
-        return this.currentRank.id == this.id;
+      return !!this.currentRank;
+    },
+    reward() {
+      if (this.rewards.length <= this.rank - 1) {
+        return 0;
       }
 
-      return false;
+      return this.rewards[this.rank - 1];
     },
     rank() {
       if (!this.currentRank) {

@@ -1,10 +1,20 @@
 <template>
   <div class="screen-content dummy-height flex-items-center width-100">
-    <div class="flex flex-center font-size-30 margin-top-2 margin-bottom-3">
-      {{ $t("total-ppoints", { s: score }) }}
+    <div
+      class="title flex flex-center font-size-20 color-panel-2 padding-bottom-4"
+    >
+      <div class="flex margin-right-2">
+        <span class="margin-right-half">{{ $t("your-rank") }}</span>
+        <span class="green-title">{{ rank }}</span>
+      </div>
+
+      <div class="flex">
+        <span class="margin-right-half">{{ $t("your-score") }}</span>
+        <span class="yellow-title">{{ score }}</span>
+      </div>
     </div>
 
-    <Title :stackBottom="true">{{ $t("ppool-t") }}</Title>
+    <Title :stackTop="true" :stackBottom="true">{{ $t("ppool-t") }}</Title>
 
     <div class="color-panel-1 padding-top-3 text-align-left flex flex-column">
       <div
@@ -50,6 +60,17 @@ export default {
         return b.score - a.score;
       });
       return list;
+    },
+    rank() {
+      if (!this.currentRank) {
+        return this.$t("race-unranked");
+      }
+
+      if (this.currentRank.rank == 0) {
+        return this.$t("race-unranked");
+      }
+
+      return this.currentRank.rank;
     }
   }
 };

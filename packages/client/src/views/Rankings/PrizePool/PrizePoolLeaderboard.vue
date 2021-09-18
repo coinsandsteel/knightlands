@@ -69,7 +69,9 @@ export default {
     fetchedAll: false,
     showInfoButton: false
   }),
-  async mounted() {
+  async activated() {
+    this.records = [];
+    this.currentPage = 0;
     this.fetchNextPage();
   },
   methods: {
@@ -89,7 +91,6 @@ export default {
         let newRecords = await this.$game.fetchPrizePool(this.currentPage);
         if (newRecords) {
           this.fetchedAll = newRecords.finished;
-          console.log(newRecords.records);
           this.records.push(...newRecords.records);
           this.currentPage++;
         }
