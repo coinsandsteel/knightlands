@@ -167,16 +167,18 @@
             :noSound:="true"
             @click="engage"
             id="engage-q"
-            >{{ $t("btn-attack") }}</AttackButton
+          >
+            <span>
+              {{ $t("btn-attack") }}{{ hasFastQuests ? " x3" : "" }}</span
+            ></AttackButton
           >
           <AttackButton
-            :promise="request"
             minWidth="15rem"
             type="green"
             :noSound:="true"
             @click="start"
             id="engage-q"
-            >{{ $t("q-prog-s") }}</AttackButton
+            >{{ $t("q-prog-s") }}{{ hasFastQuests ? " x3" : "" }}</AttackButton
           >
           <PromisedButton
             minWidth="15rem"
