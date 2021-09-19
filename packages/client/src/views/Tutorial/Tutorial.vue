@@ -63,10 +63,10 @@ export default {
       actionIndex: state => state.tutorial.actionIndex
     }),
     isFinished() {
-      return this.step + 1 > Scenario.length;
+      return this.step + 1 > Scenario.length || !this.conditionPassed;
     },
     pointerData() {
-      if (this.isFinished) {
+      if (!this.actionData) {
         return null;
       }
       return this.actionData.pointer;
@@ -79,7 +79,7 @@ export default {
       return !!this.pointerData;
     },
     dialogData() {
-      if (this.isFinished) {
+      if (!this.actionData) {
         return null;
       }
 

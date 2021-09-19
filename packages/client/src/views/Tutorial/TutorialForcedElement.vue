@@ -267,7 +267,7 @@ export default {
 
         this.skipTimeout = setTimeout(() => {
           this.showSkipButton = true;
-          this.skipTimeout = false;
+          this.skipTimeout = null;
         }, SKIP_TIMEOUT);
 
         this.searchInterval = setInterval(() => {

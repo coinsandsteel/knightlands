@@ -258,12 +258,17 @@ export default {
       playerDamages: [],
       newRewards: [],
       sliderIndex: 0,
-      paused: true
+      paused: true,
+      useAuto: false
     };
   },
   mounted() {
     this.damageTextId = 0;
     this.sliderIndex = +this.questIndex;
+
+    this.$game.on("level-up", async args => {
+      this.pause();
+    });
   },
   activated() {
     this.$refs.slider.af = null;
@@ -277,9 +282,16 @@ export default {
     this.stop();
   },
   watch: {
+    ["$store.state.tutorial.conditionPassed"]() {
+      if (this.$store.state.tutorial.conditionPassed) {
+        this.pause();
+      }
+    },
     questIndex() {
       this.sliderIndex = +this.questIndex;
-      this.start();
+      if (this.useAuto) {
+        this.start();
+      }
     }
   },
   computed: {
@@ -351,11 +363,16 @@ export default {
       }
 
       this.paused = false;
+      this.useAuto = true;
       if (!this._autoCombat) {
         this.autoCombat();
       }
     },
     stop() {
+      this.useAuto = false;
+      this.pause();
+    },
+    pause() {
       if (this.paused) {
         return;
       }
@@ -468,7 +485,8 @@ export default {
       }
     },
     async _handleQuestError(error) {
-      this.stop();
+      this.pause();
+
       switch (error) {
         case Errors.NoHealth:
           await ShowResourceRefill(Stat.Health);

@@ -19,11 +19,6 @@ export default {
     },
     setActionIndex(state, { index }) {
       state.actionIndex = index;
-
-      if (state.step >= Scenario.length) {
-        state.actionIndex = 0;
-        return;
-      }
     }
   },
   actions: {
