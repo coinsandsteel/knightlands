@@ -5,8 +5,8 @@
     </Title>
 
     <div class="color-panel-5 margin-top-1">
-      <div class="width-100 flex">
-        <div class="flex flex-column flex-space-between flex-4">
+      <div class="width-100 flex flex-space-evenly">
+        <div class="flex flex-column flex-space-between">
           <div class="flex flex-center panel-input padding-1">
             <div class="icon-timer small"></div>
             <span class="font-size-18">{{ timer.value }}</span>
@@ -21,7 +21,7 @@
         </div>
 
         <div
-          class="flex flex-space-between flex-center flex-column flex-center font-size-22 flex-4"
+          class="flex flex-space-between flex-center flex-column flex-center font-size-22"
         >
           <IconWithValue iconClass="icon-leaderboards big"
             >x{{ targetMultiplier }}</IconWithValue
@@ -31,8 +31,11 @@
           >
         </div>
 
-        <div class="flex flex-center font-size-22 margin-bottom-1 flex-2">
-          <IconWithValue iconClass="icon-rankings big" v-if="currentRank">{{
+        <div
+          class="flex flex-center font-size-22 margin-bottom-1"
+          v-if="currentRank"
+        >
+          <IconWithValue iconClass="icon-rankings big">{{
             currentRank.rank.rank
           }}</IconWithValue>
         </div>

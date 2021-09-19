@@ -133,9 +133,14 @@ export default {
     this.stop();
   },
   mounted() {
-    this.$game.on("level-up", async () => {
+    this.setHealth();
+    this._onLevelUp = async () => {
       this.stop();
-    });
+    };
+    this.$game.on("level-up", this._onLevelUp);
+  },
+  destroyed() {
+    this.$game.off("level-up", this._onLevelUp);
   },
   computed: {
     name() {

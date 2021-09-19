@@ -5,7 +5,7 @@
     :style="{ height: `${height}px` }"
     @click="preview"
   >
-    <span :class="rankIcon" class="flex-1"></span>
+    <span :class="rankIcon" class="r"></span>
     <span class="flex-1">#{{ rank }}</span>
     <Avatar :preview="true" :avatar="avatar" :mini="true"></Avatar>
     <span class="flex-4">{{ id }}</span>
@@ -60,6 +60,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.r {
+  width: 2.5rem;
+}
 .even-bg {
   background-color: #303048;
 }
