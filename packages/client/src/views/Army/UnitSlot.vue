@@ -13,13 +13,17 @@
           :element="element"
           :type="unitType"
         />
-        <span
-          class="capitalize name white-space-no-wrap font-size-30 font-weight-900 font-outline"
-          >{{ $t(name) }}</span
-        >
-        <span class="unit-level font-size-30 font-weight-900 font-outline">{{
-          $t("unit-lvl", { lvl: level })
-        }}</span>
+        <div class="name flex flex-center">
+          <span
+            class="capitalize white-space-no-wrap font-size-30 font-weight-900 font-outline"
+            >{{ $t(name) }}</span
+          >
+        </div>
+        <div class="unit-level flex flex-center">
+          <span class="font-size-30 font-weight-900 font-outline">{{
+            $t("unit-lvl", { lvl: level })
+          }}</span>
+        </div>
       </template>
     </div>
   </div>

@@ -73,7 +73,8 @@ class Game {
         towerPurchased: false,
         tutorial: {},
         raidPoints: {},
-        accountType: 0
+        accountType: 0,
+        soloRaidAttempts: {}
       })
     });
 
@@ -190,6 +191,10 @@ class Game {
 
   get depositorId() {
     return this._vm.depositorId;
+  }
+
+  get soloRaidAttempts() {
+    return this._vm.soloRaidAttempts;
   }
 
   dailyRewardStep() {
@@ -837,6 +842,14 @@ class Game {
       this.mergeObjects(this._vm, this._vm.raidPoints, changes.raidPoints);
     }
 
+    if (changes.sRaidAttempts) {
+      this.mergeObjects(
+        this._vm,
+        this._vm.soloRaidAttempts,
+        changes.sRaidAttempts
+      );
+    }
+
     if (changes.questsProgress) {
       for (let zone in changes.questsProgress.zones) {
         let quests = changes.questsProgress.zones[zone];
@@ -938,6 +951,7 @@ class Game {
         this._vm.depositorId = info.depositorId;
         this._vm.raidPoints = info.raidPoints;
         this._vm.accountType = info.accountType;
+        this._vm.soloRaidAttempts = info.sRaidAttempts;
 
         if (info.chests) {
           this.mergeObjects(this._vm, this._vm.chests, info.chests);

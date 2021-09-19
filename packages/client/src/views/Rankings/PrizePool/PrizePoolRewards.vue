@@ -14,7 +14,7 @@
         <span class="yellow-title">{{ currentRank.score }}</span>
       </div>
 
-      <div class="flex">
+      <div class="flex" v-if="reward > 0">
         <span class="margin-right-half">{{ $t("your-reward") }}</span>
         <IconWithValue iconClass="icon-usdc">{{ reward }}</IconWithValue>
       </div>

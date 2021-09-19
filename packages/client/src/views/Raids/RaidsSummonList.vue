@@ -22,6 +22,7 @@ import RaidsSummonListElement from "./RaidsSummonListElement.vue";
 const RaidListData = { ...RaidsMeta };
 delete RaidListData.min;
 delete RaidListData.max;
+delete RaidListData.dailySoloLimit;
 
 export default {
   name: "raids-for-summon",

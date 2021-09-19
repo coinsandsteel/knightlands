@@ -2247,5 +2247,6 @@
     "day": "D",
     "hour": "H",
     "minute": "M",
-    "second": "S"
+    "second": "S",
+    "solo-r-daily": "Daily Summons Left: {c}"
 }

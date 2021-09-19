@@ -23,7 +23,6 @@
 <script>
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 
 const PUBLIC_RAIDS = "pub-raids";
@@ -31,7 +30,7 @@ const YOUR_RAIDS = "your-raids";
 
 export default {
   mixins: [AppSection],
-  components: { Tabs, IconWithValue, CustomButton },
+  components: { Tabs, CustomButton },
   created() {
     this.title = "raids";
     this.$options.useRouterBack = true;

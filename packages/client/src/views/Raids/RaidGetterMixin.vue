@@ -11,6 +11,9 @@ export default {
     raidLevel() {
       return this.raidMeta.level;
     },
+    maxSoloAttempts() {
+      return RaidsMeta.dailySoloLimit;
+    },
     raidMeta() {
       return RaidsMeta[this.raid];
     },
@@ -20,6 +23,11 @@ export default {
       }
 
       return this.isFreeRaid ? this.raidMeta.soloData : this.raidMeta.data;
+    },
+    soloAttempts() {
+      return (
+        this.maxSoloAttempts - (this.$game.soloRaidAttempts[this.raid] || 0)
+      );
     },
     requiredEssences() {
       if (!this.raidData) {
@@ -75,8 +83,12 @@ export default {
       const hasIngridients = this.$game.crafting.hasEnoughResourcesForRecipe(
         data.summonRecipe
       );
+      let extra = true;
+      if (this.isFreeRaid) {
+        extra = this.soloAttempts > 0;
+      }
 
-      return hasIngridients && this.levelRequirementMet;
+      return hasIngridients && this.levelRequirementMet && extra;
     },
     raidMaxHealth() {
       return this.raidData.health;

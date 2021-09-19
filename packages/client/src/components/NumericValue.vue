@@ -2,9 +2,13 @@
   <div
     class="flex flex-no-wrap font-size-20 flex-center font-weight-900 flex-space-between"
   >
-    <CustomButton v-if="!noExtra" type="blue" @click="handleReset">{{
-      $t("reset")
-    }}</CustomButton>
+    <CustomButton
+      v-if="!noExtra"
+      type="blue"
+      @click="handleReset"
+      :disabled="!decreaseCondition"
+      >{{ $t("reset") }}</CustomButton
+    >
     <i
       :class="{ 'disabled-btn': !decreaseCondition }"
       class="pointer att-minus"
@@ -32,9 +36,13 @@
       @touchend="stopAttributeModify"
       @touchcancel="stopAttributeModify"
     ></i>
-    <CustomButton v-if="!noExtra" type="blue" @click="handleMax">{{
-      $t("max")
-    }}</CustomButton>
+    <CustomButton
+      v-if="!noExtra"
+      type="blue"
+      @click="handleMax"
+      :disabled="!increaseCondition"
+      >{{ $t("max") }}</CustomButton
+    >
     <slot></slot>
     <SoundEffect ref="fx" :files="['btn_click1']" channel="ui" />
   </div>
