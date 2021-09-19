@@ -1,5 +1,5 @@
 <template>
-  <div class="width-100 buffs-grid height-100 padding-2 relative">
+  <div class="width-100 buffs-grid padding-2 relative">
     <template v-if="buffs.length > 0">
       <BuffSlot
         v-for="record in buffs"
@@ -121,6 +121,7 @@ export default {
 .buffs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  grid-template-rows: 1fr;
   justify-items: center;
   row-gap: 0.5rem;
   column-gap: 0.5rem;
