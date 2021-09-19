@@ -634,13 +634,17 @@ export default {
       this.attackInProgress = true;
 
       try {
+        const bossDamage =
+          data.boss.damage == 0 ? this.$t("dodged") : data.boss.damage * -1;
+
         const bossDamageInstance = new (Vue.extend(BossDamageText))({
           propsData: {
-            damage: data.boss.damage * -1
+            damage: bossDamage
           }
         });
         bossDamageInstance.$mount();
         this.$refs.bossAnimation.playAttack();
+
         await Promise.all([
           this.$app
             .getStatusBar()
@@ -648,7 +652,7 @@ export default {
               bossDamageInstance,
               "health",
               this.bossViewCenter,
-              data.boss.damage * -1,
+              bossDamage,
               this.$refs.overlay
             )
         ]);
