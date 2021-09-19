@@ -202,6 +202,11 @@ export default {
   deactivated() {
     this.stop();
   },
+  mounted() {
+    this.$game.on("level-up", async () => {
+      this.stop();
+    });
+  },
   methods: {
     start() {
       if (!this.paused) {

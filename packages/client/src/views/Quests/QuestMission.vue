@@ -266,7 +266,7 @@ export default {
     this.damageTextId = 0;
     this.sliderIndex = +this.questIndex;
 
-    this.$game.on("level-up", async args => {
+    this.$game.on("level-up", async () => {
       this.pause();
     });
   },

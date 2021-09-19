@@ -3,7 +3,7 @@
     class="enemy-view relative height-100 width-100 flex flex-center"
     :style="backgroundImage"
   >
-    <div class="enemy-name">
+    <div class="enemy-name" v-if="name">
       <span class="font-size-30 enemy-title-font font-outline capitalize">{{
         $t(name)
       }}</span>

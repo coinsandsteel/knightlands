@@ -5,7 +5,8 @@ backgrounds[TrialType.Armour] = [
   "trials_of_honor_common.png",
   "trials_of_honor_rare.png",
   "trials_of_honor_epic.png",
-  "trials_of_honor_legendary.png"
+  "trials_of_honor_legendary.png",
+  "trials_of_honor_myth.png"
 ];
 backgrounds[TrialType.Weapon] = [
   "conjured_trials_common.png",
