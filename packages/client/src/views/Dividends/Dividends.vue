@@ -355,6 +355,26 @@ export default {
       }
     },
     async upgradeAccount() {
+      // Check any free raids started
+      let raidsList = await this.performRequest(this.$game.fetchCurrentRaids());
+      let activeRaidsCount = raidsList.filter(raid => !raid.finished).length;
+
+      // Forbid account type changing due to any unfinished raids
+      if (activeRaidsCount) {
+        await this.showPrompt(
+          this.$t("acc-upgrade-err-t"), 
+          this.$t("acc-upgrade-err-m"),
+          [
+            {
+              type: "grey",
+              title: this.$t("acc-upgrade-err-a"),
+              response: true
+            }
+          ]
+        );
+        return;
+      }
+
       const free = this.isFreeAccount;
       const response = await this.showPrompt(
         this.$t("acc-u-t"),
@@ -372,6 +392,7 @@ export default {
           }
         ]
       );
+
       if (response === true) {
         await this.performRequest(this.$game.upgradeAccount());
         const info = await this.performRequest(
