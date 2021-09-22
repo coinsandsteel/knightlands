@@ -356,7 +356,7 @@ export default {
     },
     async upgradeAccount() {
       // Check any free raids started
-      let raidsList = await this.$game.fetchCurrentRaids();
+      let raidsList = await this.performRequest(this.$game.fetchCurrentRaids());
       let activeRaidsCount = raidsList.filter(raid => !raid.finished).length;
 
       // Forbid account type changing due to any unfinished raids
