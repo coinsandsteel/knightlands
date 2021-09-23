@@ -178,6 +178,9 @@ const ShowItemsReceived = create(ItemsReceived, "items", "soft", "hard");
 import ChangeAvatar from "@/views/Character/Avatars/ChangeAvatar.vue";
 const ShowChangeAvatar = create(ChangeAvatar);
 
+import FounderPackAcquired from "@/views/Dividends/Presale/FounderPackAcquired.vue";
+const ShowPack = create(FounderPackAcquired);
+
 export default {
   components: {
     MusicButton,
@@ -276,6 +279,14 @@ export default {
       this.selectionShown = true;
       await ShowSelectClass();
       this.selectionShown = false;
+    });
+
+    this.$game.on(Events.FounderPackAcquired, async data => {
+      for (const tokenId of data.tokenIds) {
+        await ShowPack({
+          tokenId
+        });
+      }
     });
 
     this.$game.on("level-up", async args => {

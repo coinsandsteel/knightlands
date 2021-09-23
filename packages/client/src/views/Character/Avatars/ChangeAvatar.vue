@@ -10,7 +10,7 @@
         <div
           class="flex flex-column flex-center width-100"
           v-for="data in unlockableAvatars"
-          :key="data.level"
+          :key="`${data.level}${data.userFlag}`"
         >
           <!-- <Title
             class="margin-bottom-1"
@@ -18,16 +18,23 @@
             >{{ $t("avatar-lvl", { lvl: data.level }) }}</Title
           > -->
           <span
+            v-if="data.level > 0"
             class="font-size-25 margin-bottom-1"
             :class="{ 'font-error': !metLevel(data.level) }"
             >{{ $t("avatar-lvl", { lvl: data.level }) }}</span
+          >
+          <span
+            v-if="data.userFlag"
+            class="font-size-25 margin-bottom-1"
+            :class="{ 'font-error': !$game.hasFlag(data.userFlag) }"
+            >{{ $t(`f-${data.userFlag}`) }}</span
           >
           <div class="avatars margin-bottom-2">
             <AvatarEntry
               v-for="avatarId in data.ids"
               :key="avatarId"
               :id="avatarId"
-              :disabled="!metLevel(data.level)"
+              :disabled="!canUse(data)"
               @click="selectAvatar(data.level, avatarId)"
             ></AvatarEntry>
           </div>
@@ -42,7 +49,6 @@
 </template>
 
 <script>
-import Title from "@/components/Title.vue";
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
@@ -51,7 +57,7 @@ import AvatarsMeta from "@/avatars";
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  components: { Title, AvatarEntry, UserDialog, CustomButton },
+  components: { AvatarEntry, UserDialog, CustomButton },
   computed: {
     hasAvatar() {
       return true;
@@ -61,6 +67,11 @@ export default {
     }
   },
   methods: {
+    canUse(data) {
+      const level = this.metLevel(data.level);
+      const flag = data.userFlag ? this.$game.hasFlag(data.userFlag) : true;
+      return level && flag;
+    },
     metLevel(level) {
       return this.$game.character.level >= level;
     },

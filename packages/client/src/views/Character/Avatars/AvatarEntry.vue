@@ -1,6 +1,6 @@
 <template>
   <div
-    class="avatar-entry relative"
+    class="avatar-entry relative pointer"
     :class="{ disabled: disabled }"
     @click="handleClick"
   >
@@ -28,7 +28,9 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$emit("click", this.id);
+      if (!this.disabled) {
+        this.$emit("click", this.id);
+      }
     }
   }
 };

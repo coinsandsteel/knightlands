@@ -6,6 +6,10 @@ export default class Subscription {
     this._data = data;
   }
 
+  hasSubscription(id) {
+    return !!this._data.cards[id];
+  }
+
   get cardBonuses() {
     const bonuses = {
       soft: 0,

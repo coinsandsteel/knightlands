@@ -5,17 +5,17 @@ import currency_type from "../../../../knightlands-shared/currency_type";
 
 const PaymentGateway = require("./PaymentGateway.json");
 const Flesh = require("./Flesh.json");
-const Ash = require("./Ash.json");
+const PresaleCardsGate = require("./PresaleCardsGate.json");
+const PresaleCards = require("./PresaleCardsTest.json");
 const TokensDepositGateway = require("./TokensDepositGateway.json");
 
 import { IncorrectNetworkError } from "../WalletErrors";
 
-const NetworkName = process.env.NODE_ENV == "production" ? "mainnet" : "goerli";
-
 export default class EthereumClient extends BlockchainClient {
-  constructor() {
+  constructor(networkName) {
     super();
 
+    this._networkName = networkName;
     this._provider = null;
     this._inited = false;
   }
@@ -43,7 +43,7 @@ export default class EthereumClient extends BlockchainClient {
   async init() {
     const provider = new ethers.providers.Web3Provider(
       window.ethereum,
-      NetworkName
+      this._networkName
     );
     provider.on("network", (newNetwork, oldNetwork) => {
       if (oldNetwork) {
@@ -54,11 +54,13 @@ export default class EthereumClient extends BlockchainClient {
     try {
       await provider.getNetwork();
     } catch (e) {
-      throw new IncorrectNetworkError(NetworkName);
+      throw new IncorrectNetworkError(this._networkName);
     }
 
     this._provider = provider;
+    console.log("request");
     await provider.send("eth_requestAccounts", []);
+    console.log("request done");
 
     this._address = await this._provider.getSigner().getAddress();
 
@@ -73,9 +75,7 @@ export default class EthereumClient extends BlockchainClient {
         Flesh.address,
         Flesh.abi,
         provider
-      ),
-
-      [currency_type.Dkt2]: new ethers.Contract(Ash.address, Ash.abi, provider)
+      )
     };
 
     this._tokenGateway = new ethers.Contract(
@@ -84,11 +84,22 @@ export default class EthereumClient extends BlockchainClient {
       provider
     );
 
+    this._presaleCardsGate = new ethers.Contract(
+      PresaleCardsGate.address,
+      PresaleCardsGate.abi,
+      provider
+    );
+
+    this._presaleCards = new ethers.Contract(
+      PresaleCards.address,
+      PresaleCards.abi,
+      provider
+    );
+
     this._inited = true;
   }
 
   async purchaseIAP(iap, paymentId, price, nonce, deadline, signature) {
-    console.log(iap, paymentId, price, nonce, deadline);
     return await this._paymentContract
       .connect(this._provider.getSigner())
       .purchase(iap, paymentId, price, nonce, deadline, signature, {
@@ -170,5 +181,26 @@ export default class EthereumClient extends BlockchainClient {
         to,
         Math.floor(amount * Math.pow(10, 6)).toString()
       );
+  }
+
+  async isAllowedAllForPresale() {
+    return this._presaleCards
+      .connect(this._provider.getSigner())
+      .isApprovedForAll(this.getAddress(), this._presaleCardsGate.address);
+  }
+
+  async allowAllForPresale() {
+    const receipt = await this._presaleCards
+      .connect(this._provider.getSigner())
+      .setApprovalForAll(this._presaleCardsGate.address, true);
+
+    await receipt.wait(2);
+  }
+
+  async depositPresalePacks(depositId, tokenIds) {
+    console.log(this._presaleCardsGate.address);
+    await this._presaleCardsGate
+      .connect(this._provider.getSigner())
+      .deposit(depositId, tokenIds);
   }
 }

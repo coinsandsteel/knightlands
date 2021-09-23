@@ -635,20 +635,20 @@ const router = new Router({
         music: "castle"
       }
     },
-    {
-      path: "/account",
-      name: "account",
-      component: () => import("./views/Account/AccountRoot.vue"),
-      meta: {
-        requiresAuth: true
-      },
-      children: [
-        {
-          component: () => import("./views/Account/BlockchainWallet.vue"),
-          path: ""
-        }
-      ]
-    },
+    // {
+    //   path: "/account",
+    //   name: "account",
+    //   component: () => import("./views/Account/AccountRoot.vue"),
+    //   meta: {
+    //     requiresAuth: true
+    //   },
+    //   children: [
+    //     {
+    //       component: () => import("./views/Account/BlockchainWallet.vue"),
+    //       path: ""
+    //     }
+    //   ]
+    // },
     {
       path: "/castle/beast",
       name: "beast",
@@ -1014,6 +1014,12 @@ const router = new Router({
           name: "divs-shop",
           path: "shop",
           component: () => import("./views/Dividends/DividendsShop.vue")
+        },
+        {
+          name: "presale",
+          path: "presale",
+          component: () =>
+            import("./views/Dividends/Presale/DepositPresalePacks.vue")
         }
       ]
     },

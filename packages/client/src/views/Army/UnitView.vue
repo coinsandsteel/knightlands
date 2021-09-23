@@ -156,17 +156,35 @@ export default {
 }
 
 .bg {
-  background-image: url("../../assets/backgrounds/1674_1057934862.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  image-rendering: pixelated;
   z-index: -1;
   position: absolute !important;
   top: -4rem !important;
   left: 0 !important;
   right: 0 !important;
   bottom: 0rem !important;
+
+  &.water {
+    background-image: url("../../assets/backgrounds/elem_water.png");
+  }
+
+  &.earth {
+    background-image: url("../../assets/backgrounds/elem_earth.png");
+  }
+
+  &.darkness {
+    background-image: url("../../assets/backgrounds/elem_dark.png");
+  }
+
+  &.light {
+    background-image: url("../../assets/backgrounds/elem_light.png");
+  }
+
+  &.physical {
+    background-image: url("../../assets/backgrounds/elem_phys.png");
+  }
 }
 
 .overlay-color {

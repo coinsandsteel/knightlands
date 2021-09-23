@@ -24,12 +24,18 @@ import { create } from "vue-modal-dialogs";
 
 const ShowDialog = create(ItemsReceived, "items", "soft", "hard");
 
+const FOUNDER_SALE = 3;
+
 export default {
   mixins: [PaymentHandler],
   components: { CardShopElement, PaymentStatus },
   computed: {
     cards() {
-      return Meta.cards;
+      let cards = Meta.cards;
+      if (!this.$game.subscription.hasSubscription(FOUNDER_SALE)) {
+        cards = cards.filter(x => x.id != FOUNDER_SALE);
+      }
+      return cards;
     }
   },
   methods: {

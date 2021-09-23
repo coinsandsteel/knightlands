@@ -10,10 +10,12 @@ function BlockchainFactory(blockchain) {
       return new TronBlockchainClient();
 
     case Blockchains.Polygon:
-      return new PolygonClient();
+      return new EthereumClient("polygon");
 
     case Blockchains.Ethereum:
-      return new EthereumClient();
+      return new EthereumClient(
+        process.env.NODE_ENV == "production" ? "mainnet" : "goerli"
+      );
   }
 
   return null;

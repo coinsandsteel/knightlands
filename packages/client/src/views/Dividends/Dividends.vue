@@ -170,7 +170,6 @@
 
         <div class="flex flex-center margin-top-5">
           <CopyButton
-            type="yellow"
             :data="$game.id"
             caption="acc-id"
             minWidth="20rem"
@@ -179,6 +178,15 @@
           <CustomButton type="grey" @click="logout" minWidth="20rem">{{
             $t("logout")
           }}</CustomButton>
+        </div>
+
+        <div class="flex flex-center margin-top-5">
+          <CustomButton
+            type="yellow"
+            @click="goToPresalePacks"
+            minWidth="20rem"
+            >{{ $t("d-presale") }}</CustomButton
+          >
         </div>
       </div>
     </div>
@@ -321,6 +329,9 @@ export default {
     }
   },
   methods: {
+    goToPresalePacks() {
+      this.$router.push({ name: "presale" });
+    },
     async init() {
       this.channel = this.$game.createChannel("total_rp", false);
       this.channel.watch(this.updateShares.bind(this));

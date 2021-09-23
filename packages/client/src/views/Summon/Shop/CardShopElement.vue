@@ -53,7 +53,7 @@
       }}</span>
 
       <span class="margin-top-2 font-size-25 font-weight-900">{{
-        $t("sub-d")
+        $t("sub-d", { d: Math.floor((card.duration * 100) / 86400) / 100 })
       }}</span>
 
       <div class="color-panel-5 margin-top-1" v-if="isActivated">
@@ -66,6 +66,7 @@
         type="yellow"
         @click="$emit('purchase')"
         class="margin-top-2"
+        v-if="card.iap"
       >
         {{ isActivated ? $t("sub-c") : $t("sub-p") }}
         <PriceTag :dark="true" :iap="card.iap"></PriceTag>

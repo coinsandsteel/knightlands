@@ -1,14 +1,24 @@
 <template>
-  <div ref="root" class="card pixelated" v-on="$listeners" :class="{elevated: elevated}">
+  <div
+    ref="root"
+    class="card pixelated"
+    v-on="$listeners"
+    :class="{ elevated: elevated }"
+  >
     <div class="card-inner" ref="inner">
       <div class="card-front">
         <img src="../../../assets/ui/card_front.png" />
         <div class="absolute-stretch flex flex-column flex-space-evenly">
-          <span class="rarity-legendary font-size-25 font-outline">{{$t(name)}}</span>
-          <span class="font-size-18 font-outline">{{value}}</span>
+          <span class="rarity-legendary font-size-25 font-outline">{{
+            $t(name)
+          }}</span>
+          <span class="font-size-18 font-outline">{{ value }}</span>
         </div>
       </div>
-      <img class="card-back absolute-stretch" src="../../../assets/ui/card_back.png" />
+      <img
+        class="card-back absolute-stretch"
+        src="../../../assets/ui/card_back.png"
+      />
     </div>
   </div>
 </template>

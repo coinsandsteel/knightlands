@@ -74,7 +74,8 @@ class Game {
         tutorial: {},
         raidPoints: {},
         accountType: 0,
-        soloRaidAttempts: {}
+        soloRaidAttempts: {},
+        flags: {}
       })
     });
 
@@ -137,6 +138,10 @@ class Game {
     this._socket.on(Events.ItemEnchanted, this._handleItemEnchanted.bind(this));
     this._socket.on(Events.BuffApplied, this._handleBuffApplied.bind(this));
     this._socket.on(Events.BuffUpdate, this._handleBuffUpdate.bind(this));
+    this._socket.on(
+      Events.FounderPackAcquired,
+      this._forwardEvent.bind(this, Events.FounderPackAcquired)
+    );
     this._socket.on(
       Events.DivTokenWithdrawal,
       this._handleDivTokenWithdrawal.bind(this)
@@ -243,6 +248,10 @@ class Game {
 
   hasWallet() {
     return this._blockchainClient && this._blockchainClient.isInited();
+  }
+
+  hasFlag(flag) {
+    return !!this._vm.flags[flag];
   }
 
   get itemsDB() {
@@ -651,6 +660,10 @@ class Game {
     this._vm.$emit("task_complete");
   }
 
+  _forwardEvent(evt, data) {
+    this._vm.$emit(evt, data);
+  }
+
   _handleRaidJoinStatus(data) {
     const { iap, context } = data;
 
@@ -850,6 +863,10 @@ class Game {
       );
     }
 
+    if (changes.flags) {
+      this.mergeObjects(this._vm, this._vm.flags, changes.flags);
+    }
+
     if (changes.questsProgress) {
       for (let zone in changes.questsProgress.zones) {
         let quests = changes.questsProgress.zones[zone];
@@ -952,6 +969,7 @@ class Game {
         this._vm.raidPoints = info.raidPoints;
         this._vm.accountType = info.accountType;
         this._vm.soloRaidAttempts = info.sRaidAttempts;
+        this._vm.flags = info.flags;
 
         if (info.chests) {
           this.mergeObjects(this._vm, this._vm.chests, info.chests);
@@ -2069,6 +2087,22 @@ class Game {
       await this._wrapOperation(Operations.PurchaseDailyItem, {
         itemIndex,
         fixed
+      })
+    ).response;
+  }
+
+  // Founder's sale
+  async fetchFoundersPresale(from) {
+    return (await this._wrapOperation(Operations.FetchFounderPresale, { from }))
+      .response;
+  }
+
+  async depositFounderPacks(from, chain, tokenIds) {
+    return (
+      await this._wrapOperation(Operations.DepositFounderPack, {
+        from,
+        chain,
+        tokenIds
       })
     ).response;
   }

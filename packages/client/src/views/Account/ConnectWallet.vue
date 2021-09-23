@@ -12,6 +12,7 @@
         v-for="c in availableChains"
         :key="c"
         @click="connectWallet(c)"
+        :disabled="connectionInProcess"
       >
         <IconWithValue :iconClass="icon(c)">{{ $t(c) }}</IconWithValue>
       </CustomButton>
@@ -19,6 +20,7 @@
         minWidth="20rem"
         class="margin-top-1"
         @click="$close(false)"
+        :disabled="connectionInProcess"
         >{{ $t("btn-cancel") }}</CustomButton
       >
     </div>
@@ -47,7 +49,8 @@ export default {
   components: { CustomButton, Title, IconWithValue },
   props: ["chain"],
   data: () => ({
-    availableChains: [Blockchains.Ethereum]
+    availableChains: [Blockchains.Ethereum],
+    connectionInProcess: false
   }),
   mounted() {
     if (this.chain) {
@@ -61,7 +64,10 @@ export default {
           return "icon-trx-dark";
 
         case Blockchains.Ethereum:
-          return "icon-trx-dark";
+          return "icon-eth";
+
+        case Blockchains.Polygon:
+          return "icon-polygon";
       }
 
       return "";
@@ -71,9 +77,11 @@ export default {
 
       this.$game.blockchain = BlockchainFactory(chain);
       try {
+        this.connectionInProcess = true;
         await this.performRequestNoCatch(this.$game.blockchain.init());
         this.$close({ chain, address: this.$game.blockchain.getAddress() });
       } catch (e) {
+        console.error(e);
         if (e instanceof WalletLockedError) {
           await ShowUnlockWallet(chain);
           await this.connectWallet(chain);
@@ -98,6 +106,8 @@ export default {
             }
           ]);
         }
+      } finally {
+        this.connectionInProcess = false;
       }
     }
   }
