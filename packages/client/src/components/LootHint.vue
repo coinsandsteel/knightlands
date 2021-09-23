@@ -21,7 +21,10 @@
     <template v-slot:footer>
       <div class="flex width-100 flex-space-evenly">
         <template v-if="showButtons">
-          <div class="width-100 margin-bottom-1" v-if="!canWear">
+          <div
+            class="width-100 margin-bottom-1"
+            v-if="!canWear && levelRequired > 0"
+          >
             <span class="font-error font-size-20 font-weight-900">{{
               $t("unit-lvl-req", { level: levelRequired })
             }}</span>
