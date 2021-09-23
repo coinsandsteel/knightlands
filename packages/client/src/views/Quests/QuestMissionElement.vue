@@ -1,6 +1,6 @@
 <template>
   <div class="mission-element flex flex-column flex-no-wrap flex-items-center">
-    <Title :stackTop="true" :stackBottom="true">{{ $t(missionName) }}</Title>
+    <Title :stackBottom="true">{{ $t(missionName) }}</Title>
     <div
       class="width-100 height-100 flex color-panel-2 stacked-bottom stacked-top"
     >
@@ -36,29 +36,19 @@
             <div class="flex flex-column digit-font font-outline">
               <icon-with-value
                 class="flex-start"
-                iconClass="icon-exp small margin-right-1"
+                iconClass="icon-exp small"
                 :value="exp"
                 valueClass="info-font"
               ></icon-with-value>
               <icon-with-value
                 class="flex-start"
-                iconClass="icon-gold small margin-right-1"
+                iconClass="icon-gold small"
                 :value="goldValue"
                 valueClass="info-font"
               ></icon-with-value>
-            </div>
-          </div>
-          <div
-            class="flex-2 flex flex-column flex-items-start"
-            v-show="quest.energy > 0"
-          >
-            <div
-              class="margin-bottom-small blue-title margin-bottom-2 font-outline font-weight-900"
-            >
-              {{ $t("energy-r") }}
-            </div>
-            <div class="list digit-font font-outline">
+
               <icon-with-value
+                v-if="quest.energy > 0"
                 iconClass="icon-energy small"
                 :value="quest.energy"
                 valueClass="info-font"

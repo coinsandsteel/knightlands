@@ -16,10 +16,11 @@ backgrounds[TrialType.Weapon] = [
   "conjured_trials_mythical.png"
 ];
 backgrounds[TrialType.Accessory] = [
-  "trials_of_decay_rare.png",
+  "trials_of_decay_common.png",
   "trials_of_decay_rare.png",
   "trials_of_decay_epic.png",
-  "trials_of_decay_epic.png"
+  "trials_of_decay_legendary.png",
+  "trials_of_decay_myth.png"
 ];
 
 export default {

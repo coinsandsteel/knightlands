@@ -79,7 +79,7 @@ export default {
     openInfo() {},
     isYou(id) {
       if (!this.participates) return false;
-      return this.currentRank.rank.id == id;
+      return this.currentRank.id == id;
     },
     async fetchNextPage() {
       if (this.fetchInProcess || this.fetchedAll) {
