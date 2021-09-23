@@ -641,7 +641,7 @@ span {
             .troops_mini_star;
         }
     }
-
+ 
     &.big {
         width: @iconSize * 1.25 !important;
         height: @iconSize * 1.25 !important;
@@ -747,14 +747,13 @@ span {
 }
 
 .icon-log {
-    .icon_log;
+    .icon_log1;
     .icon();
 }
 
 .icon-exp {
     .icon_xp;
     .icon();
-    height: 1.9rem !important;
 }
 
 .icon-energy {
@@ -821,12 +820,28 @@ span {
     .icon_tron_dark;.icon();
 }
 
+.icon-view-stats {
+    .icon_details_stats;
+    .icon();
+}
+
+.icon-rloot {
+    .icon_buttons;
+    .icon();
+}
+
 .icon-info {
     
-    .icon_hint;
+    .icon_info;
 
     &.dark {
-        .icon_hint_dark;.icon();
+        .icon_hint_dark;
+        .icon();
+    }
+
+    &.round {
+        .button_info_round;
+        .icon();
     }
 
     .icon();
@@ -848,8 +863,8 @@ span {
 }
 
 .icon-preview {
-    
-    .checkbox_tick;.icon();
+    .icon_details;
+    .icon();
 }
 
 .icon-attack {

@@ -79,9 +79,32 @@ export default {
     fetchedAll: false,
     showInfoButton: false
   }),
-  async mounted() {
-    this.fetchNextPage();
-    this.currentRank = await this.getRank(this.id);
+  watch: {
+    id: {
+      immediate: true,
+      async handler(newId) {
+        if (this._id == newId) {
+          return;
+        }
+
+        if (this.$refs.scroller) {
+          this.$refs.scroller.scrollToPosition(0);
+        }
+
+        this._id = newId;
+        this.fetchInProcess = false;
+        this.currentPage = 0;
+        this.fetchedAll = false;
+
+        await this.fetchNextPage(true);
+        this.currentRank = await this.getRank(this.id);
+      }
+    }
+  },
+  activated() {
+    if (this._position) {
+      this.$refs.scroller.scrollToPosition(this._position.start);
+    }
   },
   methods: {
     openInfo() {},
@@ -91,7 +114,7 @@ export default {
       if (!this.participates) return false;
       return this.currentRank.rank.id == id;
     },
-    async fetchNextPage() {
+    async fetchNextPage(replace) {
       if (this.fetchInProcess || this.fetchedAll) {
         return true;
       }
@@ -102,7 +125,12 @@ export default {
         let newRecords = await this.fetchRankings(this.id, this.currentPage);
         if (newRecords) {
           this.fetchedAll = newRecords.finished;
-          this.records.push(...newRecords.records);
+          if (replace) {
+            this.records = newRecords.records;
+          } else {
+            this.records.push(...newRecords.records);
+          }
+
           this.currentPage++;
         }
       } finally {
@@ -110,15 +138,17 @@ export default {
       }
     },
     scrollUpdated(start, end) {
-      if (end == this.records.length) {
+      if (start != 0 && end == this.records.length) {
         this.fetchNextPage();
       }
+
+      this._position = this.$refs.scroller.getScroll();
     }
   },
   computed: {
     participates() {
       if (this.currentRank && this.currentRank.rank) {
-        return this.currentRank.id == this.id;
+        return true;
       }
 
       return false;

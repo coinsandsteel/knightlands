@@ -1,38 +1,35 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
-    <div v-bar>
-      <div>
-        <LeaderboardListElement
-          v-for="type in LeaderboardsMeta"
-          :key="type"
-          :type="type"
-          @view="openLeaderboard"
-        />
-      </div>
-    </div>
+    <Tabs :replace="true" :router="true" :tabs="tabs" :currentTab="currentTab">
+    </Tabs>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
 import LeaderboardsMeta from "@/leaderboards_meta";
-import LeaderboardListElement from "./LeaderboardListElement.vue";
+import Tabs from "@/components/Tabs.vue";
 
 export default {
   mixins: [AppSection],
-  components: { LeaderboardListElement },
+  components: { Tabs },
   data: () => ({
-    LeaderboardsMeta
+    tabs: [],
+    currentTab: LeaderboardsMeta[0].type
   }),
   created() {
     this.title = "window-leaderboards";
     this.$options.useRouterBack = true;
-  },
-  methods: {
-    openLeaderboard(type) {
-      this.$router.push({ name: "leaderboard-view", params: { id: type } });
-    }
+    this.tabs = LeaderboardsMeta.map(x => {
+      return {
+        title: "",
+        value: x.type,
+        icon: x.icon,
+        to: { name: "leaderboard-view", params: { id: x.type } }
+      };
+    });
   }
 };
 </script>

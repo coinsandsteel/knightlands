@@ -3,7 +3,7 @@
     <IconWithValue
       :flip="flip"
       :iconMargin="true"
-      iconClass="icon-info"
+      iconClass="icon-info round big"
       class="pointer"
     >
       <slot></slot>

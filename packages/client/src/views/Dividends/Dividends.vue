@@ -174,10 +174,6 @@
             caption="acc-id"
             minWidth="20rem"
           ></CopyButton>
-
-          <CustomButton type="grey" @click="logout" minWidth="20rem">{{
-            $t("logout")
-          }}</CustomButton>
         </div>
 
         <div class="flex flex-center margin-top-5">
@@ -373,7 +369,7 @@ export default {
       // Forbid account type changing due to any unfinished raids
       if (activeRaidsCount) {
         await this.showPrompt(
-          this.$t("acc-upgrade-err-t"), 
+          this.$t("acc-upgrade-err-t"),
           this.$t("acc-upgrade-err-m"),
           [
             {
@@ -488,9 +484,6 @@ export default {
           ]
         );
       }
-    },
-    logout() {
-      this.$game.logout();
     }
   }
 };

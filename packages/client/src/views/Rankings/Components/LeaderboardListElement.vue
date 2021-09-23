@@ -7,6 +7,7 @@
   >
     <span :class="rankIcon" class="r"></span>
     <span class="flex-1">#{{ rank }}</span>
+    <span class="icon-preview big"></span>
     <Avatar :preview="true" :avatar="avatar" :mini="true"></Avatar>
     <span class="flex-4">{{ id }}</span>
     <span class="flex-3">{{ scoreComputed }}</span>

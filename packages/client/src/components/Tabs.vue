@@ -3,9 +3,9 @@
     <template v-if="router">
       <router-link
         class="tabs__item white-space-no-wrap"
-        v-for="(tab, idx) in tabs"
+        v-for="tab in tabs"
         :ref="tab.value"
-        :key="tab.title"
+        :key="tab.value"
         :to="tab.to"
         :id="`t-${tab.title}`"
         tag="div"
@@ -15,14 +15,14 @@
         exact
         @click="handleClick(tab.value)"
       >
-        {{ $t(tab.title) }}
-        <slot :name="`slot${idx}`"></slot>
+        <span v-if="tab.icon" :class="[tab.icon, 'big']"></span>
+        <span v-else>{{ $t(tab.title) }}</span>
       </router-link>
     </template>
     <template v-else>
       <div
         class="tabs__item white-space-no-wrap"
-        v-for="(tab, idx) in tabs"
+        v-for="tab in tabs"
         :ref="tab.value"
         :key="tab.title"
         :id="`t-${tab.title}`"
@@ -34,8 +34,8 @@
         :disabled="tab.disabled"
         @click="handleClick(tab.value)"
       >
-        {{ $t(tab.title) }}
-        <slot :name="`slot${idx}`"></slot>
+        <span v-if="tab.icon" :class="[tab.icon, 'big']"></span>
+        <span v-else>{{ $t(tab.title) }}</span>
       </div>
     </template>
   </nav>
@@ -43,7 +43,6 @@
 
 <script>
 export default {
-  name: "vue-tabs-with-active-line",
   props: {
     currentTab: {
       type: String,
@@ -52,10 +51,6 @@ export default {
     tabs: {
       type: Array,
       required: true
-    },
-    updated: {
-      type: [Boolean, String, Array],
-      default: undefined
     },
     router: Boolean,
     wrapperClass: {
@@ -74,12 +69,20 @@ export default {
       default: "disabled-tabs__item_active"
     },
     append: Boolean,
-    replace: Boolean,
-    params: Object
+    replace: Boolean
   },
   data: () => ({
     newTab: ""
   }),
+  mounted() {
+    if (this.router) {
+      if (this.currentTab) {
+        this.$nextTick(() => {
+          this.$refs[this.currentTab][0].$el.click();
+        });
+      }
+    }
+  },
   methods: {
     handleClick(value) {
       this.$emit("onClick", value);
@@ -122,14 +125,17 @@ export default {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem;
-  font-weight: 900;
 
   border-image: url("../assets/ui/tab.png");
   .border();
 
   padding: 1rem 1.5rem 1rem 1.5rem;
   text-transform: uppercase;
+
+  & > span {
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
 }
 
 .tabs__item_active {

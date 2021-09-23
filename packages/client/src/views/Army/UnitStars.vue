@@ -51,6 +51,7 @@ export default {
   &.active {
     width: unset !important;
     max-width: ~"min(28px, 20%)";
+    max-height: 3.5rem !important;
     height: 100% !important;
   }
 }

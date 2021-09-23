@@ -184,13 +184,11 @@
     </div>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="grey" width="5rem">
-        <HintButton
-          :dark="true"
-          title="h-beast"
-          :texts="['h-beast-1', 'h-beast-2', 'h-beast-3', 'h-beast-4']"
-        ></HintButton>
-      </CustomButton>
+      <HintButton
+        :dark="true"
+        title="h-beast"
+        :texts="['h-beast-1', 'h-beast-2', 'h-beast-3', 'h-beast-4']"
+      ></HintButton>
     </portal>
   </div>
 </template>

@@ -24,12 +24,13 @@
       >
     </div>
 
-    <!-- <CopyButton
+    <CustomButton
+      type="grey"
       class="margin-top-5"
-      type="yellow"
-      :data="getReferral()"
-      caption="get-refer"
-    ></CopyButton> -->
+      @click="logout"
+      minWidth="20rem"
+      >{{ $t("logout") }}</CustomButton
+    >
 
     <a href="http://www.akashics.moe" class="akashi" target="_blank">{{
       $t("akashi")
@@ -40,11 +41,13 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import { mapState } from "vuex";
+import CustomButton from "@/components/Button.vue";
 
 let switchInProgress = false;
 
 export default {
   mixins: [AppSection],
+  components: { CustomButton },
   created() {
     this.title = "w-settings";
   },
@@ -107,6 +110,9 @@ export default {
     },
     getReferral() {
       return `${window.location.host}/#/login?referral=${this.$game.id}`;
+    },
+    logout() {
+      this.$game.logout();
     }
   }
 };

@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-column flex-center">
     <CustomButton type="grey" v-if="left" @click="$emit('info')">
-      <span class="icon-info dark"></span>
+      <span class="icon-info huge"></span>
     </CustomButton>
     <CustomButton type="grey" v-if="left" @click="$emit('log')">
-      <span class="icon-log"></span>
+      <span class="icon-log huge"></span>
     </CustomButton>
     <!-- <CustomButton
       type="grey"
@@ -15,7 +15,7 @@
     </CustomButton> -->
 
     <CustomButton type="grey" v-if="!left" @click="$emit('rewards')">
-      <span class="icon-loot"></span>
+      <span class="icon-rloot huge"></span>
     </CustomButton>
     <CustomButton
       type="grey"

@@ -178,7 +178,7 @@
               </custom-button>
 
               <custom-button type="grey" @click="handleShowInfo">
-                <span class="icon-info dark"></span>
+                <span class="icon-info big"></span>
               </custom-button>
 
               <!-- <CustomButton type="grey" @click="handleShowChart">

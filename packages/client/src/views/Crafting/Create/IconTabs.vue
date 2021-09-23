@@ -6,17 +6,22 @@
       :key="tab.title"
       :ref="tab.value"
       :class="[
-        tab.value === currentTab && tabActiveClass ? tabActiveClass: '',
-        tabClass,
+        tab.value === currentTab && tabActiveClass ? tabActiveClass : '',
+        tabClass
       ]"
-      :style="tab.value === currentTab ? getIconSelected(tab.icon) : getIcon(tab.icon)"
+      :style="
+        tab.value === currentTab ? getIconSelected(tab.icon) : getIcon(tab.icon)
+      "
       :disabled="tab.disabled || false"
       @click="handleClick(tab.value)"
     ></div>
     <div
       class="tabs__active-line"
-      :class="[lineClass, {animated: ready}]"
-      :style="{ width: `${activeLineWidth}px`, transform: `translateX(${activeLineOffset}px)` }"
+      :class="[lineClass, { animated: ready }]"
+      :style="{
+        width: `${activeLineWidth}px`,
+        transform: `translateX(${activeLineOffset}px)`
+      }"
     />
   </nav>
 </template>
@@ -68,7 +73,7 @@ export default {
   },
   mounted() {
     this.moveActiveLine(this.currentTab);
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
       this.ready = true;
     });
   },
@@ -167,5 +172,3 @@ export default {
   transition: transform 0.4s ease, width 0.4s ease;
 }
 </style>
-
-

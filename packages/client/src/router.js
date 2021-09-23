@@ -476,14 +476,16 @@ const router = new Router({
               name: "leaderboards",
               path: "",
               component: () =>
-                import("./views/Rankings/Leaderboards/LeaderboardsList.vue")
-            },
-            {
-              name: "leaderboard-view",
-              path: "view/:id",
-              component: () =>
-                import("./views/Rankings/Leaderboards/LeaderboardView.vue"),
-              props: true
+                import("./views/Rankings/Leaderboards/LeaderboardsList.vue"),
+              children: [
+                {
+                  name: "leaderboard-view",
+                  path: "view/:id",
+                  component: () =>
+                    import("./views/Rankings/Leaderboards/LeaderboardView.vue"),
+                  props: true
+                }
+              ]
             }
           ]
         },

@@ -4,6 +4,8 @@
 
     <MusicButton class="sounds-btn"></MusicButton>
 
+    <img class="logo-intro" src="../assets/logo_beta.svg" />
+
     <input
       id="input"
       type="email"
@@ -121,5 +123,10 @@ export default {
   padding: 10px;
   width: 40px;
   height: 40px;
+}
+
+.logo-intro {
+  max-width: 90%;
+  margin-bottom: 5rem;
 }
 </style>

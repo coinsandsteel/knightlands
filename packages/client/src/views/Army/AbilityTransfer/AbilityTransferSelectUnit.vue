@@ -2,7 +2,12 @@
   <div class="screen-content">
     <div class="element-background" :class="element"></div>
     <UnitView :unit="unit" />
-    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" v-show="!hideTabs" />
+    <Tabs
+      :tabs="tabs"
+      :currentTab="currentTab"
+      @onClick="switchTab"
+      v-show="!hideTabs"
+    />
 
     <div class="flex-full relative dummy-height">
       <UnitInventory
@@ -14,7 +19,9 @@
     </div>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="yellow" @click="handleUnitSelect">{{ $t("btn-select") }}</CustomButton>
+      <CustomButton type="yellow" @click="handleUnitSelect">{{
+        $t("btn-select")
+      }}</CustomButton>
     </portal>
   </div>
 </template>

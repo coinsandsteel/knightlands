@@ -49,7 +49,7 @@ export default {
   components: { CustomButton, Title, IconWithValue },
   props: ["chain"],
   data: () => ({
-    availableChains: [Blockchains.Ethereum],
+    availableChains: [Blockchains.Ethereum, Blockchains.Polygon],
     connectionInProcess: false
   }),
   mounted() {

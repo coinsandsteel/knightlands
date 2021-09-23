@@ -52,7 +52,7 @@
       <IconWithValue
         @click="$emit('details')"
         class="margin-top-1 pointer"
-        :iconClass="preview ? '' : 'icon-info'"
+        :iconClass="preview ? '' : 'icon-view-stats big'"
         valueClass="font-size-20 font-shadow rarity-legendary font-weight-900"
       >
         {{ $t("character-power", { power: totalPower() }) }}
