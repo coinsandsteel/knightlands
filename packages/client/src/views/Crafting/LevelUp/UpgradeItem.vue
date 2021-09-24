@@ -288,7 +288,7 @@ export default {
     selectMaterial(index) {
       this.selectedMaterial = index;
       if (!this.materialsCount[index]) {
-        this.incMaterialCount();
+        this.setMaxMaterial();
       } else {
         this.materialsCount[index] = 0;
         this.selectedMaterial = 0;
@@ -330,7 +330,6 @@ export default {
         this.newItemId = newItemId;
       } else {
         this.prepareItemForUpgrading();
-        this.updateMaterialList();
       }
 
       this.$refs.fx.play();
@@ -384,6 +383,7 @@ export default {
         });
         this.newItemId = 0;
       }
+      this.updateMaterialList();
     }
   },
   computed: {
