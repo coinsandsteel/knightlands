@@ -86,12 +86,28 @@ export default class Army {
       return 0;
     }
 
+    const units = {};
+    const legion = this.getLegion(unit.legion);
+    if (legion) {
+      for (let slotId in legion.units) {
+        const unitId = legion.units[slotId];
+
+        const unit = this.getUnit(unitId);
+        if (!unit) {
+          continue;
+        }
+        units[unitId] = unit;
+      }
+    }
+
     this._updateUnitEquipment(unit);
-    return this._armyResolver.estimateDamage(
+    const result = this._armyResolver.estimateDamage(
+      units,
       unit,
       this._unitsIndex,
       this._character.maxStats
-    ).unitsDamageOutput[unit.id];
+    );
+    return result.unitsDamageOutput[unit.id];
   }
 
   getDamage(unit, nextLevel, nextStar) {
@@ -121,12 +137,11 @@ export default class Army {
       this._updateUnitEquipment(units[unitId]);
     }
 
-    return this._armyResolver.resolve(
+    return this._armyResolver.resolve({
       units,
-      this._unitsIndex,
-      null,
-      playerStats
-    );
+      unitsIndex: this._unitsIndex,
+      userStats: playerStats
+    });
   }
 
   _updateUnitEquipment(unit) {

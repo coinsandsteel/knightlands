@@ -91,10 +91,10 @@
                   @hint="selectMaterial(index)"
                   :selected="index == selectedMaterial"
                   :locked="lockRest"
-                  :interactible="!lockRest"
                 >
                   <div
-                    class="absolute-stretch select-overlay flex flex-center"
+                    class="select-overlay flex flex-center"
+                    :class="{ s: index == selectedMaterial }"
                     v-if="materialsCount[index]"
                   >
                     <span class="font-size-22 font-outline font-weight-900"
@@ -525,5 +525,17 @@ export default {
 .select-overlay {
   background-color: #102a2491;
   border-radius: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  &.s {
+    top: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+  }
 }
 </style>

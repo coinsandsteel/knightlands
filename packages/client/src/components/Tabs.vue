@@ -74,16 +74,10 @@ export default {
   data: () => ({
     newTab: ""
   }),
-  mounted() {
-    if (this.router) {
-      if (this.currentTab) {
-        this.$nextTick(() => {
-          this.$refs[this.currentTab][0].$el.click();
-        });
-      }
-    }
-  },
   methods: {
+    getTabButton(value) {
+      return this.$refs[value];
+    },
     handleClick(value) {
       this.$emit("onClick", value);
       this.newTab = value;

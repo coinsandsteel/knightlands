@@ -10,7 +10,7 @@
       <EnemyView
         ref="enemyView"
         :image="enemyImage"
-        background="/images/castle.png"
+        background="/images/tower.png"
       >
         <FloatingTextContainer
           ref="floatingText"

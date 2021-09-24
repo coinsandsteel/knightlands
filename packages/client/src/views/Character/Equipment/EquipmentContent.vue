@@ -26,7 +26,7 @@
           nickname
         }}</span>
         <span
-          class="icon-edit pointer"
+          class="icon-edit pointer big"
           v-if="!preview && nickname == $game.character.nickname.v"
           @click="$emit('changeName')"
         ></span>

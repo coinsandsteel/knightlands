@@ -1,10 +1,24 @@
 <template>
   <div>
     <div class="flex width-100">
-      <div class="title-tip margin-left-2" :class="element"></div>
-      <div class="title-body flex-full flex flex-items-center" :class="element">
-        <span class="title-icon" :class="`icon-unit-${element}`"></span>
-        <span class="title-icon" :class="`icon-unit-${weaponType}`"></span>
+      <div
+        class="title-tip margin-left-2"
+        :class="[element, { general: isGeneral }]"
+      ></div>
+      <div
+        class="title-body flex-full flex flex-items-center"
+        :class="[element, { general: isGeneral }]"
+      >
+        <span
+          class="title-icon"
+          :class="`icon-unit-${element}`"
+          v-if="element"
+        ></span>
+        <span
+          class="title-icon"
+          :class="`icon-unit-${weaponType}`"
+          v-if="weaponType"
+        ></span>
         <span class="title-icon" :class="`unit_type_${unitType}`"></span>
         <div
           class="title-text-container flex flex-center font-size-25 font-outline font-weight-900"
@@ -60,6 +74,10 @@ export default {
   &.physical {
     .unit_physical;
   }
+
+  &.general {
+    .unit_general;
+  }
 }
 
 .title-body {
@@ -84,6 +102,10 @@ export default {
 
   &.physical {
     background-image: url("../../assets/ui/unit_physical1.png");
+  }
+
+  &.general {
+    background-image: url("../../assets/ui/unit_general1.png");
   }
 }
 

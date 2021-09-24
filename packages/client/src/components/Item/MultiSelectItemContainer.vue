@@ -13,7 +13,7 @@
             <div
               class="select-overlay flex flex-center"
               :class="{ s: mat.id == selectedItem }"
-              v-if="itemsCount[mat.id]"
+              v-if="itemsCount[selectedItem]"
             >
               <span class="font-size-22 font-outline font-weight-900"
                 >x{{ itemsCount[mat.id] }}</span

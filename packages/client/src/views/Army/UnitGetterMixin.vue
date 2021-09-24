@@ -44,7 +44,6 @@ export default {
       return 0;
     },
     maxPossibleLevel() {
-      console.log(this.nextMaxLevel);
       return this.maxLevel == this.nextMaxLevel;
     },
     unitImage() {
@@ -103,6 +102,13 @@ export default {
       }
 
       return 0;
+    },
+    isGeneral() {
+      if (this.unit) {
+        return !this.unit.troop;
+      }
+
+      return false;
     }
   },
   methods: {
@@ -132,6 +138,8 @@ export default {
         case UnitAbilityType.IncreasedTroopsDamagePerTroopTypeUsed:
         case UnitAbilityType.IncreasedTroopsDamage:
         case UnitAbilityType.IncreasedGeneralsDamage:
+        case UnitAbilityType.ExtraTroopsDamagePerTroopType:
+        case UnitAbilityType.IncreasedTroopsDamagePerGeneralOwned:
           if (localisationParams.unitType == 0) {
             locType += "-all";
           }

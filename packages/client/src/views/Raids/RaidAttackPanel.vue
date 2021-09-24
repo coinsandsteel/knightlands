@@ -16,11 +16,11 @@
           @click="$emit('attack', attacks)"
           :disabled="disabled"
         >
-          <div class="flex flex-center">
+          <div class="flex flex-center flex-no-wrap font-size-18">
             <span class="margin-right-half">{{
               $t("att-c", { dmg: attackDamage })
             }}</span>
-            <IconWithValue iconClass="icon-stamina">{{
+            <IconWithValue iconClass="icon-stamina" valueClass="font-size-18">{{
               attacks * staminaCost
             }}</IconWithValue>
           </div>

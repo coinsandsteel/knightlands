@@ -1,7 +1,13 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
-    <Tabs :replace="true" :router="true" :tabs="tabs" :currentTab="currentTab">
+    <Tabs
+      :replace="true"
+      :router="true"
+      :tabs="tabs"
+      :currentTab="currentTab"
+      ref="tab"
+    >
     </Tabs>
     <router-view></router-view>
   </div>
@@ -30,6 +36,9 @@ export default {
         to: { name: "leaderboard-view", params: { id: x.type } }
       };
     });
+  },
+  mounted() {
+    this.$refs.tab.getTabButton(this.currentTab)[0].$el.click();
   }
 };
 </script>
