@@ -21,6 +21,7 @@ import ArmyDB from "@/army/armyDB";
 import Army from "@/army/army";
 import Subscription from "./subscription";
 import Notifications from "./notifications";
+import SectionsProgress from "@/sections_progress";
 
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
@@ -647,6 +648,10 @@ class Game {
   }
 
   _handleDailyTaskComplete(data) {
+    if (SectionsProgress.dailyTasks > this.character.level) {
+      return;
+    }
+
     const { type } = data;
 
     Vue.notify({

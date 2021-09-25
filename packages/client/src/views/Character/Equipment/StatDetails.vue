@@ -103,6 +103,6 @@ export default {
 <style lang="less" scoped>
 .mask {
   background-color: rgba(0, 0, 0, 0.555);
-  z-index: 900;
+  z-index: 99;
 }
 </style>

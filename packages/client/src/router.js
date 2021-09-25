@@ -832,6 +832,7 @@ const router = new Router({
     {
       path: "/home",
       name: "home",
+      props: true,
       component: Home,
       meta: {
         requiresAuth: true

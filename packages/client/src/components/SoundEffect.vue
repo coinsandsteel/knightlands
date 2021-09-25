@@ -6,7 +6,7 @@
 import anime from "animejs/lib/anime.es.js";
 import { mapState } from "vuex";
 
-const MAX_VOLUME = 0.4;
+const MAX_VOLUME = 0.25;
 
 export default {
   props: {

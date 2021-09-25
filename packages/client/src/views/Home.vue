@@ -2,7 +2,7 @@
   <div class="screen-content flex-end flex-items-center full-flex">
     <div class="home-art screen-background"></div>
 
-    <div class="width-100 height-100" v-bar>
+    <div class="width-100 height-100" v-bar ref="scroll">
       <div class="width-100">
         <div
           class="flex flex-column min-height-100 width-100 flex-space-between"
@@ -16,6 +16,7 @@
                 icon="skewed_icon_quest"
                 to="daily-tasks"
                 :append="true"
+                id="daily-tasks"
                 section="dailyTasks"
                 >{{ $t("btn-daily-quests") }}
 
@@ -45,6 +46,7 @@
                 icon="skewed_icon_portal"
                 to="trials"
                 :append="true"
+                id="trials"
                 section="trials"
                 >{{ $t("btn-trials") }}
 
@@ -153,7 +155,7 @@ import RankingsMenu from "./Rankings/RankingsMenu.vue";
 import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
 
 export default {
-  name: "home",
+  props: ["scrollToBottom"],
   mixins: [AppSection],
   components: {
     PrizePoolWidget,
@@ -169,6 +171,21 @@ export default {
   },
   created() {
     this.title = this.$t("window-title-home");
+  },
+  watch: {
+    scrollToBottom: {
+      immediate: true,
+      handler() {
+        if (this.scrollToBottom) {
+          const element = document.querySelector(".vb-content");
+          element.scrollTop = element.scrollHeight - element.clientHeight;
+        }
+      }
+    }
+  },
+  activated() {
+    const element = document.querySelector(".vb-content");
+    element.scrollTop = element.scrollHeight - element.clientHeight;
   },
   methods: {
     logout() {

@@ -177,6 +177,6 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.616);
-  z-index: 900;
+  z-index: 99;
 }
 </style>

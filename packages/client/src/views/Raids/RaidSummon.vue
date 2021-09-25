@@ -2,7 +2,7 @@
   <div class="screen-content">
     <div class="screen-background"></div>
     <!-- <AnimatedBackgroundUnits></AnimatedBackgroundUnits> -->
-    <div v-bar v-show="!showChart">
+    <div v-bar v-show="!showChart" ref="summon">
       <div>
         <boss-view
           v-if="raid"
@@ -42,11 +42,11 @@
         <div class="margin-1">
           <div class="flex flex-space-evenly width-100">
             <custom-button type="grey" @click="showRewards">
-              <span class="icon-loot"></span>
+              <span class="icon-rloot huge"></span>
             </custom-button>
 
             <custom-button type="grey" @click="showInfo">
-              <span class="icon-info dark"></span>
+              <span class="icon-info huge"></span>
             </custom-button>
 
             <!-- <custom-button type="grey" @click="showChart = true" v-if="isPayed">
@@ -179,7 +179,7 @@ export default {
       raidStatus: {},
       currentTab: PayedRaid,
       options: {
-        public: false,
+        public: true,
         allowFree: false
       },
       tabs: [
@@ -199,12 +199,16 @@ export default {
       }
     }
   },
+  mounted() {
+    const element = document.querySelector(".vb-content");
+    element.scrollTop = element.scrollHeight - element.clientHeight;
+  },
   computed: {
     isPayed() {
       return this.currentTab == PayedRaid;
     },
     showTabs() {
-      return SectionsProgress["dividends"] <= this.$character.level;
+      return SectionsProgress.dividends <= this.$character.level;
     },
     weakness() {
       return this.raidStatus.weakness;

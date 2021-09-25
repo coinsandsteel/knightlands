@@ -12,8 +12,11 @@
       :noScroll="noScroll"
       @hint="handleHint"
     />
-    <div class="width-100 flex flex-center">
-      <span class="font-size-20 grey-title" v-show="hasHiddenItems">
+    <div
+      class="width-100 flex flex-center margin-top-2 margin-bottom-2"
+      v-show="hasHiddenItems"
+    >
+      <span class="font-size-22 font-weight-900 grey-title">
         {{ $t("hidden-items") }}
       </span>
     </div>

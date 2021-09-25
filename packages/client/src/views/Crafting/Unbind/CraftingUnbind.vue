@@ -6,17 +6,29 @@
     :filtersStore="$store.getters.getUnbindFilters"
     commitCmd="setUnbindFilters"
   >
-    <span class="font-size-20">{{ $t("upgrade-list-empty-msg") }}</span>
+    <template #default>
+      <span class="font-size-20">{{ $t("upgrade-list-empty-msg") }}</span>
+    </template>
+
+    <template #footer>
+      <portal to="footer" v-if="isActive">
+        <HintButton
+          title="i-unbind"
+          :texts="['i-unbind-1', 'i-unbind-2', 'i-unbind-3']"
+        ></HintButton>
+      </portal>
+    </template>
   </CraftingItemList>
 </template>
 
 <script>
 import AppSection from "@/AppSection.vue";
 import CraftingItemList from "../CraftingItemList.vue";
+import HintButton from "@/components/HintButton.vue";
 
 export default {
   mixins: [AppSection],
-  components: { CraftingItemList },
+  components: { CraftingItemList, HintButton },
   created() {
     this.title = "window-unbind-items-list";
     this.$options.useRouterBack = true;

@@ -76,7 +76,7 @@ export default {
         type = this.template.equipmentType;
       }
 
-      return `${this.$t(this.template.rarity)} ${this.$t(type)}`;
+      return this.$t(`${this.template.rarity}-${type}`);
     },
     enchant() {
       if (!this.item) {

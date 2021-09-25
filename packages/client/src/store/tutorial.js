@@ -41,7 +41,7 @@ export default {
         step: state.step + 1
       });
     },
-    async getRedirectUrl({ state }, { route }) {
+    async getRedirectUrl({ state, dispatch }, { route }) {
       if (!state.conditionPassed || state.step >= Scenario.length) {
         return;
       }
@@ -53,8 +53,13 @@ export default {
 
       const actionData = actions[state.actionIndex];
 
-      if (!actionData.lock) {
+      if (!actionData.lock && !actionData.teleport) {
         return;
+      }
+
+      if (actionData.teleport) {
+        await dispatch("skipCurrentStep");
+        return { ...actionData.teleport, replace: true };
       }
 
       const lock = actionData.lock;
@@ -70,7 +75,10 @@ export default {
         }
       }
     },
-    async checkConditions({ commit, state, dispatch }, { route, isInit }) {
+    async checkConditions(
+      { commit, state, dispatch },
+      { route, isInit, event }
+    ) {
       let passed = true;
 
       while (state.step < Scenario.length) {
@@ -119,6 +127,10 @@ export default {
             passed = false;
           }
 
+          if (cond.event && cond.event != event) {
+            passed = false;
+          }
+
           if (cond.items) {
             for (const item of cond.items) {
               if (
@@ -138,6 +150,12 @@ export default {
 
           if (cond.name) {
             if (route.name != cond.name) {
+              passed = false;
+            }
+          }
+
+          if (cond.fullClass) {
+            if (!Vue.prototype.$character.class) {
               passed = false;
             }
           }

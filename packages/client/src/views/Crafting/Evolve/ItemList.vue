@@ -63,6 +63,10 @@
         :startValue="onlyEquipped"
         :cb="handleEquippedToggle"
       />
+      <HintButton
+        title="i-evolve"
+        :texts="['i-evolve-1', 'i-evolve-2']"
+      ></HintButton>
       <CustomButton type="grey" @click="showItemFilter">{{
         $t("btn-filter")
       }}</CustomButton>
@@ -79,6 +83,7 @@ import Elements from "@/../../knightlands-shared/elements";
 import Toggle from "@/components/Toggle.vue";
 import CustomButton from "@/components/Button.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
+import HintButton from "@/components/HintButton.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import EquipmentIngridientHint from "./../EquipmentIngridientHint.vue";
@@ -100,7 +105,14 @@ const Responses = {
 
 export default {
   mixins: [AppSection],
-  components: { LootContainer, Tabs, EquippedItemList, Toggle, CustomButton },
+  components: {
+    LootContainer,
+    Tabs,
+    EquippedItemList,
+    Toggle,
+    CustomButton,
+    HintButton
+  },
   data: () => ({
     tabs: [
       { title: "other-items", value: OtherItems },

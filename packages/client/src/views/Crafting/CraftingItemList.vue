@@ -28,6 +28,8 @@
         :filtersStore="filtersStore"
       />
     </keep-alive>
+
+    <slot name="footer"></slot>
   </div>
 </template>
 

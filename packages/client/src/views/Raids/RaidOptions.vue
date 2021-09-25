@@ -22,10 +22,10 @@
       v-if="!left && !isFreeRaid"
       @click="$emit('players')"
     >
-      <span class="icon-challenge"></span>
+      <span class="icon-players huge"></span>
     </CustomButton>
     <CustomButton type="grey" v-if="!left" @click="$emit('legion')">
-      <span class="icon-legion"></span>
+      <span class="icon-swap-legion huge"></span>
     </CustomButton>
   </div>
 </template>

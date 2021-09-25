@@ -53,6 +53,10 @@
         </template>
       </template>
     </Promised>
+
+    <portal to="footer" v-if="isActive">
+      <HintButton title="h-adv" :texts="['h-adv-1', 'h-adv-2']"></HintButton>
+    </portal>
   </div>
 </template>
 
@@ -66,7 +70,7 @@ import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
-
+import HintButton from "@/components/HintButton.vue";
 import AdventureRewards from "./AdventureRewards.vue";
 import { create } from "vue-modal-dialogs";
 
@@ -75,6 +79,7 @@ const ShowRewards = create(AdventureRewards, "items");
 export default {
   mixins: [AppSection],
   components: {
+    HintButton,
     AdventureSlot,
     CustomButton,
     IconWithValue,

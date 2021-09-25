@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-column flex-center relative pp-w width-100">
     <div class="w-bg absolute-stretch"></div>
-    <h1 class="font-outline">{{ $t("grand-royal") }}</h1>
+
+    <HintButton :texts="['t-d-43']" title="grand-royale"
+      ><h1 class="font-outline">{{ $t("grand-royal") }}</h1></HintButton
+    >
 
     <IconWithValue
       iconClass="icon-usdc huge"
@@ -20,12 +23,13 @@
 </template>
 
 <script>
+import HintButton from "@/components/HintButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import Timer from "@/timer";
 
 export default {
-  components: { IconWithValue, CustomButton },
+  components: { IconWithValue, CustomButton, HintButton },
   data: () => ({
     timer: new Timer(true)
   }),

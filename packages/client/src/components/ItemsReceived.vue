@@ -1,5 +1,5 @@
 <template>
-  <UserDialog :title="$t('box-opened-title')" @close="$close">
+  <UserDialog :title="$t('box-opened-title')" @close="$close" class="over-top">
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
         <IconWithValue
@@ -77,4 +77,8 @@ export default {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.over-top {
+  z-index: 200;
+}
+</style>

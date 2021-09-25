@@ -250,8 +250,6 @@ export default {
     }
   },
   mounted() {
-    Vue.prototype.$tutorial = this.$refs.tutorial;
-
     const firebaseConfig = {
       apiKey: "AIzaSyAXe3Bylo4xM-AzOPKAInwty1J5qLXNB4w",
       authDomain: "knightlands-game.firebaseapp.com",
@@ -388,6 +386,9 @@ export default {
     });
   },
   methods: {
+    tutorial() {
+      return this.$refs.tutorial;
+    },
     getSoundChannel(id) {
       return this.$refs[`sound_${id}`];
     },

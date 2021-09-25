@@ -44,6 +44,10 @@
     </MultiSelectItemContainer>
 
     <portal to="footer" :slim="true" v-if="isActive">
+      <HintButton
+        title="i-disen"
+        :texts="['i-disen-1', 'i-disen-2']"
+      ></HintButton>
       <CustomButton type="grey" @click="goToUpgrade">{{
         $t("btn-dis-upgrade")
       }}</CustomButton>
@@ -61,10 +65,12 @@ import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 import Loot from "@/components/Loot.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import MultiSelectItemContainer from "@/components/Item/MultiSelectItemContainer.vue";
+import HintButton from "@/components/HintButton.vue";
 
 export default {
   mixins: [AppSection, PromptMixin, ShowItemsMixin, NetworkRequestErrorMixin],
   components: {
+    HintButton,
     MultiSelectItemContainer,
     CustomButton,
     Loot

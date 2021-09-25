@@ -10,12 +10,15 @@
           <div
             class="width-100 weakness-content weakness-font flex flex-center flex-column padding-1"
           >
-            <IconWithValue :iconClass="`icon-${currentWeakness.element}`">{{
-              $t(`el-${currentWeakness.element}`)
-            }}</IconWithValue>
-            <IconWithValue class="margin-top-1" iconClass="icon-attack">{{
-              $t(currentWeakness.weapon)
-            }}</IconWithValue>
+            <IconWithValue
+              :iconClass="`unit_element_${currentWeakness.element}`"
+              >{{ $t(`el-${currentWeakness.element}`) }}</IconWithValue
+            >
+            <IconWithValue
+              class="margin-top-1"
+              :iconClass="`unit_weapon_${nextWeakness.weapon}`"
+              >{{ $t(currentWeakness.weapon) }}</IconWithValue
+            >
           </div>
 
           <span class="font-size-20 width-100 next-weakness-title ">{{
@@ -25,12 +28,15 @@
           <div
             class="width-100 next-weakness-content next-weakness-font flex flex-center flex-column padding-1"
           >
-            <IconWithValue :iconClass="`icon-${nextWeakness.element}`">{{
-              $t(`el-${nextWeakness.element}`)
-            }}</IconWithValue>
-            <IconWithValue class="margin-top-1" iconClass="icon-attack">{{
-              $t(nextWeakness.weapon)
-            }}</IconWithValue>
+            <IconWithValue
+              :iconClass="`unit_element_${nextWeakness.element}`"
+              >{{ $t(`el-${nextWeakness.element}`) }}</IconWithValue
+            >
+            <IconWithValue
+              class="margin-top-1"
+              :iconClass="`unit_weapon_${nextWeakness.weapon}`"
+              >{{ $t(nextWeakness.weapon) }}</IconWithValue
+            >
 
             <span class="margin-top-1 font-size-18">{{
               $t("raid-weak-timer", { time: untilNextWeakness.value })

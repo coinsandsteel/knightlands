@@ -36,6 +36,7 @@
           <div class="flex">
             <CustomButton
               type="green"
+              id="unit-equip"
               class="margin-bottom-half"
               @click="goToEquipment"
               v-if="showEquipment"

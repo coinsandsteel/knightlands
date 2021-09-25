@@ -4,7 +4,7 @@
       <div class="font-size-25">{{ $t(message) }}</div>
     </template>
     <template v-slot:footer>
-      <CustomButton type="yellow" @click="refill">{{
+      <CustomButton type="yellow" @click="refill" id="refill">{{
         $t("do-refill")
       }}</CustomButton>
     </template>

@@ -87,7 +87,7 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.555);
-  z-index: 900;
+  z-index: 99;
   overflow: hidden auto;
 }
 

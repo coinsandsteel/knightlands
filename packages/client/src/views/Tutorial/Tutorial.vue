@@ -26,14 +26,26 @@ import TutorialDialog from "./TutorialDialog.vue";
 import { mapState } from "vuex";
 import Scenario from "@/store/scenario";
 import MusicButton from "@/components/MusicButton.vue";
+import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 
 export default {
+  mixins: [InventoryListenerMixin],
   components: { MusicButton, TutorialForcedElement, TutorialDialog },
   data: () => ({
     inited: false
   }),
   watch: {
+    "$character.class": {
+      handler() {
+        this.checkConditions();
+      }
+    },
     "$character.level": {
+      handler() {
+        this.checkConditions();
+      }
+    },
+    "$character.avatar": {
       handler() {
         this.checkConditions();
       }
@@ -53,6 +65,9 @@ export default {
     }
   },
   async mounted() {
+    this.$store.commit("tutorial/setStep", {
+      step: 0
+    });
     await this.checkConditions();
     await this.trySkipAction();
   },
@@ -107,8 +122,14 @@ export default {
     }
   },
   methods: {
-    async checkConditions() {
-      if (this._inProcess) {
+    handleInventoryChanged() {
+      this.checkConditions();
+    },
+    async triggerEvent(event) {
+      await this.checkConditions(event);
+    },
+    async checkConditions(event) {
+      if (this._inProcess || !this.$character.avatar) {
         return;
       }
 
@@ -116,7 +137,8 @@ export default {
 
       await this.$store.dispatch("tutorial/checkConditions", {
         route: this.$route,
-        isInit: !this.inited
+        isInit: !this.inited,
+        event
       });
 
       this.inited = true;
@@ -148,16 +170,20 @@ export default {
         const redirect = await this.$store.dispatch("tutorial/getRedirectUrl", {
           route: this.$route
         });
-
         if (!redirect) {
           this.advance();
+          return true;
         }
       }
+
+      return false;
     },
     async advance() {
       await this.$store.dispatch("tutorial/advanceAction");
 
-      this.trySkipAction();
+      if (!(await this.trySkipAction())) {
+        await this.checkConditions();
+      }
     }
   }
 };

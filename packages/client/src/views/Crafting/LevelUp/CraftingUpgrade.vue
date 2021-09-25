@@ -6,7 +6,18 @@
     :filtersStore="$store.getters.getLevelUpFilters"
     commitCmd="setLevelUpFilters"
   >
-    <span class="font-size-20">{{ $t("leveling-list-empty-msg") }}</span>
+    <template #default>
+      <span class="font-size-20">{{ $t("leveling-list-empty-msg") }}</span>
+    </template>
+
+    <template #footer>
+      <portal to="footer" v-if="isActive">
+        <HintButton
+          title="i-lvlup"
+          :texts="['i-lvlup-1', 'i-lvlup-2']"
+        ></HintButton>
+      </portal>
+    </template>
   </CraftingItemList>
 </template>
 
@@ -14,10 +25,11 @@
 import CraftingItemList from "../CraftingItemList.vue";
 import AppSection from "@/AppSection.vue";
 const ItemType = require("@/../../knightlands-shared/item_type");
+import HintButton from "@/components/HintButton.vue";
 
 export default {
   mixins: [AppSection],
-  components: { CraftingItemList },
+  components: { CraftingItemList, HintButton },
   created() {
     this.title = "window-upgrade-items-list";
     this.$options.useRouterBack = true;

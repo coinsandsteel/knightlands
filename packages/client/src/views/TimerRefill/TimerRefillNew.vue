@@ -27,7 +27,7 @@
             >
               <div class="flex flex-column flex-center flex-1">
                 <div class="flex flex-center margin-bottom-2 font-size-20">
-                  <span>Price to restore 100% of {{ stat }}:</span>
+                  <span>{{ $t("r-stat", { stat: $t(stat) }) }}</span>
                   <IconWithValue iconClass="icon-gold">
                     {{ softCost }}
                   </IconWithValue>
@@ -118,6 +118,7 @@
               :soft="softCost > 0"
               :price="hardCost || softCost"
               @click="confirm"
+              id="confirm-refill"
               >{{ $t("btn-confirm") }}</PurchaseButton
             >
           </div>

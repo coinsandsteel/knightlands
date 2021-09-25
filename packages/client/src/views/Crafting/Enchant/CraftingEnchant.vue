@@ -8,7 +8,18 @@
       :filtersStore="$store.getters.getEnchantFilters"
       commitCmd="setEnchantingFilters"
     >
-      <span class="font-size-20">{{ $t("enchant-list-empty-msg") }}</span>
+      <template #default>
+        <span class="font-size-20">{{ $t("enchant-list-empty-msg") }}</span>
+      </template>
+
+      <template #footer>
+        <portal to="footer" v-if="isActive">
+          <HintButton
+            title="i-enchant"
+            :texts="['i-enchant-1', 'i-enchant-2']"
+          ></HintButton>
+        </portal>
+      </template>
     </CraftingItemList>
 
     <ScrollableItemHint
@@ -27,10 +38,11 @@ import AppSection from "@/AppSection.vue";
 import CraftingItemList from "../CraftingItemList.vue";
 const ItemType = require("@/../../knightlands-shared/item_type");
 import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
+import HintButton from "@/components/HintButton.vue";
 
 export default {
   mixins: [AppSection],
-  components: { CraftingItemList, ScrollableItemHint },
+  components: { CraftingItemList, ScrollableItemHint, HintButton },
   data: () => ({
     filteredItems: []
   }),

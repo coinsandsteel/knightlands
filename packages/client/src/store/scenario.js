@@ -65,7 +65,8 @@ export default [
       },
       {
         lock: {
-          name: "home"
+          path: "/character",
+          skip: true
         },
         pointer: {
           target: "#char-btn"
@@ -89,12 +90,35 @@ export default [
           target: "#i-2045"
         },
         return: 0
+      },
+      {
+        lock: {
+          path: "/character"
+        },
+        pointer: {
+          target: "#btn-equip-2045",
+          index: 1
+        },
+        return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-23"]
+          }
+        ]
+      },
+      {
+        teleport: {
+          path: "/home/quest/1"
+        }
       }
     ]
   },
   {
     cond: {
-      level: 3
+      level: 3,
+      items: [2929]
     },
     actions: [
       {
@@ -106,7 +130,7 @@ export default [
       },
       {
         lock: {
-          name: "home",
+          path: "/character",
           skip: true
         },
         pointer: {
@@ -131,12 +155,102 @@ export default [
           target: "#num-energy .att-plus"
         },
         return: 0
+      },
+      {
+        lock: {
+          path: "/character/training"
+        },
+        pointer: {
+          target: "#apply-btn"
+        },
+        return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-24"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "home",
+          skip: true
+        },
+        pointer: {
+          target: "#home-btn"
+        },
+        return: 5
+      },
+      {
+        lock: {
+          name: "home"
+        },
+        pointer: {
+          target: "#quests > .link"
+        },
+        return: 5
+      },
+      {
+        lock: {
+          path: "/home/quest/1"
+        },
+        pointer: {
+          target: ".zone-nav.right"
+        },
+        return: 5
       }
     ]
   },
   {
     cond: {
-      level: 5
+      level: 3,
+      event: "no-energy"
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-25"]
+          }
+        ]
+      },
+      {
+        pointer: {
+          target: "#refill"
+        },
+        return: 0
+      },
+      {
+        pointer: {
+          target: "#section1"
+        },
+        return: 0
+      },
+      {
+        pointer: {
+          target: ".pointer.att-plus"
+        },
+        return: 0
+      },
+      {
+        pointer: {
+          target: "#confirm-refill"
+        },
+        return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-26"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 4
     },
     actions: [
       {
@@ -158,7 +272,8 @@ export default [
       },
       {
         lock: {
-          name: "home"
+          name: "home",
+          props: { scrollToBottom: true }
         },
         pointer: {
           target: "#daily-r"
@@ -173,12 +288,48 @@ export default [
           target: "#collect"
         },
         return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-23"]
+          }
+        ]
+      },
+      {
+        teleport: {
+          path: "/home/quest/2"
+        }
       }
     ]
   },
   {
     cond: {
       level: 5
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-27"]
+          },
+          {
+            text: ["t-d-28"]
+          },
+          {
+            text: ["t-d-29"]
+          },
+          {
+            text: ["t-d-30"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 5,
+      fullClass: true
     },
     actions: [
       {
@@ -215,6 +366,13 @@ export default [
           target: ".btn:not(.disabled)"
         },
         return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-31"]
+          }
+        ]
       }
     ]
   },
@@ -257,6 +415,153 @@ export default [
           target: "#boost-0"
         },
         return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-32"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 5
+    },
+    actions: [
+      {
+        dialog: [{ text: ["t-d-33"] }]
+      },
+      {
+        teleport: {
+          path: "/home/onyx-tower"
+        }
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 6
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-34"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "home",
+          skip: true
+        },
+        pointer: {
+          target: "#home-btn"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "home"
+        },
+        pointer: {
+          target: "#daily-tasks"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "daily-tasks"
+        },
+        pointer: {
+          target: ".btn:not(.disabled)"
+        },
+        return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-36"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 9
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-37"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "home",
+          skip: true
+        },
+        pointer: {
+          target: "#home-btn"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "home"
+        },
+        pointer: {
+          target: "#trials"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/home/trials"
+        },
+        pointer: {
+          target: ".btn"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/home/trials/honor"
+        },
+        pointer: {
+          target: ".btn:not(.disabled)"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/home/trials/honor"
+        },
+        pointer: {
+          target: ".btn:not(.disabled)"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/home/trials/honor"
+        },
+        pointer: {
+          target: ".btn:not(.disabled)"
+        },
+        return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-38"]
+          }
+        ]
       }
     ]
   },
@@ -324,6 +629,49 @@ export default [
           target: "#btn-summon"
         },
         return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-39"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    cond: {
+      level: 10
+    },
+    actions: [
+      {
+        lock: {
+          name: "home",
+          skip: true
+        },
+        pointer: {
+          target: "#home-btn"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "home"
+        },
+        pointer: {
+          target: "#divs"
+        },
+        return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-40"]
+          },
+          {
+            text: ["t-d-41"]
+          }
+        ]
       }
     ]
   },
@@ -374,8 +722,7 @@ export default [
   },
   {
     cond: {
-      level: 10,
-      name: "army-summon-menu"
+      level: 10
     },
     actions: [
       {
@@ -430,48 +777,173 @@ export default [
           target: "#confirm"
         },
         return: 0
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-42"]
+          }
+        ]
+      },
+      {
+        teleport: {
+          path: "/summon/army"
+        }
       }
     ]
   },
   {
     cond: {
-      level: 15
+      level: 10,
+      item: [2978]
     },
     actions: [
       {
         dialog: [
           {
-            text: ["t-d-15"]
+            text: ["t-d-44"]
           }
         ]
       },
       {
         lock: {
-          name: "home",
+          name: "castle",
           skip: true
         },
         pointer: {
-          target: "#home-btn"
-        }
+          target: "#b-castle"
+        },
+        return: 0
       },
       {
         lock: {
-          name: "home"
+          name: "castle"
         },
         pointer: {
-          target: "#divs"
-        }
+          target: "#legions"
+        },
+        return: 0
       },
       {
         lock: {
-          name: "dividends"
+          name: "army-composition"
         },
+        pointer: {
+          target: "#s-0"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          path: "/castle/army/edit-legion/0/troops/0"
+        },
+        pointer: {
+          target: "#unit-equip"
+        },
+        return: 0
+      },
+      {
+        pointer: {
+          target: "#t-level-up"
+        },
+        return: 0
+      },
+      {
+        pointer: {
+          target: ".btn"
+        },
+        return: 0
+      },
+      {
         dialog: [
           {
-            text: ["t-d-16", "t-d-16i"]
+            text: ["t-d-45"]
+          }
+        ]
+      }
+    ]
+  },
+  // {
+  //   cond: {
+  //     level: 11
+  //   },
+  //   actions: [
+  //     {
+  //       dialog: [
+  //         {
+  //           text: ["t-d-15"]
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       lock: {
+  //         name: "home",
+  //         skip: true
+  //       },
+  //       pointer: {
+  //         target: "#home-btn"
+  //       }
+  //     },
+  //     {
+  //       lock: {
+  //         name: "home"
+  //       },
+  //       pointer: {
+  //         target: "#divs"
+  //       }
+  //     },
+  //     {
+  //       lock: {
+  //         name: "dividends"
+  //       },
+  //       dialog: [
+  //         {
+  //           text: ["t-d-16", "t-d-16i"]
+  //         },
+  //         {
+  //           text: ["t-d-17", "t-d-18"]
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+  {
+    cond: {
+      level: 11
+    },
+    actions: [
+      {
+        dialog: [
+          {
+            text: ["t-d-46"]
+          }
+        ]
+      },
+      {
+        lock: {
+          name: "castle",
+          skip: true
+        },
+        pointer: {
+          target: "#b-castle"
+        },
+        return: 0
+      },
+      {
+        lock: {
+          name: "castle"
+        },
+        pointer: {
+          target: "#lab"
+        }
+      },
+      {
+        dialog: [
+          {
+            text: ["t-d-47"]
           },
           {
-            text: ["t-d-17", "t-d-18"]
+            text: ["t-d-48"]
           }
         ]
       }
@@ -479,7 +951,7 @@ export default [
   },
   {
     cond: {
-      level: 16,
+      level: 15,
       items: [3119]
     },
     actions: [

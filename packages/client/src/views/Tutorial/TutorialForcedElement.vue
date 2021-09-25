@@ -265,13 +265,23 @@ export default {
       this.$nextTick(() => {
         let found = false;
 
+        if (this.skipTimeout) {
+          clearTimeout(this.skipTimeout);
+          this.skipTimeout = null;
+        }
+
         this.skipTimeout = setTimeout(() => {
           this.showSkipButton = true;
           this.skipTimeout = null;
         }, SKIP_TIMEOUT);
 
         this.searchInterval = setInterval(() => {
-          this.element = document.querySelector(this.elementId);
+          const elements = document.querySelectorAll(this.elementId);
+          if (elements.length == 0) {
+            return;
+          }
+          let index = this.data.index || 0;
+          this.element = elements[index];
           if (!found && this.element) {
             found = true;
             this.$nextTick(() => {

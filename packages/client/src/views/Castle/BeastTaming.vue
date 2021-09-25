@@ -1,5 +1,5 @@
 <template>
-  <div v-bar>
+  <div v-bar ref="scroll">
     <div class="screen-content">
       <div class="screen-background"></div>
       <SoundEffect ref="fx" :files="['beep1']" channel="fx" />
@@ -239,6 +239,8 @@ export default {
   },
   activated() {
     this.$set(this, "beast", this.$game.beast());
+    const element = document.querySelector(".vb-content");
+    element.scrollTop = element.scrollHeight - element.clientHeight;
   },
   computed: {
     beastItemName() {

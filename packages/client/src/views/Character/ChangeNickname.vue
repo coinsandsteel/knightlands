@@ -54,7 +54,7 @@ export default {
       return this.nickname.match(/^[a-zA-Z0-9_-]{3,16}$/g);
     },
     hasName() {
-      return !!this.$game.character.nickname;
+      return !!this.$game.character.nickname.v;
     },
     price() {
       if (this.hasName) {

@@ -32,7 +32,7 @@
           <custom-button
             type="yellow"
             v-else-if="canEquip"
-            :id="`btn-equip-${index}`"
+            :id="`btn-equip-${item.template}`"
             class="common-btn center"
             @click="handleClose(ItemActions.Equip)"
             >{{ $t("btn-equip") }}</custom-button

@@ -34,7 +34,6 @@
     </span>
 
     <div class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap">
-      <div class="zone-id-dots left"></div>
       <div class="zone-id small">
         {{ prevZone }}
       </div>
@@ -44,7 +43,6 @@
       <div class="zone-id small">
         {{ nextZone }}
       </div>
-      <div class="zone-id-dots"></div>
     </div>
   </div>
 </template>
@@ -199,7 +197,7 @@ export default {
   height: 100%;
   grid-column: 1;
   grid-row: 1;
-  z-index: 100;
+  z-index: 98;
 
   &.right {
     grid-column: 3;

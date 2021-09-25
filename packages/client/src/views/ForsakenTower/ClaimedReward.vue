@@ -1,18 +1,25 @@
 <template>
-  <UserDialog :title="$t('rewards')" :compact="true" @close="$close">
+  <UserDialog
+    :title="$t('rewards')"
+    :compact="true"
+    @close="$close"
+    class="over-top"
+  >
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
         <IconWithValue
           class="margin-bottom-1"
           valueClass="font-size-20 digit-font"
           iconClass="icon-exp"
-        >{{rewards.exp}}</IconWithValue>
+          >{{ rewards.exp }}</IconWithValue
+        >
 
         <IconWithValue
           class="margin-bottom-1"
           valueClass="font-size-20 digit-font"
           iconClass="icon-gold"
-        >{{rewards.soft}}</IconWithValue>
+          >{{ rewards.soft }}</IconWithValue
+        >
 
         <div class="flex flex-center flex-column margin-top-3">
           <div class="flex flex-center">
@@ -29,7 +36,9 @@
       </div>
     </template>
     <template v-slot:footer>
-      <CustomButton type="grey" @click="$close">{{$t("continue")}}</CustomButton>
+      <CustomButton type="grey" @click="$close">{{
+        $t("continue")
+      }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -52,3 +61,9 @@ export default {
   props: ["rewards"]
 };
 </script>
+
+<style lang="less" scoped>
+.over-top {
+  z-index: 200;
+}
+</style>

@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-center" @click="showHint">
     <IconWithValue
-      :flip="flip"
+      :flip="true"
       :iconMargin="true"
-      iconClass="icon-info round big"
+      iconClass="icon-info square big"
       class="pointer"
     >
       <slot></slot>

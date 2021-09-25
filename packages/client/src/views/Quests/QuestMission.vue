@@ -132,12 +132,21 @@
       </div>
 
       <div class="margin-top-1 flex flex-center">
-        <div
-          v-if="!isBossUnlocked"
-          class="font-size-30 grey-title font-outline"
+        <CustomButton
+          minWidth="20rem"
+          v-if="!isBossUnlocked && !canProgress"
+          @click="goToNextMissionOrQuest"
         >
           {{ $t("clear-quests") }}
-        </div>
+        </CustomButton>
+        <CustomButton
+          type="yellow"
+          minWidth="20rem"
+          v-else-if="!isBossUnlocked && canProgress"
+          @click="goToNextMissionOrQuest"
+        >
+          {{ $t("btn-next-quest") }}
+        </CustomButton>
 
         <div v-else-if="progress.current >= progress.max">
           <CustomButton
@@ -354,6 +363,12 @@ export default {
         return true;
       }
       return !this.isLastMission;
+    },
+    canProgress() {
+      return (
+        this.hasNextZone &&
+        !this.$game.getZoneLocked(this.zone._id + 1, this.stage)
+      );
     }
   },
   methods: {
@@ -393,12 +408,20 @@ export default {
     nextDifficulty() {
       this.$emit("nextDifficulty");
     },
-    goToNextMission() {
-      if (!this.isLastMission) {
-        this.sliderIndex++;
-        return;
+    goToNextMissionOrQuest() {
+      if (this.canProgress) {
+        this.$router.replace({
+          name: "quests",
+          params: {
+            zone: this.zone._id + 1,
+            quest: 0
+          }
+        });
+      } else {
+        this.goToNextMission();
       }
-
+    },
+    goToNextMission() {
       // find next unfinished quest
       let i = 0;
       const l = this.enemyList.length;
@@ -443,7 +466,7 @@ export default {
     },
     async engage() {
       this.request = this.performRequestNoCatch(
-        this.$game.engageQuest(this.zone._id * 1, this.questIndex * 1)
+        this.$game.engageQuest(+this.zone._id, +this.questIndex)
       );
       try {
         let { damages, items } = await this.request;
@@ -493,6 +516,7 @@ export default {
           break;
 
         case Errors.NoEnergy:
+          await this.$app.tutorial().triggerEvent("no-energy");
           await ShowResourceRefill(Stat.Energy);
           break;
 
@@ -608,7 +632,7 @@ export default {
   border-radius: 2px;
   position: absolute;
   top: 0;
-  z-index: 100;
+  z-index: 98;
 }
 
 .hidden {
@@ -618,7 +642,7 @@ export default {
 .quest-nav {
   left: 0;
   position: absolute;
-  z-index: 100;
+  z-index: 10;
   height: 14rem;
   transition: all 0.2s ease;
 

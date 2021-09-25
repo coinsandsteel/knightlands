@@ -58,9 +58,12 @@ import AvatarsMeta from "@/avatars";
 export default {
   mixins: [NetworkRequestErrorMixin],
   components: { AvatarEntry, UserDialog, CustomButton },
+  data: () => ({
+    selectedAvatar: 0
+  }),
   computed: {
     hasAvatar() {
-      return true;
+      return !!this.$game.character.avatar || !!this.selectedAvatar;
     },
     unlockableAvatars() {
       return AvatarsMeta.unlockable;
@@ -76,9 +79,7 @@ export default {
       return this.$game.character.level >= level;
     },
     async submit() {
-      await this.performRequest(
-        this.$game.setAvatar(this.$game.character.avatar)
-      );
+      await this.performRequest(this.$game.setAvatar(this.selectedAvatar));
 
       this.$close();
     },
@@ -90,7 +91,7 @@ export default {
     },
     selectAvatar(level, id) {
       if (this.metLevel(level)) {
-        this.$game.character.avatar = id;
+        this.selectedAvatar = id;
       }
     }
   }

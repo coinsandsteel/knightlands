@@ -7,26 +7,18 @@
       <div
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-item-content"
       >
-        <!-- <div class="unit-item-shadow absolute-stretch"></div> -->
         <UnitStars class="stars width-100 relative" :stars="stars" />
-        <Flag
+        <!-- <Flag
           class="item-badge-grid"
           :weaponType="weaponType"
           :element="element"
           :type="unitType"
-        />
+        /> -->
         <span
-          class="width-100 font-size-18 font-weight-900 unit-item-lvl center-transform"
+          class="width-100 font-size-20 font-weight-900 unit-item-lvl center-transform font-outline"
           >{{ $t("unit-lvl", { lvl: level }) }}</span
         >
       </div>
-
-      <!-- <div class="absolute-stretch flex flex flex-center pointer-events-none">
-        <span
-          ref="damageText"
-          class="font-size-5 damage-text font-outline digit-font fnot-weight-900"
-        >{{damageDone}}</span>
-      </div> -->
     </template>
   </div>
 </template>
@@ -34,13 +26,13 @@
 <script>
 import UnitGetter from "../../Army/UnitGetterMixin.vue";
 import UnitStars from "../../Army/UnitStars.vue";
-import Flag from "../../Army/Flag.vue";
+// import Flag from "../../Army/Flag.vue";
 import anime from "animejs/lib/anime.es.js";
 
 export default {
   props: ["unit", "selected", "empty"],
   mixins: [UnitGetter],
-  components: { UnitStars, Flag },
+  components: { UnitStars },
   data: () => ({
     damageDone: 123456
   }),
@@ -107,7 +99,7 @@ export default {
   }
 
   & .stars {
-    grid-column: ~"2/3";
+    grid-column: ~"1/3";
     grid-row: 1;
   }
 }

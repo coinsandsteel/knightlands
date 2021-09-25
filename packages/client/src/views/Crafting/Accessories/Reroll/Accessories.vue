@@ -32,6 +32,7 @@
         :startValue="false"
         :cb="handleEquippedToggle"
       />
+      <HintButton title="i-reroll" :texts="['i-reroll-1']"></HintButton>
     </portal>
   </div>
 </template>
@@ -44,6 +45,7 @@ import ItemList from "@/components/Item/ItemList.vue";
 import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import EquippedItemList from "../../EquippedItemList.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
+import HintButton from "@/components/HintButton.vue";
 const {
   EquipmentSlots,
   getSlot
@@ -54,6 +56,7 @@ import NoAccessoriesMessage from "../NoAccessoriesMessage.vue";
 export default {
   mixins: [AppSection, HintHandler],
   components: {
+    HintButton,
     ItemList,
     EquippedItemList,
     Toggle,

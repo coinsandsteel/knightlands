@@ -1,5 +1,8 @@
 <template>
-  <div class="width-100 buffs-grid padding-2 relative">
+  <div
+    class="width-100 buffs-grid padding-2 relative"
+    :class="{ 'height-100': buffs.length == 0 }"
+  >
     <template v-if="buffs.length > 0">
       <BuffSlot
         v-for="record in buffs"
@@ -14,7 +17,7 @@
       class="flex flex-column flex-center width-100 height-100 absolute-stretch"
     >
       <span class="font-size-22 margin-bottom-2">{{ $t("buffs-empty") }}</span>
-      <CustomButton type="yellow" @click="goToShop">{{
+      <CustomButton type="yellow" @click="goToShop" minWidth="20rem">{{
         $t("buff-now")
       }}</CustomButton>
     </div>

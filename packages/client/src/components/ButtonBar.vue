@@ -1,9 +1,18 @@
 <template>
   <div class="flex flex-space-evenly">
-    <div class="button-bar-selector" v-for="(sectionTitle, index) in sections" :key="sectionTitle">
+    <div
+      class="button-bar-selector"
+      v-for="(sectionTitle, index) in sections"
+      :key="sectionTitle"
+    >
       <input type="radio" :id="sectionTitle" :value="index" v-model="section" />
       <label :for="sectionTitle">
-        <custom-button type="grey" :selected="section == index">{{$t(sectionTitle)}}</custom-button>
+        <custom-button
+          type="grey"
+          :selected="section == index"
+          :id="`section${index}`"
+          >{{ $t(sectionTitle) }}</custom-button
+        >
       </label>
     </div>
   </div>
@@ -42,5 +51,3 @@ export default {
   }
 }
 </style>
-
-

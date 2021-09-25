@@ -121,7 +121,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 900;
+  z-index: 98;
   overflow: hidden auto;
 }
 </style>
