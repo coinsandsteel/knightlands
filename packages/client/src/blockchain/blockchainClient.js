@@ -1,7 +1,5 @@
 class BockchainClient {
-    constructor() {}
-
-
-};
+  constructor() {}
+}
 
 export default BockchainClient;

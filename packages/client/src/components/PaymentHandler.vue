@@ -3,11 +3,12 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import Events from "@/../../knightlands-shared/events";
 import ConnectWallet from "@/views/Account/ConnectWallet.vue";
 import { create } from "vue-modal-dialogs";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const ShowWallet = create(ConnectWallet, "chain");
 
 export default {
-  mixins: [PromptMixin],
+  mixins: [PromptMixin, NetworkRequestErrorMixin],
   data: () => ({
     _internalIap: null
   }),
@@ -101,7 +102,9 @@ export default {
       } = paymentStatus;
       const result = await ShowWallet(chain);
       if (result) {
-        await this.purchase(signature, price, iap, paymentId, nonce, deadline);
+        await this.performRequest(
+          this.purchase(signature, price, iap, paymentId, nonce, deadline)
+        );
       }
     },
     async cancelPurchase(paymentStatus) {

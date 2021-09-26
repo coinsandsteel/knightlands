@@ -1,6 +1,8 @@
 <template>
   <div class="width-100 adventure-slot flex flex-column">
-    <Title v-if="!isRunning" :stackTop="true" :stackBottom="true">{{$t("new-adv")}}</Title>
+    <Title v-if="!isRunning" :stackTop="true" :stackBottom="true">{{
+      $t("new-adv")
+    }}</Title>
     <div class="color-panel-5 full-flex flex flex-column">
       <Adventure
         class="width-100"
@@ -9,9 +11,12 @@
         @claim="$emit('claim')"
       ></Adventure>
       <div class="flex flex-center full-flex width-100" v-else>
-        <CustomButton type="yellow" @click="$emit('start', adventure)">{{
-          $t("adventure-start")
-        }}</CustomButton>
+        <CustomButton
+          type="yellow"
+          @click="$emit('start', adventure)"
+          minWidth="20rem"
+          >{{ $t("adventure-start") }}</CustomButton
+        >
       </div>
     </div>
   </div>

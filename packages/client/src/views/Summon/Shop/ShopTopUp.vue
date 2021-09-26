@@ -10,14 +10,14 @@
       />
     </div>
 
-    <div class="shop-container margin-top-2">
+    <!-- <div class="shop-container margin-top-2">
       <TopUpShopElement
         v-for="entry in tickets"
         :key="entry.iap"
         :data="entry"
         @purchase="handlePurchase"
       />
-    </div>
+    </div> -->
   </PaymentStatus>
 </template>
 

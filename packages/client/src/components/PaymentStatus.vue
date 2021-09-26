@@ -69,6 +69,6 @@ export default {
 
 <style lang="less" scoped>
 .purchase-overlay {
-  z-index: 100;
+  z-index: 98;
 }
 </style>

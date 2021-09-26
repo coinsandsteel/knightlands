@@ -5,6 +5,7 @@
 <script>
 import { toDecimal } from "@/blockchain/utils";
 import IconWithValue from "@/components/IconWithValue.vue";
+import CurrencyType from "@/../../knightlands-shared/currency_type";
 
 const THROTTLE = 30000;
 
@@ -37,7 +38,9 @@ export default {
   methods: {
     async refreshPrice() {
       if (this.nextUpdate <= this.$game.nowSec) {
-        const { rate } = await this.$game.getCurrencyConversionRate();
+        const { rate } = await this.$game.getCurrencyConversionRate(
+          CurrencyType.Dkt
+        );
         this.rate = rate;
         this.nextUpdate = this.$game.nowSec + THROTTLE;
       }

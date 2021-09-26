@@ -44,12 +44,16 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import { create } from "vue-modal-dialogs";
 const ShowUnlockWallet = create(UnlockWallet, "chain");
 
+const isProd = process.env.NODE_ENV == "production";
+
 export default {
   mixins: [NetworkRequestErrorMixin, PromptMixin],
   components: { CustomButton, Title, IconWithValue },
   props: ["chain"],
   data: () => ({
-    availableChains: [Blockchains.Ethereum, Blockchains.Polygon],
+    availableChains: isProd
+      ? [Blockchains.Ethereum, Blockchains.Polygon]
+      : [Blockchains.Ethereum],
     connectionInProcess: false
   }),
   mounted() {

@@ -69,6 +69,9 @@ export default {
       return AvatarsMeta.unlockable;
     }
   },
+  mounted() {
+    this.selectedAvatar = this.$game.character.avatar;
+  },
   methods: {
     canUse(data) {
       const level = this.metLevel(data.level);

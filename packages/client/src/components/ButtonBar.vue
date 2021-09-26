@@ -23,7 +23,7 @@ import CustomButton from "@/components/Button.vue";
 
 export default {
   components: { CustomButton },
-  props: ["sections", "input"],
+  props: ["sections", "value"],
   data() {
     return {
       section: 0
@@ -33,8 +33,8 @@ export default {
     section() {
       this.$emit("input", this.section);
     },
-    input() {
-      this.section = this.input;
+    value() {
+      this.section = this.value;
     }
   }
 };

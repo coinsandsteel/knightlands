@@ -1667,8 +1667,10 @@ class Game {
 
   // IAP
 
-  async getCurrencyConversionRate() {
-    return await this._request(Operations.GetCurrencyConversionRate);
+  async getCurrencyConversionRate(currency) {
+    return await this._request(Operations.GetCurrencyConversionRate, {
+      currency
+    });
   }
 
   async cancelPurchase(id) {

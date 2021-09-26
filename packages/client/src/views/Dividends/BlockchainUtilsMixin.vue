@@ -2,7 +2,7 @@
 import Blockchains from "@/../../knightlands-shared/blockchains";
 import { toDecimal } from "../../blockchain/utils";
 
-import Polygon from "../../blockchain/polygon/polygonClient";
+import Ethereum from "../../blockchain/ethereum/ethereumClient";
 
 export default {
   methods: {
@@ -10,7 +10,7 @@ export default {
       switch (blockchainId) {
         case Blockchains.Polygon:
         case Blockchains.Ethereum:
-          return Polygon.isAddress(addr);
+          return Ethereum.isAddress(addr);
       }
     },
     toDecimal(blockchainId, value) {

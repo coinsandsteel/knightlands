@@ -1,6 +1,8 @@
 <script>
 import PromptMixin from "@/components/PromptMixin.vue";
 
+const DEFAULT_TIMEOUT = 350;
+
 export default {
   mixins: [PromptMixin],
   created() {
@@ -56,7 +58,7 @@ export default {
           duration: -1,
           closeOnClick: false
         });
-      }, this.$options.loadingTimeout || 200);
+      }, this.$options.loadingTimeout || DEFAULT_TIMEOUT);
     },
     _hideLoading(timeout) {
       clearTimeout(timeout);
