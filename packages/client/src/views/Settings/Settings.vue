@@ -32,6 +32,18 @@
       >{{ $t("logout") }}</CustomButton
     >
 
+    <div class="font-size-20 font-weight-900 margin-top-5">
+      {{ $t("acc", { m: $game.account }) }}
+    </div>
+
+    <div class="flex flex-center margin-top-5">
+      <CopyButton
+        :data="$game.id"
+        caption="acc-id"
+        minWidth="20rem"
+      ></CopyButton>
+    </div>
+
     <a href="http://www.akashics.moe" class="akashi" target="_blank">{{
       $t("akashi")
     }}</a>
@@ -42,12 +54,13 @@
 import AppSection from "@/AppSection.vue";
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
+import CopyButton from "@/components/CopyButton.vue";
 
 let switchInProgress = false;
 
 export default {
   mixins: [AppSection],
-  components: { CustomButton },
+  components: { CustomButton, CopyButton },
   created() {
     this.title = "w-settings";
   },

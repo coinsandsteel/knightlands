@@ -9,13 +9,27 @@ function BlockchainFactory(blockchain) {
       return new TronBlockchainClient();
 
     case Blockchains.Polygon:
-      return new EthereumClient({
-        chainId: 137
-      });
+      return new EthereumClient(
+        {
+          chainId: 0x89
+        },
+        {},
+        {
+          chainId: "0x89",
+          chainName: "Polygon",
+          nativeCurrency: {
+            name: "MATIC",
+            symbol: "MATIC",
+            decimals: 18
+          },
+          rpcUrls: ["https://polygon-rpc.com"],
+          blockExplorerUrls: ["https://polygonscan.com"]
+        }
+      );
 
     case Blockchains.Ethereum:
       if (process.env.NODE_ENV == "production") {
-        return new EthereumClient({ chainId: 1 }, {});
+        return new EthereumClient({ chainId: "0x1" }, {});
       } else {
         const PaymentGateway = require("./artifacts/goerli/PaymentGateway.json");
         const Flesh = require("./artifacts/goerli/Flesh.json");

@@ -6,9 +6,10 @@ import currency_type from "../../../../knightlands-shared/currency_type";
 import { IncorrectNetworkError } from "../WalletErrors";
 
 export default class EthereumClient extends BlockchainClient {
-  constructor(network, artifacts) {
+  constructor(network, artifacts, networkConfig) {
     super();
 
+    this._networkConfig = networkConfig;
     this._artifacts = artifacts;
     this._network = network;
     this._provider = null;
@@ -49,7 +50,23 @@ export default class EthereumClient extends BlockchainClient {
     try {
       await provider.getNetwork();
     } catch (e) {
-      throw new IncorrectNetworkError(this._network);
+      try {
+        await provider.send("wallet_switchEthereumChain", [
+          { chainId: ethers.utils.hexValue(this._network.chainId) }
+        ]);
+      } catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        if (switchError.code === 4902 && this._networkConfig) {
+          try {
+            await provider.send("wallet_addEthereumChain", [
+              this._networkConfig
+            ]);
+          } catch (addError) {
+            console.log(addError);
+          }
+        }
+        // handle other "switch" errors
+      }
     }
 
     this._provider = provider;

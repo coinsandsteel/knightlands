@@ -175,18 +175,6 @@
           </div> -->
         </div>
 
-        <div class="font-size-20 font-weight-900 margin-top-5">
-          {{ $t("acc", { m: $game.account }) }}
-        </div>
-
-        <div class="flex flex-center margin-top-5">
-          <CopyButton
-            :data="$game.id"
-            caption="acc-id"
-            minWidth="20rem"
-          ></CopyButton>
-        </div>
-
         <div class="flex flex-center margin-top-5">
           <CustomButton
             type="yellow"
@@ -225,7 +213,6 @@ import { toDecimal } from "../../blockchain/utils";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import AddToMetamask from "./AddToMetamask.vue";
-import CopyButton from "@/components/CopyButton.vue";
 
 const PAYOUT_PERIOD = 86400;
 const FLESH_EMISSION = 1000;
@@ -241,7 +228,6 @@ export default {
     NetworkRequestErrorMixin
   ],
   components: {
-    CopyButton,
     AddToMetamask,
     HintButton,
     IconWithValue,
@@ -367,7 +353,9 @@ export default {
       const info = await this.performRequest(this.$game.fetchRaidPointsInfo());
       this.updateShares(info, this.isFreeAccount);
 
-      const { rate } = await this.$game.getCurrencyConversionRate();
+      const { rate } = await this.$game.getCurrencyConversionRate(
+        CurrencyType.Dkt
+      );
       this.fleshRate = rate;
     },
     updateShares(data, isFree) {

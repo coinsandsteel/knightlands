@@ -35,7 +35,7 @@ import ConnectWallet from "@/views/Account/ConnectWallet.vue";
 import { create } from "vue-modal-dialogs";
 
 const ShowWallet = create(ConnectWallet);
-const POLYGON_CHAIN = Blockchains.Ethereum;
+const POLYGON_CHAIN = Blockchains.Polygon;
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],

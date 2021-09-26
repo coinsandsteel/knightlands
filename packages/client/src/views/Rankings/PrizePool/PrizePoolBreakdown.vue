@@ -18,12 +18,12 @@
 
     <div class="color-panel-1 padding-top-3 text-align-left flex flex-column">
       <div
-        class="flex font-size-22 width-100 padding-left-3 padding-right-3"
-        v-for="b in breakdown"
-        :key="b.id"
+        class="flex font-size-25 width-100 padding-left-3 padding-right-3 margin-bottom-1"
+        v-for="(score, id) in stats"
+        :key="id"
       >
-        <span class="flex-3">{{ $t(`rank-t-${b.id}`) }}</span>
-        <span class="flex-1">+{{ b.score }}</span>
+        <span class="flex-3">{{ $t(`rank-t-${id}`) }}</span>
+        <span class="flex-1">+{{ breakdown[id] || 0 }}</span>
       </div>
     </div>
   </div>
@@ -31,10 +31,19 @@
 
 <script>
 import Title from "@/components/Title.vue";
+import Meta from "@/prize_pool_meta";
 
 export default {
   props: ["currentRank"],
   components: { Title },
+  data: () => ({
+    stats: {}
+  }),
+  mounted() {
+    for (const stat of Meta) {
+      this.$set(this.stats, stat, 0);
+    }
+  },
   computed: {
     score() {
       if (!this.currentRank) {
@@ -44,21 +53,15 @@ export default {
       return this.currentRank.score;
     },
     breakdown() {
-      const list = [];
+      const list = {};
 
       if (!this.currentRank) {
-        return;
+        return {};
       }
 
       for (const k in this.currentRank.b) {
-        list.push({
-          id: k,
-          score: this.currentRank.b[k]
-        });
+        list[k] = this.currentRank.b[k];
       }
-      list.sort((a, b) => {
-        return b.score - a.score;
-      });
       return list;
     },
     rank() {
