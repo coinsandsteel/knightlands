@@ -215,7 +215,9 @@ export default {
         y: offset.top + offset.height / 2
       };
       await this.attract(instance, at, to, container);
-      this.delayedResources[resourceName] += resourceValue;
+      if (!isNaN(+resourceValue)) {
+        this.delayedResources[resourceName] += resourceValue;
+      }
     }
   }
 };

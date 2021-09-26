@@ -1,24 +1,48 @@
 <template>
   <div class="flex flex-column flex-center relative pp-w width-100">
-    <div class="w-bg absolute-stretch"></div>
+    <img src="../../../assets/ui/bg_topbanner.png" class="w-bg" />
 
-    <HintButton :texts="['t-d-43']" title="grand-royale"
-      ><h1 class="font-outline">{{ $t("grand-royal") }}</h1></HintButton
+    <div
+      class="left flex flex-column flex-center font-weight-900 font-outline"
+      v-resize-text="{
+        ratio: 1.3,
+        minFontSize: '14px',
+        maxFontSize: '100px',
+        delay: 200
+      }"
     >
+      <span class="gr-title uppercase">{{ $t("grand-royal") }}</span>
 
-    <IconWithValue
-      iconClass="icon-usdc huge"
-      valueClass="font-size-4 font-weight-900 font-outline"
-      >{{ $t("grand-prize", { n: 30000 }) }}</IconWithValue
-    >
+      <IconWithValue
+        class="margin-top-1"
+        iconClass="icon-usdc medium"
+        valueClass=""
+        >{{ $t("grand-prize", { n: 30000 }) }}</IconWithValue
+      >
+    </div>
 
-    <span class="font-size-20 font-outline">{{
-      $t("d-s-f-at", { timer: timeLeft })
-    }}</span>
+    <div class="right flex flex-column flex-center">
+      <div class="timer flex flex-items-center flex-no-wrap width-100">
+        <span class="icon-timer yellow small"></span>
+        <div
+          class="full-flex"
+          v-resize-text="{
+            ratio: 1.1,
+            minFontSize: '8px',
+            maxFontSize: '100px',
+            delay: 200
+          }"
+        >
+          <span class="font-outline nowrap">{{
+            $t("d-s-f-at", { timer: timeLeft })
+          }}</span>
+        </div>
+      </div>
 
-    <CustomButton class="margin-top-2" type="yellow" @click="goToPrizePool">{{
-      $t("pp-track")
-    }}</CustomButton>
+      <CustomButton class="margin-top-1" type="yellow" @click="goToPrizePool">{{
+        $t("pp-track")
+      }}</CustomButton>
+    </div>
   </div>
 </template>
 
@@ -66,12 +90,37 @@ export default {
 <style lang="less" scoped>
 .pp-w {
   padding: 1rem;
+  display: grid;
+  align-items: stretch;
+  grid-template-columns: 2% 58% 35% 5%;
+  grid-template-rows: 1fr;
 
   & .w-bg {
-    z-index: -1;
-    background-image: url("../../../assets/shop/shop_packs_pattern4.jpg");
-    background-repeat: repeat-x;
-    background-size: 8% 100%;
+    max-width: 100%;
+    grid-row: 1;
+    grid-column: ~"1/5";
   }
+
+  & .left {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  & .right {
+    grid-row: 1;
+    grid-column: 3;
+  }
+}
+
+.timer {
+  border-image: url("../../../assets/ui/timer_bg.png");
+  border-image-slice: 22 fill;
+  border-image-width: 22px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.gr-title {
+  color: #ffd347;
 }
 </style>

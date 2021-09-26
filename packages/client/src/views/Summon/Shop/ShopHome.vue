@@ -79,7 +79,7 @@ export default {
       }
     ]
   }),
-  activated() {
+  mounted() {
     this.fetchPaymentStatus();
   },
   methods: {

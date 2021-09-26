@@ -55,6 +55,7 @@
     "vue-popperjs": "^2.0.4",
     "vue-promised": "^1.2.1",
     "vue-resize-directive": "^1.2.0",
+    "vue-resize-text": "^0.1.1",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.3.4",
     "vue-select": "^3.10.7",

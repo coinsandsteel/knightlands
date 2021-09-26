@@ -20,6 +20,17 @@
         <div class="score-stats">
           <div class="row">
             <span>
+              {{ $t("rp-d-bb") }}
+            </span>
+            <IconWithValue iconClass="icon-dkt">
+              <div class="flex flex-center">
+                <span>{{ dktValue }}</span>
+              </div>
+            </IconWithValue>
+          </div>
+
+          <div class="row">
+            <span>
               {{ $t("rp-d-b") }}
             </span>
             <IconWithValue iconClass="icon-dkt">
@@ -244,7 +255,8 @@ export default {
     nextPayoutTimer: new Timer(true),
     nextPayout: new Timer(true),
     totalShares: 0,
-    totalPoints: 0
+    totalPoints: 0,
+    fleshRate: 1
   }),
   created() {
     this.$options.loadingTimeout = 1000;
@@ -266,6 +278,9 @@ export default {
     this.$game.removeAllListeners(Events.DivTokenWithdrawal);
   },
   computed: {
+    dktValue() {
+      return this.dkt * this.fleshRate;
+    },
     dkt() {
       return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
     },
@@ -351,6 +366,9 @@ export default {
 
       const info = await this.performRequest(this.$game.fetchRaidPointsInfo());
       this.updateShares(info, this.isFreeAccount);
+
+      const { rate } = await this.$game.getCurrencyConversionRate();
+      this.fleshRate = rate;
     },
     updateShares(data, isFree) {
       if (isFree) {

@@ -15,7 +15,8 @@ export default {
   },
   actions: {
     async refreshStatus(context) {
-      context.commit("setStatus", await Vue.prototype.$game.paymentStatus());
+      const status = await Vue.prototype.$game.paymentStatus();
+      context.commit("setStatus", status);
     }
   }
 };

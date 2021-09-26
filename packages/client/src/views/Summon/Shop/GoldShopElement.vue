@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column flex-center margin-1 gold-pack">
+  <div class="flex flex-column flex-center gold-pack">
     <img :src="`/images/banners/gold${index}.png`" />
     <div class="padding-1 price-l">
       <IconWithValue iconClass="icon-gold">{{ data.amount }}</IconWithValue>
@@ -16,11 +16,9 @@
 
 <script>
 import PurchaseButton from "@/components/PurchaseButton.vue";
-import HintHandler from "@/components/HintHandler.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
-  mixins: [HintHandler],
   components: { PurchaseButton, IconWithValue },
   props: ["data", "index"]
 };
@@ -32,6 +30,7 @@ export default {
   border-image-slice: 19 fill;
   border-image-width: 18px;
   border-image-repeat: stretch stretch;
+  margin: 0.5rem;
 
   & img {
     max-width: 100%;

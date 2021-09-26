@@ -2,8 +2,6 @@
   <user-dialog :title="$t(title)" @close="$close(false)" :disableScroll="true">
     <template v-slot:content>
       <div class="flex flex-column">
-        <div class="font-size-20">{{ $t("refill-message") }}</div>
-
         <button-bar
           class="margin-top-2 margin-bottom-2"
           :sections="methods"
@@ -110,19 +108,20 @@
               </div>
             </div>
           </keep-alive>
-
-          <div class="flex">
-            <PurchaseButton
-              :disabled="!canProcceed"
-              type="yellow"
-              :soft="softCost > 0"
-              :price="hardCost || softCost"
-              @click="confirm"
-              id="confirm-refill"
-              >{{ $t("btn-confirm") }}</PurchaseButton
-            >
-          </div>
         </div>
+      </div>
+    </template>
+    <template #footer>
+      <div class="flex">
+        <PurchaseButton
+          :disabled="!canProcceed"
+          type="yellow"
+          :soft="softCost > 0"
+          :price="hardCost || softCost"
+          @click="confirm"
+          id="confirm-refill"
+          >{{ $t("btn-confirm") }}</PurchaseButton
+        >
       </div>
     </template>
   </user-dialog>
@@ -181,6 +180,10 @@ export default {
   },
   mounted() {
     this.fetchInfo();
+
+    if (this.items.length != 0) {
+      this.methodChosen = 1;
+    }
   },
   watch: {
     methodChosen() {

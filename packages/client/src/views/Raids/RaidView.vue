@@ -604,9 +604,12 @@ export default {
         );
 
         if (!alive) {
+          this.$app.getStatusBar().setDelayResourceUpdate(false);
           let reponse = await ShowPrompt(
             "player-raid-killed-title",
-            this.$t("player-raid-killed-message", { boss: this.bossName }),
+            this.$t("player-raid-killed-message", {
+              boss: this.$t(this.bossName)
+            }),
             [
               {
                 type: "yellow",
@@ -621,7 +624,6 @@ export default {
           }
         }
       } catch (error) {
-        console.error(error);
         this._handleAttackRaidError(error);
         this.$app.getStatusBar().setDelayResourceUpdate(false);
       }

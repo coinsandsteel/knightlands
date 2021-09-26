@@ -60,9 +60,6 @@ export default {
   methods: {
     icon(chain) {
       switch (chain) {
-        case Blockchains.Tron:
-          return "icon-trx-dark";
-
         case Blockchains.Ethereum:
           return "icon-eth";
 

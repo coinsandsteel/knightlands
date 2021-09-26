@@ -5,6 +5,7 @@
       :iconMargin="true"
       iconClass="icon-info square big"
       class="pointer"
+      :valueClass="valueClass"
     >
       <slot></slot>
     </IconWithValue>
@@ -19,7 +20,7 @@ import { create } from "vue-modal-dialogs";
 const ShowHint = create(TutorialHint, "title", "texts");
 
 export default {
-  props: ["title", "texts", "component", "flip"],
+  props: ["title", "texts", "component", "flip", "valueClass"],
   components: { IconWithValue },
   methods: {
     async showHint() {
