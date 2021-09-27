@@ -1,35 +1,38 @@
 <template>
   <PaymentStatus :cancel="true" v-on="$listeners" class="width-100">
-    <div class="shop-container">
-      <TopUpShinies
-        v-for="(entry, index) in shinies"
-        :key="entry.iap"
-        :data="entry"
-        :index="index"
-        @purchase="handlePurchase"
-      />
+    <div class="width-100 height-100" v-bar>
+      <div class="width-100">
+        <div class="shop-container">
+          <TopUpShinies
+            v-for="(entry, index) in shinies"
+            :key="entry.iap"
+            :data="entry"
+            :index="index"
+            @purchase="handlePurchase"
+          />
+          <TopUpRaidTickets
+            v-for="(entry, index) in tickets"
+            :key="entry.iap"
+            :data="entry"
+            :index="index"
+            @purchase="handlePurchase"
+          />
+        </div>
+      </div>
     </div>
-
-    <!-- <div class="shop-container margin-top-2">
-      <TopUpShopElement
-        v-for="entry in tickets"
-        :key="entry.iap"
-        :data="entry"
-        @purchase="handlePurchase"
-      />
-    </div> -->
   </PaymentStatus>
 </template>
 
 <script>
 import TopUpShinies from "./TopUpShinies.vue";
+import TopUpRaidTickets from "./TopUpRaidTickets.vue";
 import Meta from "@/top_up_shop";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  components: { TopUpShinies, PaymentStatus },
+  components: { TopUpShinies, PaymentStatus, TopUpRaidTickets },
   data: () => ({
     shinies: Meta.shinies,
     tickets: Meta.raidTickets

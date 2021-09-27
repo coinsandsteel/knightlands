@@ -31,6 +31,7 @@ export default {
       const actions = Scenario[state.step].actions;
       if (actions.length <= state.actionIndex) {
         await Vue.prototype.$game.completeTutorial(state.step);
+        Vue.prototype.$app.logEvent("tutorial", { step: state.step });
         commit("setStep", { step: state.step + 1 });
       }
     },
