@@ -71,6 +71,12 @@ export default {
       );
 
       if (results) {
+        this.$app.logEvent("summon-units", {
+          summonType,
+          iap,
+          count
+        });
+
         this.showSummoning(results);
         this.update();
       }

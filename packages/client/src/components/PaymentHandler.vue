@@ -65,6 +65,7 @@ export default {
     async beforePurchase() {},
     async purchase(signature, price, iap, paymentId, nonce, deadline) {
       try {
+        this.$app.logEvent("purchase-tx", { iap });
         await this.$game.purchaseIAP(
           iap,
           paymentId,
@@ -74,6 +75,7 @@ export default {
           signature
         );
       } catch (exc) {
+        this.$app.logEvent("purchase-failed", { iap });
         console.log("Payment failed with exception", exc);
         this.showPrompt(
           this.$t("prompt-snap-title"),

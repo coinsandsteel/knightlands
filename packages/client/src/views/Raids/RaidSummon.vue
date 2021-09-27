@@ -273,6 +273,10 @@ export default {
       return true;
     },
     async confirmSummon() {
+      this.$app.logEvent("raid-summon", {
+        raid: this.raid,
+        solo: this.isFreeRaid
+      });
       const data = await this.performRequest(
         this.$game.summonRaid(this.raid, this.isFreeRaid, this.options)
       );

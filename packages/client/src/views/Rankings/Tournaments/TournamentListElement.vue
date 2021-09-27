@@ -40,16 +40,17 @@
       </div>
 
       <div class="flex flex-center">
-        <CustomButton type="grey" @click="$emit('ranks')">{{
+        <CustomButton type="grey" @click="$emit('ranks')" minWidth="15rem">{{
           $t("btn-ranks")
         }}</CustomButton>
-        <CustomButton type="green" @click="$emit('rewards')">{{
+        <CustomButton type="green" @click="$emit('rewards')" minWidth="15rem">{{
           $t("btn-rewards")
         }}</CustomButton>
         <CustomButton
           type="yellow"
           @click="$emit('join')"
           v-if="!currentRank"
+          minWidth="15rem"
           >{{ $t("btn-join") }}</CustomButton
         >
       </div>
@@ -71,11 +72,18 @@ export default {
   data: () => ({
     timer: new Timer(true)
   }),
+  watch: {
+    tournament: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.timer.timeLeft =
+          this.tournament.duration -
+          (this.$game.nowSec - this.tournament.startTime);
+      }
+    }
+  },
   mounted() {
-    this.timer.timeLeft =
-      this.tournament.duration -
-      (this.$game.nowSec - this.tournament.startTime);
-
     this.listener = () => {
       this.$emit("finished");
     };

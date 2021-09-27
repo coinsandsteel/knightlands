@@ -239,6 +239,11 @@ export default {
       try {
         this.loot = await this.request;
 
+        this.$app.logEvent("summon-chest", {
+          chest: this.chest,
+          count: this.count
+        });
+
         this.startOpening();
       } catch (exc) {
         console.log(exc);
