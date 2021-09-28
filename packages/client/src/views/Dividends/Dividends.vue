@@ -22,7 +22,7 @@
             <span>
               {{ $t("rp-d-bb") }}
             </span>
-            <IconWithValue iconClass="icon-dkt">
+            <IconWithValue iconClass="icon-dollar">
               <div class="flex flex-center">
                 <span>{{ dktValue }}</span>
               </div>

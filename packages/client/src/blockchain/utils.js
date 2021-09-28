@@ -16,5 +16,19 @@ export function toDecimal(num, decimals) {
 }
 
 export function toBigNumber(num, decimals) {
-  return Math.floor(Math.pow(10, decimals) * num);
+  let str = num.toString();
+  const parts = str.split(".");
+  let base = parts[0].length;
+  if (parts.length == 2) {
+    str = str.replace(".", "");
+
+    if (parts[0] == "0") {
+      str = str.substr(1);
+      const b = str.length;
+      str = str.replace(/^0+/, "");
+      base = str.length - b;
+    }
+  }
+
+  return str.padEnd(decimals + base, "0");
 }

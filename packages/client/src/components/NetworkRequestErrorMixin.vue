@@ -1,7 +1,7 @@
 <script>
 import PromptMixin from "@/components/PromptMixin.vue";
 
-const DEFAULT_TIMEOUT = 350;
+const DEFAULT_TIMEOUT = 1000;
 
 export default {
   mixins: [PromptMixin],
