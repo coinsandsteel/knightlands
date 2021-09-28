@@ -25,7 +25,7 @@ export default class EthereumClient extends BlockchainClient {
   }
 
   get id() {
-    return Blockchains.Ethereum;
+    return this._network.id;
   }
 
   isInited() {
