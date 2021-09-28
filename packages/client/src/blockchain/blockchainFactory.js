@@ -9,9 +9,9 @@ function BlockchainFactory(blockchain) {
       return new TronBlockchainClient();
 
     case Blockchains.Polygon: {
-      const PaymentGateway = require("./artifacts/goerli/PaymentGateway.json");
-      const PresaleCardsGate = require("./artifacts/goerli/PresaleCardsGate.json");
-      const PresaleCards = require("./artifacts/goerli/PresaleCardsTest.json");
+      const PaymentGateway = require("./artifacts/polygon/PaymentGateway.json");
+      const PresaleCardsGate = require("./artifacts/polygon/PresaleCardsGate.json");
+      const PresaleCards = require("./artifacts/polygon/PresaleCards.json");
 
       return new EthereumClient(
         { chainId: 137, id: Blockchains.Polygon },

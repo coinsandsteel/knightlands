@@ -197,7 +197,7 @@ export default {
   height: 100%;
   grid-column: 1;
   grid-row: 1;
-  z-index: 99;
+  z-index: 100;
 
   &.right {
     grid-column: 3;

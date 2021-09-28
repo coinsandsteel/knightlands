@@ -60,7 +60,7 @@ export default {
     canIncrease() {
       return (
         this.$game.character.maxStats[CharacterStats.Stamina] >
-          (this.attacks - 1) * this.staminaCost && this.attacks < 50
+          this.attacks * this.staminaCost && this.attacks < 50
       );
     }
   }
