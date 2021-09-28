@@ -14,7 +14,7 @@ function BlockchainFactory(blockchain) {
       const PresaleCards = require("./artifacts/goerli/PresaleCardsTest.json");
 
       return new EthereumClient(
-        { chainId: 137, id: Blockchains.Ethereum },
+        { chainId: 137, id: Blockchains.Polygon },
         {
           PaymentGateway,
           PresaleCardsGate,
@@ -52,7 +52,7 @@ function BlockchainFactory(blockchain) {
         const TokensDepositGateway = require("./artifacts/goerli/TokensDepositGateway.json");
 
         return new EthereumClient(
-          { chainId: 5, id: Blockchains.Polygon },
+          { chainId: 5, id: Blockchains.Ethereum },
           {
             PaymentGateway,
             Flesh,
