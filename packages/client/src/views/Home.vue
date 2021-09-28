@@ -115,7 +115,7 @@
               </MenuIcon>
 
               <MenuIcon
-                icon="skewed_icon_dividents"
+                icon="icon-account"
                 to="account"
                 :append="true"
                 section="dividends"

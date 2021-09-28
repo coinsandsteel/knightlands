@@ -8,12 +8,18 @@ function BlockchainFactory(blockchain) {
     case Blockchains.Tron:
       return new TronBlockchainClient();
 
-    case Blockchains.Polygon:
+    case Blockchains.Polygon: {
+      const PaymentGateway = require("./artifacts/goerli/PaymentGateway.json");
+      const PresaleCardsGate = require("./artifacts/goerli/PresaleCardsGate.json");
+      const PresaleCards = require("./artifacts/goerli/PresaleCardsTest.json");
+
       return new EthereumClient(
+        { chainId: 137 },
         {
-          chainId: 0x89
+          PaymentGateway,
+          PresaleCardsGate,
+          PresaleCards
         },
-        {},
         {
           chainId: "0x89",
           chainName: "Polygon",
@@ -26,10 +32,18 @@ function BlockchainFactory(blockchain) {
           blockExplorerUrls: ["https://polygonscan.com"]
         }
       );
+    }
 
     case Blockchains.Ethereum:
       if (process.env.NODE_ENV == "production") {
-        return new EthereumClient({ chainId: "0x1" }, {});
+        const PaymentGateway = require("./artifacts/ethereum/PaymentGateway.json");
+
+        return new EthereumClient(
+          { chainId: 1 },
+          {
+            PaymentGateway
+          }
+        );
       } else {
         const PaymentGateway = require("./artifacts/goerli/PaymentGateway.json");
         const Flesh = require("./artifacts/goerli/Flesh.json");

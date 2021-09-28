@@ -17,13 +17,10 @@
 import AvatarsMeta from "@/avatars";
 
 export default {
-  props: ["id", "disabled"],
+  props: ["id", "disabled", "selected"],
   computed: {
     icon() {
       return `/images/avatars/${AvatarsMeta.avatars[this.id].icon}.jpg`;
-    },
-    selected() {
-      return this.id == this.$game.character.avatar;
     }
   },
   methods: {

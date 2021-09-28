@@ -80,37 +80,44 @@ export default class EthereumClient extends BlockchainClient {
       provider
     );
 
-    this._tokens = {
-      [currency_type.Dkt]: new ethers.Contract(
-        this._artifacts.Flesh.address,
-        this._artifacts.Flesh.abi,
+    if (this._artifacts.Flesh) {
+      this._tokens = {
+        [currency_type.Dkt]: new ethers.Contract(
+          this._artifacts.Flesh.address,
+          this._artifacts.Flesh.abi,
+          provider
+        )
+      };
+    }
+
+    if (this._artifacts.TokensDepositGateway) {
+      this._tokenGateway = new ethers.Contract(
+        this._artifacts.TokensDepositGateway.address,
+        this._artifacts.TokensDepositGateway.abi,
         provider
-      )
-    };
+      );
+    }
 
-    this._tokenGateway = new ethers.Contract(
-      this._artifacts.TokensDepositGateway.address,
-      this._artifacts.TokensDepositGateway.abi,
-      provider
-    );
+    if (this._artifacts.PresaleCardsGate) {
+      this._presaleCardsGate = new ethers.Contract(
+        this._artifacts.PresaleCardsGate.address,
+        this._artifacts.PresaleCardsGate.abi,
+        provider
+      );
+    }
 
-    this._presaleCardsGate = new ethers.Contract(
-      this._artifacts.PresaleCardsGate.address,
-      this._artifacts.PresaleCardsGate.abi,
-      provider
-    );
-
-    this._presaleCards = new ethers.Contract(
-      this._artifacts.PresaleCards.address,
-      this._artifacts.PresaleCards.abi,
-      provider
-    );
+    if (this._artifacts.PresaleCards) {
+      this._presaleCards = new ethers.Contract(
+        this._artifacts.PresaleCards.address,
+        this._artifacts.PresaleCards.abi,
+        provider
+      );
+    }
 
     this._inited = true;
   }
 
   async purchaseIAP(iap, paymentId, price, nonce, deadline, signature) {
-    console.log("price", price);
     return await this._paymentContract
       .connect(this._provider.getSigner())
       .purchase(iap, paymentId, price, nonce, deadline, signature, {

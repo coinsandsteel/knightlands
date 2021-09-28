@@ -34,6 +34,7 @@
               v-for="avatarId in data.ids"
               :key="avatarId"
               :id="avatarId"
+              :selected="avatarId == selectedAvatar"
               :disabled="!canUse(data)"
               @click="selectAvatar(data.level, avatarId)"
             ></AvatarEntry>
