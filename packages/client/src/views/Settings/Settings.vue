@@ -44,6 +44,8 @@
       ></CopyButton>
     </div>
 
+    <Locale/>
+
     <a href="http://www.akashics.moe" class="akashi" target="_blank">{{
       $t("akashi")
     }}</a>
@@ -55,12 +57,13 @@ import AppSection from "@/AppSection.vue";
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import CopyButton from "@/components/CopyButton.vue";
+import Locale from "@/components/Locale.vue";
 
 let switchInProgress = false;
 
 export default {
   mixins: [AppSection],
-  components: { CustomButton, CopyButton },
+  components: { CustomButton, CopyButton, Locale },
   created() {
     this.title = "w-settings";
   },
