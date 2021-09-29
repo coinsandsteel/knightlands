@@ -13,9 +13,11 @@
 </template>
 
 <script>
+import localisationSetup from "../strings/setup";
+
 export default {
   data: () => ({
-    locales: ['en', 'es', 'ru', 'vi']
+    locales: Object.keys(localisationSetup.locales)
   }),
   methods: {
     setLocale(locale){
