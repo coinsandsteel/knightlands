@@ -223,12 +223,6 @@ export default [
       },
       {
         pointer: {
-          target: "#section1"
-        },
-        return: 0
-      },
-      {
-        pointer: {
           target: ".pointer.att-plus"
         },
         return: 0

@@ -521,17 +521,18 @@ class Game {
     let signedIn = data.newState == "authenticated";
 
     if (signedIn && !this._vm.authenticated) {
-      await this.updateUserData();
-
-      this._vm.authenticated = true;
-      if (this._signInResolve) {
-        this._signInResolve();
-      }
-      this._vm.$nextTick(() => {
-        this._vm.$emit(this.SignUp);
-      });
-      this._syncTime();
-    } else if (!signedIn && this._vm.authenticated) {
+      try {
+        await this.updateUserData();
+        this._vm.authenticated = true;
+        if (this._signInResolve) {
+          this._signInResolve();
+        }
+        this._vm.$nextTick(() => {
+          this._vm.$emit(this.SignUp);
+        });
+        this._syncTime();
+      } catch (ex) {}
+    } else if (!signedIn) {
       this._vm.authenticated = false;
       this._vm.$nextTick(() => {
         this._vm.$emit(this.SignedOut);
@@ -561,7 +562,6 @@ class Game {
         this.logout();
         break;
     }
-
     this._vm.$emit(this.Disconnected);
   }
 
@@ -942,68 +942,60 @@ class Game {
   }
 
   async updateUserData() {
-    try {
-      let info = await this._request(Operations.GetUserInfo);
-      this._character.assignData(info.character);
-      this._inventory.load(info.inventory);
+    let info = await this._request(Operations.GetUserInfo);
+    this._character.assignData(info.character);
+    this._inventory.load(info.inventory);
 
-      if (this._vm.loaded) {
-        this._mergeData(info);
-      } else {
-        if (info.questsProgress) {
-          this._vm.$set(this._vm, "questsProgress", info.questsProgress);
-        }
-
-        if (info.classInited) {
-          this._vm.classInited = info.classInited;
-        }
-
-        this._vm._id = info._id;
-        this._vm.account = info.address;
-        this._vm.beast = info.beast;
-        this._vm.freeAttempts = info.tower.freeAttemps;
-        this._vm.towerPurchased = info.tower.purchased;
-        this._vm.trials = info.trials;
-        this._vm.dailyQuests = info.dailyQuests;
-        this._vm.goldMines = info.goldMines;
-        this._vm.tutorial = info.tutorial;
-        this._vm.dividends = info.dividends;
-        this._vm.dailyShop = info.dailyShop;
-        this._vm.purchasedIaps = info.purchasedIaps;
-        this._vm.depositorId = info.depositorId;
-        this._vm.raidPoints = info.raidPoints;
-        this._vm.accountType = info.accountType;
-        this._vm.soloRaidAttempts = info.sRaidAttempts;
-        this._vm.flags = info.flags;
-
-        if (info.chests) {
-          this.mergeObjects(this._vm, this._vm.chests, info.chests);
-        }
-
-        if (info.subscriptions) {
-          this.mergeObjects(
-            this._vm,
-            this._vm.subscriptions,
-            info.subscriptions
-          );
-        }
-
-        if (!this._vm.loaded) {
-          this._checkClassChoice();
-        }
-
-        this._trialCardsResolver = new TrialCardsResolver(
-          this._vm.trials.cards.modifiers,
-          TrialsMeta.cardModifiers
-        );
-
-        await this.army.load();
+    if (this._vm.loaded) {
+      this._mergeData(info);
+    } else {
+      if (info.questsProgress) {
+        this._vm.$set(this._vm, "questsProgress", info.questsProgress);
       }
 
-      this._vm.loaded = true;
-    } catch (exc) {
-      console.error("updateUserData", exc);
+      if (info.classInited) {
+        this._vm.classInited = info.classInited;
+      }
+
+      this._vm._id = info._id;
+      this._vm.account = info.address;
+      this._vm.beast = info.beast;
+      this._vm.freeAttempts = info.tower.freeAttemps;
+      this._vm.towerPurchased = info.tower.purchased;
+      this._vm.trials = info.trials;
+      this._vm.dailyQuests = info.dailyQuests;
+      this._vm.goldMines = info.goldMines;
+      this._vm.tutorial = info.tutorial;
+      this._vm.dividends = info.dividends;
+      this._vm.dailyShop = info.dailyShop;
+      this._vm.purchasedIaps = info.purchasedIaps;
+      this._vm.depositorId = info.depositorId;
+      this._vm.raidPoints = info.raidPoints;
+      this._vm.accountType = info.accountType;
+      this._vm.soloRaidAttempts = info.sRaidAttempts;
+      this._vm.flags = info.flags;
+
+      if (info.chests) {
+        this.mergeObjects(this._vm, this._vm.chests, info.chests);
+      }
+
+      if (info.subscriptions) {
+        this.mergeObjects(this._vm, this._vm.subscriptions, info.subscriptions);
+      }
+
+      if (!this._vm.loaded) {
+        this._checkClassChoice();
+      }
+
+      this._trialCardsResolver = new TrialCardsResolver(
+        this._vm.trials.cards.modifiers,
+        TrialsMeta.cardModifiers
+      );
+
+      await this.army.load();
     }
+
+    this._vm.loaded = true;
   }
 
   getRequiredExperience(level) {

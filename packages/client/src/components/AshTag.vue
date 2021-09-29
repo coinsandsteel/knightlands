@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { toDecimal } from "@/blockchain/utils";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 
@@ -45,10 +44,7 @@ export default {
         this.nextUpdate = this.$game.nowSec + THROTTLE;
       }
 
-      this.convertedPrice = toDecimal(
-        ((this.price * this.rate) / 100) * Math.pow(10, 6),
-        6
-      );
+      this.convertedPrice = this.price / this.rate / 100;
 
       this.$emit("input", this.convertedPrice);
     }

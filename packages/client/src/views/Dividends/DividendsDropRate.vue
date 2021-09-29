@@ -28,7 +28,7 @@
       :disabled="cantUpgradeRate"
     >
       {{ $t("btn-upgrade") }}
-      <IconWithValue iconClass="icon-dkt2">{{ ratePrice }}</IconWithValue>
+      <AshTag :price="ratePrice" v-model="price" ref="tag"></AshTag>
     </CustomButton>
   </div>
 </template>
@@ -36,10 +36,13 @@
 <script>
 import DividendsMeta from "@/dividends";
 import CustomButton from "@/components/Button.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
+import AshTag from "@/components/AshTag.vue";
 
 export default {
-  components: { CustomButton, IconWithValue },
+  components: { CustomButton, AshTag },
+  data: () => ({
+    price: 0
+  }),
   computed: {
     isMax() {
       return this.level == DividendsMeta.dropRate.length;
@@ -66,10 +69,10 @@ export default {
       return Math.floor(this.meta.rate * 10000) / 100;
     },
     ratePrice() {
-      return this.meta.price;
+      return this.meta.price * 100;
     },
     cantUpgradeRate() {
-      return this.ratePrice > this.$game.dkt;
+      return this.price > this.$game.dkt;
     }
   }
 };
