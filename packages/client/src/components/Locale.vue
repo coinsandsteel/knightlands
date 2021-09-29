@@ -24,6 +24,7 @@ export default {
   methods: {
     setLocale(locale) {
       this.$i18n.set(locale);
+      localStorage.setItem('locale', locale);
     }
   },
   computed: {
