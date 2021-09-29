@@ -69,12 +69,12 @@ export default {
     showHintItems: false,
     showDetails: false,
     resultItems: [],
-    noEquipped: true
+    noEquipped: false
   }),
   computed: {
     computedItems() {
       const items = this.items || this.$game.inventory.items;
-      if (this.noEquipped) {
+      if (!this.noEquipped) {
         return items.filter(x => !x.equipped);
       }
 

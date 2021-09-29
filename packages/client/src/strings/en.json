@@ -1759,7 +1759,7 @@
     "no-wa-desc": "It looks like there is no wallet required is installed.",
     "ch-nick": "Choose your name",
     "sub-nick": "Submit name",
-    "t-equipped": "skip equipped",
+    "t-equipped": "show equipped",
     "nick-max": "3-16 symbols. Only letters, numbers, _, -.",
     "nick-busy": "Name is occupied",
     "pur-tickets": "Buy Tickets",
