@@ -1,5 +1,11 @@
 <template>
-  <CustomButton ref="btn" type="grey" :caption="btnCaption" :data-clipboard-text="data">{{$t(btnCaption)}}</CustomButton>
+  <CustomButton
+    ref="btn"
+    type="grey"
+    :caption="btnCaption"
+    :data-clipboard-text="data"
+    >{{ $t(btnCaption) }}</CustomButton
+  >
 </template>
 
 <script>

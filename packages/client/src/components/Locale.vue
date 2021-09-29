@@ -1,13 +1,15 @@
 <template>
-  <div class="locales-list flex flex-space-evenly flex-items-center width-50 margin-top-5">
+  <div
+    class="locales-list flex flex-space-evenly flex-items-center width-50 margin-top-5"
+  >
     <a
-      class="locale-item"
+      class="locale-item pointer"
       :class="{ active: code === activeLocale }"
       v-for="code in locales"
       :key="code"
       @click="setLocale(code)"
     >
-      <img :src="`/images/flags/${code}.svg`"/>
+      <img :src="`/images/flags/${code}.svg`" />
     </a>
   </div>
 </template>
@@ -20,12 +22,12 @@ export default {
     locales: Object.keys(localisationSetup.locales)
   }),
   methods: {
-    setLocale(locale){
+    setLocale(locale) {
       this.$i18n.set(locale);
     }
   },
   computed: {
-    activeLocale(){
+    activeLocale() {
       return this.$i18n.locale();
     }
   }

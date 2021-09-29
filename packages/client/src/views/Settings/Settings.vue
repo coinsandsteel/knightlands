@@ -44,7 +44,7 @@
       ></CopyButton>
     </div>
 
-    <Locale/>
+    <Locale />
 
     <a href="http://www.akashics.moe" class="akashi" target="_blank">{{
       $t("akashi")
