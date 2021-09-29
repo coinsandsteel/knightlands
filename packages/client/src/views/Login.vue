@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container flex flex-center">
+  <div class="login-container flex flex-center margin-top-5">
     <div class="screen-background"></div>
 
     <MusicButton class="sounds-btn"></MusicButton>
@@ -33,6 +33,8 @@
         src="../assets/ui/btn_google_light_normal_ios.svg"
       />
     </div>
+
+    <Locale/>
   </div>
 </template>
 
@@ -41,9 +43,10 @@ import AppSection from "@/AppSection.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import MusicButton from "@/components/MusicButton.vue";
+import Locale from "@/components/Locale.vue";
 
 export default {
-  components: { PromisedButton, MusicButton },
+  components: { PromisedButton, MusicButton, Locale },
   mixins: [AppSection, NetworkRequestErrorMixin],
   data: () => ({
     request: null,
