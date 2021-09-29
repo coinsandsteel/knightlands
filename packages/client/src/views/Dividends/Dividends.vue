@@ -307,10 +307,13 @@ export default {
       return Math.floor(this.totalShares * PRECISION) / PRECISION;
     },
     totalPointsUI() {
+      if (!this.totalPoints) {
+        return 0;
+      }
       return Math.floor(this.totalPoints * PRECISION) / PRECISION;
     },
     expectedDkt() {
-      if (this.totalShares == 0) {
+      if (!this.totalShares) {
         return 0;
       }
       return (
@@ -359,7 +362,7 @@ export default {
       this.fleshRate = rate;
     },
     updateShares(data, isFree) {
-      if (isFree) {
+      if (isFree || (isFree === undefined && this.isFreeAccount)) {
         this.totalShares = data.totalFreeShares;
         this.totalPoints = data.totalFreePoints;
       } else {

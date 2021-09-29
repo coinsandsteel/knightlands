@@ -14,7 +14,7 @@
         <AttackButton
           type="red"
           @click="$emit('attack', attacks)"
-          :disabled="disabled"
+          :disabled="disabled || notEnoughStamina"
         >
           <div class="flex flex-center flex-no-wrap font-size-18">
             <span class="margin-right-half">{{
@@ -48,9 +48,17 @@ export default {
     },
     currentStamina() {
       return this.$game.character.getTimer(CharacterStats.Stamina).value;
+    },
+    notEnoughStamina() {
+      return this.currentStamina < this.attacks * this.staminaCost;
     }
   },
   methods: {
+    checkStamina() {
+      if (this.notEnoughStamina) {
+        this.attacks = Math.floor(this.currentStamina / this.staminaCost);
+      }
+    },
     setMax() {
       this.attacks = Math.min(
         50,

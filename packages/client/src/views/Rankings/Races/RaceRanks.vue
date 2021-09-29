@@ -62,6 +62,7 @@
               :id="item.name"
               :pId="item.id"
               :score="item.score"
+              :avatar="item.avatar"
               :height="itemSize"
               :you="isYou(item.id)"
               :target="currentRank.target"

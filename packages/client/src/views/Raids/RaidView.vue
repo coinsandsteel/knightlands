@@ -77,6 +77,7 @@
                 ></ProgressBar>
             </div>-->
             <RaidAttackPanel
+              ref="attackPanel"
               class="attack"
               @attack="handleAttack"
               :disabled="attackInProgress"
@@ -275,7 +276,6 @@ import ClaimedReward from "./ClaimedReward.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat";
 import Errors from "@/../../knightlands-shared/errors";
 import Prompt from "@/components/Prompt.vue";
-import PromisedButton from "@/components/PromisedButton.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 import RaidArmy from "./Army/RaidArmy.vue";
 import RaidOptions from "./RaidOptions.vue";
@@ -694,6 +694,7 @@ export default {
       } finally {
         this.$app.getStatusBar().setDelayResourceUpdate(false);
         this.attackInProgress = false;
+        this.$refs.attackPanel.checkStamina();
         this.checkIfRaidWon();
       }
     },

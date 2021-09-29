@@ -55,7 +55,6 @@
             <div class="flex flex-center margin-top-1">
               <CustomButton
                 type="yellow"
-                class="width-30"
                 @click="promote"
                 :disabled="!canPromote()"
               >

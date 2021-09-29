@@ -10,7 +10,7 @@
           >{{ dkt }}</IconWithValue
         > -->
 
-        <div if="tokenType == '3'" class="font-size-20">
+        <div v-if="tokenType == '3'" class="font-size-20">
           <div
             class="flex flex-center line"
             v-html="$t('sub-7', { c: 10 })"

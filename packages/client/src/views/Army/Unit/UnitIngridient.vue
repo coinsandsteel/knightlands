@@ -9,7 +9,7 @@
         class="bg absolute-stretch"
         :style="unitImage"
       ></div>
-      <div v-else class="bg absolute-stretch troops_any_unit"></div>
+      <div v-else class="bg absolute-stretch unit-bg-any"></div>
       <div
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-ingr-content"
       >
@@ -122,7 +122,7 @@ export default {
 }
 
 .unit-bg-any {
-  // background-image: url("../../../assets/ui/troops_any_unit.png");
+  background-image: url("../../../assets/ui/troops_any_unit.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
