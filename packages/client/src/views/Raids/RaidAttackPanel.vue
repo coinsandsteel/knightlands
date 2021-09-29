@@ -45,22 +45,22 @@ export default {
   computed: {
     attackDamage() {
       return Math.floor(this.attacks * 100 * (1 + 0.01 * (this.attacks - 1)));
+    },
+    currentStamina() {
+      return this.$game.character.getTimer(CharacterStats.Stamina).value;
     }
   },
   methods: {
     setMax() {
       this.attacks = Math.min(
         50,
-        Math.floor(
-          this.$game.character.maxStats[CharacterStats.Stamina] /
-            this.staminaCost
-        )
+        Math.floor(this.currentStamina / this.staminaCost)
       );
     },
     canIncrease() {
       return (
-        this.$game.character.maxStats[CharacterStats.Stamina] >
-          this.attacks * this.staminaCost && this.attacks < 50
+        this.currentStamina > this.attacks * this.staminaCost &&
+        this.attacks < 50
       );
     }
   }

@@ -23,7 +23,7 @@
         :disabled="cantUpgradeRate"
       >
         {{ $t("btn-upgrade") }}
-        <IconWithValue iconClass="icon-dkt2">{{ ratePrice }}</IconWithValue>
+        <AshTag :price="ratePrice" v-model="price"></AshTag>
       </CustomButton>
 
       <CustomButton
@@ -42,11 +42,13 @@
 import DividendsMeta from "@/dividends";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
+import AshTag from "@/components/AshTag.vue";
 
 export default {
-  components: { IconWithValue, CustomButton },
+  components: { IconWithValue, CustomButton, AshTag },
   data: () => ({
-    mined: 0
+    mined: 0,
+    price: 0
   }),
   mounted() {
     this.interval = setInterval(this.updateMinedAmount.bind(this), 1000);
@@ -86,17 +88,15 @@ export default {
     },
     ratePrice() {
       return (
-        Math.floor(
-          Math.pow(
-            DividendsMeta.mining.price.base *
-              (this.$game.dividends.miningLevel + 1),
-            DividendsMeta.mining.price.factor
-          ) * 10000
-        ) / 10000
+        Math.pow(
+          DividendsMeta.mining.price.base *
+            (this.$game.dividends.miningLevel + 1),
+          DividendsMeta.mining.price.factor
+        ) * 100
       );
     },
     cantUpgradeRate() {
-      return this.ratePrice > this.$game.dkt;
+      return this.price > this.$game.dkt;
     }
   },
   methods: {

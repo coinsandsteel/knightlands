@@ -35,15 +35,17 @@
                       }}</span>
                     </template>
                   </div>
-                  <span
+                  <!-- <span
                     class="font-size-18 rarity-legendary"
                     v-if="lvlWillReduce"
                   >
                     {{ $t("enchant-f", { lvl: failLvl }) }}
-                  </span>
-                  <span class="font-size-18 rarity-legendary" v-else>{{
-                    $t("enchant-s")
-                  }}</span>
+                  </span> -->
+                  <span
+                    class="font-size-18 rarity-legendary"
+                    v-if="canEnchant"
+                    >{{ $t("enchant-s") }}</span
+                  >
                 </div>
               </div>
             </template>
@@ -84,7 +86,7 @@
             class="flex flex-center font-size-22 color-panel-2"
             v-if="!canEnchant"
           >
-            <span class="rarity-mythical margin-right-half">{{
+            <span class="rarity-legendary font-outline margin-right-half">{{
               $t("enchanting-maxed-out")
             }}</span>
           </span>
@@ -128,7 +130,7 @@
               </transition>
             </template>
 
-            <div class="flex flex-center width-100" v-if="!paymentInProcess">
+            <div class="flex flex-center width-100" v-if="stepData.hard == 0">
               <PurchaseButton
                 type="yellow"
                 :soft="true"
@@ -139,20 +141,17 @@
               </PurchaseButton>
             </div>
 
-            <div
-              class="margin-top-3 flex flex-column margin-bottom-5 color-panel-3"
-              v-if="stepData.successRate < 100 && stepData.hard > 0"
-            >
-              <span
+            <div class="margin-top-3 flex flex-column margin-bottom-5" v-else>
+              <!-- <span
                 class="margin-top-1 margin-bottom-1 success-font font-outline font-size-20"
                 >{{ $t("enchant-success-rate", { rate: 100 }) }}</span
-              >
+              > -->
 
               <div class="flex flex-center margin-bottom-1">
                 <span class="font-size-20">{{ $t("du-balance") }}</span>
 
                 <IconWithValue class="balance" iconClass="icon-dkt2">{{
-                  ashBalance
+                  fleshBalance
                 }}</IconWithValue>
               </div>
 
@@ -297,7 +296,7 @@ export default {
         this.currentEnchantingLevel + 1
       );
     },
-    ashBalance() {
+    fleshBalance() {
       return this.$game.inventory.getCurrency(CurrencyType.Dkt, 6);
     }
   },

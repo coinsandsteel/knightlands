@@ -3,7 +3,7 @@
     <div
       class="flex flex-center padding-1 padding-left-3 padding-right-3 panel-input height-100"
     >
-      <div class="item-icon" :class="trialType"></div>
+      <div class="item-icon" :class="ticketIcon"></div>
       <span>{{ totalTickets }}</span>
       <span
         class="item-icon button_plus_footer margin-left-half pointer"
@@ -48,11 +48,11 @@ export default {
     }
   },
   computed: {
+    ticketIcon() {
+      return this.$game.itemsDB.getIcon(this.meta.ticketItem);
+    },
     totalTickets() {
       return this.nonItemAttempts + this.itemTickets;
-    },
-    ticketItemName() {
-      return this.$t(`trial-attempt-${this.trialType}`);
     },
     nonItemAttempts() {
       if (!this.state) {
