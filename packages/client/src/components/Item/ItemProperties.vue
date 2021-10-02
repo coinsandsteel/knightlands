@@ -37,6 +37,7 @@ import ItemProperties from "@/../../knightlands-shared/item_properties";
 import ItemGetterMixin from "./ItemGetterMixin.vue";
 import AccessoryPropertiesViewMixin from "./AccessoryPropertiesViewMixin.vue";
 import RaidsMeta from "@/raids_meta";
+import CharacterStat from "@/../../knightlands-shared/character_stat";
 
 export default {
   mixins: [ItemGetterMixin, AccessoryPropertiesViewMixin],
@@ -64,6 +65,11 @@ export default {
         params.suffix = "%";
       } else {
         params.suffix = "";
+      }
+
+      if (action.stat == CharacterStat.ExtraExp) {
+        params.suffix = "%";
+        params.value /= 10;
       }
 
       if (params.stat) {

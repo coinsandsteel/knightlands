@@ -16,10 +16,7 @@
       </div>
     </div>
 
-    <div
-      class="full-flex width-100 dummy-height"
-      v-if="records.length > 0 && currentRank"
-    >
+    <div class="full-flex width-100 dummy-height" v-if="records.length > 0">
       <RecycleScroller
         ref="scroller"
         class="width-100 height-100"
@@ -39,7 +36,7 @@
           :score="item.score"
           :height="itemSize"
           :you="isYou(item.id)"
-          :target="currentRank.target"
+          :target="currentRank && currentRank.target"
         />
       </RecycleScroller>
     </div>

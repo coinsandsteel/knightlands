@@ -1,12 +1,9 @@
 <script>
 import LeaderboardView from "../Components/LeaderboardView.vue";
-import AppSection from "@/AppSection.vue";
 
 export default {
-  mixins: [AppSection],
   extends: LeaderboardView,
   mounted() {
-    this.title = this.$t(`l-type-${this.id}`);
     this.$options.useRouterBack = true;
   },
   methods: {

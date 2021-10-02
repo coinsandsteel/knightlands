@@ -343,12 +343,15 @@ export default class Army {
     for (const key in newReserve) {
       const newUnit = newReserve[key];
       if (!this._vm.reserve[key]) {
-        this._vm.reserveUnits.push(newUnit);
+        newUnit.index = this._vm.reserveUnits.push(newUnit) - 1;
         added = true;
+        this._vm.$set(this._vm.reserve, key, newUnit);
+      } else {
+        this._vm.$set(this._vm.reserve[key], "count", newUnit.count);
       }
-      this._vm.$set(this._vm.reserve, key, newUnit);
     }
     this._sort(this._vm.reserveUnits);
+
     this._unitsIndex.update(null, this._vm.reserve);
   }
 

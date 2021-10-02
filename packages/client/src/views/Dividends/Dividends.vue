@@ -363,11 +363,11 @@ export default {
     },
     updateShares(data, isFree) {
       if (isFree || (isFree === undefined && this.isFreeAccount)) {
-        this.totalShares = data.totalFreeShares;
-        this.totalPoints = data.totalFreePoints;
+        this.totalShares = data.totalFreeShares || this.totalShares;
+        this.totalPoints = data.totalFreePoints || this.totalPoints;
       } else {
-        this.totalShares = data.totalShares;
-        this.totalPoints = data.totalPoints;
+        this.totalShares = data.totalShares || this.totalShares;
+        this.totalPoints = data.totalPoints || this.totalPoints;
       }
     },
     async upgradeAccount() {
