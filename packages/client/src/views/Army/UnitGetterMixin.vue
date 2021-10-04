@@ -158,7 +158,7 @@ export default {
 
       if (ability.stars) {
         // create stars html
-        localisationParams.stars = `<div class="flex flex-no-wrap flex-item-center"><div class="star active small"></div><span class="digit-font">${ability.stars}</span></div>`;
+        localisationParams.stars = `<div class="flex flex-no-wrap flex-item-center"><div class="star active small"></div><span class="digit-font">${ability.stars}+</span></div>`;
       }
 
       if (ability.raid) {
