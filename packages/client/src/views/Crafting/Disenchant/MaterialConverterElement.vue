@@ -12,7 +12,7 @@
           @hint="onHint"
         ></Loot>
         <span class="font-size-18 absolute-bottom"
-          >{{ totalCount }}/{{ requiredCount }}</span
+          >{{ requiredCount }}&nbsp;/&nbsp;{{ totalCount }}</span
         >
       </div>
 
@@ -69,10 +69,12 @@ export default {
     setMax() {
       this.resultCount = Math.floor(this.totalCount / this.conversionRate);
       this.requiredCount += this.resultCount * this.conversionRate;
+      this.emitChanged();
     },
     reset() {
       this.requiredCount = 0;
       this.resultCount = 0;
+      this.emitChanged();
     },
     canAdd() {
       return this.requiredCount + this.conversionRate <= this.totalCount;
