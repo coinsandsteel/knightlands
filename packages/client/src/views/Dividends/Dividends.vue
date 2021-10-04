@@ -373,10 +373,9 @@ export default {
     async upgradeAccount() {
       // Check any free raids started
       let raidsList = await this.performRequest(this.$game.fetchCurrentRaids());
-      let activeRaidsCount = raidsList.filter(raid => !raid.finished).length;
 
       // Forbid account type changing due to any unfinished raids
-      if (activeRaidsCount) {
+      if (raidsList.length > 0) {
         await this.showPrompt(
           this.$t("acc-upgrade-err-t"),
           this.$t("acc-upgrade-err-m"),
