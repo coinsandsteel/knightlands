@@ -46,8 +46,8 @@ import { create } from "vue-modal-dialogs";
 const ShowDialog = create(ItemsReceived, "items");
 
 export default {
-  mixins: [ActivityMixin, NetworkRequestErrorMixin],
-  components: { DailyShopElement, PurchaseButton, PromptMixin },
+  mixins: [ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
+  components: { DailyShopElement, PurchaseButton },
   data: () => ({
     timer: new Timer(true)
   }),
