@@ -11,6 +11,8 @@
             :quantity="item.quantity"
             :price="item.price"
             :locked="!canPurchase(item.price)"
+            :max="item.max"
+            :count="getCount(item.item)"
             @purchase="handlePurchase"
           />
         </div>
@@ -52,6 +54,9 @@ export default {
     }
   },
   methods: {
+    getCount(templateId) {
+      return this.$game.raceShop.dailyPurchases[templateId] || 0;
+    },
     canPurchase(price) {
       return price <= this.chips;
     },
@@ -83,7 +88,7 @@ export default {
 <style lang="less" scoped>
 .race-shop {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   justify-items: center;
 }
 </style>

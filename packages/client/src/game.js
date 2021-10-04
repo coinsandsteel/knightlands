@@ -76,7 +76,8 @@ class Game {
         raidPoints: {},
         accountType: 0,
         soloRaidAttempts: {},
-        flags: {}
+        flags: {},
+        raceShop: {}
       })
     });
 
@@ -253,6 +254,10 @@ class Game {
 
   hasFlag(flag) {
     return !!this._vm.flags[flag];
+  }
+
+  get raceShop() {
+    return this._vm.raceShop;
   }
 
   get itemsDB() {
@@ -868,6 +873,10 @@ class Game {
       );
     }
 
+    if (changes.raceShop) {
+      this.mergeObjects(this._vm, this._vm.raceShop, changes.raceShop);
+    }
+
     if (changes.flags) {
       this.mergeObjects(this._vm, this._vm.flags, changes.flags);
     }
@@ -974,6 +983,7 @@ class Game {
       this._vm.accountType = info.accountType;
       this._vm.soloRaidAttempts = info.sRaidAttempts;
       this._vm.flags = info.flags;
+      this._vm.raceShop = info.raceShop;
 
       if (info.chests) {
         this.mergeObjects(this._vm, this._vm.chests, info.chests);

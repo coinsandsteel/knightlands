@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-column flex-center margin-1 padding-1">
     <Loot :item="item" :quantity="quantity" @hint="handleHint" />
+    <span class="padding-1 font-size-18">
+      {{ $t("d-pur-daily", { left, max }) }}
+    </span>
     <CustomButton
       type="grey"
       @click="$emit('purchase', item, price)"
@@ -20,6 +23,11 @@ import HintHandler from "@/components/HintHandler.vue";
 export default {
   mixins: [HintHandler],
   components: { Loot, IconWithValue, CustomButton },
-  props: ["item", "quantity", "price", "locked"]
+  props: ["item", "quantity", "price", "locked", "max", "count"],
+  computed: {
+    left() {
+      return this.max - this.count;
+    }
+  }
 };
 </script>
