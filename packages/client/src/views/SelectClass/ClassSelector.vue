@@ -16,6 +16,7 @@
               valueClass="font-size-15 blue-title"
               :flip="true"
               iconClass="icon-timer small"
+              :iconMargin="true"
               >{{ energyRegen }}</IconWithValue
             >
           </IconWithValue>
@@ -24,6 +25,7 @@
               valueClass="font-size-15 blue-title"
               :flip="true"
               iconClass="icon-timer small"
+              :iconMargin="true"
               >{{ staminaRegen }}</IconWithValue
             >
           </IconWithValue>
@@ -67,7 +69,7 @@ export default {
     },
     convertToTime(seconds) {
       const minutes = Math.floor(seconds / 60);
-      const secondsLeft = seconds - minutes * 60;
+      const secondsLeft = Math.round(seconds - minutes * 60);
 
       const minutesString = `${minutes}`.padStart(2, "0");
       const secondsString = `${secondsLeft}`.padStart(2, "0");
