@@ -134,7 +134,7 @@
       <div class="margin-top-1 flex flex-center">
         <CustomButton
           minWidth="20rem"
-          v-if="!isBossUnlocked && !canProgress"
+          v-if="!isBossUnlocked && !canProgress && !isLastZone"
           @click="goToNextMissionOrQuest"
         >
           {{ $t("clear-quests") }}
@@ -142,10 +142,18 @@
         <CustomButton
           type="yellow"
           minWidth="20rem"
-          v-else-if="!isBossUnlocked && canProgress"
+          v-else-if="!isBossUnlocked && canProgress && !isLastZone"
           @click="goToNextMissionOrQuest"
         >
           {{ $t("btn-next-quest") }}
+        </CustomButton>
+
+        <CustomButton
+          minWidth="20rem"
+          v-else-if="!isBossUnlocked && canProgress && isLastZone"
+          @click="goToQuests"
+        >
+          {{ $t("btn-back-to-quests") }}
         </CustomButton>
 
         <div v-else-if="progress.current >= progress.max">
@@ -407,6 +415,11 @@ export default {
     },
     nextDifficulty() {
       this.$emit("nextDifficulty");
+    },
+    goToQuests() {
+      this.$router.replace({
+        name: "quests"
+      });
     },
     goToNextMissionOrQuest() {
       if (this.canProgress) {
