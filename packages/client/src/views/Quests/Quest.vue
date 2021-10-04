@@ -25,7 +25,7 @@
     </div>
 
     <keep-alive>
-      <div class="height-100" v-if="zone" v-bar>
+      <div class="height-100" v-if="zone && !!currentZone && !!currentZone.quests" v-bar>
         <div class="height-100">
           <keep-alive>
             <quest-mission
@@ -80,7 +80,7 @@
 
     <portal
       to="footer"
-      v-if="isActive && zone !== undefined && zones.length > 0"
+      v-if="isActive && zone !== undefined && zone <= getLastZoneNum() && zones.length > 0"
       :slim="true"
     >
       <CustomButton type="yellow" @click="openLuckyDrops">{{
@@ -131,6 +131,17 @@ export default {
       allFinished: false
     };
   },
+  created(){
+    if (this.zone && this.zone > this.getLastZoneNum()) {
+      this.$router.replace({
+        name: "quests",
+        params: {
+          zone: 40,
+          quest: 0
+        }
+      });
+    }
+  },
   watch: {
     quest() {
       // watch router change quest param and refresh quest data
@@ -140,6 +151,16 @@ export default {
       this.updateCurrentZone();
 
       if (this.zone) {
+        if (this.zone > this.getLastZoneNum()) {
+          this.$router.replace({
+            name: "quests",
+            params: {
+              zone: 40,
+              quest: 0
+            }
+          });
+          return;
+        }
         this.$store.commit("setQuestZone", this.zone);
       }
     }
@@ -245,6 +266,9 @@ export default {
       }
 
       this.toggleFooterButtons();
+    },
+    getLastZoneNum() {
+      return Zones.getLastZone();
     },
     getZoneName(zone) {
       return Zones.getZoneName(zone);
