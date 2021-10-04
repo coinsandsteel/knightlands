@@ -15,8 +15,7 @@
     </div>
 
     <div v-else-if="!hideCount" class="font-size-18 digit-font">
-      <span v-if="!hideCurrentCount">{{ currentCount }}/</span>
-      <span>{{ requiredCount }}</span>
+      <span>{{ requiredCount }}</span>&nbsp;<span v-if="!hideCurrentCount">/&nbsp;{{ currentCount }}</span>
     </div>
 
     <div
