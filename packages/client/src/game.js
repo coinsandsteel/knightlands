@@ -1358,9 +1358,10 @@ class Game {
     return response.response;
   }
 
-  async disenchantConvert(conversions) {
-    let response = await this._wrapOperation(Operations.DisenchantConvert, {
-      conversions
+  async convert(conversions, entity) {
+    let response = await this._wrapOperation(Operations.Convert, {
+      conversions,
+      entity
     });
 
     return response.response;
