@@ -169,6 +169,8 @@ export default {
           return Rarity.Epic;
         case Rarity.Epic:
           return Rarity.Legendary;
+        case Rarity.Legendary:
+          return Rarity.Mythical;
         default:
           return null;
       }
