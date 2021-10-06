@@ -107,6 +107,10 @@ export default {
       this.$emit("select", { item, count, select: false });
     },
     selectItem(item) {
+      if (item.locked) {
+        return;
+      }
+
       let selected = this.selectedItem == item.id;
       let count = 0;
       if (selected) {

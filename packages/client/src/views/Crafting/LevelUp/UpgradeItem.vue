@@ -88,7 +88,7 @@
                   v-for="(mat, index) in upgradeMaterials"
                   :key="mat.id"
                   :item="mat"
-                  @hint="selectMaterial(index)"
+                  @hint="!mat.locked ? selectMaterial(index) : null"
                   :selected="index == selectedMaterial"
                   :locked="lockRest"
                 >

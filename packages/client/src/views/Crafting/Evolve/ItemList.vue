@@ -149,7 +149,7 @@ export default {
 
       for (; i < length; ++i) {
         const item = items[i];
-        if (item.equipped || item.locked) {
+        if (item.equipped) {
           continue;
         }
 

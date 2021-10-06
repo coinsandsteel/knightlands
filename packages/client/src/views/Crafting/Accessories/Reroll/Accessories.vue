@@ -77,7 +77,6 @@ export default {
         filters: {},
         filter: (item, template) => {
           return (
-            !item.locked &&
             this.equippedAccessoriesFilter(item, template) &&
             !item.equipped
           );
@@ -107,6 +106,10 @@ export default {
     },
     async _handleHint(item, index) {
       if (!item) {
+        return;
+      }
+
+      if (item.locked) {
         return;
       }
 

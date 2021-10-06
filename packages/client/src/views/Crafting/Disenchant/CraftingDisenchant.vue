@@ -101,7 +101,7 @@ export default {
 
       for (let index = 0; index < length; ++index) {
         const item = items[index];
-        if (item.equipped || item.locked) {
+        if (item.equipped) {
           continue;
         }
         filteredItems[insertedItems++] = item;

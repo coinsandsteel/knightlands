@@ -226,7 +226,11 @@ export default {
       }
     },
     toggleSelectItem(itemIndex) {
-      if (this.lockRest && !this.selectedItems[itemIndex]) {
+      if (
+        this.unbindItems[itemIndex].locked
+        ||
+        (this.lockRest && !this.selectedItems[itemIndex])
+      ) {
         return;
       }
 
