@@ -12,7 +12,7 @@
           @hint="onHint"
         ></Loot>
         <span class="font-size-18 absolute-bottom"
-          >{{ requiredCount }}&nbsp;/&nbsp;{{ totalCount }}</span
+          >{{ totalCount }}&nbsp;/&nbsp;{{ requiredCount }}</span
         >
       </div>
 
