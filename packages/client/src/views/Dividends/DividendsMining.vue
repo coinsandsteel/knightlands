@@ -103,8 +103,12 @@ export default {
     updateMinedAmount() {
       const timePassed =
         this.$game.nowSec - this.$game.dividends.lastMiningUpdate;
+
+      const threeDays = 86400 * 3;
+      const timePassedLimited = timePassed > threeDays ? threeDays : timePassed;
+
       this.mined =
-        Math.floor(((timePassed * this.rate) / 3600) * 10000) / 10000;
+        Math.floor(((timePassedLimited * this.rate) / 3600) * 10000) / 10000;
     }
   }
 };
