@@ -121,7 +121,7 @@
           <div class="margin-top-2 flex flex-center" v-else-if="raidWon">
             <Title>{{ $t("raid-victory") }}</Title>
 
-            <template v-if="participant">
+            <template v-if="participant && rewards">
               <RewardsPreview
                 class="margin-top-2"
                 :rewards="rewards"
@@ -134,6 +134,7 @@
                 {{ $t("claim-reward") }}
               </custom-button>
             </template>
+            <LoadingIndicator v-else class="margin-top-5" color="#fbd766" type="scale"/>
           </div>
 
           <!--RAID LOST-->
@@ -290,6 +291,7 @@ import RaidsMeta from "@/raids_meta";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import SoundEffect from "@/components/SoundEffect.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import LoadingIndicator from "@/components/LoadingIndicator.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import Rewards from "./Rewards.vue";
@@ -351,7 +353,8 @@ export default {
     SpriteAnimator,
     Title,
     RewardsPreview,
-    SoundEffect
+    SoundEffect,
+    LoadingIndicator
   },
   mixins: [AppSection, RaidGetterMixin, NetworkRequestErrorMixin],
   props: ["raidId"],
@@ -477,6 +480,7 @@ export default {
         this.raidState && this.raidState.finished && this.raidState.defeat;
     },
     async init() {
+      this.rewards = null;
       await this.getRaid();
       this.bossViewCenter = this.$refs.bossView.center;
       this.checkIfRaidWon();
