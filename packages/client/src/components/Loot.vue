@@ -27,6 +27,11 @@
       ></span>
       <span v-else-if="itemData" :class="`icon-${element} element`"></span>
 
+      <div class="icon-locked" v-if="showLocked && itemData && itemData.locked">
+        <span class="icon-locked-corner"/>
+        <span class="icon-locked-text">L</span>
+      </div>
+
       <div
         class="flex flex-center width-100 flex-evenly-spaced stars-container"
         :class="{ top: showLevel && itemData }"
@@ -116,6 +121,10 @@ export default {
       default: true
     },
     showEquipped: {
+      type: Boolean,
+      default: true
+    },
+    showLocked: {
       type: Boolean,
       default: true
     },
@@ -423,6 +432,30 @@ export default {
   &.on-unit {
     .icon_equipped;
   }
+}
+
+.icon-locked {
+  position: absolute;
+  top: 0.2rem;
+  left: 0;
+}
+
+.icon-locked-corner {
+  width: 0;
+  height: 0;
+  border-top: 2.5rem solid #bd270c !important;
+  border-right: 2.5rem solid transparent !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.icon-locked-text {
+  top: 0.15rem;
+  left: 0.25rem;
+  font-size: 1.3rem;
+  position: absolute;
+  text-shadow: 1px 1px black;
 }
 
 .element {

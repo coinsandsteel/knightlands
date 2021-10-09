@@ -4,7 +4,6 @@
       ref="itemList"
       :items="items"
       :hintHandler="handleHint"
-      :equippedItemsFilter="equippedItemsFilter"
       :filtersStore="$store.getters.getEnchantFilters"
       commitCmd="setEnchantingFilters"
     >
@@ -62,8 +61,7 @@ export default {
 
         if (
           !template.enchantable ||
-          gear.enchant >= maxEnchant ||
-          gear.locked
+          gear.enchant >= maxEnchant
         ) {
           continue;
         }
@@ -86,8 +84,7 @@ export default {
         if (
           !template.enchantable ||
           item.enchant >= maxEnchant ||
-          filteredIds[item.id] ||
-          item.locked
+          filteredIds[item.id]
         ) {
           continue;
         }
@@ -99,9 +96,6 @@ export default {
     }
   },
   methods: {
-    equippedItemsFilter(item) {
-      return !item.locked;
-    },
     handleHint(item, index, filteredItems) {
       this.filteredItems = filteredItems;
       this.$nextTick(() => {
