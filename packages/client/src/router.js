@@ -104,7 +104,7 @@ const router = new Router({
           path: "convert",
           name: "convert",
           component: Convert,
-          props: { entity: 'shard' }
+          props: { entity: "shard" }
         },
         {
           path: "craft",
@@ -229,7 +229,7 @@ const router = new Router({
               path: "convert",
               name: "disenchant-convert",
               component: Convert,
-              props: { entity: 'dust' }
+              props: { entity: "dust" }
             }
           ]
         },

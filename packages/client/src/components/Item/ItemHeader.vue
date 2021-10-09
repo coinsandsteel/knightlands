@@ -29,6 +29,7 @@
         v-if="item"
         class="flex flex-items-center flex-no-wrap margin-top-half margin-bottom-1"
         :class="{ pointer: stars < 2 }"
+        @click="isEquipment ? upgradeItem() : null"
       >
         <span class="font-size-20 margin-right-1">
           {{ type }}
@@ -36,7 +37,7 @@
         <template v-if="isEquipment && !isPreview">
           <span class="star" :class="{ active: stars >= 1 }"></span>
           <span class="star" :class="{ active: stars >= 2 }"></span>
-          <span class="arrow-up" v-if="stars < 2" @click="upgradeItem"></span>
+          <span class="arrow-up" v-if="stars < 2"></span>
         </template>
       </div>
 

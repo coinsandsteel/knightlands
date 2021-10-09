@@ -65,7 +65,7 @@ import MaterialConverterElement from "./MaterialConverterElement.vue";
 import Title from "@/components/Title.vue";
 
 import DisenchantingMeta from "@/disenchanting_meta";
-import ShardsMeta from "@/shards_meta";
+import ShardsMeta from "@/acc_shards_meta";
 
 export default {
   mixins: [AppSection, ShowItemsMixin, HintHandler, PromptMixin],
@@ -89,12 +89,12 @@ export default {
     this.title = "window-dis-convert";
   },
   computed: {
-    meta(){
-      switch(this.entity){
-        case 'shard': {
+    meta() {
+      switch (this.entity) {
+        case "shard": {
           return ShardsMeta;
         }
-        case 'dust': {
+        case "dust": {
           return DisenchantingMeta;
         }
         default: {
@@ -117,7 +117,6 @@ export default {
           upgradeCost
         });
       }
-
       return materials;
     },
     canConvert() {

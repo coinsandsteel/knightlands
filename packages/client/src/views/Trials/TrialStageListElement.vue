@@ -53,6 +53,7 @@
         <div class="flex">
           <CustomButton
             v-if="readyToCollect"
+            :disabled="inFight"
             type="green"
             @click="$emit('collect', index)"
             >{{ $t("trial-stage-collect") }}</CustomButton

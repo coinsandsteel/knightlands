@@ -34,7 +34,12 @@
           @reset="reset"
         >
           <template v-slot:between>
-            <Loot :hideQuantity="true" :item="itemTo" @hint="onHint"></Loot>
+            <Loot
+              :hideQuantity="true"
+              :item="itemTo"
+              @hint="onHint"
+              :quantity="1"
+            ></Loot>
           </template>
         </NumericValue>
         <span class="font-size-18 absolute-bottom">{{ resultCount }}</span>

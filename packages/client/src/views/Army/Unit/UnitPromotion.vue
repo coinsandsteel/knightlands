@@ -245,8 +245,15 @@ export default {
       );
 
       if (confirmation === true) {
+        const units = {};
+        for (const ingridientId in this.unitsPerIngridient) {
+          units[ingridientId] = this.unitsPerIngridient[ingridientId].map(
+            x => x.id
+          );
+        }
+
         this.request = this.performRequest(
-          this.$game.promoteUnit(this.unit.id, this.unitsPerIngridient)
+          this.$game.promoteUnit(this.unit.id, units)
         );
 
         try {

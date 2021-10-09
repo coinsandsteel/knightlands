@@ -36,7 +36,7 @@
             <IconWithValue iconClass="icon-dkt">
               <div class="flex flex-center">
                 <span>{{ dkt }}</span>
-                <AddToMetamask class="margin-left-1" type="dkt" />
+                <!-- <AddToMetamask class="margin-left-1" type="dkt" /> -->
               </div>
             </IconWithValue>
           </div>
