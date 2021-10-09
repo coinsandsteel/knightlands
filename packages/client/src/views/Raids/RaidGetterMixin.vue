@@ -52,7 +52,7 @@ export default {
           : this.raidMeta.data;
 
       if (this.$game.isFreeAccount) {
-        return [];
+        return this.$game.crafting.getRecipeIngridients(data.summonRecipe);
       }
 
       return this.$game.crafting.getRecipeIngridients(data.joinRecipe);
