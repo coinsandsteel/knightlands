@@ -135,7 +135,7 @@ export default {
         );
 
         this.refundedItems.souls.quantity +=
-          ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit)];
+          ArmyMeta.soulsFromBanishment[this.$game.armyDB.getStars(unit) - 1];
       }
     }
   },
@@ -178,7 +178,6 @@ export default {
       if (!confirm) {
         return;
       }
-
       this.request = this.performRequest(
         this.$game.banishUnits(this.selectedUnits.map(x => x.id))
       );

@@ -32,6 +32,9 @@
         :startValue="false"
         :cb="handleEquippedToggle"
       />
+      <CustomButton type="grey" @click="goToConvert">{{
+        $t("btn-convert-shards")
+      }}</CustomButton>
       <HintButton title="i-reroll" :texts="['i-reroll-1']"></HintButton>
     </portal>
   </div>
@@ -46,6 +49,8 @@ import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import EquippedItemList from "../../EquippedItemList.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
 import HintButton from "@/components/HintButton.vue";
+import CustomButton from "@/components/Button.vue";
+
 const {
   EquipmentSlots,
   getSlot
@@ -61,7 +66,8 @@ export default {
     EquippedItemList,
     Toggle,
     ScrollableItemHint,
-    NoAccessoriesMessage
+    NoAccessoriesMessage,
+    CustomButton
   },
   created() {
     this.title = "btn-reroll-acc";
@@ -86,6 +92,11 @@ export default {
     }
   },
   methods: {
+    goToConvert() {
+      this.$router.push({
+        name: "convert"
+      });
+    },
     handleItemAction(item, action) {
       if (action) {
         this.$router.push({

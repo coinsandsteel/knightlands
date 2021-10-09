@@ -62,7 +62,7 @@ import Rarity from "@/../../knightlands-shared/rarity";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import Loot from "@/components/Loot.vue";
-import MaterialConverterElement from "./MaterialConverterElement.vue";
+import MaterialConverterElement from "../Convert/MaterialConverterElement.vue";
 import Title from "@/components/Title.vue";
 
 export default {
@@ -130,7 +130,7 @@ export default {
           payload[item.id] = this.conversions[rarity];
         }
 
-        this.request = this.$game.disenchantConvert(payload);
+        this.request = this.$game.convert(payload);
         const items = await this.request;
 
         this.conversions = {};

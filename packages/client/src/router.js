@@ -61,9 +61,8 @@ const CraftingEnchant = () =>
 const Enchant = () => import("./views/Crafting/Enchant/Enchant.vue");
 const EnchantItem = () => import("./views/Crafting/Enchant/EnchantItem.vue");
 
+const Convert = () => import("./views/Crafting/Convert/Convert.vue");
 const Disenchant = () => import("./views/Crafting/Disenchant/Disenchant.vue");
-const DisenchantConvert = () =>
-  import("./views/Crafting/Disenchant/DisenchantConvert.vue");
 const CraftingDisenchant = () =>
   import("./views/Crafting/Disenchant/CraftingDisenchant.vue");
 
@@ -100,6 +99,12 @@ const router = new Router({
           path: "",
           name: "alchemy-lab",
           component: CraftingHome
+        },
+        {
+          path: "convert",
+          name: "convert",
+          component: Convert,
+          props: { entity: "shard" }
         },
         {
           path: "craft",
@@ -223,7 +228,8 @@ const router = new Router({
             {
               path: "convert",
               name: "disenchant-convert",
-              component: DisenchantConvert
+              component: Convert,
+              props: { entity: "dust" }
             }
           ]
         },
