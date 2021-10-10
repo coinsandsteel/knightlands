@@ -140,6 +140,7 @@ export default {
         case UnitAbilityType.IncreasedGeneralsDamage:
         case UnitAbilityType.ExtraTroopsDamagePerTroopType:
         case UnitAbilityType.IncreasedTroopsDamagePerGeneralOwned:
+        case UnitAbilityType.IncreasedTroopsDamagePerGeneralTypeOwned:
           if (localisationParams.unitType == 0) {
             locType += "-all";
           }

@@ -2,6 +2,7 @@
 import RaidsMeta from "@/raids_meta";
 import UiConstants from "@/ui_constants";
 import Campaign from "@/campaign_database";
+import CharacterStats from "@/../../knightlands-shared/character_stat";
 
 export default {
   computed: {
@@ -78,7 +79,12 @@ export default {
         this.requiredJoinEssences
       );
 
-      return hasIngridients && this.levelRequirementMet;
+      return (
+        hasIngridients &&
+        this.levelRequirementMet &&
+        this.raidData.summonPrice <=
+          this.$game.character.timers[CharacterStats.Stamina].value
+      );
     },
     canSummon() {
       if (!this.raidData) {
@@ -98,7 +104,13 @@ export default {
         extra = this.soloAttempts > 0;
       }
 
-      return hasIngridients && this.levelRequirementMet && extra;
+      return (
+        hasIngridients &&
+        this.levelRequirementMet &&
+        extra &&
+        this.raidData.summonPrice <=
+          this.$game.character.timers[CharacterStats.Stamina].value
+      );
     },
     raidMaxHealth() {
       return this.raidData.health;
