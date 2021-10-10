@@ -4,6 +4,7 @@
       ref="itemList"
       :items="items"
       :hintHandler="handleHint"
+      :equippedItemsFilter="equippedItemsFilter"
       :filtersStore="$store.getters.getEnchantFilters"
       commitCmd="setEnchantingFilters"
     >
@@ -59,10 +60,7 @@ export default {
         const gear = this.$game.character.equipment[slot];
         const template = this.$game.itemsDB.getTemplate(gear.template);
 
-        if (
-          !template.enchantable ||
-          gear.enchant >= maxEnchant
-        ) {
+        if (!template.enchantable || gear.enchant >= maxEnchant) {
           continue;
         }
 
@@ -96,6 +94,9 @@ export default {
     }
   },
   methods: {
+    equippedItemsFilter(item) {
+      return (item.enchant || 0) < 2;
+    },
     handleHint(item, index, filteredItems) {
       this.filteredItems = filteredItems;
       this.$nextTick(() => {

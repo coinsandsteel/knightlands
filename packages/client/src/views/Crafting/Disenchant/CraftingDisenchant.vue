@@ -140,7 +140,7 @@ export default {
         if (!this.predictedMaterials[rarity]) {
           this.$set(this.predictedMaterials, rarity, {
             count: 0,
-            template: DisenchantingMeta[rarity].dustItem
+            template: DisenchantingMeta[rarity].itemId
           });
         }
         this.predictedMaterials[rarity].count += quantity;
