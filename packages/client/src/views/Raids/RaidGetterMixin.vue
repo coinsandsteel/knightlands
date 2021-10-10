@@ -11,8 +11,11 @@ export default {
     raidLevel() {
       return this.raidMeta.level;
     },
+    groupRaidSummonCooldown() {
+      return RaidsMeta.meta.groupRaidSummonCooldown;
+    },
     maxSoloAttempts() {
-      return RaidsMeta.dailySoloLimit;
+      return RaidsMeta.meta.dailySoloLimit;
     },
     raidMeta() {
       return RaidsMeta[this.raid];
@@ -23,6 +26,9 @@ export default {
       }
 
       return this.isFreeRaid ? this.raidMeta.soloData : this.raidMeta.data;
+    },
+    summonPrice() {
+      return this.raidData.summonPrice;
     },
     soloAttempts() {
       return (
@@ -39,6 +45,10 @@ export default {
           ? this.raidMeta.soloData
           : this.raidMeta.data;
 
+      if (this.$game.isFreeAccount) {
+        return [];
+      }
+
       return this.$game.crafting.getRecipeIngridients(data.summonRecipe);
     },
     requiredJoinEssences() {
@@ -52,7 +62,7 @@ export default {
           : this.raidMeta.data;
 
       if (this.$game.isFreeAccount) {
-        return this.$game.crafting.getRecipeIngridients(data.summonRecipe);
+        return [];
       }
 
       return this.$game.crafting.getRecipeIngridients(data.joinRecipe);

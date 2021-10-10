@@ -134,7 +134,12 @@
                 {{ $t("claim-reward") }}
               </custom-button>
             </template>
-            <LoadingIndicator v-else class="margin-top-5" color="#fbd766" type="scale"/>
+            <LoadingIndicator
+              v-else
+              class="margin-top-5"
+              color="#fbd766"
+              type="scale"
+            />
           </div>
 
           <!--RAID LOST-->
@@ -176,11 +181,11 @@
               class="margin-top-3 flex flex-center width-100 flex-space-around full-flex"
             >
               <custom-button type="grey" @click="handleShowRewards">
-                <span class="icon-loot"></span>
+                <span class="icon-rloot huge"></span>
               </custom-button>
 
               <custom-button type="grey" @click="handleShowInfo">
-                <span class="icon-info big"></span>
+                <span class="icon-info huge"></span>
               </custom-button>
 
               <!-- <CustomButton type="grey" @click="handleShowChart">
@@ -210,6 +215,10 @@
                 :disabled="!canJoin"
               >
                 <span class="margin-right-half">{{ $t("join") }}</span>
+
+                <IconWithValue iconClass="icon-stamina">{{
+                  summonPrice
+                }}</IconWithValue>
               </CustomButton>
 
               <CustomButton
@@ -267,6 +276,7 @@
 </template>
 
 <script>
+import IconWithValue from "@/components/IconWithValue.vue";
 import CopyButton from "@/components/CopyButton.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
@@ -354,7 +364,8 @@ export default {
     Title,
     RewardsPreview,
     SoundEffect,
-    LoadingIndicator
+    LoadingIndicator,
+    IconWithValue
   },
   mixins: [AppSection, RaidGetterMixin, NetworkRequestErrorMixin],
   props: ["raidId"],

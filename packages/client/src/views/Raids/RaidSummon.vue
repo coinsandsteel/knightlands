@@ -89,7 +89,7 @@
               <span>{{ $t("solo-r-daily", { c: soloAttempts }) }}</span>
             </div>
 
-            <div class="flex flex-center">
+            <div class="flex flex-center" v-if="summonRaidTimer.timeLeft <= 0">
               <CustomButton
                 :disabled="!canSummon"
                 type="yellow"
@@ -97,7 +97,10 @@
                 id="btn-summon"
                 width="20rem"
               >
-                <span>{{ $t("btn-summon") }}</span>
+                {{ $t("btn-summon") }}
+                <IconWithValue iconClass="icon-stamina">{{
+                  summonPrice
+                }}</IconWithValue>
               </CustomButton>
               <CustomButton
                 type="grey"
@@ -107,6 +110,11 @@
               >
                 {{ $t("pur-tickets") }}
               </CustomButton>
+            </div>
+            <div class="flex flex-center" v-else>
+              <span class="font-size-22 rarity-mythical">{{
+                $t("tt-sum", { time: summonRaidTimer.value })
+              }}</span>
             </div>
           </div>
         </div>
@@ -131,6 +139,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 import SectionsProgress from "@/sections_progress";
+import Timer from "@/timer";
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 
@@ -172,6 +181,7 @@ export default {
   },
   data() {
     return {
+      summonRaidTimer: new Timer(true),
       showChart: false,
       raidStatusRequest: null,
       fetchPayment: null,
@@ -198,6 +208,9 @@ export default {
         this.fetchInfo();
       }
     }
+  },
+  activated() {
+    this.refreshSummonTimer();
   },
   mounted() {
     const element = document.querySelector(".vb-content");
@@ -233,11 +246,19 @@ export default {
       this.raidStatus = await this.performRequest(
         this.$game.fetchRaidSummonStatus(this.raid, this.isFreeRaid)
       );
+
+      this.refreshSummonTimer();
+    },
+    refreshSummonTimer() {
+      this.summonRaidTimer.timeLeft =
+        this.groupRaidSummonCooldown -
+        this.$game.nowSec +
+        (this.$game.groupRaidSummons[this.raid] || 0);
     },
     goToNext() {
       let newRaidId = this.raid * 1 + 1;
       if (RaidsMeta.max < newRaidId) {
-        newRaidId = RaidsMeta.min;
+        newRaidId = RaidsMeta.meta.min;
       }
       this.$router.replace({
         name: "summon-raid",
@@ -246,7 +267,7 @@ export default {
     },
     goToPrevious() {
       let newRaidId = this.raid * 1 - 1;
-      if (RaidsMeta.min > newRaidId) {
+      if (RaidsMeta.meta.min > newRaidId) {
         newRaidId = RaidsMeta.max;
       }
       this.$router.replace({

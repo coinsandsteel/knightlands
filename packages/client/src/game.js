@@ -77,7 +77,8 @@ class Game {
         accountType: 0,
         soloRaidAttempts: {},
         flags: {},
-        raceShop: {}
+        raceShop: {},
+        groupRaidSummons: {}
       })
     });
 
@@ -202,6 +203,10 @@ class Game {
 
   get soloRaidAttempts() {
     return this._vm.soloRaidAttempts;
+  }
+
+  get groupRaidSummons() {
+    return this._vm.groupRaidSummons;
   }
 
   dailyRewardStep() {
@@ -873,6 +878,14 @@ class Game {
       );
     }
 
+    if (changes.gRaidSummon) {
+      this.mergeObjects(
+        this._vm,
+        this._vm.groupRaidSummons,
+        changes.gRaidSummon
+      );
+    }
+
     if (changes.raceShop) {
       this.mergeObjects(this._vm, this._vm.raceShop, changes.raceShop);
     }
@@ -982,6 +995,7 @@ class Game {
       this._vm.raidPoints = info.raidPoints;
       this._vm.accountType = info.accountType;
       this._vm.soloRaidAttempts = info.sRaidAttempts;
+      this._vm.groupRaidSummons = info.gRaidSummon;
       this._vm.flags = info.flags;
       this._vm.raceShop = info.raceShop;
 
