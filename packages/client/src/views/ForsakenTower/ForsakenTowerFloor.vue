@@ -51,16 +51,8 @@
           v-else-if="!finished"
           class="flex margin-top-3 flex-center width-100 flex-space-evenly"
         >
-          <PromisedButton
-            v-if="!paused"
-            @click="stop"
-            width="15rem"
-            type="red"
-            :disabled="paused"
-            >{{ $t("q-prog-m") }}</PromisedButton
-          >
-        
           <AttackButton
+            v-if="paused"
             :promise="request"
             @click="start"
             width="15rem"
@@ -69,11 +61,10 @@
           >
 
           <PromisedButton
-            v-if="paused"
+            v-else
             @click="stop"
             width="15rem"
             type="red"
-            :disabled="paused"
             >{{ $t("q-prog-m") }}</PromisedButton
           >
 
