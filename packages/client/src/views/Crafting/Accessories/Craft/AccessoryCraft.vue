@@ -20,7 +20,7 @@
         }}</IconWithValue>
       </div>
 
-      <CustomButton type="yellow" @click="craft" :disabled="!canCraft">
+      <CustomButton type="yellow" @click="craft" :disabled="!canCraft || ashPrice < $game.dkt">
         <div class="flex flex-center">
           <span class="margin-right-1">{{ $t("btn-craft") }}</span>
           <AshTag :price="recipe.price" v-model="ashPrice"> </AshTag></div
