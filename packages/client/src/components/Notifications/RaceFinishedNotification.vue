@@ -12,7 +12,7 @@
 
           <custom-button
             @click="openRace(props.item.data.race)"
-            v-if="props.item.data.rank"
+            v-if="!props.item.data.rank"
             >{{ $t("o-race") }}</custom-button
           >
           <CustomButton @click="openRaceRewards(props.item.data.race)" v-else>{{
