@@ -1307,6 +1307,14 @@ class Game {
     ).response;
   }
 
+  async leaveRaid(raidId) {
+    return (
+      await this._wrapOperation(Operations.LeaveRaid, {
+        raidId
+      })
+    ).response;
+  }
+
   async fetchPlayersFromRaid(raid) {
     return (
       await this._wrapOperation(Operations.GetRaidPlayers, {

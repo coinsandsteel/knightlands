@@ -11,7 +11,8 @@
               v-for="(raidState, index) in raids"
               :key="raidState.id"
               :raidState="raidState"
-              @claimed="handleRaidClaimed(index)"
+              @claimed="delistRaid(index)"
+              @left="delistRaid(index)"
             ></current-raid-element>
           </div>
         </div>
@@ -66,7 +67,7 @@ export default {
         console.error(e);
       }
     },
-    handleRaidClaimed(raidIndex) {
+    delistRaid(raidIndex) {
       this.raids.splice(raidIndex, 1);
     },
     summonRaid() {

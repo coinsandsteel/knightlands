@@ -50,6 +50,14 @@
           minWidth="20rem"
           >{{ join ? $t("join") : $t("continue") }}</custom-button
         >
+        <custom-button
+          v-if="!join"
+          class="margin-top-half"
+          type="red"
+          @click="leaveRaid"
+          minWidth="20rem"
+          >{{ $t("btn-leave") }}</custom-button
+        >
       </div>
 
       <div
@@ -74,6 +82,8 @@ import { create as CreateDialog } from "vue-modal-dialogs";
 import ClaimedReward from "./ClaimedReward.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import RaidGetterMixin from "./RaidGetterMixin.vue";
 
@@ -81,7 +91,7 @@ const ShowReward = CreateDialog(ClaimedReward, "rewards", "raidTemplateId");
 
 export default {
   props: ["raidState", "join"],
-  mixins: [RaidGetterMixin],
+  mixins: [RaidGetterMixin, PromptMixin, NetworkRequestErrorMixin],
   components: { CustomButton, IconWithValue, ProgressBar, Title },
   data: () => ({
     timer: new Timer(true),
@@ -118,6 +128,29 @@ export default {
     }
   },
   methods: {
+    async leaveRaid() {
+      let result = await this.showPrompt(
+        this.$t("p-raid_leave-t"),
+        this.$t("p-raid_leave-m"),
+        [
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]
+      );
+
+      if (result) {
+        await this.performRequest(this.$game.leaveRaid(this.raidState.id));
+        this.$emit("left");
+      }
+    },
     viewRaid() {
       this.$router.push({
         name: "view-raid",

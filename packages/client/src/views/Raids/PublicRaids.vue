@@ -60,8 +60,8 @@ export default {
       this.$router.push({ name: "raid-points" });
     },
     async handleRaidData(data) {
-      if (data.full) {
-        const idx = this.raids.findIndex(id => id == data.full);
+      if (data.full || data.terminated) {
+        const idx = this.raids.findIndex(id => (id == (data.full || data.terminated)));
         if (idx != -1) {
           this.raids.splice(idx, 1);
         }
