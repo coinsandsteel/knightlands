@@ -1631,6 +1631,8 @@
   "orkgre": "orkgre",
   "other-items": "Inventory items",
   "p_mega_1": "Potion Mega Pack",
+  "p-raid_finished-m": "This raid is finished! You could start your own raid or join any public raid.",
+  "p-raid_finished-t": "Raid is finished",
   "p-raid_leave-m": "Are you sure you want to leave this raid?",
   "p-raid_leave-t": "Are you sure?",
   "paid_raid": "Group",

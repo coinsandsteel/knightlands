@@ -97,6 +97,7 @@
               :left="true"
               :isFreeRaid="isFreeRaid"
               @log="handleShowLogs"
+              @exit="handleShowExit"
               @rewards="handleShowRewards"
               @info="handleShowInfo"
               @legion="selectLegion"
@@ -108,6 +109,7 @@
               class="raid-options-right"
               :isFreeRaid="isFreeRaid"
               @log="handleShowLogs"
+              @exit="handleShowExit"
               @rewards="handleShowRewards"
               @info="handleShowInfo"
               @legion="selectLegion"
@@ -472,6 +474,9 @@ export default {
         return false;
       }
       return this.raidState.isFree;
+    },
+    guestAtFinishedRaid() {
+      return this.raidState && this.raidState.finished && !this.participant;
     }
   },
   methods: {
@@ -495,6 +500,26 @@ export default {
       await this.getRaid();
       this.bossViewCenter = this.$refs.bossView.center;
       this.checkIfRaidWon();
+
+      if (this.guestAtFinishedRaid) {
+        this.callRaidFinishedAlert();
+      }
+    },
+    async callRaidFinishedAlert() {
+      await this.showPrompt(
+        this.$t("p-raid_finished-t"),
+        this.$t("p-raid_finished-m"),
+        [
+          {
+            type: "grey",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]
+      );
+      this.$router.push({
+        name: this.isFreeRaid ? "raids" : "pub-raids"
+      });
     },
     selectLegion() {
       this.$router.push({ name: "select-legion" });
@@ -512,6 +537,30 @@ export default {
     },
     handleShowLogs() {
       this.showLog = !this.showLog;
+    },
+    async handleShowExit() {
+      let result = await this.showPrompt(
+        this.$t("p-raid_leave-t"),
+        this.$t("p-raid_leave-m"),
+        [
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]
+      );
+      if (result) {
+        await this.performRequest(this.$game.leaveRaid(this.raidState.id));
+        this.$router.push({
+          name: "pub-raids"
+        });
+      }
     },
     handleShowChallenges() {
       this.showChallenges = true;
@@ -761,6 +810,10 @@ export default {
 
       if (data.defeat) {
         this.raidState.defeat = true;
+      }
+
+      if (this.guestAtFinishedRaid) {
+        this.callRaidFinishedAlert();
       }
     },
     _handleArmyDamage(damage) {

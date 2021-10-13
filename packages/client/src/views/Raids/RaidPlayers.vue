@@ -28,13 +28,28 @@ import Avatar from "@/views/Character/Avatars/Avatar.vue";
 export default {
   components: { UserDialog, Avatar },
   props: ["participants", "raidId"],
+  data: () => ({
+    players: [],
+    channel: null
+  }),
   mounted() {
     this.init();
+    this.subscribe();
   },
-  data: () => ({
-    players: []
-  }),
+  beforeDestroy() {
+    this.unsubscribe();
+  },
   methods: {
+    subscribe() {
+      this.channel = this.$game.createChannel(`raid/${this.raidId}/participants`);
+      this.channel.watch(this._handleParticipants.bind(this));
+    },
+    unsubscribe() {
+      this.channel.destroy();
+    },
+    async _handleParticipants(data) {
+      console.log("[RaidPlayers] _handleParticipants", { data });
+    },
     async init() {
       const players = await this.$game.fetchPlayersFromRaid(this.raidId);
       for (const playerId in this.participants) {

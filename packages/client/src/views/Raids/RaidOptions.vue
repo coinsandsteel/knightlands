@@ -6,6 +6,9 @@
     <CustomButton type="grey" v-if="left" @click="$emit('log')">
       <span class="icon-log huge"></span>
     </CustomButton>
+    <CustomButton type="grey" v-if="left" @click="$emit('exit')">
+      <span class="icon-exit huge"></span>
+    </CustomButton>
     <!-- <CustomButton
       type="grey"
       v-if="left && !isFreeRaid"
