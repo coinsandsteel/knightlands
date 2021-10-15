@@ -59,16 +59,8 @@
             >{{ $t("btn-attack") }}</AttackButton
           >
 
-          <PromisedButton
-            v-if="!paused"
-            @click="stop"
-            type="red"
-            width="15rem"
-            :disabled="paused"
-            >{{ $t("q-prog-m") }}</PromisedButton
-          >
-
           <AttackButton
+            v-if="paused"
             :promise="request"
             @click="start"
             type="green"
@@ -76,14 +68,9 @@
             >{{ $t("q-prog-s") }}</AttackButton
           >
 
-          <PromisedButton
-            v-if="paused"
-            @click="stop"
-            type="red"
-            width="15rem"
-            :disabled="paused"
-            >{{ $t("q-prog-m") }}</PromisedButton
-          >
+          <PromisedButton v-else @click="stop" type="red" width="15rem">{{
+            $t("q-prog-m")
+          }}</PromisedButton>
 
           <PromisedButton
             :promise="request"

@@ -189,15 +189,8 @@
               {{ $t("btn-attack") }}{{ hasFastQuests ? " x3" : "" }}</span
             ></AttackButton
           >
-          <PromisedButton
-            v-if="!paused"
-            minWidth="15rem"
-            :promise="request"
-            :disabled="paused"
-            @click="stop"
-            >{{ $t("q-prog-m") }}</PromisedButton
-          >
           <AttackButton
+            v-if="paused"
             minWidth="15rem"
             type="green"
             :noSound:="true"
@@ -206,10 +199,9 @@
             >{{ $t("q-prog-s") }}{{ hasFastQuests ? " x3" : "" }}</AttackButton
           >
           <PromisedButton
-            v-if="paused"
+            v-else
             minWidth="15rem"
             :promise="request"
-            :disabled="paused"
             @click="stop"
             >{{ $t("q-prog-m") }}</PromisedButton
           >
