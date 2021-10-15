@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     equippedItemsFilter(item) {
-      return (item.enchant || 0) < 2;
+      return (item.enchant || 0) < 15;
     },
     handleHint(item, index, filteredItems) {
       this.filteredItems = filteredItems;

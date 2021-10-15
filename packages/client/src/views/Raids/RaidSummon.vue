@@ -250,6 +250,11 @@ export default {
       this.refreshSummonTimer();
     },
     refreshSummonTimer() {
+      if (this.isFreeRaid) {
+        this.summonRaidTimer.timeLeft = 0;
+        return;
+      }
+
       this.summonRaidTimer.timeLeft =
         this.groupRaidSummonCooldown -
         this.$game.nowSec +
