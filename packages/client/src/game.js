@@ -22,7 +22,8 @@ import Army from "@/army/army";
 import Subscription from "./subscription";
 import Notifications from "./notifications";
 import SectionsProgress from "@/sections_progress";
-
+import DividendsMeta from "@/dividends";
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
 
@@ -389,6 +390,19 @@ class Game {
 
   get isFreeAccount() {
     return !this._vm.accountType;
+  }
+
+  get dktBonus() {
+    let factor = 1;
+    const bonuses = this.subscription.cardBonuses;
+    const dividends = this.dividends;
+    factor += this.character.maxStats[CharacterStats.ExtraDkt] / 1000;
+    if (dividends.dropRateLevel > 0) {
+      factor *= 1 + DividendsMeta.dropRate[dividends.dropRateLevel - 1].rate;
+    }
+
+    factor *= 1 + bonuses.dkt / 100;
+    return factor;
   }
 
   on(event, callback) {

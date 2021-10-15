@@ -20,10 +20,10 @@
         }}</IconWithValue>
       </div>
 
-      <CustomButton type="yellow" @click="craft" :disabled="!canCraft || ashPrice < $game.dkt">
+      <CustomButton type="yellow" @click="craft" :disabled="!canCraft">
         <div class="flex flex-center">
           <span class="margin-right-1">{{ $t("btn-craft") }}</span>
-          <AshTag :price="recipe.price" v-model="ashPrice"> </AshTag></div
+          <AshTag :price="recipe.price" v-model="craftPrice"> </AshTag></div
       ></CustomButton>
     </div>
   </div>
@@ -61,11 +61,14 @@ export default {
     this.title = "win-create-acc";
   },
   data: () => ({
-    ashPrice: 0
+    craftPrice: 0
   }),
   computed: {
     canCraft() {
-      return this.$game.inventory.hasEnoughIngridient(this.ingridient);
+      return (
+        this.$game.inventory.hasEnoughIngridient(this.ingridient) &&
+        this.craftPrice <= this.$game.dkt
+      );
     },
     isRing() {
       if (typeof this.ring === "string") {

@@ -2,18 +2,24 @@
   <div
     class="flex flex-space-between flex-no-wrap flex-column color-panel-2 padding-left-2 padding-right-2"
   >
-    <div class="flex flex-items-center">
-      <span class="font-size-20 font-outline font-weight-900">{{
-        $t("mine-rate", { rate: rate, lvl: rateLvl })
-      }}</span>
-      <span class="icon-rp big"></span>
+    <div
+      class="flex flex-items-center flex-space-between font-size-20 padding-right-1"
+    >
+      <div class="flex flex-center">
+        <span class=" font-outline font-weight-900">{{
+          $t("mine-rate", { rate: rate, lvl: rateLvl })
+        }}</span>
+        <span class="icon-rp big"></span>
 
-      <span class="nav-arrow margin-left-1 margin-right-1"></span>
+        <span class="nav-arrow margin-left-1 margin-right-1"></span>
 
-      <span class="font-size-20 font-outline font-weight-900 rarity-rare">{{
-        $t("mine-rate-n", { rate: nextRate })
-      }}</span>
-      <span class="icon-rp big"></span>
+        <span class="font-size-20 font-outline font-weight-900 rarity-rare">{{
+          $t("mine-rate-n", { rate: nextRate })
+        }}</span>
+        <span class="icon-rp big"></span>
+      </div>
+
+      <span class="rarity-mythical">{{ $t("rp-max") }}</span>
     </div>
 
     <div class="flex flex-space-between width-100 margin-top-1">
@@ -67,6 +73,7 @@ export default {
             DividendsMeta.mining.rate.factor
           ) /
             24) *
+            this.$game.dktBonus *
             10000
         ) / 10000
       );
@@ -79,6 +86,7 @@ export default {
             DividendsMeta.mining.rate.factor
           ) /
             24) *
+            this.$game.dktBonus *
             10000
         ) / 10000
       );
