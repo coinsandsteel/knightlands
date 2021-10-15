@@ -132,9 +132,6 @@ class Game {
       Events.RaidJoinStatus,
       this._handleRaidJoinStatus.bind(this)
     );
-    this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
-    this.racesChannel = this.createChannel(Events.RaceFinished, false);
-    this.racesChannel.watch(this._handleRaceFinished.bind(this));
 
     this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
     this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
@@ -433,6 +430,14 @@ class Game {
     this._vm.$emit("refill", stat);
   }
 
+  joinRaceChannel() {
+    if (!this.racesChannel) {
+      this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
+      this.racesChannel = this.createChannel(Events.RaceFinished, false);
+      this.racesChannel.watch(this._handleRaceFinished.bind(this));
+    }
+  }
+  
   async signMessage(message) {
     return await this._blockchainClient.sign(message);
   }
@@ -732,12 +737,17 @@ class Game {
   }
 
   _handleRaceFinished(data) {
-    this._vm.$emit(Events.RaceFinished);
-    Vue.notify({
-      group: "race",
-      data,
-      duration: 5000
-    });
+    if (this.racesChannel) {
+      this._vm.$emit(Events.RaceFinished, data);
+      const currentRace = this.$store.state.rankings.currentRace;
+      if (currentRace && currentRace.id == data.race) {
+        Vue.notify({
+          group: "race",
+          data,
+          duration: 5000
+        });
+      }
+    }
   }
 
   _handleCraftStatus(data) {
@@ -1962,6 +1972,7 @@ class Game {
   }
 
   async joinRace(raceId) {
+    this.joinRaceChannel();
     return (await this._wrapOperation(Operations.JoinRace, { raceId }))
       .response;
   }

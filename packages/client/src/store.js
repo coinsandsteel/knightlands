@@ -12,6 +12,7 @@ import EquipmentType from "@/../../knightlands-shared/equipment_type";
 
 import DailyLoginStore from "@/store/dailyLogin";
 import Adventures from "@/store/adventures";
+import Rankings from "@/store/rankings";
 import Summon from "@/store/summon";
 import Training from "@/store/training";
 import Tutorial from "@/store/tutorial";
@@ -277,6 +278,7 @@ const store = new Vuex.Store({
   modules: {
     dailyLogin: DailyLoginStore,
     adventures: Adventures,
+    rankings: Rankings,
     summon: Summon,
     training: Training,
     tutorial: Tutorial,

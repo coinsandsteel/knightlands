@@ -12,10 +12,10 @@
 
           <custom-button
             @click="openRace(props.item.data.race)"
-            v-if="props.item.data.rank"
+            v-if="!props.item.data.rank"
             >{{ $t("o-race") }}</custom-button
           >
-          <CustomButton @click="openRaceRewards" v-else>{{
+          <CustomButton @click="openRaceRewards(props.item.data.race)" v-else>{{
             $t("claim-rewards")
           }}</CustomButton>
         </template>
@@ -37,9 +37,10 @@ export default {
         params: { id }
       });
     },
-    openRaceRewards() {
+    openRaceRewards(id) {
       this.$router.push({
-        name: "race-rewards"
+        name: "race-rewards",
+        params: { id }
       });
     }
   }
