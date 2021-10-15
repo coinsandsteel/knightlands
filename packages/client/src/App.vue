@@ -377,6 +377,7 @@ export default {
 
     this.$nextTick(() => {
       this.showBackButton();
+      this.joinRaceChannel();
     });
 
     this.$game.connect();
@@ -386,6 +387,12 @@ export default {
     });
   },
   methods: {
+    async joinRaceChannel() {
+      await this.$store.dispatch("rankings/update");
+      if (this.$store.state.rankings.currentRace) {
+        this.$game.joinRaceChannel();
+      }
+    },
     tutorial() {
       return this.$refs.tutorial;
     },
