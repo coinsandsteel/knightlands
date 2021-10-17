@@ -1054,6 +1054,17 @@ const router = new Router({
       path: "/admin",
       name: "admin",
       component: Admin
+    },
+    {
+      path: "/halloween",
+      component: () => import("./views/SimpleDungeon/SimpleDungeonRoot.vue"),
+      children: [
+        {
+          name: "halloween",
+          path: "/",
+          component: () => import("./views/SimpleDungeon/SimpleDungeon.vue")
+        }
+      ]
     }
   ]
 });

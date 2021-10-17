@@ -22,6 +22,14 @@
 
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
+
+              <MenuIcon
+                icon="skewed_icon_halloween"
+                :to="{ name: 'halloween' }"
+                :append="true"
+                id="halloween"
+                >{{ $t("btn-evt-hal") }}
+              </MenuIcon>
             </MenuIconRow>
 
             <MenuIconRow>
