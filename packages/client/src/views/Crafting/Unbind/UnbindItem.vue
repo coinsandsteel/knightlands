@@ -129,6 +129,9 @@ export default {
     lockedTotal: 0
   }),
   watch: {
+    newItemId() {
+      this.handleInventoryChanged();
+    },
     itemId() {
       this.cancelUnbind();
       this.prepareItemForUnbind();
@@ -171,6 +174,8 @@ export default {
         });
         this.newItemId = 0;
       }
+
+      this.updateUnbindItemsList();
     },
     craft() {
       let query = { returnTo: this.$route.fullPath };
@@ -218,17 +223,16 @@ export default {
         let newItemId = await this.performRequest(
           this.$game.unbindItem(this.itemId, items)
         );
+
+        console.log(newItemId != this.itemId);
         if (newItemId != this.itemId) {
           this.newItemId = newItemId;
         }
-
-        this.updateUnbindItemsList();
       }
     },
     toggleSelectItem(itemIndex) {
       if (
-        this.unbindItems[itemIndex].locked
-        ||
+        this.unbindItems[itemIndex].locked ||
         (this.lockRest && !this.selectedItems[itemIndex])
       ) {
         return;
