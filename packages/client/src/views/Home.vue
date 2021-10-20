@@ -25,7 +25,7 @@
 
               <MenuIcon
                 icon="skewed_icon_halloween"
-                :to="{ name: 'halloween' }"
+                :to="{ name: 'dungeon' }"
                 :append="true"
                 id="halloween"
                 >{{ $t("btn-evt-hal") }}

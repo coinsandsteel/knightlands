@@ -1231,6 +1231,11 @@ class Game {
     });
   }
 
+  async getDungeon() {
+    let result = await this._wrapOperation(Operations.SDungeonGenerateNew);
+    return result.response;
+  }
+
   async engageQuest(zone, questIndex, max = false) {
     let stage = this.$store.getters.getZoneStage;
     let result = await this._wrapOperation(Operations.EngageQuest, {

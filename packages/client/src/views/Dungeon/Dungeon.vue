@@ -23,15 +23,19 @@
 import Title from "@/components/Title.vue";
 import EnemyView from "@/components/EnemyView.vue";
 import Maze from "@/components/Maze.vue";
+import AppSection from "@/AppSection.vue";
 
 export default {
-  mixins: [],
+  mixins: [AppSection],
   components: {
     Title,
     EnemyView,
-    Maze,
+    Maze
   },
   data: () => ({}),
+  created() {
+    this.title = "w-simple-dun";
+  },
   computed: {
     enemyImage() {
       return "Insects Giant Bug Centipede";

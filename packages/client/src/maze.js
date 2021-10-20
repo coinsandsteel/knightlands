@@ -1,402 +1,290 @@
 /*jshint esversion: 9 */
 
-import Vue from "vue";
-import throttle from "lodash.throttle";
+class MazeImage {
+  constructor(data, x, y, c, maze, clear) {
+    this.image = new Image();
+    this.data = data;
+    this.x = x;
+    this.y = y;
+    this.c = c;
+    this.maze = maze;
+    this.clear = clear;
 
-const EXTRA_PASSAGE_CHANCE = 10;
-const PASSAGE_CHANCE_INC = 0;
-
-const rewardsConfig = [{
-    loot: 1
-  },
-  {
-    loot: 2
-  },
-  {
-    loot: 3
-  },
-  {
-    loot: 4
-  }
-];
-
-const enemiesConfig = [{
-    difficulty: 1,
-    count: 3
-  },
-  {
-    difficulty: 2,
-    count: 4
-  },
-  {
-    difficulty: 1,
-    count: 2
-  },
-  {
-    difficulty: 3,
-    count: 1
-  },
-  {
-    difficulty: 2,
-    count: 2
-  },
-  {
-    difficulty: 1,
-    count: 3
-  },
-  {
-    difficulty: 4,
-    count: 1
-  },
-  {
-    difficulty: 2,
-    count: 4
-  },
-  {
-    difficulty: 3,
-    count: 2
-  },
-  {
-    difficulty: 4,
-    count: 2
-  }
-];
-
-class Maze {
-  constructor(ref, wrapper) {
-    const width = wrapper.offsetWidth;
-
-    this.TILE_SIZE = width / 9;
-    this.DUNGEON_WIDTH = width;
-    this.DUNGEON_HEIGHT = this.TILE_SIZE * 6;
-
-    ref.width = width;
-    ref.height = width;
-    this.ctx = ref.getContext("2d");
+    this.backgroundType = null;
+    this.backgroundDirection = null;
+    this.rotateDegrees = 0;
   }
 
   render() {
-    this.drawDungeon(this.generateDungeon());
+    console.log("MazeImage.render()", this);
+    this.setUrl();
+
+    this.image.onload = () => {
+      if (this.clear) {
+        this.maze.ctx.clearRect(
+          this.x * this.maze.TILE_SIZE,
+          this.y * this.maze.TILE_SIZE,
+          (this.x + 1) * this.maze.TILE_SIZE - 2,
+          (this.y + 1) * this.maze.TILE_SIZE - 2
+        );
+      }
+
+      var x = this.x * this.maze.TILE_SIZE + this.maze.TILE_SIZE / 2;
+      var y = this.y * this.maze.TILE_SIZE + this.maze.TILE_SIZE / 2;
+
+      if (this.rotateDegrees) {
+        this.maze.ctx.save();
+        this.maze.ctx.translate(x, y);
+        this.maze.ctx.rotate((this.rotateDegrees * Math.PI) / 180);
+        this.maze.ctx.translate(-x, -y);
+        this.maze.ctx.drawImage(
+          this.image,
+          this.x * this.maze.TILE_SIZE,
+          this.y * this.maze.TILE_SIZE,
+          this.maze.TILE_SIZE,
+          this.maze.TILE_SIZE
+        );
+        this.maze.ctx.restore();
+
+      } else {
+        this.maze.ctx.drawImage(
+          this.image,
+          this.x * this.maze.TILE_SIZE,
+          this.y * this.maze.TILE_SIZE,
+          this.maze.TILE_SIZE,
+          this.maze.TILE_SIZE
+        );
+      }
+
+      this.rotateDegrees = 0;
+      this.backgroundType = null;
+      this.backgroundDirection = null;
+    }
   }
 
-  drawTile(x, y, color = "#c7d0d8") {
-    this.ctx.beginPath();
-    this.ctx.rect(x * this.TILE_SIZE, y * this.TILE_SIZE, this.TILE_SIZE - 2, this.TILE_SIZE - 2);
-    this.ctx.fillStyle = color;
-    this.ctx.fill();
+  setUrl() {
+    let prefix = "/images/halloween_assets";
+    switch (this.data.type) {
+      case "enemy": {
+        let enemyData = this.maze.meta.enemies[this.data.id];
+        this.image.src = `${prefix}/${enemyData.level}${enemyData.name}.png`;
+        break;
+      }
+      case "closed": {
+        this.image.src = `${prefix}/${this.maze.meta.backgrounds.closed}.jpg`;
+        break;
+      }
+      case "way": {
+        this.setBackgroundUrl();
+        this.image.src = `${prefix}/${this.maze.meta.backgrounds[this.backgroundType]}.jpg`;
+        break;
+      }
+      case "loot": {
+        this.image.src = `/images/banners/shinies6.png`;
+        break;
+      }
+    }
   }
 
-  drawLine(from, to) {
-    const offset = this.TILE_SIZE / 2;
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = "#194368";
-    this.ctx.moveTo(from.x * this.TILE_SIZE + offset, from.y * this.TILE_SIZE + offset);
-    this.ctx.lineTo(to.x * this.TILE_SIZE + offset, to.y * this.TILE_SIZE + offset);
-    this.ctx.stroke();
+  setBackgroundUrl() {
+    let type = "item_background";
+    let direction = null;
+
+    if (this.c.length === 1) {
+      direction = this.singleWayCase(this.c[0]);
+      type = "way_single";
+
+    } else if (this.c.length === 2) {
+      direction = this.doubleWayCase(this.c[0], this.c[1]);
+      let map = {
+        horizontal: "way_straight",
+        vertical: "way_straight",
+        rigth_up: "way_turn",
+        right_down: "way_turn",
+        left_up: "way_turn",
+        left_down: "way_turn"
+      }
+      type = map[direction];
+
+    } else if (this.c.length === 3) {
+      direction = this.tripleWayCase(this.c[0], this.c[1], this.c[2]);
+      type = "way_triple";
+
+    } else {
+      type = "way_all";
+    }
+
+    this.backgroundType = type;
+    this.backgroundDirection = direction;
+    console.log('Way', { type, direction });
   }
 
-  range(min, max) {
-    return min + Math.round(Math.random() * (max - min));
+  singleWayCase(c1) {
+    console.log('singleWayCase', {c1, index: this.data.index });
+    if (c1 === this.data.index + 1) {
+      this.rotateDegrees = 90;
+      return "right";
+    } else if (c1 === this.data.index - 1) {
+      this.rotateDegrees = -90;
+      return "left";
+    } else if (c1 === this.data.index - this.maze.DUNGEON_WIDTH_COUNT) {
+      this.rotateDegrees = 0;
+      return "top";
+    } else {
+      this.rotateDegrees = 180;
+      return "bottom";
+    }
+  }
+
+  doubleWayCase(c1, c2) {
+    if (Math.abs(c1 - c2) === 2) {
+      this.rotateDegrees = 0;
+      return "horizontal";
+    } else if (Math.abs(c1 - c2) === this.maze.DUNGEON_WIDTH_COUNT * 2) {
+      this.rotateDegrees = 90;
+      return "vertical";
+    } else {
+      if (Math.min(c1, c2, this.data.index) === this.data.index) {
+        this.rotateDegrees = -90;
+        return "right_down";
+      } else if (Math.max(c1, c2, this.data.index) === this.data.index) {
+        this.rotateDegrees = 90;
+        return "left_up";
+      } else if (c1+1 === this.data.index || c2+1 === this.data.index) {
+        this.rotateDegrees = 0;
+        return "left_down";
+      } else {
+        this.rotateDegrees = 180;
+        return "rigth_up";
+      }
+    }
+  }
+
+  tripleWayCase(c1, c2, c3) {
+    if (![c1, c2, c3].some(i => i === this.data.index + 1)) {
+      this.rotateDegrees = 90;
+      return "left";
+    } else if (![c1, c2, c3].some(i => i === this.data.index - 1)) {
+      this.rotateDegrees = -90;
+      return "right";
+    } else if (![c1, c2, c3].some(i => i === this.data.index - this.maze.DUNGEON_WIDTH_COUNT)) {
+      this.rotateDegrees = 0;
+      return "bottom";
+    } else {
+      this.rotateDegrees = 180;
+      return "up";
+    }
+  }
+}
+
+class Maze {
+  constructor(data, meta, canvas, wrapper) {
+    this.cells = [];
+    this.data = data;
+    this.meta = meta;
+    this.canvas = canvas;
+    this.wrapper = wrapper;
+    this.cache = {};
+
+    this.setConstants();
+    console.log("Maze.constructor()", this);
+  }
+
+  setConstants() {
+    this.DUNGEON_WIDTH_COUNT = 6;
+    this.DUNGEON_HEIGHT_COUNT = 12;
+    this.DUNGEON_CELLS_TOTAL = this.DUNGEON_WIDTH_COUNT * this.DUNGEON_HEIGHT_COUNT;
+    this.TILE_SIZE = Math.round(this.wrapper.offsetWidth / this.DUNGEON_WIDTH_COUNT);
+
+    this.canvas.width = this.wrapper.offsetWidth;
+    this.canvas.height = this.TILE_SIZE * this.DUNGEON_HEIGHT_COUNT;
+    this.ctx = this.canvas.getContext("2d");
+  }
+
+  render() {
+    // Draw revealed
+    for (const cell of this.data.revealed) {
+      console.log("Draw revealed", {cell});
+      this.drawCell(cell, null, true);
+    }
+
+    // Draw the rest
+    for (let index = 0; index < this.DUNGEON_CELLS_TOTAL; index++) {
+      if (!this.cells[index]) {
+        console.log("Draw rest", {index});
+        this.drawCell(null, index, false);
+      }
+    }
+  }
+
+  drawCell(cell, index, revealed) {
+    // x: number;
+    // y: number;
+    // c?: number[];
+    // enemy?: CellEnemy;
+    // loot?: CellLoot;
+
+    if (index === null) {
+      index = this.cellToIndex(cell);
+      console.log("Computed index", index);
+    }
+    if (cell === null) {
+      cell = this.indexToCell(index);
+      console.log("Computed cell", cell);
+    }
+    cell.revealed = revealed;
+    this.cells[index] = cell;
+
+    if (!cell.revealed) {
+      // Draw closed
+      this.drawClosedCell(cell.x, cell.y);
+    } else if (cell.enemy) {
+      // Draw enemy cell
+      this.drawEnemyCell(cell.x, cell.y, cell.c, cell.enemy, index);
+    } else if (cell.loot) {
+      // Draw loot cell
+      this.drawLootCell(cell.x, cell.y, cell.c, cell.loot, index);
+    } else {
+      // Draw empty cell
+      this.drawEmptyCell(cell.x, cell.y, cell.c, index);
+    }
   }
 
   cellToIndex(cell) {
-    return cell.y * this.DUNGEON_WIDTH + cell.x;
+    return cell.y * this.DUNGEON_WIDTH_COUNT + cell.x;
   }
 
-  shuffle(cells) {
-    for (let i = cells.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [cells[i], cells[j]] = [cells[j], cells[i]];
-    }
-
-    return cells;
+  indexToCell(index) {
+    let x = index % this.DUNGEON_WIDTH_COUNT;
+    let y = (index - x) / this.DUNGEON_WIDTH_COUNT;
+    return { x, y };
+  }
+  
+  drawImage(data, x, y, c) {
+    const image = new MazeImage(data, x, y, c, this, false);
+    image.render();
   }
 
-  randomNeighbours(cell, filter) {
-    const cells = [];
-    // left
-    if (cell.x > 0) {
-      const nc = {
-        x: cell.x - 1,
-        y: cell.y,
-        c: []
-      };
-      if (filter(nc)) {
-        cells.push(nc);
-      }
-    }
-
-    // top
-    if (cell.y > 0) {
-      const nc = {
-        x: cell.x,
-        y: cell.y - 1,
-        c: []
-      };
-      if (filter(nc)) {
-        cells.push(nc);
-      }
-    }
-
-    // right
-    if (cell.x < this.DUNGEON_WIDTH - 1) {
-      const nc = {
-        x: cell.x + 1,
-        y: cell.y,
-        c: []
-      };
-      if (filter(nc)) {
-        cells.push(nc);
-      }
-    }
-
-    // bottom
-    if (cell.y < this.DUNGEON_HEIGHT - 1) {
-      const nc = {
-        x: cell.x,
-        y: cell.y + 1,
-        c: []
-      };
-      if (filter(nc)) {
-        cells.push(nc);
-      }
-    }
-
-    return this.shuffle(cells);
+  drawClosedCell(x, y) {
+    console.log("drawClosedCell", {x,y});
+    this.drawImage({ type: "closed"}, x, y);
   }
 
-  randomNotConnected(cell) {
-    const cells = {};
-    for (const c of cell.c) {
-      cells[this.cellToIndex(cell)] = c;
-    }
-
-    return this.randomNeighbours(cell, (c) => !cells[this.cellToIndex(c)]);
+  drawEnemyCell(x, y, c, data, index) {
+    console.log("drawEnemyCell", { x, y, c, data, index });
+    this.drawImage({ type: "way", index }, x, y, c);
+    this.drawImage({ ...data, type: "enemy" }, x, y);
   }
-
-  expandEnemyConfig(enemiesConfig) {
-    const enemyList = [];
-    for (let k = enemiesConfig.length - 1; k >= 0; --k) {
-      const config = enemiesConfig[k];
-      for (let i = 0; i < config.count; ++i) {
-        enemyList.push({
-          difficulty: config.difficulty
-        });
-      }
-    }
-
-    return enemyList;
+  
+  drawLootCell(x, y, c, data, index) {
+    console.log("drawLootCell", {x, y, c, data, index});
+    this.drawImage({ type: "way", index }, x, y, c);
+    this.drawImage({ ...data, type: "loot" }, x, y);
   }
-
-  placeEnemies(start, tiles) {
-    // first, place main enemies, in an order
-    // we guarantee that player will able to reach out every enemy in the list
-    // according to the list's order and quantity
-    // this will let players compete in a random dungeon
-    // with similar difficulty
-    const enemyList = this.expandEnemyConfig(enemiesConfig);
-    //console.log("enemies to place", enemyList.length);
-    const maxDistanceBetweenEnemies = Math.round(
-      (tiles.length - 1) / enemyList.length
-    );
-    //console.log("maxDistanceBetweenEnemies", maxDistanceBetweenEnemies);
-    const cellsForLoot = [];
-
-    const enemyStack = [];
-    let cellStack = [start];
-    const visited = {
-      [this.cellToIndex(start)]: 0,
-    };
-
-    // move along the way, choosing random direction at the conjunction
-    while (enemyList.length != 0 && cellStack.length != 0) {
-      let currentCell = cellStack.pop();
-      let accumulatedDistance = visited[this.cellToIndex(currentCell)];
-      const lastEnemyDistance = accumulatedDistance;
-
-      const neighbours = this.shuffle(currentCell.c);
-
-      if (neighbours.length == 0) {
-        continue;
-      }
-
-      for (const nb of neighbours) {
-        const index = this.cellToIndex(nb);
-        if (visited[index]) {
-          continue;
-        }
-
-        currentCell = tiles[index];
-        visited[index] = ++accumulatedDistance;
-        cellStack.push(currentCell);
-
-        const distance = accumulatedDistance - lastEnemyDistance;
-
-        if (accumulatedDistance % maxDistanceBetweenEnemies == 0) {
-          // place enemy
-          const enemy = enemyList.pop();
-          enemyStack.push({
-            ...enemy,
-            x: currentCell.x,
-            y: currentCell.y,
-          });
-        } else if (enemyStack.length != 0) {
-          cellsForLoot.push({
-            x: currentCell.x,
-            y: currentCell.y,
-          });
-        }
-      }
-    }
-
-    //console.log("total enemies", enemyStack.length);
-
-    return {
-      enemies: enemyStack,
-      cellsForLoot,
-    };
-  }
-
-  placeRewards(cellsForLoot) {
-    // uniformly distibute loot
-    const rewards = [];
-    const cellsBetweenLoot = Math.floor(
-      (cellsForLoot.length - 1) / rewardsConfig.length
-    );
-    let rewardIndex = cellsBetweenLoot;
-    for (const reward of rewardsConfig) {
-      const cell = cellsForLoot[rewardIndex];
-      rewardIndex += cellsBetweenLoot;
-      rewards.push({
-        ...reward,
-        x: cell.x,
-        y: cell.y,
-      });
-    }
-
-    return rewards;
-  }
-
-  connect(cell1, cell2) {
-    cell1.c.push({
-      x: cell2.x,
-      y: cell2.y,
-    });
-
-    cell2.c.push({
-      x: cell1.x,
-      y: cell1.y,
-    });
-  }
-
-  generateDungeon() {
-    let tiles = new Array(this.DUNGEON_WIDTH * this.DUNGEON_HEIGHT);
-    // pick random point as a start
-    const startCell = {
-      x: this.range(0, this.DUNGEON_WIDTH - 1),
-      y: this.range(0, this.DUNGEON_HEIGHT - 1),
-      c: [],
-    };
-    let stack = [startCell];
-    tiles[this.cellToIndex(startCell)] = startCell;
-
-    while (stack.length != 0) {
-      let currentCell = stack.pop();
-      const neighbours = this.randomNeighbours(
-        currentCell,
-        (c) => !tiles[this.cellToIndex(c)]
-      );
-      if (neighbours.length != 0) {
-        stack.push(currentCell);
-      } else {
-        continue;
-      }
-
-      const nbCell = neighbours[0];
-      if (!tiles[this.cellToIndex(nbCell)]) {
-        tiles[this.cellToIndex(nbCell)] = nbCell;
-
-        stack.push(nbCell);
-
-        this.connect(currentCell, nbCell);
-      }
-    }
-
-    // randomly open extra passsages
-    let openChance = EXTRA_PASSAGE_CHANCE;
-    for (const cell of tiles) {
-      if (cell.c.length < 4) {
-        const neighbours = this.randomNotConnected(cell);
-        for (const nbCell of neighbours) {
-          if (this.range(1, 100) <= openChance) {
-            this.connect(tiles[this.cellToIndex(nbCell)], cell);
-            openChance = EXTRA_PASSAGE_CHANCE;
-          } else {
-            openChance += PASSAGE_CHANCE_INC;
-          }
-        }
-      }
-    }
-
-    // place enemies
-    const {
-      enemies,
-      cellsForLoot
-    } = this.placeEnemies(startCell, tiles);
-    const rewards = this.placeRewards(cellsForLoot);
-
-    const dungeon = {
-      tiles,
-      start: startCell,
-      enemies,
-      rewards
-    };
-
-    return dungeon;
-  }
-
-  getEnemyColor(enemy) {
-    switch (enemy.difficulty) {
-      case 1:
-        return "#fac6bc";
-
-      case 2:
-        return "#da978a";
-
-      case 3:
-        return "#c47364";
-
-      case 4:
-        return "#ae5746";
-
-      case 5:
-        return "#a4422f";
-
-      case 6:
-        return "#6e1504";
-    }
-  }
-
-  drawDungeon(dungeon) {
-    for (const cell of dungeon.tiles) {
-      this.drawTile(cell.x, cell.y);
-    }
-
-    for (const enemy of dungeon.enemies) {
-      this.drawTile(enemy.x, enemy.y, this.getEnemyColor(enemy));
-    }
-
-    for (const reward of dungeon.rewards) {
-      this.drawTile(reward.x, reward.y, "#6dff12");
-    }
-
-    for (const cell of dungeon.tiles) {
-      for (const nb of cell.c) {
-        this.drawLine(cell, nb);
-      }
-    }
-
-    this.drawTile(dungeon.start.x, dungeon.start.y, "#245178");
+  
+  drawEmptyCell(x, y, c, index) {
+    console.log("drawEmptyCell", {x, y, c, index});
+    this.drawImage({ type: "way", index }, x, y, c);
   }
 }
 
