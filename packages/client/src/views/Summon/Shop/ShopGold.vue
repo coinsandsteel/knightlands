@@ -14,7 +14,6 @@
 import GoldShopElement from "./GoldShopElement.vue";
 import Meta from "@/top_up_shop";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import PromptMixin from "@/components/PromptMixin.vue";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
@@ -22,34 +21,13 @@ import { create } from "vue-modal-dialogs";
 const ShowDialog = create(ItemsReceived, "items", "soft");
 
 export default {
-  mixins: [NetworkRequestErrorMixin, PromptMixin],
+  mixins: [NetworkRequestErrorMixin],
   components: { GoldShopElement },
   data: () => ({
     gold: Meta.gold
   }),
   methods: {
     async handlePurchase(idx) {
-      const response = await this.showPrompt(
-        this.$t("buy-i-t"),
-        this.$t("buy-i-q"),
-        [
-          {
-            type: "red",
-            title: this.$t("buy-i-n"),
-            response: false
-          },
-          {
-            type: "green",
-            title: this.$t("buy-i-y"),
-            response: true
-          }
-        ]
-      );
-
-      if (!response) {
-        return;
-      }
-
       const gold = await this.performRequest(this.$game.purchaseGold(idx));
       await ShowDialog([], gold);
     }
