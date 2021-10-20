@@ -69,6 +69,11 @@ const CraftingDisenchant = () =>
 const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
 const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
+const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
+const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
+const DungeonRaids = () => import("./views/Dungeon/DungeonRaids.vue");
+const DungeonRankings = () => import("./views/Dungeon/DungeonRankings.vue");
+
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
 const ChooseChest = () => import("./views/Summon/Chests/ChooseChest.vue");
 const OpenChest = () => import("./views/Summon/Chests/OpenChest.vue");
@@ -383,6 +388,30 @@ const router = new Router({
     {
       path: "/home/daily-rewards",
       component: DailyRewards
+    },
+    {
+      path: "/home/dungeon",
+      component: DungeonRoot,
+      children: [
+        {
+          path: "",
+          name: "dungeon",
+          component: Dungeon
+        },
+        {
+          path: "raids",
+          name: "dungeon-raids",
+          component: DungeonRaids
+        },
+        {
+          path: "rankings",
+          name: "dungeon-rankings",
+          component: DungeonRankings
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/home/adventures",
