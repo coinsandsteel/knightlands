@@ -26,6 +26,10 @@ class Timer extends EventEmitter {
     }
   }
 
+  destroy() {
+    this.removeAllListeners("finished");
+  }
+
   stop() {
     clearTimeout(this._timerTimeout);
     this._timerTimeout = null;
