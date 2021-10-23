@@ -1232,7 +1232,17 @@ class Game {
   }
 
   async getDungeon() {
-    let result = await this._wrapOperation(Operations.SDungeonGenerateNew);
+    let result = await this._wrapOperation(Operations.SDungeonGet);
+    return result.response;
+  }
+
+  async revealDungeonCell(index) {
+    let result = await this._wrapOperation(Operations.SDungeonRevealTile, { cellId: index });
+    return result.response;
+  }
+
+  async useDungeonCell(index) {
+    let result = await this._wrapOperation(Operations.SDungeonUseCell, { cellId: index });
     return result.response;
   }
 

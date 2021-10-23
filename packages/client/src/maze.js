@@ -1,4 +1,4 @@
-/*jshint esversion: 9 */
+'use strict';
 
 class MazeImage {
   constructor(data, x, y, c, maze, clear) {
@@ -24,8 +24,8 @@ class MazeImage {
         this.maze.ctx.clearRect(
           this.x * this.maze.TILE_SIZE,
           this.y * this.maze.TILE_SIZE,
-          (this.x + 1) * this.maze.TILE_SIZE - 2,
-          (this.y + 1) * this.maze.TILE_SIZE - 2
+          this.maze.TILE_SIZE,
+          this.maze.TILE_SIZE
         );
       }
 
@@ -66,8 +66,7 @@ class MazeImage {
     let prefix = "/images/halloween_assets";
     switch (this.data.type) {
       case "enemy": {
-        let enemyData = this.maze.meta.enemies[this.data.id];
-        this.image.src = `${prefix}/${enemyData.level}${enemyData.name}.png`;
+        this.image.src = `${prefix}/${this.data.difficulty}${this.data.name}.png`;
         break;
       }
       case "closed": {
@@ -178,27 +177,57 @@ class MazeImage {
 }
 
 class Maze {
-  constructor(data, meta, canvas, wrapper) {
+  constructor(data, meta, canvas, wrapper, game) {
     this.cells = [];
     this.data = data;
     this.meta = meta;
     this.canvas = canvas;
     this.wrapper = wrapper;
+    this.game = game;
     this.cache = {};
 
     this.setConstants();
-    console.log("Maze.constructor()", this);
+    this.setListeners();
   }
 
   setConstants() {
-    this.DUNGEON_WIDTH_COUNT = 6;
-    this.DUNGEON_HEIGHT_COUNT = 12;
+    this.DUNGEON_WIDTH_COUNT = this.data.width;
+    this.DUNGEON_HEIGHT_COUNT = this.data.height;
     this.DUNGEON_CELLS_TOTAL = this.DUNGEON_WIDTH_COUNT * this.DUNGEON_HEIGHT_COUNT;
     this.TILE_SIZE = Math.round(this.wrapper.offsetWidth / this.DUNGEON_WIDTH_COUNT);
 
     this.canvas.width = this.wrapper.offsetWidth;
     this.canvas.height = this.TILE_SIZE * this.DUNGEON_HEIGHT_COUNT;
     this.ctx = this.canvas.getContext("2d");
+  }
+
+  setListeners() {
+    this.canvas.addEventListener("click", event => {
+      let localX = event.pageX;
+      let localY = event.pageY - this.canvas.getBoundingClientRect().top;
+
+      let cellIndex = this.cellToIndex({
+        x: (localX - localX % this.TILE_SIZE) / this.TILE_SIZE,
+        y: (localY - localY % this.TILE_SIZE) / this.TILE_SIZE
+      });
+
+      this.handleCellClick(cellIndex);
+    }, false);
+  }
+
+  async handleCellClick(index) {
+    let cell = this.cells[index];
+    if (!cell.revealed) {
+      try {
+        const response = await this.game.revealDungeonCell(index);
+        console.log({ response });
+        this.drawCell(response, index, true);
+      } catch (e){
+        console.log('handleCellClick error', );
+      }
+    } else {
+      const response = await this.game.useDungeonCell(index);
+    }
   }
 
   render() {
@@ -260,31 +289,31 @@ class Maze {
     return { x, y };
   }
   
-  drawImage(data, x, y, c) {
-    const image = new MazeImage(data, x, y, c, this, false);
+  drawImage(data, x, y, c, clear) {
+    const image = new MazeImage(data, x, y, c, this, clear);
     image.render();
   }
 
   drawClosedCell(x, y) {
     console.log("drawClosedCell", {x,y});
-    this.drawImage({ type: "closed"}, x, y);
+    this.drawImage({ type: "closed"}, x, y, [], false);
   }
 
   drawEnemyCell(x, y, c, data, index) {
     console.log("drawEnemyCell", { x, y, c, data, index });
-    this.drawImage({ type: "way", index }, x, y, c);
-    this.drawImage({ ...data, type: "enemy" }, x, y);
+    this.drawImage({ type: "way", index }, x, y, c, true);
+    this.drawImage({ ...data, type: "enemy" }, x, y, [], false);
   }
   
   drawLootCell(x, y, c, data, index) {
     console.log("drawLootCell", {x, y, c, data, index});
-    this.drawImage({ type: "way", index }, x, y, c);
-    this.drawImage({ ...data, type: "loot" }, x, y);
+    this.drawImage({ type: "way", index }, x, y, c, true);
+    this.drawImage({ ...data, type: "loot" }, x, y, [], false);
   }
   
   drawEmptyCell(x, y, c, index) {
     console.log("drawEmptyCell", {x, y, c, index});
-    this.drawImage({ type: "way", index }, x, y, c);
+    this.drawImage({ type: "way", index }, x, y, c, false);
   }
 }
 
