@@ -5,7 +5,11 @@
       <div
         class="flex relative flex-items-center padding-top-1 padding-bottom-5"
       >
-        <Maze :dungeon="dungeon" @move="handleMoveToCell" />
+        <Maze
+          :dungeon="dungeon"
+          @reveal="revealCell"
+          @interact="interactWithCell"
+        />
       </div>
     </div>
   </div>
@@ -37,8 +41,21 @@ export default {
     this.$game.offNetwork(Events.SDungeonUpdate, this._updateHandler);
   },
   methods: {
-    async handleMoveToCell(cellIndex) {
+    async revealCell(cellIndex) {
       await this.$game.revealDungeonCell(cellIndex);
+    },
+    async interactWithCell(cellIndex, revealedIndex) {
+      const cell = this.dungeon.revealed[revealedIndex];
+      if (cell.enemy) {
+        // show pre-combat dialog
+      } else if (cell.altar) {
+        // show altar dialog
+      } else if (cell.trap) {
+        // show trap dialog
+      } else {
+        // move to the empty cell or collect loot
+        await this.$game.useDungeonCell(cellIndex);
+      }
     },
     handleDungeonUpdate(data) {
       console.log("update dungeon", data);

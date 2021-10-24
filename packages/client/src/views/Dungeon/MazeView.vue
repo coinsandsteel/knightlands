@@ -113,7 +113,9 @@ export default {
       const index = cell.index;
       const isRevealed = this.indexToCellIndex[index] !== undefined;
       if (!isRevealed) {
-        this.$emit("move", index);
+        this.$emit("reveal", index);
+      } else {
+        this.$emit("interact", index, this.indexToCellIndex[index]);
       }
     },
     async movePlayerToCell(index, animated = true) {
