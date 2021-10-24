@@ -334,6 +334,8 @@ export default {
         await ShowChangeAvatar();
       }
 
+      await this.joinRaceChannel();
+
       this.logEvent("log", {
         account: this.$game.account
       });
@@ -377,7 +379,6 @@ export default {
 
     this.$nextTick(() => {
       this.showBackButton();
-      this.joinRaceChannel();
     });
 
     this.$game.connect();

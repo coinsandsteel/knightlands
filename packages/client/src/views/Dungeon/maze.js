@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 class MazeImage {
   constructor(data, x, y, c, maze, clear) {
@@ -45,7 +45,6 @@ class MazeImage {
           this.maze.TILE_SIZE
         );
         this.maze.ctx.restore();
-
       } else {
         this.maze.ctx.drawImage(
           this.image,
@@ -59,7 +58,7 @@ class MazeImage {
       this.rotateDegrees = 0;
       this.backgroundType = null;
       this.backgroundDirection = null;
-    }
+    };
   }
 
   setUrl() {
@@ -75,7 +74,9 @@ class MazeImage {
       }
       case "way": {
         this.setBackgroundUrl();
-        this.image.src = `${prefix}/${this.maze.meta.backgrounds[this.backgroundType]}.jpg`;
+        this.image.src = `${prefix}/${
+          this.maze.meta.backgrounds[this.backgroundType]
+        }.jpg`;
         break;
       }
       case "loot": {
@@ -92,7 +93,6 @@ class MazeImage {
     if (this.c.length === 1) {
       direction = this.singleWayCase(this.c[0]);
       type = "way_single";
-
     } else if (this.c.length === 2) {
       direction = this.doubleWayCase(this.c[0], this.c[1]);
       let map = {
@@ -102,24 +102,22 @@ class MazeImage {
         right_down: "way_turn",
         left_up: "way_turn",
         left_down: "way_turn"
-      }
+      };
       type = map[direction];
-
     } else if (this.c.length === 3) {
       direction = this.tripleWayCase(this.c[0], this.c[1], this.c[2]);
       type = "way_triple";
-
     } else {
       type = "way_all";
     }
 
     this.backgroundType = type;
     this.backgroundDirection = direction;
-    console.log('Way', { type, direction });
+    console.log("Way", { type, direction });
   }
 
   singleWayCase(c1) {
-    console.log('singleWayCase', {c1, index: this.data.index });
+    console.log("singleWayCase", { c1, index: this.data.index });
     if (c1 === this.data.index + 1) {
       this.rotateDegrees = 90;
       return "right";
@@ -149,7 +147,7 @@ class MazeImage {
       } else if (Math.max(c1, c2, this.data.index) === this.data.index) {
         this.rotateDegrees = 90;
         return "left_up";
-      } else if (c1+1 === this.data.index || c2+1 === this.data.index) {
+      } else if (c1 + 1 === this.data.index || c2 + 1 === this.data.index) {
         this.rotateDegrees = 0;
         return "left_down";
       } else {
@@ -166,7 +164,11 @@ class MazeImage {
     } else if (![c1, c2, c3].some(i => i === this.data.index - 1)) {
       this.rotateDegrees = -90;
       return "right";
-    } else if (![c1, c2, c3].some(i => i === this.data.index - this.maze.DUNGEON_WIDTH_COUNT)) {
+    } else if (
+      ![c1, c2, c3].some(
+        i => i === this.data.index - this.maze.DUNGEON_WIDTH_COUNT
+      )
+    ) {
       this.rotateDegrees = 0;
       return "bottom";
     } else {
@@ -193,8 +195,11 @@ class Maze {
   setConstants() {
     this.DUNGEON_WIDTH_COUNT = this.data.width;
     this.DUNGEON_HEIGHT_COUNT = this.data.height;
-    this.DUNGEON_CELLS_TOTAL = this.DUNGEON_WIDTH_COUNT * this.DUNGEON_HEIGHT_COUNT;
-    this.TILE_SIZE = Math.round(this.wrapper.offsetWidth / this.DUNGEON_WIDTH_COUNT);
+    this.DUNGEON_CELLS_TOTAL =
+      this.DUNGEON_WIDTH_COUNT * this.DUNGEON_HEIGHT_COUNT;
+    this.TILE_SIZE = Math.round(
+      this.wrapper.offsetWidth / this.DUNGEON_WIDTH_COUNT
+    );
 
     this.canvas.width = this.wrapper.offsetWidth;
     this.canvas.height = this.TILE_SIZE * this.DUNGEON_HEIGHT_COUNT;
@@ -202,17 +207,21 @@ class Maze {
   }
 
   setListeners() {
-    this.canvas.addEventListener("click", event => {
-      let localX = event.pageX;
-      let localY = event.pageY - this.canvas.getBoundingClientRect().top;
+    this.canvas.addEventListener(
+      "click",
+      event => {
+        let localX = event.pageX;
+        let localY = event.pageY - this.canvas.getBoundingClientRect().top;
 
-      let cellIndex = this.cellToIndex({
-        x: (localX - localX % this.TILE_SIZE) / this.TILE_SIZE,
-        y: (localY - localY % this.TILE_SIZE) / this.TILE_SIZE
-      });
+        let cellIndex = this.cellToIndex({
+          x: (localX - (localX % this.TILE_SIZE)) / this.TILE_SIZE,
+          y: (localY - (localY % this.TILE_SIZE)) / this.TILE_SIZE
+        });
 
-      this.handleCellClick(cellIndex);
-    }, false);
+        this.handleCellClick(cellIndex);
+      },
+      false
+    );
   }
 
   async handleCellClick(index) {
@@ -222,8 +231,8 @@ class Maze {
         const response = await this.game.revealDungeonCell(index);
         console.log({ response });
         this.drawCell(response, index, true);
-      } catch (e){
-        console.log('handleCellClick error', );
+      } catch (e) {
+        console.log("handleCellClick error");
       }
     } else {
       const response = await this.game.useDungeonCell(index);
@@ -233,14 +242,14 @@ class Maze {
   render() {
     // Draw revealed
     for (const cell of this.data.revealed) {
-      console.log("Draw revealed", {cell});
+      console.log("Draw revealed", { cell });
       this.drawCell(cell, null, true);
     }
 
     // Draw the rest
     for (let index = 0; index < this.DUNGEON_CELLS_TOTAL; index++) {
       if (!this.cells[index]) {
-        console.log("Draw rest", {index});
+        console.log("Draw rest", { index });
         this.drawCell(null, index, false);
       }
     }
@@ -288,15 +297,15 @@ class Maze {
     let y = (index - x) / this.DUNGEON_WIDTH_COUNT;
     return { x, y };
   }
-  
+
   drawImage(data, x, y, c, clear) {
     const image = new MazeImage(data, x, y, c, this, clear);
     image.render();
   }
 
   drawClosedCell(x, y) {
-    console.log("drawClosedCell", {x,y});
-    this.drawImage({ type: "closed"}, x, y, [], false);
+    console.log("drawClosedCell", { x, y });
+    this.drawImage({ type: "closed" }, x, y, [], false);
   }
 
   drawEnemyCell(x, y, c, data, index) {
@@ -304,15 +313,15 @@ class Maze {
     this.drawImage({ type: "way", index }, x, y, c, true);
     this.drawImage({ ...data, type: "enemy" }, x, y, [], false);
   }
-  
+
   drawLootCell(x, y, c, data, index) {
-    console.log("drawLootCell", {x, y, c, data, index});
+    console.log("drawLootCell", { x, y, c, data, index });
     this.drawImage({ type: "way", index }, x, y, c, true);
     this.drawImage({ ...data, type: "loot" }, x, y, [], false);
   }
-  
+
   drawEmptyCell(x, y, c, index) {
-    console.log("drawEmptyCell", {x, y, c, index});
+    console.log("drawEmptyCell", { x, y, c, index });
     this.drawImage({ type: "way", index }, x, y, c, false);
   }
 }

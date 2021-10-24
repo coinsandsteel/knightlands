@@ -402,6 +402,14 @@ class Game {
     return factor;
   }
 
+  onNetwork(event, callback) {
+    this._socket.on(event, callback);
+  }
+
+  offNetwork(event, callback) {
+    this._socket.off(event, callback);
+  }
+
   on(event, callback) {
     this._vm.$on(event, callback);
   }
@@ -437,7 +445,7 @@ class Game {
       this.racesChannel.watch(this._handleRaceFinished.bind(this));
     }
   }
-  
+
   async signMessage(message) {
     return await this._blockchainClient.sign(message);
   }
@@ -1232,17 +1240,21 @@ class Game {
   }
 
   async getDungeon() {
-    let result = await this._wrapOperation(Operations.SDungeonGet);
+    let result = await this._wrapOperation(Operations.SDungeonLoad);
     return result.response;
   }
 
   async revealDungeonCell(index) {
-    let result = await this._wrapOperation(Operations.SDungeonRevealTile, { cellId: index });
+    let result = await this._wrapOperation(Operations.SDungeonRevealCell, {
+      cellId: index
+    });
     return result.response;
   }
 
   async useDungeonCell(index) {
-    let result = await this._wrapOperation(Operations.SDungeonUseCell, { cellId: index });
+    let result = await this._wrapOperation(Operations.SDungeonUseCell, {
+      cellId: index
+    });
     return result.response;
   }
 

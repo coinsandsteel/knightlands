@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Maze from "@/maze";
+import Maze from "./maze";
 
 export default {
   mixins: [],
@@ -34,7 +34,7 @@ export default {
   methods: {
     async getDungeon() {
       this.data = await this.$game.getDungeon();
-      console.log('Dungeon data', { data: this.data });
+      console.log("Dungeon data", { data: this.data });
     },
     render() {
       console.log("Render started", new Date().toISOString());

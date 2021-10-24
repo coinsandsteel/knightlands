@@ -44,7 +44,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import Timer from "@/timer";
 import Events from "@/../../knightlands-shared/events";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
@@ -73,7 +73,7 @@ export default {
     cooldownTimer: new Timer(true)
   }),
   watch: {
-    "current.id": function(newId, oldId){
+    "current.id": function(newId, oldId) {
       if (oldId && !newId) {
         this.removeListener();
       }
@@ -83,15 +83,15 @@ export default {
     }
   },
   methods: {
-    finishedRaceHandler(data){
+    finishedRaceHandler(data) {
       if (this.currentRace && this.currentRace.id == data.race) {
         this.fetchList();
       }
     },
-    removeListener(){
+    removeListener() {
       this.$game.off(Events.RaceFinished, this.finishedRaceHandler);
     },
-    addListener(){
+    addListener() {
       this.$game.on(Events.RaceFinished, this.finishedRaceHandler);
     },
     previewRewards() {
@@ -113,7 +113,9 @@ export default {
       this.current = info.currentRace;
       this.cooldownTimer.timeLeft = info.cooldown;
 
-      this.$store.commit("rankings/setCurrentRace", { currentRace: info.currentRace });
+      this.$store.commit("rankings/setCurrentRace", {
+        currentRace: info.currentRace
+      });
 
       this.races.sort((x, y) => {
         let subject = x.config.tier - y.config.tier;
