@@ -66,12 +66,12 @@ export default {
   components: {
     Maze,
     Title,
-    ProgressBar,
+    ProgressBar
   },
   data: () => ({
     dungeon: null,
     thresholds: UiConstants.progressThresholds,
-    timer: new Timer(true),
+    timer: new Timer(true)
   }),
   created() {
     this.title = "w-simple-dun";
@@ -79,13 +79,13 @@ export default {
   },
   async mounted() {
     this.dungeon = await this.$game.getDungeon();
+    this._updateHandler = this.handleDungeonUpdate.bind(this);
+    this.$game.onNetwork(Events.SDungeonUpdate, this._updateHandler);
+
     if (false && "userIsInFight") {
       this.$router.push({ name: "dungeon-fight", params: { id: 1 } });
       return;
     }
-
-    this._updateHandler = this.handleDungeonUpdate.bind(this);
-    this.$game.onNetwork(Events.SDungeonUpdate, this._updateHandler);
   },
   destroyed() {
     this.$game.offNetwork(Events.SDungeonUpdate, this._updateHandler);
@@ -106,8 +106,8 @@ export default {
               {
                 type: "red",
                 title: "fight-it",
-                response: true,
-              },
+                response: true
+              }
             ]
           );
           // Redirect to fight
@@ -121,8 +121,8 @@ export default {
           {
             type: "red",
             title: "btn-ok",
-            response: true,
-          },
+            response: true
+          }
         ]);
       } else {
         // move to the empty cell or collect loot
@@ -138,7 +138,7 @@ export default {
       if (data.moveTo) {
         this.dungeon.user.cell = data.moveTo;
       }
-    },
-  },
+    }
+  }
 };
 </script>
