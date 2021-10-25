@@ -82,7 +82,7 @@ export default {
     this._updateHandler = this.handleDungeonUpdate.bind(this);
     this.$game.onNetwork(Events.SDungeonUpdate, this._updateHandler);
 
-    if (false && "userIsInFight") {
+    if (this.dungeon.combat) {
       this.$router.push({ name: "dungeon-fight", params: { id: 1 } });
       return;
     }
