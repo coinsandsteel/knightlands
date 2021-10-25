@@ -96,9 +96,12 @@ export default {
     },
     async interactWithCell(cellIndex, revealedIndex) {
       const cell = this.dungeon.revealed[revealedIndex];
-      if (cell.enemy) {
-        // show pre-combat dialog
-        if ("enemyIsAggresive") {
+
+      if (cellIndex == this.dungeon.user.cell) {
+        // can interact with objects where user stands
+
+        if (cell.enemy) {
+          // show pre-combat dialog
           await this.showPrompt(
             this.$t("enemy-aggressive-h"),
             this.$t("enemy-aggressive-t"),
@@ -112,21 +115,23 @@ export default {
           );
           // Redirect to fight
           this.$router.push({ name: "dungeon-fight", params: { id: 1 } });
+        } else if (cell.altar) {
+          // show altar dialog
+        } else if (cell.trap) {
+          // show trap dialog
+          await this.showPrompt(this.$t("trap-h"), this.$t("trap-t"), [
+            {
+              type: "red",
+              title: "btn-ok",
+              response: true
+            }
+          ]);
         }
-      } else if (cell.altar) {
-        // show altar dialog
-      } else if (cell.trap) {
-        // show trap dialog
-        await this.showPrompt(this.$t("trap-h"), this.$t("trap-t"), [
-          {
-            type: "red",
-            title: "btn-ok",
-            response: true
-          }
-        ]);
-      } else {
-        // move to the empty cell or collect loot
+
+        // interact with the object in the cell
         await this.$game.useDungeonCell(cellIndex);
+      } else {
+        await this.$game.moveToDungeonCell(cellIndex);
       }
     },
     handleDungeonUpdate(data) {
