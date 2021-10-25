@@ -1258,6 +1258,15 @@ class Game {
     return result.response;
   }
 
+  async engageDungeon(level, enemyIndex) {
+    /*let result = await this._wrapOperation('SDungeonEngage', {
+      level,
+      enemyIndex
+    });*/
+    return { damages: [{crit: false, damage: level * 50}], items: [] };
+    //return result.response;
+  }
+
   async engageQuest(zone, questIndex, max = false) {
     let stage = this.$store.getters.getZoneStage;
     let result = await this._wrapOperation(Operations.EngageQuest, {

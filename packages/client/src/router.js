@@ -70,8 +70,9 @@ const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
 const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
 const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
+const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
 const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
-const DungeonRaids = () => import("./views/Dungeon/DungeonRaids.vue");
+const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
 const DungeonRankings = () => import("./views/Dungeon/DungeonRankings.vue");
 
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
@@ -394,20 +395,27 @@ const router = new Router({
       component: DungeonRoot,
       children: [
         {
+          path: "fight/:id",
+          name: "dungeon-fight",
+          component: DungeonFight
+        },
+        {
           path: "",
-          name: "dungeon",
-          component: Dungeon
+          name: "dungeon-sections",
+          component: DungeonSections,
+          children: [
+            {
+              path: "",
+              name: "dungeon",
+              component: Dungeon
+            },
+            {
+              path: "rankings",
+              name: "dungeon-rankings",
+              component: DungeonRankings
+            }
+          ]
         },
-        {
-          path: "raids",
-          name: "dungeon-raids",
-          component: DungeonRaids
-        },
-        {
-          path: "rankings",
-          name: "dungeon-rankings",
-          component: DungeonRankings
-        }
       ],
       meta: {
         requiresAuth: true

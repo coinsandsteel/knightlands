@@ -42,7 +42,8 @@ export default {
     },
     "dungeon.user.cell": {
       handler() {
-        this.movePlayerToCell(this.dungeon.user.cell);
+        //this.movePlayerToCell(this.dungeon.user.cell);
+        this.movePlayerToCell(this.dungeon.start);
       }
     }
   },
@@ -72,7 +73,8 @@ export default {
 
       this.indexCells(true);
 
-      this.movePlayerToCell(this.dungeon.user.cell, false);
+      //this.movePlayerToCell(this.dungeon.user.cell, false);
+      this.movePlayerToCell(this.dungeon.start, false);
     },
     cellToIndex(cell) {
       return cell.y * this.width + cell.x;
