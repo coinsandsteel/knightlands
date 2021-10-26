@@ -124,7 +124,11 @@ export default {
   },
   actions: {
     redirectToActiveCombat(store) {
-      if (store.state.combat && store.state.combat.enemyId) {
+      if (
+        store.state.combat &&
+        store.state.combat.enemyId &&
+        store.state.combat.enemyHealth
+      ) {
         this.$app.$router.push({ name: "dungeon-fight" });
       }
     },

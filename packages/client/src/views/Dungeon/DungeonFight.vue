@@ -156,6 +156,10 @@ export default {
   },
   mounted() {
     this.damageTextId = 0;
+
+    if (!this.combat.enemyHealth) {
+      this.leave();
+    }
   },
   deactivated() {
     this.rewards = [];

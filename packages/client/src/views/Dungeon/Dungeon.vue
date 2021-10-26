@@ -70,8 +70,8 @@ export default {
     this.timer.timeLeft = PERIOD - (this.$game.nowSec % PERIOD);
   },
   activated() {
-    console.log('Dungeon:activated');
-    this.$store.dispatch('dungeon/redirectToActiveCombat');
+    console.log("Dungeon:activated");
+    this.$store.dispatch("dungeon/redirectToActiveCombat");
   },
   computed: {
     ...mapState({
@@ -79,16 +79,6 @@ export default {
       user: state => state.dungeon.user,
       combat: state => state.dungeon.combat
     })
-  },
-  watch: {
-    combat: {
-      immediate: true,
-      handler() {
-        if (this.combat && this.combat.enemyId && this.combat.enemyHealth) {
-          this.$app.$router.push({ name: "dungeon-fight" });
-        }
-      }
-    }
   },
   methods: {
     async resetDungeon() {
