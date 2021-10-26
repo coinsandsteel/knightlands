@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
-    <div class="screen-background"></div>
+    <div class="hallowen-bg"></div>
     <Title class="enemy-title-font margin-top-1 margin-bottom-1 font-outline">{{
       $t("level-full", { lvl: maze.floor })
     }}</Title>
@@ -37,12 +37,7 @@
         <template v-slot:label>Dungeon Energy&nbsp;&ndash;&nbsp;</template>
       </ProgressBar>
     </div>
-
-    <div class="width-100" v-bar>
-      <div class="flex relative flex-items-center padding-top-1">
-        <Maze />
-      </div>
-    </div>
+    <Maze />
   </div>
 </template>
 
@@ -55,12 +50,11 @@ import Title from "@/components/Title.vue";
 import UiConstants from "@/ui_constants";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Timer from "@/timer";
-import PromptMixin from "@/components/PromptMixin.vue";
 
 const PERIOD = 86400;
 
 export default {
-  mixins: [AppSection, PromptMixin],
+  mixins: [AppSection],
   components: {
     Maze,
     Title,
@@ -78,8 +72,19 @@ export default {
   computed: {
     ...mapState({
       maze: state => state.dungeon.maze,
-      user: state => state.dungeon.user
+      user: state => state.dungeon.user,
+      combat: state => state.dungeon.combat
     })
+  },
+  watch: {
+    combat: {
+      immediate: true,
+      handler() {
+        if (this.combat && this.combat.enemyId && this.combat.enemyHealth) {
+          this.$app.$router.push({ name: "dungeon-fight" });
+        }
+      }
+    }
   },
   methods: {
     async resetDungeon() {
@@ -88,3 +93,15 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.hallowen-bg {
+  background-color: #40374d;
+  z-index: -1;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+</style>

@@ -1,25 +1,31 @@
 <template>
-  <div class="width-100 dungeon-grid" ref="wrapper" :style="cssVars">
-    <MazeCell
-      v-for="idx in totalCells"
-      :key="`${idx - 1}_${indexToCellIndex[idx - 1]}`"
-      :cell="getCellAt(indexToCellIndex[idx - 1])"
-      :index="idx - 1"
-      :mazeWidth="width"
-      :highlight="isHighlighted(idx - 1)"
-      @click="handleCellClick"
-    />
+  <div class="width-100" v-bar>
+    <div class="flex relative flex-items-center padding-top-1">
+      <div class="width-100 dungeon-grid" ref="wrapper" :style="cssVars">
+        <MazeCell
+          v-for="idx in totalCells"
+          :key="`${idx - 1}_${indexToCellIndex[idx - 1]}`"
+          :cell="getCellAt(indexToCellIndex[idx - 1])"
+          :index="idx - 1"
+          :mazeWidth="width"
+          :highlight="isHighlighted(idx - 1)"
+          @click="handleCellClick"
+        />
 
-    <Player ref="player" class="dungeon-player" />
+        <Player ref="player" class="dungeon-player" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import MazeCell from "./MazeCell.vue";
 import Player from "./Player.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 import { mapGetters, mapState } from "vuex";
 
 export default {
+  mixins: [PromptMixin],
   components: { MazeCell, Player },
   watch: {
     loaded: {
@@ -72,6 +78,7 @@ export default {
     }
   },
   methods: {
+    scrollToPlayer() {},
     init() {
       this.cellSize = this.$refs.wrapper.offsetWidth / this.width;
 
@@ -82,6 +89,8 @@ export default {
       this.indexCells(true);
 
       this.movePlayerToCell(this.user.cell, false);
+
+      this.scrollToPlayer();
     },
     cellToIndex(cell) {
       return cell.y * this.width + cell.x;

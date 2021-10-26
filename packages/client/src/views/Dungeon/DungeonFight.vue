@@ -37,7 +37,7 @@
               'hit5',
               'hit6',
               'hit7',
-              'hit8',
+              'hit8'
             ]"
           />
           <DamageText
@@ -59,7 +59,7 @@
 
       <div class="color-panel-1 flex flex-column full-flex">
         <progress-bar
-          :percentMode="true"
+          :percentMode="false"
           v-model="currentProgress"
           :maxValue="maxProgress"
           height="4px"
@@ -70,45 +70,8 @@
           :thresholds="thresholds"
         ></progress-bar>
 
-        <div v-if="false" class="flex margin-top-2">
-          <div
-            class="
-              width-50
-              font-size-25
-              flex flex-column flex-center flex-justify-start
-            "
-          >
-            <span class="margin-bottom-1 yellow-title font-weight-900">{{
-              $t("rewards")
-            }}</span>
-            <div class="flex flex-column flex-start">
-              <icon-with-value
-                class="flex-start"
-                iconClass="icon-gold"
-                :value="5000"
-              ></icon-with-value>
-            </div>
-          </div>
-          <div
-            class="
-              width-50
-              font-size-25
-              flex flex-column flex-center flex-justify-start
-            "
-          >
-            <span class="margin-bottom-1 blue-title font-weight-900">Cost</span>
-            <div class="flex flex-column">
-              <icon-with-value
-                class="flex-start"
-                iconClass="icon-energy"
-                :value="20"
-              ></icon-with-value>
-            </div>
-          </div>
-        </div>
-
         <div class="margin-top-2 flex flex-center">
-          <AttackButton
+          <CustomButton
             :promise="request"
             minWidth="15rem"
             type="yellow"
@@ -116,9 +79,9 @@
             @click="engage(moves.Scissors)"
             id="engage-q"
           >
-            <span>{{ $t("btn-attack") }}</span></AttackButton
+            <span>{{ $t("btn-attack") }}</span></CustomButton
           >
-          <AttackButton
+          <CustomButton
             :promise="request"
             minWidth="15rem"
             type="yellow"
@@ -126,9 +89,9 @@
             @click="engage(moves.Paper)"
             id="engage-q"
           >
-            <span>{{ $t("btn-block") }}</span></AttackButton
+            <span>{{ $t("btn-block") }}</span></CustomButton
           >
-          <AttackButton
+          <CustomButton
             :promise="request"
             minWidth="15rem"
             type="yellow"
@@ -136,34 +99,9 @@
             @click="engage(moves.Rock)"
             id="engage-q"
           >
-            <span>{{ $t("btn-parry") }}</span></AttackButton
+            <span>{{ $t("btn-parry") }}</span></CustomButton
           >
         </div>
-      </div>
-
-      <div class="width-100 margin-top-2 margin-bottom-2">
-        <ProgressBar
-          :value="870"
-          :maxValue="935"
-          height="4px"
-          width="90%"
-          valuePosition="top"
-          barType="blue"
-          valueClass="white-font font-outline font-size-20"
-        >
-          <template v-slot:label>Dungeon Energy&nbsp;&ndash;&nbsp;</template>
-        </ProgressBar>
-      </div>
-
-      <Title class="margin-top-2">{{ $t("loot") }}</Title>
-
-      <div class="flex full-flex padding-left-1 padding-right-1 margin-top-1">
-        <loot
-          v-for="reward in rewards"
-          :key="reward.id"
-          :item="reward"
-          @hint="handleHint"
-        ></loot>
       </div>
     </div>
   </div>
@@ -172,46 +110,37 @@
 <script>
 import HintHandler from "@/components/HintHandler.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
-import Loot from "@/components/Loot.vue";
 import Stat from "@/../../knightlands-shared/character_stat.js";
 import IconWithValue from "@/components/IconWithValue.vue";
 import UiConstants from "@/ui_constants";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import PromisedButton from "@/components/PromisedButton.vue";
-import AttackButton from "@/components/AttackButton.vue";
 import CustomButton from "@/components/Button.vue";
-import Title from "@/components/Title.vue";
-import NewLoot from "@/components/Item/NewLoot.vue";
 import DamageText from "@/views/Raids/DamageText.vue";
 import Errors from "@/../../knightlands-shared/errors";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 import { create } from "vue-modal-dialogs";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
 import { MoveType } from "@/../../knightlands-shared/dungeon_types";
 
 import anime from "animejs/lib/anime.es.js";
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState } from "vuex";
 
 const ShowResourceRefill = create(NotEnoughResource, "stat");
 const NEW_LOOT_DELAY = 300;
 
 export default {
   name: "dungeon-fight",
-  mixins: [HintHandler, NetworkRequestErrorMixin, AppSection],
-  props: ["zone", "questIndex", "maxQuestIndex", "stage"], 
+  mixins: [HintHandler, NetworkRequestErrorMixin, AppSection, PromptMixin],
+  props: ["zone", "questIndex", "maxQuestIndex", "stage"],
   components: {
-    Loot,
     ProgressBar,
     IconWithValue,
-    PromisedButton,
     CustomButton,
     DamageText,
-    AttackButton,
-    Title,
-    NewLoot,
-    SoundEffect,
+    SoundEffect
   },
   data: () => ({
     moves: MoveType,
@@ -236,10 +165,11 @@ export default {
   },
   computed: {
     ...mapState({
-      combat: state => state.dungeon.combat
+      combat: state => state.dungeon.combat,
+      user: state => state.dungeon.user
     }),
     ...mapGetters({
-      enemy: 'dungeon/enemy'
+      enemy: "dungeon/enemy"
     }),
     enemyImage() {
       return `/images/enemies/${this.enemy.image}.png`;
@@ -261,24 +191,41 @@ export default {
     },
     missionName() {
       return this.enemy.label;
+    }
+  },
+  watch: {
+    "combat.enemyHealth"(current, previous) {
+      const damage = previous - current;
+      if (damage > 0) {
+        this.$refs.fx.play();
+        this.handleDamage(damage, false, 0);
+      }
+
+      if (current <= 0) {
+        this.combatWon();
+      }
     },
+    "user.health"(current, previous) {
+      const damage = previous - current;
+      if (current <= 0) {
+        this.combatLost();
+      }
+    }
   },
   methods: {
+    combatLost() {
+      this.leave();
+    },
+    combatWon() {
+      this.leave();
+    },
+    leave() {
+      this.$router.push({ name: "dungeon" });
+    },
     async engage(move) {
       this.request = this.$store.dispatch("dungeon/combat", move);
       try {
         await this.request;
-        let totalDamage = 0;
-        let isCrit = false;
-        for (let i = 0; i < 2; ++i) {
-          isCrit |= true;
-          totalDamage += 30;
-        }
-
-        if (totalDamage > 0) {
-          this.$refs.fx.play();
-          this.handleDamage(totalDamage, isCrit, 0);
-        }
 
         //this.handleLoot(items);
       } catch (exc) {
@@ -296,7 +243,7 @@ export default {
           // or add to loot array and hash for tracking
           this.$set(this.lootHash, templateId, {
             template: loot.item,
-            count: loot.quantity,
+            count: loot.quantity
           });
           this.rewards.push(this.lootHash[templateId]);
         }
@@ -307,20 +254,18 @@ export default {
     },
     async _handleQuestError(error) {
       // TODO test
-      switch (error) {
-        case Errors.NoHealth:
-          await ShowResourceRefill(Stat.Health);
-          break;
-
-        case Errors.NoEnergy:
-          await this.$app.tutorial().triggerEvent("no-energy");
-          await ShowResourceRefill(Stat.Energy);
-          break;
-
-        case "enemy is defeated":
-          this.$router.push({ name: "dungeon" });
-          break;
-      }
+      // switch (error) {
+      //   case Errors.NoHealth:
+      //     await ShowResourceRefill(Stat.Health);
+      //     break;
+      //   case Errors.NoEnergy:
+      //     await this.$app.tutorial().triggerEvent("no-energy");
+      //     await ShowResourceRefill(Stat.Energy);
+      //     break;
+      //   case "enemy is defeated":
+      //     this.$router.push({ name: "dungeon" });
+      //     break;
+      // }
     },
     showNewLoot(loot, delay) {
       setTimeout(() => {
@@ -330,14 +275,14 @@ export default {
       this.newRewards.push({
         template: loot.item,
         count: loot.quantity,
-        delay,
+        delay
       });
     },
     handleDamage(damage, crit, delay) {
       this.playerDamages.push({
         damage: damage,
         crit: crit,
-        id: this.damageTextId++,
+        id: this.damageTextId++
       });
 
       setTimeout(() => {
@@ -347,27 +292,27 @@ export default {
       const enemyView = this.$refs.enemyView[this.questIndex];
       anime.remove(enemyView);
       let timeline = anime.timeline({
-        targets: enemyView,
+        targets: enemyView
       });
 
       if (crit) {
         timeline.add({
-          translateX: function (el, i) {
+          translateX: function(el, i) {
             return `-=${anime.random(-1, -2)}rem`;
           },
-          translateY: function (el, i) {
+          translateY: function(el, i) {
             return `-=${anime.random(-1, 1)}rem`;
           },
           scale: 1.2 + Math.random() * 0.2,
           duration: 0,
-          loop: 1,
+          loop: 1
         });
       }
 
       timeline.add(
         {
           filter: "brightness(100)",
-          duration: 0,
+          duration: 0
         },
         0
       );
@@ -380,11 +325,11 @@ export default {
         filter: {
           value: "brightness(1)",
           easing: "linear",
-          duration: 100,
-        },
+          duration: 100
+        }
       });
     }
-  },
+  }
 };
 </script>
 

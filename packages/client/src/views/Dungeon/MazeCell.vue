@@ -39,6 +39,7 @@ export default {
   watch: {
     cell: {
       immediate: true,
+      deep: true,
       handler() {
         this.render();
       }
@@ -105,6 +106,8 @@ export default {
           this.objectImage = {
             "background-image": `url("${baseUrl}/${objectFile}.png")`
           };
+        } else {
+          this.objectImage = {};
         }
       }
 

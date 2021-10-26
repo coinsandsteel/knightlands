@@ -397,12 +397,14 @@ const router = new Router({
         {
           path: "fight",
           name: "dungeon-fight",
-          component: DungeonFight
+          component: DungeonFight,
+          meta: { noTopBar: true }
         },
         {
           path: "",
           name: "dungeon-sections",
           component: DungeonSections,
+          meta: { noTopBar: true },
           children: [
             {
               path: "",
@@ -415,7 +417,7 @@ const router = new Router({
               component: DungeonRankings
             }
           ]
-        },
+        }
       ],
       meta: {
         requiresAuth: true

@@ -25,11 +25,8 @@ export default {
       lastEnergyRegen: null
     },
     combat: {
-      turn: null,
-      enemyHealth: null,
-      enemyId: null,
-      moveSetId: null,
-      moveIndex: null
+      enemyId: 0,
+      enemyHealth: 0
     }
   },
   getters: {
@@ -47,18 +44,14 @@ export default {
         delete data.user;
       }
       if (data.combat) {
-        state.combat = { ...state.combat, ...data.combat };
-        delete data.combat;
+        state.combat = data.combat;
       } else {
-        delete state.combat;
+        state.combat.enemyId = 0;
+        state.combat.enemyHealth = 0;
       }
       state.maze = { ...state.maze, ...data };
       console.log("state.maze", state.maze);
       state.loaded = true;
-
-      if (state.combat && state.combat.enemyId) {
-        this.$app.$router.push({ name: "dungeon-fight" });
-      }
     },
     updateState(state, data) {
       // cellRevealed
@@ -66,24 +59,32 @@ export default {
         state.maze.revealed.push(data.cell);
       }
       // energyChanged
-      if (data.energy) {
+      if (data.energy !== undefined) {
         state.user.energy = data.energy;
       }
       // combatStarted
       if (data.combat) {
-        state.combat = { ...state.combat, ...data.combat };
+        state.combat = data.combat;
       }
       // enemyHealth
-      if (data.enemyHealth) {
+      if (data.enemyHealth !== undefined) {
         state.combat.enemyHealth = data.enemyHealth;
       }
       // playerHealth
-      if (data.playerHealth) {
+      if (data.playerHealth !== undefined) {
         state.user.health = data.playerHealth;
       }
       // playerMoved
-      if (data.moveTo) {
+      if (data.moveTo !== undefined) {
         state.user.cell = data.moveTo;
+      }
+
+      if (data.altar !== undefined) {
+        state.maze.revealed[data.altar].altar = undefined;
+      }
+
+      if (data.trap !== undefined) {
+        state.maze.revealed[data.trap].trap = undefined;
       }
     }
   },
