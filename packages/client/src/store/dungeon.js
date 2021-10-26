@@ -53,6 +53,7 @@ export default {
         delete state.combat;
       }
       state.maze = { ...state.maze, ...data };
+      console.log("state.maze", state.maze);
       state.loaded = true;
 
       if (state.combat && state.combat.enemyId) {
@@ -123,6 +124,10 @@ export default {
         action: CombatAction.Attack,
         data: { move }
       });
+    },
+    async reset(store) {
+      await this.$app.$game._wrapOperation(Operations.SDungeonGenerateNew);
+      await store.dispatch("load");
     }
   }
 };

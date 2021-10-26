@@ -97,6 +97,10 @@ export default {
           objectFile = DungeonTraps[this.cell.trap.id].image;
         }
 
+        if (this.cell.loot) {
+          objectFile = "loot";
+        }
+
         if (objectFile) {
           this.objectImage = {
             "background-image": `url("${baseUrl}/${objectFile}.png")`

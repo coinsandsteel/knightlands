@@ -34,8 +34,8 @@ export default {
     },
     "maze.revealed": {
       deep: true,
-      handler() {
-        this.indexCells(false);
+      handler(newer, old) {
+        this.indexCells(newer.length <= old.length);
       }
     },
     "user.cell": {

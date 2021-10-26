@@ -8,6 +8,7 @@
     <div class="flex flex-center panel-input padding-1">
       <div class="icon-timer small margin-right-half"></div>
       <span class="font-size-18">{{ timer.value }}</span>
+      <CustomButton @click="resetDungeon">Reset dungeon</CustomButton>
     </div>
 
     <div class="width-100 margin-top-2 margin-bottom-2">
@@ -47,7 +48,7 @@
 
 <script>
 import { mapState } from "vuex";
-
+import CustomButton from "@/components/Button.vue";
 import Maze from "./MazeView.vue";
 import AppSection from "@/AppSection.vue";
 import Title from "@/components/Title.vue";
@@ -63,7 +64,8 @@ export default {
   components: {
     Maze,
     Title,
-    ProgressBar
+    ProgressBar,
+    CustomButton
   },
   data: () => ({
     thresholds: UiConstants.progressThresholds,
@@ -78,6 +80,11 @@ export default {
       maze: state => state.dungeon.maze,
       user: state => state.dungeon.user
     })
+  },
+  methods: {
+    async resetDungeon() {
+      await this.$store.dispatch("dungeon/reset");
+    }
   }
 };
 </script>
