@@ -183,15 +183,20 @@ export default {
 
       // Click to user's current cell
       if (cellIndex == this.user.cell) {
+        let response = false;
+
         if (cell.enemy) {
-          await ShowEnemyPopup(cell.enemy.id);
-          //this.$router.push({ name: "dungeon-fight" });
+          response = await ShowEnemyPopup(cell.enemy.id);
         } else if (cell.altar) {
-          await ShowAltarPopup(cell.altar.id);
+          response = await ShowAltarPopup(cell.altar.id);
         } else if (cell.trap) {
-          await ShowTrapPopup(cell.trap.id);
+          response = await ShowTrapPopup(cell.trap.id);
         } else if (cell.loot) {
-          await ShowLootPopup(cell.loot);
+          response = await ShowLootPopup(cell.loot);
+        }
+
+        if (!response) {
+          return;
         }
 
         // interact with the object in the cell

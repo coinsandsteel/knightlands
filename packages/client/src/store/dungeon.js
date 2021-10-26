@@ -85,13 +85,6 @@ export default {
       // cellRevealed
       if (data.cell) {
         state.maze.revealed.push(data.cell);
-        if (data.cell.enemy) {
-          let enemy = enemies[data.cell.enemy.id];
-          console.log('Cell enemy', enemy);
-          if (enemy.isAgressiive) {
-            this.$app.$emit('aggressive_enemy_encountered');
-          }
-        }
       }
       // energyChanged
       if (data.energy !== undefined) {
@@ -143,6 +136,22 @@ export default {
     },
     update(store, data) {
       store.commit("updateState", data);
+
+      if (data.cell && data.cell.enemy) {
+        let enemy = enemies[data.cell.enemy.id];
+        console.log('Cell enemy', enemy);
+        if (enemy.isAgressiive) {
+          this.$app.$emit('aggressive_enemy_encountered');
+        }
+      }
+
+      if (data.combat) {
+        store.dispatch('redirectToActiveCombat');
+      }
+
+      // TODO combat finished > redirect to maze
+      if (false) {
+      }
     },
     subscribe(store) {
       this.$app.$game.onNetwork(Events.SDungeonUpdate, data => {
