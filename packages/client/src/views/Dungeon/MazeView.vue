@@ -16,8 +16,7 @@
 <script>
 import MazeCell from "./MazeCell.vue";
 import Player from "./Player.vue";
-import anime from "animejs";
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState } from "vuex";
 
 export default {
   components: { MazeCell, Player },
@@ -58,7 +57,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      enemy: 'dungeon/enemy'
+      enemy: "dungeon/enemy"
     }),
     ...mapState({
       loaded: state => state.dungeon.loaded,
@@ -140,7 +139,7 @@ export default {
       await player.moveToPosition(this.cellToScreen(targetCell));
     },
     async revealCell(cellIndex) {
-      await this.$store.dispatch('dungeon/revealCell', cellIndex);
+      await this.$store.dispatch("dungeon/revealCell", cellIndex);
     },
     async interactWithCell(cellIndex, revealedIndex) {
       const cell = this.maze.revealed[revealedIndex];
@@ -171,9 +170,7 @@ export default {
           // show altar dialog
         } else if (cell.trap) {
           // show trap dialog
-          await this.showPrompt(
-            this.$t("trap-h"), 
-            this.$t("trap-t"), [
+          await this.showPrompt(this.$t("trap-h"), this.$t("trap-t"), [
             {
               type: "red",
               title: "btn-ok",
@@ -183,9 +180,9 @@ export default {
         }
 
         // interact with the object in the cell
-        await this.$store.dispatch('dungeon/useCell', cellIndex);
+        await this.$store.dispatch("dungeon/useCell", cellIndex);
       } else {
-        await this.$store.dispatch('dungeon/moveToCell', cellIndex);
+        await this.$store.dispatch("dungeon/moveToCell", cellIndex);
       }
     }
   }
