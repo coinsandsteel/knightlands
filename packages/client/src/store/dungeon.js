@@ -29,7 +29,8 @@ export default {
         dex: 0,
         int: 0,
         sta: 0
-      }
+      },
+      exp: 0
     },
     combat: {
       enemyId: 0,
@@ -110,6 +111,14 @@ export default {
 
       if (data.trap !== undefined) {
         state.maze.revealed[data.trap].trap = undefined;
+      }
+
+      if (data.exp !== undefined) {
+        state.user.exp = data.exp;
+      }
+
+      if (data.level !== undefined) {
+        state.user.level = data.level;
       }
     }
   },

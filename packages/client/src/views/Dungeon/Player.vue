@@ -69,7 +69,7 @@ export default {
   }
 
   & .border {
-    background-image: url("/images/halloween_assets/avatar_border.png");
+    background-image: url("/images/halloween_assets/avatar_border1.png");
     background-position: center;
     background-size: contain;
   }
