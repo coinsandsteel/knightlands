@@ -290,11 +290,23 @@ const store = new Vuex.Store({
 });
 
 store.subscribe((mutation, state) => {
-  console.log(mutation, mutation.payload);
+  if (
+    !mutation.type.includes('training')
+    &&
+    !mutation.type.includes('tutorial')
+  ) {
+    console.log('Mutation', mutation.type, mutation.payload);
+  }
 });
 
 store.subscribeAction((action, state) => {
-  console.log(action, action.payload);
+  if (
+    !action.type.includes('training')
+    &&
+    !action.type.includes('tutorial')
+  ) {
+    console.log('Action', action.type, action.payload);
+  }
 });
 
 export default store;

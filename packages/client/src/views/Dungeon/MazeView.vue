@@ -54,9 +54,11 @@ export default {
   mounted() {
     this._resize = this.init.bind(this);
     window.addEventListener("resize", this._resize);
+    this.$app.$on('aggressive_enemy_encountered', this.handleAggressiveEnemy);
   },
   destroyed() {
     window.removeEventListener("resize", this._resize);
+    this.$app.$off('aggressive_enemy_encountered');
   },
   data: () => ({
     cellSize: 0,
@@ -211,8 +213,11 @@ export default {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
         // MODAL aggressinve enemy
       }
+    },
+    async handleAggressiveEnemy() {
+      console.log('MazeView::handleAggressiveEnemy');
     }
-  }
+  },
 };
 </script>
 
