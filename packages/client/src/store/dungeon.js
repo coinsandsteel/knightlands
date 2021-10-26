@@ -86,11 +86,10 @@ export default {
       if (data.cell) {
         state.maze.revealed.push(data.cell);
         if (data.cell.enemy) {
-          console.log('Cell enemies', enemies);
-          let enemy = enemies[data.cell.enemy.enemyId];
+          let enemy = enemies[data.cell.enemy.id];
           console.log('Cell enemy', enemy);
-          if (enemy.isAgressive) {
-            this.$app.emit('aggressive_enemy_encountered');
+          if (enemy.isAgressiive) {
+            this.$app.$emit('aggressive_enemy_encountered');
           }
         }
       }
