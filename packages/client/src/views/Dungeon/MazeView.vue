@@ -22,6 +22,7 @@
 import MazeCell from "./MazeCell.vue";
 import Player from "./Player.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+
 import { mapGetters, mapState } from "vuex";
 
 export default {
@@ -144,10 +145,11 @@ export default {
     },
     handleCellClick(cell) {
       console.log({ cell });
-
-      const index = cell.index;
+      let index = cell.index;
+      if (index === -1) {
+        index = this.user.cell;
+      }
       const isRevealed = this.indexToCellIndex[index] !== undefined;
-      console.log({ isRevealed });
       if (!isRevealed) {
         this.revealCell(index);
       } else {
@@ -169,33 +171,30 @@ export default {
     },
     async interactWithCell(cellIndex, revealedIndex) {
       const cell = this.maze.revealed[revealedIndex];
-      console.log({
-        cellIndex,
-        revealedIndex,
-        userCell: this.user.cell
-      });
+
+      // Click to user's current cell
       if (cellIndex == this.user.cell) {
-        // can interact with objects where user stands
-        // Custom dialog
-        if (cell.enemy) {
+        if (cell.enemy /*&& this.enemy.isAgressive*/) {
+          // MODAL non-aggressinve enemy
+
           // show pre-combat dialog
-          await this.showPrompt(
+          /*await this.showPrompt(
             this.$t("enemy-aggressive-h"),
             this.$t("enemy-aggressive-t"),
             [
               {
                 type: "red",
                 title: "fight-it",
-                response: true
-              }
+                response: true,
+              },
             ]
-          );
+          );*/
 
           this.$router.push({ name: "dungeon-fight" });
         } else if (cell.altar) {
-          // show altar dialog
+          // MODAL gained some stuff
         } else if (cell.trap) {
-          // show trap dialog
+          // MODAL trap, 2 options
           await this.showPrompt(this.$t("trap-h"), this.$t("trap-t"), [
             {
               type: "red",
@@ -204,11 +203,13 @@ export default {
             }
           ]);
         }
+        // loot
 
         // interact with the object in the cell
         await this.$store.dispatch("dungeon/useCell", cellIndex);
       } else {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
+        // MODAL aggressinve enemy
       }
     }
   }

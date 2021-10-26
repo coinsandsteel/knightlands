@@ -398,7 +398,7 @@ const router = new Router({
           path: "fight",
           name: "dungeon-fight",
           component: DungeonFight,
-          meta: { noTopBar: true }
+          meta: { noTopBar: true, noBackButton: true }
         },
         {
           path: "",
