@@ -7,6 +7,11 @@
     ></div>
 
     <div class="absolute-stretch img" :style="objectImage"></div>
+    <div
+      v-if="highlight"
+      class="highlight absolute-stretch"
+      ref="highlight"
+    ></div>
   </div>
 </template>
 
@@ -25,7 +30,7 @@ const IMAGE_BY_TYPE = {
 };
 
 export default {
-  props: ["cell", "index", "mazeWidth"],
+  props: ["cell", "index", "mazeWidth", "highlight"],
   data: () => ({
     image: "",
     rotation: "",
@@ -179,6 +184,33 @@ export default {
     &.r-90 {
       transform: rotateZ(270deg);
     }
+  }
+
+  & .highlight {
+    z-index: 5;
+
+    @keyframes scaleme {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      20% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      80% {
+        transform: scale(1.05);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1.05);
+        opacity: 0;
+      }
+    }
+
+    background-image: url("/images/halloween_assets/selection.png");
+    background-size: contain;
+    animation: scaleme 1.5s alternate ease-in-out infinite;
   }
 }
 </style>

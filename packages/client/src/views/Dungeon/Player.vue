@@ -1,5 +1,8 @@
 <template>
-  <div class="dungeon-player flex flex-center" :style="style">
+  <div
+    class="dungeon-player flex flex-center pointer-events-none"
+    :style="style"
+  >
     <div class="avatar">
       <Avatar :preview="true" />
     </div>

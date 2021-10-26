@@ -6,6 +6,7 @@
       :cell="getCellAt(indexToCellIndex[idx - 1])"
       :index="idx - 1"
       :mazeWidth="width"
+      :highlight="isHighlighted(idx - 1)"
       @click="handleCellClick"
     />
 
@@ -115,6 +116,22 @@ export default {
     },
     getCellAt(index) {
       return this.maze.revealed[index];
+    },
+    isHighlighted(cellIdx) {
+      const targetCell = this.getCellAt(this.indexToCellIndex[cellIdx]);
+      if (!targetCell) {
+        return false;
+      }
+
+      if (
+        !targetCell.trap &&
+        !targetCell.enemy &&
+        !targetCell.altar &&
+        !targetCell.loot
+      ) {
+        return false;
+      }
+      return cellIdx == this.user.cell;
     },
     handleCellClick(cell) {
       console.log({ cell });

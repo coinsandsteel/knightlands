@@ -49,10 +49,12 @@ export default {
       if (data.combat) {
         state.combat = { ...state.combat, ...data.combat };
         delete data.combat;
+      } else {
+        delete state.combat;
       }
       state.maze = { ...state.maze, ...data };
       state.loaded = true;
-      
+
       if (state.combat && state.combat.enemyId) {
         this.$app.$router.push({ name: "dungeon-fight" });
       }
@@ -87,17 +89,19 @@ export default {
   actions: {
     subscribe(store) {
       this.$app.$game.onNetwork(Events.SDungeonUpdate, data => {
-        store.commit('updateState', data);
+        store.commit("updateState", data);
       });
     },
     unsubscribe(store) {
       this.$app.$game.offNetwork(Events.SDungeonUpdate, data => {
-        store.commit('updateState', data);
+        store.commit("updateState", data);
       });
     },
     async load(store) {
-      let result = await this.$app.$game._wrapOperation(Operations.SDungeonLoad);
-      store.commit('setInitialState', result.response);
+      let result = await this.$app.$game._wrapOperation(
+        Operations.SDungeonLoad
+      );
+      store.commit("setInitialState", result.response);
     },
     async revealCell(store, index) {
       await this.$app.$game._wrapOperation(Operations.SDungeonRevealCell, {
@@ -115,7 +119,7 @@ export default {
       });
     },
     async combat(store, move) {
-      await this._wrapOperation(Operations.SDunegonCombatAction, {
+      await this.$app.$game._wrapOperation(Operations.SDunegonCombatAction, {
         action: CombatAction.Attack,
         data: { move }
       });
