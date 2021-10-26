@@ -164,13 +164,12 @@ export default {
     },
     async interactWithCell(cellIndex, revealedIndex) {
       const cell = this.maze.revealed[revealedIndex];
-      if (cellIndex == this.user.cell) {
-        // can interact with objects where user stands
-        // Custom dialog
 
-        // actions: fight, cnc
-        // actions: fight
+      // Click to user's current cell
+      if (cellIndex == this.user.cell) {
         if (cell.enemy /*&& this.enemy.isAgressive*/) {
+          // MODAL non-aggressinve enemy
+
           // show pre-combat dialog
           /*await this.showPrompt(
             this.$t("enemy-aggressive-h"),
@@ -186,11 +185,9 @@ export default {
 
           this.$router.push({ name: "dungeon-fight" });
         } else if (cell.altar) {
-          // actions: use, cnc
-          // show altar dialog
+          // MODAL gained some stuff
         } else if (cell.trap) {
-          // trap: use, cnc
-          // show trap dialog
+          // MODAL trap, 2 options
           await this.showPrompt(this.$t("trap-h"), this.$t("trap-t"), [
             {
               type: "red",
@@ -205,6 +202,7 @@ export default {
         await this.$store.dispatch("dungeon/useCell", cellIndex);
       } else {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
+        // MODAL aggressinve enemy
       }
     },
   },

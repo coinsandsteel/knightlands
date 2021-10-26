@@ -53,12 +53,7 @@ export default {
         delete state.combat;
       }
       state.maze = { ...state.maze, ...data };
-      console.log("state.maze", state.maze);
       state.loaded = true;
-
-      if (state.combat && state.combat.enemyId) {
-        this.$app.$router.push({ name: "dungeon-fight" });
-      }
     },
     updateState(state, data) {
       // cellRevealed
@@ -88,6 +83,11 @@ export default {
     }
   },
   actions: {
+    redirectToActiveCombat(store) {
+      if (store.state.combat && store.state.combat.enemyId) {
+        this.$app.$router.push({ name: "dungeon-fight" });
+      }
+    },
     subscribe(store) {
       this.$app.$game.onNetwork(Events.SDungeonUpdate, data => {
         store.commit("updateState", data);

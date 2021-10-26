@@ -75,6 +75,10 @@ export default {
     this.title = "w-simple-dun";
     this.timer.timeLeft = PERIOD - (this.$game.nowSec % PERIOD);
   },
+  activated() {
+    console.log('Dungeon:activated');
+    this.$store.dispatch('dungeon/redirectToActiveCombat');
+  },
   computed: {
     ...mapState({
       maze: state => state.dungeon.maze,
