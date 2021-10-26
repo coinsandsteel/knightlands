@@ -1,5 +1,6 @@
 import Events from "@/../../knightlands-shared/events";
 import enemies from "@/metadata/halloween/dungeon_enemies.json";
+import progression from "@/metadata/halloween/dungeon_progression.json";
 
 import Operations from "@/../../knightlands-shared/operations";
 import { CombatAction } from "@/../../knightlands-shared/dungeon_types";
@@ -22,7 +23,13 @@ export default {
       energy: null,
       health: null,
       lastHpRegen: null,
-      lastEnergyRegen: null
+      lastEnergyRegen: null,
+      stats: {
+        str: 0,
+        dex: 0,
+        int: 0,
+        sta: 0
+      }
     },
     combat: {
       enemyId: 0,
@@ -30,6 +37,24 @@ export default {
     }
   },
   getters: {
+    playerStats: state => {
+      const stats = state.user.stats;
+      return {
+        maxHealth: Math.ceil(
+          progression.baseHealth + 1.4 * stats.str + 1.15 * stats.sta
+        ),
+        defense: Math.ceil(
+          progression.baseDefense + 1.5 * stats.dex + 1.25 * stats.sta
+        ),
+        attack: Math.ceil(
+          progression.baseAttack + 1.5 * stats.str + 1.25 * stats.int
+        ),
+        maxEnergy: Math.ceil(
+          progression.baseEnergy + 1.01 * stats.sta + (1.05 + stats.int)
+        )
+      };
+    },
+
     enemy: state => {
       if (!state.combat || !state.combat.enemyId) {
         return null;
@@ -40,15 +65,16 @@ export default {
   mutations: {
     setInitialState(state, data) {
       if (data.user) {
-        state.user = { ...state.user, ...data.user };
-        delete data.user;
+        state.user = data.user;
       }
+
       if (data.combat) {
         state.combat = data.combat;
       } else {
         state.combat.enemyId = 0;
         state.combat.enemyHealth = 0;
       }
+
       state.maze = { ...state.maze, ...data };
       state.loaded = true;
     },
