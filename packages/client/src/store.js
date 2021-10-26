@@ -18,6 +18,7 @@ import Training from "@/store/training";
 import Tutorial from "@/store/tutorial";
 import Shop from "@/store/shop";
 import Settings from "@/store/settings";
+import Dungeon from "@/store/dungeon";
 import Elements from "@/../../knightlands-shared/elements";
 import ArmyUnitTypes from "@/army_unit_types";
 
@@ -283,8 +284,17 @@ const store = new Vuex.Store({
     training: Training,
     tutorial: Tutorial,
     settings: Settings,
-    shop: Shop
+    shop: Shop,
+    dungeon: Dungeon
   }
+});
+
+store.subscribe((mutation, state) => {
+  console.log(mutation, mutation.payload);
+});
+
+store.subscribeAction((action, state) => {
+  console.log(action, action.payload);
 });
 
 export default store;

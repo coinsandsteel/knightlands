@@ -17,32 +17,30 @@
 import MazeCell from "./MazeCell.vue";
 import Player from "./Player.vue";
 import anime from "animejs";
+import { mapGetters, mapState } from 'vuex';
 
 export default {
-  props: {
-    dungeon: Object
-  },
   components: { MazeCell, Player },
   watch: {
-    dungeon: {
+    loaded: {
       immediate: true,
-      handler() {
-        if (!this.dungeon) {
-          return;
+      handler(value) {
+        if (value) {
+          this.$nextTick(function() {
+            this.init();
+          });
         }
-
-        this.init();
       }
     },
-    "dungeon.revealed": {
+    "maze.revealed": {
       deep: true,
       handler() {
         this.indexCells(false);
       }
     },
-    "dungeon.user.cell": {
-      handler() {
-        this.movePlayerToCell(this.dungeon.user.cell);
+    "user.cell": {
+      handler(value) {
+        this.movePlayerToCell(value);
       }
     }
   },
@@ -52,14 +50,18 @@ export default {
     indexToCellIndex: {}
   }),
   computed: {
+    ...mapGetters({
+      enemy: 'dungeon/enemy'
+    }),
+    ...mapState({
+      loaded: state => state.dungeon.loaded,
+      maze: state => state.dungeon.maze,
+      width: state => state.dungeon.maze.width,
+      height: state => state.dungeon.maze.height,
+      user: state => state.dungeon.user
+    }),
     totalCells() {
       return this.height * this.width;
-    },
-    width() {
-      return this.dungeon ? this.dungeon.width : 0;
-    },
-    height() {
-      return this.dungeon ? this.dungeon.height : 0;
     }
   },
   methods: {
@@ -72,18 +74,17 @@ export default {
 
       this.indexCells(true);
 
-      this.movePlayerToCell(this.dungeon.user.cell, false);
+      this.movePlayerToCell(this.user.cell, false);
     },
     cellToIndex(cell) {
       return cell.y * this.width + cell.x;
     },
     indexCells(full) {
-      if (!this.dungeon) {
+      if (!this.loaded) {
         return;
       }
 
-      const revealed = this.dungeon.revealed;
-
+      const revealed = this.maze.revealed;
       if (full) {
         this.indexToCellIndex = {};
         for (let index = 0; index < revealed.length; index++) {
@@ -107,15 +108,18 @@ export default {
       };
     },
     getCellAt(index) {
-      return this.dungeon.revealed[index];
+      return this.maze.revealed[index];
     },
     handleCellClick(cell) {
+      console.log({ cell });
+
       const index = cell.index;
       const isRevealed = this.indexToCellIndex[index] !== undefined;
+      console.log({ isRevealed });
       if (!isRevealed) {
-        this.$emit("reveal", index);
+        this.revealCell(index);
       } else {
-        this.$emit("interact", index, this.indexToCellIndex[index]);
+        this.interactWithCell(index, this.indexToCellIndex[index]);
       }
     },
     async movePlayerToCell(index, animated = true) {
@@ -127,6 +131,55 @@ export default {
       }
 
       await player.moveToPosition(this.cellToScreen(targetCell));
+    },
+    async revealCell(cellIndex) {
+      await this.$store.dispatch('dungeon/revealCell', cellIndex);
+    },
+    async interactWithCell(cellIndex, revealedIndex) {
+      const cell = this.maze.revealed[revealedIndex];
+      console.log({
+        cellIndex,
+        revealedIndex,
+        userCell: this.user.cell
+      });
+      if (cellIndex == this.user.cell) {
+        // can interact with objects where user stands
+        // Custom dialog
+        if (cell.enemy) {
+          // show pre-combat dialog
+          await this.showPrompt(
+            this.$t("enemy-aggressive-h"),
+            this.$t("enemy-aggressive-t"),
+            [
+              {
+                type: "red",
+                title: "fight-it",
+                response: true
+              }
+            ]
+          );
+
+          this.$router.push({ name: "dungeon-fight" });
+        } else if (cell.altar) {
+          // show altar dialog
+        } else if (cell.trap) {
+          // show trap dialog
+          await this.showPrompt(
+            this.$t("trap-h"), 
+            this.$t("trap-t"), [
+            {
+              type: "red",
+              title: "btn-ok",
+              response: true
+            }
+          ]);
+        }
+
+        // interact with the object in the cell
+        await this.$store.dispatch('dungeon/useCell', cellIndex);
+      } else {
+        await this.$store.dispatch('dungeon/moveToCell', cellIndex);
+      }
     }
   }
 };

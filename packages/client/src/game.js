@@ -1239,32 +1239,6 @@ class Game {
     });
   }
 
-  async getDungeon() {
-    let result = await this._wrapOperation(Operations.SDungeonLoad);
-    return result.response;
-  }
-
-  async revealDungeonCell(index) {
-    let result = await this._wrapOperation(Operations.SDungeonRevealCell, {
-      cellId: index
-    });
-    return result.response;
-  }
-
-  async useDungeonCell(index) {
-    let result = await this._wrapOperation(Operations.SDungeonUseCell, {
-      cellId: index
-    });
-    return result.response;
-  }
-
-  async moveToDungeonCell(index) {
-    let result = await this._wrapOperation(Operations.SDungeonMove, {
-      cellId: index
-    });
-    return result.response;
-  }
-
   async engageQuest(zone, questIndex, max = false) {
     let stage = this.$store.getters.getZoneStage;
     let result = await this._wrapOperation(Operations.EngageQuest, {

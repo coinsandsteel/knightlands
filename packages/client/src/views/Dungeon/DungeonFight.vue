@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content flex-items-center full-flex">
+  <div class="screen-content flex-items-center full-flex" v-if="combat.enemyId">
     <div class="screen-background"></div>
     <div class="flex flex-column flex-center">
       <div
@@ -16,7 +16,7 @@
             "
           >
             <span class="rarity-mythical font-weight-900 font-outline">{{
-              $t("level", { lvl: 1 })
+              $t("level", { lvl: enemy.difficulty })
             }}</span>
             <div>
               <span class="enemy-title-font capitalize">{{
@@ -70,7 +70,7 @@
           :thresholds="thresholds"
         ></progress-bar>
 
-        <div class="flex margin-top-2">
+        <div v-if="false" class="flex margin-top-2">
           <div
             class="
               width-50
@@ -95,7 +95,6 @@
               font-size-25
               flex flex-column flex-center flex-justify-start
             "
-            v-show="true"
           >
             <span class="margin-bottom-1 blue-title font-weight-900">Cost</span>
             <div class="flex flex-column">
@@ -114,7 +113,7 @@
             minWidth="15rem"
             type="yellow"
             :noSound:="true"
-            @click="engage"
+            @click="engage(moves.Scissors)"
             id="engage-q"
           >
             <span>{{ $t("btn-attack") }}</span></AttackButton
@@ -124,7 +123,7 @@
             minWidth="15rem"
             type="yellow"
             :noSound:="true"
-            @click="engage"
+            @click="engage(moves.Paper)"
             id="engage-q"
           >
             <span>{{ $t("btn-block") }}</span></AttackButton
@@ -134,7 +133,7 @@
             minWidth="15rem"
             type="yellow"
             :noSound:="true"
-            @click="engage"
+            @click="engage(moves.Rock)"
             id="engage-q"
           >
             <span>{{ $t("btn-parry") }}</span></AttackButton
@@ -190,17 +189,18 @@ import AppSection from "@/AppSection.vue";
 
 import { create } from "vue-modal-dialogs";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
-
-const ShowResourceRefill = create(NotEnoughResource, "stat");
+import { MoveType } from "@/../../knightlands-shared/dungeon_types";
 
 import anime from "animejs/lib/anime.es.js";
+import { mapGetters, mapState } from 'vuex';
 
+const ShowResourceRefill = create(NotEnoughResource, "stat");
 const NEW_LOOT_DELAY = 300;
 
 export default {
   name: "dungeon-fight",
   mixins: [HintHandler, NetworkRequestErrorMixin, AppSection],
-  props: ["zone", "questIndex", "maxQuestIndex", "stage"],
+  props: ["zone", "questIndex", "maxQuestIndex", "stage"], 
   components: {
     Loot,
     ProgressBar,
@@ -213,18 +213,15 @@ export default {
     NewLoot,
     SoundEffect,
   },
-  data() {
-    return {
-      rewards: [],
-      thresholds: UiConstants.progressThresholds,
-      lootHash: {},
-      request: null,
-      playerDamages: [],
-      newRewards: [],
-      paused: true,
-      useAuto: false,
-    };
-  },
+  data: () => ({
+    moves: MoveType,
+    rewards: [],
+    newRewards: [],
+    lootHash: {},
+    thresholds: UiConstants.progressThresholds,
+    request: null,
+    playerDamages: []
+  }),
   created() {
     this.title = "dungeon-fight";
   },
@@ -235,10 +232,17 @@ export default {
     this.rewards = [];
     this.newRewards = [];
     this.lootHash = {};
+    this.playerDamages = [];
   },
   computed: {
+    ...mapState({
+      combat: state => state.dungeon.combat
+    }),
+    ...mapGetters({
+      enemy: 'dungeon/enemy'
+    }),
     enemyImage() {
-      return "/images/enemies/Undead Walker.png";
+      return `/images/enemies/${this.enemy.image}.png`;
     },
     maxProgress() {
       return this.progress.max;
@@ -248,28 +252,27 @@ export default {
     },
     progress() {
       return {
-        max: 900,
-        current: 136,
+        max: this.enemy.health,
+        current: this.combat.enemyHealth
       };
     },
     zoneBackground() {
       return 'background-image: url("/images/zones/undead.jpg");';
     },
     missionName() {
-      return "Черный Муравей рыцарь";
-      //return Zones.getMissionName(this.zone._id, this.questIndex);
+      return this.enemy.label;
     },
   },
   methods: {
-    async engage() {
-      this.request = this.performRequestNoCatch(this.$game.engageDungeon(1, 1));
+    async engage(move) {
+      this.request = this.$store.dispatch("dungeon/combat", move);
       try {
-        let { damages, items } = await this.request;
+        await this.request;
         let totalDamage = 0;
         let isCrit = false;
-        for (let i = 0; i < damages.length; ++i) {
-          isCrit |= damages[i].crit;
-          totalDamage += damages[i].damage;
+        for (let i = 0; i < 2; ++i) {
+          isCrit |= true;
+          totalDamage += 30;
         }
 
         if (totalDamage > 0) {
@@ -277,7 +280,7 @@ export default {
           this.handleDamage(totalDamage, isCrit, 0);
         }
 
-        this.handleLoot(items);
+        //this.handleLoot(items);
       } catch (exc) {
         await this._handleQuestError(exc);
       }
@@ -303,6 +306,7 @@ export default {
       }
     },
     async _handleQuestError(error) {
+      // TODO test
       switch (error) {
         case Errors.NoHealth:
           await ShowResourceRefill(Stat.Health);
@@ -379,33 +383,7 @@ export default {
           duration: 100,
         },
       });
-    },
-    async handleBackButton() {
-      if ('monsterIsAggressive') {
-        const response = await this.showPrompt(
-          this.$t("enemy-aggressive-leave-h"),
-          this.$t("enemy-aggressive-leave-t"),
-          [
-            {
-              type: "red",
-              title: "btn-ok",
-              response: true,
-            },
-            {
-              type: "grey",
-              title: "btn-cancel",
-              response: false
-            },
-          ]
-        );
-        if (!response) {
-          return false;
-        }
-      }
-
-      this.$router.back();
-      return true;
-    },
+    }
   },
 };
 </script>
