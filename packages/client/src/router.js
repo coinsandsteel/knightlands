@@ -395,7 +395,7 @@ const router = new Router({
       component: DungeonRoot,
       children: [
         {
-          path: "fight/:id",
+          path: "fight",
           name: "dungeon-fight",
           component: DungeonFight
         },
