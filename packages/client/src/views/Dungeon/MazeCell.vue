@@ -16,7 +16,7 @@ import DungeonAltars from "@/metadata/halloween/dungeon_altars.json";
 import DungeonTraps from "@/metadata/halloween/dungeon_traps.json";
 
 const IMAGE_BY_TYPE = {
-  default: "tile_empty1",
+  default: ["tile_back1", "tile_back2"],
   way_single: "way4",
   way_straight: "way1",
   way_turn: "way2",
@@ -99,8 +99,20 @@ export default {
         }
       }
 
+      let imageName = IMAGE_BY_TYPE[t];
+      if (t == "default") {
+        const offset = Math.floor(this.index / this.mazeWidth) % 2 ? 1 : 0;
+        if (offset) {
+          imageName =
+            this.index % 2 ? IMAGE_BY_TYPE[t][0] : IMAGE_BY_TYPE[t][1];
+        } else {
+          imageName =
+            this.index % 2 ? IMAGE_BY_TYPE[t][1] : IMAGE_BY_TYPE[t][0];
+        }
+      }
+
       this.image = {
-        "background-image": `url("${baseUrl}/${IMAGE_BY_TYPE[t]}.jpg")`
+        "background-image": `url("${baseUrl}/${imageName}.jpg")`
       };
       this.rotation = r;
     },
@@ -154,6 +166,7 @@ export default {
   & .img {
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
 
     &.r90 {
       transform: rotateZ(90deg);

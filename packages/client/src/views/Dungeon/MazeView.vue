@@ -46,6 +46,13 @@ export default {
       }
     }
   },
+  mounted() {
+    this._resize = this.init.bind(this);
+    window.addEventListener("resize", this._resize);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this._resize);
+  },
   data: () => ({
     cellSize: 0,
     cssVars: {},

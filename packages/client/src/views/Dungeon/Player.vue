@@ -1,9 +1,16 @@
 <template>
-  <div class="dungeon-player" :style="style"></div>
+  <div class="dungeon-player flex flex-center" :style="style">
+    <div class="avatar">
+      <Avatar :preview="true" />
+    </div>
+
+    <div class="border absolute-stretch"></div>
+  </div>
 </template>
 
 <script>
 import anime from "animejs/lib/anime.es.js";
+import Avatar from "@/views/Character/Avatars/Avatar.vue";
 
 export default {
   data: () => ({
@@ -12,6 +19,7 @@ export default {
       y: 0
     }
   }),
+  components: { Avatar },
   computed: {
     style() {
       return {
@@ -44,6 +52,19 @@ export default {
 
 <style lang="less" scoped>
 .dungeon-player {
-  background-image: url("/images/halloween_assets/loot.png");
+  & .avatar {
+    width: calc(var(--item-size) * 0.55);
+    height: calc(var(--item-size) * 0.55);
+
+    & img {
+      max-width: 100% !important;
+    }
+  }
+
+  & .border {
+    background-image: url("/images/halloween_assets/avatar_border.png");
+    background-position: center;
+    background-size: contain;
+  }
 }
 </style>

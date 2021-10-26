@@ -38,9 +38,7 @@
     </div>
 
     <div class="width-100" v-bar>
-      <div
-        class="flex relative flex-items-center padding-top-1 padding-bottom-5"
-      >
+      <div class="flex relative flex-items-center padding-top-1">
         <Maze
           :dungeon="dungeon"
           @reveal="revealCell"

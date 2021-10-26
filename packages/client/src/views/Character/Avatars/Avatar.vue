@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     changeAvatar() {
-      if (!this.avatar) {
+      if (!this.avatar && !this.preview) {
         ShowChangeAvatar();
       }
     }
