@@ -80,11 +80,11 @@ export default {
       state.loaded = true;
     },
     updateState(state, data) {
-      console.log('updateState', { data });
+      console.log("updateState", { data });
 
       // cellRevealed
       if (data.cell) {
-        state.maze.revealed.push(data.cell);
+        state.maze.revealed.push(...data.cell);
       }
       // energyChanged
       if (data.energy !== undefined) {
@@ -122,6 +122,10 @@ export default {
       if (data.level !== undefined) {
         state.user.level = data.level;
       }
+
+      if (data.loot !== undefined) {
+        state.maze.revealed[data.loot].loot = undefined;
+      }
     }
   },
   actions: {
@@ -139,14 +143,14 @@ export default {
 
       if (data.cell && data.cell.enemy) {
         let enemy = enemies[data.cell.enemy.id];
-        console.log('Cell enemy', enemy);
+        console.log("Cell enemy", enemy);
         if (enemy.isAgressiive) {
-          this.$app.$emit('aggressive_enemy_encountered');
+          this.$app.$emit("aggressive_enemy_encountered");
         }
       }
 
       if (data.combat) {
-        store.dispatch('redirectToActiveCombat');
+        store.dispatch("redirectToActiveCombat");
       }
 
       // TODO combat finished > redirect to maze
@@ -173,9 +177,11 @@ export default {
       });
     },
     async useCell(store, index) {
-      await this.$app.$game._wrapOperation(Operations.SDungeonUseCell, {
-        cellId: index
-      });
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDungeonUseCell, {
+          cellId: index
+        })
+      ).response;
     },
     async moveToCell(store, index) {
       await this.$app.$game._wrapOperation(Operations.SDungeonMove, {

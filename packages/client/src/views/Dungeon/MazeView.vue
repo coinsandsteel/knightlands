@@ -64,11 +64,11 @@ export default {
   mounted() {
     this._resize = this.init.bind(this);
     window.addEventListener("resize", this._resize);
-    this.$app.$on('aggressive_enemy_encountered', this.handleAggressiveEnemy);
+    this.$app.$on("aggressive_enemy_encountered", this.handleAggressiveEnemy);
   },
   destroyed() {
     window.removeEventListener("resize", this._resize);
-    this.$app.$off('aggressive_enemy_encountered');
+    this.$app.$off("aggressive_enemy_encountered");
   },
   data: () => ({
     cellSize: 0,
@@ -200,15 +200,23 @@ export default {
         }
 
         // interact with the object in the cell
-        await this.$store.dispatch("dungeon/useCell", cellIndex);
+        const cmdResponse = await this.$store.dispatch(
+          "dungeon/useCell",
+          cellIndex
+        );
+
+        // response only from loot
+        if (cmdResponse) {
+          // show loot content
+        }
       } else {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
       }
     },
     async handleAggressiveEnemy(id) {
       await ShowEnemyPopup(id);
-    },
-  },
+    }
+  }
 };
 </script>
 
