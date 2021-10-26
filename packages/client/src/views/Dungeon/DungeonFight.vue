@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content flex-items-center full-flex" v-if="combat.enemyId">
+  <div class="screen-content flex-items-center full-flex" v-if="enemy.id">
     <div class="screen-background"></div>
     <div class="flex flex-column flex-center">
       <div

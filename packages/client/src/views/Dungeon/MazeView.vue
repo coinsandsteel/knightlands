@@ -21,9 +21,19 @@
 <script>
 import MazeCell from "./MazeCell.vue";
 import Player from "./Player.vue";
+import { mapState } from "vuex";
 import PromptMixin from "@/components/PromptMixin.vue";
 
-import { mapGetters, mapState } from "vuex";
+import EnemyPopup from "./Popup/EnemyPopup.vue";
+import AltarPopup from "./Popup/AltarPopup.vue";
+import TrapPopup from "./Popup/TrapPopup.vue";
+import LootPopup from "./Popup/LootPopup.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowEnemyPopup = create(EnemyPopup, "data");
+const ShowAltarPopup = create(AltarPopup, "data");
+const ShowTrapPopup = create(TrapPopup, "data");
+const ShowLootPopup = create(LootPopup, "data");
 
 export default {
   mixins: [PromptMixin],
@@ -54,9 +64,11 @@ export default {
   mounted() {
     this._resize = this.init.bind(this);
     window.addEventListener("resize", this._resize);
+    this.$app.$on('aggressive_enemy_encountered', this.handleAggressiveEnemy);
   },
   destroyed() {
     window.removeEventListener("resize", this._resize);
+    this.$app.$off('aggressive_enemy_encountered');
   },
   data: () => ({
     cellSize: 0,
@@ -64,9 +76,6 @@ export default {
     indexToCellIndex: {}
   }),
   computed: {
-    ...mapGetters({
-      enemy: "dungeon/enemy"
-    }),
     ...mapState({
       loaded: state => state.dungeon.loaded,
       maze: state => state.dungeon.maze,
@@ -174,45 +183,27 @@ export default {
 
       // Click to user's current cell
       if (cellIndex == this.user.cell) {
-        if (cell.enemy /*&& this.enemy.isAgressive*/) {
-          // MODAL non-aggressinve enemy
-
-          // show pre-combat dialog
-          /*await this.showPrompt(
-            this.$t("enemy-aggressive-h"),
-            this.$t("enemy-aggressive-t"),
-            [
-              {
-                type: "red",
-                title: "fight-it",
-                response: true,
-              },
-            ]
-          );*/
-
-          this.$router.push({ name: "dungeon-fight" });
+        if (cell.enemy) {
+          await ShowEnemyPopup(cell.enemy.id);
+          //this.$router.push({ name: "dungeon-fight" });
         } else if (cell.altar) {
-          // MODAL gained some stuff
+          await ShowAltarPopup(cell.altar.id);
         } else if (cell.trap) {
-          // MODAL trap, 2 options
-          await this.showPrompt(this.$t("trap-h"), this.$t("trap-t"), [
-            {
-              type: "red",
-              title: "btn-ok",
-              response: true
-            }
-          ]);
+          await ShowTrapPopup(cell.trap.id);
+        } else if (cell.loot) {
+          await ShowLootPopup(cell.loot);
         }
-        // loot
 
         // interact with the object in the cell
         await this.$store.dispatch("dungeon/useCell", cellIndex);
       } else {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
-        // MODAL aggressinve enemy
       }
-    }
-  }
+    },
+    async handleAggressiveEnemy(id) {
+      await ShowEnemyPopup(id);
+    },
+  },
 };
 </script>
 

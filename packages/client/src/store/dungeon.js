@@ -80,9 +80,18 @@ export default {
       state.loaded = true;
     },
     updateState(state, data) {
+      console.log('updateState', { data });
+
       // cellRevealed
       if (data.cell) {
         state.maze.revealed.push(data.cell);
+        if (data.cell.enemy) {
+          let enemy = enemies[data.cell.enemy.id];
+          console.log('Cell enemy', enemy);
+          if (enemy.isAgressiive) {
+            this.$app.$emit('aggressive_enemy_encountered');
+          }
+        }
       }
       // energyChanged
       if (data.energy !== undefined) {
@@ -132,15 +141,16 @@ export default {
         this.$app.$router.push({ name: "dungeon-fight" });
       }
     },
+    update(store, data) {
+      store.commit("updateState", data);
+    },
     subscribe(store) {
       this.$app.$game.onNetwork(Events.SDungeonUpdate, data => {
-        store.commit("updateState", data);
+        store.dispatch("update", data);
       });
     },
-    unsubscribe(store) {
-      this.$app.$game.offNetwork(Events.SDungeonUpdate, data => {
-        store.commit("updateState", data);
-      });
+    unsubscribe() {
+      this.$app.$game.offNetwork(Events.SDungeonUpdate);
     },
     async load(store) {
       let result = await this.$app.$game._wrapOperation(
