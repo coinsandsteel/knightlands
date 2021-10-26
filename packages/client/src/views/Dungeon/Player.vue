@@ -2,6 +2,7 @@
   <div
     class="dungeon-player flex flex-center pointer-events-none"
     :style="style"
+    @click="handleClick"
   >
     <div class="avatar">
       <Avatar :preview="true" />
@@ -32,6 +33,9 @@ export default {
     }
   },
   methods: {
+    handleClick() {
+      this.$emit("click", { index: -1 });
+    },
     snapToPosition({ x, y }) {
       this.pos.x = x;
       this.pos.y = y;

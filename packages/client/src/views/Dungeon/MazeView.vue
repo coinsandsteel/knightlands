@@ -10,16 +10,19 @@
       @click="handleCellClick"
     />
 
-    <Player ref="player" class="dungeon-player" />
+    <Player ref="player" class="dungeon-player" @click="handleCellClick" />
   </div>
 </template>
 
 <script>
 import MazeCell from "./MazeCell.vue";
 import Player from "./Player.vue";
+import anime from "animejs";
 import { mapGetters, mapState } from "vuex";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
+  mixins: [PromptMixin],
   components: { MazeCell, Player },
   watch: {
     loaded: {
@@ -30,7 +33,7 @@ export default {
             this.init();
           });
         }
-      }
+      },
     },
     "maze.revealed": {
       deep: true,
@@ -41,8 +44,8 @@ export default {
     "user.cell": {
       handler(value) {
         this.movePlayerToCell(value);
-      }
-    }
+      },
+    },
   },
   mounted() {
     this._resize = this.init.bind(this);
@@ -54,22 +57,22 @@ export default {
   data: () => ({
     cellSize: 0,
     cssVars: {},
-    indexToCellIndex: {}
+    indexToCellIndex: {},
   }),
   computed: {
     ...mapGetters({
       enemy: "dungeon/enemy"
     }),
     ...mapState({
-      loaded: state => state.dungeon.loaded,
-      maze: state => state.dungeon.maze,
-      width: state => state.dungeon.maze.width,
-      height: state => state.dungeon.maze.height,
-      user: state => state.dungeon.user
+      loaded: (state) => state.dungeon.loaded,
+      maze: (state) => state.dungeon.maze,
+      width: (state) => state.dungeon.maze.width,
+      height: (state) => state.dungeon.maze.height,
+      user: (state) => state.dungeon.user,
     }),
     totalCells() {
       return this.height * this.width;
-    }
+    },
   },
   methods: {
     init() {
@@ -111,7 +114,7 @@ export default {
     cellToScreen(cell) {
       return {
         x: cell.x * this.cellSize,
-        y: cell.y * this.cellSize
+        y: cell.y * this.cellSize,
       };
     },
     getCellAt(index) {
@@ -135,10 +138,11 @@ export default {
     },
     handleCellClick(cell) {
       console.log({ cell });
-
-      const index = cell.index;
+      let index = cell.index;
+      if (index === -1) {
+        index = this.user.cell;
+      }
       const isRevealed = this.indexToCellIndex[index] !== undefined;
-      console.log({ isRevealed });
       if (!isRevealed) {
         this.revealCell(index);
       } else {
@@ -160,49 +164,50 @@ export default {
     },
     async interactWithCell(cellIndex, revealedIndex) {
       const cell = this.maze.revealed[revealedIndex];
-      console.log({
-        cellIndex,
-        revealedIndex,
-        userCell: this.user.cell
-      });
       if (cellIndex == this.user.cell) {
         // can interact with objects where user stands
         // Custom dialog
-        if (cell.enemy) {
+
+        // actions: fight, cnc
+        // actions: fight
+        if (cell.enemy /*&& this.enemy.isAgressive*/) {
           // show pre-combat dialog
-          await this.showPrompt(
+          /*await this.showPrompt(
             this.$t("enemy-aggressive-h"),
             this.$t("enemy-aggressive-t"),
             [
               {
                 type: "red",
                 title: "fight-it",
-                response: true
-              }
+                response: true,
+              },
             ]
-          );
+          );*/
 
           this.$router.push({ name: "dungeon-fight" });
         } else if (cell.altar) {
+          // actions: use, cnc
           // show altar dialog
         } else if (cell.trap) {
+          // trap: use, cnc
           // show trap dialog
           await this.showPrompt(this.$t("trap-h"), this.$t("trap-t"), [
             {
               type: "red",
               title: "btn-ok",
-              response: true
-            }
+              response: true,
+            },
           ]);
         }
+        // loot
 
         // interact with the object in the cell
         await this.$store.dispatch("dungeon/useCell", cellIndex);
       } else {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -16,7 +16,7 @@
             "
           >
             <span class="rarity-mythical font-weight-900 font-outline">{{
-              $t("level", { lvl: enemy.difficulty })
+              $t("floor", { val: maze.floor })
             }}</span>
             <div>
               <span class="enemy-title-font capitalize">{{
@@ -236,7 +236,8 @@ export default {
   },
   computed: {
     ...mapState({
-      combat: state => state.dungeon.combat
+      combat: state => state.dungeon.combat,
+      maze: state => state.dungeon.maze
     }),
     ...mapGetters({
       enemy: 'dungeon/enemy'
