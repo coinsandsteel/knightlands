@@ -34,7 +34,6 @@ const ShowEnemyPopup = create(EnemyPopup, "data");
 const ShowAltarPopup = create(AltarPopup, "data");
 const ShowTrapPopup = create(TrapPopup, "data");
 const ShowLootPopup = create(LootPopup, "data");
->>>>>>> 01c4915d... fix: Popups
 
 export default {
   mixins: [PromptMixin],
