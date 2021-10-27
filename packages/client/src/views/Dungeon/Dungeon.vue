@@ -97,7 +97,6 @@ export default {
   },
   activated() {
     console.log("Dungeon:activated");
-    this.$store.dispatch("dungeon/redirectToActiveCombat");
   },
   computed: {
     ...mapState({

@@ -5,8 +5,8 @@
     </template>
 
     <template v-slot:footer>
-      <CustomButton type="grey" @click="$close">{{ "Option 1" }}</CustomButton>
-      <CustomButton type="grey" @click="handle">{{ "Option 2" }}</CustomButton>
+      <CustomButton type="grey" @click="$close">{{ "Do nothing" }}</CustomButton>
+      <CustomButton type="grey" @click="handle">{{ "Pick Up!" }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -22,7 +22,6 @@ export default {
   methods: {
     handle() {
       // Do stuff
-
       this.$close(true);
     }
   }

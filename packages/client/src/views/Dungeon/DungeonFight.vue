@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content flex-items-center full-flex" v-if="enemy.id">
+  <div class="screen-content flex-items-center full-flex" v-if="combat.enemyId">
     <div class="screen-background"></div>
     <div class="flex flex-column flex-center">
       <div
@@ -131,6 +131,12 @@ import { mapGetters, mapState } from "vuex";
 const ShowResourceRefill = create(NotEnoughResource, "stat");
 const NEW_LOOT_DELAY = 300;
 
+const CombatOutcome = {
+  EnemyWon: -1,
+  PlayerWon: 1,
+  NobodyWon: 0
+};
+
 export default {
   name: "dungeon-fight",
   mixins: [HintHandler, NetworkRequestErrorMixin, AppSection, PromptMixin],
@@ -156,8 +162,7 @@ export default {
   },
   mounted() {
     this.damageTextId = 0;
-
-    if (!this.combat.enemyHealth) {
+    if (!this.combat.enemyId) {
       this.leave();
     }
   },
@@ -199,29 +204,30 @@ export default {
     }
   },
   watch: {
+    "combat.outcome"(value) {
+      if (value === CombatOutcome.EnemyWon) {
+        this.combatLost();
+      } else if (value === CombatOutcome.PlayerWon) {
+        this.combatWon();
+      }
+    },
     "combat.enemyHealth"(current, previous) {
       const damage = previous - current;
       if (damage > 0) {
         this.$refs.fx.play();
         this.handleDamage(damage, false, 0);
       }
-
-      if (current <= 0) {
-        this.combatWon();
-      }
-    },
-    "user.health"(current, previous) {
-      const damage = previous - current;
-      if (current <= 0) {
-        this.combatLost();
-      }
     }
   },
   methods: {
     combatLost() {
+      alert('You lost the combat!');
+      this.$store.dispatch("dungeon/resetCombat");
       this.leave();
     },
     combatWon() {
+      alert('You won the combat!');
+      this.$store.dispatch("dungeon/resetCombat");
       this.leave();
     },
     leave() {
