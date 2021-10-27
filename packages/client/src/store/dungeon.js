@@ -76,14 +76,17 @@ export default {
   mutations: {
     setInitialState(state, data) {
       if (data.user) {
-        state.user = data.user;
+        state.user = _.clone(data.user);
       }
 
       if (data.combat) {
-        state.combat = data.combat;
+        state.combat = _.clone(data.combat);
       } else {
         state.combat = _.clone(combatInitialState);
       }
+
+      delete data.user;
+      delete data.combat;
 
       state.maze = { ...state.maze, ...data };
       state.loaded = true;

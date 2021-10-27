@@ -158,6 +158,7 @@ export default {
       if (index === -1) {
         index = this.user.cell;
       }
+
       const isRevealed = this.indexToCellIndex[index] !== undefined;
       if (!isRevealed) {
         this.revealCell(index);
@@ -210,6 +211,15 @@ export default {
           // show loot content
         }
       } else {
+        const userCell = this.maze.revealed[
+          this.indexToCellIndex[this.user.cell]
+        ];
+
+        if (userCell.trap) {
+          alert('You`re in the trap! Defuse it!');
+          return;
+        }
+
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
       }
     },
