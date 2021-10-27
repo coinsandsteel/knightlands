@@ -174,7 +174,9 @@ export default {
         return;
       }
 
-      await player.moveToPosition(this.cellToScreen(targetCell));
+      await new Promise(resolve => {
+        setTimeout(() => resolve(player.moveToPosition(this.cellToScreen(targetCell))), 500)
+      });
     },
     async revealCell(cellIndex) {
       await this.$store.dispatch("dungeon/revealCell", cellIndex);
