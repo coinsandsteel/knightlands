@@ -76,11 +76,11 @@ export default {
   mutations: {
     setInitialState(state, data) {
       if (data.user) {
-        state.user = _.clone(data.user);
+        state.user = data.user;
       }
 
       if (data.combat) {
-        state.combat = _.clone(data.combat);
+        state.combat = data.combat;
       } else {
         state.combat = _.clone(combatInitialState);
       }
@@ -92,80 +92,81 @@ export default {
       state.loaded = true;
     },
     updateState(state, data) {
-      console.log("updateState", { data });
-
       // cellRevealed
       if (data.cell) {
+        console.log("New cell", data.cell);
         state.maze.revealed.push(...data.cell);
       }
       // energyChanged
       if (data.energy !== undefined) {
+        console.log("User energy", data.energy);
         state.user.energy = data.energy;
       }
       // combatStarted
       if (data.combat !== undefined) {
+        console.log("Combat status updated", data.combat);
         state.combat = {...state.combat, ...data.combat};
       }
       // enemyHealth
       if (state.combat.enemyId && data.enemyHealth !== undefined) {
+        console.log("Enemy HP", data.enemyHealth);
         state.combat.enemyHealth = data.enemyHealth;
       }
       // playerHealth
       if (data.playerHealth !== undefined) {
+        console.log("Player HP", data.playerHealth);
         state.user.health = data.playerHealth;
       }
       // playerMoved
       if (data.moveTo !== undefined) {
+        console.log("User moved to cell", data.moveTo);
         state.user.cell = data.moveTo;
       }
-
+      
       if (data.altar !== undefined) {
+        console.log("Altar used", data.altar);
         state.maze.revealed[data.altar].altar = undefined;
       }
-
+      
       if (data.trap !== undefined) {
+        console.log("Trap used", data.trap);
         state.maze.revealed[data.trap].trap = undefined;
       }
-
+      
       if (data.exp !== undefined) {
+        console.log("User XP", data.exp);
         state.user.exp = data.exp;
       }
-
+      
       if (data.level !== undefined) {
+        console.log("Level changed", data.level);
         state.user.level = data.level;
       }
-
+      
       if (data.loot !== undefined) {
+        console.log("Loot received", data.loot);
         state.maze.revealed[data.loot].loot = undefined;
       }
     },
     resetCombat(state) {
       state.combat = _.clone(combatInitialState);
+      console.log("Combat status was reset", state.combat);
     }
   },
   actions: {
-    redirectToActiveCombat(store) {
-      if (store.state.combat.enemyId) {
-        this.$app.$router.push({ name: "dungeon-fight" });
-      }
-    },
     update(store, data) {
       store.commit("updateState", data);
 
       if (data.cell && data.cell.enemy) {
         let enemy = enemies[data.cell.enemy.id];
-        console.log("Cell enemy", enemy);
         if (enemy.isAgressiive) {
+          console.log("Aggressive enemy encountered", enemy);
           this.$app.$emit("aggressive_enemy_encountered");
         }
       }
 
       if (data.combat) {
         store.dispatch("redirectToActiveCombat");
-      }
-
-      // TODO combat finished > redirect to maze
-      if (false) {
       }
     },
     subscribe(store) {
