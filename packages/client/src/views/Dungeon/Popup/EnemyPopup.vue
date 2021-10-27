@@ -3,7 +3,7 @@
     <template v-slot:content> Fight this monster? </template>
 
     <template v-slot:footer>
-      <CustomButton type="grey" @click="$close">{{ "Escape" }}</CustomButton>
+      <CustomButton type="grey" @click="$close">{{ "Do nothing" }}</CustomButton>
       <CustomButton type="grey" @click="handle">{{ "Fight!" }}</CustomButton>
     </template>
   </UserDialog>
