@@ -39,9 +39,9 @@
     <template v-slot:footer>
       <div class="flex width-100 flex-evenly-spaced">
         <CustomButton width="30%" type="grey" @click="$close">{{
-          "Do nothing"
+          $t("run-away")
         }}</CustomButton>
-        <CustomButton width="30%" type="red" @click="handle">{{ "Fight!" }}</CustomButton>
+        <CustomButton width="30%" type="red" @click="handle">{{ $t("fight-it") }}</CustomButton>
       </div>
     </template>
   </UserDialog>
