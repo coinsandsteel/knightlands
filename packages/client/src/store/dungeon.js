@@ -229,16 +229,21 @@ export default {
     update(store, data) {
       store.commit("updateState", data);
 
-      if (data.cell && data.cell.enemy) {
-        let enemy = enemies[data.cell.enemy.id];
-        if (enemy.isAgressiive) {
-          console.log("Aggressive enemy encountered", enemy);
-          this.$app.$emit("aggressive_enemy_encountered");
+      // Do not redirect to combat after cell was revealed (aggressive enemy)
+      if (data.cell && data.cell.length === 1 && data.cell[0].enemy) {
+        let enemyPayload = data.cell[0].enemy;
+        let enemyMeta = enemies[enemyPayload.id];
+        if (enemyMeta.isAgressiive) {
+          this.$app.$emit("aggressive_enemy_encountered", enemyPayload);
         }
       }
-
+      
+      // Redirect to combat after cell was used (non-aggressive enemy)
       if (data.combat) {
-        store.dispatch("redirectToActiveCombat");
+        let enemyMeta = enemies[data.combat.enemyId];
+        if (!enemyMeta.isAgressiive) {
+          store.dispatch("redirectToActiveCombat");
+        }
       }
 
       if (data.regen) {

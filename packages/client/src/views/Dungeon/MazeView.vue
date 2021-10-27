@@ -64,11 +64,11 @@ export default {
   mounted() {
     this._resize = this.init.bind(this);
     window.addEventListener("resize", this._resize);
-    this.$app.$on("aggressive_enemy_encountered", this.handleAggressiveEnemy);
+    this.$store.$app.$on("aggressive_enemy_encountered", this.handleAggressiveEnemy);
   },
   destroyed() {
     window.removeEventListener("resize", this._resize);
-    this.$app.$off("aggressive_enemy_encountered");
+    this.$store.$app.$off("aggressive_enemy_encountered");
   },
   data: () => ({
     cellSize: 0,
@@ -224,8 +224,10 @@ export default {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
       }
     },
-    async handleAggressiveEnemy(id) {
-      await ShowEnemyPopup(id);
+    async handleAggressiveEnemy(payload) {
+      console.log('handleAggressiveEnemy', payload);
+      await ShowEnemyPopup(payload.id, payload.health);
+      this.$store.dispatch("dungeon/redirectToActiveCombat");
     }
   }
 };

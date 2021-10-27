@@ -1,5 +1,5 @@
 <template>
-  <UserDialog @close="$close">
+  <UserDialog @close="$close(enemy.isAgressiive)">
     <template v-slot:content>
       <div class="flex flex-column flex-center flex-start">
         <div
@@ -14,8 +14,8 @@
         >
           {{ enemy.label }}
         </div>
-        <p v-if="enemy.isAgressiive" class="font-size-20">
-          {{ $t("aggressive_enemy") }}
+        <p v-if="enemy.isAgressiive" class="rarity-legendary font-size-22">
+          {{ $t("aggressive-enemy") }}
         </p>
         <img :src="enemyImage" alt="" class="enemy-img margin-bottom-2" />
         <ProgressBar
@@ -38,10 +38,10 @@
 
     <template v-slot:footer>
       <div class="flex width-100 flex-evenly-spaced">
-        <CustomButton width="30%" type="grey" @click="$close">{{
+        <CustomButton v-if="!enemy.isAgressiive" width="30%" type="grey" @click="$close(false)">{{
           $t("run-away")
         }}</CustomButton>
-        <CustomButton width="30%" type="red" @click="handle">{{ $t("fight-it") }}</CustomButton>
+        <CustomButton width="30%" type="red" @click="$close(true)">{{ $t("fight-it") }}</CustomButton>
       </div>
     </template>
   </UserDialog>
@@ -63,13 +63,7 @@ export default {
     enemyImage() {
       return `/images/enemies/${this.enemy.image}.png`;
     },
-  },
-  methods: {
-    handle() {
-      // Do stuff
-      this.$close(true);
-    },
-  },
+  }
 };
 </script>
 
