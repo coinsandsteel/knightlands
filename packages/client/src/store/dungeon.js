@@ -154,6 +154,11 @@ export default {
     }
   },
   actions: {
+    redirectToActiveCombat(store) {
+      if (store.state.combat.enemyId) {
+        this.$app.$router.push({ name: "dungeon-fight" });
+      }
+    },
     update(store, data) {
       store.commit("updateState", data);
 
