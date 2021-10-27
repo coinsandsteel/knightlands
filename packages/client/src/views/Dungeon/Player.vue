@@ -2,6 +2,7 @@
   <div
     class="dungeon-player flex flex-center pointer-events-none"
     :style="style"
+    :class="{ invis: user.invis > 0 }"
     @click="handleClick"
   >
     <div class="avatar">
@@ -15,6 +16,7 @@
 <script>
 import anime from "animejs/lib/anime.es.js";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
+import { mapState } from "vuex";
 
 export default {
   data: () => ({
@@ -30,7 +32,10 @@ export default {
         left: this.pos.x + "px",
         top: this.pos.y + "px"
       };
-    }
+    },
+    ...mapState({
+      user: state => state.dungeon.user
+    })
   },
   methods: {
     handleClick() {
@@ -72,6 +77,10 @@ export default {
     background-image: url("/images/halloween_assets/avatar_border1.png");
     background-position: center;
     background-size: contain;
+  }
+
+  &.invis {
+    opacity: 0.5;
   }
 }
 </style>

@@ -208,6 +208,7 @@ export default {
         // response only from loot
         if (cmdResponse) {
           // show loot content
+          this.$store.commit("dungeon/updateLoot", cmdResponse);
         }
       } else {
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);

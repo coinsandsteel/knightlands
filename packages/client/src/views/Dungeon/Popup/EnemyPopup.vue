@@ -5,12 +5,8 @@
     </template>
 
     <template v-slot:footer>
-      <CustomButton type="grey" @click="$close">{{
-        'Option 1'
-      }}</CustomButton>
-      <CustomButton type="grey" @click="handle">{{
-        'Option 2'
-      }}</CustomButton>
+      <CustomButton type="grey" @click="$close">{{ "Option 1" }}</CustomButton>
+      <CustomButton type="grey" @click="handle">{{ "Option 2" }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -27,7 +23,7 @@ export default {
     handle() {
       // Do stuff
 
-      this.$close();
+      this.$close(true);
     }
   }
 };

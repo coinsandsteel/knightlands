@@ -30,7 +30,8 @@ export default {
         int: 0,
         sta: 0
       },
-      exp: 0
+      exp: 0,
+      invis: 0
     },
     combat: {
       enemyId: 0,
@@ -56,6 +57,10 @@ export default {
       };
     },
 
+    nextExp: state => {
+      return progression.experience[state.user.level - 1];
+    },
+
     enemy: state => {
       if (!state.combat || !state.combat.enemyId) {
         return null;
@@ -64,9 +69,21 @@ export default {
     }
   },
   mutations: {
+    useItem(state, item) {
+      state.user[item]--;
+
+      if (item == "potion") {
+        state.user.invis += 10;
+      }
+    },
+    updateInvisibility(state) {
+      if (state.user.invis) {
+        state.user.invis--;
+      }
+    },
     setInitialState(state, data) {
       if (data.user) {
-        state.user = data.user;
+        state.user = { ...state.user, ...data.user };
       }
 
       if (data.combat) {
@@ -78,6 +95,23 @@ export default {
 
       state.maze = { ...state.maze, ...data };
       state.loaded = true;
+    },
+    updateLoot(state, loot) {
+      if (loot.potion) {
+        state.user.potion = loot.potion;
+      }
+
+      if (loot.scroll) {
+        state.user.scroll = loot.scroll;
+      }
+
+      if (loot.key) {
+        state.user.key = loot.key;
+      }
+
+      if (loot.equip) {
+        state.user.equip = loot.equip;
+      }
     },
     updateState(state, data) {
       console.log("updateState", { data });
@@ -105,6 +139,14 @@ export default {
       // playerMoved
       if (data.moveTo !== undefined) {
         state.user.cell = data.moveTo;
+      }
+
+      if (data.enemy !== undefined) {
+        state.maze.revealed[data.enemy.cell].enemy.health = data.enemy.health;
+      }
+
+      if (data.noEnemy !== undefined) {
+        state.maze.revealed[data.noEnemy].enemy = undefined;
       }
 
       if (data.altar !== undefined) {
@@ -175,18 +217,22 @@ export default {
       await this.$app.$game._wrapOperation(Operations.SDungeonRevealCell, {
         cellId: index
       });
+      store.commit("updateInvisibility");
     },
     async useCell(store, index) {
-      return (
+      const response = (
         await this.$app.$game._wrapOperation(Operations.SDungeonUseCell, {
           cellId: index
         })
       ).response;
+      store.commit("updateInvisibility");
+      return response;
     },
     async moveToCell(store, index) {
       await this.$app.$game._wrapOperation(Operations.SDungeonMove, {
         cellId: index
       });
+      store.commit("updateInvisibility");
     },
     async combat(store, move) {
       await this.$app.$game._wrapOperation(Operations.SDunegonCombatAction, {
@@ -197,6 +243,12 @@ export default {
     async reset(store) {
       await this.$app.$game._wrapOperation(Operations.SDungeonGenerateNew);
       await store.dispatch("load");
+    },
+    async useItem(store, item) {
+      await this.$app.$game._wrapOperation(Operations.SDungeonUseItem, {
+        item
+      });
+      store.commit("useItem", item);
     }
   }
 };

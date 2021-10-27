@@ -11,38 +11,64 @@
       <CustomButton @click="resetDungeon">Reset dungeon</CustomButton>
     </div>
 
-    <div class="width-100 margin-top-2 margin-bottom-2">
+    <div class="width-100 margin-top-2 margin-bottom-2 stat-panel">
       <ProgressBar
         :value="user.health"
-        :maxValue="1357"
+        :maxValue="stats.maxHealth"
         height="4px"
         width="90%"
         valuePosition="top"
         barType="red"
         valueClass="white-font font-outline font-size-20"
-        class="margin-bottom-1"
       >
-        <template v-slot:label>Dungeon HP&nbsp;&ndash;&nbsp;</template>
+        <template v-slot:label><span class="icon-health"></span></template>
       </ProgressBar>
 
       <ProgressBar
         :value="user.energy"
-        :maxValue="935"
+        :maxValue="stats.maxEnergy"
         height="4px"
         width="90%"
         valuePosition="top"
         barType="blue"
         valueClass="white-font font-outline font-size-20"
       >
-        <template v-slot:label>Dungeon Energy&nbsp;&ndash;&nbsp;</template>
+        <template v-slot:label><span class="icon-energy"></span></template>
       </ProgressBar>
+
+      <ProgressBar
+        :value="user.exp"
+        :maxValue="nextExp"
+        height="4px"
+        width="90%"
+        valuePosition="top"
+        barType="grey"
+        valueClass="white-font font-outline font-size-20"
+      >
+        <template v-slot:label><span class="icon-exp"></span></template>
+      </ProgressBar>
+
+      <div class="flex flex-center">
+        <CustomButton
+          type="grey"
+          @click="usePotion"
+          :disabled="user.potion == 0"
+          >Use potion {{ user.potion }}</CustomButton
+        >
+        <CustomButton
+          type="grey"
+          @click="useScroll"
+          :disabled="user.scroll == 0"
+          >Use scroll {{ user.scroll }}</CustomButton
+        >
+      </div>
     </div>
     <Maze />
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import Maze from "./MazeView.vue";
 import AppSection from "@/AppSection.vue";
@@ -78,11 +104,21 @@ export default {
       maze: state => state.dungeon.maze,
       user: state => state.dungeon.user,
       combat: state => state.dungeon.combat
+    }),
+    ...mapGetters({
+      stats: "dungeon/playerStats",
+      nextExp: "dungeon/nextExp"
     })
   },
   methods: {
     async resetDungeon() {
       await this.$store.dispatch("dungeon/reset");
+    },
+    async usePotion() {
+      await this.$store.dispatch("dungeon/useItem", "potion");
+    },
+    async useScroll() {
+      await this.$store.dispatch("dungeon/useItem", "scroll");
     }
   }
 };
@@ -97,5 +133,13 @@ export default {
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
+}
+
+.stat-panel {
+  display: grid;
+  justify-content: center;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 2rem;
 }
 </style>
