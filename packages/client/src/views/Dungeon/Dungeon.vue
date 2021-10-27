@@ -8,7 +8,10 @@
     <div class="flex flex-center panel-input padding-1">
       <div class="icon-timer small margin-right-half"></div>
       <span class="font-size-18">{{ timer.value }}</span>
-      <CustomButton @click="resetDungeon">Reset dungeon</CustomButton>
+      <CustomButton type="yellow" @click="resetDungeon"
+        >Reset dungeon</CustomButton
+      >
+      <CustomButton @click="resetProgress">Reset progress</CustomButton>
     </div>
 
     <div class="width-100 margin-top-2 margin-bottom-2 stat-panel">
@@ -111,6 +114,9 @@ export default {
   },
   methods: {
     async resetDungeon() {
+      await this.$store.dispatch("dungeon/reset");
+    },
+    async resetProgress() {
       await this.$store.dispatch("dungeon/reset");
     },
     async usePotion() {

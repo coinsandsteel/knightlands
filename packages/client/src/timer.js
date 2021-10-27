@@ -22,7 +22,7 @@ class Timer extends EventEmitter {
 
     this._timeLeft = Math.floor(value);
     if (this._timeLeft > 0 && !this._timerTimeout) {
-      this._update();
+      this.update(true);
     }
   }
 
@@ -36,7 +36,7 @@ class Timer extends EventEmitter {
       return;
     }
 
-    if (force) {
+    if (force && this._timerTimeout) {
       clearTimeout(this._timerTimeout);
     }
 

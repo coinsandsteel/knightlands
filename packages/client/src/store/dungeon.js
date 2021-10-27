@@ -5,6 +5,7 @@ import progression from "@/metadata/halloween/dungeon_progression.json";
 
 import Operations from "@/../../knightlands-shared/operations";
 import { CombatAction } from "@/../../knightlands-shared/dungeon_types";
+import timer from "../timer";
 
 const CombatOutcome = {
   EnemyWon: -1,
@@ -21,6 +22,8 @@ const combatInitialState = {
 export default {
   namespaced: true,
   state: {
+    hpTimer: new timer(),
+    energyTimer: new timer(),
     loaded: false,
     maze: {
       revealed: [],
@@ -51,19 +54,28 @@ export default {
   getters: {
     playerStats: state => {
       const stats = state.user.stats;
+
+      const maxEnergy = Math.ceil(
+        progression.baseEnergy + 1.01 * stats.sta + (1.05 + stats.int)
+      );
+      const maxHealth = Math.ceil(
+        progression.baseHealth + 1.4 * stats.str + 1.15 * stats.sta
+      );
       return {
-        maxHealth: Math.ceil(
-          progression.baseHealth + 1.4 * stats.str + 1.15 * stats.sta
-        ),
         defense: Math.ceil(
           progression.baseDefense + 1.5 * stats.dex + 1.25 * stats.sta
         ),
         attack: Math.ceil(
           progression.baseAttack + 1.5 * stats.str + 1.25 * stats.int
         ),
-        maxEnergy: Math.ceil(
-          progression.baseEnergy + 1.01 * stats.sta + (1.05 + stats.int)
-        )
+        maxHealth,
+        maxEnergy,
+        energyRegen:
+          86400 / (10 + 1.01 * stats.sta + 1.01 * stats.int) / maxEnergy,
+        hpRegen:
+          86400 /
+          (20 + 1.01 * stats.dex + 1.01 * stats.sta + 1.01 * stats.str) /
+          maxHealth
       };
     },
 
@@ -105,7 +117,7 @@ export default {
       delete data.user;
       delete data.combat;
 
-      state.maze = { ...state.maze, ...data };
+      state.maze = data;
       state.loaded = true;
     },
     updateLoot(state, loot) {
@@ -168,6 +180,7 @@ export default {
       if (data.altar !== undefined) {
         console.log("Altar used", data.altar);
         state.maze.revealed[data.altar].altar = undefined;
+        console.log(state.maze.revealed[data.altar]);
       }
 
       if (data.trap !== undefined) {
@@ -189,10 +202,22 @@ export default {
         console.log("Loot received", data.loot);
         state.maze.revealed[data.loot].loot = undefined;
       }
+
+      if (data.regen) {
+        console.log("Health and energy regen", data.regen);
+        state.user.lastHpRegen = data.regen.hp;
+        state.user.lastEnergyRegen = data.regen.energy;
+      }
     },
     resetCombat(state) {
       state.combat = _.clone(combatInitialState);
       console.log("Combat status was reset", state.combat);
+    },
+    addHealth(state, value) {
+      state.user.health += value;
+    },
+    addEnergy(state, value) {
+      state.user.energy += value;
     }
   },
   actions: {
@@ -215,6 +240,10 @@ export default {
       if (data.combat) {
         store.dispatch("redirectToActiveCombat");
       }
+
+      if (data.regen) {
+        store.dispatch("updateRegenTimers");
+      }
     },
     subscribe(store) {
       this.$app.$game.onNetwork(Events.SDungeonUpdate, data => {
@@ -229,6 +258,25 @@ export default {
         Operations.SDungeonLoad
       );
       store.commit("setInitialState", result.response);
+
+      // initialize timers
+
+      store.state.hpTimer.removeAllListeners("finished");
+      store.state.hpTimer.on("finished", () => {
+        if (store.getters.playerStats.maxHealth > store.state.user.health) {
+          store.commit("addHealth", 1);
+        }
+        store.state.hpTimer.timeLeft = store.getters.playerStats.hpRegen;
+      });
+
+      store.state.energyTimer.removeAllListeners("finished");
+      store.state.energyTimer.on("finished", () => {
+        if (store.getters.playerStats.maxEnergy > store.state.user.energy) {
+          store.commit("addEnergy", 1);
+        }
+        store.state.energyTimer.timeLeft =
+          store.getters.playerStats.energyRegen;
+      });
     },
     async revealCell(store, index) {
       await this.$app.$game._wrapOperation(Operations.SDungeonRevealCell, {
@@ -269,6 +317,11 @@ export default {
         item
       });
       store.commit("useItem", item);
+    },
+    updateRegenTimers({ state }) {
+      state.hpTimer.timeLeft = this.$app.$game.nowSec - state.user.lastHpRegen;
+      state.energyTimer.timeLeft =
+        this.$app.$game.nowSec - state.user.lastEnergyRegen;
     }
   }
 };

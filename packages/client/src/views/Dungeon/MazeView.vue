@@ -5,7 +5,7 @@
         <MazeCell
           v-for="idx in totalCells"
           :key="`${idx - 1}_${indexToCellIndex[idx - 1]}`"
-          :cell="getCellAt(indexToCellIndex[idx - 1])"
+          :cell="maze.revealed[indexToCellIndex[idx - 1]]"
           :index="idx - 1"
           :mazeWidth="width"
           :highlight="isHighlighted(idx - 1)"
@@ -217,7 +217,7 @@ export default {
         ];
 
         if (userCell.trap) {
-          alert('You`re in the trap! Defuse it!');
+          alert("You`re in the trap! Defuse it!");
           return;
         }
 
