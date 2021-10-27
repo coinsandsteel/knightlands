@@ -30,10 +30,10 @@ import TrapPopup from "./Popup/TrapPopup.vue";
 import LootPopup from "./Popup/LootPopup.vue";
 import { create } from "vue-modal-dialogs";
 
-const ShowEnemyPopup = create(EnemyPopup, "data");
-const ShowAltarPopup = create(AltarPopup, "data");
-const ShowTrapPopup = create(TrapPopup, "data");
-const ShowLootPopup = create(LootPopup, "data");
+const ShowEnemyPopup = create(EnemyPopup, "enemyId", "enemyCurrentHealth");
+const ShowAltarPopup = create(AltarPopup, "cellId");
+const ShowTrapPopup = create(TrapPopup, "cellId");
+const ShowLootPopup = create(LootPopup, "cellId");
 
 export default {
   mixins: [PromptMixin],
@@ -187,7 +187,7 @@ export default {
         let response = false;
 
         if (cell.enemy) {
-          response = await ShowEnemyPopup(cell.enemy.id);
+          response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
         } else if (cell.altar) {
           response = await ShowAltarPopup(cell.altar.id);
         } else if (cell.trap) {
