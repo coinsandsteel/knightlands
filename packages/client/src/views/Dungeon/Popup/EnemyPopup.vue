@@ -1,16 +1,10 @@
 <template>
   <UserDialog :title="'Hi!'" @close="$close">
-    <template v-slot:content>
-      Content here
-    </template>
+    <template v-slot:content> Fight this monster? </template>
 
     <template v-slot:footer>
-      <CustomButton type="grey" @click="$close">{{
-        'Option 1'
-      }}</CustomButton>
-      <CustomButton type="grey" @click="handle">{{
-        'Option 2'
-      }}</CustomButton>
+      <CustomButton type="grey" @click="$close">{{ "Escape" }}</CustomButton>
+      <CustomButton type="grey" @click="handle">{{ "Fight!" }}</CustomButton>
     </template>
   </UserDialog>
 </template>
@@ -26,9 +20,8 @@ export default {
   methods: {
     handle() {
       // Do stuff
-
-      this.$close();
-    }
-  }
+      this.$close(true);
+    },
+  },
 };
 </script>
