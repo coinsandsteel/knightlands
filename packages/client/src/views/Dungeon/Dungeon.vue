@@ -30,10 +30,10 @@
         height="4px"
         width="90%"
         valuePosition="top"
-        barType="blue"
+        barType="green-h"
         valueClass="white-font font-outline font-size-20"
       >
-        <template v-slot:label><span class="icon-energy"></span></template>
+        <template v-slot:label><span class="energy-hallowen"></span></template>
       </ProgressBar>
 
       <ProgressBar
@@ -124,6 +124,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../../style/common.less";
+
 .hallowen-bg {
   background-color: #40374d;
   z-index: -1;
@@ -140,5 +142,10 @@ export default {
   grid-template-rows: repeat(2, 1fr);
   grid-template-columns: repeat(2, 1fr);
   row-gap: 2rem;
+}
+
+.energy-hallowen {
+  .icon_nrg_halloween;
+  .icon();
 }
 </style>

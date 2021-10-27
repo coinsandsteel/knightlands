@@ -374,6 +374,12 @@ export default {
   border-image-width: 3px;
 }
 
+.green-h {
+  border-image: url("../assets/ui/progress_bar_halloween.png") repeat;
+  border-image-slice: 1 fill;
+  border-image-width: 3px;
+}
+
 .bar-value {
   color: #210028;
   position: absolute;
