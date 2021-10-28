@@ -28,7 +28,7 @@
       <span v-else-if="itemData" :class="`icon-${element} element`"></span>
 
       <div class="icon-locked" v-if="showLocked && itemData && itemData.locked">
-        <span class="icon-locked-corner"/>
+        <span class="icon-locked-corner" />
         <span class="icon-locked-text">L</span>
       </div>
 
@@ -334,26 +334,6 @@ export default {
   left: 0;
   right: 0;
 }
-
-// .slot-common {
-//   background-image: url("../assets/ui/slot_common.png");
-// }
-
-// .slot-rare {
-//   background-image: url("../assets/ui/slot_rare.png");
-// }
-
-// .slot-epic {
-//   background-image: url("../assets/ui/slot_epic.png");
-// }
-
-// .slot-legendary {
-//   background-image: url("../assets/ui/slot_legendary.png");
-// }
-
-// .slot-mythical {
-//   background-image: url("../assets/ui/slot_mythical.png");
-// }
 
 .loot-equipped {
   background-image: url("../assets/ui/slot_selected.png");

@@ -41,6 +41,8 @@ export default {
       health: null,
       lastHpRegen: null,
       lastEnergyRegen: null,
+      mHand: 0,
+      oHand: 0,
       stats: {
         str: 0,
         dex: 0,
@@ -139,7 +141,7 @@ export default {
       }
     },
     updateState(state, data) {
-      console.log('Response from server', data);
+      console.log("Response from server", data);
 
       // cellRevealed
       if (data.cell) {
@@ -211,6 +213,11 @@ export default {
         console.log("Health and energy regen", data.regen);
         state.user.lastHpRegen = data.regen.hp;
         state.user.lastEnergyRegen = data.regen.energy;
+      }
+
+      if (data.equip) {
+        state.user.mHand = data.equip.mHand;
+        state.user.oHand = data.equip.oHand;
       }
     },
     resetCombat(state) {
@@ -345,6 +352,9 @@ export default {
       await this.$app.$game._wrapOperation(Operations.SDungeonTestAction, {
         action
       });
+    },
+    async equip(store, data) {
+      await this.$app.$game._wrapOperation(Operations.SDungeonEquip, data);
     }
   }
 };

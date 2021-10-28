@@ -70,39 +70,52 @@
           :thresholds="thresholds"
         ></progress-bar>
 
+        <progress-bar
+          :percentMode="false"
+          v-model="user.health"
+          :maxValue="stats.maxHealth"
+          height="4px"
+          width="80%"
+          valuePosition="top"
+          barType="red"
+          valueClass="white-font font-outline font-size-30 quest-progress-value margin-top-2"
+        ></progress-bar>
+
         <div class="margin-top-2 flex flex-center">
           <CustomButton
             :promise="request"
             minWidth="15rem"
-            type="yellow"
+            type="grey"
             :noSound:="true"
             @click="engage(moves.Scissors)"
             id="engage-q"
           >
-            <span>{{ $t("btn-attack") }}</span></CustomButton
+            <span>{{ $t("d-attack") }}</span></CustomButton
           >
           <CustomButton
             :promise="request"
             minWidth="15rem"
-            type="yellow"
+            type="grey"
             :noSound:="true"
             @click="engage(moves.Paper)"
             id="engage-q"
           >
-            <span>{{ $t("btn-block") }}</span></CustomButton
+            <span>{{ $t("d-block") }}</span></CustomButton
           >
           <CustomButton
             :promise="request"
             minWidth="15rem"
-            type="yellow"
+            type="grey"
             :noSound:="true"
             @click="engage(moves.Rock)"
             id="engage-q"
           >
-            <span>{{ $t("btn-parry") }}</span></CustomButton
+            <span>{{ $t("d-parry") }}</span></CustomButton
           >
         </div>
       </div>
+
+      <Equipment class="margin-top-5" />
     </div>
   </div>
 </template>
@@ -120,6 +133,7 @@ import Errors from "@/../../knightlands-shared/errors";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Equipment from "./equipment/Equipment.vue";
 
 import { create } from "vue-modal-dialogs";
 import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
@@ -142,6 +156,7 @@ export default {
   mixins: [HintHandler, NetworkRequestErrorMixin, AppSection, PromptMixin],
   props: ["zone", "questIndex", "maxQuestIndex", "stage"],
   components: {
+    Equipment,
     ProgressBar,
     IconWithValue,
     CustomButton,
@@ -179,7 +194,8 @@ export default {
       maze: state => state.dungeon.maze
     }),
     ...mapGetters({
-      enemy: "dungeon/enemy"
+      enemy: "dungeon/enemy",
+      stats: "dungeon/playerStats"
     }),
     enemyImage() {
       return `/images/enemies/${this.enemy.image}.png`;
@@ -221,12 +237,12 @@ export default {
   },
   methods: {
     combatLost() {
-      alert('You lost the combat!');
+      alert("You lost the combat!");
       this.$store.dispatch("dungeon/resetCombat");
       this.leave();
     },
     combatWon() {
-      alert('You won the combat!');
+      alert("You won the combat!");
       this.$store.dispatch("dungeon/resetCombat");
       this.leave();
     },

@@ -65,7 +65,10 @@ export default {
   mounted() {
     this._resize = this.init.bind(this);
     window.addEventListener("resize", this._resize);
-    this.$store.$app.$on("aggressive_enemy_encountered", this.handleAggressiveEnemy);
+    this.$store.$app.$on(
+      "aggressive_enemy_encountered",
+      this.handleAggressiveEnemy
+    );
   },
   destroyed() {
     window.removeEventListener("resize", this._resize);
@@ -88,9 +91,7 @@ export default {
       return this.height * this.width;
     },
     userCell() {
-      return this.maze.revealed[
-        this.indexToCellIndex[this.user.cell]
-      ];
+      return this.maze.revealed[this.indexToCellIndex[this.user.cell]];
     }
   },
   methods: {
@@ -161,7 +162,10 @@ export default {
     async handleCellClick(cell) {
       let index = cell.index;
       if (this.userCell.trap && index !== this.user.cell) {
-        this.interactWithCell(this.user.cell, this.indexToCellIndex[this.user.cell]);
+        this.interactWithCell(
+          this.user.cell,
+          this.indexToCellIndex[this.user.cell]
+        );
         return;
       }
 
@@ -174,7 +178,7 @@ export default {
         }
       } catch (e) {
         if (e === Erorrs.NoEnergy) {
-          this.$app.$emit('shake-energy');
+          this.$app.$emit("shake-energy");
         }
       }
     },
@@ -187,7 +191,10 @@ export default {
       }
 
       await new Promise(resolve => {
-        setTimeout(() => resolve(player.moveToPosition(this.cellToScreen(targetCell))), 500)
+        setTimeout(
+          () => resolve(player.moveToPosition(this.cellToScreen(targetCell))),
+          500
+        );
       });
     },
     async revealCell(cellIndex) {
