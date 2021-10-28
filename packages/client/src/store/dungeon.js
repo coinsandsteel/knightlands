@@ -319,10 +319,12 @@ export default {
       store.commit("updateInvisibility");
     },
     async combat(store, move) {
-      await this.$app.$game._wrapOperation(Operations.SDunegonCombatAction, {
-        action: CombatAction.Attack,
-        data: { move }
-      });
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDunegonCombatAction, {
+          action: CombatAction.Attack,
+          data: { move }
+        })
+      ).response;
     },
     resetCombat(store) {
       store.commit("resetCombat");

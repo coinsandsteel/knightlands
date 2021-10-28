@@ -6,7 +6,7 @@
         :style="zoneBackground"
         class="flex quest-mid relative flex-center flex-no-wrap"
       >
-        <div class="quest-image flex flex-column flex-center flex-start">
+        <div class="quest-image flex flex-column flex-center flex-end">
           <img ref="enemyView" :src="enemyImage" />
           <div
             class="
@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div class="absolute-stretch z-index-100 pointer-events-none">
+        <div class="absolute-stretch z-index-100 pointer-events-none ">
           <SoundEffect
             ref="fx"
             :files="[
@@ -40,20 +40,9 @@
               'hit8'
             ]"
           />
-          <DamageText
-            v-for="damage in playerDamages"
-            :local="true"
-            :key="damage.id"
-            :crit="damage.crit"
-            >{{ damage.damage }}</DamageText
-          >
-          <NewLoot
-            v-for="reward in newRewards"
-            :key="reward.id"
-            :item="reward"
-            :delay="reward.delay"
-          >
-          </NewLoot>
+          <span class="move font-outline font-weight-900" ref="moveHandle">{{
+            $t(move)
+          }}</span>
         </div>
       </div>
 
@@ -123,27 +112,20 @@
 <script>
 import HintHandler from "@/components/HintHandler.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
-import Stat from "@/../../knightlands-shared/character_stat.js";
 import IconWithValue from "@/components/IconWithValue.vue";
 import UiConstants from "@/ui_constants";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import CustomButton from "@/components/Button.vue";
-import DamageText from "@/views/Raids/DamageText.vue";
-import Errors from "@/../../knightlands-shared/errors";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Equipment from "./equipment/Equipment.vue";
 
 import { create } from "vue-modal-dialogs";
-import NotEnoughResource from "@/components/Modals/NotEnoughResource.vue";
 import { MoveType } from "@/../../knightlands-shared/dungeon_types";
 
 import anime from "animejs/lib/anime.es.js";
 import { mapGetters, mapState } from "vuex";
-
-const ShowResourceRefill = create(NotEnoughResource, "stat");
-const NEW_LOOT_DELAY = 300;
 
 const CombatOutcome = {
   EnemyWon: -1,
@@ -160,7 +142,6 @@ export default {
     ProgressBar,
     IconWithValue,
     CustomButton,
-    DamageText,
     SoundEffect
   },
   data: () => ({
@@ -170,7 +151,7 @@ export default {
     lootHash: {},
     thresholds: UiConstants.progressThresholds,
     request: null,
-    playerDamages: []
+    move: ""
   }),
   created() {
     this.title = "dungeon-fight";
@@ -213,7 +194,7 @@ export default {
       };
     },
     zoneBackground() {
-      return 'background-image: url("/images/zones/undead.jpg");';
+      return 'background-image: url("/images/zones/dragons.jpg");';
     },
     missionName() {
       return this.enemy.label;
@@ -231,7 +212,6 @@ export default {
       const damage = previous - current;
       if (damage > 0) {
         this.$refs.fx.play();
-        this.handleDamage(damage, false, 0);
       }
     }
   },
@@ -250,110 +230,53 @@ export default {
       this.$router.push({ name: "dungeon" });
     },
     async engage(move) {
-      this.request = this.$store.dispatch("dungeon/combat", move);
-      try {
-        await this.request;
-
-        //this.handleLoot(items);
-      } catch (exc) {
-        await this._handleQuestError(exc);
-      }
-    },
-    handleLoot(lootDrop) {
-      let delay = 0;
-      for (let loot of lootDrop) {
-        const templateId = loot.item;
-        // if already was dropped before - just inc loot counter
-        if (this.lootHash[templateId]) {
-          this.lootHash[templateId].count += loot.quantity;
-        } else {
-          // or add to loot array and hash for tracking
-          this.$set(this.lootHash, templateId, {
-            template: loot.item,
-            count: loot.quantity
-          });
-          this.rewards.push(this.lootHash[templateId]);
-        }
-
-        this.showNewLoot(loot, delay);
-        delay += NEW_LOOT_DELAY;
-      }
-    },
-    async _handleQuestError(error) {
-      // TODO test
-      // switch (error) {
-      //   case Errors.NoHealth:
-      //     await ShowResourceRefill(Stat.Health);
-      //     break;
-      //   case Errors.NoEnergy:
-      //     await this.$app.tutorial().triggerEvent("no-energy");
-      //     await ShowResourceRefill(Stat.Energy);
-      //     break;
-      //   case "enemy is defeated":
-      //     this.$router.push({ name: "dungeon" });
-      //     break;
-      // }
-    },
-    showNewLoot(loot, delay) {
-      setTimeout(() => {
-        this.newRewards.splice(0, 1);
-      }, 3000);
-
-      this.newRewards.push({
-        template: loot.item,
-        count: loot.quantity,
-        delay
-      });
-    },
-    handleDamage(damage, crit, delay) {
-      this.playerDamages.push({
-        damage: damage,
-        crit: crit,
-        id: this.damageTextId++
-      });
-
-      setTimeout(() => {
-        this.playerDamages.splice(0, 1);
-      }, 3000);
-
-      const enemyView = this.$refs.enemyView[this.questIndex];
-      anime.remove(enemyView);
-      let timeline = anime.timeline({
-        targets: enemyView
-      });
-
-      if (crit) {
-        timeline.add({
-          translateX: function(el, i) {
-            return `-=${anime.random(-1, -2)}rem`;
-          },
-          translateY: function(el, i) {
-            return `-=${anime.random(-1, 1)}rem`;
-          },
-          scale: 1.2 + Math.random() * 0.2,
-          duration: 0,
-          loop: 1
-        });
-      }
-
-      timeline.add(
-        {
-          filter: "brightness(100)",
-          duration: 0
-        },
-        0
+      const outcomes = await this.performRequest(
+        this.$store.dispatch("dungeon/combat", move)
       );
 
+      let moveStr = "default";
+      switch (outcomes.enemyMove) {
+        case MoveType.Scissors:
+          moveStr = "d-attack";
+          break;
+        case MoveType.Paper:
+          moveStr = "d-block";
+          break;
+        case MoveType.Rock:
+          moveStr = "d-parry";
+          break;
+      }
+
+      this.move = moveStr;
+
+      anime.remove(this.$refs.moveHandle);
+
+      let timeline = anime.timeline({
+        targets: this.$refs.moveHandle
+      });
+
       timeline.add({
-        translateX: 0,
-        translateY: 0,
-        scale: 1,
-        delay: delay,
-        filter: {
-          value: "brightness(1)",
-          easing: "linear",
-          duration: 100
-        }
+        "font-size": "1rem",
+        duration: 0
+      });
+
+      timeline.add({
+        duration: 600,
+        easing: "easeOutElastic",
+        "font-size": `8rem`,
+        opacity: 1
+      });
+
+      timeline.add({
+        duration: 500,
+        "font-size": `8rem`
+      });
+
+      timeline.add({
+        easing: "easeOutCubic",
+        duration: 1000,
+        "font-size": `8rem`,
+        opacity: 0
       });
     }
   }
@@ -400,7 +323,14 @@ export default {
   background-color: #0d00287d;
   border-radius: 2px;
   position: absolute;
-  bottom: 0;
+  top: 0;
   z-index: 98;
+}
+
+.move {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
