@@ -117,7 +117,7 @@ export default {
     ...mapState({
       maze: state => state.dungeon.maze,
       user: state => state.dungeon.user,
-      combat: state => state.dungeon.combat,
+      combat: state => state.dungeon.combat
     }),
     ...mapGetters({
       stats: "dungeon/playerStats",
@@ -148,7 +148,7 @@ export default {
       await anime({
         targets: "#energy",
         easing: "easeInOutSine",
-        duration: 550,
+        duration: 400,
         translateX: [
           {
             value: xMax * -1

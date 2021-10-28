@@ -25,6 +25,7 @@ import { mapState } from "vuex";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Erorrs from "@/../../knightlands-shared/errors";
 
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import EnemyPopup from "./Popup/EnemyPopup.vue";
 import AltarPopup from "./Popup/AltarPopup.vue";
 import TrapPopup from "./Popup/TrapPopup.vue";
@@ -37,7 +38,7 @@ const ShowTrapPopup = create(TrapPopup, "trapId");
 const ShowLootPopup = create(LootPopup, "lootId");
 
 export default {
-  mixins: [PromptMixin],
+  mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: { MazeCell, Player },
   watch: {
     loaded: {
@@ -75,6 +76,7 @@ export default {
     this.$store.$app.$off("aggressive_enemy_encountered");
   },
   data: () => ({
+    interaction: false,
     cellSize: 0,
     cssVars: {},
     indexToCellIndex: {}
@@ -198,46 +200,59 @@ export default {
       });
 
       if (targetCell.trap) {
-        ShowTrapPopup(targetCell.trap.id);
+        this.interactWithCell(index, this.indexToCellIndex[index]);
       }
     },
     async revealCell(cellIndex) {
-      await this.$store.dispatch("dungeon/revealCell", cellIndex);
+      await this.performRequestNoCatch(
+        this.$store.dispatch("dungeon/revealCell", cellIndex)
+      );
     },
     async interactWithCell(cellIndex, revealedIndex) {
+      if (this.interaction) {
+        return;
+      }
+
+      this.interaction = true;
+
       const cell = this.maze.revealed[revealedIndex];
 
       // Click to user's current cell
-      if (cellIndex == this.user.cell) {
-        let response = false;
+      try {
+        if (cellIndex == this.user.cell) {
+          let response = false;
 
-        if (cell.enemy) {
-          response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
-        } else if (cell.altar) {
-          response = await ShowAltarPopup(cell.altar.id);
-        } else if (cell.trap) {
-          response = await ShowTrapPopup(cell.trap.id);
-        } else if (cell.loot) {
-          response = await ShowLootPopup(cell.loot);
+          if (cell.enemy) {
+            response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
+          } else if (cell.altar) {
+            response = await ShowAltarPopup(cell.altar.id);
+          } else if (cell.trap) {
+            response = await ShowTrapPopup(cell.trap.id);
+          } else if (cell.loot) {
+            response = await ShowLootPopup(cell.loot);
+          }
+
+          if (!response) {
+            return;
+          }
+
+          // interact with the object in the cell
+          const cmdResponse = await this.performRequestNoCatch(
+            this.$store.dispatch("dungeon/useCell", cellIndex)
+          );
+
+          // response only from loot
+          if (cmdResponse) {
+            // show loot content
+            this.$store.commit("dungeon/updateLoot", cmdResponse);
+          }
+        } else {
+          await this.performRequestNoCatch(
+            this.$store.dispatch("dungeon/moveToCell", cellIndex)
+          );
         }
-
-        if (!response) {
-          return;
-        }
-
-        // interact with the object in the cell
-        const cmdResponse = await this.$store.dispatch(
-          "dungeon/useCell",
-          cellIndex
-        );
-
-        // response only from loot
-        if (cmdResponse) {
-          // show loot content
-          this.$store.commit("dungeon/updateLoot", cmdResponse);
-        }
-      } else {
-        await this.$store.dispatch("dungeon/moveToCell", cellIndex);
+      } finally {
+        this.interaction = false;
       }
     },
     async handleAggressiveEnemy(payload) {
