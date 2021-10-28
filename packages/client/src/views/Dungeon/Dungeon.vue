@@ -12,6 +12,9 @@
         >Reset dungeon</CustomButton
       >
       <CustomButton @click="resetProgress">Reset progress</CustomButton>
+      <CustomButton @click="sendTestAction('energy')"
+        >Add 10 energy</CustomButton
+      >
     </div>
 
     <div class="width-100 margin-top-2 margin-bottom-2 stat-panel">
@@ -133,6 +136,9 @@ export default {
     },
     async nextFloor() {
       await this.$store.dispatch("dungeon/nextFloor");
+    },
+    async sendTestAction(action) {
+      await this.$store.dispatch("dungeon/sendTestAction", action);
     }
   }
 };

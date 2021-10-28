@@ -338,6 +338,11 @@ export default {
         Operations.SDungeonNextFloor
       );
       store.dispatch("init", result.response);
+    },
+    async sendTestAction(store, action) {
+      await this.$app.$game._wrapOperation(Operations.SDungeonTestAction, {
+        action
+      });
     }
   }
 };
