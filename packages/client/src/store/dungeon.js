@@ -31,7 +31,8 @@ export default {
       cycle: null,
       defuseFails: 0,
       width: 0,
-      height: 0
+      height: 0,
+      enemiesLeft: 0
     },
     user: {
       level: null,
@@ -175,6 +176,7 @@ export default {
 
       if (data.noEnemy !== undefined) {
         state.maze.revealed[data.noEnemy].enemy = undefined;
+        state.maze.enemiesLeft--;
       }
 
       if (data.altar !== undefined) {
@@ -237,7 +239,7 @@ export default {
           this.$app.$emit("aggressive_enemy_encountered", enemyPayload);
         }
       }
-      
+
       // Redirect to combat after cell was used (non-aggressive enemy)
       if (data.combat) {
         let enemyMeta = enemies[data.combat.enemyId];
@@ -258,11 +260,8 @@ export default {
     unsubscribe() {
       this.$app.$game.offNetwork(Events.SDungeonUpdate);
     },
-    async load(store) {
-      let result = await this.$app.$game._wrapOperation(
-        Operations.SDungeonLoad
-      );
-      store.commit("setInitialState", result.response);
+    init(store, data) {
+      store.commit("setInitialState", data);
 
       // initialize timers
 
@@ -282,6 +281,12 @@ export default {
         store.state.energyTimer.timeLeft =
           store.getters.playerStats.energyRegen;
       });
+    },
+    async load(store) {
+      let result = await this.$app.$game._wrapOperation(
+        Operations.SDungeonLoad
+      );
+      store.dispatch("init", result.response);
     },
     async revealCell(store, index) {
       await this.$app.$game._wrapOperation(Operations.SDungeonRevealCell, {
@@ -327,6 +332,12 @@ export default {
       state.hpTimer.timeLeft = this.$app.$game.nowSec - state.user.lastHpRegen;
       state.energyTimer.timeLeft =
         this.$app.$game.nowSec - state.user.lastEnergyRegen;
+    },
+    async nextFloor(store) {
+      let result = await this.$app.$game._wrapOperation(
+        Operations.SDungeonNextFloor
+      );
+      store.dispatch("init", result.response);
     }
   }
 };

@@ -64,6 +64,12 @@
           :disabled="user.scroll == 0"
           >Use scroll {{ user.scroll }}</CustomButton
         >
+        <span v-if="maze.enemiesLeft" class="font-size-20"
+          >Enemies left: {{ maze.enemiesLeft }}</span
+        >
+        <CustomButton @click="nextFloor" v-else type="yellow"
+          >Next floor</CustomButton
+        >
       </div>
     </div>
     <Maze />
@@ -124,6 +130,9 @@ export default {
     },
     async useScroll() {
       await this.$store.dispatch("dungeon/useItem", "scroll");
+    },
+    async nextFloor() {
+      await this.$store.dispatch("dungeon/nextFloor");
     }
   }
 };
