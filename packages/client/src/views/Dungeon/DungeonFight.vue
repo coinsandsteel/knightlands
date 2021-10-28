@@ -79,7 +79,9 @@
             @click="engage(moves.Scissors)"
             id="engage-q"
           >
-            <span>{{ $t("d-attack") }}</span></CustomButton
+            <IconWithValue iconClass="d-das big">{{
+              $t("d-attack")
+            }}</IconWithValue></CustomButton
           >
           <CustomButton
             :promise="request"
@@ -89,7 +91,9 @@
             @click="engage(moves.Paper)"
             id="engage-q"
           >
-            <span>{{ $t("d-block") }}</span></CustomButton
+            <IconWithValue iconClass="d-blo big">{{
+              $t("d-block")
+            }}</IconWithValue></CustomButton
           >
           <CustomButton
             :promise="request"
@@ -99,7 +103,9 @@
             @click="engage(moves.Rock)"
             id="engage-q"
           >
-            <span>{{ $t("d-parry") }}</span></CustomButton
+            <IconWithValue iconClass="d-sla big">{{
+              $t("d-parry")
+            }}</IconWithValue></CustomButton
           >
         </div>
       </div>

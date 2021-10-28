@@ -11,12 +11,13 @@
         <div :class="[{ selected: selected }]"></div>
       </div>
     </div>
-    <div :class="moveIcon"></div>
+    <span :class="moveIcon" class="big"></span>
   </div>
 </template>
 
 <script>
 import DungeonItems from "@/metadata/halloween/dungeon_items.json";
+import { MoveType } from "@/../../knightlands-shared/dungeon_types";
 
 export default {
   props: ["id", "selected"],
@@ -47,6 +48,21 @@ export default {
       };
     },
     moveIcon() {
+      if (!this.id) {
+        return "";
+      }
+
+      switch (DungeonItems[this.id].move) {
+        case MoveType.Scissors:
+          return "d-das";
+
+        case MoveType.Paper:
+          return "d-blo";
+
+        case MoveType.Rock:
+          return "d-sla";
+      }
+
       return "";
     }
   }
