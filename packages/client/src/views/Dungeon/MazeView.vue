@@ -23,6 +23,7 @@ import MazeCell from "./MazeCell.vue";
 import Player from "./Player.vue";
 import { mapState } from "vuex";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Erorrs from "@/../../knightlands-shared/errors";
 
 import EnemyPopup from "./Popup/EnemyPopup.vue";
 import AltarPopup from "./Popup/AltarPopup.vue";
@@ -157,18 +158,24 @@ export default {
       }
       return cellIdx == this.user.cell;
     },
-    handleCellClick(cell) {
+    async handleCellClick(cell) {
       let index = cell.index;
       if (this.userCell.trap && index !== this.user.cell) {
         this.interactWithCell(this.user.cell, this.indexToCellIndex[this.user.cell]);
         return;
       }
 
-      const isRevealed = this.indexToCellIndex[index] !== undefined;
-      if (!isRevealed) {
-        this.revealCell(index);
-      } else {
-        this.interactWithCell(index, this.indexToCellIndex[index]);
+      try {
+        const isRevealed = this.indexToCellIndex[index] !== undefined;
+        if (!isRevealed) {
+          await this.revealCell(index);
+        } else {
+          await this.interactWithCell(index, this.indexToCellIndex[index]);
+        }
+      } catch (e) {
+        if (e === Erorrs.NoEnergy) {
+          this.$app.$emit('shake-energy');
+        }
       }
     },
     async movePlayerToCell(index, animated = true) {

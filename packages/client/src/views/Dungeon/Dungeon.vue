@@ -31,6 +31,7 @@
       </ProgressBar>
 
       <ProgressBar
+        id="energy"
         :value="user.energy"
         :maxValue="stats.maxEnergy"
         height="4px"
@@ -88,6 +89,7 @@ import Title from "@/components/Title.vue";
 import UiConstants from "@/ui_constants";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Timer from "@/timer";
+import anime from "animejs/lib/anime.es.js";
 
 const PERIOD = 86400;
 
@@ -106,15 +108,16 @@ export default {
   created() {
     this.title = "w-simple-dun";
     this.timer.timeLeft = PERIOD - (this.$game.nowSec % PERIOD);
+    this.$app.$on("shake-energy", this.shakeEnergy);
   },
-  activated() {
-    console.log("Dungeon:activated");
+  destroyed() {
+    this.$app.$off("shake-energy");
   },
   computed: {
     ...mapState({
       maze: state => state.dungeon.maze,
       user: state => state.dungeon.user,
-      combat: state => state.dungeon.combat
+      combat: state => state.dungeon.combat,
     }),
     ...mapGetters({
       stats: "dungeon/playerStats",
@@ -139,6 +142,31 @@ export default {
     },
     async sendTestAction(action) {
       await this.$store.dispatch("dungeon/sendTestAction", action);
+    },
+    async shakeEnergy() {
+      const xMax = 16;
+      await anime({
+        targets: "#energy",
+        easing: "easeInOutSine",
+        duration: 550,
+        translateX: [
+          {
+            value: xMax * -1
+          },
+          {
+            value: xMax
+          },
+          {
+            value: xMax / -2
+          },
+          {
+            value: xMax / 2
+          },
+          {
+            value: 0
+          }
+        ]
+      }).finished;
     }
   }
 };
