@@ -1,1 +1,1 @@
-{"1":{"id":1,"image":"shrine-energy","title":"energy. Value: 20"},"2":{"id":2,"image":"shrine-hp","title":"health. Value: 100"}}
+{"1":{"id":1,"type":1,"restoreValue":20,"image":"shrine-energy","title":"energy. Value: 20"},"2":{"id":2,"type":0,"restoreValue":100,"image":"shrine-hp","title":"health. Value: 100"}}

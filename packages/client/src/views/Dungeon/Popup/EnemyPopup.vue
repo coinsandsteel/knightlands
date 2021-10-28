@@ -1,5 +1,5 @@
 <template>
-  <UserDialog @close="$close(enemy.isAgressiive)">
+  <UserDialog @close="$close(enemy.isAgressiive)" :hideCloseBtn="enemy.isAgressiive">
     <template v-slot:content>
       <div class="flex flex-column flex-center flex-start">
         <div
@@ -14,10 +14,10 @@
         >
           {{ enemy.label }}
         </div>
-        <p v-if="enemy.isAgressiive" class="rarity-legendary font-size-22">
+        <p v-if="enemy.isAgressiive" class="description rarity-legendary font-size-22">
           {{ $t("aggressive-enemy") }}
         </p>
-        <img :src="enemyImage" alt="" class="enemy-img margin-bottom-2" />
+        <img :src="enemyImage" alt="" class="popup-img margin-bottom-2" />
         <ProgressBar
           :value="enemyCurrentHealth"
           :maxValue="enemy.health"
@@ -31,7 +31,10 @@
           <template v-slot:label><span class="icon-health"></span></template>
         </ProgressBar>
         <div class="font-size-22 font-outline">
-          {{ $t("attack") }}:&nbsp;{{ enemy.attack }}
+          {{ $t("attack") }}:&nbsp;
+          <IconWithValue iconClass="icon-attack">
+            {{ enemy.attack }}
+          </IconWithValue>
         </div>
       </div>
     </template>
@@ -51,11 +54,12 @@
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 import enemies from "@/metadata/halloween/dungeon_enemies.json";
 
 export default {
   props: ["enemyId", "enemyCurrentHealth"],
-  components: { UserDialog, CustomButton, ProgressBar },
+  components: { UserDialog, CustomButton, ProgressBar, IconWithValue },
   computed: {
     enemy() {
       return enemies[this.enemyId];
@@ -68,7 +72,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.enemy-img {
+.description {
+  padding: 0 5%;
+}
+.popup-img {
   max-height: 20vh;
 }
 .flex-evenly-spaced {

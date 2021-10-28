@@ -139,6 +139,8 @@ export default {
       }
     },
     updateState(state, data) {
+      console.log('Response from server', data);
+
       // cellRevealed
       if (data.cell) {
         console.log("New cell", data.cell);

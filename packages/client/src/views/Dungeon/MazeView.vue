@@ -31,9 +31,9 @@ import LootPopup from "./Popup/LootPopup.vue";
 import { create } from "vue-modal-dialogs";
 
 const ShowEnemyPopup = create(EnemyPopup, "enemyId", "enemyCurrentHealth");
-const ShowAltarPopup = create(AltarPopup, "cellId");
-const ShowTrapPopup = create(TrapPopup, "cellId");
-const ShowLootPopup = create(LootPopup, "cellId");
+const ShowAltarPopup = create(AltarPopup, "altarId");
+const ShowTrapPopup = create(TrapPopup, "trapId");
+const ShowLootPopup = create(LootPopup, "lootId");
 
 export default {
   mixins: [PromptMixin],
@@ -85,6 +85,11 @@ export default {
     }),
     totalCells() {
       return this.height * this.width;
+    },
+    userCell() {
+      return this.maze.revealed[
+        this.indexToCellIndex[this.user.cell]
+      ];
     }
   },
   methods: {
@@ -153,10 +158,10 @@ export default {
       return cellIdx == this.user.cell;
     },
     handleCellClick(cell) {
-      console.log({ cell });
       let index = cell.index;
-      if (index === -1) {
-        index = this.user.cell;
+      if (this.userCell.trap && index !== this.user.cell) {
+        this.interactWithCell(this.user.cell, this.indexToCellIndex[this.user.cell]);
+        return;
       }
 
       const isRevealed = this.indexToCellIndex[index] !== undefined;
@@ -214,20 +219,10 @@ export default {
           this.$store.commit("dungeon/updateLoot", cmdResponse);
         }
       } else {
-        const userCell = this.maze.revealed[
-          this.indexToCellIndex[this.user.cell]
-        ];
-
-        if (userCell.trap) {
-          alert("You`re in the trap! Defuse it!");
-          return;
-        }
-
         await this.$store.dispatch("dungeon/moveToCell", cellIndex);
       }
     },
     async handleAggressiveEnemy(payload) {
-      console.log('handleAggressiveEnemy', payload);
       await ShowEnemyPopup(payload.id, payload.health);
       this.$store.dispatch("dungeon/redirectToActiveCombat");
     }
