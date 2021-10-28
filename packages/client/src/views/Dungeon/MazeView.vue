@@ -196,6 +196,10 @@ export default {
           500
         );
       });
+
+      if (targetCell.trap) {
+        ShowTrapPopup(targetCell.trap.id);
+      }
     },
     async revealCell(cellIndex) {
       await this.$store.dispatch("dungeon/revealCell", cellIndex);
