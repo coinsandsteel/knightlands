@@ -163,17 +163,15 @@ export default {
     },
     async handleCellClick(cell) {
       let index = cell.index;
-      if (this.userCell.trap && index !== this.user.cell) {
-        this.interactWithCell(
-          this.user.cell,
-          this.indexToCellIndex[this.user.cell]
-        );
-        return;
+      const forceTrapInteraction =
+        this.userCell.trap && index !== this.user.cell;
+      if (forceTrapInteraction) {
+        index = this.user.cell;
       }
 
       try {
         const isRevealed = this.indexToCellIndex[index] !== undefined;
-        if (!isRevealed) {
+        if (!isRevealed && !forceTrapInteraction) {
           await this.revealCell(index);
         } else {
           await this.interactWithCell(index, this.indexToCellIndex[index]);
