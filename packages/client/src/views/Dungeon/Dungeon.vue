@@ -2,7 +2,7 @@
   <div class="screen-content flex-items-center full-flex">
     <div class="hallowen-bg"></div>
     <Title class="enemy-title-font margin-top-1 margin-bottom-1 font-outline">
-      {{ $t("level-full", { lvl: maze.floor }) }}
+      {{ $t("floor", { val: maze.floor }) }}
     </Title>
 
     <div class="flex flex-center panel-input padding-1">
@@ -79,6 +79,9 @@
       </ProgressBar>
 
       <div class="flex flex-center btns">
+        <CustomButton type="blue" @click="goToUser">
+          <span class="icon-user"></span>
+        </CustomButton>
         <CustomButton
           type="grey"
           @click="usePotion"
@@ -155,6 +158,9 @@ export default {
     }
   },
   methods: {
+    goToUser() {
+      this.$router.push({ name: "dungeon-user" });
+    },
     async resetDungeon() {
       await this.$store.dispatch("dungeon/reset");
     },

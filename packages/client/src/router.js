@@ -74,6 +74,7 @@ const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
 const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
 const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
 const DungeonRankings = () => import("./views/Dungeon/DungeonRankings.vue");
+const DungeonUser = () => import("./views/Dungeon/DungeonUser.vue");
 
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
 const ChooseChest = () => import("./views/Summon/Chests/ChooseChest.vue");
@@ -415,6 +416,11 @@ const router = new Router({
               path: "rankings",
               name: "dungeon-rankings",
               component: DungeonRankings
+            },
+            {
+              path: "user",
+              name: "dungeon-user",
+              component: DungeonUser
             }
           ]
         }
