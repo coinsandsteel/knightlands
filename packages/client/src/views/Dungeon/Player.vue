@@ -42,6 +42,8 @@ export default {
       this.$emit("click", { index: -1 });
     },
     snapToPosition({ x, y }) {
+      anime.remove(this.pos);
+
       this.pos.x = x;
       this.pos.y = y;
     },
@@ -53,7 +55,7 @@ export default {
         x,
         y,
         duration: 1500,
-        easing: "easeOutElastic(1, .6)"
+        easing: "easeOutExpo"
       });
 
       await timeline.finished;

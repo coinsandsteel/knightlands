@@ -30,12 +30,14 @@ import EnemyPopup from "./Popup/EnemyPopup.vue";
 import AltarPopup from "./Popup/AltarPopup.vue";
 import TrapPopup from "./Popup/TrapPopup.vue";
 import LootPopup from "./Popup/LootPopup.vue";
+import ExitPopup from "./Popup/ExitPopup.vue";
 import { create } from "vue-modal-dialogs";
 
 const ShowEnemyPopup = create(EnemyPopup, "enemyId", "enemyCurrentHealth");
 const ShowAltarPopup = create(AltarPopup, "altarId");
 const ShowTrapPopup = create(TrapPopup, "trapId");
 const ShowLootPopup = create(LootPopup, "lootId");
+const ShowExitPopup = create(ExitPopup);
 
 export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
@@ -54,7 +56,7 @@ export default {
     "maze.revealed": {
       deep: true,
       handler(newer, old) {
-        this.indexCells(newer.length <= old.length);
+        this.indexCells(newer.length < old.length);
       }
     },
     "user.cell": {
@@ -76,6 +78,7 @@ export default {
     this.$store.$app.$off("aggressive_enemy_encountered");
   },
   data: () => ({
+    firstMove: false,
     interaction: false,
     cellSize: 0,
     cssVars: {},
@@ -107,7 +110,7 @@ export default {
 
       this.indexCells(true);
 
-      this.movePlayerToCell(this.user.cell, false);
+      this.movePlayerToCell(this.user.cell);
 
       this.scrollToPlayer();
     },
@@ -126,6 +129,8 @@ export default {
           const cell = revealed[index];
           this.$set(this.indexToCellIndex, this.cellToIndex(cell), index);
         }
+
+        this.firstMove = true;
       } else {
         for (let index = 0; index < revealed.length; index++) {
           const cell = revealed[index];
@@ -155,7 +160,8 @@ export default {
         !targetCell.trap &&
         !targetCell.enemy &&
         !targetCell.altar &&
-        !targetCell.loot
+        !targetCell.loot &&
+        !targetCell.exit
       ) {
         return false;
       }
@@ -182,24 +188,27 @@ export default {
         }
       }
     },
-    async movePlayerToCell(index, animated = true) {
+    async movePlayerToCell(index) {
       const targetCell = this.getCellAt(this.indexToCellIndex[index]);
       const player = this.$refs.player;
-      if (!animated) {
+      if (this.firstMove) {
+        this.firstMove = false;
         player.snapToPosition(this.cellToScreen(targetCell));
         return;
       }
 
-      await new Promise(resolve => {
-        setTimeout(
-          () => resolve(player.moveToPosition(this.cellToScreen(targetCell))),
-          500
-        );
-      });
-
       if (targetCell.trap) {
         this.interactWithCell(index, this.indexToCellIndex[index]);
       }
+
+      await new Promise(resolve => {
+        setTimeout(() => {
+          if (this.user.cell == index) {
+            player.moveToPosition(this.cellToScreen(targetCell));
+          }
+          resolve();
+        }, 500);
+      });
     },
     async revealCell(cellIndex) {
       await this.performRequestNoCatch(
@@ -219,6 +228,7 @@ export default {
       try {
         if (cellIndex == this.user.cell) {
           let response = false;
+          let responseType = "loot";
 
           if (cell.enemy) {
             response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
@@ -228,6 +238,9 @@ export default {
             response = await ShowTrapPopup(cell.trap.id);
           } else if (cell.loot) {
             response = await ShowLootPopup(cell.loot);
+          } else if (cell.exit) {
+            response = await ShowExitPopup();
+            responseType = "exit";
           }
 
           if (!response) {
@@ -239,10 +252,12 @@ export default {
             this.$store.dispatch("dungeon/useCell", cellIndex)
           );
 
-          // response only from loot
           if (cmdResponse) {
-            // show loot content
-            this.$store.commit("dungeon/updateLoot", cmdResponse);
+            if (responseType == "loot") {
+              this.$store.commit("dungeon/updateLoot", cmdResponse);
+            } else if (responseType == "exit") {
+              this.$store.dispatch("dungeon/init", cmdResponse);
+            }
           }
         } else {
           await this.performRequestNoCatch(

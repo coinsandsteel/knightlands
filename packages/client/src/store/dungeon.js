@@ -6,6 +6,7 @@ import progression from "@/metadata/halloween/dungeon_progression.json";
 import Operations from "@/../../knightlands-shared/operations";
 import { CombatAction } from "@/../../knightlands-shared/dungeon_types";
 import timer from "../timer";
+import Vue from "vue";
 
 const CombatOutcome = {
   EnemyWon: -1,
@@ -32,7 +33,8 @@ export default {
       defuseFails: 0,
       width: 0,
       height: 0,
-      enemiesLeft: 0
+      enemiesLeft: 0,
+      startTime: 0
     },
     user: {
       level: null,
@@ -175,7 +177,11 @@ export default {
       }
 
       if (data.enemy !== undefined) {
-        state.maze.revealed[data.enemy.cell].enemy.health = data.enemy.health;
+        Vue.$set(
+          state.maze.revealed[data.enemy.cell].enemy,
+          "health",
+          data.enemy.health
+        );
       }
 
       if (data.noEnemy !== undefined) {

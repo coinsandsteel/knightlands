@@ -1,13 +1,11 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
     <div class="hallowen-bg"></div>
-    <Title class="enemy-title-font margin-top-1 margin-bottom-1 font-outline">{{
-      $t("level-full", { lvl: maze.floor })
-    }}</Title>
+    <Title class="enemy-title-font margin-top-1 margin-bottom-1 font-outline">
+      {{ $t("level-full", { lvl: maze.floor }) }}
+    </Title>
 
     <div class="flex flex-center panel-input padding-1">
-      <div class="icon-timer small margin-right-half"></div>
-      <span class="font-size-18">{{ timer.value }}</span>
       <CustomButton type="yellow" @click="resetDungeon"
         >Reset dungeon</CustomButton
       >
@@ -15,9 +13,12 @@
       <CustomButton @click="sendTestAction('energy')"
         >Add 10 energy</CustomButton
       >
+      <CustomButton @click="nextFloor" v-if="!maze.enemiesLeft" type="yellow"
+        >Next floor</CustomButton
+      >
     </div>
 
-    <div class="width-100 margin-top-2 margin-bottom-2 stat-panel">
+    <div class="width-100 margin-bottom-2 stat-panel">
       <ProgressBar
         :value="user.health"
         :maxValue="stats.maxHealth"
@@ -28,6 +29,18 @@
         valueClass="white-font font-outline font-size-20"
       >
         <template v-slot:label><span class="icon-health"></span></template>
+      </ProgressBar>
+
+      <ProgressBar
+        :value="maze.enemiesLeft"
+        height="4px"
+        width="90%"
+        valuePosition="top"
+        :hideMaxValue="true"
+        barType="yellow"
+        valueClass="white-font font-outline font-size-20"
+      >
+        <template v-slot:label><span>Enemies left:</span></template>
       </ProgressBar>
 
       <ProgressBar
@@ -55,24 +68,28 @@
         <template v-slot:label><span class="icon-exp"></span></template>
       </ProgressBar>
 
-      <div class="flex flex-center">
+      <div class="flex flex-center btns">
         <CustomButton
           type="grey"
           @click="usePotion"
           :disabled="user.potion == 0"
-          >Use potion {{ user.potion }}</CustomButton
         >
+          <IconWithValue iconClass="hpotion big">{{
+            user.potion
+          }}</IconWithValue>
+        </CustomButton>
         <CustomButton
           type="grey"
           @click="useScroll"
           :disabled="user.scroll == 0"
-          >Use scroll {{ user.scroll }}</CustomButton
+          ><IconWithValue iconClass="hscroll big">{{
+            user.scroll
+          }}</IconWithValue></CustomButton
         >
-        <span v-if="maze.enemiesLeft" class="font-size-20"
-          >Enemies left: {{ maze.enemiesLeft }}</span
-        >
-        <CustomButton @click="nextFloor" v-else type="yellow"
-          >Next floor</CustomButton
+        <CustomButton type="grey" :disabled="true"
+          ><IconWithValue iconClass="hkey big">{{
+            user.key
+          }}</IconWithValue></CustomButton
         >
       </div>
     </div>
@@ -83,15 +100,13 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 import Maze from "./MazeView.vue";
 import AppSection from "@/AppSection.vue";
 import Title from "@/components/Title.vue";
 import UiConstants from "@/ui_constants";
 import ProgressBar from "@/components/ProgressBar.vue";
-import Timer from "@/timer";
 import anime from "animejs/lib/anime.es.js";
-
-const PERIOD = 86400;
 
 export default {
   mixins: [AppSection],
@@ -99,15 +114,14 @@ export default {
     Maze,
     Title,
     ProgressBar,
-    CustomButton
+    CustomButton,
+    IconWithValue
   },
   data: () => ({
-    thresholds: UiConstants.progressThresholds,
-    timer: new Timer(true)
+    thresholds: UiConstants.progressThresholds
   }),
   created() {
     this.title = "w-simple-dun";
-    this.timer.timeLeft = PERIOD - (this.$game.nowSec % PERIOD);
     this.$app.$on("shake-energy", this.shakeEnergy);
   },
   destroyed() {
@@ -188,9 +202,14 @@ export default {
 .stat-panel {
   display: grid;
   justify-content: center;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 4rem);
   grid-template-columns: repeat(2, 1fr);
-  row-gap: 2rem;
+  row-gap: 1rem;
+}
+
+.btns {
+  grid-row: ~"2/4";
+  grid-column: 2;
 }
 
 .energy-hallowen {

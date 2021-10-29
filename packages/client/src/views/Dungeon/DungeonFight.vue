@@ -1,7 +1,7 @@
 <template>
   <div class="screen-content flex-items-center full-flex" v-if="combat.enemyId">
     <div class="screen-background"></div>
-    <div class="flex flex-column flex-center">
+    <div class="width-100 flex flex-column flex-center">
       <div
         :style="zoneBackground"
         class="flex quest-mid relative flex-center flex-no-wrap"
@@ -307,7 +307,7 @@ export default {
 }
 
 .quest-image {
-  width: 100vw;
+  width: 100%;
   padding-bottom: 1rem;
   height: 100%;
 

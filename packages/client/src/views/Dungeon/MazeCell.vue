@@ -86,6 +86,10 @@ export default {
 
         let objectFile;
 
+        if (this.cell.exit) {
+          objectFile = "stairs";
+        }
+
         if (this.cell.enemy) {
           objectFile = DungeonEnemies[this.cell.enemy.id].dungeonImage;
         }
