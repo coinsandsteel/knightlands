@@ -6,7 +6,11 @@
       :class="`r${rotation}`"
     ></div>
 
-    <div class="absolute-stretch img" :style="objectImage"></div>
+    <div class="absolute-stretch img" :style="objectImage">
+      <CustomButton type="green" @click="confirm" v-if="energy">
+        <IconWithValue>{{ energy }}</IconWithValue>
+      </CustomButton>
+    </div>
     <div
       v-if="highlight"
       class="highlight absolute-stretch"
@@ -19,6 +23,8 @@
 import DungeonEnemies from "@/metadata/halloween/dungeon_enemies.json";
 import DungeonAltars from "@/metadata/halloween/dungeon_altars.json";
 import DungeonTraps from "@/metadata/halloween/dungeon_traps.json";
+import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 const IMAGE_BY_TYPE = {
   default: ["tile_back1", "tile_back2"],
@@ -30,12 +36,13 @@ const IMAGE_BY_TYPE = {
 };
 
 export default {
-  props: ["cell", "index", "mazeWidth", "highlight"],
+  props: ["cell", "index", "mazeWidth", "highlight", "energy"],
   data: () => ({
     image: "",
     rotation: "",
     objectImage: ""
   }),
+  components: { CustomButton, IconWithValue },
   watch: {
     cell: {
       immediate: true,
@@ -46,6 +53,9 @@ export default {
     }
   },
   methods: {
+    confirm() {
+      this.$emit("confirm", { ...this.cell, index: this.index });
+    },
     handleClick() {
       this.$emit("click", { ...this.cell, index: this.index });
     },
@@ -58,6 +68,8 @@ export default {
       if (this.cell) {
         const connections = this.cell.c;
         const totalConnections = this.cell.c.length;
+
+        console.log(connections, this.index);
 
         if (totalConnections === 1) {
           ({ t, r } = this.singleWayCase(connections[0]));

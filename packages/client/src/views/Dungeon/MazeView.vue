@@ -9,7 +9,9 @@
           :index="idx - 1"
           :mazeWidth="width"
           :highlight="isHighlighted(idx - 1)"
+          :energy="energyEstimation[idx - 1]"
           @click="handleCellClick"
+          @confirm="confirmMovement"
         />
 
         <Player ref="player" class="dungeon-player" />
@@ -78,6 +80,7 @@ export default {
     this.$store.$app.$off("aggressive_enemy_encountered");
   },
   data: () => ({
+    energyEstimation: {},
     firstMove: false,
     interaction: false,
     cellSize: 0,
@@ -167,6 +170,7 @@ export default {
       }
       return cellIdx == this.user.cell;
     },
+    async confirmMovement() {},
     async handleCellClick(cell) {
       let index = cell.index;
       const forceTrapInteraction =
@@ -271,6 +275,14 @@ export default {
     async handleAggressiveEnemy(payload) {
       await ShowEnemyPopup(payload.id, payload.health);
       this.$store.dispatch("dungeon/redirectToActiveCombat");
+    },
+    async confirmMovement(cellIndex, revealedIndex) {},
+    async estimateEnergy(cellIndex) {
+      const energy = await this.$store.dispatch(
+        "dungeon/estimateEnergy",
+        cellIndex
+      );
+      this.$set(this.energyEstimation, cellIndex, energy);
     }
   }
 };

@@ -29,6 +29,11 @@
         valueClass="white-font font-outline font-size-20"
       >
         <template v-slot:label><span class="icon-health"></span></template>
+        <template v-slot:after-label
+          ><span class="margin-left-1">{{
+            $t("h-reg", { v: healthRegen })
+          }}</span></template
+        >
       </ProgressBar>
 
       <ProgressBar
@@ -53,7 +58,12 @@
         barType="green-h"
         valueClass="white-font font-outline font-size-20"
       >
-        <template v-slot:label><span class="energy-hallowen"></span></template>
+        <template v-slot:label><span class="h-energy"></span></template>
+        <template v-slot:after-label
+          ><span class="margin-left-1">{{
+            $t("h-reg", { v: energyRegen })
+          }}</span></template
+        >
       </ProgressBar>
 
       <ProgressBar
@@ -136,7 +146,13 @@ export default {
     ...mapGetters({
       stats: "dungeon/playerStats",
       nextExp: "dungeon/nextExp"
-    })
+    }),
+    energyRegen() {
+      return Math.floor(3600 / this.stats.energyRegen);
+    },
+    healthRegen() {
+      return Math.floor(3600 / this.stats.hpRegen);
+    }
   },
   methods: {
     async resetDungeon() {
@@ -210,10 +226,5 @@ export default {
 .btns {
   grid-row: ~"2/4";
   grid-column: 2;
-}
-
-.energy-hallowen {
-  .icon_nrg_halloween;
-  .icon();
 }
 </style>

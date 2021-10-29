@@ -24,6 +24,7 @@
           <div class="icon-timer small"></div>
           <span>{{ timerValue.value }}</span>
         </div>
+        <slot name="after-label"></slot>
       </div>
 
       <div class="bar" :style="barStyle()" :class="{ top: isTop }">

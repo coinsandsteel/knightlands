@@ -217,8 +217,9 @@ export default {
 
       if (data.regen) {
         console.log("Health and energy regen", data.regen);
-        state.user.lastHpRegen = data.regen.hp;
-        state.user.lastEnergyRegen = data.regen.energy;
+        state.user.lastHpRegen = data.regen.hp || state.user.lastHpRegen;
+        state.user.lastEnergyRegen =
+          data.regen.energy || state.user.lastEnergyRegen;
       }
 
       if (data.equip) {
@@ -281,6 +282,8 @@ export default {
       // initialize timers
 
       store.state.hpTimer.removeAllListeners("finished");
+      store.state.hpTimer.timeLeft =
+        this.$app.$game.nowSec - store.state.user.lastHpRegen;
       store.state.hpTimer.on("finished", () => {
         if (store.getters.playerStats.maxHealth > store.state.user.health) {
           store.commit("addHealth", 1);
@@ -289,8 +292,16 @@ export default {
       });
 
       store.state.energyTimer.removeAllListeners("finished");
+      store.state.energyTimer.timeLeft =
+        this.$app.$game.nowSec - store.state.user.lastEnergyRegen;
+      console.log(
+        "store.state.energyTimer.timeLeft",
+        store.state.energyTimer.timeLeft
+      );
       store.state.energyTimer.on("finished", () => {
+        console.log("energy regened!");
         if (store.getters.playerStats.maxEnergy > store.state.user.energy) {
+          console.log("add energy!");
           store.commit("addEnergy", 1);
         }
         store.state.energyTimer.timeLeft =
@@ -363,6 +374,13 @@ export default {
     },
     async equip(store, data) {
       await this.$app.$game._wrapOperation(Operations.SDungeonEquip, data);
+    },
+    async estimateEnergy(store, cellId) {
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDungeonPath, {
+          cellId
+        })
+      ).response;
     }
   }
 };
