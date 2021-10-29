@@ -56,7 +56,7 @@ export default {
     "maze.revealed": {
       deep: true,
       handler(newer, old) {
-        this.indexCells(newer.length < old.length);
+        this.indexCells(newer.leght === 1 || newer.length < old.length);
       }
     },
     "user.cell": {
