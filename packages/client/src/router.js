@@ -73,7 +73,8 @@ const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
 const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
 const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
 const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
-const DungeonRankings = () => import("./views/Dungeon/DungeonRankings.vue");
+const DungeonRankings = () =>
+  import("./views/Dungeon/Rankings/DungeonRankings.vue");
 const DungeonUser = () => import("./views/Dungeon/DungeonUser.vue");
 
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
@@ -399,7 +400,7 @@ const router = new Router({
           path: "fight",
           name: "dungeon-fight",
           component: DungeonFight,
-          meta: { noTopBar: true/*, noBackButton: true*/ }
+          meta: { noTopBar: true /*, noBackButton: true*/ }
         },
         {
           path: "",

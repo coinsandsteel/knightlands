@@ -385,6 +385,20 @@ export default {
           cellId
         })
       ).response;
+    },
+    async fetchRank() {
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDungeonRank, {
+          personal: true
+        })
+      ).response;
+    },
+    async fetchRankings(store, page) {
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDungeonRank, {
+          page
+        })
+      ).response;
     }
   }
 };
