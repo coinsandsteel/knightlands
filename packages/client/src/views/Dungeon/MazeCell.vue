@@ -69,8 +69,6 @@ export default {
         const connections = this.cell.c;
         const totalConnections = this.cell.c.length;
 
-        console.log(connections, this.index);
-
         if (totalConnections === 1) {
           ({ t, r } = this.singleWayCase(connections[0]));
           t = "way_single";

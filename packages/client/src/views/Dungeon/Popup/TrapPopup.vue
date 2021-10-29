@@ -10,12 +10,20 @@
             margin-bottom-1
           "
         >
-          Oh no! You've got caught in <span class="rarity-mythical">a trap</span>!
+          Oh no! You've got caught in
+          <span class="rarity-mythical">a trap</span>!
         </div>
         <p class="description font-size-25">
-          You can try to break the trap open for 
-          <span class="energy-hallowen"></span>&nbsp;<span class="color-en">{{ trap.damage }}&nbsp;Energy</span> with certain chance of success.<br/> 
-          Or you can use <span class="key-halloween"></span>&nbsp;<span class="rarity-epic">Trap&nbsp;Key</span> to release immideately.
+          You can try to break the trap open for
+          <span class="energy-hallowen"></span>&nbsp;<span class="color-en"
+            >{{ energyCost }}&nbsp;Energy</span
+          >
+          with certain chance of success.<br />
+          Or you can use <span class="key-halloween"></span>&nbsp;<span
+            class="rarity-epic"
+            >Trap&nbsp;Key</span
+          >
+          to release immideately.
         </p>
         <img :src="trapImage" alt="" class="popup-img" />
       </div>
@@ -31,11 +39,16 @@
         <div class="asset-lot font-size-20">
           <span class="energy-hallowen"></span>
           &nbsp;
-          <span class="color-en">{{ trap.damage }}&nbsp;{{ $t('energy') }}</span>
+          <span class="color-en">{{ energyCost }}&nbsp;{{ $t("energy") }}</span>
         </div>
       </div>
       <div class="flex width-100 flex-evenly-spaced">
-        <CustomButton width="30%" type="blue" @click="$close('open')">
+        <CustomButton
+          width="30%"
+          type="blue"
+          @click="$close('open')"
+          :disabled="user.key <= 0"
+        >
           Release
         </CustomButton>
         <CustomButton width="30%" type="yellow" @click="$close('break')">
@@ -49,17 +62,22 @@
 <script>
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
+import Meta from "@/metadata/halloween/dungeon_meta.json";
 import traps from "@/metadata/halloween/dungeon_traps.json";
+import { mapState } from "vuex";
 
 export default {
   props: ["trapId"],
   components: { UserDialog, CustomButton },
   computed: {
-    trap() {
-      return traps[this.trapId];
+    ...mapState({
+      user: state => state.dungeon.user
+    }),
+    energyCost() {
+      return Meta.costs.trap;
     },
     trapImage() {
-      return `/images/halloween_assets/${this.trap.image}.png`;
+      return `/images/halloween_assets/${traps[this.trapId].image}.png`;
     }
   }
 };

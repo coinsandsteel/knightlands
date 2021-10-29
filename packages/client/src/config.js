@@ -3,7 +3,7 @@ const Config = {
     process.env.NODE_ENV == "production"
       ? "play.knightlands.com"
       : process.env.VUE_APP_SAPPAO
-      ? "sappao.knightlands.com"
+      ? "test.knightlands.com"
       : "localhost",
   gameServerPort: 9000,
   httpEndpoint:

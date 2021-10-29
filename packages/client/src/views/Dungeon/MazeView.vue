@@ -233,6 +233,7 @@ export default {
         if (cellIndex == this.user.cell) {
           let response = false;
           let responseType = "loot";
+          let cmdResponse;
 
           if (cell.enemy) {
             response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
@@ -251,10 +252,17 @@ export default {
             return;
           }
 
-          // interact with the object in the cell
-          const cmdResponse = await this.performRequestNoCatch(
-            this.$store.dispatch("dungeon/useCell", cellIndex)
-          );
+          if (response == "open") {
+            // interact with the object in the cell
+            cmdResponse = await this.performRequestNoCatch(
+              this.$store.dispatch("dungeon/useItem", "key")
+            );
+          } else {
+            // interact with the object in the cell
+            cmdResponse = await this.performRequestNoCatch(
+              this.$store.dispatch("dungeon/useCell", cellIndex)
+            );
+          }
 
           if (cmdResponse) {
             if (responseType == "loot") {

@@ -61,7 +61,7 @@ export default {
       const stats = state.user.stats;
 
       const maxEnergy = Math.ceil(
-        progression.baseEnergy + 1.01 * stats.sta + (1.05 + stats.int)
+        progression.baseEnergy + 1.01 * stats.sta + 1.05 * stats.int
       );
       const maxHealth = Math.ceil(
         progression.baseHealth + 1.4 * stats.str + 1.15 * stats.sta
@@ -159,6 +159,8 @@ export default {
       if (data.combat !== undefined) {
         console.log("Combat status updated", data.combat);
         state.combat = { ...state.combat, ...data.combat };
+        state.hpTimer.stop();
+        state.energyTimer.stop();
       }
       // enemyHealth
       if (state.combat.enemyId && data.enemyHealth !== undefined) {
@@ -283,7 +285,8 @@ export default {
 
       store.state.hpTimer.removeAllListeners("finished");
       store.state.hpTimer.timeLeft =
-        this.$app.$game.nowSec - store.state.user.lastHpRegen;
+        store.getters.playerStats.hpRegen -
+        (this.$app.$game.nowSec - store.state.user.lastHpRegen);
       store.state.hpTimer.on("finished", () => {
         if (store.getters.playerStats.maxHealth > store.state.user.health) {
           store.commit("addHealth", 1);
@@ -293,7 +296,8 @@ export default {
 
       store.state.energyTimer.removeAllListeners("finished");
       store.state.energyTimer.timeLeft =
-        this.$app.$game.nowSec - store.state.user.lastEnergyRegen;
+        store.getters.playerStats.energyRegen -
+        (this.$app.$game.nowSec - store.state.user.lastEnergyRegen);
       console.log(
         "store.state.energyTimer.timeLeft",
         store.state.energyTimer.timeLeft
