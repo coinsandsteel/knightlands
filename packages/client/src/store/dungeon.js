@@ -208,7 +208,7 @@ export default {
       }
 
       if (data.level !== undefined) {
-        console.log("Level changed", data.level);
+        console.log("User level changed", data.level);
         state.user.level = data.level;
       }
 

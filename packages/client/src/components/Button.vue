@@ -91,9 +91,9 @@ export default {
     }
   },
   methods: {
-    handleClick() {
+    handleClick(e) {
       this.$refs.fx.play();
-      this.$emit("click");
+      this.$emit("click", e);
       if (this.cb) {
         this.cb();
       }
