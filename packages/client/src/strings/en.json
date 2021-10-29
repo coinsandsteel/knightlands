@@ -2464,5 +2464,6 @@
     "your-score": "Score:",
     "zalaras": "zalaras",
     "zombie_lord": "zombielord",
-    "h-reg": " +{v}/hour"
+    "h-reg": " +{v}/hour",
+    "p-move": "MOVE {v}"
 }

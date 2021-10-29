@@ -6,9 +6,11 @@
       :class="`r${rotation}`"
     ></div>
 
-    <div class="absolute-stretch img" :style="objectImage">
-      <CustomButton type="green" @click="confirm" v-if="energy">
-        <IconWithValue>{{ energy }}</IconWithValue>
+    <div class="absolute-stretch img flex flex-center" :style="objectImage">
+      <CustomButton type="green" @click.stop="confirm" v-if="energy">
+        <IconWithValue iconClass="h-energy" :flip="true">{{
+          $t("p-move", { v: energy })
+        }}</IconWithValue>
       </CustomButton>
     </div>
     <div

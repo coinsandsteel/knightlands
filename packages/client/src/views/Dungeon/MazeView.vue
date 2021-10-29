@@ -170,8 +170,8 @@ export default {
       }
       return cellIdx == this.user.cell;
     },
-    async confirmMovement() {},
     async handleCellClick(cell) {
+      console.log("clicik");
       let index = cell.index;
       const forceTrapInteraction =
         this.userCell.trap && index !== this.user.cell;
@@ -182,7 +182,7 @@ export default {
       try {
         const isRevealed = this.indexToCellIndex[index] !== undefined;
         if (!isRevealed && !forceTrapInteraction) {
-          await this.revealCell(index);
+          await this.estimateEnergy(index);
         } else {
           await this.interactWithCell(index, this.indexToCellIndex[index]);
         }
@@ -213,11 +213,6 @@ export default {
           resolve();
         }, 500);
       });
-    },
-    async revealCell(cellIndex) {
-      await this.performRequestNoCatch(
-        this.$store.dispatch("dungeon/revealCell", cellIndex)
-      );
     },
     async interactWithCell(cellIndex, revealedIndex) {
       if (this.interaction) {
@@ -272,9 +267,7 @@ export default {
             }
           }
         } else {
-          await this.performRequestNoCatch(
-            this.$store.dispatch("dungeon/moveToCell", cellIndex)
-          );
+          await this.estimateEnergy(cellIndex);
         }
       } finally {
         this.interaction = false;
@@ -284,8 +277,31 @@ export default {
       await ShowEnemyPopup(payload.id, payload.health);
       this.$store.dispatch("dungeon/redirectToActiveCombat");
     },
-    async confirmMovement(cellIndex, revealedIndex) {},
+    async confirmMovement(cell) {
+      this.energyEstimation = {};
+
+      const cellIndex = cell.index;
+      try {
+        const isRevealed = this.indexToCellIndex[cellIndex] !== undefined;
+
+        if (isRevealed) {
+          await this.performRequestNoCatch(
+            this.$store.dispatch("dungeon/moveToCell", cellIndex)
+          );
+        } else {
+          await this.performRequestNoCatch(
+            this.$store.dispatch("dungeon/revealCell", cellIndex)
+          );
+        }
+      } catch (e) {
+        if (e === Erorrs.NoEnergy) {
+          this.$app.$emit("shake-energy");
+        }
+      }
+    },
     async estimateEnergy(cellIndex) {
+      this.energyEstimation = {};
+
       const energy = await this.$store.dispatch(
         "dungeon/estimateEnergy",
         cellIndex

@@ -67,7 +67,7 @@ import traps from "@/metadata/halloween/dungeon_traps.json";
 import { mapState } from "vuex";
 
 export default {
-  props: ["trapId"],
+  props: ["cell"],
   components: { UserDialog, CustomButton },
   computed: {
     ...mapState({
