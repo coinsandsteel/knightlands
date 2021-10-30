@@ -58,8 +58,8 @@ export default {
     combat: _.clone(combatInitialState)
   },
   getters: {
-    playerStats: state => {
-      const stats = state.user.stats;
+    playerStats: state => nextStats => {
+      const stats = nextStats || state.user.stats;
 
       const maxEnergy = Math.ceil(
         progression.baseEnergy + 1.01 * stats.sta + 1.05 * stats.int
@@ -291,10 +291,10 @@ export default {
 
       store.state.hpTimer.removeAllListeners("finished");
       store.state.hpTimer.timeLeft =
-        store.getters.playerStats.hpRegen -
+        store.getters.playerStats(null).hpRegen -
         (this.$app.$game.nowSec - store.state.user.lastHpRegen);
       store.state.hpTimer.on("finished", () => {
-        if (store.getters.playerStats.maxHealth > store.state.user.health) {
+        if (store.getters.playerStats(null).maxHealth > store.state.user.health) {
           store.commit("addHealth", 1);
         }
         store.state.hpTimer.timeLeft = store.getters.playerStats.hpRegen;
@@ -302,7 +302,7 @@ export default {
 
       store.state.energyTimer.removeAllListeners("finished");
       store.state.energyTimer.timeLeft =
-        store.getters.playerStats.energyRegen -
+        store.getters.playerStats(null).energyRegen -
         (this.$app.$game.nowSec - store.state.user.lastEnergyRegen);
       console.log(
         "store.state.energyTimer.timeLeft",
@@ -310,12 +310,12 @@ export default {
       );
       store.state.energyTimer.on("finished", () => {
         console.log("energy regened!");
-        if (store.getters.playerStats.maxEnergy > store.state.user.energy) {
+        if (store.getters.playerStats(null).maxEnergy > store.state.user.energy) {
           console.log("add energy!");
           store.commit("addEnergy", 1);
         }
         store.state.energyTimer.timeLeft =
-          store.getters.playerStats.energyRegen;
+          store.getters.playerStats(null).energyRegen;
       });
     },
     async load(store) {

@@ -5,7 +5,7 @@
       {{ $t("char") }}
     </Title>
 
-    <div class="flex flex-evenly-spaced width-100 padding-3">
+    <div class="flex flex-evenly-spaced width-100 padding-2">
       <ProgressBar
         :value="user.exp"
         :maxValue="nextExp"
@@ -26,79 +26,90 @@
     </div>
 
     <div
-      class="flex flex-evenly-spaced width-100 padding-3 font-size-22 font-outline"
+      class="flex flex-center flex-evenly-spaced width-100 padding-2 font-size-22 font-outline"
     >
       <div
         class="stats-wrapper flex flex-column flex-evenly-spaced flex-item-center stat-block"
       >
-        <div class="stat-t s1">
-          <IconWithValue iconClass="icon-health">
-            &nbsp;HP:
-          </IconWithValue>
+        <div
+          :key="'title_' + key"
+          class="stat-t"
+          v-for="(value, key) in primaryStats"
+        >
+          {{ $t("stat_" + key) }}
         </div>
-        <div class="stat-t s2">
-          <IconWithValue iconClass="icon-energy">
-            &nbsp;Energy:
-          </IconWithValue>
-        </div>
-        <div class="stat-t s3">
-          <IconWithValue iconClass="icon-attack">
-            &nbsp;Attack:
-          </IconWithValue>
-        </div>
-        <div class="stat-t s4">
-          <IconWithValue iconClass="icon-chests">
-            &nbsp;Defence:
-          </IconWithValue>
-        </div>
-        <div class="v1 stat-v enemy-title-font">
-          {{ stats.maxHealth }}
-          <span class="btn-plus"></span>
-        </div>
-        <div class="v2 stat-v enemy-title-font">
-          {{ stats.maxEnergy }}
-          <span class="btn-plus"></span>
-        </div>
-        <div class="v3 stat-v enemy-title-font">
-          {{ stats.attack }}
-          <span class="btn-plus"></span>
-        </div>
-        <div class="v4 stat-v enemy-title-font">
-          {{ stats.defense }}
-          <span class="btn-plus"></span>
+        <div
+          :key="'value_' + key"
+          class="stat-v enemy-title-font"
+          v-for="(value, key) in primaryStats"
+        >
+          <span v-if="!attributesNeedReset">{{ value }}</span>
+          <NumericValue
+            else
+            class="width-100"
+            :id="'num_value_' + key"
+            :showMax="true"
+            :value="getStatValue(key)"
+            :maxValue="getMaxStatValue(key)"
+            :decreaseCondition="canDecrease(key)"
+            :increaseCondition="canIncrease"
+            @inc="increaseAttribute(key)"
+            @dec="decreaseAttribute(key)"
+            @reset="reset(key)"
+          />
         </div>
       </div>
 
-      <div class="stat-block slots">
-        <div class="avatar">
-          <Avatar />
+      <div>
+        <Avatar :preview="true" />
+      </div>
+
+      <div
+        class="stats-wrapper flex flex-column flex-evenly-spaced flex-item-center stat-block"
+      >
+        <div class="stat-t s1">
+          HP:
         </div>
-        <div class="hand m-hand">
-          <ItemInfo
-            class="info"
-            :item="null"
-            :hideTitle="true"
-            :showLocked="true"
-            :lootProps="{ equipment: true, equipmentSlot: 'mainHand' }"
-          >
-          </ItemInfo>
+        <div class="stat-t s2">
+          &#8593;HP:
         </div>
-        <div class="hand o-hand">
-          <ItemInfo
-            class="info"
-            :item="null"
-            :hideTitle="true"
-            :showLocked="true"
-            :lootProps="{ equipment: true, equipmentSlot: 'offHand' }"
-          >
-          </ItemInfo>
+        <div class="stat-t s3">
+          Energy:
+        </div>
+        <div class="stat-t s4">
+          &#8593;Energy:
+        </div>
+        <div class="v1 stat-v enemy-title-font">
+          {{ secondaryStats.maxHealth }}
+        </div>
+        <div class="v2 stat-v enemy-title-font">
+          {{ secondaryStats.hpRegen }}&nbsp;/&nbsp;hr.
+        </div>
+        <div class="v3 stat-v enemy-title-font">
+          {{ secondaryStats.maxEnergy }}
+        </div>
+        <div class="v4 stat-v enemy-title-font">
+          {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr.
         </div>
       </div>
+    </div>
+
+    <div
+      v-show="attributesNeedReset"
+      class="flex flex-center flex-full margin-top-3 flex-space-around margin-bottom-3"
+    >
+      <CustomButton type="green" @click="confirmAttributes" id="apply-btn">{{
+        $t("btn-apply")
+      }}</CustomButton>
+      <CustomButton @click="resetAttributes">{{
+        $t("btn-reset")
+      }}</CustomButton>
     </div>
   </div>
 </template>
 
 <script>
+import _ from "lodash";
 import { mapState, mapGetters } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
@@ -107,6 +118,7 @@ import Title from "@/components/Title.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
+import NumericValue from "@/components/NumericValue.vue";
 
 export default {
   mixins: [AppSection],
@@ -116,11 +128,22 @@ export default {
     CustomButton,
     IconWithValue,
     ItemInfo,
-    Avatar
+    Avatar,
+    NumericValue
   },
   created() {
     //this.title = "w-simple-dun";
   },
+  activated() {
+    this.init();
+  },
+  deactivated() {
+    this.resetAttributes();
+  },
+  data: () => ({
+    edit: true,
+    purchasedAttributes: {}
+  }),
   computed: {
     ...mapState({
       user: state => state.dungeon.user
@@ -128,9 +151,77 @@ export default {
     ...mapGetters({
       stats: "dungeon/playerStats",
       nextExp: "dungeon/nextExp"
-    })
+    }),
+    primaryStatsSum() {
+      return _.sum(Object.values(this.primaryStats));
+    },
+    primaryStats() {
+      return this.user.stats;
+    },
+    secondaryStats() {
+      return {
+        ...this.stats,
+        hpRegen: Math.floor(3600 / this.stats.hpRegen),
+        energyRegen: Math.floor(3600 / this.stats.energyRegen)
+      };
+    },
+    attributesNeedReset() {
+      for (let i in this.purchasedAttributes) {
+        if (this.purchasedAttributes[i] !== 0) {
+          return true;
+        }
+      }
+      return false;
+    }
   },
-  methods: {}
+  methods: {
+    init() {
+      for (let statKey in Object.keys(this.primaryStats)) {
+        this.$set(this.purchasedAttributes, statKey, 0);
+      }
+    },
+    getAttributeValue(stat) {
+      return this.primaryStats[stat] + (this.purchasedAttributes[stat] || 0);
+    },
+    getStatValue(stat) {
+      return this.getAttributeValue(stat);
+    },
+    getMaxStatValue() {
+      return this.user.level - this.primaryStatsSum - 1;
+    },
+    canIncrease() {
+      return this.primaryStatsSum < this.user.level - 1;
+    },
+    canDecrease(att) {
+      return this.getEditedAttribute(att) > 0 && this.attributesNeedReset;
+    },
+    increaseAttribute(attr) {
+      this.purchasedAttributes[attr]++;
+      return true;
+    },
+    decreaseAttribute(attr) {
+      this.purchasedAttributes[attr]--;
+      return true;
+    },
+    async confirmAttributes() {
+      console.log("confirmAttributes", _.clone(this.purchasedAttributes));
+      //await this.performRequest(this.$game.buyStats(this.purchasedAttributes));
+      this.init();
+    },
+    getEditedAttribute(attr) {
+      return this.purchasedAttributes[attr];
+    },
+    reset(attr) {
+      while (this.canDecrease(attr)) {
+        this.decreaseAttribute(attr);
+      }
+    },
+    resetAttributes() {
+      for (let i in this.purchasedAttributes) {
+        this.purchasedAttributes[i] = 0;
+      }
+    }
+  }
 };
 </script>
 
@@ -149,16 +240,10 @@ export default {
 
 .stats-wrapper {
   display: grid;
-  grid-template-columns: 50% 45%;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-auto-columns: 1fr;
-  gap: 0 5%;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "s1 v1"
-    "s2 v2"
-    "s3 v3"
-    "s4 v4";
+  justify-content: center;
+  grid-template-rows: repeat(4, 1rem);
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 1rem;
 }
 .stat-t {
   text-align: right;
@@ -167,41 +252,9 @@ export default {
   display: flex;
   justify-content: left;
   align-items: center;
-  padding-bottom: 0.1em;
 }
 .stat-v .btn-plus {
   margin-left: 0.5em;
-}
-.s1 {
-  grid-area: s1;
-}
-
-.s2 {
-  grid-area: s2;
-}
-
-.s3 {
-  grid-area: s3;
-}
-
-.s4 {
-  grid-area: s4;
-}
-
-.v1 {
-  grid-area: v1;
-}
-
-.v2 {
-  grid-area: v2;
-}
-
-.v3 {
-  grid-area: v3;
-}
-
-.v4 {
-  grid-area: v4;
 }
 .slots {
   display: grid;
@@ -210,7 +263,7 @@ export default {
 }
 
 .stat-block {
-  min-width: 45%;
+  min-width: 35%;
   text-align: left;
 }
 
