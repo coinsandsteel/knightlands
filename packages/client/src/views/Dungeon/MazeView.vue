@@ -1,5 +1,5 @@
 <template>
-  <div class="width-100" v-bar>
+  <div class="width-100" ref="scroll" v-bar>
     <div class="flex relative flex-items-center padding-top-1">
       <div class="width-100 dungeon-grid" ref="wrapper" :style="cssVars">
         <MazeCell
@@ -62,6 +62,16 @@ function mulberry32(a) {
   };
 }
 
+function findPos(obj, parent) {
+  var curtop = 0;
+  if (obj.offsetParent) {
+    do {
+      curtop += obj.offsetTop;
+    } while ((obj = obj.offsetParent) !== parent);
+    return curtop;
+  }
+}
+
 export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: { MazeCell, Player },
@@ -96,6 +106,9 @@ export default {
       this.handleAggressiveEnemy
     );
   },
+  activated() {
+    this.scrollToPlayer();
+  },
   destroyed() {
     window.removeEventListener("resize", this._resize);
     this.$store.$app.$off("aggressive_enemy_encountered");
@@ -127,7 +140,13 @@ export default {
     random() {
       return this._randomState();
     },
-    scrollToPlayer() {},
+    scrollToPlayer() {
+      this.$nextTick(() => {
+        const scroll = document.querySelector(".vb-content");
+        scroll.scrollTop =
+          findPos(this.$refs.player.$el, scroll) - scroll.offsetHeight / 2;
+      });
+    },
     init() {
       this._seed = xmur3(this.$game.id + this.user.level);
       this._randomState = mulberry32(this._seed());
