@@ -48,7 +48,7 @@
           :class="['title_' + key, 'stat-t']"
           v-for="(value, key) in primaryStats"
         >
-          {{ $t("stat_" + key) }}:
+          {{ $t(key) }}:
         </div>
         <div
           :key="'value_' + key"
