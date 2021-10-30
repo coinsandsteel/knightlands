@@ -37,7 +37,7 @@ export default {
       startTime: 0
     },
     user: {
-      level: null,
+      level: 0,
       cell: null,
       energy: null,
       health: null,
@@ -109,6 +109,10 @@ export default {
       }
     },
     setInitialState(state, data) {
+      if (!data) {
+        return;
+      }
+
       if (data.user) {
         state.user = { ...state.user, ...data.user };
       }
@@ -279,6 +283,7 @@ export default {
       this.$app.$game.offNetwork(Events.SDungeonUpdate);
     },
     init(store, data) {
+      console.log("init");
       store.commit("setInitialState", data);
 
       // initialize timers
@@ -398,6 +403,11 @@ export default {
         await this.$app.$game._wrapOperation(Operations.SDungeonRank, {
           page
         })
+      ).response;
+    },
+    async enter(store, data) {
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDungeonEnter, data)
       ).response;
     }
   }

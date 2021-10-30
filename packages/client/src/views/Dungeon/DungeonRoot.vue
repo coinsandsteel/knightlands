@@ -5,15 +5,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   async mounted() {
-    this.$store.dispatch('dungeon/subscribe');
-    await this.$store.dispatch('dungeon/load');
+    this.$store.dispatch("dungeon/subscribe");
+    await this.$store.dispatch("dungeon/load");
   },
   beforeDestroy() {
-    this.$store.dispatch('dungeon/unsubscribe');
+    this.$store.dispatch("dungeon/unsubscribe");
   },
   computed: {
     ...mapState({

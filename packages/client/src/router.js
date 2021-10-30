@@ -397,13 +397,19 @@ const router = new Router({
       component: DungeonRoot,
       children: [
         {
+          path: "",
+          name: "dungeon-entrance",
+          component: () => import("./views/Dungeon/Entrance.vue"),
+          meta: { noTopBar: true }
+        },
+        {
           path: "fight",
           name: "dungeon-fight",
           component: DungeonFight,
           meta: { noTopBar: true /*, noBackButton: true*/ }
         },
         {
-          path: "",
+          path: "dungeon",
           name: "dungeon-sections",
           component: DungeonSections,
           meta: { noTopBar: true },

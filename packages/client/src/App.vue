@@ -215,6 +215,11 @@ export default {
   beforeCreate() {
     this.$game.on(Events.PurchaseComplete, context => {
       context = context.context;
+
+      if (!context) {
+        return;
+      }
+
       if (context.item) {
         ShowItemsReceived([context]);
       } else {

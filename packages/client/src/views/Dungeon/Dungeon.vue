@@ -135,6 +135,7 @@ export default {
   }),
   created() {
     this.title = "w-simple-dun";
+    this.$options.useRouterBack = true;
     this.$app.$on("shake-energy", this.shakeEnergy);
   },
   destroyed() {
