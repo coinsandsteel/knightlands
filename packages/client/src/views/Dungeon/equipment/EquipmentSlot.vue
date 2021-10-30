@@ -7,7 +7,7 @@
     <span class="font-size-20 font-weight-900" v-html="damage"></span>
     <div class="loot-slot  flex relative flex-column ">
       <div class="inner-border item_slot_dark" :class="rarity">
-        <div :style="icon" class="icon" />
+        <div :style="icon" class="icon" :class="!icon ? `icon_slot_${type}` : null" />
         <div :class="[{ selected: selected }]"></div>
       </div>
     </div>
@@ -20,7 +20,7 @@ import DungeonItems from "@/metadata/halloween/dungeon_items.json";
 import { MoveType } from "@/../../knightlands-shared/dungeon_types";
 
 export default {
-  props: ["id", "selected"],
+  props: ["id", "selected", "type"],
   computed: {
     rarity() {
       if (!this.id) {
