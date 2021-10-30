@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-column"
+    class="flex flex-column flex-center flex-start"
     @click="$emit('click', id)"
     :class="{ pointer: id }"
   >

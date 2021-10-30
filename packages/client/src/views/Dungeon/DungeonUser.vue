@@ -11,12 +11,17 @@
 
     <div class="flex flex-evenly-spaced width-100 padding-1">
       <div class="flex flex-center panel-input  margin-bottom-2">
+        <span class="font-size-25 font-outline" @click="dereaseLevel">[-]</span>
+        &nbsp;
         <span
           class="font-size-25 font-outline"
           :class="[upgradeAllowed ? 'rarity-epic' : null]"
+          @click="userLevel++"
         >
           {{ $t("level-full", { lvl: user.level }) }}
         </span>
+        &nbsp;
+        <span class="font-size-25 font-outline" @click="userLevel++">[+]</span>
       </div>
 
       <ProgressBar
@@ -128,6 +133,8 @@
         $t("btn-reset")
       }}</CustomButton>
     </div>
+
+    <DungeonEquipment />
   </div>
 </template>
 
@@ -142,6 +149,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
 import NumericValue from "@/components/NumericValue.vue";
+import DungeonEquipment from "@/views/Dungeon/Equipment/Equipment.vue";
 
 export default {
   mixins: [AppSection],
@@ -152,7 +160,8 @@ export default {
     IconWithValue,
     ItemInfo,
     Avatar,
-    NumericValue
+    NumericValue,
+    DungeonEquipment
   },
   created() {
     //this.title = "w-simple-dun";
@@ -228,6 +237,11 @@ export default {
     }
   },
   methods: {
+    dereaseLevel() {
+      if (this.userLevel > 1) {
+        this.userLevel--;
+      }
+    },
     init() {
       for (let statKey in this.primaryStats) {
         this.$set(this.statsDelta, statKey, 0);
