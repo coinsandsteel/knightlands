@@ -1,54 +1,64 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
     <div class="hallowen-bg"></div>
-    <Title class="enemy-title-font margin-top-1 font-outline">
+    <Title class="margin-top-1 font-outline">
       {{ $t("char") }}
     </Title>
 
-    <div class="flex flex-evenly-spaced width-100 padding-2">
+    <div class="flex flex-center width-100 margin-top-2">
+      <Avatar :preview="true" />
+    </div>
+
+    <div class="flex flex-evenly-spaced width-100 padding-1">
+      <div class="flex flex-center panel-input  margin-bottom-2">
+        <span
+          class="font-size-25 font-outline"
+          :class="[upgradeAllowed ? 'rarity-epic' : null]"
+        >
+          {{ $t("level-full", { lvl: user.level }) }}
+        </span>
+      </div>
+
       <ProgressBar
         :value="user.exp"
         :maxValue="nextExp"
-        height="4px"
-        width="90%"
-        valuePosition="top"
+        height="3em"
+        width="85%"
+        valuePosition="bottom"
         barType="grey"
-        valueClass="white-font font-outline font-size-20"
+        labelClass="label-panel"
+        valueClass="white-font font-outline-heavy font-size-20"
         class="margin-bottom-1"
       >
         <template v-slot:label><span class="icon-exp"></span></template>
       </ProgressBar>
-      <div class="flex flex-center panel-input">
-        <span class="font-size-25 rarity-epic font-outline">
-          {{ $t("level-full", { lvl: user.level }) }}
-        </span>
-      </div>
     </div>
 
     <div
-      class="flex flex-center flex-evenly-spaced width-100 padding-2 font-size-22 font-outline"
+      class="flex flex-center flex-evenly-spaced width-100 padding-3 font-size-22 font-outline"
     >
-      <div
-        class="stats-wrapper flex flex-column flex-evenly-spaced flex-item-center stat-block"
-      >
+      <div class="primary-stats-wrapper stats-wrapper flex flex-center">
         <div
           :key="'title_' + key"
-          class="stat-t"
+          :class="['title_' + key, 'stat-t']"
           v-for="(value, key) in primaryStats"
         >
-          {{ $t("stat_" + key) }}
+          {{ $t("stat_" + key) }}:
         </div>
         <div
           :key="'value_' + key"
           class="stat-v enemy-title-font"
+          :class="['value_' + key]"
           v-for="(value, key) in primaryStats"
         >
-          <span v-if="!attributesNeedReset">{{ value }}</span>
           <NumericValue
-            else
+            v-if="upgradeAllowed"
             class="width-100"
             :id="'num_value_' + key"
-            :showMax="true"
+            :showMax="false"
+            :noExtra="true"
+            :rowStyle="{ 'align-items': 'center' }"
+            :btnStyle="{ width: '1em', height: '1em' }"
             :value="getStatValue(key)"
             :maxValue="getMaxStatValue(key)"
             :decreaseCondition="canDecrease(key)"
@@ -57,46 +67,59 @@
             @dec="decreaseAttribute(key)"
             @reset="reset(key)"
           />
+          <span v-else>{{ value }}</span>
         </div>
       </div>
 
-      <div>
-        <Avatar :preview="true" />
-      </div>
-
-      <div
-        class="stats-wrapper flex flex-column flex-evenly-spaced flex-item-center stat-block"
-      >
-        <div class="stat-t s1">
-          HP:
+      <div class="stats-wrapper flex flex-center">
+        <div class="flex flex-column title-column">
+          <div class="stat-t">HP:</div>
+          <div class="stat-t">&#8593;HP:</div>
+          <div class="stat-t">{{ $t("energy") }}:</div>
+          <div class="stat-t">&#8593;{{ $t("energy") }}:</div>
         </div>
-        <div class="stat-t s2">
-          &#8593;HP:
-        </div>
-        <div class="stat-t s3">
-          Energy:
-        </div>
-        <div class="stat-t s4">
-          &#8593;Energy:
-        </div>
-        <div class="v1 stat-v enemy-title-font">
-          {{ secondaryStats.maxHealth }}
-        </div>
-        <div class="v2 stat-v enemy-title-font">
-          {{ secondaryStats.hpRegen }}&nbsp;/&nbsp;hr.
-        </div>
-        <div class="v3 stat-v enemy-title-font">
-          {{ secondaryStats.maxEnergy }}
-        </div>
-        <div class="v4 stat-v enemy-title-font">
-          {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr.
+        <div class="flex flex-column value-column">
+          <div
+            class="stat-v enemy-title-font"
+            :class="[
+              secondaryStatsWereModifiedMap['maxHealth'] ? 'rarity-epic' : null
+            ]"
+          >
+            {{ secondaryStats.maxHealth }}
+          </div>
+          <div
+            class="stat-v enemy-title-font"
+            :class="[
+              secondaryStatsWereModifiedMap['hpRegen'] ? 'rarity-epic' : null
+            ]"
+          >
+            {{ secondaryStats.hpRegen }}&nbsp;/&nbsp;hr.
+          </div>
+          <div
+            class="stat-v enemy-title-font"
+            :class="[
+              secondaryStatsWereModifiedMap['maxEnergy'] ? 'rarity-epic' : null
+            ]"
+          >
+            {{ secondaryStats.maxEnergy }}
+          </div>
+          <div
+            class="stat-v enemy-title-font"
+            :class="[
+              secondaryStatsWereModifiedMap['energyRegen']
+                ? 'rarity-epic'
+                : null
+            ]"
+          >
+            {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr.
+          </div>
         </div>
       </div>
     </div>
 
     <div
-      v-show="attributesNeedReset"
-      class="flex flex-center flex-full margin-top-3 flex-space-around margin-bottom-3"
+      v-show="attributesModified"
+      class="flex flex-center margin-top-2 flex-space-around margin-bottom-3"
     >
       <CustomButton type="green" @click="confirmAttributes" id="apply-btn">{{
         $t("btn-apply")
@@ -142,74 +165,103 @@ export default {
   },
   data: () => ({
     edit: true,
-    purchasedAttributes: {}
+    statsDelta: {},
+    userLevel: 1
   }),
   computed: {
     ...mapState({
-      user: state => state.dungeon.user
+      user: function(state) {
+        return { ...state.dungeon.user, level: this.userLevel };
+      }
     }),
     ...mapGetters({
-      stats: "dungeon/playerStats",
+      playerStats: "dungeon/playerStats",
       nextExp: "dungeon/nextExp"
     }),
+    statsDeltaSum() {
+      return _.sum(Object.values(this.statsDelta));
+    },
     primaryStatsSum() {
       return _.sum(Object.values(this.primaryStats));
     },
     primaryStats() {
       return this.user.stats;
     },
+    primaryStatsModified() {
+      const statsModified = {};
+      _.keys(this.user.stats).forEach(key => {
+        statsModified[key] = this.getStatValue(key);
+      });
+      return statsModified;
+    },
     secondaryStats() {
+      const currentPlayerStats = this.playerStats(this.primaryStatsModified);
       return {
-        ...this.stats,
-        hpRegen: Math.floor(3600 / this.stats.hpRegen),
-        energyRegen: Math.floor(3600 / this.stats.energyRegen)
+        ...currentPlayerStats,
+        hpRegen: Math.floor(3600 / currentPlayerStats.hpRegen),
+        energyRegen: Math.floor(3600 / currentPlayerStats.energyRegen)
       };
     },
-    attributesNeedReset() {
-      for (let i in this.purchasedAttributes) {
-        if (this.purchasedAttributes[i] !== 0) {
+    secondaryStatsWereModifiedMap() {
+      const initialPlayerstats = this.playerStats(this.primaryStats);
+      const currentPlayerStats = this.playerStats(this.primaryStatsModified);
+      const statsModified = {};
+      _.keys(initialPlayerstats).forEach(key => {
+        statsModified[key] =
+          initialPlayerstats[key] !== currentPlayerStats[key];
+      });
+      return statsModified;
+    },
+    attributesModified() {
+      for (let i in this.statsDelta) {
+        if (this.statsDelta[i] !== 0) {
           return true;
         }
       }
       return false;
+    },
+    canIncrease() {
+      return this.statsDeltaSum < this.user.level - 1;
+    },
+    upgradeAllowed() {
+      return this.primaryStatsSum < this.user.level - 1;
     }
   },
   methods: {
     init() {
-      for (let statKey in Object.keys(this.primaryStats)) {
-        this.$set(this.purchasedAttributes, statKey, 0);
+      for (let statKey in this.primaryStats) {
+        this.$set(this.statsDelta, statKey, 0);
       }
     },
+    switchLevel() {
+      this.userLevel++;
+    },
     getAttributeValue(stat) {
-      return this.primaryStats[stat] + (this.purchasedAttributes[stat] || 0);
+      return this.primaryStats[stat] + (this.statsDelta[stat] || 0);
     },
     getStatValue(stat) {
       return this.getAttributeValue(stat);
     },
     getMaxStatValue() {
-      return this.user.level - this.primaryStatsSum - 1;
-    },
-    canIncrease() {
-      return this.primaryStatsSum < this.user.level - 1;
+      return this.user.level - this.statsDeltaSum - 1;
     },
     canDecrease(att) {
-      return this.getEditedAttribute(att) > 0 && this.attributesNeedReset;
+      return this.getEditedAttribute(att) > 0 && this.attributesModified;
     },
     increaseAttribute(attr) {
-      this.purchasedAttributes[attr]++;
+      this.statsDelta[attr]++;
       return true;
     },
     decreaseAttribute(attr) {
-      this.purchasedAttributes[attr]--;
+      this.statsDelta[attr]--;
       return true;
     },
     async confirmAttributes() {
-      console.log("confirmAttributes", _.clone(this.purchasedAttributes));
-      //await this.performRequest(this.$game.buyStats(this.purchasedAttributes));
+      //await this.performRequest(this.$game.buyStats(this.statsDelta));
       this.init();
     },
     getEditedAttribute(attr) {
-      return this.purchasedAttributes[attr];
+      return this.statsDelta[attr];
     },
     reset(attr) {
       while (this.canDecrease(attr)) {
@@ -217,8 +269,8 @@ export default {
       }
     },
     resetAttributes() {
-      for (let i in this.purchasedAttributes) {
-        this.purchasedAttributes[i] = 0;
+      for (let i in this.statsDelta) {
+        this.statsDelta[i] = 0;
       }
     }
   }
@@ -239,32 +291,75 @@ export default {
 }
 
 .stats-wrapper {
-  display: grid;
-  justify-content: center;
-  grid-template-rows: repeat(4, 1rem);
-  grid-template-columns: repeat(2, 1fr);
-  row-gap: 1rem;
+  width: 50%;
 }
+.primary-stats-wrapper {
+  display: grid;
+  grid-template-columns: 60% 36%;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-auto-columns: 1fr;
+  gap: 0.1rem 4%;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "title_str value_str"
+    "title_dex value_dex"
+    "title_int value_int"
+    "title_sta value_sta";
+}
+
+.title_str {
+  grid-area: title_str;
+}
+.title_dex {
+  grid-area: title_dex;
+}
+.title_int {
+  grid-area: title_int;
+}
+.title_sta {
+  grid-area: title_sta;
+}
+
+.value_str {
+  grid-area: value_str;
+}
+.value_dex {
+  grid-area: value_dex;
+}
+.value_int {
+  grid-area: value_int;
+}
+.value_sta {
+  grid-area: value_sta;
+}
+
 .stat-t {
   text-align: right;
+  margin-bottom: 0.5rem;
 }
 .stat-v {
   display: flex;
   justify-content: left;
   align-items: center;
+  width: 100%;
+  margin-right: 5%;
+  margin-bottom: 0.5rem;
 }
-.stat-v .btn-plus {
-  margin-left: 0.5em;
+.title-column {
+  width: 60%;
+  display: flex;
+  justify-content: right;
+  margin-right: 4%;
+}
+.value-column {
+  width: 36%;
+  display: flex;
+  justify-content: left;
 }
 .slots {
   display: grid;
   grid-row: 1 / 3;
   grid-column: 1 / 3;
-}
-
-.stat-block {
-  min-width: 35%;
-  text-align: left;
 }
 
 .flex-evenly-spaced {
@@ -273,15 +368,6 @@ export default {
 .energy-hallowen {
   .icon_nrg_halloween;
   .icon();
-}
-.slots {
-  display: grid;
-  grid-template-columns: 4em 8.5em;
-  grid-template-rows: 4em 4em;
-  gap: 0 0.5em;
-  grid-template-areas:
-    "mHand Avatar"
-    "oHand Avatar";
 }
 .avatar {
   grid-area: Avatar;

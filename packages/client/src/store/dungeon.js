@@ -4,7 +4,9 @@ import enemies from "@/metadata/halloween/dungeon_enemies.json";
 import progression from "@/metadata/halloween/dungeon_progression.json";
 
 import Operations from "@/../../knightlands-shared/operations";
-import { CombatAction } from "@/../../knightlands-shared/dungeon_types";
+import {
+  CombatAction
+} from "@/../../knightlands-shared/dungeon_types";
 import timer from "../timer";
 import Vue from "vue";
 
@@ -76,10 +78,8 @@ export default {
         ),
         maxHealth,
         maxEnergy,
-        energyRegen:
-          86400 / (10 + 1.01 * stats.sta + 1.01 * stats.int) / maxEnergy,
-        hpRegen:
-          86400 /
+        energyRegen: 86400 / (10 + 1.01 * stats.sta + 1.01 * stats.int) / maxEnergy,
+        hpRegen: 86400 /
           (20 + 1.01 * stats.dex + 1.01 * stats.sta + 1.01 * stats.str) /
           maxHealth
       };
@@ -115,7 +115,10 @@ export default {
       }
 
       if (data.user) {
-        state.user = { ...state.user, ...data.user };
+        state.user = {
+          ...state.user,
+          ...data.user
+        };
       }
 
       if (data.combat) {
@@ -163,7 +166,10 @@ export default {
       // combatStarted
       if (data.combat !== undefined) {
         console.log("Combat status updated", data.combat);
-        state.combat = { ...state.combat, ...data.combat };
+        state.combat = {
+          ...state.combat,
+          ...data.combat
+        };
         state.hpTimer.stop();
         state.energyTimer.stop();
       }
@@ -248,7 +254,9 @@ export default {
   actions: {
     redirectToActiveCombat(store) {
       if (store.state.combat.enemyId) {
-        this.$app.$router.push({ name: "dungeon-fight" });
+        this.$app.$router.push({
+          name: "dungeon-fight"
+        });
       }
     },
     update(store, data) {
@@ -289,20 +297,23 @@ export default {
 
       // initialize timers
 
+      const playerStats = store.getters.playerStats(null);
+      console.log('playerStats', _.clone(playerStats));
+
       store.state.hpTimer.removeAllListeners("finished");
       store.state.hpTimer.timeLeft =
-        store.getters.playerStats(null).hpRegen -
+        playerStats.hpRegen -
         (this.$app.$game.nowSec - store.state.user.lastHpRegen);
       store.state.hpTimer.on("finished", () => {
-        if (store.getters.playerStats(null).maxHealth > store.state.user.health) {
+        if (playerStats.maxHealth > store.state.user.health) {
           store.commit("addHealth", 1);
         }
-        store.state.hpTimer.timeLeft = store.getters.playerStats.hpRegen;
+        store.state.hpTimer.timeLeft = playerStats.hpRegen;
       });
 
       store.state.energyTimer.removeAllListeners("finished");
       store.state.energyTimer.timeLeft =
-        store.getters.playerStats(null).energyRegen -
+        playerStats.energyRegen -
         (this.$app.$game.nowSec - store.state.user.lastEnergyRegen);
       console.log(
         "store.state.energyTimer.timeLeft",
@@ -310,12 +321,12 @@ export default {
       );
       store.state.energyTimer.on("finished", () => {
         console.log("energy regened!");
-        if (store.getters.playerStats(null).maxEnergy > store.state.user.energy) {
+        if (playerStats.maxEnergy > store.state.user.energy) {
           console.log("add energy!");
           store.commit("addEnergy", 1);
         }
         store.state.energyTimer.timeLeft =
-          store.getters.playerStats(null).energyRegen;
+          playerStats.energyRegen;
       });
     },
     async load(store) {
@@ -349,7 +360,9 @@ export default {
       return (
         await this.$app.$game._wrapOperation(Operations.SDunegonCombatAction, {
           action: CombatAction.Attack,
-          data: { move }
+          data: {
+            move
+          }
         })
       ).response;
     },
@@ -366,7 +379,9 @@ export default {
       });
       store.commit("useItem", item);
     },
-    updateRegenTimers({ state }) {
+    updateRegenTimers({
+      state
+    }) {
       state.hpTimer.timeLeft = this.$app.$game.nowSec - state.user.lastHpRegen;
       state.energyTimer.timeLeft =
         this.$app.$game.nowSec - state.user.lastEnergyRegen;

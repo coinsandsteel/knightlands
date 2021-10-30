@@ -1,6 +1,7 @@
 <template>
   <div
     class="flex flex-no-wrap font-size-20 flex-center font-weight-900 flex-space-between"
+    :style="rowStyle"
   >
     <CustomButton
       v-if="!noExtra"
@@ -19,6 +20,7 @@
       @touchstart="startAttributeDecrease"
       @touchend="stopAttributeModify"
       @touchcancel="stopAttributeModify"
+      :style="btnStyle"
     ></i>
     <slot name="between">
       <span class="att-name" v-if="caption">{{ caption }}</span>
@@ -35,6 +37,7 @@
       @touchstart="startAttributeIncrease"
       @touchend="stopAttributeModify"
       @touchcancel="stopAttributeModify"
+      :style="btnStyle"
     ></i>
     <CustomButton
       v-if="!noExtra"
@@ -62,7 +65,9 @@ export default {
     "maxValue",
     "caption",
     "showMax",
-    "noExtra"
+    "noExtra",
+    "btnStyle",
+    "rowStyle"
   ],
   components: { SoundEffect, CustomButton },
   methods: {
