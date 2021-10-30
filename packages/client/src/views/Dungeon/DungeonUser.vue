@@ -124,13 +124,13 @@
 
     <div
       v-show="attributesModified"
-      class="flex flex-center margin-top-2 flex-space-around margin-bottom-3"
+      class="stat-commit flex flex-center width-100 margin-top-2 flex-evenly-spaced margin-bottom-3"
     >
-      <CustomButton type="green" @click="confirmAttributes" id="apply-btn">{{
-        $t("btn-apply")
-      }}</CustomButton>
       <CustomButton @click="resetAttributes">{{
         $t("btn-reset")
+      }}</CustomButton>
+      <CustomButton type="green" @click="confirmAttributes" id="apply-btn">{{
+        $t("btn-apply")
       }}</CustomButton>
     </div>
 
@@ -411,5 +411,8 @@ export default {
 }
 .panel-input {
   padding: 0 1em;
+}
+.stat-commit .btn {
+  min-width: 25%;
 }
 </style>
