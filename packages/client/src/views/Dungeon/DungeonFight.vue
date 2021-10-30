@@ -1,116 +1,122 @@
 <template>
   <div class="screen-content flex-items-center full-flex" v-if="combat.enemyId">
     <div class="screen-background"></div>
-    <div class="width-100 flex flex-column flex-center">
-      <div
-        :style="zoneBackground"
-        class="flex quest-mid relative flex-center flex-no-wrap"
-      >
-        <div class="quest-image flex flex-column flex-center flex-end">
-          <img ref="enemyView" :src="enemyImage" />
-          <div
-            class="
+    <div class="width-100" v-bar>
+      <div class="width-100 flex flex-column flex-center">
+        <div
+          :style="zoneBackground"
+          class="flex quest-mid relative flex-center flex-no-wrap"
+        >
+          <div class="quest-image flex flex-column flex-center flex-end">
+            <img ref="enemyView" :src="enemyImage" />
+            <div
+              class="
               flex flex-center flex-column
               font-outline font-size-30
               enemy-title
             "
-          >
-            <span class="rarity-mythical font-weight-900 font-outline">{{
-              $t("floor", { val: maze.floor })
-            }}</span>
-            <div>
-              <span class="enemy-title-font capitalize">{{
-                $t(missionName)
+            >
+              <span class="rarity-mythical font-weight-900 font-outline">{{
+                $t("floor", { val: maze.floor })
               }}</span>
+              <div>
+                <span class="enemy-title-font capitalize">{{
+                  $t(missionName)
+                }}</span>
+              </div>
             </div>
+          </div>
+
+          <div class="absolute-stretch z-index-100 pointer-events-none ">
+            <SoundEffect
+              ref="fx"
+              :files="[
+                'hit1',
+                'hit2',
+                'hit3',
+                'hit4',
+                'hit5',
+                'hit6',
+                'hit7',
+                'hit8'
+              ]"
+            />
+            <span class="move font-outline font-weight-900" ref="moveHandle">{{
+              $t(move)
+            }}</span>
           </div>
         </div>
 
-        <div class="absolute-stretch z-index-100 pointer-events-none ">
-          <SoundEffect
-            ref="fx"
-            :files="[
-              'hit1',
-              'hit2',
-              'hit3',
-              'hit4',
-              'hit5',
-              'hit6',
-              'hit7',
-              'hit8'
-            ]"
-          />
-          <span class="move font-outline font-weight-900" ref="moveHandle">{{
-            $t(move)
-          }}</span>
+        <div class="color-panel-1 flex flex-column full-flex">
+          <progress-bar
+            :percentMode="false"
+            v-model="currentProgress"
+            :maxValue="maxProgress"
+            height="4px"
+            width="80%"
+            valuePosition="top"
+            barType="yellow"
+            valueClass="white-font font-outline font-size-30 quest-progress-value"
+            :thresholds="thresholds"
+          ></progress-bar>
+
+          <progress-bar
+            :percentMode="false"
+            v-model="user.health"
+            :maxValue="stats.maxHealth"
+            height="4px"
+            width="80%"
+            valuePosition="top"
+            barType="red"
+            valueClass="white-font font-outline font-size-30 quest-progress-value margin-top-2"
+          ></progress-bar>
+
+          <div class="margin-top-2 flex flex-center">
+            <CustomButton
+              :promise="request"
+              minWidth="15rem"
+              type="grey"
+              :noSound:="true"
+              @click="engage(moves.Scissors)"
+              id="engage-q"
+            >
+              <IconWithValue iconClass="d-das big">{{
+                $t("d-attack")
+              }}</IconWithValue></CustomButton
+            >
+            <CustomButton
+              :promise="request"
+              minWidth="15rem"
+              type="grey"
+              :noSound:="true"
+              @click="engage(moves.Paper)"
+              id="engage-q"
+            >
+              <IconWithValue iconClass="d-blo big">{{
+                $t("d-block")
+              }}</IconWithValue></CustomButton
+            >
+            <CustomButton
+              :promise="request"
+              minWidth="15rem"
+              type="grey"
+              :noSound:="true"
+              @click="engage(moves.Rock)"
+              id="engage-q"
+            >
+              <IconWithValue iconClass="d-sla big">{{
+                $t("d-parry")
+              }}</IconWithValue></CustomButton
+            >
+
+            <CustomButton type="grey" @click="showHint">
+              <span class="icon-info big"></span>
+            </CustomButton>
+          </div>
         </div>
+
+        <Equipment class="margin-top-5" />
       </div>
-
-      <div class="color-panel-1 flex flex-column full-flex">
-        <progress-bar
-          :percentMode="false"
-          v-model="currentProgress"
-          :maxValue="maxProgress"
-          height="4px"
-          width="80%"
-          valuePosition="top"
-          barType="yellow"
-          valueClass="white-font font-outline font-size-30 quest-progress-value"
-          :thresholds="thresholds"
-        ></progress-bar>
-
-        <progress-bar
-          :percentMode="false"
-          v-model="user.health"
-          :maxValue="stats.maxHealth"
-          height="4px"
-          width="80%"
-          valuePosition="top"
-          barType="red"
-          valueClass="white-font font-outline font-size-30 quest-progress-value margin-top-2"
-        ></progress-bar>
-
-        <div class="margin-top-2 flex flex-center">
-          <CustomButton
-            :promise="request"
-            minWidth="15rem"
-            type="grey"
-            :noSound:="true"
-            @click="engage(moves.Scissors)"
-            id="engage-q"
-          >
-            <IconWithValue iconClass="d-das big">{{
-              $t("d-attack")
-            }}</IconWithValue></CustomButton
-          >
-          <CustomButton
-            :promise="request"
-            minWidth="15rem"
-            type="grey"
-            :noSound:="true"
-            @click="engage(moves.Paper)"
-            id="engage-q"
-          >
-            <IconWithValue iconClass="d-blo big">{{
-              $t("d-block")
-            }}</IconWithValue></CustomButton
-          >
-          <CustomButton
-            :promise="request"
-            minWidth="15rem"
-            type="grey"
-            :noSound:="true"
-            @click="engage(moves.Rock)"
-            id="engage-q"
-          >
-            <IconWithValue iconClass="d-sla big">{{
-              $t("d-parry")
-            }}</IconWithValue></CustomButton
-          >
-        </div>
-      </div>
-
-      <Equipment class="margin-top-5" />
     </div>
   </div>
 </template>
@@ -126,12 +132,17 @@ import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Equipment from "./equipment/Equipment.vue";
-
-import { create } from "vue-modal-dialogs";
 import { MoveType } from "@/../../knightlands-shared/dungeon_types";
 
 import anime from "animejs/lib/anime.es.js";
 import { mapGetters, mapState } from "vuex";
+
+import CombatTip from "./Popup/CombatTip.vue";
+import CombatWin from "./Popup/CombatWin.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowHint = create(CombatTip);
+const ShowCombatWin = create(CombatWin);
 
 const CombatOutcome = {
   EnemyWon: -1,
@@ -222,13 +233,24 @@ export default {
     }
   },
   methods: {
-    combatLost() {
-      alert("You lost the combat!");
+    showHint() {
+      ShowHint();
+    },
+    async combatLost() {
+      await this.showPrompt(this.$t("combat-lost"), this.$t("combat-lost-d"), [
+        {
+          type: "green",
+          title: this.$t("btn-ok"),
+          response: true
+        }
+      ]);
       this.$store.dispatch("dungeon/resetCombat");
       this.leave();
     },
-    combatWon() {
-      alert("You won the combat!");
+    async combatWon() {
+      await ShowCombatWin({
+        enemyId: this.enemy.id
+      });
       this.$store.dispatch("dungeon/resetCombat");
       this.leave();
     },

@@ -10,9 +10,16 @@
         <span class="green-title">{{ rank }}</span>
       </div>
 
-      <div class="flex">
+      <div class="flex ">
         <span class="margin-right-half">{{ $t("your-score") }}</span>
         <span class="yellow-title">{{ currentRank.score }}</span>
+      </div>
+
+      <div class="flex margin-left-2" v-if="reward">
+        <span class="margin-right-half">{{ $t("your-reward") }}</span>
+        <IconWithValue valueClass="yellow-title" iconClass="icon-usdc">{{
+          reward
+        }}</IconWithValue>
       </div>
     </div>
 
@@ -58,10 +65,12 @@
 <script>
 import RankingsListElement from "./RankingsListElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import meta from "@/metadata/halloween/dungeon_meta";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  components: { RankingsListElement },
+  components: { RankingsListElement, IconWithValue },
   data: () => ({
     currentRank: null,
     records: [],
@@ -115,6 +124,13 @@ export default {
     }
   },
   computed: {
+    reward() {
+      if (this.rank > meta.rewards.length) {
+        return 0;
+      }
+
+      return meta.rewards[this.rank - 1];
+    },
     participates() {
       return !!this.currentRank;
     },

@@ -22,6 +22,7 @@
 <script>
 import IconWithValue from "@/components/IconWithValue.vue";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
+import meta from "@/metadata/halloween/dungeon_meta";
 
 export default {
   props: [
@@ -39,7 +40,11 @@ export default {
   components: { Avatar, IconWithValue },
   computed: {
     reward() {
-      return 1;
+      if (this.index >= meta.rewards.length) {
+        return 0;
+      }
+
+      return meta.rewards[this.index];
     },
     scoreComputed() {
       const converted = Math.floor(this.score * 1000000) / 1000000;

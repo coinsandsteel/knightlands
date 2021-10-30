@@ -2465,5 +2465,9 @@
     "zalaras": "zalaras",
     "zombie_lord": "zombielord",
     "h-reg": " +{v}/hour",
-    "p-move": "MOVE {v}"
+    "p-move": "MOVE {v}",
+    "combat-lost": "You lose",
+    "combat-lost-d": "You will do better next time!",
+    "combat-win": "You win!",
+    "c-w-e": "You have gained: "
 }
