@@ -21,7 +21,7 @@
     <div class="width-100 margin-bottom-2 stat-panel">
       <ProgressBar
         :value="user.health"
-        :maxValue="stats.maxHealth"
+        :maxValue="playerStats.maxHealth"
         height="4px"
         width="90%"
         valuePosition="top"
@@ -52,7 +52,7 @@
       <ProgressBar
         id="energy"
         :value="user.energy"
-        :maxValue="stats.maxEnergy"
+        :maxValue="playerStats.maxEnergy"
         height="4px"
         width="90%"
         valuePosition="top"
@@ -149,14 +149,16 @@ export default {
       combat: state => state.dungeon.combat
     }),
     ...mapGetters({
-      stats: "dungeon/playerStats",
+      playerStats: "dungeon/playerStats",
       nextExp: "dungeon/nextExp"
     }),
     energyRegen() {
-      return Math.floor(3600 / this.stats.energyRegen);
+      const playerStats = this.playerStats(null);
+      return Math.floor(3600 / playerStats.energyRegen);
     },
     healthRegen() {
-      return Math.floor(3600 / this.stats.hpRegen);
+      const playerStats = this.playerStats(null);
+      return Math.floor(3600 / playerStats.hpRegen);
     }
   },
   methods: {
