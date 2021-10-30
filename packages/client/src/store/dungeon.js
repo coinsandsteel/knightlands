@@ -237,10 +237,11 @@ export default {
         console.log("Health and energy regen", data.regen);
         state.user.lastHpRegen = data.regen.hp || state.user.lastHpRegen;
         state.user.lastEnergyRegen =
-          data.regen.energy || state.user.lastEnergyRegen;
+        data.regen.energy || state.user.lastEnergyRegen;
       }
-
+      
       if (data.equip) {
+        console.log("User was equiped", data.equip);
         state.user.mHand = data.equip.mHand;
         state.user.oHand = data.equip.oHand;
       }
@@ -303,12 +304,11 @@ export default {
       // initialize timers
 
       const playerStats = store.getters.playerStats(null);
-      console.log('playerStats', _.clone(playerStats));
-
       store.state.hpTimer.removeAllListeners("finished");
       store.state.hpTimer.timeLeft =
         playerStats.hpRegen -
         (this.$app.$game.nowSec - store.state.user.lastHpRegen);
+
       store.state.hpTimer.on("finished", () => {
         if (playerStats.maxHealth > store.state.user.health) {
           store.commit("addHealth", 1);
@@ -320,10 +320,12 @@ export default {
       store.state.energyTimer.timeLeft =
         playerStats.energyRegen -
         (this.$app.$game.nowSec - store.state.user.lastEnergyRegen);
+
       console.log(
         "store.state.energyTimer.timeLeft",
         store.state.energyTimer.timeLeft
       );
+      
       store.state.energyTimer.on("finished", () => {
         console.log("energy regened!");
         if (playerStats.maxEnergy > store.state.user.energy) {
