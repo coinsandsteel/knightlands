@@ -223,6 +223,11 @@ export default {
         state.user.level = data.level;
       }
 
+      if (data.stats !== undefined) {
+        console.log("User stats changed", data.stats);
+        state.user.stats = { ...state.user.stats, ...data.stats };
+      }
+
       if (data.loot !== undefined) {
         console.log("Loot received", data.loot);
         state.maze.revealed[data.loot].loot = undefined;
@@ -272,7 +277,7 @@ export default {
       }
 
       // Redirect to combat after cell was used (non-aggressive enemy)
-      if (data.combat) {
+      if (data.combat && data.combat.enemyId) {
         let enemyMeta = enemies[data.combat.enemyId];
         if (!enemyMeta.isAgressiive) {
           store.dispatch("redirectToActiveCombat");
@@ -365,6 +370,11 @@ export default {
           }
         })
       ).response;
+    },
+    async commitStats(store, stats) {
+      await this.$app.$game._wrapOperation(Operations.SDunegonCommitStats, {
+        stats
+      });
     },
     resetCombat(store) {
       store.commit("resetCombat");

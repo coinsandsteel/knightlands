@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
     <div class="hallowen-bg"></div>
+
     <Title class="margin-top-1 font-outline">
       {{ $t("char") }}
     </Title>
@@ -11,17 +12,12 @@
 
     <div class="flex flex-evenly-spaced width-100 padding-1">
       <div class="flex flex-center panel-input  margin-bottom-2">
-        <span class="font-size-25 font-outline" @click="dereaseLevel">[-]</span>
-        &nbsp;
         <span
           class="font-size-25 font-outline"
           :class="[upgradeAllowed ? 'rarity-epic' : null]"
-          @click="userLevel++"
         >
           {{ $t("level-full", { lvl: user.level }) }}
         </span>
-        &nbsp;
-        <span class="font-size-25 font-outline" @click="userLevel++">[+]</span>
       </div>
 
       <ProgressBar
@@ -40,9 +36,12 @@
     </div>
 
     <div
-      class="flex flex-center flex-evenly-spaced width-100 padding-3 font-size-22 font-outline"
+      class="flex flex-center flex-evenly-spaced width-100 padding-3 font-size-25 font-outline"
     >
-      <div class="primary-stats-wrapper stats-wrapper flex flex-center">
+      <div 
+        class="primary-stats-wrapper stats-wrapper flex flex-center"
+        :class="[upgradeAllowed ? 'upgradable' : null]"
+      >
         <div
           :key="'title_' + key"
           :class="['title_' + key, 'stat-t']"
@@ -60,7 +59,7 @@
             v-if="upgradeAllowed"
             class="width-100"
             :id="'num_value_' + key"
-            :showMax="false"
+            :showMax="true"
             :noExtra="true"
             :rowStyle="{ 'align-items': 'center' }"
             :btnStyle="{ width: '1em', height: '1em' }"
@@ -174,14 +173,19 @@ export default {
   },
   data: () => ({
     edit: true,
-    statsDelta: {},
-    userLevel: 1
+    statsDelta: {}
   }),
+  watch: {
+    "user.stats": {
+      deep: true,
+      handler() {
+        this.init();
+      }
+    }
+  },
   computed: {
     ...mapState({
-      user: function(state) {
-        return { ...state.dungeon.user, level: this.userLevel };
-      }
+      user: state => state.dungeon.user
     }),
     ...mapGetters({
       playerStats: "dungeon/playerStats",
@@ -237,18 +241,15 @@ export default {
     }
   },
   methods: {
-    dereaseLevel() {
-      if (this.userLevel > 1) {
-        this.userLevel--;
-      }
-    },
     init() {
       for (let statKey in this.primaryStats) {
         this.$set(this.statsDelta, statKey, 0);
       }
     },
-    switchLevel() {
-      this.userLevel++;
+    commit() {
+      for (let statKey in this.primaryStatsModified) {
+        this.$set(this.statsDelta, statKey, 0);
+      }
     },
     getAttributeValue(stat) {
       return this.primaryStats[stat] + (this.statsDelta[stat] || 0);
@@ -271,8 +272,7 @@ export default {
       return true;
     },
     async confirmAttributes() {
-      //await this.performRequest(this.$game.buyStats(this.statsDelta));
-      this.init();
+      await this.$store.dispatch('dungeon/commitStats', this.primaryStatsModified);
     },
     getEditedAttribute(attr) {
       return this.statsDelta[attr];
@@ -319,6 +319,10 @@ export default {
     "title_dex value_dex"
     "title_int value_int"
     "title_sta value_sta";
+}
+.primary-stats-wrapper.upgradable {
+  grid-template-columns: 50% 50%;
+  gap: 0.1rem 0;
 }
 
 .title_str {
