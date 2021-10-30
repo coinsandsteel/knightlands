@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-full flex-center flex-column">
     <div class="flex flex-center" v-if="!showSwap">
-      <EquipmentSlot class="margin-right-2" :id="user.mHand" />
-      <EquipmentSlot :id="user.oHand" />
+      <EquipmentSlot type="mainhand" class="margin-right-2" :id="user.mHand" />
+      <EquipmentSlot type="offhand" :id="user.oHand" />
     </div>
 
     <div class="flex flex-center flex-column width-100" v-else>
