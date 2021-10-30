@@ -30,15 +30,15 @@ import IconWithValue from "@/components/IconWithValue.vue";
 
 const IMAGE_BY_TYPE = {
   default: ["tile_back1", "tile_back2"],
-  way_single: "way4",
-  way_straight: "way1",
-  way_turn: "way2",
-  way_all: "way3",
-  way_triple: "way5"
+  way_single: ["way4", "way4a"],
+  way_straight: ["way1", "way1a"],
+  way_turn: ["way2", "way2a"],
+  way_all: ["way3", "way3a"],
+  way_triple: ["way5", "way5a"]
 };
 
 export default {
-  props: ["cell", "index", "mazeWidth", "highlight", "energy"],
+  props: ["cell", "index", "mazeWidth", "highlight", "energy", "random"],
   data: () => ({
     image: "",
     rotation: "",
@@ -137,6 +137,10 @@ export default {
           imageName =
             this.index % 2 ? IMAGE_BY_TYPE[t][1] : IMAGE_BY_TYPE[t][0];
         }
+      } else {
+        let r = this.random() % 100000;
+        r = r < 50000 ? 0 : 1;
+        imageName = IMAGE_BY_TYPE[t][r];
       }
 
       this.image = {

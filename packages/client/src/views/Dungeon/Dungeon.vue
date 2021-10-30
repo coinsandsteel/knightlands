@@ -38,6 +38,7 @@
 
       <ProgressBar
         :value="maze.enemiesLeft"
+        :maxValue="maze.totalEnemies"
         height="4px"
         width="90%"
         valuePosition="top"

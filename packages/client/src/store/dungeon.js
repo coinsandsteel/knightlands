@@ -34,6 +34,7 @@ export default {
       width: 0,
       height: 0,
       enemiesLeft: 0,
+      totalEnemies: 0,
       startTime: 0
     },
     user: {
