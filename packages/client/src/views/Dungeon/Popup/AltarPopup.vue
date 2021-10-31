@@ -7,19 +7,42 @@
             font-size-30
             rarity-rare
             font-outline
-            margin-bottom-1
+            margin-bottom-2
             capitalize
           "
         >
           You've found <span class="rarity-rare">an altar</span>!
         </div>
-        <p class="description font-size-22">
-          Nice! You recieved
-          <span :class="[{[types.Energy]: 'energy-hallowen', [types.Health]: 'icon-health'}[altar.type]]"></span>&nbsp;
-          <span :class="[{[types.Energy]: 'color-energy', [types.Health]: 'color-hp'}[altar.type]]">
-            {{ altar.restoreValue }}&nbsp;{{ $t({[types.Energy]: 'energy', [types.Health]: 'health'}[altar.type]) }}
-          </span>.
-        </p>
+        <div class="description font-size-22 flex flex-center">
+          Nice! You will recieve
+          <IconWithValue class="margin-left-1" :iconClass="icon">{{
+            altar.restoreValue
+          }}</IconWithValue>
+          <!-- <span
+            :class="[
+              {
+                [types.Energy]: 'h-energy',
+                [types.Health]: 'icon-health'
+              }[altar.type]
+            ]"
+          ></span
+          >&nbsp;
+          <span
+            :class="[
+              { [types.Energy]: 'color-energy', [types.Health]: 'color-hp' }[
+                altar.type
+              ]
+            ]"
+          >
+            {{ altar.restoreValue }}&nbsp;{{
+              $t(
+                { [types.Energy]: "energy", [types.Health]: "health" }[
+                  altar.type
+                ]
+              )
+            }} </span
+          >. -->
+        </div>
         <img :src="altarImage" alt="" class="popup-img" />
       </div>
     </template>
@@ -27,7 +50,14 @@
     <template v-slot:footer>
       <div class="flex width-100 flex-evenly-spaced">
         <CustomButton width="30%" type="green" @click="$close(true)">
-          {{ $t('btn-continue') }}
+          {{ $t("btn-use") }}
+          <IconWithValue class="margin-left-1" iconClass="h-energy">{{
+            energy
+          }}</IconWithValue>
+        </CustomButton>
+
+        <CustomButton width="30%" type="red" @click="$close(false)">
+          {{ $t("btn-cancel") }}
         </CustomButton>
       </div>
     </template>
@@ -38,20 +68,32 @@
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import altars from "@/metadata/halloween/dungeon_altars.json";
+import meta from "@/metadata/halloween/dungeon_meta";
 import { AltarType } from "@/../../knightlands-shared/dungeon_types";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   props: ["altarId"],
-  components: { UserDialog, CustomButton },
+  components: { UserDialog, CustomButton, IconWithValue },
   data: () => ({
     types: AltarType
   }),
   computed: {
+    energy() {
+      return meta.costs.altar;
+    },
     altar() {
       return altars[this.altarId];
     },
     altarImage() {
       return `/images/halloween_assets/${this.altar.image}.png`;
+    },
+    icon() {
+      if (this.altar.type == AltarType.Energy) {
+        return "h-energy";
+      } else {
+        return "icon-health";
+      }
     }
   }
 };
@@ -70,7 +112,7 @@ export default {
   justify-content: space-evenly;
 }
 .color-energy {
-  color: rgb(165 230 118);
+  color: rgb(165, 230, 118);
 }
 .color-hp {
   color: #f44a64;

@@ -4,9 +4,7 @@ import enemies from "@/metadata/halloween/dungeon_enemies.json";
 import progression from "@/metadata/halloween/dungeon_progression.json";
 
 import Operations from "@/../../knightlands-shared/operations";
-import {
-  CombatAction
-} from "@/../../knightlands-shared/dungeon_types";
+import { CombatAction } from "@/../../knightlands-shared/dungeon_types";
 import timer from "../timer";
 import Vue from "vue";
 
@@ -78,8 +76,10 @@ export default {
         ),
         maxHealth,
         maxEnergy,
-        energyRegen: 86400 / (10 + 1.01 * stats.sta + 1.01 * stats.int) / maxEnergy,
-        hpRegen: 86400 /
+        energyRegen:
+          86400 / (10 + 1.01 * stats.sta + 1.01 * stats.int) / maxEnergy,
+        hpRegen:
+          86400 /
           (20 + 1.01 * stats.dex + 1.01 * stats.sta + 1.01 * stats.str) /
           maxHealth
       };
@@ -237,9 +237,9 @@ export default {
         console.log("Health and energy regen", data.regen);
         state.user.lastHpRegen = data.regen.hp || state.user.lastHpRegen;
         state.user.lastEnergyRegen =
-        data.regen.energy || state.user.lastEnergyRegen;
+          data.regen.energy || state.user.lastEnergyRegen;
       }
-      
+
       if (data.equip) {
         console.log("User was equiped", data.equip);
         state.user.mHand = data.equip.mHand;
@@ -267,6 +267,15 @@ export default {
     },
     update(store, data) {
       store.commit("updateState", data);
+
+      if (data.jammed !== undefined) {
+        const cell = store.state.maze.revealed[data.jammed];
+        const trapId = cell.trap.id;
+        this.$app.$emit("trap_jammed", {
+          trap: trapId
+        });
+        cell.trap = undefined;
+      }
 
       // Do not redirect to combat after cell was revealed (aggressive enemy)
       if (data.cell && data.cell.length === 1 && data.cell[0].enemy) {
@@ -325,15 +334,14 @@ export default {
         "store.state.energyTimer.timeLeft",
         store.state.energyTimer.timeLeft
       );
-      
+
       store.state.energyTimer.on("finished", () => {
         console.log("energy regened!");
         if (playerStats.maxEnergy > store.state.user.energy) {
           console.log("add energy!");
           store.commit("addEnergy", 1);
         }
-        store.state.energyTimer.timeLeft =
-          playerStats.energyRegen;
+        store.state.energyTimer.timeLeft = playerStats.energyRegen;
       });
     },
     async load(store) {
@@ -391,9 +399,7 @@ export default {
       });
       store.commit("useItem", item);
     },
-    updateRegenTimers({
-      state
-    }) {
+    updateRegenTimers({ state }) {
       state.hpTimer.timeLeft = this.$app.$game.nowSec - state.user.lastHpRegen;
       state.energyTimer.timeLeft =
         this.$app.$game.nowSec - state.user.lastEnergyRegen;

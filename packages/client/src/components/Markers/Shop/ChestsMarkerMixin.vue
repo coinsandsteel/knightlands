@@ -1,7 +1,12 @@
 <script>
-import ChestsMeta from "@/chests_meta";
+import ChestsMeta from "@/metadata/chests_meta";
 
-const ChestNames = ["wooden_chest", "silver_chest", "velvet_chest"];
+const ChestNames = [
+  "wooden_chest",
+  "silver_chest",
+  "velvet_chest",
+  "halloween_chest"
+];
 
 export default {
   computed: {

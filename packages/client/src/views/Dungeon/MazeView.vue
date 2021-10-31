@@ -32,6 +32,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import EnemyPopup from "./Popup/EnemyPopup.vue";
 import AltarPopup from "./Popup/AltarPopup.vue";
 import TrapPopup from "./Popup/TrapPopup.vue";
+import TrapJammedPopup from "./Popup/TrapJammedPopup.vue";
 import LootPopup from "./Popup/LootPopup.vue";
 import ExitPopup from "./Popup/ExitPopup.vue";
 import { create } from "vue-modal-dialogs";
@@ -41,6 +42,7 @@ const ShowAltarPopup = create(AltarPopup, "altarId");
 const ShowTrapPopup = create(TrapPopup, "trapId");
 const ShowLootPopup = create(LootPopup, "lootId");
 const ShowExitPopup = create(ExitPopup);
+const ShowTrapJammed = create(TrapJammedPopup);
 
 function xmur3(str) {
   for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
@@ -105,6 +107,7 @@ export default {
       "aggressive_enemy_encountered",
       this.handleAggressiveEnemy
     );
+    this.$store.$app.$on("trap_jammed", this.handleJammedTrap);
   },
   activated() {
     this.scrollToPlayer();
@@ -112,6 +115,7 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this._resize);
     this.$store.$app.$off("aggressive_enemy_encountered");
+    this.$store.$app.$off("trap_jammed");
   },
   data: () => ({
     energyEstimation: {},
@@ -321,6 +325,11 @@ export default {
     async handleAggressiveEnemy(payload) {
       await ShowEnemyPopup(payload.id, payload.health);
       this.$store.dispatch("dungeon/redirectToActiveCombat");
+    },
+    async handleJammedTrap(payload) {
+      await ShowTrapJammed({
+        trapId: payload.trap
+      });
     },
     async confirmMovement(cell) {
       this.energyEstimation = {};

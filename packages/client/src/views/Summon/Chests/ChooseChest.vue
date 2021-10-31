@@ -21,11 +21,16 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import ChestsMeta from "@/chests_meta";
+import ChestsMeta from "@/metadata/chests_meta";
 import ChestElement from "./ChestElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
-const ChestNames = ["wooden_chest", "silver_chest", "velvet_chest"];
+const ChestNames = [
+  "wooden_chest",
+  "silver_chest",
+  "velvet_chest",
+  "halloween_chest"
+];
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],

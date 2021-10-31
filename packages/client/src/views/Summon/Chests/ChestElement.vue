@@ -177,4 +177,8 @@ export default {
 .velvet_chest {
   .chest-icon("chest_large");
 }
+
+.halloween_chest {
+  .chest-icon("halloween_chest");
+}
 </style>
