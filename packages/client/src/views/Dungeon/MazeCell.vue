@@ -8,9 +8,12 @@
 
     <div class="absolute-stretch img flex flex-center" :style="objectImage">
       <CustomButton type="green" @click.stop="confirm" v-if="energy">
-        <IconWithValue iconClass="h-energy" :flip="true">{{
-          $t("p-move", { v: energy })
-        }}</IconWithValue>
+        <IconWithValue
+          iconClass="h-energy"
+          valueClass="nowrap font-size-18"
+          :flip="true"
+          >{{ $t("p-move", { v: energy }) }}</IconWithValue
+        >
       </CustomButton>
     </div>
     <div
