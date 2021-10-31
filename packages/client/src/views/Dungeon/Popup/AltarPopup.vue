@@ -11,10 +11,10 @@
             capitalize
           "
         >
-          You've found <span class="rarity-rare">an altar</span>!
+          {{ $t('you-found') }} <span class="rarity-rare">{{ $t('altar') }}</span>!
         </div>
         <div class="description font-size-22 flex flex-center">
-          Nice! You will recieve
+          {{ $t('you-receive') }}
           <IconWithValue class="margin-left-1" :iconClass="icon">{{
             altar.restoreValue
           }}</IconWithValue>

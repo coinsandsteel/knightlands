@@ -10,20 +10,20 @@
             margin-bottom-1
           "
         >
-          Oh no! You've got caught in
-          <span class="rarity-mythical">a trap</span>!
+          {{ $t('you-caught') }}
+          <span class="rarity-mythical">{{ $t('trap') }}</span>!
         </div>
         <p class="description font-size-25">
-          You can try to break the trap open for
+          {{ $t('try-to-break') }}
           <span class="energy-hallowen"></span>&nbsp;<span class="color-en"
-            >{{ energyCost }}&nbsp;Energy</span
+            >{{ energyCost }}&nbsp;{{ $t("energy") }}</span
           >
-          with certain chance of success.<br />
-          Or you can use <span class="key-halloween"></span>&nbsp;<span
+          {{ $t('certain-chance') }}.<br />
+          {{ $t('you-can-use') }} <span class="key-halloween"></span>&nbsp;<span
             class="rarity-epic"
-            >Trap&nbsp;Key</span
+            >{{ $t('trap-key') }}</span
           >
-          to release immideately.
+          {{ $t('release-immediately') }}.
         </p>
         <img :src="trapImage" alt="" class="popup-img" />
       </div>
@@ -34,7 +34,7 @@
         <div class="asset-lot font-size-20">
           <span class="key-halloween"></span>
           &nbsp;
-          <span class="rarity-epic">1x Trap Key</span>
+          <span class="rarity-epic">1x {{ $t('trap-key') }}</span>
         </div>
         <div class="asset-lot font-size-20">
           <span class="energy-hallowen"></span>
@@ -49,10 +49,10 @@
           @click="$close('open')"
           :disabled="user.key <= 0"
         >
-          Release
+          {{ $t("release") }}
         </CustomButton>
         <CustomButton width="30%" type="yellow" @click="$close('break')">
-          Break Trap
+          {{ $t("break-trap") }}
         </CustomButton>
       </div>
     </template>

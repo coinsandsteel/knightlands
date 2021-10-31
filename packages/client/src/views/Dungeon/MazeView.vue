@@ -33,14 +33,14 @@ import EnemyPopup from "./Popup/EnemyPopup.vue";
 import AltarPopup from "./Popup/AltarPopup.vue";
 import TrapPopup from "./Popup/TrapPopup.vue";
 import TrapJammedPopup from "./Popup/TrapJammedPopup.vue";
-import LootPopup from "./Popup/LootPopup.vue";
+import LootReceivedPopup from "./Popup/LootReceivedPopup.vue";
 import ExitPopup from "./Popup/ExitPopup.vue";
 import { create } from "vue-modal-dialogs";
 
 const ShowEnemyPopup = create(EnemyPopup, "enemyId", "enemyCurrentHealth");
 const ShowAltarPopup = create(AltarPopup, "altarId");
 const ShowTrapPopup = create(TrapPopup, "trapId");
-const ShowLootPopup = create(LootPopup, "lootId");
+const ShowLootReceivedPopup = create(LootReceivedPopup, "loot");
 const ShowExitPopup = create(ExitPopup);
 const ShowTrapJammed = create(TrapJammedPopup);
 
@@ -100,7 +100,7 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     this._resize = this.init.bind(this);
     window.addEventListener("resize", this._resize);
     this.$store.$app.$on(
@@ -220,7 +220,6 @@ export default {
       return cellIdx == this.user.cell;
     },
     async handleCellClick(cell) {
-      console.log("clicik");
       let index = cell.index;
       const forceTrapInteraction =
         this.userCell.trap && index !== this.user.cell;
@@ -279,6 +278,8 @@ export default {
           let responseType = "loot";
           let cmdResponse;
 
+          console.log('Cell click', _.clone(cell));
+
           if (cell.enemy) {
             response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
           } else if (cell.altar) {
@@ -286,7 +287,7 @@ export default {
           } else if (cell.trap) {
             response = await ShowTrapPopup(cell.trap.id);
           } else if (cell.loot) {
-            response = await ShowLootPopup(cell.loot);
+            response = true;
           } else if (cell.exit) {
             response = await ShowExitPopup();
             responseType = "exit";
@@ -310,6 +311,8 @@ export default {
 
           if (cmdResponse) {
             if (responseType == "loot") {
+              console.log('Loot cmd response', cmdResponse);
+              await ShowLootReceivedPopup(cmdResponse);
               this.$store.commit("dungeon/updateLoot", cmdResponse);
             } else if (responseType == "exit") {
               this.$app.logEvent("dungeon-floor", { floor: this.maze.floor });

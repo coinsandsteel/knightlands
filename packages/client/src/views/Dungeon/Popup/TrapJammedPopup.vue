@@ -3,7 +3,7 @@
     <template v-slot:content>
       <div class="flex flex-column flex-center flex-start">
         <p class="description font-size-25">
-          Trap jammed! It's not dangerous anymore.
+          {{ $t('trap-jammed') }}
         </p>
         <img :src="trapImage" alt="" class="popup-img" />
       </div>

@@ -2,14 +2,14 @@
   <UserDialog :title="$t('d-exit-t')" class="font-size-22" @close="$close">
     <template v-slot:content>
       <div v-if="maze.enemiesLeft">
-        <span>Defeat all the enemies to leave to the next floor!</span>
+        <span>{{ $t('defeat-to-leave') }}</span>
       </div>
       <div v-else-if="canLeave">
-        <span>You have completed floor 1 and now ready to go deeper...</span>
+        <span>{{ $t('go-deeper') }}</span>
       </div>
       <div v-else>
         <div class="margin-left-2 flex flex-center">
-          Until next floor:
+          {{ $t('until-next-floor') }}:
           {{ timer.value }}
         </div>
       </div>
