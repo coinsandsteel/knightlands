@@ -52,11 +52,13 @@
           :class="valueClass"
           v-if="!hideValues && !isTop"
         >
-          <slot name="label"></slot>
-          <div v-show="showValue">{{ currentValue }}</div>
-          <div v-show="!showValue" class="status-bar-font flex flex-center">
-            <div class="icon-timer small"></div>
-            <span>{{ timerValue.value }}</span>
+          <div class="flex flex-center" :class="labelClass">
+            <slot name="label"></slot>
+            <div v-show="showValue">{{ currentValue }}</div>
+            <div v-show="!showValue" class="status-bar-font flex flex-center">
+              <div class="icon-timer small"></div>
+              <span>{{ timerValue.value }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -106,7 +108,8 @@ export default {
     expand: {
       type: Boolean,
       default: true
-    }
+    },
+    labelClass: { type: String }
   },
   data() {
     return {
@@ -404,5 +407,9 @@ export default {
 
 .icon {
   position: relative;
+}
+.label-panel {
+  padding: 0.1em 0.4em;
+  background: rgba(0, 0, 0, 0.25);
 }
 </style>
