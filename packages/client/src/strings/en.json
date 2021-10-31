@@ -1005,7 +1005,6 @@
   "fire_turtle": "fire turtle",
   "fire_volcanic_golem": "volcanic golem",
   "floor": "Floor {val}",
-  "depth": "Depth: {val}",
   "forest_catermoth": "Catermoth",
   "forest_deer": "Deer",
   "forest_fairy_dragon_xinbal": "Fairy Dragon Xinbal",
@@ -1955,6 +1954,9 @@
   "rare-whip": "Rare Mace",
   "rattlesnake": "rattlesnake",
   "reaper": "reaper",
+  "rebalance": "Rebalance",
+  "rebalance-confirm-h": "Rebalance",
+  "rebalance-confirm-t": "Are you sure you want to completely rebalance your stats for <span class=\"h-energy\"></span>&nbsp;{energy}&nbsp;energy?",
   "reduceDamageAgainstPvp": null,
   "reduceDamageAgainstRaidName": null,
   "reduceDamageAgainstRaidStage": "Reduce damage against {raidStage} raids.",
@@ -2499,10 +2501,5 @@
   "your-reward": "Reward:",
   "your-score": "Score:",
   "zalaras": "zalaras",
-  "zombie_lord": "zombielord",
-  "health-reg": "Health regen",
-  "energy-reg": "Energy regen",
-  "dl-no-use": "Nothing to reveal",
-  "dl-no-use-d": "Stand close to hidden rooms to reveal them using scroll",
-  "d-upg": "Purchase full pass"
+  "zombie_lord": "zombielord"
 }
