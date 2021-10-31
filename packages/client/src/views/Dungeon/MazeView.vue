@@ -249,7 +249,7 @@ export default {
         return;
       }
 
-      if (targetCell.trap) {
+      if (targetCell.trap && this.user.invis <= 0) {
         this.interactWithCell(index, this.indexToCellIndex[index]);
       }
 
