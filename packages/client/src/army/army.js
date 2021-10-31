@@ -100,10 +100,11 @@ export default class Army {
       }
     }
 
+    units[unit.id] = unit;
+
     this._updateUnitEquipment(unit);
     const result = this._armyResolver.estimateDamage(
       units,
-      unit,
       this._unitsIndex,
       this._character.maxStats
     );

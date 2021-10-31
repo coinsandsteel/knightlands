@@ -31,7 +31,8 @@ export default {
   width: 3rem;
   height: 3rem;
   position: absolute;
-  top: 0;
-  transform: translateY(50%) translateX(50%);
+  left: 50%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%);
 }
 </style>

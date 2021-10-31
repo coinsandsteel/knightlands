@@ -57,6 +57,10 @@ export default {
       type: DailyTaskType.DailyAllTasks
     };
     this.timer.timeLeft = PERIOD - (this.$game.nowSec % PERIOD);
+    this.timer.on("finished", this.reload.bind(this));
+  },
+  destroyed() {
+    this.timer.destroy();
   },
   computed: {
     meta() {
@@ -110,6 +114,11 @@ export default {
     }
   },
   methods: {
+    reload() {
+      this.timer.timeLeft = PERIOD - ((this.$game.nowSec + 1) % PERIOD);
+      this.$game.dailyQuests.taskProgress = {};
+      this.$game.dailyQuests.claimedTasks = {};
+    },
     isFinished(task) {
       const progress = this.$game.dailyQuests.taskProgress[task.type] || 0;
       return task.targetValue <= progress;

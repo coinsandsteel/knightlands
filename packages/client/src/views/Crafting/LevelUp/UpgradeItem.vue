@@ -225,6 +225,9 @@ export default {
     upgradeMaterials: []
   }),
   watch: {
+    newItemId() {
+      this.handleInventoryChanged();
+    },
     itemId() {
       this.init();
     }

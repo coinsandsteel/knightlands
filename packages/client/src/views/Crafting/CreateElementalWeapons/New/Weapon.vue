@@ -41,7 +41,9 @@
       </div>
     </div>
 
-    <div class="width-100 flex flex-space-evenly margin-top-3">
+    <div
+      class="width-100 flex flex-space-evenly flex-items-center margin-top-3"
+    >
       <ItemPicker
         :item="selectedItemId"
         @select="selectItem"
@@ -104,6 +106,7 @@ import Rarity from "@/../../knightlands-shared/rarity";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ItemPicker from "../../ItemPicker.vue";
 import AshTag from "@/components/AshTag.vue";
+import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 
 import ItemCreatedPopup from "../../Create/ItemCreatedPopup.vue";
 import { create } from "vue-modal-dialogs";
@@ -111,7 +114,7 @@ import { create } from "vue-modal-dialogs";
 const ShowItemCreated = create(ItemCreatedPopup, "item", "amount");
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [AppSection, NetworkRequestErrorMixin, InventoryListenerMixin],
   components: {
     AshTag,
     SoundEffect,
@@ -199,6 +202,11 @@ export default {
     }
   },
   methods: {
+    handleInventoryChanged() {
+      if (this.item && !this.$game.inventory.hasItem(this.item.id, 1)) {
+        this.item = null;
+      }
+    },
     async craft() {
       const { item } = await this.performRequest(
         this.$game.createWeapon(
