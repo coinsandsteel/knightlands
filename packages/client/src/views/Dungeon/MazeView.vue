@@ -278,7 +278,7 @@ export default {
           let responseType = "loot";
           let cmdResponse;
 
-          console.log('Cell click', _.clone(cell));
+          console.log("Cell click", _.clone(cell));
 
           if (cell.enemy) {
             response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
@@ -311,7 +311,13 @@ export default {
 
           if (cmdResponse) {
             if (responseType == "loot") {
-              console.log('Loot cmd response', cmdResponse);
+              console.log("Loot cmd response", cmdResponse);
+              if (cmdResponse.items) {
+                this.$app.logEvent("dungeon-items", {
+                  items: cmdResponse.items
+                });
+              }
+
               await ShowLootReceivedPopup(cmdResponse);
               this.$store.commit("dungeon/updateLoot", cmdResponse);
             } else if (responseType == "exit") {

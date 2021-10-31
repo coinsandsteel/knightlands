@@ -162,7 +162,7 @@ export default {
       // energyChanged
       if (data.energy !== undefined) {
         console.log("User energy", data.energy);
-        this.$app.logEvent("dungeon-player-energy", {
+        Vue.prototype.$app.logEvent("dungeon-player-energy", {
           energy: Math.abs(data.energy - state.user.energy)
         });
         state.user.energy = data.energy;

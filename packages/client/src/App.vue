@@ -267,9 +267,6 @@ export default {
 
     this.firebase = initializeApp(firebaseConfig);
     this.analytics = getAnalytics(this.firebase);
-    this.logEvent = (name, params) => {
-      logEvent(this.analytics, name, params);
-    };
   },
   async created() {
     Vue.prototype.$app = this;
@@ -393,6 +390,9 @@ export default {
     });
   },
   methods: {
+    logEvent(name, params) {
+      logEvent(this.analytics, name, params);
+    },
     async joinRaceChannel() {
       await this.$store.dispatch("rankings/update");
       if (this.$store.state.rankings.currentRace) {
