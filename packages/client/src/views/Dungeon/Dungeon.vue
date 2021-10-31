@@ -136,6 +136,9 @@ export default {
   data: () => ({
     thresholds: UiConstants.progressThresholds
   }),
+  activated() {
+    this.$store.dispatch("dungeon/redirectToActiveCombat");
+  },
   created() {
     this.title = "w-simple-dun";
     this.$options.useRouterBack = true;
