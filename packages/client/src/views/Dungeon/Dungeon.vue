@@ -5,7 +5,7 @@
       {{ $t("depth", { val: maze.floor }) }}
     </Title>
 
-    <div class="flex flex-center panel-input padding-1">
+    <!-- <div class="flex flex-center panel-input padding-1">
       <CustomButton type="yellow" @click="resetDungeon"
         >Reset dungeon</CustomButton
       >
@@ -16,7 +16,7 @@
       <CustomButton @click="nextFloor" v-if="!maze.enemiesLeft" type="yellow"
         >Next floor</CustomButton
       >
-    </div>
+    </div> -->
 
     <div class="width-100 margin-bottom-2 stat-panel">
       <ProgressBar

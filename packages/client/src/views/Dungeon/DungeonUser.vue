@@ -155,7 +155,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import ItemInfo from "@/components/ItemInfo.vue";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
 import NumericValue from "@/components/NumericValue.vue";
-import DungeonEquipment from "@/views/Dungeon/Equipment/Equipment.vue";
+import DungeonEquipment from "@/views/Dungeon/Inventory/Equipment.vue";
 
 export default {
   mixins: [AppSection],

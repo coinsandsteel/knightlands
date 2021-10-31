@@ -50,13 +50,22 @@
           class="minor-loot-section flex flex-center width-100 margin-bottom-2"
           v-if="loot.key || loot.potion || loot.scroll"
         >
-          <IconWithValue valueClass="font-size-20" iconClass="hpotion big"
+          <IconWithValue
+            valueClass="font-size-20"
+            v-if="loot.key"
+            iconClass="hpotion huge"
             >{{ loot.key }}x</IconWithValue
           >
-          <IconWithValue valueClass="font-size-20" iconClass="hscroll big"
+          <IconWithValue
+            valueClass="font-size-20"
+            v-if="loot.potion"
+            iconClass="hscroll huge"
             >{{ loot.potion }}x</IconWithValue
           >
-          <IconWithValue valueClass="font-size-20" iconClass="hkey big"
+          <IconWithValue
+            valueClass="font-size-20"
+            v-if="loot.scroll"
+            iconClass="hkey huge"
             >{{ loot.scroll }}x</IconWithValue
           >
         </div>
@@ -75,7 +84,7 @@
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
-import EquipmentSlot from "../Equipment/EquipmentSlot.vue";
+import EquipmentSlot from "../Inventory/EquipmentSlot.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {

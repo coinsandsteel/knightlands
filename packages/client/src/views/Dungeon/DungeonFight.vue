@@ -131,7 +131,7 @@ import CustomButton from "@/components/Button.vue";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
-import Equipment from "./Equipment/Equipment.vue";
+import Equipment from "./Inventory/Equipment.vue";
 import { MoveType } from "@/../../knightlands-shared/dungeon_types";
 
 import anime from "animejs/lib/anime.es.js";

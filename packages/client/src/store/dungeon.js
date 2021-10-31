@@ -148,7 +148,7 @@ export default {
       }
 
       if (loot.equip) {
-        state.user.equip = loot.equip;
+        state.user.equip.push(...loot.equip);
       }
     },
     updateState(state, data) {
@@ -281,9 +281,8 @@ export default {
 
       if (data.jammed !== undefined) {
         const cell = store.state.maze.revealed[data.jammed];
-        const trapId = cell.trap.id;
         this.$app.$emit("trap_jammed", {
-          trap: trapId
+          trap: 1
         });
         cell.trap = undefined;
       }
