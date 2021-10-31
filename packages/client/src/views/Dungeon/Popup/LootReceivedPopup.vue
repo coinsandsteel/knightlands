@@ -32,6 +32,7 @@
             :key="'item_' + item.item"
             :item="item.item"
             :quantity="item.quantity"
+            @hint="handleHint"
           />
         </div>
 
@@ -86,8 +87,10 @@ import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import EquipmentSlot from "../Inventory/EquipmentSlot.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import HintHandler from "@/components/HintHandler.vue";
 
 export default {
+  mixins: [HintHandler],
   props: ["loot"],
   components: { UserDialog, CustomButton, Loot, EquipmentSlot, IconWithValue },
   computed: {},

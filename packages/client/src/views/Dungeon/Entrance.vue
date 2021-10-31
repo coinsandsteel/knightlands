@@ -32,17 +32,27 @@
             </CustomButton>
           </div>
 
-          <div
-            v-if="notEntered"
-            class="margin-top-4 flex flex-center flex-column color-panel-1"
-          >
+          <div class="margin-top-4 flex flex-center flex-column color-panel-1">
             <span class="font-size-22 margin-bottom-1"
               >Enter for free without an access to USDC prize pool and full
               rewards.</span
             >
 
-            <CustomButton type="yellow" minWidth="20rem" @click="enterFree">
+            <CustomButton
+              v-if="notEntered"
+              type="yellow"
+              minWidth="20rem"
+              @click="enterFree"
+            >
               Free
+            </CustomButton>
+            <CustomButton
+              v-else
+              type="yellow"
+              minWidth="20rem"
+              @click="continueForFree"
+            >
+              Continue for free
             </CustomButton>
           </div>
         </PaymentStatus>
@@ -100,6 +110,9 @@ export default {
     }
   },
   methods: {
+    continueForFree() {
+      this.$router.replace({ name: "dungeon" });
+    },
     async fetchPaymentStatus() {
       this.status = await this.performRequest(
         this.$store.dispatch("dungeon/enter", { status: true })
