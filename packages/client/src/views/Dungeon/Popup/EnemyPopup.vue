@@ -54,9 +54,10 @@
           @click="$close(false)"
           >{{ $t("run-away") }}</CustomButton
         >
-        <CustomButton width="30%" type="red" @click="$close(true)">{{
-          $t("fight-it")
-        }}</CustomButton>
+        <CustomButton width="30%" type="red" @click="$close(true)">
+          {{ $t("fight-it") }}
+          <IconWithValue iconClass="h-energy">{{ energy }}</IconWithValue>
+        </CustomButton>
       </div>
     </template>
   </UserDialog>
@@ -68,6 +69,7 @@ import CustomButton from "@/components/Button.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import enemies from "@/metadata/halloween/dungeon_enemies.json";
+import meta from "@/metadata/halloween/dungeon_meta.json";
 
 export default {
   props: ["enemyId", "enemyCurrentHealth"],
@@ -78,6 +80,9 @@ export default {
     },
     enemyImage() {
       return `/images/enemies/${this.enemy.image}.png`;
+    },
+    energy() {
+      return meta.costs.enemy * this.enemy.difficulty;
     }
   }
 };
