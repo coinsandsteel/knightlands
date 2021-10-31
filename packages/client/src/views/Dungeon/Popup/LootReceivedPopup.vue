@@ -50,13 +50,13 @@
           class="minor-loot-section flex flex-center width-100 margin-bottom-2"
           v-if="loot.key || loot.potion || loot.scroll"
         >
-          <IconWithValue valueClass="font-size-20" iconClass="hpotion big"
+          <IconWithValue valueClass="font-size-20" iconClass="hkey big"
             >{{ loot.key }}x</IconWithValue
           >
-          <IconWithValue valueClass="font-size-20" iconClass="hscroll big"
+          <IconWithValue valueClass="font-size-20" iconClass="hpotion big"
             >{{ loot.potion }}x</IconWithValue
           >
-          <IconWithValue valueClass="font-size-20" iconClass="hkey big"
+          <IconWithValue valueClass="font-size-20" iconClass="hscroll big"
             >{{ loot.scroll }}x</IconWithValue
           >
         </div>
