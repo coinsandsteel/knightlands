@@ -2,145 +2,158 @@
   <div class="screen-content flex-items-center full-flex">
     <div class="hallowen-bg"></div>
 
-    <Title class="margin-top-1 font-outline">
-      {{ $t("char") }}
-    </Title>
+    <div class="width-100" v-bar>
+      <div class="screen-content">
+        <Title class="margin-top-1 font-outline">
+          {{ $t("char") }}
+        </Title>
 
-    <div class="flex flex-center flex-column width-100 margin-top-2">
-      <Avatar :preview="true" />
-      <CustomButton
-        type="green"
-        class="margin-top-1"
-        v-if="isFree"
-        @click="goToEntrance"
-        >{{ $t("d-upg") }}</CustomButton
-      >
-    </div>
+        <div class="flex flex-center flex-column width-100 margin-top-2">
+          <Avatar :preview="true" />
+          <CustomButton
+            type="green"
+            class="margin-top-1"
+            v-if="isFree"
+            @click="goToEntrance"
+            >{{ $t("d-upg") }}</CustomButton
+          >
+        </div>
 
-    <div class="flex flex-evenly-spaced width-100 padding-1">
-      <div class="flex flex-center panel-input  margin-bottom-2">
-        <span
-          class="font-size-25 font-outline"
-          :class="[upgradeAllowed ? 'rarity-epic' : null]"
-        >
-          {{ $t("level-full", { lvl: user.level }) }}
-        </span>
-      </div>
+        <div class="flex flex-evenly-spaced width-100 padding-1">
+          <div class="flex flex-center panel-input  margin-bottom-2">
+            <span
+              class="font-size-25 font-outline"
+              :class="[upgradeAllowed ? 'rarity-epic' : null]"
+            >
+              {{ $t("level-full", { lvl: user.level }) }}
+            </span>
+          </div>
 
-      <ProgressBar
-        :value="user.exp"
-        :maxValue="nextExp"
-        height="3em"
-        width="85%"
-        valuePosition="bottom"
-        barType="grey"
-        labelClass="label-panel"
-        valueClass="white-font font-outline-heavy font-size-20"
-        class="margin-bottom-1"
-      >
-        <template v-slot:label><span class="icon-exp"></span></template>
-      </ProgressBar>
-    </div>
+          <ProgressBar
+            :value="user.exp"
+            :maxValue="nextExp"
+            height="3em"
+            width="85%"
+            valuePosition="bottom"
+            barType="grey"
+            labelClass="label-panel"
+            valueClass="white-font font-outline-heavy font-size-20"
+            class="margin-bottom-1"
+          >
+            <template v-slot:label><span class="icon-exp"></span></template>
+          </ProgressBar>
+        </div>
 
-    <div
-      class="flex flex-center flex-evenly-spaced width-100 color-panel-1 font-size-25 font-outline"
-    >
-      <div
-        class="primary-stats-wrapper stats-wrapper flex flex-center"
-        :class="[upgradeAllowed ? 'upgradable' : null]"
-      >
         <div
-          :key="'title_' + key"
-          :class="['title_' + key, 'stat-t']"
-          v-for="(value, key) in primaryStats"
+          class="flex flex-center flex-evenly-spaced width-100 color-panel-1 font-size-25 font-outline"
         >
-          {{ $t(key) }}:
+          <div
+            class="primary-stats-wrapper stats-wrapper flex flex-center"
+            :class="[upgradeAllowed ? 'upgradable' : null]"
+          >
+            <div
+              :key="'title_' + key"
+              :class="['title_' + key, 'stat-t']"
+              v-for="(value, key) in primaryStats"
+            >
+              {{ $t(key) }}:
+            </div>
+            <div
+              :key="'value_' + key"
+              class="stat-v enemy-title-font"
+              :class="['value_' + key]"
+              v-for="(value, key) in primaryStats"
+            >
+              <NumericValue
+                v-if="upgradeAllowed"
+                class="width-100"
+                :id="'num_value_' + key"
+                :showMax="true"
+                :noExtra="true"
+                :rowStyle="{ 'align-items': 'center' }"
+                :btnStyle="{ width: '1em', height: '1em' }"
+                :value="getStatValue(key)"
+                :maxValue="getMaxStatValue(key)"
+                :decreaseCondition="canDecrease(key)"
+                :increaseCondition="canIncrease"
+                @inc="increaseAttribute(key)"
+                @dec="decreaseAttribute(key)"
+                @reset="reset(key)"
+              />
+              <span v-else>{{ value }}</span>
+            </div>
+          </div>
+
+          <div class="stats-wrapper flex flex-center">
+            <div class="flex flex-column title-column">
+              <div class="stat-t">{{ $t("health") }}</div>
+              <div class="stat-t">{{ $t("health-reg") }}</div>
+              <div class="stat-t">{{ $t("energy") }}</div>
+              <div class="stat-t">{{ $t("energy-reg") }}</div>
+            </div>
+            <div class="flex flex-column value-column">
+              <div
+                class="stat-v enemy-title-font"
+                :class="[
+                  secondaryStatsWereModifiedMap['maxHealth']
+                    ? 'rarity-epic'
+                    : null
+                ]"
+              >
+                {{ secondaryStats.maxHealth }}
+              </div>
+              <div
+                class="stat-v enemy-title-font"
+                :class="[
+                  secondaryStatsWereModifiedMap['hpRegen']
+                    ? 'rarity-epic'
+                    : null
+                ]"
+              >
+                {{ secondaryStats.hpRegen }}&nbsp;/&nbsp;hr
+              </div>
+              <div
+                class="stat-v enemy-title-font"
+                :class="[
+                  secondaryStatsWereModifiedMap['maxEnergy']
+                    ? 'rarity-epic'
+                    : null
+                ]"
+              >
+                {{ secondaryStats.maxEnergy }}
+              </div>
+              <div
+                class="stat-v enemy-title-font"
+                :class="[
+                  secondaryStatsWereModifiedMap['energyRegen']
+                    ? 'rarity-epic'
+                    : null
+                ]"
+              >
+                {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr
+              </div>
+            </div>
+          </div>
         </div>
+
         <div
-          :key="'value_' + key"
-          class="stat-v enemy-title-font"
-          :class="['value_' + key]"
-          v-for="(value, key) in primaryStats"
+          v-show="attributesModified"
+          class="stat-commit flex flex-center width-100 margin-top-2 flex-evenly-spaced margin-bottom-3"
         >
-          <NumericValue
-            v-if="upgradeAllowed"
-            class="width-100"
-            :id="'num_value_' + key"
-            :showMax="true"
-            :noExtra="true"
-            :rowStyle="{ 'align-items': 'center' }"
-            :btnStyle="{ width: '1em', height: '1em' }"
-            :value="getStatValue(key)"
-            :maxValue="getMaxStatValue(key)"
-            :decreaseCondition="canDecrease(key)"
-            :increaseCondition="canIncrease"
-            @inc="increaseAttribute(key)"
-            @dec="decreaseAttribute(key)"
-            @reset="reset(key)"
-          />
-          <span v-else>{{ value }}</span>
+          <CustomButton @click="resetAttributes">{{
+            $t("btn-reset")
+          }}</CustomButton>
+          <CustomButton
+            type="green"
+            @click="confirmAttributes"
+            id="apply-btn"
+            >{{ $t("btn-apply") }}</CustomButton
+          >
         </div>
-      </div>
 
-      <div class="stats-wrapper flex flex-center">
-        <div class="flex flex-column title-column">
-          <div class="stat-t">{{ $t("health") }}</div>
-          <div class="stat-t">{{ $t("health-reg") }}</div>
-          <div class="stat-t">{{ $t("energy") }}</div>
-          <div class="stat-t">{{ $t("energy-reg") }}</div>
-        </div>
-        <div class="flex flex-column value-column">
-          <div
-            class="stat-v enemy-title-font"
-            :class="[
-              secondaryStatsWereModifiedMap['maxHealth'] ? 'rarity-epic' : null
-            ]"
-          >
-            {{ secondaryStats.maxHealth }}
-          </div>
-          <div
-            class="stat-v enemy-title-font"
-            :class="[
-              secondaryStatsWereModifiedMap['hpRegen'] ? 'rarity-epic' : null
-            ]"
-          >
-            {{ secondaryStats.hpRegen }}&nbsp;/&nbsp;hr
-          </div>
-          <div
-            class="stat-v enemy-title-font"
-            :class="[
-              secondaryStatsWereModifiedMap['maxEnergy'] ? 'rarity-epic' : null
-            ]"
-          >
-            {{ secondaryStats.maxEnergy }}
-          </div>
-          <div
-            class="stat-v enemy-title-font"
-            :class="[
-              secondaryStatsWereModifiedMap['energyRegen']
-                ? 'rarity-epic'
-                : null
-            ]"
-          >
-            {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr
-          </div>
-        </div>
+        <DungeonEquipment />
       </div>
     </div>
-
-    <div
-      v-show="attributesModified"
-      class="stat-commit flex flex-center width-100 margin-top-2 flex-evenly-spaced margin-bottom-3"
-    >
-      <CustomButton @click="resetAttributes">{{
-        $t("btn-reset")
-      }}</CustomButton>
-      <CustomButton type="green" @click="confirmAttributes" id="apply-btn">{{
-        $t("btn-apply")
-      }}</CustomButton>
-    </div>
-
-    <DungeonEquipment />
   </div>
 </template>
 

@@ -23,10 +23,7 @@
       </div>
     </div>
 
-    <div
-      class="full-flex width-100 dummy-height"
-      v-if="records.length > 0 && currentRank"
-    >
+    <div class="full-flex width-100 dummy-height" v-if="records.length > 0">
       <RecycleScroller
         ref="scroller"
         class="width-100 height-100"
@@ -46,18 +43,8 @@
           :score="item.score"
           :height="itemSize"
           :you="isYou(item.id)"
-          :target="currentRank.target"
         />
       </RecycleScroller>
-    </div>
-
-    <div class="flex flex-center full-flex" v-else>
-      <div class="panel-input padding-1">
-        <span
-          class="font-size-20 flex flex-center"
-          v-html="$t('empty-leaderboard')"
-        ></span>
-      </div>
     </div>
   </div>
 </template>

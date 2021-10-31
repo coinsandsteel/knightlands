@@ -219,7 +219,7 @@ export default {
 
       if (data.exp !== undefined) {
         console.log("User XP", data.exp);
-        this.$app.logEvent("dungeon-player-exp", {
+        Vue.prototype.$app.logEvent("dungeon-player-exp", {
           exp: Math.abs(data.exp - state.user.exp)
         });
         state.user.exp = data.exp;
