@@ -287,7 +287,22 @@ export default {
           } else if (cell.trap) {
             response = await ShowTrapPopup(cell.trap.id);
           } else if (cell.loot) {
-            response = true;
+            response = await this.showPrompt(
+              this.$t("loot-h"),
+              this.$t("loot-t", { energy: 6 }),
+              [
+                {
+                  type: "red",
+                  title: this.$t("btn-cancel"),
+                  response: false
+                },
+                {
+                  type: "green",
+                  title: this.$t("btn-ok"),
+                  response: true
+                }
+              ]
+            );
           } else if (cell.exit) {
             response = await ShowExitPopup();
             responseType = "exit";
