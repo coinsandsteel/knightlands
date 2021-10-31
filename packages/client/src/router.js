@@ -406,7 +406,7 @@ const router = new Router({
           path: "fight",
           name: "dungeon-fight",
           component: DungeonFight,
-          meta: { noTopBar: true /*, noBackButton: true*/ }
+          meta: { noTopBar: true, noBackButton: true }
         },
         {
           path: "dungeon",

@@ -47,6 +47,9 @@ export default {
       }
       return this.$game.itemsDB.getTemplate(this.item);
     },
+    unbindable() {
+      return this.template.unbindable;
+    },
     element() {
       return this.$game.itemsDB.getElement(this.item);
     },
