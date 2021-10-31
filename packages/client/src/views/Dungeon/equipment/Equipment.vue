@@ -78,8 +78,8 @@ export default {
       if (this.showSwap) {
         // swap
         await this.$store.dispatch("dungeon/equip", {
-          mHand: this.mainSelected,
-          oHand: this.offSelected
+          mHand: this.mainSelected || 0,
+          oHand: this.offSelected || 0
         });
       } else {
         this.mainSelected = this.user.mHand;

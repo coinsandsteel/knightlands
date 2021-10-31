@@ -2,7 +2,7 @@
   <div class="screen-content flex-items-center full-flex">
     <div class="hallowen-bg"></div>
     <Title class="enemy-title-font margin-top-1 margin-bottom-1 font-outline">
-      {{ $t("floor", { val: maze.floor }) }}
+      {{ $t("depth", { val: maze.floor }) }}
     </Title>
 
     <div class="flex flex-center panel-input padding-1">

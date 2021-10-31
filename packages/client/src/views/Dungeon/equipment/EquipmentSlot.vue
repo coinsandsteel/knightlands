@@ -7,11 +7,15 @@
     <span class="font-size-20 font-weight-900" v-html="damage"></span>
     <div class="loot-slot  flex relative flex-column ">
       <div class="inner-border item_slot_dark" :class="rarity">
-        <div :style="icon" class="icon" :class="!icon ? `icon_slot_${type}` : null" />
+        <div
+          :style="icon"
+          class="icon"
+          :class="!icon ? `icon_slot_${type}` : null"
+        />
         <div :class="[{ selected: selected }]"></div>
       </div>
     </div>
-    <span :class="moveIcon" class="big"></span>
+    <span :class="[moveIcon]" class="empty-icon big"></span>
   </div>
 </template>
 
@@ -46,6 +50,12 @@ export default {
           DungeonItems[this.id].image
         }.png")`
       };
+    },
+    emptyIcon() {
+      if (!this.id) {
+        return "&nbsp;";
+      }
+      return "";
     },
     moveIcon() {
       if (!this.id) {

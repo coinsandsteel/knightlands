@@ -26,9 +26,20 @@
           </div>
 
           <div class="margin-top-4 flex flex-center">
-            <CustomButton type="yellow" minWidth="20rem" @click="enter">
+            <CustomButton type="green" minWidth="20rem" @click="enter">
               Enter
               <PriceTag iap="halloween"></PriceTag>
+            </CustomButton>
+          </div>
+
+          <div class="margin-top-4 flex flex-center flex-column color-panel-1">
+            <span class="font-size-22 margin-bottom-1"
+              >Enter for free without an access to USDC prize pool and full
+              rewards.</span
+            >
+
+            <CustomButton type="yellow" minWidth="20rem" @click="enterFree">
+              Free
             </CustomButton>
           </div>
         </PaymentStatus>
@@ -92,6 +103,11 @@ export default {
         this.purchaseRequest(
           this.$store.dispatch("dungeon/enter", { chain, address })
         )
+      );
+    },
+    async enterFree() {
+      await this.performRequest(
+        this.$store.dispatch("dungeon/enter", { free: true })
       );
     }
   }

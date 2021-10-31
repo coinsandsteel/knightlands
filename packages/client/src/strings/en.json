@@ -997,6 +997,7 @@
   "fire_turtle": "fire turtle",
   "fire_volcanic_golem": "volcanic golem",
   "floor": "Floor {val}",
+  "depth": "Depth: {val}",
   "forest_catermoth": "Catermoth",
   "forest_deer": "Deer",
   "forest_fairy_dragon_xinbal": "Fairy Dragon Xinbal",
@@ -2475,5 +2476,7 @@
   "your-reward": "Reward:",
   "your-score": "Score:",
   "zalaras": "zalaras",
-  "zombie_lord": "zombielord"
+  "zombie_lord": "zombielord",
+  "health-reg": "Health regen",
+  "energy-reg": "Energy regen"
 }

@@ -27,6 +27,7 @@ export default {
     energyTimer: new timer(),
     loaded: false,
     maze: {
+      isFree: true,
       revealed: [],
       floor: 1,
       cycle: null,
@@ -244,6 +245,10 @@ export default {
         console.log("User was equiped", data.equip);
         state.user.mHand = data.equip.mHand;
         state.user.oHand = data.equip.oHand;
+      }
+
+      if (data.free !== undefined) {
+        state.maze.isFree = data.free;
       }
     },
     resetCombat(state) {

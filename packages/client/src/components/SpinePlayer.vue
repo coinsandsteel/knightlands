@@ -4,10 +4,11 @@
   </div>
 </template>
 
-<script>
-import spine from "@/spine.js";
- 
-export default {
+<script lang="ts">
+import Vue from "vue";
+import * as spine from "@esotericsoftware/spine-canvas";
+
+export default Vue.extend({
   props: {
     skeletonFile: String,
     skeletonName: String,
@@ -37,11 +38,11 @@ export default {
         if (this.skeletonFile) {
           if (this.binary) {
             this._getAssetManager().loadBinary(
-              `animations/${this.wrapInFolder(this.skeletonFile)}.skel.bytes`
+              `${this.wrapInFolder(this.skeletonFile)}.skel.bytes`
             );
           } else {
             this._getAssetManager().loadText(
-              `animations/${this.wrapInFolder(this.skeletonFile)}.json`
+              `${this.wrapInFolder(this.skeletonFile)}.json`
             );
           }
           this.scheduleLoad();
@@ -62,7 +63,7 @@ export default {
       handler() {
         if (this.atlas) {
           this._getAssetManager().loadText(
-            `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
+            `${this.wrapInFolder(this.atlas)}.atlas.txt`
           );
           this.scheduleLoad();
         }
@@ -73,19 +74,18 @@ export default {
       handler() {
         if (this.atlasImage) {
           this._getAssetManager().loadTexture(
-            `animations/${this.wrapInFolder(this.atlasImage)}.png`
+            `${this.wrapInFolder(this.atlasImage)}.png`
           );
           this.scheduleLoad();
         }
       }
     }
   },
-  mounted() {     
+  mounted() {
     this.$nextTick(() => {
       this.canvas = this.$refs.canvas;
       this.context = this.canvas.getContext("2d");
-      spine.canvas.SkeletonRenderer.useTriangleRendering = this.useTriangleRendering;
-      this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
+      this.skeletonRenderer = new spine.SkeletonRenderer(this.context);
       // enable the triangle renderer, supports meshes, but may produce artifacts in some browsers
       this.skeletonRenderer.triangleRendering = this.useTriangleRendering;
       this.scheduleLoad();
@@ -94,7 +94,7 @@ export default {
   methods: {
     _getAssetManager() {
       if (!this.assetManager) {
-        this.assetManager = new spine.canvas.AssetManager();
+        this.assetManager = new spine.AssetManager("animations/");
       }
       return this.assetManager;
     },
@@ -129,7 +129,7 @@ export default {
         this.$emit("ready");
         this.ready = true;
 
-        requestAnimationFrame(this.render.bind(this));
+        requestAnimationFrame(this.renderSpine.bind(this));
         clearInterval(this._loadInterval);
         this._loadInterval = null;
       }
@@ -138,14 +138,11 @@ export default {
       if (skin === undefined) skin = "default";
       // Load the texture atlas using name.atlas and name.png from the AssetManager.
       // The function passed to TextureAtlas is used to resolve relative paths.
+      const assetManager = this._getAssetManager();
       let atlas = new spine.TextureAtlas(
-        this.assetManager.get(
-          `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
-        ),
-        path => {
-          return this.assetManager.get("animations/" + this.wrapInFolder(path));
-        }
+        assetManager.require(`${this.wrapInFolder(this.atlas)}.atlas.txt`)
       );
+      atlas.setTextures(assetManager);
 
       // Create a AtlasAttachmentLoader, which is specific to the WebGL backend.
       let atlasLoader = new spine.AtlasAttachmentLoader(atlas);
@@ -154,13 +151,11 @@ export default {
       let skeletonData;
       if (this.binary) {
         skeletonData = new spine.SkeletonBinary(atlasLoader).readSkeletonData(
-          this.assetManager.get(
-            `animations/${this.wrapInFolder(name)}.skel.bytes`
-          )
+          this.assetManager.get(`${this.wrapInFolder(name)}.skel.bytes`)
         );
       } else {
         skeletonData = new spine.SkeletonJson(atlasLoader).readSkeletonData(
-          this.assetManager.get(`animations/${this.wrapInFolder(name)}.json`)
+          this.assetManager.get(`${this.wrapInFolder(name)}.json`)
         );
       }
 
@@ -224,7 +219,7 @@ export default {
       skeleton.getBounds(offset, size, []);
       return { offset: offset, size: size };
     },
-    render() {
+    renderSpine() {
       if (!this.skeleton) {
         return;
       }
@@ -244,8 +239,8 @@ export default {
       this.skeleton.updateWorldTransform();
       this.skeletonRenderer.draw(this.skeleton);
 
-      requestAnimationFrame(this.render.bind(this));
+      requestAnimationFrame(this.renderSpine.bind(this));
     }
   }
-};
+});
 </script>

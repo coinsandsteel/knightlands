@@ -6,7 +6,7 @@
     <SpinePlayer
       class="canvas"
       ref="animation"
-      :binary="true"
+      :binary="false"
       :skeletonFile="chestSkeleton"
       :skeletonName="chestSkeleton"
       atlas="chests_anim"
@@ -355,6 +355,11 @@ export default {
       rgba(184, 29, 116, 1) 0%,
       rgba(74, 0, 90, 1) 100%
     );
+  }
+
+  &.halloween_chest {
+    background: #7bce5d;
+    background: linear-gradient(0deg, #7bce5d 0%, #623b9f 100%);
   }
 }
 

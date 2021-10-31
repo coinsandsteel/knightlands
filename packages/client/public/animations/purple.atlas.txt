@@ -1,62 +1,26 @@
-
 purple.png
-size: 190,490
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
+size:190,490
+filter:Linear,Linear
+pma:true
 flash
-  rotate: false
-  xy: 2, 348
-  size: 140, 140
-  orig: 140, 140
-  offset: 0, 0
-  index: -1
+bounds:2,348,140,140
 flash1
-  rotate: false
-  xy: 2, 214
-  size: 132, 132
-  orig: 140, 140
-  offset: 4, 4
-  index: -1
+bounds:2,214,132,132
+offsets:4,4,140,140
 flash2
-  rotate: false
-  xy: 2, 5
-  size: 116, 116
-  orig: 140, 140
-  offset: 12, 12
-  index: -1
+bounds:2,5,116,116
+offsets:12,12,140,140
 purple_0
-  rotate: true
-  xy: 120, 2
-  size: 100, 66
-  orig: 100, 66
-  offset: 0, 0
-  index: -1
+bounds:120,2,100,66
+rotate:90
 purple_1
-  rotate: true
-  xy: 126, 104
-  size: 108, 61
-  orig: 108, 61
-  offset: 0, 0
-  index: -1
+bounds:126,104,108,61
+rotate:90
 purple_2
-  rotate: true
-  xy: 136, 238
-  size: 108, 52
-  orig: 108, 52
-  offset: 0, 0
-  index: -1
+bounds:136,238,108,52
+rotate:90
 purple_3
-  rotate: true
-  xy: 144, 380
-  size: 108, 38
-  orig: 108, 38
-  offset: 0, 0
-  index: -1
+bounds:144,380,108,38
+rotate:90
 purple_base
-  rotate: false
-  xy: 2, 123
-  size: 122, 89
-  orig: 122, 89
-  offset: 0, 0
-  index: -1
+bounds:2,123,122,89

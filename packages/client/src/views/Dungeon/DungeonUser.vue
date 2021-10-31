@@ -38,7 +38,7 @@
     <div
       class="flex flex-center flex-evenly-spaced width-100 padding-3 font-size-25 font-outline"
     >
-      <div 
+      <div
         class="primary-stats-wrapper stats-wrapper flex flex-center"
         :class="[upgradeAllowed ? 'upgradable' : null]"
       >
@@ -77,10 +77,10 @@
 
       <div class="stats-wrapper flex flex-center">
         <div class="flex flex-column title-column">
-          <div class="stat-t">HP:</div>
-          <div class="stat-t">&#8593;HP:</div>
-          <div class="stat-t">{{ $t("energy") }}:</div>
-          <div class="stat-t">&#8593;{{ $t("energy") }}:</div>
+          <div class="stat-t">{{ $t("health") }}</div>
+          <div class="stat-t">{{ $t("health-reg") }}</div>
+          <div class="stat-t">{{ $t("energy") }}</div>
+          <div class="stat-t">{{ $t("energy-reg") }}</div>
         </div>
         <div class="flex flex-column value-column">
           <div
@@ -97,7 +97,7 @@
               secondaryStatsWereModifiedMap['hpRegen'] ? 'rarity-epic' : null
             ]"
           >
-            {{ secondaryStats.hpRegen }}&nbsp;/&nbsp;hr.
+            {{ secondaryStats.hpRegen }}&nbsp;/&nbsp;hr
           </div>
           <div
             class="stat-v enemy-title-font"
@@ -115,7 +115,7 @@
                 : null
             ]"
           >
-            {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr.
+            {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr
           </div>
         </div>
       </div>
@@ -162,9 +162,6 @@ export default {
     NumericValue,
     DungeonEquipment
   },
-  created() {
-    //this.title = "w-simple-dun";
-  },
   activated() {
     this.init();
   },
@@ -185,7 +182,8 @@ export default {
   },
   computed: {
     ...mapState({
-      user: state => state.dungeon.user
+      user: state => state.dungeon.user,
+      isFree: state => state.maze.isFree
     }),
     ...mapGetters({
       playerStats: "dungeon/playerStats",
@@ -272,7 +270,10 @@ export default {
       return true;
     },
     async confirmAttributes() {
-      await this.$store.dispatch('dungeon/commitStats', this.primaryStatsModified);
+      await this.$store.dispatch(
+        "dungeon/commitStats",
+        this.primaryStatsModified
+      );
     },
     getEditedAttribute(attr) {
       return this.statsDelta[attr];
