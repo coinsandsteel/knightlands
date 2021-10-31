@@ -137,13 +137,19 @@
         </div>
 
         <div
-          v-show="attributesModified"
           class="stat-commit flex flex-center width-100 margin-top-2 flex-evenly-spaced margin-bottom-3"
         >
-          <CustomButton @click="resetAttributes">{{
+          <CustomButton v-show="rebalanceAllowed" type="blue" @click="rebalanceAttributes">
+            {{ $t("rebalance") }}
+            <IconWithValue iconClass="h-energy" valueClass="font-size-18">{{
+              40
+            }}</IconWithValue>
+          </CustomButton>
+          <CustomButton v-show="attributesModified" @click="resetAttributes">{{
             $t("btn-reset")
           }}</CustomButton>
           <CustomButton
+            v-show="attributesModified"
             type="green"
             @click="confirmAttributes"
             id="apply-btn"
@@ -169,9 +175,10 @@ import ItemInfo from "@/components/ItemInfo.vue";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
 import NumericValue from "@/components/NumericValue.vue";
 import DungeonEquipment from "@/views/Dungeon/Inventory/Equipment.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, PromptMixin],
   components: {
     Title,
     ProgressBar,
@@ -256,6 +263,9 @@ export default {
     },
     upgradeAllowed() {
       return this.primaryStatsSum < this.user.level - 1;
+    },
+    rebalanceAllowed() {
+      return this.user.energy >= 40 && this.primaryStatsSum > 0;
     }
   },
   methods: {
@@ -310,6 +320,37 @@ export default {
       for (let i in this.statsDelta) {
         this.statsDelta[i] = 0;
       }
+    },
+    async rebalanceAttributes() {
+      // Modal
+      const result = await this.showPrompt(
+        this.$t("rebalance-confirm-h"),
+        this.$t("rebalance-confirm-t", { energy: 40 }),
+        [
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]
+      );
+
+      if (!result) {
+        return;
+      }
+
+      // Action
+      await this.$store.dispatch("dungeon/commitStats", {
+        str: 0,
+        dex: 0,
+        int: 0,
+        sta: 0
+      });
     }
   }
 };
