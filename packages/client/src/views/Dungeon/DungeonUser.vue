@@ -13,7 +13,7 @@
           <CustomButton
             type="green"
             class="margin-top-1"
-            v-if="isFree"
+            v-if="maze.isFree"
             @click="goToEntrance"
             >{{ $t("d-upg") }}</CustomButton
           >
@@ -203,7 +203,7 @@ export default {
   computed: {
     ...mapState({
       user: state => state.dungeon.user,
-      isFree: state => state.dungeon.maze.isFree
+      maze: state => state.dungeon.maze
     }),
     ...mapGetters({
       playerStats: "dungeon/playerStats",

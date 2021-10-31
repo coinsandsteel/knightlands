@@ -54,19 +54,19 @@
           <IconWithValue
             valueClass="font-size-20"
             v-if="loot.key"
-            iconClass="hpotion huge"
+            iconClass="hkey huge"
             >{{ loot.key }}x</IconWithValue
           >
           <IconWithValue
             valueClass="font-size-20"
             v-if="loot.potion"
-            iconClass="hscroll huge"
+            iconClass="hpotion huge"
             >{{ loot.potion }}x</IconWithValue
           >
           <IconWithValue
             valueClass="font-size-20"
             v-if="loot.scroll"
-            iconClass="hkey huge"
+            iconClass="hscroll huge"
             >{{ loot.scroll }}x</IconWithValue
           >
         </div>
