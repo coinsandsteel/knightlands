@@ -121,9 +121,11 @@ import Title from "@/components/Title.vue";
 import UiConstants from "@/ui_constants";
 import ProgressBar from "@/components/ProgressBar.vue";
 import anime from "animejs/lib/anime.es.js";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
   components: {
     Maze,
     Title,
@@ -166,22 +168,38 @@ export default {
       this.$router.push({ name: "dungeon-user" });
     },
     async resetDungeon() {
-      await this.$store.dispatch("dungeon/reset");
+      await this.performRequest(this.$store.dispatch("dungeon/reset"));
     },
     async resetProgress() {
-      await this.$store.dispatch("dungeon/reset");
+      await this.performRequest(this.$store.dispatch("dungeon/reset"));
     },
     async usePotion() {
-      await this.$store.dispatch("dungeon/useItem", "potion");
+      await this.performRequest(
+        this.$store.dispatch("dungeon/useItem", "potion")
+      );
     },
     async useScroll() {
-      await this.$store.dispatch("dungeon/useItem", "scroll");
+      const used = await this.performRequest(
+        this.$store.dispatch("dungeon/useItem", "scroll")
+      );
+
+      if (!used) {
+        await this.showPrompt(this.$t("dl-no-use"), this.$t("dl-no-use-d"), [
+          {
+            type: "grey",
+            title: "btn-ok",
+            response: true
+          }
+        ]);
+      }
     },
     async nextFloor() {
-      await this.$store.dispatch("dungeon/nextFloor");
+      await this.performRequest(this.$store.dispatch("dungeon/nextFloor"));
     },
     async sendTestAction(action) {
-      await this.$store.dispatch("dungeon/sendTestAction", action);
+      await this.performRequest(
+        this.$store.dispatch("dungeon/sendTestAction", action)
+      );
     },
     async shakeEnergy() {
       const xMax = 16;

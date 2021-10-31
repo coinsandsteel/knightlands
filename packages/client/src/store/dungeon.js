@@ -399,10 +399,17 @@ export default {
       await store.dispatch("load");
     },
     async useItem(store, item) {
-      await this.$app.$game._wrapOperation(Operations.SDungeonUseItem, {
-        item
-      });
-      store.commit("useItem", item);
+      const response = (
+        await this.$app.$game._wrapOperation(Operations.SDungeonUseItem, {
+          item
+        })
+      ).response;
+
+      if (response) {
+        store.commit("useItem", item);
+      }
+
+      return response;
     },
     updateRegenTimers({ state }) {
       state.hpTimer.timeLeft = this.$app.$game.nowSec - state.user.lastHpRegen;

@@ -2478,5 +2478,7 @@
   "zalaras": "zalaras",
   "zombie_lord": "zombielord",
   "health-reg": "Health regen",
-  "energy-reg": "Energy regen"
+  "energy-reg": "Energy regen",
+  "dl-no-use": "Nothing to reveal",
+  "dl-no-use-d": "Stand close to hidden rooms to reveal them using scroll"
 }
