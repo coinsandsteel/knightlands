@@ -312,6 +312,7 @@ export default {
             if (responseType == "loot") {
               this.$store.commit("dungeon/updateLoot", cmdResponse);
             } else if (responseType == "exit") {
+              this.$app.logEvent("dungeon-floor", { floor: this.maze.floor });
               this.$store.dispatch("dungeon/init", cmdResponse);
             }
           }

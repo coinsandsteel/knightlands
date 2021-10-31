@@ -50,8 +50,9 @@ export default {
     updateNextFloorTimer() {
       const diff = this.$game.nowSec - this.maze.startTime;
       this.timer.timeLeft = 86400 - (diff % 86400);
-      this.canLeave =
-        Math.ceil(diff / 86400) > this.maze.floor && this.maze.enemiesLeft <= 0;
+
+      const maxFloor = Math.max(Math.ceil(diff / 86400), 0);
+      this.canLeave = maxFloor > this.maze.floor && this.maze.enemiesLeft <= 0;
     },
     handle() {
       // Do stuff

@@ -162,6 +162,9 @@ export default {
       // energyChanged
       if (data.energy !== undefined) {
         console.log("User energy", data.energy);
+        this.$app.logEvent("dungeon-player-energy", {
+          energy: Math.abs(data.energy - state.user.energy)
+        });
         state.user.energy = data.energy;
       }
       // combatStarted
@@ -216,6 +219,9 @@ export default {
 
       if (data.exp !== undefined) {
         console.log("User XP", data.exp);
+        this.$app.logEvent("dungeon-player-exp", {
+          exp: Math.abs(data.exp - state.user.exp)
+        });
         state.user.exp = data.exp;
       }
 

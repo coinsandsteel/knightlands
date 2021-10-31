@@ -6,8 +6,15 @@
       {{ $t("char") }}
     </Title>
 
-    <div class="flex flex-center width-100 margin-top-2">
+    <div class="flex flex-center flex-column width-100 margin-top-2">
       <Avatar :preview="true" />
+      <CustomButton
+        type="green"
+        class="margin-top-1"
+        v-if="isFree"
+        @click="goToEntrance"
+        >{{ $t("d-upg") }}</CustomButton
+      >
     </div>
 
     <div class="flex flex-evenly-spaced width-100 padding-1">
@@ -36,7 +43,7 @@
     </div>
 
     <div
-      class="flex flex-center flex-evenly-spaced width-100 padding-3 font-size-25 font-outline"
+      class="flex flex-center flex-evenly-spaced width-100 color-panel-1 font-size-25 font-outline"
     >
       <div
         class="primary-stats-wrapper stats-wrapper flex flex-center"
@@ -183,7 +190,7 @@ export default {
   computed: {
     ...mapState({
       user: state => state.dungeon.user,
-      isFree: state => state.maze.isFree
+      isFree: state => state.dungeon.maze.isFree
     }),
     ...mapGetters({
       playerStats: "dungeon/playerStats",
@@ -239,6 +246,9 @@ export default {
     }
   },
   methods: {
+    goToEntrance() {
+      this.$router.push({ name: "dungeon-entrance" });
+    },
     init() {
       for (let statKey in this.primaryStats) {
         this.$set(this.statsDelta, statKey, 0);

@@ -218,6 +218,10 @@ export default {
     }
   },
   watch: {
+    "user.health"(current, previous) {
+      const damage = previous - current;
+      this.$app.logEvent("dungeon-player-damage", { damage });
+    },
     "combat.outcome"(value) {
       if (value === CombatOutcome.EnemyWon) {
         this.combatLost();

@@ -21,8 +21,8 @@
           </div>
 
           <div class="margin-top-4 font-size-25 padding-left-1 padding-right-1">
-            Compete with other players in an incredibly spooky dungeon filled
-            with monsters, traps and valuable LOOT!
+            Full pass will allow you to particiapte in USDC pool and earn FULL
+            rewards such as Raid Ticket, Shinies, FLESH and much more!
           </div>
 
           <div class="margin-top-4 flex flex-center">
@@ -32,7 +32,10 @@
             </CustomButton>
           </div>
 
-          <div class="margin-top-4 flex flex-center flex-column color-panel-1">
+          <div
+            v-if="notEntered"
+            class="margin-top-4 flex flex-center flex-column color-panel-1"
+          >
             <span class="font-size-22 margin-bottom-1"
               >Enter for free without an access to USDC prize pool and full
               rewards.</span
@@ -73,7 +76,7 @@ export default {
     this.$options.useRouterBack = true;
   },
   activated() {
-    if (this.user.level) {
+    if (!this.notEntered && !this.isFree) {
       this.$router.replace({ name: "dungeon" });
     } else {
       this.fetchPaymentStatus();
@@ -81,15 +84,20 @@ export default {
   },
   watch: {
     "user.level"() {
-      if (this.user.level) {
-        this.$router.replace({ name: "dungeon" });
-      }
+      this.$router.replace({ name: "dungeon" });
+    },
+    isFree() {
+      this.$router.replace({ name: "dungeon" });
     }
   },
   computed: {
     ...mapState({
-      user: state => state.dungeon.user
-    })
+      user: state => state.dungeon.user,
+      isFree: state => state.dungeon.maze.isFree
+    }),
+    notEntered() {
+      return this.user.level == 0;
+    }
   },
   methods: {
     async fetchPaymentStatus() {
