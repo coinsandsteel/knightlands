@@ -336,11 +336,11 @@ export default {
 
           if (cmdResponse) {
             if (responseType == "loot") {
-              console.log("Loot cmd response", cmdResponse);
+              console.log("Loot cmd response", cmdResponse, currentItems);
 
               for (const k in currentItems) {
-                if (cmdResponse.items[k]) {
-                  cmdResponse.items[k] -= currentItems[k];
+                if (cmdResponse[k]) {
+                  cmdResponse[k] -= currentItems[k];
                 }
               }
 
