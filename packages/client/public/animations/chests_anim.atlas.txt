@@ -1,112 +1,342 @@
+
 chests_anim.png
-size:196,1623
-filter:Linear,Linear
-pma:true
+size: 196,1623
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 blue_0
-bounds:2,108,90,35
+  rotate: false
+  xy: 2, 108
+  size: 90, 35
+  orig: 90, 35
+  offset: 0, 0
+  index: -1
 blue_1
-bounds:94,100,90,31
+  rotate: false
+  xy: 94, 100
+  size: 90, 31
+  orig: 90, 31
+  offset: 0, 0
+  index: -1
 blue_2
-bounds:2,80,90,26
+  rotate: false
+  xy: 2, 80
+  size: 90, 26
+  orig: 90, 26
+  offset: 0, 0
+  index: -1
 blue_3
-bounds:94,76,90,22
+  rotate: false
+  xy: 94, 76
+  size: 90, 22
+  orig: 90, 22
+  offset: 0, 0
+  index: -1
 blue_base
-bounds:104,489,90,63
+  rotate: false
+  xy: 104, 489
+  size: 90, 63
+  orig: 90, 63
+  offset: 0, 0
+  index: -1
 brown_0
-bounds:2,40,72,38
+  rotate: false
+  xy: 2, 40
+  size: 72, 38
+  orig: 72, 38
+  offset: 0, 0
+  index: -1
 brown_1
-bounds:76,42,72,32
+  rotate: false
+  xy: 76, 42
+  size: 72, 32
+  orig: 72, 32
+  offset: 0, 0
+  index: -1
 brown_2
-bounds:150,2,72,28
-rotate:90
+  rotate: true
+  xy: 150, 2
+  size: 72, 28
+  orig: 72, 28
+  offset: 0, 0
+  index: -1
 brown_3
-bounds:76,19,72,21
+  rotate: false
+  xy: 76, 19
+  size: 72, 21
+  orig: 72, 21
+  offset: 0, 0
+  index: -1
 brown_base
-bounds:111,554,72,60
+  rotate: false
+  xy: 111, 554
+  size: 72, 60
+  orig: 72, 60
+  offset: 0, 0
+  index: -1
 flash
-bounds:2,1481,140,140
+  rotate: false
+  xy: 2, 1481
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
 flash1
-bounds:2,1347,132,132
-offsets:4,4,140,140
+  rotate: false
+  xy: 2, 1347
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
 flash2
-bounds:2,977,116,116
-offsets:12,12,140,140
+  rotate: false
+  xy: 2, 977
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1
 halloween_0
-bounds:120,877,116,72
-rotate:90
+  rotate: true
+  xy: 120, 877
+  size: 116, 72
+  orig: 116, 72
+  offset: 0, 0
+  index: -1
 halloween_1
-bounds:126,1206,116,68
-rotate:90
+  rotate: true
+  xy: 126, 1206
+  size: 116, 68
+  orig: 116, 68
+  offset: 0, 0
+  index: -1
 halloween_2
-bounds:2,923,116,52
+  rotate: false
+  xy: 2, 923
+  size: 116, 52
+  orig: 116, 52
+  offset: 0, 0
+  index: -1
 halloween_3
-bounds:2,881,116,40
+  rotate: false
+  xy: 2, 881
+  size: 116, 40
+  orig: 116, 40
+  offset: 0, 0
+  index: -1
 halloween_base
-bounds:2,793,108,86
+  rotate: false
+  xy: 2, 793
+  size: 108, 86
+  orig: 108, 86
+  offset: 0, 0
+  index: -1
 large_0
-bounds:2,1095,121,72
+  rotate: false
+  xy: 2, 1095
+  size: 121, 72
+  orig: 121, 72
+  offset: 0, 0
+  index: -1
 large_1
-bounds:125,1097,107,68
-rotate:90
+  rotate: true
+  xy: 125, 1097
+  size: 107, 68
+  orig: 107, 68
+  offset: 0, 0
+  index: -1
 large_2
-bounds:2,573,107,61
+  rotate: false
+  xy: 2, 573
+  size: 107, 61
+  orig: 107, 61
+  offset: 0, 0
+  index: -1
 large_3
-bounds:136,1324,107,58
-rotate:90
+  rotate: true
+  xy: 136, 1324
+  size: 107, 58
+  orig: 107, 58
+  offset: 0, 0
+  index: -1
 large_base
-bounds:2,1169,121,85
+  rotate: false
+  xy: 2, 1169
+  size: 121, 85
+  orig: 121, 85
+  offset: 0, 0
+  index: -1
 love_0
-bounds:2,507,100,64
+  rotate: false
+  xy: 2, 507
+  size: 100, 64
+  orig: 100, 64
+  offset: 0, 0
+  index: -1
 love_1
-bounds:2,447,100,58
+  rotate: false
+  xy: 2, 447
+  size: 100, 58
+  orig: 100, 58
+  offset: 0, 0
+  index: -1
 love_2
-bounds:2,388,100,57
+  rotate: false
+  xy: 2, 388
+  size: 100, 57
+  orig: 100, 57
+  offset: 0, 0
+  index: -1
 love_3
-bounds:2,333,100,53
+  rotate: false
+  xy: 2, 333
+  size: 100, 53
+  orig: 100, 53
+  offset: 0, 0
+  index: -1
 love_base
-bounds:112,616,100,72
-rotate:90
+  rotate: true
+  xy: 112, 616
+  size: 100, 72
+  orig: 100, 72
+  offset: 0, 0
+  index: -1
 medium_0
-bounds:2,231,96,45
+  rotate: false
+  xy: 2, 231
+  size: 96, 45
+  orig: 96, 45
+  offset: 0, 0
+  index: -1
 medium_1
-bounds:2,184,96,45
+  rotate: false
+  xy: 2, 184
+  size: 96, 45
+  orig: 96, 45
+  offset: 0, 0
+  index: -1
 medium_2
-bounds:144,1433,96,49
-rotate:90
+  rotate: true
+  xy: 144, 1433
+  size: 96, 49
+  orig: 96, 49
+  offset: 0, 0
+  index: -1
 medium_3
-bounds:2,278,96,53
+  rotate: false
+  xy: 2, 278
+  size: 96, 53
+  orig: 96, 53
+  offset: 0, 0
+  index: -1
 medium_base
-bounds:100,258,94,71
+  rotate: false
+  xy: 100, 258
+  size: 94, 71
+  orig: 94, 71
+  offset: 0, 0
+  index: -1
 purple_0
-bounds:125,995,100,66
-rotate:90
+  rotate: true
+  xy: 125, 995
+  size: 100, 66
+  orig: 100, 66
+  offset: 0, 0
+  index: -1
 purple_1
-bounds:2,730,108,61
+  rotate: false
+  xy: 2, 730
+  size: 108, 61
+  orig: 108, 61
+  offset: 0, 0
+  index: -1
 purple_2
-bounds:2,676,108,52
+  rotate: false
+  xy: 2, 676
+  size: 108, 52
+  orig: 108, 52
+  offset: 0, 0
+  index: -1
 purple_3
-bounds:2,636,108,38
+  rotate: false
+  xy: 2, 636
+  size: 108, 38
+  orig: 108, 38
+  offset: 0, 0
+  index: -1
 purple_base
-bounds:2,1256,122,89
+  rotate: false
+  xy: 2, 1256
+  size: 122, 89
+  orig: 122, 89
+  offset: 0, 0
+  index: -1
 red_0
-bounds:100,210,91,46
+  rotate: false
+  xy: 100, 210
+  size: 91, 46
+  orig: 91, 46
+  offset: 0, 0
+  index: -1
 red_1
-bounds:100,167,91,41
+  rotate: false
+  xy: 100, 167
+  size: 91, 41
+  orig: 91, 41
+  offset: 0, 0
+  index: -1
 red_2
-bounds:2,145,91,37
+  rotate: false
+  xy: 2, 145
+  size: 91, 37
+  orig: 91, 37
+  offset: 0, 0
+  index: -1
 red_3
-bounds:95,133,91,32
+  rotate: false
+  xy: 95, 133
+  size: 91, 32
+  orig: 91, 32
+  offset: 0, 0
+  index: -1
 red_base
-bounds:112,784,91,79
-rotate:90
+  rotate: true
+  xy: 112, 784
+  size: 91, 79
+  orig: 91, 79
+  offset: 0, 0
+  index: -1
 small_0
-bounds:104,433,90,54
+  rotate: false
+  xy: 104, 433
+  size: 90, 54
+  orig: 90, 54
+  offset: 0, 0
+  index: -1
 small_1
-bounds:144,1531,90,50
-rotate:90
+  rotate: true
+  xy: 144, 1531
+  size: 90, 50
+  orig: 90, 50
+  offset: 0, 0
+  index: -1
 small_2
-bounds:104,331,90,47
+  rotate: false
+  xy: 104, 331
+  size: 90, 47
+  orig: 90, 47
+  offset: 0, 0
+  index: -1
 small_3
-bounds:104,380,90,51
+  rotate: false
+  xy: 104, 380
+  size: 90, 51
+  orig: 90, 51
+  offset: 0, 0
+  index: -1
 small_base
-bounds:112,718,78,64
+  rotate: false
+  xy: 112, 718
+  size: 78, 64
+  orig: 78, 64
+  offset: 0, 0
+  index: -1

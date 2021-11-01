@@ -1,23 +1,62 @@
+
 large.png
-size:363,278
-filter:Linear,Linear
-pma:true
+size: 363,278
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 flash
-bounds:2,136,140,140
+  rotate: false
+  xy: 2, 136
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
 flash1
-bounds:2,2,132,132
-offsets:4,4,140,140
+  rotate: false
+  xy: 2, 2
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
 flash2
-bounds:136,18,116,116
-offsets:12,12,140,140
+  rotate: false
+  xy: 136, 18
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1
 large_0
-bounds:231,204,121,72
+  rotate: false
+  xy: 231, 204
+  size: 121, 72
+  orig: 121, 72
+  offset: 0, 0
+  index: -1
 large_1
-bounds:254,71,107,68
+  rotate: false
+  xy: 254, 71
+  size: 107, 68
+  orig: 107, 68
+  offset: 0, 0
+  index: -1
 large_2
-bounds:231,141,107,61
+  rotate: false
+  xy: 231, 141
+  size: 107, 61
+  orig: 107, 61
+  offset: 0, 0
+  index: -1
 large_3
-bounds:254,11,107,58
+  rotate: false
+  xy: 254, 11
+  size: 107, 58
+  orig: 107, 58
+  offset: 0, 0
+  index: -1
 large_base
-bounds:144,155,121,85
-rotate:90
+  rotate: true
+  xy: 144, 155
+  size: 121, 85
+  orig: 121, 85
+  offset: 0, 0
+  index: -1

@@ -9,6 +9,7 @@
           :index="idx - 1"
           :mazeWidth="width"
           :highlight="isHighlighted(idx - 1)"
+          :pathHighlight="highlightedCells[idx - 1]"
           :energy="energyEstimation[idx - 1]"
           :random="random"
           @click="handleCellClick"
@@ -118,6 +119,7 @@ export default {
     this.$store.$app.$off("trap_jammed");
   },
   data: () => ({
+    highlightedCells: {},
     energyEstimation: {},
     firstMove: false,
     interaction: false,
@@ -357,6 +359,7 @@ export default {
     },
     async confirmMovement(cell) {
       this.energyEstimation = {};
+      this.highlightedCells = {};
 
       const cellIndex = cell.index;
       try {
@@ -379,12 +382,20 @@ export default {
     },
     async estimateEnergy(cellIndex) {
       this.energyEstimation = {};
+      this.highlightedCells = {};
 
-      const energy = await this.$store.dispatch(
+      const { energyRequired, path } = await this.$store.dispatch(
         "dungeon/estimateEnergy",
         cellIndex
       );
-      this.$set(this.energyEstimation, cellIndex, energy);
+      if (path.length == 0) {
+        this.$set(this.energyEstimation, cellIndex, energyRequired);
+      } else {
+        this.$set(this.energyEstimation, path[path.length - 1], energyRequired);
+        for (const idx of path) {
+          this.$set(this.highlightedCells, idx, true);
+        }
+      }
     }
   }
 };

@@ -4,11 +4,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import * as spine from "@esotericsoftware/spine-canvas";
+<script>
+import spine from "@/spine.js";
 
-export default Vue.extend({
+export default {
   props: {
     skeletonFile: String,
     skeletonName: String,
@@ -38,11 +37,11 @@ export default Vue.extend({
         if (this.skeletonFile) {
           if (this.binary) {
             this._getAssetManager().loadBinary(
-              `${this.wrapInFolder(this.skeletonFile)}.skel.bytes`
+              `animations/${this.wrapInFolder(this.skeletonFile)}.skel.bytes`
             );
           } else {
             this._getAssetManager().loadText(
-              `${this.wrapInFolder(this.skeletonFile)}.json`
+              `animations/${this.wrapInFolder(this.skeletonFile)}.json`
             );
           }
           this.scheduleLoad();
@@ -63,7 +62,7 @@ export default Vue.extend({
       handler() {
         if (this.atlas) {
           this._getAssetManager().loadText(
-            `${this.wrapInFolder(this.atlas)}.atlas.txt`
+            `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
           );
           this.scheduleLoad();
         }
@@ -74,7 +73,7 @@ export default Vue.extend({
       handler() {
         if (this.atlasImage) {
           this._getAssetManager().loadTexture(
-            `${this.wrapInFolder(this.atlasImage)}.png`
+            `animations/${this.wrapInFolder(this.atlasImage)}.png`
           );
           this.scheduleLoad();
         }
@@ -85,7 +84,8 @@ export default Vue.extend({
     this.$nextTick(() => {
       this.canvas = this.$refs.canvas;
       this.context = this.canvas.getContext("2d");
-      this.skeletonRenderer = new spine.SkeletonRenderer(this.context);
+      spine.canvas.SkeletonRenderer.useTriangleRendering = this.useTriangleRendering;
+      this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
       // enable the triangle renderer, supports meshes, but may produce artifacts in some browsers
       this.skeletonRenderer.triangleRendering = this.useTriangleRendering;
       this.scheduleLoad();
@@ -94,7 +94,7 @@ export default Vue.extend({
   methods: {
     _getAssetManager() {
       if (!this.assetManager) {
-        this.assetManager = new spine.AssetManager("animations/");
+        this.assetManager = new spine.canvas.AssetManager();
       }
       return this.assetManager;
     },
@@ -129,7 +129,7 @@ export default Vue.extend({
         this.$emit("ready");
         this.ready = true;
 
-        requestAnimationFrame(this.renderSpine.bind(this));
+        requestAnimationFrame(this.render.bind(this));
         clearInterval(this._loadInterval);
         this._loadInterval = null;
       }
@@ -138,11 +138,14 @@ export default Vue.extend({
       if (skin === undefined) skin = "default";
       // Load the texture atlas using name.atlas and name.png from the AssetManager.
       // The function passed to TextureAtlas is used to resolve relative paths.
-      const assetManager = this._getAssetManager();
       let atlas = new spine.TextureAtlas(
-        assetManager.require(`${this.wrapInFolder(this.atlas)}.atlas.txt`)
+        this.assetManager.get(
+          `animations/${this.wrapInFolder(this.atlas)}.atlas.txt`
+        ),
+        path => {
+          return this.assetManager.get("animations/" + this.wrapInFolder(path));
+        }
       );
-      atlas.setTextures(assetManager);
 
       // Create a AtlasAttachmentLoader, which is specific to the WebGL backend.
       let atlasLoader = new spine.AtlasAttachmentLoader(atlas);
@@ -151,11 +154,13 @@ export default Vue.extend({
       let skeletonData;
       if (this.binary) {
         skeletonData = new spine.SkeletonBinary(atlasLoader).readSkeletonData(
-          this.assetManager.get(`${this.wrapInFolder(name)}.skel.bytes`)
+          this.assetManager.get(
+            `animations/${this.wrapInFolder(name)}.skel.bytes`
+          )
         );
       } else {
         skeletonData = new spine.SkeletonJson(atlasLoader).readSkeletonData(
-          this.assetManager.get(`${this.wrapInFolder(name)}.json`)
+          this.assetManager.get(`animations/${this.wrapInFolder(name)}.json`)
         );
       }
 
@@ -219,7 +224,7 @@ export default Vue.extend({
       skeleton.getBounds(offset, size, []);
       return { offset: offset, size: size };
     },
-    renderSpine() {
+    render() {
       if (!this.skeleton) {
         return;
       }
@@ -239,8 +244,8 @@ export default Vue.extend({
       this.skeleton.updateWorldTransform();
       this.skeletonRenderer.draw(this.skeleton);
 
-      requestAnimationFrame(this.renderSpine.bind(this));
+      requestAnimationFrame(this.render.bind(this));
     }
   }
-});
+};
 </script>

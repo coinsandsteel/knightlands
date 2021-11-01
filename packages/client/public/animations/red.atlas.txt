@@ -1,25 +1,62 @@
+
 red.png
-size:321,259
-filter:Linear,Linear
-pma:true
+size: 321,259
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 flash
-bounds:2,117,140,140
+  rotate: false
+  xy: 2, 117
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
 flash1
-bounds:144,125,132,132
-offsets:4,4,140,140
+  rotate: false
+  xy: 144, 125
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
 flash2
-bounds:144,7,116,116
-offsets:12,12,140,140
+  rotate: false
+  xy: 144, 7
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1
 red_0
-bounds:262,32,91,46
-rotate:90
+  rotate: true
+  xy: 262, 32
+  size: 91, 46
+  orig: 91, 46
+  offset: 0, 0
+  index: -1
 red_1
-bounds:278,166,91,41
-rotate:90
+  rotate: true
+  xy: 278, 166
+  size: 91, 41
+  orig: 91, 41
+  offset: 0, 0
+  index: -1
 red_2
-bounds:95,24,91,37
-rotate:90
+  rotate: true
+  xy: 95, 24
+  size: 91, 37
+  orig: 91, 37
+  offset: 0, 0
+  index: -1
 red_3
-bounds:2,2,91,32
+  rotate: false
+  xy: 2, 2
+  size: 91, 32
+  orig: 91, 32
+  offset: 0, 0
+  index: -1
 red_base
-bounds:2,36,91,79
+  rotate: false
+  xy: 2, 36
+  size: 91, 79
+  orig: 91, 79
+  offset: 0, 0
+  index: -1

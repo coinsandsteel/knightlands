@@ -6,7 +6,7 @@
     <SpinePlayer
       class="canvas"
       ref="animation"
-      :binary="false"
+      :binary="true"
       :skeletonFile="chestSkeleton"
       :skeletonName="chestSkeleton"
       atlas="chests_anim"

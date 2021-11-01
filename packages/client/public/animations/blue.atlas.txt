@@ -1,24 +1,62 @@
+
 blue.png
-size:278,262
-filter:Linear,Linear
-pma:true
+size: 278,262
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 blue_0
-bounds:120,28,90,35
-rotate:90
+  rotate: true
+  xy: 120, 28
+  size: 90, 35
+  orig: 90, 35
+  offset: 0, 0
+  index: -1
 blue_1
-bounds:157,30,90,31
+  rotate: false
+  xy: 157, 30
+  size: 90, 31
+  orig: 90, 31
+  offset: 0, 0
+  index: -1
 blue_2
-bounds:249,36,90,26
-rotate:90
+  rotate: true
+  xy: 249, 36
+  size: 90, 26
+  orig: 90, 26
+  offset: 0, 0
+  index: -1
 blue_3
-bounds:157,6,90,22
+  rotate: false
+  xy: 157, 6
+  size: 90, 22
+  orig: 90, 22
+  offset: 0, 0
+  index: -1
 blue_base
-bounds:157,63,90,63
+  rotate: false
+  xy: 157, 63
+  size: 90, 63
+  orig: 90, 63
+  offset: 0, 0
+  index: -1
 flash
-bounds:2,120,140,140
+  rotate: false
+  xy: 2, 120
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
 flash1
-bounds:144,128,132,132
-offsets:4,4,140,140
+  rotate: false
+  xy: 144, 128
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
 flash2
-bounds:2,2,116,116
-offsets:12,12,140,140
+  rotate: false
+  xy: 2, 2
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1

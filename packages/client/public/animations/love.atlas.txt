@@ -1,25 +1,62 @@
+
 love.png
-size:222,422
-filter:Linear,Linear
-pma:true
+size: 222,422
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 flash
-bounds:2,280,140,140
+  rotate: false
+  xy: 2, 280
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
 flash1
-bounds:2,146,132,132
-offsets:4,4,140,140
+  rotate: false
+  xy: 2, 146
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
 flash2
-bounds:2,28,116,116
-offsets:12,12,140,140
+  rotate: false
+  xy: 2, 28
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1
 love_0
-bounds:144,218,100,64
-rotate:90
+  rotate: true
+  xy: 144, 218
+  size: 100, 64
+  orig: 100, 64
+  offset: 0, 0
+  index: -1
 love_1
-bounds:136,116,100,58
-rotate:90
+  rotate: true
+  xy: 136, 116
+  size: 100, 58
+  orig: 100, 58
+  offset: 0, 0
+  index: -1
 love_2
-bounds:120,57,100,57
+  rotate: false
+  xy: 120, 57
+  size: 100, 57
+  orig: 100, 57
+  offset: 0, 0
+  index: -1
 love_3
-bounds:120,2,100,53
+  rotate: false
+  xy: 120, 2
+  size: 100, 53
+  orig: 100, 53
+  offset: 0, 0
+  index: -1
 love_base
-bounds:144,320,100,72
-rotate:90
+  rotate: true
+  xy: 144, 320
+  size: 100, 72
+  orig: 100, 72
+  offset: 0, 0
+  index: -1

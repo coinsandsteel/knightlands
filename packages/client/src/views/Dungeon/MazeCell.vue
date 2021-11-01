@@ -17,8 +17,9 @@
       </CustomButton>
     </div>
     <div
-      v-if="highlight"
-      class="highlight absolute-stretch"
+      v-if="highlight || pathHighlight"
+      class="highlight absolute-stretch pointer-events-none"
+      :class="{ noanim: pathHighlight }"
       ref="highlight"
     ></div>
   </div>
@@ -41,7 +42,15 @@ const IMAGE_BY_TYPE = {
 };
 
 export default {
-  props: ["cell", "index", "mazeWidth", "highlight", "energy", "random"],
+  props: [
+    "cell",
+    "index",
+    "mazeWidth",
+    "highlight",
+    "energy",
+    "random",
+    "pathHighlight"
+  ],
   data: () => ({
     image: "",
     rotation: "",
@@ -241,6 +250,11 @@ export default {
     background-image: url("/images/halloween_assets/selection.png");
     background-size: contain;
     animation: scaleme 1.5s alternate ease-in-out infinite;
+
+    &.noanim {
+      animation: none;
+      opacity: 0.5;
+    }
   }
 }
 </style>

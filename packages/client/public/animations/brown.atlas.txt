@@ -1,24 +1,62 @@
+
 brown.png
-size:492,146
-filter:Linear,Linear
-pma:true
+size: 492,146
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 brown_0
-bounds:396,32,72,38
+  rotate: false
+  xy: 396, 32
+  size: 72, 38
+  orig: 72, 38
+  offset: 0, 0
+  index: -1
 brown_1
-bounds:458,72,72,32
-rotate:90
+  rotate: true
+  xy: 458, 72
+  size: 72, 32
+  orig: 72, 32
+  offset: 0, 0
+  index: -1
 brown_2
-bounds:396,2,72,28
+  rotate: false
+  xy: 396, 2
+  size: 72, 28
+  orig: 72, 28
+  offset: 0, 0
+  index: -1
 brown_3
-bounds:278,5,72,21
+  rotate: false
+  xy: 278, 5
+  size: 72, 21
+  orig: 72, 21
+  offset: 0, 0
+  index: -1
 brown_base
-bounds:396,72,72,60
-rotate:90
+  rotate: true
+  xy: 396, 72
+  size: 72, 60
+  orig: 72, 60
+  offset: 0, 0
+  index: -1
 flash
-bounds:2,4,140,140
+  rotate: false
+  xy: 2, 4
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
 flash1
-bounds:144,12,132,132
-offsets:4,4,140,140
+  rotate: false
+  xy: 144, 12
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
 flash2
-bounds:278,28,116,116
-offsets:12,12,140,140
+  rotate: false
+  xy: 278, 28
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1

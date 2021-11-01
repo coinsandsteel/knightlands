@@ -1,26 +1,62 @@
+
 halloween.png
-size:190,514
-filter:Linear,Linear
-pma:true
+size: 190,514
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 flash
-bounds:2,372,140,140
+  rotate: false
+  xy: 2, 372
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
 flash1
-bounds:2,238,132,132
-offsets:4,4,140,140
+  rotate: false
+  xy: 2, 238
+  size: 132, 132
+  orig: 140, 140
+  offset: 4, 4
+  index: -1
 flash2
-bounds:2,120,116,116
-offsets:12,12,140,140
+  rotate: false
+  xy: 2, 120
+  size: 116, 116
+  orig: 140, 140
+  offset: 12, 12
+  index: -1
 halloween_0
-bounds:112,2,116,72
-rotate:90
+  rotate: true
+  xy: 112, 2
+  size: 116, 72
+  orig: 116, 72
+  offset: 0, 0
+  index: -1
 halloween_1
-bounds:120,120,116,68
-rotate:90
+  rotate: true
+  xy: 120, 120
+  size: 116, 68
+  orig: 116, 68
+  offset: 0, 0
+  index: -1
 halloween_2
-bounds:136,254,116,52
-rotate:90
+  rotate: true
+  xy: 136, 254
+  size: 116, 52
+  orig: 116, 52
+  offset: 0, 0
+  index: -1
 halloween_3
-bounds:144,396,116,40
-rotate:90
+  rotate: true
+  xy: 144, 396
+  size: 116, 40
+  orig: 116, 40
+  offset: 0, 0
+  index: -1
 halloween_base
-bounds:2,32,108,86
+  rotate: false
+  xy: 2, 32
+  size: 108, 86
+  orig: 108, 86
+  offset: 0, 0
+  index: -1
