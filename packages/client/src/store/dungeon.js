@@ -149,6 +149,10 @@ export default {
     updateState(state, data) {
       console.log("Response from server", data);
 
+      if (data.invis !== undefined) {
+        state.user.invis = data.invis;
+      }
+
       // cellRevealed
       if (data.cell) {
         console.log("New cell", data.cell);
@@ -250,10 +254,6 @@ export default {
 
       if (data.free !== undefined) {
         state.maze.isFree = data.free;
-      }
-
-      if (data.invis !== undefined) {
-        state.user.invis = data.invis;
       }
     },
     resetCombat(state) {
