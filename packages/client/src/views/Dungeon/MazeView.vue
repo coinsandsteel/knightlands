@@ -222,7 +222,7 @@ export default {
     async handleCellClick(cell) {
       let index = cell.index;
       const forceTrapInteraction =
-        this.userCell.trap && index !== this.user.cell;
+        this.userCell.trap && index !== this.user.cell && this.user.invis <= 0;
       if (forceTrapInteraction) {
         index = this.user.cell;
       }
@@ -275,16 +275,14 @@ export default {
       try {
         if (cellIndex == this.user.cell) {
           let response = false;
-          let responseType = "loot";
+          let responseType;
           let cmdResponse;
-
-          console.log("Cell click", _.clone(cell));
 
           if (cell.enemy) {
             response = await ShowEnemyPopup(cell.enemy.id, cell.enemy.health);
           } else if (cell.altar) {
             response = await ShowAltarPopup(cell.altar.id);
-          } else if (cell.trap) {
+          } else if (cell.trap && this.user.invis <= 0) {
             response = await ShowTrapPopup(cell.trap.id);
           } else if (cell.loot) {
             response = await this.showPrompt(
@@ -303,6 +301,7 @@ export default {
                 }
               ]
             );
+            responseType = "loot";
           } else if (cell.exit) {
             response = await ShowExitPopup();
             responseType = "exit";

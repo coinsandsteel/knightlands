@@ -316,42 +316,54 @@ export default {
     unsubscribe() {
       this.$app.$game.offNetwork(Events.SDungeonUpdate);
     },
-    init(store, data) {
+    init({ commit, getters, state }, data) {
       console.log("init");
-      store.commit("setInitialState", data);
+      commit("setInitialState", data);
 
       // initialize timers
 
-      const playerStats = store.getters.playerStats(null);
-      store.state.hpTimer.removeAllListeners("finished");
-      store.state.hpTimer.timeLeft =
-        playerStats.hpRegen -
-        (this.$app.$game.nowSec - store.state.user.lastHpRegen);
+      const playerStats = getters.playerStats(null);
+      state.hpTimer.removeAllListeners("finished");
+      state.hpTimer.timeLeft =
+        playerStats.hpRegen - (this.$app.$game.nowSec - state.user.lastHpRegen);
 
-      store.state.hpTimer.on("finished", () => {
-        if (playerStats.maxHealth > store.state.user.health) {
-          store.commit("addHealth", 1);
+      state.hpTimer.on("finished", () => {
+        const timeElapsed = this.$app.$game.nowSec - state.user.lastHpRegen;
+        const hpRegened = Math.min(
+          Math.floor(timeElapsed / playerStats.hpRegen),
+          playerStats.maxHealth - state.user.health
+        );
+
+        if (hpRegened > 0) {
+          commit("addHealth", hpRegened);
+          state.user.lastHpRegen += hpRegened * playerStats.hpRegen;
         }
-        store.state.hpTimer.timeLeft = playerStats.hpRegen;
+
+        state.hpTimer.timeLeft =
+          playerStats.hpRegen -
+          (this.$app.$game.nowSec - state.user.lastHpRegen);
       });
 
-      store.state.energyTimer.removeAllListeners("finished");
-      store.state.energyTimer.timeLeft =
+      state.energyTimer.removeAllListeners("finished");
+      state.energyTimer.timeLeft =
         playerStats.energyRegen -
-        (this.$app.$game.nowSec - store.state.user.lastEnergyRegen);
+        (this.$app.$game.nowSec - state.user.lastEnergyRegen);
 
-      console.log(
-        "store.state.energyTimer.timeLeft",
-        store.state.energyTimer.timeLeft
-      );
+      state.energyTimer.on("finished", () => {
+        const timeElapsed = this.$app.$game.nowSec - state.user.lastEnergyRegen;
+        const energyRegened = Math.min(
+          Math.floor(timeElapsed / playerStats.energyRegen),
+          playerStats.maxEnergy - state.user.energy
+        );
 
-      store.state.energyTimer.on("finished", () => {
-        console.log("energy regened!");
-        if (playerStats.maxEnergy > store.state.user.energy) {
-          console.log("add energy!");
-          store.commit("addEnergy", 1);
+        if (energyRegened > 0) {
+          commit("addEnergy", energyRegened);
+          state.user.lastEnergyRegen += energyRegened * playerStats.energyRegen;
         }
-        store.state.energyTimer.timeLeft = playerStats.energyRegen;
+
+        state.hpTimer.timeLeft =
+          playerStats.energyRegen -
+          (this.$app.$game.nowSec - state.user.lastEnergyRegen);
       });
     },
     async load(store) {
@@ -417,6 +429,7 @@ export default {
       return response;
     },
     updateRegenTimers({ state }) {
+      console.log("updateRegenTimers");
       state.hpTimer.timeLeft = this.$app.$game.nowSec - state.user.lastHpRegen;
       state.energyTimer.timeLeft =
         this.$app.$game.nowSec - state.user.lastEnergyRegen;

@@ -90,6 +90,8 @@
               <div class="stat-t">{{ $t("health-reg") }}</div>
               <div class="stat-t">{{ $t("energy") }}</div>
               <div class="stat-t">{{ $t("energy-reg") }}</div>
+              <div class="stat-t">{{ $t("attack") }}</div>
+              <div class="stat-t">{{ $t("defense") }}</div>
             </div>
             <div class="flex flex-column value-column">
               <div
@@ -132,6 +134,24 @@
               >
                 {{ secondaryStats.energyRegen }}&nbsp;/&nbsp;hr
               </div>
+              <div
+                class="stat-v enemy-title-font"
+                :class="[
+                  secondaryStatsWereModifiedMap['attack'] ? 'rarity-epic' : null
+                ]"
+              >
+                {{ secondaryStats.attack }}
+              </div>
+              <div
+                class="stat-v enemy-title-font"
+                :class="[
+                  secondaryStatsWereModifiedMap['defense']
+                    ? 'rarity-epic'
+                    : null
+                ]"
+              >
+                {{ secondaryStats.defense }}
+              </div>
             </div>
           </div>
         </div>
@@ -139,7 +159,11 @@
         <div
           class="stat-commit flex flex-center width-100 margin-top-2 flex-evenly-spaced margin-bottom-3"
         >
-          <CustomButton v-show="rebalanceAllowed" type="blue" @click="rebalanceAttributes">
+          <CustomButton
+            v-show="rebalanceAllowed"
+            type="blue"
+            @click="rebalanceAttributes"
+          >
             {{ $t("rebalance") }}
             <IconWithValue iconClass="h-energy" valueClass="font-size-18">{{
               40
