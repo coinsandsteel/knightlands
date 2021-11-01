@@ -271,6 +271,8 @@ export default {
   async created() {
     Vue.prototype.$app = this;
 
+    this.isProd = process.env.NODE_ENV == "production";
+
     this.$game.on("change-class", async () => {
       if (this.selectionShown) {
         return;

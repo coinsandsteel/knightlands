@@ -5,7 +5,7 @@
       {{ $t("depth", { val: maze.floor }) }}
     </Title>
 
-    <div class="flex flex-center panel-input padding-1">
+    <div class="flex flex-center panel-input padding-1" v-if="!$app.isProd">
       <CustomButton type="yellow" @click="resetDungeon"
         >Reset dungeon</CustomButton
       >
