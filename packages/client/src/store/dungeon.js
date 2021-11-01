@@ -105,11 +105,6 @@ export default {
         state.user.invis += 10;
       }
     },
-    updateInvisibility(state) {
-      if (state.user.invis) {
-        state.user.invis--;
-      }
-    },
     setInitialState(state, data) {
       if (!data) {
         return;
@@ -256,6 +251,10 @@ export default {
       if (data.free !== undefined) {
         state.maze.isFree = data.free;
       }
+
+      if (data.invis !== undefined) {
+        state.user.invis = data.invis;
+      }
     },
     resetCombat(state) {
       state.combat = _.clone(combatInitialState);
@@ -376,7 +375,6 @@ export default {
       await this.$app.$game._wrapOperation(Operations.SDungeonRevealCell, {
         cellId: index
       });
-      store.commit("updateInvisibility");
     },
     async useCell(store, index) {
       const response = (
@@ -384,14 +382,12 @@ export default {
           cellId: index
         })
       ).response;
-      store.commit("updateInvisibility");
       return response;
     },
     async moveToCell(store, index) {
       await this.$app.$game._wrapOperation(Operations.SDungeonMove, {
         cellId: index
       });
-      store.commit("updateInvisibility");
     },
     async combat(store, move) {
       return (

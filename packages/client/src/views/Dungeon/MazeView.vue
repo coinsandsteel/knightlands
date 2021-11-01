@@ -221,10 +221,12 @@ export default {
       }
       return cellIdx == this.user.cell;
     },
+    isTrapped() {
+      return this.userCell.trap && this.user.invis <= 0;
+    },
     async handleCellClick(cell) {
       let index = cell.index;
-      const forceTrapInteraction =
-        this.userCell.trap && index !== this.user.cell && this.user.invis <= 0;
+      const forceTrapInteraction = index !== this.user.cell && this.isTrapped();
       if (forceTrapInteraction) {
         index = this.user.cell;
       }
@@ -245,14 +247,15 @@ export default {
     async movePlayerToCell(index) {
       const targetCell = this.getCellAt(this.indexToCellIndex[index]);
       const player = this.$refs.player;
+
+      if (targetCell.trap && this.user.invis <= 0) {
+        this.interactWithCell(index, this.indexToCellIndex[index]);
+      }
+
       if (this.firstMove) {
         this.firstMove = false;
         player.snapToPosition(this.cellToScreen(targetCell));
         return;
-      }
-
-      if (targetCell.trap && this.user.invis <= 0) {
-        this.interactWithCell(index, this.indexToCellIndex[index]);
       }
 
       await new Promise(resolve => {

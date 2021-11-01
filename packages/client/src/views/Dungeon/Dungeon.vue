@@ -107,7 +107,7 @@
         >
       </div>
     </div>
-    <Maze />
+    <Maze ref="maze" />
   </div>
 </template>
 
@@ -177,11 +177,18 @@ export default {
       await this.performRequest(this.$store.dispatch("dungeon/reset"));
     },
     async usePotion() {
+      if (this.$refs.maze.isTrapped()) {
+        return;
+      }
       await this.performRequest(
         this.$store.dispatch("dungeon/useItem", "potion")
       );
     },
     async useScroll() {
+      if (this.$refs.maze.isTrapped()) {
+        return;
+      }
+
       const used = await this.performRequest(
         this.$store.dispatch("dungeon/useItem", "scroll")
       );

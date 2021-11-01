@@ -7,6 +7,22 @@
     ></div>
 
     <div class="absolute-stretch img flex flex-center" :style="objectImage">
+      <CustomButton
+        class="move-btn"
+        type="green"
+        @click.stop="confirm"
+        v-if="energy"
+      >
+        <IconWithValue
+          iconClass="h-energy"
+          valueClass="nowrap font-size-18"
+          :flip="true"
+          >{{ $t("p-move", { v: energy }) }}</IconWithValue
+        >
+      </CustomButton>
+    </div>
+
+    <div class="absolute-stretch flex flex-center move-btn">
       <CustomButton type="green" @click.stop="confirm" v-if="energy">
         <IconWithValue
           iconClass="h-energy"
@@ -204,6 +220,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.move-btn {
+  z-index: 2;
+}
+
 .dungeon-cell {
   position: relative;
 
@@ -211,6 +231,7 @@ export default {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    z-index: 0;
 
     &.r90 {
       transform: rotateZ(90deg);
@@ -226,7 +247,7 @@ export default {
   }
 
   & .highlight {
-    z-index: 5;
+    z-index: 3;
 
     @keyframes scaleme {
       0% {
@@ -253,7 +274,8 @@ export default {
 
     &.noanim {
       animation: none;
-      opacity: 0.5;
+      background-image: url("/images/halloween_assets/path.png");
+      z-index: 1;
     }
   }
 }
