@@ -316,6 +316,12 @@ export default {
             return;
           }
 
+          const currentItems = {
+            scroll: this.user.scroll,
+            potion: this.user.potion,
+            key: this.user.key
+          };
+
           if (response == "open") {
             // interact with the object in the cell
             cmdResponse = await this.performRequestNoCatch(
@@ -331,6 +337,13 @@ export default {
           if (cmdResponse) {
             if (responseType == "loot") {
               console.log("Loot cmd response", cmdResponse);
+
+              for (const k in currentItems) {
+                if (cmdResponse.items[k]) {
+                  cmdResponse.items[k] -= currentItems[k];
+                }
+              }
+
               if (cmdResponse.items) {
                 this.$app.logEvent("dungeon-items", {
                   items: cmdResponse.items

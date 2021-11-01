@@ -47,6 +47,9 @@ export default {
       lastEnergyRegen: null,
       mHand: 0,
       oHand: 0,
+      scroll: 0,
+      potion: 0,
+      key: 0,
       stats: {
         str: 0,
         dex: 0,

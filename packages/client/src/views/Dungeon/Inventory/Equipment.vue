@@ -52,6 +52,12 @@ import EquipmentSlot from "./EquipmentSlot.vue";
 import { mapState } from "vuex";
 import Rarity from "@/../../knightlands-shared/rarity";
 
+const RarityToIndex = {
+  [Rarity.Common]: 0,
+  [Rarity.Rare]: 1,
+  [Rarity.Epic]: 2
+};
+
 export default {
   components: { EquipmentSlot, CustomButton },
   data: () => ({
@@ -101,9 +107,15 @@ export default {
       this.offSelected = id;
     },
     getItems(defensive) {
-      const items = this.user.equip.filter(
-        x => DungeonItems[x].defensive == defensive
-      );
+      const items = this.user.equip
+        .filter(x => DungeonItems[x].defensive == defensive)
+        .sort(
+          (x, y) =>
+            RarityToIndex[DungeonItems[x].rarity] -
+            RarityToIndex[DungeonItems[y].rarity]
+        );
+
+      console.log(items);
       // select best rarity
       const result = new Array(3);
 
@@ -116,7 +128,6 @@ export default {
         if (prevItem) {
           const prevRarity = DungeonItems[prevItem].rarity;
           const currentRarity = currentItemData.rarity;
-
           if (prevRarity == Rarity.Rare && currentRarity != Rarity.Epic) {
             replace = false;
           }
