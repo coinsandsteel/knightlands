@@ -400,9 +400,8 @@ export default {
       this.energyEstimation = {};
       this.highlightedCells = {};
 
-      const { energyRequired, path } = await this.$store.dispatch(
-        "dungeon/estimateEnergy",
-        cellIndex
+      const { energyRequired, path } = await this.performRequestNoCatch(
+        this.$store.dispatch("dungeon/estimateEnergy", cellIndex)
       );
       if (path.length == 0) {
         this.$set(this.energyEstimation, cellIndex, energyRequired);
