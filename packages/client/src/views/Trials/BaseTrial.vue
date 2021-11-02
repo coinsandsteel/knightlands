@@ -179,7 +179,7 @@ export default {
         }
 
         const stageState = trialState.stages[stage.id];
-        if (!stageState || !stageState.cleared) {
+        if (!stageState || !stageState.firstTimeCleared) {
           return true;
         }
       }
