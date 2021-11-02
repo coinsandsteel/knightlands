@@ -5,7 +5,7 @@
     :class="{ pointer: id }"
   >
     <span class="font-size-20 font-weight-900" v-html="damage"></span>
-    <div class="loot-slot  flex relative flex-column ">
+    <div class="loot-slot flex relative flex-column ">
       <div class="inner-border item_slot_dark" :class="rarity">
         <div
           :style="icon"
@@ -48,7 +48,8 @@ export default {
       return {
         "background-image": `url("/images/halloween_assets/items/${
           DungeonItems[this.id].image
-        }.png")`
+        }.png")`,
+        "background-size": "contain"
       };
     },
     emptyIcon() {
@@ -151,5 +152,6 @@ export default {
 .icon {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 </style>
