@@ -160,7 +160,7 @@
           class="stat-commit flex flex-center width-100 margin-top-2 flex-evenly-spaced margin-bottom-3"
         >
           <CustomButton
-            v-show="rebalanceAllowed"
+            :disabled="!rebalanceAllowed"
             type="blue"
             @click="rebalanceAttributes"
           >
@@ -221,7 +221,7 @@ export default {
   },
   data: () => ({
     edit: true,
-    statsDelta: {}
+    newStats: {}
   }),
   watch: {
     "user.stats": {
@@ -240,8 +240,8 @@ export default {
       playerStats: "dungeon/playerStats",
       nextExp: "dungeon/nextExp"
     }),
-    statsDeltaSum() {
-      return _.sum(Object.values(this.statsDelta));
+    newStatsSum() {
+      return _.sum(Object.values(this.newStats));
     },
     primaryStatsSum() {
       return _.sum(Object.values(this.primaryStats));
@@ -249,15 +249,8 @@ export default {
     primaryStats() {
       return this.user.stats;
     },
-    primaryStatsModified() {
-      const statsModified = {};
-      _.keys(this.user.stats).forEach(key => {
-        statsModified[key] = this.getStatValue(key);
-      });
-      return statsModified;
-    },
     secondaryStats() {
-      const currentPlayerStats = this.playerStats(this.primaryStatsModified);
+      const currentPlayerStats = this.playerStats(this.newStats);
       return {
         ...currentPlayerStats,
         hpRegen: Math.floor(3600 / currentPlayerStats.hpRegen),
@@ -266,7 +259,7 @@ export default {
     },
     secondaryStatsWereModifiedMap() {
       const initialPlayerstats = this.playerStats(this.primaryStats);
-      const currentPlayerStats = this.playerStats(this.primaryStatsModified);
+      const currentPlayerStats = this.playerStats(this.newStats);
       const statsModified = {};
       _.keys(initialPlayerstats).forEach(key => {
         statsModified[key] =
@@ -275,15 +268,15 @@ export default {
       return statsModified;
     },
     attributesModified() {
-      for (let i in this.statsDelta) {
-        if (this.statsDelta[i] !== 0) {
+      for (let key in this.newStats) {
+        if (this.newStats[key] !== this.primaryStats[key]) {
           return true;
         }
       }
       return false;
     },
     canIncrease() {
-      return this.statsDeltaSum < this.user.level - 1;
+      return this.newStatsSum < this.user.level - 1;
     },
     upgradeAllowed() {
       return this.primaryStatsSum < this.user.level - 1;
@@ -297,52 +290,38 @@ export default {
       this.$router.push({ name: "dungeon-entrance" });
     },
     init() {
-      for (let statKey in this.primaryStats) {
-        this.$set(this.statsDelta, statKey, 0);
+      for (let key in this.primaryStats) {
+        this.$set(this.newStats, key, this.primaryStats[key]);
       }
     },
-    commit() {
-      for (let statKey in this.primaryStatsModified) {
-        this.$set(this.statsDelta, statKey, 0);
-      }
-    },
-    getAttributeValue(stat) {
-      return this.primaryStats[stat] + (this.statsDelta[stat] || 0);
-    },
-    getStatValue(stat) {
-      return this.getAttributeValue(stat);
+    getStatValue(key) {
+      return this.newStats[key];
     },
     getMaxStatValue() {
-      return this.user.level - this.statsDeltaSum - 1;
+      return this.user.level - 1 - this.newStatsSum;
     },
-    canDecrease(att) {
-      return this.getEditedAttribute(att) > 0 && this.attributesModified;
+    canDecrease(key) {
+      return this.newStats[key] > this.primaryStats[key];
     },
-    increaseAttribute(attr) {
-      this.statsDelta[attr]++;
+    increaseAttribute(key) {
+      this.newStats[key]++;
       return true;
     },
-    decreaseAttribute(attr) {
-      this.statsDelta[attr]--;
+    decreaseAttribute(key) {
+      this.newStats[key]--;
       return true;
     },
     async confirmAttributes() {
-      await this.$store.dispatch(
-        "dungeon/commitStats",
-        this.primaryStatsModified
-      );
+      await this.$store.dispatch("dungeon/commitStats", this.newStats);
     },
-    getEditedAttribute(attr) {
-      return this.statsDelta[attr];
-    },
-    reset(attr) {
-      while (this.canDecrease(attr)) {
-        this.decreaseAttribute(attr);
+    reset(key) {
+      while (this.canDecrease(key)) {
+        this.decreaseAttribute(key);
       }
     },
     resetAttributes() {
-      for (let i in this.statsDelta) {
-        this.statsDelta[i] = 0;
+      for (let key in this.newStats) {
+        this.newStats[key] = this.primaryStats[key];
       }
     },
     async rebalanceAttributes() {
