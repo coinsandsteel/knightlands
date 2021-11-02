@@ -24,7 +24,7 @@
             >
           </transition>
         </div>
-        <PurchaseButton type="yellow" :price="price" @click="submit">{{
+        <PurchaseButton type="yellow" :soft="true" :price="price" @click="submit">{{
           $t("sub-nick")
         }}</PurchaseButton>
       </div>

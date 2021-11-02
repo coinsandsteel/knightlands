@@ -160,7 +160,7 @@
           class="stat-commit flex flex-center width-100 margin-top-2 flex-evenly-spaced margin-bottom-3"
         >
           <CustomButton
-            v-show="rebalanceAllowed"
+            :disabled="!rebalanceAllowed"
             type="blue"
             @click="rebalanceAttributes"
           >
