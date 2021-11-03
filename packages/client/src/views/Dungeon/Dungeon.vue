@@ -86,7 +86,7 @@
         <CustomButton
           type="grey"
           @click="usePotion"
-          :disabled="user.potion == 0"
+          :disabled="user.potion <= 0"
         >
           <IconWithValue iconClass="hpotion big">{{
             user.potion
@@ -95,7 +95,7 @@
         <CustomButton
           type="grey"
           @click="useScroll"
-          :disabled="user.scroll == 0"
+          :disabled="user.scroll <= 0"
           ><IconWithValue iconClass="hscroll big">{{
             user.scroll
           }}</IconWithValue></CustomButton

@@ -427,11 +427,16 @@ export default {
 
       return response;
     },
-    updateRegenTimers({ state }) {
+    updateRegenTimers({ getters, state }) {
       console.log("updateRegenTimers");
-      state.hpTimer.timeLeft = this.$app.$game.nowSec - state.user.lastHpRegen;
+
+      state.hpTimer.timeLeft =
+        getters.playerStats.hpRegen -
+        (this.$app.$game.nowSec - state.user.lastHpRegen);
+
       state.energyTimer.timeLeft =
-        this.$app.$game.nowSec - state.user.lastEnergyRegen;
+        getters.playerStats.energyRegen -
+        (this.$app.$game.nowSec - state.user.lastEnergyRegen);
     },
     async nextFloor(store) {
       let result = await this.$app.$game._wrapOperation(
