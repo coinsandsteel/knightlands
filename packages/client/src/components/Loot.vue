@@ -29,7 +29,7 @@
 
       <div class="icon-locked" v-if="showLocked && itemData && itemData.locked">
         <span class="icon-locked-corner" />
-        <span class="icon-locked-text">L</span>
+        <span class="icon-locked-text"></span>
       </div>
 
       <div
@@ -423,19 +423,9 @@ export default {
 .icon-locked-corner {
   width: 0;
   height: 0;
-  border-top: 2.5rem solid #bd270c !important;
-  border-right: 2.5rem solid transparent !important;
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.icon-locked-text {
-  top: 0.15rem;
-  left: 0.25rem;
-  font-size: 1.3rem;
-  position: absolute;
-  text-shadow: 1px 1px black;
 }
 
 .element {
