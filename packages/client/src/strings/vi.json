@@ -1739,6 +1739,8 @@
   "prompt-confirm-title": "Cú pháp xác nhận",
   "prompt-conn-m": "Kết nối bị gián đoạn. Vui lòng thử lại sau.",
   "prompt-conn-t": "Lỗi kết nối",
+  "prompt-shutdown-h": null,
+  "prompt-shutdown-t": null,
   "prompt-snap-msg": "Đã xảy ra lỗi. Thử lại sau.",
   "prompt-snap-title": "Oh snap!",
   "prompt-success-title": "Thành công!",

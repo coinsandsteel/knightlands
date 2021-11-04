@@ -1739,6 +1739,8 @@
   "prompt-confirm-title": "Confirm action",
   "prompt-conn-m": "Connection was interrupted. Please try again later.",
   "prompt-conn-t": "Connection error",
+  "prompt-shutdown-h": "Something new is coming!",
+  "prompt-shutdown-t": "At this moment we are restarting the server. Probably, we have added something or fixed some bugs. The game is coming back soon!",
   "prompt-snap-msg": "Something went wrong. Try again later.",
   "prompt-snap-title": "Oh snap!",
   "prompt-success-title": "Success!",

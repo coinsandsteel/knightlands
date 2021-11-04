@@ -1739,6 +1739,8 @@
   "prompt-confirm-title": "Подтверди действие",
   "prompt-conn-m": "Соединение прервано. Пожалуйста, попробуй позже.",
   "prompt-conn-t": "Ошибка подключения",
+  "prompt-shutdown-h": null,
+  "prompt-shutdown-t": null,
   "prompt-snap-msg": "Что-то пошло не так. Попробуй позже.",
   "prompt-snap-title": "Вот незадача!",
   "prompt-success-title": "Успешно!",

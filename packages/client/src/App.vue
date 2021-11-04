@@ -354,23 +354,28 @@ export default {
       }
     });
 
-    // this.$game.on(this.$game.ConnectionError, async () => {
-    //   this.$game.disconnect();
+    this.$game.on(this.$game.Shutdown, async () => {
+      this.showPrompt(
+        this.$t("prompt-shutdown-h"),
+        this.$t("prompt-shutdown-t")
+      );
+    });
 
-    //   await this.showPrompt(
-    //     this.$t("prompt-conn-t"),
-    //     this.$t("prompt-conn-m"),
-    //     [
-    //       {
-    //         type: "green",
-    //         title: this.$t("btn-retry"),
-    //         response: true
-    //       }
-    //     ]
-    //   );
-
-    //   this.$game.connect();
-    // });
+    this.$game.on(this.$game.ConnectionError, async () => {
+      this.$game.disconnect();
+      await this.showPrompt(
+        this.$t("prompt-conn-t"),
+        this.$t("prompt-conn-m"),
+        [
+          {
+            type: "green",
+            title: this.$t("btn-retry"),
+            response: true
+          }
+        ]
+      );
+      this.$game.connect();
+    });
 
     this.$game.on(this.$game.Ready, () => {
       if (this.$route.matched.some(record => record.meta.requiresAuth)) {

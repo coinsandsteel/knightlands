@@ -36,6 +36,7 @@ class Game {
     this.Ready = "ready";
     this.SignUp = "signup";
     this.SignedOut = "signed_out";
+    this.Shutdown = "shutdown";
     this.Disconnected = "disconnected";
     this.WalletSignedIn = "wallet_sign_in";
     this.WalletSignedOut = "wallet_sign_out";
@@ -587,17 +588,51 @@ class Game {
     });
   }
 
-  _handleSocketError() {
-    this._vm.$emit(this.ConnectionError);
+  _handleSocketError(error) {
+    if (error.code === DisconnectCodes.ServerShutdown) {
+      this._vm.$emit(this.Shutdown);
+      return;
+    }
+
+    /*
+    SCClientSocket.errorStatuses:
+      1001: 'Socket was disconnected',
+      1002: 'A WebSocket protocol error was encountered',
+      1003: 'Server terminated socket because it received invalid data',
+      1005: 'Socket closed without status code',
+      1006: 'Socket hung up',
+      1007: 'Message format was incorrect',
+      1008: 'Encountered a policy violation',
+      1009: 'Message was too big to process',
+      1010: 'Client ended the connection because the server did not comply with extension requirements',
+      1011: 'Server encountered an unexpected fatal condition',
+      4000: 'Server ping timed out',
+      4001: 'Client pong timed out',
+      4002: 'Server failed to sign auth token',
+      4003: 'Failed to complete handshake',
+      4004: 'Client failed to save auth token',
+      4005: 'Did not receive #handshake from client before timeout',
+      4006: 'Failed to bind socket to message broker',
+      4007: 'Client connection establishment timed out',
+      4008: 'Server rejected handshake from client'
+    };
+    */
+    if (error.code >= 1002 && error.code <= 4008) {
+      this._vm.$emit(this.ConnectionError);
+      return;
+    }
   }
 
   _handleDisconnect(errorCode) {
     switch (errorCode) {
+      case DisconnectCodes.ServerShutdown:
+      case DisconnectCodes.ServerDown:
       case DisconnectCodes.OtherClientSignedIn:
       case DisconnectCodes.NotAllowed:
-      case DisconnectCodes.NotAuthorized:
+      case DisconnectCodes.NotAuthorized: {
         this.logout();
         break;
+      }
     }
     this._vm.$emit(this.Disconnected);
   }
@@ -1208,7 +1243,7 @@ class Game {
     if (!this.authenticated) {
       return;
     }
-
+    
     try {
       let serverTime = await this._request(Operations.SyncTime);
       this._serverTimeDiff = serverTime.time - this.now;
