@@ -206,7 +206,7 @@ export default {
     },
     progress() {
       return {
-        max: this.enemy.health,
+        max: Math.round(this.enemy.health * this.maze.power),
         current: this.combat.enemyHealth
       };
     },

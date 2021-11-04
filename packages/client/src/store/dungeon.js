@@ -27,6 +27,7 @@ export default {
     energyTimer: new timer(),
     loaded: false,
     maze: {
+      power: 1,
       isFree: true,
       revealed: [],
       floor: 1,
@@ -196,7 +197,7 @@ export default {
       }
 
       if (data.enemy !== undefined) {
-        Vue.$set(
+        Vue.prototype.$set(
           state.maze.revealed[data.enemy.cell].enemy,
           "health",
           data.enemy.health

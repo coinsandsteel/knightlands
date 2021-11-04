@@ -26,7 +26,7 @@
         <img :src="enemyImage" alt="" class="popup-img margin-bottom-2" />
         <ProgressBar
           :value="enemyCurrentHealth"
-          :maxValue="enemy.health"
+          :maxValue="health"
           height="4px"
           width="80%"
           valuePosition="top"
@@ -39,7 +39,7 @@
         <div class="font-size-22 font-outline">
           {{ $t("attack") }}:&nbsp;
           <IconWithValue iconClass="icon-attack">
-            {{ enemy.attack }}
+            {{ attack }}
           </IconWithValue>
         </div>
       </div>
@@ -70,11 +70,21 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import enemies from "@/metadata/halloween/dungeon_enemies.json";
 import meta from "@/metadata/halloween/dungeon_meta.json";
+import { mapState } from "vuex";
 
 export default {
   props: ["enemyId", "enemyCurrentHealth"],
   components: { UserDialog, CustomButton, ProgressBar, IconWithValue },
   computed: {
+    ...mapState({
+      maze: state => state.dungeon.maze
+    }),
+    health() {
+      return Math.round(this.enemy.health * this.maze.power);
+    },
+    attack() {
+      return Math.round(this.enemy.attack * this.maze.power);
+    },
     enemy() {
       return enemies[this.enemyId];
     },
