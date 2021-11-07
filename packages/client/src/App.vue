@@ -175,6 +175,9 @@ const ShowChangeNickname = create(ChangeNickname);
 import ItemsReceived from "@/components/ItemsReceived.vue";
 const ShowItemsReceived = create(ItemsReceived, "items", "soft", "hard");
 
+import Shutdown from "@/views/Shutdown.vue";
+const ShowShutdown = create(Shutdown);
+
 import ChangeAvatar from "@/views/Character/Avatars/ChangeAvatar.vue";
 const ShowChangeAvatar = create(ChangeAvatar);
 
@@ -208,7 +211,8 @@ export default {
       ready: false,
       footers: [],
       footerProps: [],
-      hideTopBar: false
+      hideTopBar: false,
+      connectionErrorPrompt: false
     };
   },
   sectionBackButton: null,
@@ -355,14 +359,15 @@ export default {
     });
 
     this.$game.on(this.$game.Shutdown, async () => {
-      this.showPrompt(
-        this.$t("prompt-shutdown-h"),
-        this.$t("prompt-shutdown-t")
-      );
+      await ShowShutdown();
     });
 
     this.$game.on(this.$game.ConnectionError, async () => {
+      if (this.connectionErrorPrompt) {
+        return;
+      }
       this.$game.disconnect();
+      this.connectionErrorPrompt = true;
       await this.showPrompt(
         this.$t("prompt-conn-t"),
         this.$t("prompt-conn-m"),
@@ -375,6 +380,7 @@ export default {
         ]
       );
       this.$game.connect();
+      this.connectionErrorPrompt = false;
     });
 
     this.$game.on(this.$game.Ready, () => {
