@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode dev",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build && node -r esm -r ts-node/register src/commands/update_service_worker.js",
     "lint": "vue-cli-service lint",
     "prebuild": "node ./node_modules/rimraf/bin.js ./node_modules/.cache",
-    "locale": "node -r esm -r ts-node/register src/strings/fetch_locale_strings.js",
+    "locale": "node -r esm -r ts-node/register src/commands/fetch_locale_strings.js",
     "test": "vue-cli-service build --mode test"
   },
   "dependencies": {
@@ -84,12 +84,15 @@
     "eslint-plugin-vue": "^5.0.0",
     "esm": "^3.2.25",
     "form-data": "^4.0.0",
+    "fs-extra": "^10.0.0",
     "less": "^3.12.2",
     "less-loader": "^4.1.0",
     "node-fetch": "2",
     "phrase-js": "1.1.0",
+    "replace-in-file": "^6.3.2",
     "sass-loader": "^7.1.0",
     "ts-node": "^10.2.1",
+    "uid": "^2.0.0",
     "vue-cli-plugin-vuetify": "^0.5.0",
     "vue-template-compiler": "^2.6.10"
   },

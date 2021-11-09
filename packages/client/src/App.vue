@@ -271,6 +271,11 @@ export default {
 
     this.firebase = initializeApp(firebaseConfig);
     this.analytics = getAnalytics(this.firebase);
+
+    window.addEventListener('sw-installed', this.handleUpdate);
+  },
+  beforeDestroy() {
+    window.removeEventListener('sw-installed');
   },
   async created() {
     Vue.prototype.$app = this;
@@ -403,6 +408,30 @@ export default {
     });
   },
   methods: {
+    async handleUpdate() {
+      let response = await this.showPrompt(
+        'New version',
+        'New version is available. Reload page?',
+        [ 
+          {
+            type: "red",
+            title: this.$t("btn-cancel"),
+            response: false,
+            mute: true
+          },
+          {
+            type: "green",
+            title: this.$t("btn-ok"),
+            response: true,
+            mute: true
+          }
+        ]
+      );
+      if (!response) {
+        return;
+      }
+      window.newWorker.postMessage({ action: 'skipWaiting' });
+    },
     logEvent(name, params) {
       logEvent(this.analytics, name, params);
     },

@@ -2,7 +2,7 @@ import { Configuration, LocalesApi } from "phrase-js";
 import FormData from "form-data";
 import fetch from "node-fetch";
 import fs from "fs";
-import localisationSetup from "./setup";
+import localisationSetup from "../strings/setup";
 
 const globalAny = global;
 globalAny.window = { fetch };

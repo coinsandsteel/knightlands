@@ -2,67 +2,94 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Alef&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Overpass&display=swap" rel="stylesheet">
-    <title>Knightlands: Crypto RPG</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Alef&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Overpass&display=swap" rel="stylesheet">
+  <title>Knightlands: Crypto RPG</title>
 
-    <style>
-        .indicator {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        body {
-            height: 100vh;
-            min-height: 100vh;
-            margin: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        #app {
-            overflow: hidden;
-            position: relative;
-            color: white;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            margin: 0 auto;
-        }
-        
-        html {
-            background: #2a232b;
-            font-family: "Brandon", sans-serif;
-            font-size: 6px;
-            line-height: 1;
-            box-sizing: content-box;
-        }
-    </style>
+  <style>
+    .indicator {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body {
+      height: 100vh;
+      min-height: 100vh;
+      margin: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    #app {
+      overflow: hidden;
+      position: relative;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    html {
+      background: #2a232b;
+      font-family: "Brandon", sans-serif;
+      font-size: 6px;
+      line-height: 1;
+      box-sizing: content-box;
+    }
+  </style>
 </head>
 
 <body>
-    <noscript>
+  <noscript>
     <strong>We're sorry but knightlands doesn't work properly without JavaScript enabled. Please enable it to
       continue.</strong>
   </noscript>
-    <div id="app">
-        <div class="indicator">
-            <lottie-player autoplay loop mode="normal" src="loaders/03_Fade Circles/JSON/07_white.json" style="width: 64px; height: 64px;">
-            </lottie-player>
-        </div>
+  <div id="app">
+    <div class="indicator">
+      <lottie-player autoplay loop mode="normal" src="loaders/03_Fade Circles/JSON/07_white.json"
+        style="width: 64px; height: 64px;">
+      </lottie-player>
     </div>
-    <script src="/js/lottie-player.js"></script>
+  </div>
+  <script src="/js/lottie-player.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js', {
+          scope: '/'
+        })
+        .then(function(registration) {
+          registration.onupdatefound = () => {
+            window.newWorker = registration.installing;
+            console.log('[Service worker] Update found');
+
+            window.newWorker.onstatechange = () => {
+              console.log('[Service worker] State changed', window.newWorker.state);
+              if (window.newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                let event = new Event("sw-installed");
+                window.dispatchEvent(event);
+              }
+            };
+          };
+        });
+
+      navigator.serviceWorker.oncontrollerchange = (event) => {
+        console.log('[Service worker] Controller changed. Reloading...');
+        window.location.reload();
+      };
+    }
+  </script>
 </body>
 
 </html>

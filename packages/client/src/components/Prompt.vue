@@ -10,6 +10,7 @@
           :key="index"
           :class="btn.type"
           @click="$close(btn.response)"
+          :mute="btn.mute"
           >{{ $t(btn.title) }}</custom-button
         >
       </div>

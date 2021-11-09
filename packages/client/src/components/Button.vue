@@ -22,7 +22,7 @@
       <slot>{{ $t(caption) }}</slot>
     </div>
     <div v-if="locked" class="locked"></div>
-    <SoundEffect ref="fx" :files="sounds" channel="ui" />
+    <SoundEffect v-if="!mute" ref="fx" :files="sounds" channel="ui" />
   </div>
 </template>
 
@@ -31,6 +31,10 @@ import SoundEffect from "./SoundEffect.vue";
 
 export default {
   props: {
+    mute: {
+      type: Boolean,
+      default: false
+    },
     sounds: {
       type: Array,
       default() {
@@ -92,7 +96,9 @@ export default {
   },
   methods: {
     handleClick(e) {
-      this.$refs.fx.play();
+      if (!this.mute) {
+        this.$refs.fx.play();
+      }
       this.$emit("click", e);
       if (this.cb) {
         this.cb();

@@ -68,6 +68,10 @@ if (process.env.NODE_ENV !== "dev") {
 }
 
 module.exports = {
+  devServer: {
+    hot: true,
+    liveReload: true
+  },
   configureWebpack: {
     devtool: "source-map",
     optimization: optimization
