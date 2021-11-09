@@ -299,13 +299,13 @@ export default {
       return true;
     },
     async confirmSummon() {
-      this.$app.logEvent("raid-summon", {
-        raid: this.raid,
-        solo: this.isFreeRaid
-      });
       const data = await this.performRequest(
         this.$game.summonRaid(this.raid, this.isFreeRaid, this.options)
       );
+      this.$app.logEvent("raid-summon", {
+        raidMetaId: this.raid,
+        isFree: this.isFreeRaid
+      });
       this.$router.push({
         name: "view-raid",
         params: { raidId: data.raid }
