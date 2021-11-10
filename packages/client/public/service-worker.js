@@ -1,4 +1,4 @@
-let version = 'f19c7dbd5d0';
+let version = '7fb9d33562e';
 
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will

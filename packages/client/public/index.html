@@ -65,6 +65,7 @@
   </div>
   <script src="/js/lottie-player.js"></script>
   <script>
+    let justFoundNewSW = false;
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js', {
           scope: '/'
@@ -82,10 +83,20 @@
               }
             };
           };
+
+          if (registration.waiting) {
+            console.log('[Service worker] Found wating SW. Skip waiting.');
+            registration.waiting.postMessage({ action: 'skipWaiting' });
+            justFoundNewSW = true;
+          }
         });
 
       navigator.serviceWorker.oncontrollerchange = (event) => {
-        console.log('[Service worker] Controller changed. Reloading...');
+        console.log('[Service worker] Controller changed. Trying to reload...');
+        if (justFoundNewSW) {
+          console.log('[Service worker] This is fresh SW. No need to reload page.');
+          return;
+        }
         window.location.reload();
       };
     }

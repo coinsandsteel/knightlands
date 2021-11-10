@@ -45,7 +45,7 @@ self.addEventListener('activate', event => {
                 .then(cachesToDelete => {
                     return Promise.all(
                         cachesToDelete.map(cacheToDelete => {
-                            // console.log('[Service worker] Deleting cache', cacheToDelete);
+                            console.log('[Service worker] Deleting cache', cacheToDelete);
                             return caches.delete(cacheToDelete);
                         })
                     );
@@ -103,7 +103,7 @@ self.addEventListener('fetch', event => {
                     })
             );
         } else {
-            console.log('[Service worker] External request. Fetching external server.', urlObject.pathname);
+            //console.log('[Service worker] External request. Fetching external server.', urlObject.pathname);
         }
     } catch (error) {
         console.log('[Service worker] Fetch error', error)
