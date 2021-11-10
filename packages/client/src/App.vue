@@ -410,8 +410,8 @@ export default {
   methods: {
     async handleUpdate() {
       let response = await this.showPrompt(
-        'New version',
-        'New version is available. Reload page?',
+        this.$t("new-version-h"),
+        this.$t("new-version-t"),
         [ 
           {
             type: "red",
