@@ -546,7 +546,7 @@ export default {
     async join() {
       await this.performRequest(this.$game.joinRaid(this.raidId));
       await this.init();
-      this.$app.logEvent("raid-joined", {
+      this.$app.logEvent("raid-join", {
         raidMetaId: this.raid,
         isFree: this.isFreeRaid
       });
