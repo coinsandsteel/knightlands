@@ -1603,6 +1603,8 @@
   "necklace": "Ожерелье",
   "network": "Сеть",
   "new-adv": "Новое приключение",
+  "new-version-h": null,
+  "new-version-t": null,
   "next-p": "Следующая выплата {timer}",
   "next-refresh": "Обновить через {time}",
   "nick-busy": "Имя занято",

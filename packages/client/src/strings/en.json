@@ -1603,6 +1603,8 @@
   "necklace": "Amulet",
   "network": "Network",
   "new-adv": "New adventure",
+  "new-version-h": "An update was received!",
+  "new-version-t": "The new game version was received. Reload page?",
   "next-p": "Next payout {timer}",
   "next-refresh": "Refresh after {time}",
   "nick-busy": "Name is occupied",

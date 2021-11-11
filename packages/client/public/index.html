@@ -65,7 +65,6 @@
   </div>
   <script src="/js/lottie-player.js"></script>
   <script>
-    let justFoundNewSW = false;
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js', {
           scope: '/'
@@ -73,30 +72,23 @@
         .then(function(registration) {
           registration.onupdatefound = () => {
             window.newWorker = registration.installing;
-            console.log('[Service worker] Update found');
-
+            console.log('[SW manager] Update found');
             window.newWorker.onstatechange = () => {
-              console.log('[Service worker] State changed', window.newWorker.state);
+              console.log('[SW manager] State changed', window.newWorker.state);
               if (window.newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                 let event = new Event("sw-installed");
                 window.dispatchEvent(event);
               }
             };
           };
-
           if (registration.waiting) {
-            console.log('[Service worker] Found wating SW. Skip waiting.');
+            console.log('[SW manager] Found wating SW. Skip waiting.');
             registration.waiting.postMessage({ action: 'skipWaiting' });
-            justFoundNewSW = true;
           }
         });
 
       navigator.serviceWorker.oncontrollerchange = (event) => {
-        console.log('[Service worker] Controller changed. Trying to reload...');
-        if (justFoundNewSW) {
-          console.log('[Service worker] This is fresh SW. No need to reload page.');
-          return;
-        }
+        console.log('[SW manager] Controller changed. Reloading...');
         window.location.reload();
       };
     }
