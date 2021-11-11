@@ -65,32 +65,30 @@
   </div>
   <script src="/js/lottie-player.js"></script>
   <script>
+    window.version = "%version%";
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js', {
           scope: '/'
         })
         .then(function(registration) {
           registration.onupdatefound = () => {
-            window.newWorker = registration.installing;
-            console.log('[SW manager] Update found');
-            window.newWorker.onstatechange = () => {
-              console.log('[SW manager] State changed', window.newWorker.state);
-              if (window.newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                let event = new Event("sw-installed");
-                window.dispatchEvent(event);
+            worker = registration.installing;
+            console.log('[Service worker] Update found', {
+              reg: registration
+            });
+
+            worker.onstatechange = () => {
+              console.log('[Service worker] State changed', {
+                reg: registration
+              });
+              if (worker.state === 'activated') {
+                console.log('[Service worker] State is "activated". Reloading page.');
+                location.reload();
               }
             };
           };
-          if (registration.waiting) {
-            console.log('[SW manager] Found wating SW. Skip waiting.');
-            registration.waiting.postMessage({ action: 'skipWaiting' });
-          }
         });
-
-      navigator.serviceWorker.oncontrollerchange = (event) => {
-        console.log('[SW manager] Controller changed. Reloading...');
-        window.location.reload();
-      };
     }
   </script>
 </body>

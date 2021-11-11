@@ -447,6 +447,13 @@ class Game {
     }
   }
 
+  joinUpdateChannel() {
+    if (!this.updateChannel) {
+      this.updateChannel = this.createChannel(Events.UpdateRecieved, false);
+      this.updateChannel.watch(this._handleUpdateRecieved.bind(this));
+    }
+  }
+
   async signMessage(message) {
     return await this._blockchainClient.sign(message);
   }
@@ -656,6 +663,10 @@ class Game {
   }
 
   // EVENTS
+  _handleUpdateRecieved(data) {
+    this._vm.$emit(Events.UpdateRecieved, data);
+  }
+
   _handleRaidDamaged(data) {
     this._vm.$emit(Events.RaidDamaged, data);
   }

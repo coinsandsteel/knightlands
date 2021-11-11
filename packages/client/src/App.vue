@@ -212,7 +212,8 @@ export default {
       footers: [],
       footerProps: [],
       hideTopBar: false,
-      connectionErrorPrompt: false
+      connectionErrorPrompt: false,
+      updateRecievedPrompt: false
     };
   },
   sectionBackButton: null,
@@ -271,11 +272,6 @@ export default {
 
     this.firebase = initializeApp(firebaseConfig);
     this.analytics = getAnalytics(this.firebase);
-
-    window.addEventListener('sw-installed', this.handleUpdate);
-  },
-  beforeDestroy() {
-    window.removeEventListener('sw-installed');
   },
   async created() {
     Vue.prototype.$app = this;
@@ -291,6 +287,9 @@ export default {
       await ShowSelectClass();
       this.selectionShown = false;
     });
+
+    this.$game.on(Events.UpdateRecieved, this.handleUpdateRecieved.bind(this));
+    this.$game.joinUpdateChannel();
 
     this.$game.on(Events.FounderPackAcquired, async data => {
       for (const tokenId of data.tokenIds) {
@@ -408,11 +407,16 @@ export default {
     });
   },
   methods: {
-    async handleUpdate() {
+    async handleUpdateRecieved(data) {
+      if (this.updateRecievedPrompt || data.version === window.version) {
+        return;
+      }
+
+      this.updateRecievedPrompt = true;
       let response = await this.showPrompt(
         this.$t("new-version-h"),
         this.$t("new-version-t"),
-        [ 
+        [
           {
             type: "red",
             title: this.$t("btn-cancel"),
@@ -427,10 +431,13 @@ export default {
           }
         ]
       );
+      this.updateRecievedPrompt = false;
+
       if (!response) {
         return;
       }
-      window.newWorker.postMessage({ action: 'skipWaiting' });
+
+      window.location.reload();
     },
     logEvent(name, params) {
       logEvent(this.analytics, name, params);

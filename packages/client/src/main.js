@@ -84,6 +84,5 @@ window.onload = async () => {
     render: h => h(App)
   });
   store.$app = app;
-  window.$app = app;
   app.$mount("#app");
 };

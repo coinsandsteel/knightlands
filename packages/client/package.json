@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && node -r esm -r ts-node/register src/commands/update_service_worker.js",
+    "build": "node -r esm -r ts-node/register src/commands/update_version.js && vue-cli-service build",
     "lint": "vue-cli-service lint",
     "prebuild": "node ./node_modules/rimraf/bin.js ./node_modules/.cache",
     "locale": "node -r esm -r ts-node/register src/commands/fetch_locale_strings.js",
@@ -71,7 +71,8 @@
     "vuex-i18n": "^1.13.1",
     "vuex-persist": "^2.0.1",
     "web3": "^1.4.0",
-    "web3-utils": "^1.4.0"
+    "web3-utils": "^1.4.0",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
