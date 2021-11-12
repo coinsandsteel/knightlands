@@ -408,7 +408,12 @@ export default {
   },
   methods: {
     async handleUpdateRecieved(data) {
+      console.log('An update recieved', data);
       if (this.updateRecievedPrompt || data.version === window.version) {
+        console.log('Update aborted', {
+          updateRecievedPrompt: this.updateRecievedPrompt,
+          isLastVersion: data.version === window.version
+        });
         return;
       }
 
