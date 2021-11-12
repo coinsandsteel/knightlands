@@ -1,7 +1,7 @@
 let optimization;
 let plugins = [];
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV !== "dev") {
   const WebpackShellPlugin = require('webpack-shell-plugin');
   plugins.push(
     new WebpackShellPlugin({
