@@ -451,6 +451,7 @@ class Game {
     if (!this.updateChannel) {
       this.updateChannel = this.createChannel(Events.UpdateRecieved, false);
       this.updateChannel.watch(this._handleUpdateRecieved.bind(this));
+      console.log('Joined updated channel', Events.UpdateRecieved);
     }
   }
 
