@@ -12,8 +12,9 @@ async function updateVersion() {
   let version = uid();
 
   try {
-    await fs.remove('/tmp/__client_version');
-    await fs.remove('/tmp/__client_version.tmp');
+    let frontendVersionFile = process.env.FRONTEND_VERSION_FILE || "/tmp/__client_version";
+    await fs.remove(frontendVersionFile);
+    await fs.remove(frontendVersionFile + ".tmp");
 
     ['service-worker.js', 'index.html'].forEach(async (fileName) => {
       let distFullPath = "./src/commands/templates/" + fileName + ".dist";
@@ -44,9 +45,8 @@ async function updateVersion() {
     });
 
     await fs.writeFile(
-      '/tmp/__client_version.tmp',
-      version,
-      {
+      frontendVersionFile + ".tmp",
+      version, {
         encoding: 'utf8'
       }
     );

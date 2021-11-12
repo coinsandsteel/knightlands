@@ -6,9 +6,10 @@ async function run() {
 
 async function syncVersion() {
   try {
+    let frontendVersionFile = process.env.FRONTEND_VERSION_FILE || "/tmp/__client_version";
     await fs.move(
-      '/tmp/__client_version.tmp',
-      '/tmp/__client_version', {
+      frontendVersionFile + ".tmp",
+      frontendVersionFile, {
         overwrite: true
       }
     );
