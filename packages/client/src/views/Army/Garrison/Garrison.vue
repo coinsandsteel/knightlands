@@ -1,17 +1,21 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
-    <Tabs
-      :tabs="tabs"
-      :router="true"
-      :currentTab="currentTab"
-      @onClick="switchTab"
-      :replace="true"
-    ></Tabs>
+    <div v-bar>
+      <div>
+        <Tabs
+          :tabs="tabs"
+          :router="true"
+          :currentTab="currentTab"
+          @onClick="switchTab"
+          :replace="true"
+        ></Tabs>
 
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </div>
+    </div>
   </div>
 </template>
 
