@@ -5,6 +5,9 @@ async function run() {
 }
 
 async function syncVersion() {
+  if (process.env.DEV === 'dev') {
+    return;
+  }
   try {
     let frontendVersionFile = process.env.FRONTEND_VERSION_FILE || "/tmp/__client_version";
     await fs.move(
