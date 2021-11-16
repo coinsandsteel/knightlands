@@ -24,11 +24,11 @@
               ></MenuIcon>
 
               <MenuIcon
-                icon="skewed_icon_halloween"
-                :to="{ name: 'dungeon-entrance' }"
+                icon="skewed_icon_tower"
+                :to="{ name: 'xmas-home' }"
                 :append="true"
-                id="halloween"
-                >{{ $t("btn-evt-hal") }}
+                id="xmas"
+                >{{ $t("btn-evt-xmas") }}
               </MenuIcon>
             </MenuIconRow>
 
@@ -205,7 +205,7 @@ export default {
 
 <style lang="less" scoped>
 .home-art {
-  background-image: url("../assets/backgrounds/halloween_bg.jpg");
+  background-image: url("../assets/backgrounds/castle_bg.jpg");
   background-size: cover;
   background-position: bottom;
 }

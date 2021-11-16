@@ -69,6 +69,8 @@ const CraftingDisenchant = () =>
 const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
 const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
+const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
+
 const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
 const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
 const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
@@ -430,6 +432,20 @@ const router = new Router({
               component: DungeonUser
             }
           ]
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/xmas",
+      component: XmasRoot,
+      children: [
+        {
+          path: "",
+          name: "xmas-home",
+          component: () => import("./views/Xmas/XmasHome.vue")
         }
       ],
       meta: {
