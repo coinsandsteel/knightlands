@@ -29,7 +29,7 @@ Vue.use(Vuex);
 const vuexPersist = new VuexPersist({
   key: "knightlands",
   storage: localStorage,
-  reducer: (state) => _.omit(state, 'dungeon')
+  reducer: (state) => _.omit(state, ['dungeon', 'xmas'])
 });
 
 const DefaultRarityFilters = {};

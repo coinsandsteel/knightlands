@@ -9,10 +9,8 @@ export default {
   namespaced: true,
   state: {
     loaded: true,
-    area: {
-    },
-    user: {
-    },
+    area: {},
+    user: {},
   },
   getters: {
     playerStats: state => nextStats => {
@@ -20,8 +18,7 @@ export default {
     },
   },
   mutations: {
-    setInitialState(state, data) {
-    },
+    setInitialState(state, data) {},
     updateState(state, data) {
       /*console.log("Response from server", data);
 

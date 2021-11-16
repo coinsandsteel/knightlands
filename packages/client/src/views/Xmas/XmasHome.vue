@@ -2,6 +2,11 @@
   <div class="screen-content flex-items-center full-flex">
     <div class="screen-background"></div>
     <Area ref="area" />
+    <portal to="footer">
+      <CustomButton type="blue">{{
+        $t("btn-cp")
+      }}</CustomButton>
+    </portal>
   </div>
 </template>
 
@@ -27,15 +32,12 @@ export default {
     CustomButton,
     IconWithValue
   },
-  data: () => ({
-  }),
-  activated() {
-  },
+  data: () => ({}),
+  activated() {},
   created() {
     this.title = "w-xmas";
   },
-  destroyed() {
-  },
+  destroyed() {},
   computed: {
     ...mapState({
       area: state => state.xmas.area,
@@ -43,10 +45,9 @@ export default {
     }),
     ...mapGetters({
       playerStats: "xmas/playerStats"
-    }),
+    })
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>
 
