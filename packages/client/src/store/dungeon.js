@@ -99,6 +99,10 @@ export default {
         return null;
       }
       return enemies[state.combat.enemyId];
+    },
+
+    isFinished: state => {
+      return state.maze.startTime + 18 * 86400 < Vue.prototype.$game.nowSec;
     }
   },
   mutations: {

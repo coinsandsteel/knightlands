@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content flex-items-center full-flex">
+  <div class="screen-content flex-items-center full-flex relative">
     <div class="hallowen-bg"></div>
     <Title class="enemy-title-font margin-top-1 margin-bottom-1 font-outline">
       {{ $t("depth", { val: maze.floor }) }}
@@ -108,6 +108,17 @@
       </div>
     </div>
     <Maze ref="maze" />
+    <div
+      class="overlay-color absolute-stretch flex flex-column flex-center"
+      v-if="isFinished"
+    >
+      <span class="font-size-22"
+        >Halloween dungeon is closed! Thank you for participating!</span
+      >
+      <span class="font-size-22 text-warn margin-top-2"
+        >USDC rewards will be available for withdrawal tomorrow.</span
+      >
+    </div>
   </div>
 </template>
 
@@ -155,7 +166,8 @@ export default {
     }),
     ...mapGetters({
       playerStats: "dungeon/playerStats",
-      nextExp: "dungeon/nextExp"
+      nextExp: "dungeon/nextExp",
+      isFinished: "dungeon/isFinished"
     }),
     energyRegen() {
       const playerStats = this.playerStats(null);
@@ -264,5 +276,9 @@ export default {
 .btns {
   grid-row: ~"2/4";
   grid-column: 2;
+}
+
+.overlay-color {
+  z-index: 110;
 }
 </style>
