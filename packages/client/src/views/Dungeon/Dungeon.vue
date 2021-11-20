@@ -238,7 +238,7 @@ export default {
   },
   methods: {
     async claimReward() {
-      const { address } = await ShowWallet(Blockchains.Ethereum);
+      const { address } = await ShowWallet(Blockchains.Polygon);
       const txDetails = await this.performRequest(
         this.$store.dispatch("dungeon/claimReward", address)
       );
