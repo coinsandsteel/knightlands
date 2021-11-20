@@ -277,7 +277,7 @@ export default {
   },
   actions: {
     redirectToActiveCombat(store) {
-      if (store.state.combat.enemyId) {
+      if (!store.getters.isFinished && store.state.combat.enemyId) {
         this.$app.$router.push({
           name: "dungeon-fight"
         });
@@ -481,6 +481,13 @@ export default {
     async enter(store, data) {
       return (
         await this.$app.$game._wrapOperation(Operations.SDungeonEnter, data)
+      ).response;
+    },
+    async claimReward(store, to) {
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDungeonWithdraw, {
+          to
+        })
       ).response;
     }
   }

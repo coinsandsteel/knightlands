@@ -115,9 +115,17 @@
       <span class="font-size-22"
         >Halloween dungeon is closed! Thank you for participating!</span
       >
-      <span class="font-size-22 text-warn margin-top-2"
-        >USDC rewards will be available for withdrawal tomorrow.</span
+      <CustomButton
+        type="yellow"
+        class="margin-top-2"
+        @click="claimReward"
+        v-if="hasReward && !claimed"
       >
+        <div class="flex flex-center">
+          <span>Claim</span>
+          <IconWithValue iconClass="icon-usdc">{{ reward }}</IconWithValue>
+        </div>
+      </CustomButton>
     </div>
   </div>
 </template>
@@ -134,6 +142,12 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import anime from "animejs/lib/anime.es.js";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import meta from "@/metadata/halloween/dungeon_meta";
+import Blockchains from "@/../../knightlands-shared/blockchains";
+
+import ConnectWallet from "@/views/Account/ConnectWallet.vue";
+import { create } from "vue-modal-dialogs";
+const ShowWallet = create(ConnectWallet, "chain");
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
@@ -178,7 +192,58 @@ export default {
       return Math.floor(3600 / playerStats.hpRegen);
     }
   },
+  asyncComputed: {
+    async rank() {
+      const currentRank = await this.performRequest(
+        this.$store.dispatch("dungeon/fetchRank")
+      );
+
+      return currentRank;
+    },
+    async hasReward() {
+      let rank = await this.rank;
+      if (!rank) {
+        return false;
+      }
+
+      rank = rank.rank;
+      if (!rank) {
+        return false;
+      }
+
+      if (rank - 1 >= meta.rewards.length) {
+        return false;
+      }
+
+      return true;
+    },
+    async reward() {
+      if (await this.hasReward) {
+        const rank = await this.rank;
+        if (!rank) {
+          return 0;
+        }
+        return meta.rewards[rank.rank - 1];
+      }
+
+      return 0;
+    },
+    async claimed() {
+      let rank = await this.rank;
+      if (!rank) {
+        return false;
+      }
+      return rank.claimed;
+    }
+  },
   methods: {
+    async claimReward() {
+      const { address } = await ShowWallet(Blockchains.Ethereum);
+      const txDetails = await this.performRequest(
+        this.$store.dispatch("dungeon/claimReward", address)
+      );
+      await this.$game.blockchain.withdrawUSDCPot(txDetails);
+    },
     goToUser() {
       this.$router.push({ name: "dungeon-user" });
     },
@@ -279,6 +344,6 @@ export default {
 }
 
 .overlay-color {
-  z-index: 110;
+  z-index: 98;
 }
 </style>
