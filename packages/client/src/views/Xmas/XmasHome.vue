@@ -8,9 +8,7 @@
     </div>
 
     <portal to="footer">
-      <CustomButton type="blue">{{
-        $t("btn-cp")
-      }}</CustomButton>
+      <CustomButton type="blue">{{ $t("btn-cp") }}</CustomButton>
     </portal>
   </div>
 </template>

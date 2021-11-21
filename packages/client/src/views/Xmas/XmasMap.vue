@@ -5,7 +5,19 @@
       ref="scene"
       @mousedown="startMovement"
       @touchstart="startMovement"
-    ></div>
+    >
+      <div class="building building-tower font-size-25" :style="towerStyle">
+        TOWER
+      </div>
+      <div
+        class="building building-farm font-size-25"
+        :key="'slot-' + id"
+        v-for="(slot, id) in slots"
+        :style="slot.style"
+      >
+        SLOT
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,6 +40,17 @@ export default {
   },
   data: () => {
     return {
+      slots: [
+        { style: { left: "13rem", top: "59rem" } },
+        { style: { left: "42rem", top: "25rem" } },
+        { style: { left: "57rem", top: "56rem" } },
+        { style: { left: "85rem", top: "18rem" } },
+        { style: { left: "100rem", top: "46rem" } },
+        { style: { left: "35rem", top: "81rem" } },
+        { style: { left: "22rem", top: "105rem" } },
+        { style: { left: "79rem", top: "90rem" } },
+        { style: { left: "122rem", top: "75rem" } }
+      ],
       size: {
         port: {
           width: 0,
@@ -121,6 +144,9 @@ export default {
     }
   },
   computed: {
+    towerStyle() {
+      return {};
+    },
     ...mapState({
       xmas: state => state.xmas.loaded,
       area: state => state.xmas.area,
@@ -143,5 +169,24 @@ export default {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+.building {
+  position: absolute;
+  text-align: center;
+  color: black;
+}
+.building-tower {
+  background: coral;
+  height: 35rem;
+  width: 20rem;
+  left: 10rem;
+  top: 12rem;
+  padding: 15rem 0;
+}
+.building-farm {
+  background: aquamarine;
+  height: 15rem;
+  width: 30rem;
+  padding: 5rem 0;
 }
 </style>
