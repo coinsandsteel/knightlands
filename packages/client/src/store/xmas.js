@@ -9,6 +9,7 @@ export default {
   namespaced: true,
   state: {
     loaded: true,
+    mode: 'manage',
     area: {},
     user: {},
   },
@@ -130,11 +131,17 @@ export default {
       }*/
     },
     resetArea(state) {
-      state.area = _.clone(areaInitialState);
+      //state.area = _.clone(areaInitialState);
       console.log("Area was reset", state.area);
+    },
+    updateMode(state, value) {
+      state.mode = value;
     },
   },
   actions: {
+    updateMode(store, value) {
+      store.commit('updateMode', value);
+    },
     update(store, data) {
       store.commit("updateState", data);
     },
