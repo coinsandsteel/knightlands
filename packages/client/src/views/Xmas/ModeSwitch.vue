@@ -1,5 +1,9 @@
 <template>
-  <a class="mode-switch font-size-25 flex flex-center" @click="toggleMode">
+  <a
+    ref="btn"
+    class="mode-switch font-size-25 flex flex-center"
+    @click="toggleMode"
+  >
     <div class="mode-switch-text">
       {{ $t(mode === "collect" ? "xmas-mode-collect" : "xmas-mode-manage") }}
     </div>
@@ -9,6 +13,7 @@
 </template>
 
 <script>
+import anime from "animejs/lib/anime.es.js";
 import { mapState } from "vuex";
 
 export default {
@@ -17,12 +22,29 @@ export default {
       mode: state => state.xmas.mode
     })
   },
+  watch: {
+    mode(value) {
+      let animeParams = {
+        targets: this.$refs.btn,
+        duration: 350,
+        easing: "easeInCubic"
+      };
+
+      if (value === "collect") {
+        anime({ ...animeParams, bottom: "0rem" });
+      } else {
+        anime({ ...animeParams, bottom: "15rem" });
+      }
+    }
+  },
   methods: {
     toggleMode() {
       this.$store.dispatch(
         "xmas/updateMode",
         this.mode === "collect" ? "manage" : "collect"
       );
+
+      this.$app.$emit("farm-blur");
     }
   }
 };
@@ -31,11 +53,12 @@ export default {
 <style lang="less" scoped>
 .mode-switch {
   position: absolute;
-  bottom: 0;
+  bottom: 15rem;
   left: 0;
   background: lightseagreen;
   height: 7rem;
   padding: 0 3rem;
+  z-index: 15;
 }
 .mode-switch-corner {
   position: absolute;

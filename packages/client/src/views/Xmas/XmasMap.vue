@@ -5,33 +5,37 @@
       ref="scene"
       @mousedown="startMovement"
       @touchstart="startMovement"
+      @click.self="handleMapClick"
     >
       <div class="building building-tower font-size-25" :style="towerStyle">
         TOWER
       </div>
-      <div
-        class="building building-farm font-size-25"
+
+      <XmasFarm
         :key="'slot-' + id"
         v-for="(slot, id) in slots"
         :style="slot.style"
-      >
-        SLOT
-      </div>
+        :tier="0"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import PromptMixin from "@/components/PromptMixin.vue";
-import Erorrs from "@/../../knightlands-shared/errors";
 
+import Erorrs from "@/../../knightlands-shared/errors";
+import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { create } from "vue-modal-dialogs";
 
+import XmasFarm from "./XmasFarm.vue";
+
 export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
-  components: {},
+  components: {
+    XmasFarm
+  },
   watch: {},
   mounted() {
     this.$nextTick(() => {
@@ -80,6 +84,9 @@ export default {
     };
   },
   methods: {
+    handleMapClick() {
+      this.$app.$emit("farm-blur");
+    },
     calcPositionLimits() {
       this.size.port.width = this.$refs.port.offsetWidth;
       this.size.port.height = this.$refs.port.offsetHeight;
@@ -150,7 +157,8 @@ export default {
     ...mapState({
       xmas: state => state.xmas.loaded,
       area: state => state.xmas.area,
-      user: state => state.xmas.user
+      user: state => state.xmas.user,
+      mode: state => state.xmas.mode
     })
   }
 };
