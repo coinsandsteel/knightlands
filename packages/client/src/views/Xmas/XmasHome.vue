@@ -4,7 +4,8 @@
 
     <div class="wrapper relative width-100 height-100">
       <XmasMap ref="area" />
-      <ModeSwitch />
+      <ModeSwitchBtn />
+      <StatisticsBtn />
     </div>
 
     <portal to="footer">
@@ -27,13 +28,15 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import PromptMixin from "@/components/PromptMixin.vue";
 
 import XmasMap from "./XmasMap.vue";
-import ModeSwitch from "./ModeSwitch.vue";
+import ModeSwitchBtn from "./ModeSwitchBtn.vue";
+import StatisticsBtn from "./StatisticsBtn.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
   components: {
     XmasMap,
-    ModeSwitch,
+    ModeSwitchBtn,
+    StatisticsBtn,
     Title,
     ProgressBar,
     CustomButton,
