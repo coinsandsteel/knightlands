@@ -1,19 +1,49 @@
 import _ from "lodash";
 import Events from "@/../../knightlands-shared/events";
+import * as xmas from "../../../knightlands-shared/xmas";
 
 import Operations from "@/../../knightlands-shared/operations";
 import timer from "../timer";
 import Vue from "vue";
 
+
 export default {
   namespaced: true,
   state: {
     loaded: true,
-    mode: 'manage',
+    mode: "manage",
     area: {},
     user: {},
+    slots: {
+      1: { level: 0 },
+      2: { level: 0 },
+      3: { level: 0 },
+      4: { level: 0 },
+      5: { level: 0 },
+      6: { level: 0 },
+      7: { level: 0 },
+      8: { level: 0 },
+      9: { level: 0 }
+    }
   },
   getters: {
+    slot: (state, getters) => tier => {
+      return {
+        ...state.slots[tier],
+        upgradePrice: xmas.abbreviateNumber(getters.upgradePrice(tier)),
+        collectValue: xmas.abbreviateNumber(getters.collectValue(tier)),
+        currency: xmas.tierCurrencies[tier]
+      };
+    },
+    collectValue: (state, getters) => tier => {
+      let upgradePrice = getters.upgradePrice(tier);
+      return Math.floor(upgradePrice / 100);
+    },
+    upgradePrice: state => tier => {
+      let level = state.slots[tier].level;
+      let step = tier * 1000 * Math.pow(level + 1, 1.5);
+      return Math.floor(step);
+    },
     playerStats: state => nextStats => {
       return {};
     },
@@ -134,11 +164,17 @@ export default {
       //state.area = _.clone(areaInitialState);
       console.log("Area was reset", state.area);
     },
+    upgradeSlot(state, tier) {
+      state.slots[tier].level++;
+    },
     updateMode(state, value) {
       state.mode = value;
     },
   },
   actions: {
+    upgradeSlot(store, tier) {
+      store.commit('upgradeSlot', tier);
+    },
     updateMode(store, value) {
       store.commit('updateMode', value);
     },

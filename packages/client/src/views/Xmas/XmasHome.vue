@@ -4,7 +4,6 @@
 
     <div class="wrapper relative width-100 height-100">
       <XmasMap ref="area" />
-      <XmasFarmDrafts />
       <ModeSwitch />
     </div>
 
@@ -29,14 +28,12 @@ import PromptMixin from "@/components/PromptMixin.vue";
 
 import XmasMap from "./XmasMap.vue";
 import ModeSwitch from "./ModeSwitch.vue";
-import XmasFarmDrafts from "./XmasFarmDrafts.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
   components: {
     XmasMap,
     ModeSwitch,
-    XmasFarmDrafts,
     Title,
     ProgressBar,
     CustomButton,

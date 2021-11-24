@@ -5,17 +5,16 @@
       ref="scene"
       @mousedown="startMovement"
       @touchstart="startMovement"
-      @click.self="handleMapClick"
     >
       <div class="building building-tower font-size-25" :style="towerStyle">
         TOWER
       </div>
 
       <XmasFarm
-        :key="'slot-' + id"
-        v-for="(slot, id) in slots"
+        :key="'tier-' + tier"
+        v-for="(slot, tier) in slots"
         :style="slot.style"
-        :tier="0"
+        :tier="tier"
       />
     </div>
   </div>
@@ -44,17 +43,17 @@ export default {
   },
   data: () => {
     return {
-      slots: [
-        { style: { left: "13rem", top: "59rem" } },
-        { style: { left: "42rem", top: "25rem" } },
-        { style: { left: "57rem", top: "56rem" } },
-        { style: { left: "85rem", top: "18rem" } },
-        { style: { left: "100rem", top: "46rem" } },
-        { style: { left: "35rem", top: "81rem" } },
-        { style: { left: "22rem", top: "105rem" } },
-        { style: { left: "79rem", top: "90rem" } },
-        { style: { left: "122rem", top: "75rem" } }
-      ],
+      slots: {
+        1: { style: { left: "13rem", top: "59rem" } },
+        2: { style: { left: "42rem", top: "25rem" } },
+        3: { style: { left: "57rem", top: "56rem" } },
+        4: { style: { left: "85rem", top: "18rem" } },
+        5: { style: { left: "100rem", top: "46rem" } },
+        6: { style: { left: "35rem", top: "81rem" } },
+        7: { style: { left: "22rem", top: "105rem" } },
+        8: { style: { left: "79rem", top: "90rem" } },
+        9: { style: { left: "122rem", top: "75rem" } }
+      },
       size: {
         port: {
           width: 0,
@@ -84,9 +83,6 @@ export default {
     };
   },
   methods: {
-    handleMapClick() {
-      this.$app.$emit("farm-blur");
-    },
     calcPositionLimits() {
       this.size.port.width = this.$refs.port.offsetWidth;
       this.size.port.height = this.$refs.port.offsetHeight;
@@ -190,11 +186,5 @@ export default {
   left: 10rem;
   top: 12rem;
   padding: 15rem 0;
-}
-.building-farm {
-  background: aquamarine;
-  height: 15rem;
-  width: 30rem;
-  padding: 5rem 0;
 }
 </style>

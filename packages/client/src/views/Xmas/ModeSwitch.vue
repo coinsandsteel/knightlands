@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import anime from "animejs/lib/anime.es.js";
 import { mapState } from "vuex";
 
 export default {
@@ -22,29 +21,12 @@ export default {
       mode: state => state.xmas.mode
     })
   },
-  watch: {
-    mode(value) {
-      let animeParams = {
-        targets: this.$refs.btn,
-        duration: 350,
-        easing: "easeInCubic"
-      };
-
-      if (value === "collect") {
-        anime({ ...animeParams, bottom: "0rem" });
-      } else {
-        anime({ ...animeParams, bottom: "15rem" });
-      }
-    }
-  },
   methods: {
     toggleMode() {
       this.$store.dispatch(
         "xmas/updateMode",
         this.mode === "collect" ? "manage" : "collect"
       );
-
-      this.$app.$emit("farm-blur");
     }
   }
 };
@@ -53,7 +35,7 @@ export default {
 <style lang="less" scoped>
 .mode-switch {
   position: absolute;
-  bottom: 15rem;
+  bottom: 0;
   left: 0;
   background: lightseagreen;
   height: 7rem;

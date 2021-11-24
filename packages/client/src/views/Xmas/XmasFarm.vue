@@ -1,62 +1,92 @@
 <template>
   <div
     ref="farm"
-    class="building building-farm font-size-25"
+    class="building font-size-25"
+    :class="[!slot.level ? 'building-slot' : 'building-farm']"
     @click="handleClick"
   >
-    TIER {{ tier }}
+    <IncomeText v-for="income in incomes" :key="income.id">{{
+      income.income
+    }}</IncomeText>
+    <template v-if="mode === 'manage'">
+      TIER: {{ tier }}<br />
+      Level: {{ slot.level }}<br />
+      <template v-if="!slot.level">
+        Build price {{ slot.upgradePrice }}
+      </template>
+      <template v-else> Upgrade price {{ slot.upgradePrice }} </template>
+    </template>
+    <template v-if="mode === 'collect'">
+      TIER: {{ tier }}<br />
+      Collect: {{ slot.collectValue }}
+    </template>
   </div>
 </template>
 
 <script>
-import anime from "animejs/lib/anime.es.js";
+import IncomeText from "./IncomeText.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 import { mapState } from "vuex";
 
 export default {
-  props: ["id", "tier"],
+  props: ["tier"],
+  mixins: [PromptMixin],
+  components: {
+    IncomeText
+  },
   data: () => ({
-    animation: null
+    incomeId: 0,
+    incomes: []
   }),
   computed: {
+    slot() {
+      return this.$store.getters["xmas/slot"](this.tier);
+    },
     ...mapState({
       mode: state => state.xmas.mode
     })
-  },
-  mounted() {
-    this.$app.$on("farm-blur", this.handleBlur);
   },
   beforeDestroy() {
     this.$app.$off("farm-blur");
   },
   methods: {
-    handleClick() {
-      // Empty slot
-      if (this.tier === 0) {
-        if (this.mode === "collect") {
-          this.$store.dispatch("xmas/updateMode", "manage");
+    async handleClick() {
+      if (this.mode === "manage") {
+        // Empty slot
+        if (this.slot.level === 0) {
+          const result = await this.showPrompt(
+            "Building a farm",
+            `Are you sure you want to build a farm for ${this.slot.upgradePrice} ${this.slot.currency}?`,
+            [
+              {
+                type: "red",
+                title: this.$t("btn-cancel"),
+                response: false
+              },
+              {
+                type: "green",
+                title: this.$t("btn-ok"),
+                response: true
+              }
+            ]
+          );
+          if (!result) return;
         }
+        this.$store.dispatch("xmas/upgradeSlot", this.tier);
 
-        if (!this.animation) {
-          this.animation = anime({
-            targets: this.$refs.farm,
-            keyframes: [{ opacity: 1 }, { opacity: 0.5 }],
-            direction: "alternate",
-            duration: 500,
-            loop: true,
-            easing: "linear"
-          });
-        }
-
-        // Existing farm
-      } else {
+      } else if (this.mode === "collect") {
+        this.handleIncome(this.slot.collectValue);
       }
     },
-    handleBlur() {
-      if (this.animation) {
-        this.animation.remove(this.$refs.farm);
-        this.animation = null;
-        this.$refs.farm.style.opacity = 1;
-      }
+    handleIncome(income) {
+      this.incomes.push({
+        income: income,
+        id: this.incomeId++
+      });
+
+      setTimeout(() => {
+        this.incomes.splice(0, 1);
+      }, 3000);
     }
   }
 };
@@ -68,10 +98,17 @@ export default {
   text-align: center;
   color: black;
 }
-.building-farm {
-  background: aquamarine;
+.building-farm,
+.building-slot {
   height: 15rem;
   width: 30rem;
-  padding: 5rem 0;
+  padding: 1rem 0;
+}
+.building-slot {
+  background: grey;
+  opacity: 0.8;
+}
+.building-farm {
+  background: aquamarine;
 }
 </style>
