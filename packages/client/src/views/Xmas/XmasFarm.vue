@@ -51,33 +51,30 @@ export default {
   },
   methods: {
     async handleClick() {
-      if (this.mode === "manage") {
-        // Empty slot
-        if (this.slot.level === 0) {
-          const result = await this.showPrompt(
-            "Building a farm",
-            `Are you sure you want to build a farm for ${this.slot.upgradePrice} ${this.slot.currency}?`,
-            [
-              {
-                type: "red",
-                title: this.$t("btn-cancel"),
-                response: false
-              },
-              {
-                type: "green",
-                title: this.$t("btn-ok"),
-                response: true
-              }
-            ]
-          );
-          if (!result) return;
-        }
-        this.$store.dispatch("xmas/upgradeSlot", this.tier);
+      // Empty slot
+      if (this.slot.level === 0) {
+        const result = await this.showPrompt(
+          "Building a farm",
+          `Are you sure you want to build a farm for ${this.slot.upgradePrice} ${this.slot.currency}?`,
+          [
+            {
+              type: "red",
+              title: this.$t("btn-cancel"),
+              response: false
+            },
+            {
+              type: "green",
+              title: this.$t("btn-ok"),
+              response: true
+            }
+          ]
+        );
+        if (!result) return;
+      }
+      this.$store.dispatch("xmas/upgradeSlot", this.tier);
 
-      } else if (this.mode === "collect") {
-        if (this.slot.level > 0) {
-          this.handleIncome(this.slot.collectValue);
-        }
+      if (this.mode === "collect" && this.slot.level > 0) {
+        this.handleIncome(this.slot.collectValue);
       }
     },
     handleIncome(income) {
