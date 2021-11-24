@@ -29,7 +29,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  background: lightgreen;
+  background: mediumslateblue;
   height: 7rem;
   padding: 0 3rem;
   z-index: 15;
@@ -39,11 +39,11 @@ export default {
   width: 0;
   height: 0;
   border-style: solid;
-  border-color: transparent lightgreen transparent transparent;
+  border-color: transparent mediumslateblue transparent transparent;
 }
 .stat-btn-corner.stat-btn-corner-bottom {
   right: 0;
-  top: 5rem;
+  top: 7rem;
   border-width: 0 5rem 5rem 0;
 }
 .stat-btn-corner.stat-btn-corner-left {

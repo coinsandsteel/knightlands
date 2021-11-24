@@ -69,9 +69,14 @@ export default {
             }
           ]
         );
-        if (!result) return;
+        if (result) {
+          this.$store.dispatch("xmas/upgradeSlot", this.tier);
+        }
       }
-      this.$store.dispatch("xmas/upgradeSlot", this.tier);
+
+      if (this.mode === "manage") {
+        this.$store.dispatch("xmas/upgradeSlot", this.tier);
+      }
 
       if (this.mode === "collect" && this.slot.level > 0) {
         this.handleIncome(this.slot.collectValue);

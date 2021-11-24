@@ -6,6 +6,7 @@
       <XmasMap ref="area" />
       <ModeSwitchBtn />
       <StatisticsBtn />
+      <Multipliers />
     </div>
 
     <portal to="footer">
@@ -30,6 +31,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import XmasMap from "./XmasMap.vue";
 import ModeSwitchBtn from "./ModeSwitchBtn.vue";
 import StatisticsBtn from "./StatisticsBtn.vue";
+import Multipliers from "./Multipliers.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
@@ -37,6 +39,7 @@ export default {
     XmasMap,
     ModeSwitchBtn,
     StatisticsBtn,
+    Multipliers,
     Title,
     ProgressBar,
     CustomButton,

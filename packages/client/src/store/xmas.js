@@ -14,16 +14,35 @@ export default {
     mode: "manage",
     area: {},
     user: {},
+    activeMultiplier: 1,
     slots: {
-      1: { level: 0 },
-      2: { level: 0 },
-      3: { level: 0 },
-      4: { level: 0 },
-      5: { level: 0 },
-      6: { level: 0 },
-      7: { level: 0 },
-      8: { level: 0 },
-      9: { level: 0 }
+      1: {
+        level: 0
+      },
+      2: {
+        level: 0
+      },
+      3: {
+        level: 0
+      },
+      4: {
+        level: 0
+      },
+      5: {
+        level: 0
+      },
+      6: {
+        level: 0
+      },
+      7: {
+        level: 0
+      },
+      8: {
+        level: 0
+      },
+      9: {
+        level: 0
+      }
     }
   },
   getters: {
@@ -35,17 +54,28 @@ export default {
         currency: xmas.tierCurrencies[tier]
       };
     },
-    collectValue: (state, getters) => tier => {
+    collectValue: state => tier => {
       let level = state.slots[tier].level;
       if (level === 0) {
         return 0;
       }
-      let upgradePrice = getters.upgradePrice(tier);
-      return Math.floor(upgradePrice / 100);
+      let step = tier * 1000 * Math.pow(level + 1, 1.5);
+      return Math.floor(step / 100);
     },
     upgradePrice: state => tier => {
+      // TODO calc custom multiplier
+      let customMultiplier = 23;
       let level = state.slots[tier].level;
-      let step = tier * 1000 * Math.pow(level + 1, 1.5);
+
+      let activeMultiplier = 1;
+      if (level > 0) {
+        activeMultiplier = state.activeMultiplier === Infinity ?
+          customMultiplier 
+          :
+          state.activeMultiplier;
+      }
+
+      let step = tier * 1000 * Math.pow(level + 1, 1.5) * activeMultiplier;
       return Math.floor(step);
     },
     playerStats: state => nextStats => {
@@ -174,8 +204,14 @@ export default {
     updateMode(state, value) {
       state.mode = value;
     },
+    updateMultiplier(state, value) {
+      state.activeMultiplier = value;
+    },
   },
   actions: {
+    updateMultiplier(store, value) {
+      store.commit('updateMultiplier', value);
+    },
     upgradeSlot(store, tier) {
       store.commit('upgradeSlot', tier);
     },
