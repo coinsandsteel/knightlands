@@ -2,6 +2,7 @@
   <a
     ref="btn"
     class="mode-switch font-size-25 flex flex-center"
+    :class="['mode-switch-' + mode]"
     @click="toggleMode"
   >
     <div class="mode-switch-text">
@@ -37,7 +38,7 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
-  background: lightseagreen;
+  background: darkslateblue;
   height: 7rem;
   padding: 0 3rem;
   z-index: 15;
@@ -47,7 +48,7 @@ export default {
   width: 0;
   height: 0;
   border-style: solid;
-  border-color: transparent transparent transparent lightseagreen;
+  border-color: transparent transparent transparent darkslateblue;
 }
 .mode-switch-corner.mode-switch-corner-top {
   left: 0;
@@ -58,5 +59,12 @@ export default {
   top: 0;
   right: -5rem;
   border-width: 7rem 0 0 5rem;
+}
+
+.mode-switch.mode-switch-collect {
+  background: darkgreen;
+}
+.mode-switch.mode-switch-collect .mode-switch-corner {
+  border-color: transparent transparent transparent darkgreen;
 }
 </style>
