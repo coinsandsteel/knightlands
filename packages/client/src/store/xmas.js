@@ -36,6 +36,10 @@ export default {
       };
     },
     collectValue: (state, getters) => tier => {
+      let level = state.slots[tier].level;
+      if (level === 0) {
+        return 0;
+      }
       let upgradePrice = getters.upgradePrice(tier);
       return Math.floor(upgradePrice / 100);
     },

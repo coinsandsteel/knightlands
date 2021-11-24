@@ -75,7 +75,9 @@ export default {
         this.$store.dispatch("xmas/upgradeSlot", this.tier);
 
       } else if (this.mode === "collect") {
-        this.handleIncome(this.slot.collectValue);
+        if (this.slot.level > 0) {
+          this.handleIncome(this.slot.collectValue);
+        }
       }
     },
     handleIncome(income) {
