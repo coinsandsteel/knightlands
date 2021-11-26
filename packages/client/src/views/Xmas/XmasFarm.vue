@@ -8,6 +8,18 @@
     <IncomeText v-for="income in incomes" :key="income.id">{{
       income.income
     }}</IncomeText>
+
+    <progress-bar
+      class="farm-progress-bar"
+      v-if="slot.level && progress !== null"
+      ref="progress"
+      :maxValue="100"
+      :percentMode="false"
+      :hideMaxValue="false"
+      v-model="progress"
+      barType="green"
+    ></progress-bar>
+
     <template v-if="mode === 'manage'">
       TIER: {{ tier }}<br />
       Level: {{ slot.level }}<br />
@@ -16,6 +28,7 @@
       </template>
       <template v-else> Upgrade price {{ slot.upgradePrice }} </template>
     </template>
+
     <template v-if="mode === 'collect'">
       TIER: {{ tier }}<br />
       Collect: {{ slot.collectValue }}
@@ -24,6 +37,7 @@
 </template>
 
 <script>
+import ProgressBar from "@/components/ProgressBar.vue";
 import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import { mapState } from "vuex";
@@ -32,12 +46,34 @@ export default {
   props: ["tier"],
   mixins: [PromptMixin],
   components: {
-    IncomeText
+    IncomeText,
+    ProgressBar
   },
   data: () => ({
+    progress: null,
+    animation: null,
     incomeId: 0,
     incomes: []
   }),
+  watch: {
+    "slot.level": function(value) {
+      if (value) {
+        this.progress = 0;
+
+        let self = this;
+        if (this.animation) {
+          clearInterval(this.animation);
+        }
+
+        this.animation = setInterval(function() {
+          self.progress++;
+          if (self.progress >= 100) {
+            self.progress = 0;
+          }
+        }, this.tier * this.slot.level * 50);
+      }
+    }
+  },
   computed: {
     slot() {
       return this.$store.getters["xmas/slot"](this.tier);
@@ -114,5 +150,9 @@ export default {
 }
 .building-farm {
   background: aquamarine;
+}
+.farm-progress-bar {
+  position: absolute;
+  top: -3rem;
 }
 </style>
