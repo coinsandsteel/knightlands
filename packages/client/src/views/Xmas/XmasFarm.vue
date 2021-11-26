@@ -112,7 +112,8 @@ export default {
         // Add 50% of resources at the end
         if (this.progress >= 100) {
           this.totalCollectValue += currentCollectValue / 2;
-          if (this.slot.tier > 5) {
+          if (this.tier >= 5) {
+            this.$store.dispatch("xmas/resetCollectValue", this.tier);
             this.resetTimer();
           } else {
             clearInterval(this.animation);
