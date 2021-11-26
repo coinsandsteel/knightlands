@@ -31,7 +31,7 @@
 
     <template v-if="mode === 'collect'">
       TIER: {{ tier }}<br />
-      Collect: {{ slot.collectValue }}
+      Collect: {{ totalCollectValueFormatted }}
     </template>
   </div>
 </template>
@@ -42,6 +42,8 @@ import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import { mapState } from "vuex";
 
+import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
+
 export default {
   props: ["tier"],
   mixins: [PromptMixin],
@@ -50,6 +52,7 @@ export default {
     ProgressBar
   },
   data: () => ({
+    totalCollectValue: 0,
     progress: null,
     animation: null,
     incomeId: 0,
@@ -58,25 +61,16 @@ export default {
   watch: {
     "slot.level": function(value) {
       if (value) {
-        this.progress = 0;
-
-        let self = this;
-        if (this.animation) {
-          clearInterval(this.animation);
-        }
-
-        this.animation = setInterval(function() {
-          self.progress++;
-          if (self.progress >= 100) {
-            self.progress = 0;
-          }
-        }, this.tier * this.slot.level * 50);
+        this.resetTimer();
       }
     }
   },
   computed: {
     slot() {
       return this.$store.getters["xmas/slot"](this.tier);
+    },
+    totalCollectValueFormatted() {
+      return abbreviateNumber(this.totalCollectValue);
     },
     ...mapState({
       mode: state => state.xmas.mode
@@ -86,6 +80,20 @@ export default {
     this.$app.$off("farm-blur");
   },
   methods: {
+    resetTimer() {
+      this.progress = 0;
+      if (this.animation) {
+        clearInterval(this.animation);
+      }
+
+      this.animation = setInterval(() => {
+        this.progress++;
+        this.totalCollectValue += this.slot.collectValue / 100;
+        if (this.progress >= 100) {
+          this.progress = 0;
+        }
+      }, this.tier * this.slot.level * 50);
+    },
     async handleClick() {
       // Empty slot
       if (this.slot.level === 0) {
@@ -115,18 +123,21 @@ export default {
       }
 
       if (this.mode === "collect" && this.slot.level > 0) {
-        this.handleIncome(this.slot.collectValue);
+        this.handleIncome();
       }
     },
-    handleIncome(income) {
+    handleIncome() {
       this.incomes.push({
-        income: income,
+        income: this.totalCollectValueFormatted,
         id: this.incomeId++
       });
 
       setTimeout(() => {
         this.incomes.splice(0, 1);
       }, 3000);
+
+      this.resetTimer();
+      this.totalCollectValue = 0;
     }
   }
 };

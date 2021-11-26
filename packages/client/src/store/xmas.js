@@ -47,10 +47,12 @@ export default {
   },
   getters: {
     slot: (state, getters) => tier => {
+      let collectValue = getters.collectValue(tier);
       return {
         ...state.slots[tier],
         upgradePrice: xmas.abbreviateNumber(getters.upgradePrice(tier)),
-        collectValue: xmas.abbreviateNumber(getters.collectValue(tier)),
+        collectValueFarmatted: xmas.abbreviateNumber(collectValue),
+        collectValue: collectValue,
         currency: xmas.tierCurrencies[tier]
       };
     },
