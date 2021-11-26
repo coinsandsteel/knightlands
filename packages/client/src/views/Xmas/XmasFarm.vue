@@ -2,7 +2,7 @@
   <div
     ref="farm"
     class="building font-size-25"
-    :class="[!slot.level ? 'building-slot' : 'building-farm']"
+    :class="[!slot.level ? 'building-slot' : 'building-farm', slot.level ? 'building-mode-' + mode : null]"
     @click="handleClick"
   >
     <IncomeText v-for="income in incomes" :key="income.id">{{
@@ -195,6 +195,14 @@ export default {
 }
 .building-farm {
   background: aquamarine;
+  &.building-mode-manage {
+    background: darkslateblue;
+    color: white;
+  }
+  &.building-mode-collect {
+    background: darkgreen;
+    color: white;
+  }
 }
 .farm-progress-bar {
   position: absolute;
