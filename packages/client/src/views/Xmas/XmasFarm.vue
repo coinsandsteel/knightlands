@@ -32,7 +32,15 @@
 
     <template v-if="mode === 'collect'">
       TIER: {{ tier }}<br />
-      Power: {{ slot.previousCollectValue ? previousCollectValueFormatted + ' &rarr; ' : '' }}{{ collectValueFormatted }}<br />
+
+      <template v-if="slot.previousCollectValue">
+        Power: {{ previousCollectValueFormatted }}&nbsp;&rarr;&nbsp;<strong>{{
+          collectValueFormatted
+        }}</strong
+        ><br />
+      </template>
+      <template v-else> Power: {{ collectValueFormatted }}<br /> </template>
+
       Accumulated: {{ totalCollectValueFormatted }}
     </template>
   </div>
@@ -95,7 +103,8 @@ export default {
       }
 
       this.animation = setInterval(() => {
-        let currentCollectValue = this.slot.previousCollectValue || this.slot.collectValue;
+        let currentCollectValue =
+          this.slot.previousCollectValue || this.slot.collectValue;
 
         this.progress++;
         this.totalCollectValue += currentCollectValue / 200;
@@ -137,7 +146,7 @@ export default {
         }
         this.$store.dispatch("xmas/upgradeSlot", this.tier);
 
-      // Existing farm
+        // Existing farm
       } else {
         if (this.mode === "manage") {
           if (!this.slot.previousCollectValue) {
