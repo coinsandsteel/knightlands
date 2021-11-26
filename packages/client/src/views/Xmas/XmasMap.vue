@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import { mapState } from "vuex";
 
 import Erorrs from "@/../../knightlands-shared/errors";
@@ -94,7 +95,7 @@ export default {
       this.positionLimits.left.min =
         this.size.port.width - this.size.scene.width;
 
-      console.log('Sizes', this.size);
+      console.log('Sizes', _.cloneDeep(this.size));
     },
     startMovement: function(event) {
       // get the mouse cursor position at startup:
