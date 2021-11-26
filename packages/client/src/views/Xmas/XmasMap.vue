@@ -93,6 +93,8 @@ export default {
         this.size.port.height - this.size.scene.height;
       this.positionLimits.left.min =
         this.size.port.width - this.size.scene.width;
+
+      console.log('Sizes', this.size);
     },
     startMovement: function(event) {
       // get the mouse cursor position at startup:
