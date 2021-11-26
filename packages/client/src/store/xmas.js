@@ -7,6 +7,16 @@ import timer from "../timer";
 import Vue from "vue";
 
 
+const initialSlotState = {
+  level: 0,
+  previousCollectValue: 0
+};
+
+const slots = {};
+for (let i = 1; i <= 9; i++) {
+  slots[i] = _.clone(initialSlotState);
+}
+
 export default {
   namespaced: true,
   state: {
@@ -15,35 +25,7 @@ export default {
     area: {},
     user: {},
     activeMultiplier: 1,
-    slots: {
-      1: {
-        level: 0
-      },
-      2: {
-        level: 0
-      },
-      3: {
-        level: 0
-      },
-      4: {
-        level: 0
-      },
-      5: {
-        level: 0
-      },
-      6: {
-        level: 0
-      },
-      7: {
-        level: 0
-      },
-      8: {
-        level: 0
-      },
-      9: {
-        level: 0
-      }
-    }
+    slots
   },
   getters: {
     slot: (state, getters) => tier => {
@@ -58,11 +40,8 @@ export default {
     },
     collectValue: state => tier => {
       let level = state.slots[tier].level;
-      if (level === 0) {
-        return 0;
-      }
       let step = tier * 1000 * Math.pow(level + 1, 1.5);
-      return Math.floor(step / 100);
+      return step / 100;
     },
     upgradePrice: state => tier => {
       // TODO calc custom multiplier
@@ -203,6 +182,9 @@ export default {
     upgradeSlot(state, tier) {
       state.slots[tier].level++;
     },
+    updateSlot(state, { tier, data }) {
+      state.slots[tier] = { ...state.slots[tier], ...data };
+    },
     updateMode(state, value) {
       state.mode = value;
     },
@@ -216,6 +198,15 @@ export default {
     },
     upgradeSlot(store, tier) {
       store.commit('upgradeSlot', tier);
+    },
+    captureCollectValue(store, tier) {
+      store.commit('updateSlot', { tier, data: { previousCollectValue: store.getters.collectValue(tier) } });
+    },
+    resetCollectValue(store, tier) {
+      store.commit('updateSlot', { tier, data: { previousCollectValue: 0 } });
+    },
+    updateSlot(store, payload) {
+      store.commit('updateSlot', payload);
     },
     updateMode(store, value) {
       store.commit('updateMode', value);

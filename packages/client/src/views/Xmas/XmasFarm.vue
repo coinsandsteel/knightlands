@@ -13,6 +13,7 @@
       class="farm-progress-bar"
       v-if="slot.level && progress !== null"
       ref="progress"
+      barClasses="no-animation"
       :maxValue="100"
       :percentMode="false"
       :hideMaxValue="false"
@@ -31,7 +32,8 @@
 
     <template v-if="mode === 'collect'">
       TIER: {{ tier }}<br />
-      Collect: {{ totalCollectValueFormatted }}
+      Power: {{ slot.previousCollectValue ? previousCollectValueFormatted + ' &rarr; ' : '' }}{{ collectValueFormatted }}<br />
+      Accumulated: {{ totalCollectValueFormatted }}
     </template>
   </div>
 </template>
@@ -53,14 +55,14 @@ export default {
   },
   data: () => ({
     totalCollectValue: 0,
-    progress: null,
+    progress: 0,
     animation: null,
     incomeId: 0,
     incomes: []
   }),
   watch: {
     "slot.level": function(value) {
-      if (value) {
+      if (value === 1) {
         this.resetTimer();
       }
     }
@@ -68,6 +70,12 @@ export default {
   computed: {
     slot() {
       return this.$store.getters["xmas/slot"](this.tier);
+    },
+    collectValueFormatted() {
+      return abbreviateNumber(this.slot.collectValue);
+    },
+    previousCollectValueFormatted() {
+      return abbreviateNumber(this.slot.previousCollectValue);
     },
     totalCollectValueFormatted() {
       return abbreviateNumber(this.totalCollectValue);
@@ -87,16 +95,27 @@ export default {
       }
 
       this.animation = setInterval(() => {
+        let currentCollectValue = this.slot.previousCollectValue || this.slot.collectValue;
+
         this.progress++;
-        this.totalCollectValue += this.slot.collectValue / 100;
+        this.totalCollectValue += currentCollectValue / 200;
+
+        // Add 50% of resources at the end
         if (this.progress >= 100) {
-          this.progress = 0;
+          this.totalCollectValue += currentCollectValue / 2;
+          if (this.slot.tier > 5) {
+            this.resetTimer();
+          } else {
+            clearInterval(this.animation);
+          }
         }
-      }, this.tier * this.slot.level * 50);
+      }, this.tier * 50);
     },
     async handleClick() {
+      const level = this.slot.level;
+
       // Empty slot
-      if (this.slot.level === 0) {
+      if (level === 0) {
         const result = await this.showPrompt(
           "Building a farm",
           `Are you sure you want to build a farm for ${this.slot.upgradePrice} ${this.slot.currency}?`,
@@ -113,20 +132,24 @@ export default {
             }
           ]
         );
-        if (result) {
+        if (!result) {
+          return;
+        }
+        this.$store.dispatch("xmas/upgradeSlot", this.tier);
+
+      // Existing farm
+      } else {
+        if (this.mode === "manage") {
+          if (!this.slot.previousCollectValue) {
+            this.$store.dispatch("xmas/captureCollectValue", this.tier);
+          }
           this.$store.dispatch("xmas/upgradeSlot", this.tier);
+        } else if (this.mode === "collect") {
+          this.handleHarvest();
         }
       }
-
-      if (this.mode === "manage") {
-        this.$store.dispatch("xmas/upgradeSlot", this.tier);
-      }
-
-      if (this.mode === "collect" && this.slot.level > 0) {
-        this.handleIncome();
-      }
     },
-    handleIncome() {
+    handleHarvest() {
       this.incomes.push({
         income: this.totalCollectValueFormatted,
         id: this.incomeId++
@@ -137,7 +160,9 @@ export default {
       }, 3000);
 
       this.resetTimer();
+      this.progress = 0;
       this.totalCollectValue = 0;
+      this.$store.dispatch("xmas/resetCollectValue", this.tier);
     }
   }
 };

@@ -322,6 +322,17 @@ export default {
         right: 0;
       }
     }
+
+    &.no-animation {
+      .progress {
+        transition: none;
+      }
+      .progress-delta {
+        &.show {
+          animation: none;
+        }
+      }
+    }
   }
 }
 
