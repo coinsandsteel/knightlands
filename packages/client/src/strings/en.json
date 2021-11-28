@@ -574,6 +574,7 @@
   "d-pur-lim": "Limited: {left}/{max}",
   "d-pur-weekly": "Weekly: {left}/{max}",
   "d-s-f-at": "Finish in {timer}",
+  "d-s-f": "Finished!",
   "d-season": "Season {season}",
   "d-stake": "Stake balance:",
   "d-total-s": "Total KL Staked",
