@@ -2,7 +2,7 @@
   <div class="multipliers flex flex-column">
     <a
       class="multiplier font-size-25"
-      :class="[activeMultiplier === data.value ? 'active' : '']"
+      :class="[levelGap === data.value ? 'active' : '']"
       v-for="(data, id) in multipliers"
       :key="'multiplier' + id"
       @click="handleClick(data.value)"
@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     ...mapState({
-      activeMultiplier: state => state.xmas.activeMultiplier
+      levelGap: state => state.xmas.levelGap
     })
   }
 };
