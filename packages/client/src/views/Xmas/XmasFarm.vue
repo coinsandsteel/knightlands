@@ -10,7 +10,7 @@
     }}</IncomeText>
 
     <progress-bar
-      class="farm-progress-bar"
+      class="progress-bar"
       v-if="slot.level && progress !== null"
       ref="progress"
       barClasses="no-animation"
@@ -26,9 +26,9 @@
       TIER: {{ tier }}<br />
       Level: {{ slot.level }}<br />
       <template v-if="!slot.level">
-        Build price {{ upgradePriceFormatted }}
+        Build price {{ upgradePriceFormatted }} SB
       </template>
-      <template v-else> Upgrade price {{ upgradePriceFormatted }} </template>
+      <template v-else> Upgrade price {{ upgradePriceFormatted }} SB</template>
     </template>
 
     <template v-if="mode === 'collect'">
@@ -36,14 +36,14 @@
       TIER: {{ tier }}<br />
 
       <template v-if="slot.previousIncomeValue">
-        Power: {{ previousIncomeValueFormatted }}&nbsp;&rarr;&nbsp;<strong>{{
-          incomeValueFormatted
+        Power: {{ previousCurrencyIncomeValueFormatted }}&nbsp;&rarr;&nbsp;<strong>{{
+          currencyIncomeValueFormatted
         }}</strong
         ><br />
       </template>
-      <template v-else> Power: {{ incomeValueFormatted }}<br /> </template>
+      <template v-else> Power: {{ currencyIncomeValueFormatted }}<br /> </template>
 
-      Accumulated: {{ totalIncomeValueFormatted }}
+      Accumulated: {{ totalCurrencyIncomeValueFormatted }} {{ slot.currency }}
     </template>
   </div>
 </template>
@@ -64,7 +64,8 @@ export default {
     ProgressBar
   },
   data: () => ({
-    totalIncomeValue: 0,
+    totalCurrencyIncomeValue: 0,
+    totalExpIncomeValue: 0,
     progress: 0,
     animation: null,
     incomeId: 0,
@@ -84,14 +85,14 @@ export default {
     upgradePriceFormatted() {
       return abbreviateNumber(this.slot.upgradePrice);
     },
-    incomeValueFormatted() {
-      return abbreviateNumber(this.slot.incomeValue.expIncomePerCycle);
+    currencyIncomeValueFormatted() {
+      return abbreviateNumber(this.slot.incomeValue.currencyIncomePerCycle);
     },
-    previousIncomeValueFormatted() {
-      return abbreviateNumber(this.slot.previousIncomeValue.expIncomePerCycle);
+    previousCurrencyIncomeValueFormatted() {
+      return abbreviateNumber(this.slot.previousIncomeValue.currencyIncomePerCycle);
     },
-    totalIncomeValueFormatted() {
-      return abbreviateNumber(this.totalIncomeValue);
+    totalCurrencyIncomeValueFormatted() {
+      return abbreviateNumber(this.totalCurrencyIncomeValue);
     },
     ...mapState({
       mode: state => state.xmas.mode
@@ -112,12 +113,15 @@ export default {
           this.slot.previousIncomeValue || this.slot.incomeValue;
 
         this.progress++;
-        this.totalIncomeValue += currentIncomeValue.expIncomePerCycle / 200;
+        this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 200;
+        this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 200;
 
         // Add 50% of resources at the end
         if (this.progress >= 100) {
-          this.totalIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
+          this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 2;
+          this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
           if (this.tier >= 5) {
+            this.handleHarvest();
             this.$store.dispatch("xmas/resetIncomeValue", this.tier);
             this.resetTimer();
           } else {
@@ -169,6 +173,7 @@ export default {
         income: this.totalIncomeValueFormatted,
         id: this.incomeId++
       });
+      this.$store.dispatch("xmas/addExpirience", this.totalExpIncomeValue);
 
       setTimeout(() => {
         this.incomes.splice(0, 1);
@@ -176,7 +181,8 @@ export default {
 
       this.resetTimer();
       this.progress = 0;
-      this.totalIncomeValue = 0;
+      this.totalCurrencyIncomeValue = 0;
+      this.totalExpIncomeValue = 0;
       this.$store.dispatch("xmas/resetIncomeValue", this.tier);
     }
   }
@@ -210,7 +216,7 @@ export default {
     color: white;
   }
 }
-.farm-progress-bar {
+.progress-bar {
   position: absolute;
   top: -3rem;
 }

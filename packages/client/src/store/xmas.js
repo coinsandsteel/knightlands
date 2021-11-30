@@ -1,6 +1,7 @@
 import _ from "lodash";
 import Events from "@/../../knightlands-shared/events";
 import {
+  getTowerLevelBoundaries,
   farmConfig,
   getFarmTimeData,
   getFarmIncomeData,
@@ -17,7 +18,7 @@ import Vue from "vue";
 
 const initialSlotState = {
   level: 0,
-  previousIncomeValue: 0
+  previousCurrencyIncome: null
 };
 
 const slots = {};
@@ -32,6 +33,12 @@ export default {
     mode: "manage",
     area: {},
     user: {},
+    tower: {
+      expirience: 100,
+      level: 1,
+      currentLevelPercentage: 0
+    },
+    towerLevelBoundaries: null,
     levelGap: 1,
     slots
   },
@@ -106,8 +113,43 @@ export default {
     updateLevelGap(state, value) {
       state.levelGap = value;
     },
+    addExpirience(state, value) {
+      state.tower.expirience += value;
+
+      let currentExp = state.tower.expirience;
+      let currentLevel = state.tower.level;
+      let newLevel = currentLevel + 1;
+      let currentLevelExpStart = state.towerLevelBoundaries[currentLevel];
+      let currentLevelExpEnd = state.towerLevelBoundaries[newLevel];
+      
+      while (state.towerLevelBoundaries[newLevel] < state.tower.expirience) {
+        currentLevelExpStart = state.towerLevelBoundaries[newLevel];
+        currentLevelExpEnd = state.towerLevelBoundaries[newLevel+1];
+        newLevel++;
+      }
+
+      if (newLevel > currentLevel) {
+        state.tower.level = newLevel - 1;
+      }
+
+      let expGap = currentLevelExpEnd - currentLevelExpStart;
+      let currentGap = currentExp - currentLevelExpStart;
+
+      state.tower.currentLevelPercentage = Math.floor(
+        currentGap * 100 / expGap
+      );
+    },
+    setTowerLevelBoundaries(state) {
+      state.towerLevelBoundaries = getTowerLevelBoundaries();
+    }
   },
   actions: {
+    setTowerLevelBoundaries(store) {
+      store.commit('setTowerLevelBoundaries');
+    },
+    addExpirience(store, value) {
+      store.commit('addExpirience', value);
+    },
     updateLevelGap(store, value) {
       store.commit('updateLevelGap', value);
     },
@@ -118,7 +160,7 @@ export default {
       store.commit('updateSlot', {
         tier,
         data: {
-          previousIncomeValue: store.getters.incomeValue(tier)
+          previousCurrencyIncome: store.getters.incomeValue(tier)
         }
       });
     },
@@ -126,7 +168,7 @@ export default {
       store.commit('updateSlot', {
         tier,
         data: {
-          previousIncomeValue: null
+          previousCurrencyIncome: null
         }
       });
     },

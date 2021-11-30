@@ -7,7 +7,20 @@
       @touchstart="startMovement"
     >
       <div class="building building-tower font-size-25" :style="towerStyle">
-        TOWER
+        <progress-bar
+          class="farm-progress-bar"
+          ref="progress"
+          barClasses="no-animation"
+          :maxValue="100"
+          :percentMode="false"
+          :hideMaxValue="false"
+          v-model="tower.currentLevelPercentage"
+          barType="green"
+        ></progress-bar>
+
+        TOWER<br />
+        Exp: {{ expirienceValueFormatted }}<br />
+        Level: {{ tower.level }}
       </div>
 
       <XmasFarm
@@ -30,17 +43,21 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import { create } from "vue-modal-dialogs";
 
 import XmasFarm from "./XmasFarm.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
+import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
 
 export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
-    XmasFarm
+    XmasFarm,
+    ProgressBar
   },
   watch: {},
   mounted() {
     this.$nextTick(() => {
       this.calcPositionLimits();
     });
+    this.$store.dispatch("xmas/setTowerLevelBoundaries");
   },
   data: () => {
     return {
@@ -95,7 +112,7 @@ export default {
       this.positionLimits.left.min =
         this.size.port.width - this.size.scene.width;
 
-      console.log('Sizes', _.cloneDeep(this.size));
+      console.log("Sizes", _.cloneDeep(this.size));
     },
     startMovement: function(event) {
       // get the mouse cursor position at startup:
@@ -150,14 +167,14 @@ export default {
     }
   },
   computed: {
+    expirienceValueFormatted() {
+      return abbreviateNumber(this.tower.expirience);
+    },
     towerStyle() {
       return {};
     },
     ...mapState({
-      xmas: state => state.xmas.loaded,
-      area: state => state.xmas.area,
-      user: state => state.xmas.user,
-      mode: state => state.xmas.mode
+      tower: state => state.xmas.tower
     })
   }
 };
@@ -189,5 +206,9 @@ export default {
   left: 10rem;
   top: 12rem;
   padding: 15rem 0;
+}
+.progress-bar {
+  position: absolute;
+  top: -3rem;
 }
 </style>
