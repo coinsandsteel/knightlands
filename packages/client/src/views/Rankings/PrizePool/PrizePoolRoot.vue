@@ -60,7 +60,7 @@ export default {
       this.currentTab = newTab;
     },
     async claimPrize() {
-      const { address } = await ShowWallet(Blockchains.Ethereum);
+      const { address } = await ShowWallet(Blockchains.Polygon);
       const txDetails = await this.$game.withdrawPrizePool(address);
       await this.$game.blockchain.withdrawUSDCPot(txDetails);
     }
