@@ -1243,7 +1243,7 @@ class Game {
     if (!this.authenticated) {
       return;
     }
-    
+
     try {
       let serverTime = await this._request(Operations.SyncTime);
       this._serverTimeDiff = serverTime.time - this.now;
@@ -2007,6 +2007,11 @@ class Game {
 
   async getPrizePoolRewards() {
     return (await this._wrapOperation(Operations.GetPrizePoolRewards)).response;
+  }
+
+  async withdrawPrizePool(to) {
+    return (await this._wrapOperation(Operations.PrizePoolWithdraw, { to }))
+      .response;
   }
 
   // Races
