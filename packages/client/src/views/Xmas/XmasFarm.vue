@@ -121,14 +121,13 @@ export default {
           this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 2;
           this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
           if (this.tier >= 5) {
-            this.handleHarvest();
             this.$store.dispatch("xmas/resetIncomeValue", this.tier);
             this.resetTimer();
           } else {
             clearInterval(this.animation);
           }
         }
-      }, this.slot.cycleLength);
+      }, this.slot.cycleLength * 1000 / 100);
     },
     async handleClick() {
       const level = this.slot.level;
