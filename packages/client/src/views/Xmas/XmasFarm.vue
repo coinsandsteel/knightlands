@@ -2,12 +2,35 @@
   <div
     ref="farm"
     class="building font-size-25"
-    :class="[!slot.level ? 'building-slot' : 'building-farm', slot.level ? 'building-mode-' + mode : null]"
+    :class="[
+      !slot.level ? 'building-slot' : 'building-farm',
+      slot.level ? 'building-mode-' + mode : null
+    ]"
     @click="handleClick"
   >
     <IncomeText v-for="income in incomes" :key="income.id">{{
       income.income
     }}</IncomeText>
+
+    <template v-if="mode === 'manage'">
+      TIER: {{ tier }}<br />
+      Level: {{ slot.level }}<br />
+      <template v-if="!slot.level">
+        Build price {{ upgradePriceFormatted }} SB
+      </template>
+      <template v-else> Upgrade price {{ upgradePriceFormatted }} SB</template>
+    </template>
+
+    <template v-if="mode === 'collect'">
+      TIER:&nbsp;{{ tier }}<br />
+      Power:&nbsp;
+      <span
+        :class="[slot.previousIncomeValue ? 'strong' : null]"
+        v-html="power"
+      />&nbsp;{{ currency }}<br />
+      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{ currency }}<br />
+      Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}
+    </template>
 
     <progress-bar
       class="progress-bar"
@@ -20,31 +43,6 @@
       v-model="progress"
       barType="green"
     ></progress-bar>
-
-    <template v-if="mode === 'manage'">
-      <div v-if="this.tier >= 5">[Auto-cycle]</div>
-      TIER: {{ tier }}<br />
-      Level: {{ slot.level }}<br />
-      <template v-if="!slot.level">
-        Build price {{ upgradePriceFormatted }} SB
-      </template>
-      <template v-else> Upgrade price {{ upgradePriceFormatted }} SB</template>
-    </template>
-
-    <template v-if="mode === 'collect'">
-      <div v-if="this.tier >= 5">[Auto-cycle]</div>
-      TIER: {{ tier }}<br />
-
-      <template v-if="slot.previousIncomeValue">
-        Power: {{ previousCurrencyIncomeValueFormatted }}&nbsp;&rarr;&nbsp;<strong>{{
-          currencyIncomeValueFormatted
-        }}</strong
-        ><br />
-      </template>
-      <template v-else> Power: {{ currencyIncomeValueFormatted }}<br /> </template>
-
-      Accumulated: {{ totalCurrencyIncomeValueFormatted }} {{ slot.currency }}
-    </template>
   </div>
 </template>
 
@@ -82,6 +80,26 @@ export default {
     slot() {
       return this.$store.getters["xmas/slot"](this.tier);
     },
+    power() {
+      if (this.slot.previousIncomeValue) {
+        return (
+          this.previousCurrencyIncomeValueFormatted +
+          "&nbsp;&rarr;&nbsp;" +
+          this.currencyIncomeValueFormatted
+        );
+      } else {
+        return this.currencyIncomeValueFormatted;
+      }
+    },
+    currency() {
+      if (this.tier == 6) {
+        return this.slot.incomeValue.currencyIncomePerCycle < 1
+          ? "XP"
+          : this.slot.currency;
+      } else {
+        return this.slot.currency;
+      }
+    },
     upgradePriceFormatted() {
       return abbreviateNumber(this.slot.upgradePrice);
     },
@@ -89,13 +107,22 @@ export default {
       return abbreviateNumber(this.slot.incomeValue.currencyIncomePerCycle);
     },
     previousCurrencyIncomeValueFormatted() {
-      return abbreviateNumber(this.slot.previousIncomeValue.currencyIncomePerCycle);
+      return abbreviateNumber(
+        this.slot.previousIncomeValue.currencyIncomePerCycle
+      );
     },
     totalCurrencyIncomeValueFormatted() {
       return abbreviateNumber(this.totalCurrencyIncomeValue);
     },
+    buildingIsAllowed() {
+      if (this.tier == 1) {
+        return true;
+      }
+      return this.slots[this.tier - 1].level >= 50;
+    },
     ...mapState({
-      mode: state => state.xmas.mode
+      mode: state => state.xmas.mode,
+      slots: state => state.xmas.slots
     })
   },
   beforeDestroy() {
@@ -113,30 +140,48 @@ export default {
           this.slot.previousIncomeValue || this.slot.incomeValue;
 
         this.progress++;
-        this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 200;
+        this.totalCurrencyIncomeValue +=
+          currentIncomeValue.currencyIncomePerCycle / 200;
         this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 200;
 
         // Add 50% of resources at the end
         if (this.progress >= 100) {
-          this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 2;
+          this.totalCurrencyIncomeValue +=
+            currentIncomeValue.currencyIncomePerCycle / 2;
           this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
-          if (this.tier >= 5) {
-            this.$store.dispatch("xmas/resetIncomeValue", this.tier);
+          if (this.slot.autoCyclesLeft) {
+            this.$store.dispatch("xmas/cycleFinished", this.tier);
             this.resetTimer();
           } else {
+            this.$store.dispatch("xmas/epochFinished", this.tier);
             clearInterval(this.animation);
           }
         }
-      }, this.slot.cycleLength * 1000 / 100);
+      }, (this.slot.cycleLength * 1000) / 100);
     },
     async handleClick() {
       const level = this.slot.level;
 
       // Empty slot
       if (level === 0) {
+        if (!this.buildingIsAllowed) {
+          await this.showPrompt(
+            "Upgrade previous farm",
+            `In order to build this farm you should upgrade the previous farm to 50-th level `,
+            [
+              {
+                type: "grey",
+                title: this.$t("btn-ok"),
+                response: true
+              }
+            ]
+          );
+          return;
+        }
+
         const result = await this.showPrompt(
           "Building a farm",
-          `Are you sure you want to build a farm for ${this.slot.upgradePriceFormatted} ${this.slot.currency}?`,
+          `Are you sure you want to build a farm for ${this.upgradePriceFormatted} ${this.slot.currency}?`,
           [
             {
               type: "red",
@@ -190,17 +235,16 @@ export default {
 
 <style lang="less" scoped>
 .building {
-  position: absolute;
+  position: relative;
   text-align: center;
   color: black;
+  margin-bottom: 5rem;
 }
-.building-farm,
-.building-slot {
-  height: 17rem;
-  width: 30rem;
-  padding: 1rem 0;
+.building-farm {
+  padding: 5rem 0;
 }
 .building-slot {
+  padding: 5rem 0;
   background: grey;
   opacity: 0.8;
 }
@@ -217,6 +261,6 @@ export default {
 }
 .progress-bar {
   position: absolute;
-  top: -3rem;
+  bottom: 0;
 }
 </style>

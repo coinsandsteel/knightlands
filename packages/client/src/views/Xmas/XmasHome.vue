@@ -4,6 +4,7 @@
 
     <div class="wrapper relative width-100 height-100">
       <XmasMap ref="area" />
+      <XmasPerks v-if="perksVisible" />
       <ModeSwitchBtn />
       <StatisticsBtn />
       <Multipliers />
@@ -29,6 +30,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import PromptMixin from "@/components/PromptMixin.vue";
 
 import XmasMap from "./XmasMap.vue";
+import XmasPerks from "./XmasPerks.vue";
 import ModeSwitchBtn from "./ModeSwitchBtn.vue";
 import StatisticsBtn from "./StatisticsBtn.vue";
 import Multipliers from "./Multipliers.vue";
@@ -36,6 +38,7 @@ import Multipliers from "./Multipliers.vue";
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
   components: {
+    XmasPerks,
     XmasMap,
     ModeSwitchBtn,
     StatisticsBtn,
@@ -45,7 +48,6 @@ export default {
     CustomButton,
     IconWithValue
   },
-  data: () => ({}),
   activated() {},
   created() {
     this.title = "w-xmas";
@@ -54,7 +56,8 @@ export default {
   computed: {
     ...mapState({
       area: state => state.xmas.area,
-      user: state => state.xmas.user
+      user: state => state.xmas.user,
+      perksVisible: state => state.xmas.flags.perks
     }),
     ...mapGetters({
       playerStats: "xmas/playerStats"

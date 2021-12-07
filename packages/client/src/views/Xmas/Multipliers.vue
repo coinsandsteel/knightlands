@@ -47,6 +47,7 @@ export default {
   transform: translateY(-50%);
   overflow: hidden;
   border-radius: 2rem 0 0 2rem;
+  z-index: 50;
 }
 .multiplier {
   width: 8rem;
