@@ -8,11 +8,16 @@ import {
   getFarmTimeData,
   getFarmIncomeData,
   getFarmUpgradeData,
+  
+  TOWER_PERK_INCOME,
+  TOWER_PERK_UPGRADE,
   TOWER_PERK_SPEED,
   TOWER_PERK_BOOST,
   TOWER_PERK_SUPER_SPEED,
   TOWER_PERK_SUPER_BOOST,
   TOWER_PERK_AUTOCYCLES_COUNT,
+  TOWER_PERK_CYCLE_DURATION,
+
   CURRENCY_CHRISTMAS_POINTS
 } from "../../../knightlands-shared/xmas";
 
@@ -55,22 +60,19 @@ export default {
   },
   getters: {
     slot: (state) => tier => {
-      console.log('slot getter');
       return {
         ...state.slots[tier],
         currency: farmConfig[tier].currency
       };
     },
     slotComputed: (state, getters) => tier => {
-      console.log('slotComputed getter');
       return {
         cycleLength: getters.cycleLength(tier),
         upgradePrice: getters.upgradePrice(tier),
         incomeValue: getters.incomeValue(tier)
       };
     },
-    upgradePrice: state => tier => {
-      console.log('upgradePrice getter');
+    upgradePrice: (state, getters) => tier => {
       let levelGap = 1;
       let level = state.slots[tier].level;
       if (level > 0) {
@@ -78,26 +80,28 @@ export default {
           100 :
           state.levelGap;
       }
+      let perkData = getters.perkData(tier, TOWER_PERK_UPGRADE);
       let stat = getFarmUpgradeData(tier, level + levelGap, {
-        upgradePerkLevel: 1
+        upgradePerkLevel: perkData ? perkData.level : 0
       });
       return stat.upgradePrice;
     },
-    incomeValue: state => tier => {
-      console.log('incomeValue getter');
+    incomeValue: (state, getters) => tier => {
       let level = state.slots[tier].level;
+      let incomePerkData = getters.perkData(tier, TOWER_PERK_INCOME);
+      let cyclePerkData = getters.perkData(tier, TOWER_PERK_CYCLE_DURATION);
       let stat = getFarmIncomeData(tier, level, {
-        incomePerkLevel: 1,
-        cycleDurationPerkLevel: 1,
+        incomePerkLevel: incomePerkData ? incomePerkData.level : 0,
+        cycleDurationPerkLevel: cyclePerkData ? cyclePerkData.level : 0,
         [TOWER_PERK_BOOST]: false,
         [TOWER_PERK_SUPER_BOOST]: false
       });
       return stat;
     },
-    cycleLength: () => tier => {
-      console.log('cycleLength getter');
+    cycleLength: (state, getters) => tier => {
+      let cyclePerkData = getters.perkData(tier, TOWER_PERK_CYCLE_DURATION);
       let stat = getFarmTimeData(tier, {
-        cycleDurationPerkLevel: 1,
+        cycleDurationPerkLevel: cyclePerkData ? cyclePerkData.level : 0,
         [TOWER_PERK_SPEED]: false,
         [TOWER_PERK_SUPER_SPEED]: false
       });
@@ -107,7 +111,6 @@ export default {
       return {};
     },
     perkData: state => (tier, perkName) => {
-      console.log('perkData getter');
       let tierCurrency = farmConfig[tier].currency;
       return state.perks[tierCurrency].tiers[
         tierCurrency === CURRENCY_CHRISTMAS_POINTS ? tier : "all"

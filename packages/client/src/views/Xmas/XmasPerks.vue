@@ -10,9 +10,6 @@
         @click="rebalancePerks"
       >
         {{ $t("rebalance") }}
-        <IconWithValue iconClass="h-gold" valueClass="font-size-18">{{
-          40
-        }}</IconWithValue>
       </CustomButton>
       <CustomButton v-show="perksModified" @click="resetPerks">{{
         $t("btn-reset")
@@ -85,9 +82,10 @@ import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import NumericValue from "@/components/NumericValue.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
-  mixins: [],
+  mixins: [PromptMixin],
   components: {
     CustomButton,
     NumericValue,
