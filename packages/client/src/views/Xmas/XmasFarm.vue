@@ -18,7 +18,11 @@
       <template v-if="!slot.level">
         Build price {{ upgradePriceFormatted }} SB
       </template>
-      <template v-else> Upgrade price {{ upgradePriceFormatted }} SB</template>
+      <template v-else>
+        <span :style="{ color: !canAffordUpgrade ? 'orangered' : null }"
+          >Upgrade price {{ upgradePriceFormatted }} SB</span
+        >
+      </template>
     </template>
 
     <template v-if="mode === 'collect'">
@@ -28,7 +32,9 @@
         :class="[slot.previousIncomeValue ? 'strong' : null]"
         v-html="power"
       />&nbsp;{{ currency }}<br />
-      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{ currency }}<br />
+      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{
+        currency
+      }}<br />
       Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
       Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}
     </template>
@@ -53,7 +59,10 @@ import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import { mapState } from "vuex";
 
-import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
+import {
+  abbreviateNumber,
+  CURRENCY_SANTABUCKS
+} from "../../../../knightlands-shared/xmas";
 
 export default {
   props: ["tier"],
@@ -73,7 +82,9 @@ export default {
     slotComputedCached: null
   }),
   created() {
-    this.slotComputedCached = this.$store.getters["xmas/slotComputed"](this.tier);
+    this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
+      this.tier
+    );
   },
   watch: {
     "slot.level": function(value) {
@@ -82,8 +93,10 @@ export default {
       }
     },
     slotsComputedHash: function(value) {
-      console.log('watcher slotsComputedHash', value);
-      this.slotComputedCached = this.$store.getters["xmas/slotComputed"](this.tier);
+      console.log("watcher slotsComputedHash", value);
+      this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
+        this.tier
+      );
     }
   },
   computed: {
@@ -114,7 +127,9 @@ export default {
       return abbreviateNumber(this.slotComputedCached.upgradePrice);
     },
     currencyIncomeValueFormatted() {
-      return abbreviateNumber(this.slotComputedCached.incomeValue.currencyIncomePerCycle);
+      return abbreviateNumber(
+        this.slotComputedCached.incomeValue.currencyIncomePerCycle
+      );
     },
     previousCurrencyIncomeValueFormatted() {
       return abbreviateNumber(
@@ -130,10 +145,14 @@ export default {
       }
       return this.slots[this.tier - 1].level >= 50;
     },
+    canAffordUpgrade() {
+      return this.slotComputedCached.upgradePrice <= this.sbBalance;
+    },
     ...mapState({
       mode: state => state.xmas.mode,
       slots: state => state.xmas.slots,
-      slotsComputedHash: state => state.xmas.slotsComputedHash
+      slotsComputedHash: state => state.xmas.slotsComputedHash,
+      sbBalance: state => state.xmas.balance[CURRENCY_SANTABUCKS]
     })
   },
   beforeDestroy() {
@@ -190,9 +209,10 @@ export default {
           return;
         }
 
+
         const result = await this.showPrompt(
           "Building a farm",
-          `Are you sure you want to build a farm for ${this.upgradePriceFormatted} ${this.slot.currency}?`,
+          `Are you sure you want to build a farm for ${this.upgradePriceFormatted} SB?`,
           [
             {
               type: "red",
@@ -209,11 +229,21 @@ export default {
         if (!result) {
           return;
         }
+
         this.$store.dispatch("xmas/upgradeSlot", this.tier);
 
         // Existing farm
       } else {
         if (this.mode === "manage") {
+          if (!this.canAffordUpgrade) {
+            return;
+          }
+
+          this.$store.commit("xmas/decreaseBalance", {
+            currency: this.slot.currency,
+            amount: this.slotComputedCached.upgradePrice
+          });
+
           if (!this.slot.previousIncomeValue) {
             this.$store.dispatch("xmas/captureIncomeValue", this.tier);
           }
@@ -229,6 +259,10 @@ export default {
         id: this.incomeId++
       });
       this.$store.dispatch("xmas/addExpirience", this.totalExpIncomeValue);
+      this.$store.commit("xmas/increaseBalance", {
+        currency: this.slot.currency,
+        amount: this.totalCurrencyIncomeValue
+      });
 
       setTimeout(() => {
         this.incomes.splice(0, 1);

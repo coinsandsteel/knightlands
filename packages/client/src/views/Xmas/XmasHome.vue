@@ -20,12 +20,7 @@
 import { mapState, mapGetters } from "vuex";
 
 import CustomButton from "@/components/Button.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import AppSection from "@/AppSection.vue";
-import Title from "@/components/Title.vue";
-import UiConstants from "@/ui_constants";
-import ProgressBar from "@/components/ProgressBar.vue";
-import anime from "animejs/lib/anime.es.js";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 
@@ -43,10 +38,7 @@ export default {
     ModeSwitchBtn,
     StatisticsBtn,
     Multipliers,
-    Title,
-    ProgressBar,
-    CustomButton,
-    IconWithValue
+    CustomButton
   },
   activated() {},
   created() {

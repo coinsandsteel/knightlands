@@ -1,6 +1,16 @@
 <template>
   <div ref="port" class="relative width-100 height-100" v-bar>
     <div id="map">
+      <div
+        class="flex flex-center width-100 margin-top-3 margin-bottom-3 font-size-25"
+      >
+        Santabucks: {{ balanceFormatted.santa_bucks }}<br />
+        Gold: {{ balanceFormatted.gold }}<br />
+        Unit Essence: {{ balanceFormatted.unit_essence }}<br />
+        Christmas Points: {{ balanceFormatted.christmas_points }}<br />
+        Shinies: {{ balanceFormatted.shinies }}
+      </div>
+
       <XmasTower @click="$emit('toggle-perks')" />
       <XmasFarm
         :key="'tier-' + tier"
@@ -13,25 +23,19 @@
 </template>
 
 <script>
-import _ from "lodash";
 import { mapState } from "vuex";
 
-import Erorrs from "@/../../knightlands-shared/errors";
 import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import { create } from "vue-modal-dialogs";
-
+import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
 import XmasTower from "./XmasTower.vue";
 import XmasFarm from "./XmasFarm.vue";
-import ProgressBar from "@/components/ProgressBar.vue";
-import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
 
 export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
     XmasTower,
-    XmasFarm,
-    ProgressBar
+    XmasFarm
   },
   watch: {},
   mounted() {
@@ -53,7 +57,18 @@ export default {
     };
   },
   methods: {},
-  computed: {}
+  computed: {
+    balanceFormatted() {
+      let formattedBalance = {};
+      for (let key in this.balance) {
+        formattedBalance[key] = abbreviateNumber(this.balance[key]);
+      }
+      return formattedBalance;
+    },
+    ...mapState({
+      balance: state => state.xmas.balance
+    })
+  }
 };
 </script>
 

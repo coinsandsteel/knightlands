@@ -18,7 +18,11 @@ import {
   TOWER_PERK_AUTOCYCLES_COUNT,
   TOWER_PERK_CYCLE_DURATION,
 
-  CURRENCY_CHRISTMAS_POINTS
+  CURRENCY_SANTABUCKS,
+  CURRENCY_GOLD,
+  CURRENCY_UNIT_ESSENCE,
+  CURRENCY_CHRISTMAS_POINTS,
+  CURRENCY_SHINIES
 } from "../../../knightlands-shared/xmas";
 
 import Events from "@/../../knightlands-shared/events";
@@ -56,6 +60,13 @@ export default {
     perks: perksTree,
     flags: {
       perks: false
+    },
+    balance: {
+      [CURRENCY_SANTABUCKS]: 20,
+      [CURRENCY_GOLD]: 0,
+      [CURRENCY_UNIT_ESSENCE]: 0,
+      [CURRENCY_CHRISTMAS_POINTS]: 0,
+      [CURRENCY_SHINIES]: 0
     }
   },
   getters: {
@@ -118,7 +129,12 @@ export default {
     }
   },
   mutations: {
-    updateState(state, data) {},
+    decreaseBalance(state, { currency, amount }) {
+      state.balance[currency] -= amount;
+    },
+    increaseBalance(state, { currency, amount }) {
+      state.balance[currency] += amount;
+    },
     resetArea(state) {
       //state.area = _.clone(areaInitialState);
       console.log("Area was reset", state.area);
@@ -228,9 +244,9 @@ export default {
     toggleFlag(store, key) {
       store.commit('toggleFlag', key);
     },
-    updateSlot(store, payload) {
-      store.commit('updateSlot', payload);
-      if (payload.data.level || payload.data.previousCurrencyIncome) {
+    updateSlot(store, { tier, data }) {
+      store.commit('updateSlot', { tier, data });
+      if (data.level || data.previousCurrencyIncome) {
         store.commit('refreshSlotsComputedHash');
       }
     },

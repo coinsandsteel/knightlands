@@ -81,15 +81,13 @@ import _ from "lodash";
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import NumericValue from "@/components/NumericValue.vue";
-import IconWithValue from "@/components/IconWithValue.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
   mixins: [PromptMixin],
   components: {
     CustomButton,
-    NumericValue,
-    IconWithValue
+    NumericValue
   },
   watch: {
     perks: {
