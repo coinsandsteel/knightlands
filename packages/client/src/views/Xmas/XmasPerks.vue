@@ -29,35 +29,43 @@
       <div class="perks-wrap padding-5 font-size-25">
         <div
           class="currency-wrap"
-          v-for="(perks, currencyName) in perks"
+          v-for="(currencyData, currencyName) in perks"
           :key="currencyName"
         >
           <div class="currency-item">
             <strong>{{ currencyName }}</strong>
           </div>
           <div
-            class="perk-item flex"
-            v-for="(perkData, perkName) in perks"
-            :key="perkName"
+            v-for="(tierData, tier) in currencyData.tiers"
+            :key="currencyName + '_tier_' + tier"
           >
-            <NumericValue
-              v-if="upgradeAllowed"
-              :id="'perk_' + currencyName + '_' + perkName"
-              :showMax="true"
-              :noExtra="true"
-              :rowStyle="{ 'align-items': 'center' }"
-              :btnStyle="{ width: '1em', height: '1em' }"
-              :value="getStatValue(currencyName, perkName)"
-              :maxValue="getMaxStatValue(currencyName, perkName)"
-              :decreaseCondition="canDecrease(currencyName, perkName)"
-              :increaseCondition="canIncrease"
-              @inc="increaseAttribute(currencyName, perkName)"
-              @dec="decreaseAttribute(currencyName, perkName)"
-              @reset="reset(currencyName, perkName)"
-            />
-            &nbsp;lvl&nbsp;{{ perkData.level }}&nbsp;<strong>{{
-              perkName
-            }}</strong>
+            <div class="tier-item" v-if="tier !== 'all'">
+              <strong>Tier {{ tier }}</strong>
+            </div>
+            <div
+              class="perk-item flex"
+              v-for="(perkData, perkName) in tierData"
+              :key="currencyName + '_tier_' + tier + '_perk_' + perkName"
+            >
+              <NumericValue
+                v-if="upgradeAllowed"
+                :id="'perk_' + currencyName + '_' + perkName"
+                :showMax="true"
+                :noExtra="true"
+                :rowStyle="{ 'align-items': 'center' }"
+                :btnStyle="{ width: '1em', height: '1em' }"
+                :value="getStatValue(currencyName, tier, perkName)"
+                :maxValue="getMaxStatValue(currencyName, perkName)"
+                :decreaseCondition="canDecrease(currencyName, tier, perkName)"
+                :increaseCondition="canIncrease"
+                @inc="increaseAttribute(currencyName, tier, perkName)"
+                @dec="decreaseAttribute(currencyName, tier, perkName)"
+                @reset="reset(currencyName, tier, perkName)"
+              />
+              &nbsp;lvl&nbsp;{{ perkData.level }}&nbsp;<strong>{{
+                perkName
+              }}</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -72,6 +80,8 @@ import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import NumericValue from "@/components/NumericValue.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+
+import { CURRENCY_CHRISTMAS_POINTS } from "../../../../knightlands-shared/xmas";
 
 export default {
   mixins: [],
@@ -101,50 +111,64 @@ export default {
       for (let currencyName in perksClone) {
         if (_.isUndefined(this.newPerks[currencyName])) {
           this.$set(this.newPerks, currencyName, {});
-        }
-        for (let perkName in perksClone[currencyName]) {
           this.$set(
             this.newPerks[currencyName],
-            perkName,
-            perksClone[currencyName][perkName]
+            "unlocked",
+            perksClone[currencyName].unlocked
           );
+          this.$set(this.newPerks[currencyName], "tiers", {});
+        }
+        for (let tier in perksClone[currencyName].tiers) {
+          if (_.isUndefined(this.newPerks[currencyName].tiers[tier])) {
+            this.$set(this.newPerks[currencyName].tiers, tier, {});
+          }
+          for (let perkName in perksClone[currencyName].tiers[tier]) {
+            this.$set(
+              this.newPerks[currencyName].tiers[tier],
+              perkName,
+              perksClone[currencyName].tiers[tier][perkName]
+            );
+          }
         }
       }
     },
-    getStatValue(currencyName, perkName) {
-      return this.newPerks[currencyName][perkName].level;
+    getStatValue(currencyName, tier, perkName) {
+      return this.newPerks[currencyName].tiers[tier][perkName].level;
     },
+    // TODO charge 1 level for branch reveal
     getMaxStatValue() {
       return this.tower.level - 1 - this.newPerksSum;
     },
-    canDecrease(currencyName, perkName) {
+    canDecrease(currencyName, tier, perkName) {
       return (
-        this.newPerks[currencyName][perkName].level >
-        this.perks[currencyName][perkName].level
+        this.newPerks[currencyName].tiers[tier][perkName].level >
+        this.perks[currencyName].tiers[tier][perkName].level
       );
     },
-    increaseAttribute(currencyName, perkName) {
-      this.newPerks[currencyName][perkName].level++;
+    increaseAttribute(currencyName, tier, perkName) {
+      this.newPerks[currencyName].tiers[tier][perkName].level++;
       return true;
     },
-    decreaseAttribute(currencyName, perkName) {
-      this.newPerks[currencyName][perkName].level--;
+    decreaseAttribute(currencyName, tier, perkName) {
+      this.newPerks[currencyName].tiers[tier][perkName].level--;
       return true;
     },
     confirmPerks() {
       this.$store.dispatch("xmas/commitPerks", this.newPerks);
     },
-    reset(currencyName, perkName) {
-      while (this.canDecrease(currencyName, perkName)) {
-        this.decreaseAttribute(currencyName, perkName);
+    reset(currencyName, tier, perkName) {
+      while (this.canDecrease(currencyName, tier, perkName)) {
+        this.decreaseAttribute(currencyName, tier, perkName);
       }
     },
     resetPerks() {
       let perksClone = _.cloneDeep(this.perks);
       for (let currencyName in this.newPerks) {
-        for (let perkName in this.newPerks[currencyName]) {
-          this.newPerks[currencyName][perkName].level =
-            perksClone[currencyName][perkName].level;
+        for (let tier in this.newPerks[currencyName].tiers) {
+          for (let perkName in this.newPerks[currencyName].tiers[tier]) {
+            this.newPerks[currencyName].tiers[tier][perkName].level =
+              perksClone[currencyName].tiers[tier][perkName].level;
+          }
         }
       }
     },
@@ -173,8 +197,10 @@ export default {
 
       let newPerks = _.cloneDeep(this.perks);
       for (let currencyName in newPerks) {
-        for (let perkName in newPerks[currencyName]) {
-          newPerks[currencyName][perkName].level = 0;
+        for (let tier in newPerks[currencyName].tiers) {
+          for (let perkName in newPerks[currencyName].tiers[tier]) {
+            newPerks[currencyName].tiers[tier][perkName].level = 0;
+          }
         }
       }
       this.$store.dispatch("xmas/commitPerks", newPerks);
@@ -184,27 +210,38 @@ export default {
     newPerksSum() {
       let sum = 0;
       for (let currencyName in this.newPerks) {
-        sum += _.sum(
-          _.map(Object.values(this.newPerks[currencyName]), "level")
-        );
+        for (let tier in this.newPerks[currencyName].tiers) {
+          sum += _.sum(
+            _.map(
+              Object.values(this.newPerks[currencyName].tiers[tier]),
+              "level"
+            )
+          );
+        }
       }
       return sum;
     },
     perksSum() {
       let sum = 0;
       for (let currencyName in this.perks) {
-        sum += _.sum(_.map(Object.values(this.perks[currencyName]), "level"));
+        for (let tier in this.perks[currencyName].tiers) {
+          sum += _.sum(
+            _.map(Object.values(this.perks[currencyName].tiers[tier]), "level")
+          );
+        }
       }
       return sum;
     },
     perksModified() {
       for (let currencyName in this.newPerks) {
-        for (let perkName in this.newPerks[currencyName]) {
-          if (
-            this.newPerks[currencyName][perkName].level !==
-            this.perks[currencyName][perkName].level
-          ) {
-            return true;
+        for (let tier in this.newPerks[currencyName].tiers) {
+          for (let perkName in this.newPerks[currencyName].tiers[tier]) {
+            if (
+              this.newPerks[currencyName].tiers[tier][perkName].level !==
+              this.perks[currencyName].tiers[tier][perkName].level
+            ) {
+              return true;
+            }
           }
         }
       }
@@ -249,11 +286,15 @@ export default {
 }
 .perk-item {
   background: rgb(90, 103, 116);
-  padding: 1rem 0;
+  padding: 1rem;
 }
 .currency-item {
   background: seagreen;
   padding: 2rem 0;
+}
+.tier-item {
+  background: hotpink;
+  padding: 1rem 0;
 }
 .lvl {
   font-weight: 600;

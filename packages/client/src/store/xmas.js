@@ -1,7 +1,6 @@
 import _ from "lodash";
-import Events from "@/../../knightlands-shared/events";
 import {
-  currencies,
+  perksTree,
   getTowerLevelBoundaries,
   getMainTowerPerkValue,
   farmConfig,
@@ -13,11 +12,10 @@ import {
   TOWER_PERK_SUPER_SPEED,
   TOWER_PERK_SUPER_BOOST,
   TOWER_PERK_AUTOCYCLES_COUNT,
-  TOWER_PERK_CYCLE_DURATION,
-  TOWER_PERK_INCOME,
-  TOWER_PERK_UPGRADE
+  CURRENCY_CHRISTMAS_POINTS
 } from "../../../knightlands-shared/xmas";
 
+import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 import timer from "../timer";
 import Vue from "vue";
@@ -26,28 +24,12 @@ const slots = {};
 const initialSlotState = {
   level: 0,
   autoCyclesLeft: 0,
+  autoCyclesSpent: 0,
   previousCurrencyIncome: null
 };
 for (let i = 1; i <= 9; i++) {
   slots[i] = _.clone(initialSlotState);
 }
-
-const initialPerksBranchesState = {};
-const initialPerksState = {};
-const initialPerkState = {
-  [TOWER_PERK_CYCLE_DURATION]: { level: 0 },
-  [TOWER_PERK_INCOME]: { level: 0 },
-  [TOWER_PERK_UPGRADE]: { level: 0 },
-  [TOWER_PERK_AUTOCYCLES_COUNT]: { level: 0 },
-  [TOWER_PERK_BOOST]: { level: 0 },
-  [TOWER_PERK_SPEED]: { level: 0 },
-  [TOWER_PERK_SUPER_BOOST]: { level: 0 },
-  [TOWER_PERK_SUPER_SPEED]: { level: 0 }
-};
-currencies.forEach(currency => {
-  initialPerksBranchesState[currency] = false;
-  initialPerksState[currency] = _.clone(initialPerkState);
-});
 
 export default {
   namespaced: true,
@@ -64,8 +46,7 @@ export default {
     },
     levelGap: 1,
     slots,
-    perks: initialPerksState,
-    perkBranches: initialPerksBranchesState,
+    perks: perksTree,
     flags: {
       perks: false
     }
@@ -115,7 +96,10 @@ export default {
       return {};
     },
     perkData: state => (tier, perkName) => {
-      return state.perks[farmConfig[tier].currency][perkName];
+      let tierCurrency = farmConfig[tier].currency;
+      return state.perks[tierCurrency].tiers[
+        tierCurrency === CURRENCY_CHRISTMAS_POINTS ? tier : "all"
+      ][perkName];
     }
   },
   mutations: {
@@ -169,6 +153,7 @@ export default {
       state.towerLevelBoundaries = getTowerLevelBoundaries();
     },
     decreaseAutoCycleCount(state, tier) {
+      state.slots[tier].autoCyclesSpent++;
       if (state.slots[tier].autoCyclesLeft > 0) {
         state.slots[tier].autoCyclesLeft--;
       }
@@ -176,18 +161,24 @@ export default {
     toggleFlag(state, key) {
       state.flags[key] = !state.flags[key];
     },
-    commitPerks(state, perks) {
-      for (let currencyName in perks) {
-        for (let perkName in perks[currencyName]) {
-          state.perks[currencyName][perkName].level =
-          perks[currencyName][perkName].level;
+    commitPerks(state, payload) {
+      for (let currencyName in payload) {
+        state.perks[currencyName].unlocked = payload[currencyName].unlocked;
+        for (let tier in payload[currencyName].tiers) {
+          for (let perkName in payload[currencyName].tiers[tier]) {
+            state.perks[currencyName].tiers[tier][perkName].level =
+            payload[currencyName].tiers[tier][perkName].level;
+          }
         }
       }
     }
   },
   actions: {
-    commitPerks(store, perks) {
-      store.commit('commitPerks', perks);
+    commitPerks(store, payload) {
+      store.commit('commitPerks', payload);
+      for (let tier = 1; tier <= 9; tier++) {
+        store.dispatch('updateTierPerks', tier);
+      }
     },
     setInitialState(store) {
       store.dispatch("setTowerLevelBoundaries");
@@ -204,7 +195,10 @@ export default {
       let autoCyclesLeft = getMainTowerPerkValue(tier, TOWER_PERK_AUTOCYCLES_COUNT, perkData.level);
       store.commit('updateSlot', {
         tier,
-        data: { autoCyclesLeft }
+        data: {
+          autoCyclesLeft,
+          autoCyclesSpent: 0
+        }
       });
     },
     addExpirience(store, value) {
@@ -218,21 +212,36 @@ export default {
     },
     upgradeSlot(store, tier) {
       let newLevel = store.state.slots[tier].level + 1;
-      let data = {
-        level: newLevel
-      };
+      // Previous tier should be > 50 lvl
       if (newLevel > 0 && tier > 1 && store.state.slots[tier - 1].level < 50) {
-        // Previous tier should be > 50 lvl
         return;
-      }
-      if (newLevel === 1) {
-        let perkData = store.getters.perkData(tier, TOWER_PERK_AUTOCYCLES_COUNT);
-        data.autoCyclesLeft = getMainTowerPerkValue(tier, TOWER_PERK_AUTOCYCLES_COUNT, perkData.level);
       }
       store.commit('updateSlot', {
         tier,
-        data
+        data: {
+          level: newLevel
+        }
       });
+      store.dispatch('updateTierPerks', tier);
+    },
+    updateTierPerks(store, tier) {
+      let data = {};
+      let slotData = store.getters.slot(tier);
+
+      // Update autocycles counters
+      let perkData = store.getters.perkData(tier, TOWER_PERK_AUTOCYCLES_COUNT);
+      if (perkData) {
+        let autoCyclesMax = getMainTowerPerkValue(tier, TOWER_PERK_AUTOCYCLES_COUNT, perkData.level);
+        data.autoCyclesLeft = autoCyclesMax - slotData.autoCyclesSpent;
+      }
+
+      console.log('updateTierPerks', _.cloneDeep({ slotData, perkData, data }));
+      if (Object.keys(data).length) {
+        store.commit('updateSlot', {
+          tier,
+          data
+        });
+      }
     },
     captureIncomeValue(store, tier) {
       store.commit('updateSlot', {

@@ -29,7 +29,8 @@
         v-html="power"
       />&nbsp;{{ currency }}<br />
       Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{ currency }}<br />
-      Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}
+      Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
+      Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}
     </template>
 
     <progress-bar
