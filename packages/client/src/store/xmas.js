@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { v1 as uuidv1 } from 'uuid';
 import {
   perksTree,
   getTowerLevelBoundaries,
@@ -46,22 +47,30 @@ export default {
     },
     levelGap: 1,
     slots,
+    slotsComputedHash: null,
     perks: perksTree,
     flags: {
       perks: false
     }
   },
   getters: {
-    slot: (state, getters) => tier => {
+    slot: (state) => tier => {
+      console.log('slot getter');
       return {
         ...state.slots[tier],
-        cycleLength: getters.cycleLength(tier),
-        upgradePrice: getters.upgradePrice(tier),
-        incomeValue: getters.incomeValue(tier),
         currency: farmConfig[tier].currency
       };
     },
+    slotComputed: (state, getters) => tier => {
+      console.log('slotComputed getter');
+      return {
+        cycleLength: getters.cycleLength(tier),
+        upgradePrice: getters.upgradePrice(tier),
+        incomeValue: getters.incomeValue(tier)
+      };
+    },
     upgradePrice: state => tier => {
+      console.log('upgradePrice getter');
       let levelGap = 1;
       let level = state.slots[tier].level;
       if (level > 0) {
@@ -75,6 +84,7 @@ export default {
       return stat.upgradePrice;
     },
     incomeValue: state => tier => {
+      console.log('incomeValue getter');
       let level = state.slots[tier].level;
       let stat = getFarmIncomeData(tier, level, {
         incomePerkLevel: 1,
@@ -85,6 +95,7 @@ export default {
       return stat;
     },
     cycleLength: () => tier => {
+      console.log('cycleLength getter');
       let stat = getFarmTimeData(tier, {
         cycleDurationPerkLevel: 1,
         [TOWER_PERK_SPEED]: false,
@@ -96,6 +107,7 @@ export default {
       return {};
     },
     perkData: state => (tier, perkName) => {
+      console.log('perkData getter');
       let tierCurrency = farmConfig[tier].currency;
       return state.perks[tierCurrency].tiers[
         tierCurrency === CURRENCY_CHRISTMAS_POINTS ? tier : "all"
@@ -171,6 +183,9 @@ export default {
           }
         }
       }
+    },
+    refreshSlotsComputedHash(state) {
+      state.slotsComputedHash = uuidv1();
     }
   },
   actions: {
@@ -179,6 +194,7 @@ export default {
       for (let tier = 1; tier <= 9; tier++) {
         store.dispatch('updateTierPerks', tier);
       }
+      store.commit('refreshSlotsComputedHash');
     },
     setInitialState(store) {
       store.dispatch("setTowerLevelBoundaries");
@@ -187,13 +203,12 @@ export default {
       store.commit('setTowerLevelBoundaries');
     },
     cycleFinished(store, tier) {
-      store.dispatch('resetIncomeValue', tier);
       store.commit('decreaseAutoCycleCount', tier);
     },
     epochFinished(store, tier) {
       let perkData = store.getters.perkData(tier, TOWER_PERK_AUTOCYCLES_COUNT);
       let autoCyclesLeft = getMainTowerPerkValue(tier, TOWER_PERK_AUTOCYCLES_COUNT, perkData.level);
-      store.commit('updateSlot', {
+      store.dispatch('updateSlot', {
         tier,
         data: {
           autoCyclesLeft,
@@ -210,13 +225,19 @@ export default {
     toggleFlag(store, key) {
       store.commit('toggleFlag', key);
     },
+    updateSlot(store, payload) {
+      store.commit('updateSlot', payload);
+      if (payload.data.level || payload.data.previousCurrencyIncome) {
+        store.commit('refreshSlotsComputedHash');
+      }
+    },
     upgradeSlot(store, tier) {
       let newLevel = store.state.slots[tier].level + 1;
       // Previous tier should be > 50 lvl
       if (newLevel > 0 && tier > 1 && store.state.slots[tier - 1].level < 50) {
         return;
       }
-      store.commit('updateSlot', {
+      store.dispatch('updateSlot', {
         tier,
         data: {
           level: newLevel
@@ -237,14 +258,14 @@ export default {
 
       console.log('updateTierPerks', _.cloneDeep({ slotData, perkData, data }));
       if (Object.keys(data).length) {
-        store.commit('updateSlot', {
+        store.dispatch('updateSlot', {
           tier,
           data
         });
       }
     },
     captureIncomeValue(store, tier) {
-      store.commit('updateSlot', {
+      store.dispatch('updateSlot', {
         tier,
         data: {
           previousCurrencyIncome: store.getters.incomeValue(tier)
@@ -252,15 +273,12 @@ export default {
       });
     },
     resetIncomeValue(store, tier) {
-      store.commit('updateSlot', {
+      store.dispatch('updateSlot', {
         tier,
         data: {
           previousCurrencyIncome: null
         }
       });
-    },
-    updateSlot(store, payload) {
-      store.commit('updateSlot', payload);
     },
     updateMode(store, value) {
       store.commit('updateMode', value);

@@ -63,18 +63,27 @@ export default {
     ProgressBar
   },
   data: () => ({
+    cycleLengthCached: 10,
     totalCurrencyIncomeValue: 0,
     totalExpIncomeValue: 0,
     progress: 0,
     animation: null,
     incomeId: 0,
-    incomes: []
+    incomes: [],
+    slotComputedCached: null
   }),
+  created() {
+    this.slotComputedCached = this.$store.getters["xmas/slotComputed"](this.tier);
+  },
   watch: {
     "slot.level": function(value) {
       if (value === 1) {
         this.resetTimer();
       }
+    },
+    slotsComputedHash: function(value) {
+      console.log('watcher slotsComputedHash', value);
+      this.slotComputedCached = this.$store.getters["xmas/slotComputed"](this.tier);
     }
   },
   computed: {
@@ -94,7 +103,7 @@ export default {
     },
     currency() {
       if (this.tier == 6) {
-        return this.slot.incomeValue.currencyIncomePerCycle < 1
+        return this.slotComputedCached.incomeValue.currencyIncomePerCycle < 1
           ? "XP"
           : this.slot.currency;
       } else {
@@ -102,10 +111,10 @@ export default {
       }
     },
     upgradePriceFormatted() {
-      return abbreviateNumber(this.slot.upgradePrice);
+      return abbreviateNumber(this.slotComputedCached.upgradePrice);
     },
     currencyIncomeValueFormatted() {
-      return abbreviateNumber(this.slot.incomeValue.currencyIncomePerCycle);
+      return abbreviateNumber(this.slotComputedCached.incomeValue.currencyIncomePerCycle);
     },
     previousCurrencyIncomeValueFormatted() {
       return abbreviateNumber(
@@ -123,7 +132,8 @@ export default {
     },
     ...mapState({
       mode: state => state.xmas.mode,
-      slots: state => state.xmas.slots
+      slots: state => state.xmas.slots,
+      slotsComputedHash: state => state.xmas.slotsComputedHash
     })
   },
   beforeDestroy() {
@@ -138,7 +148,7 @@ export default {
 
       this.animation = setInterval(() => {
         let currentIncomeValue =
-          this.slot.previousIncomeValue || this.slot.incomeValue;
+          this.slot.previousIncomeValue || this.slotComputedCached.incomeValue;
 
         this.progress++;
         this.totalCurrencyIncomeValue +=
@@ -158,7 +168,7 @@ export default {
             clearInterval(this.animation);
           }
         }
-      }, (this.slot.cycleLength * 1000) / 100);
+      }, (this.slotComputedCached.cycleLength * 1000) / 100);
     },
     async handleClick() {
       const level = this.slot.level;
@@ -228,7 +238,10 @@ export default {
       this.progress = 0;
       this.totalCurrencyIncomeValue = 0;
       this.totalExpIncomeValue = 0;
-      this.$store.dispatch("xmas/resetIncomeValue", this.tier);
+
+      if (this.slot.previousIncomeValue) {
+        this.$store.dispatch("xmas/resetIncomeValue", this.tier);
+      }
     }
   }
 };

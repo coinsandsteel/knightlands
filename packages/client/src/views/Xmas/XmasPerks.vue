@@ -1,8 +1,9 @@
 <template>
   <div ref="port" class="perks-port relative width-100 height-100">
     <div
-      class="stat-commit flex flex-center width-100 margin-top-2 margin-bottom-2 flex-evenly-spaced margin-bottom-3"
+      class="stat-commit font-size-25 flex flex-center width-100 margin-top-2 margin-bottom-2 flex-evenly-spaced margin-bottom-3"
     >
+      <div class="width-100 margin-bottom-1"><strong>TOWER lvl. {{ tower.level }}</strong></div>
       <CustomButton
         :disabled="!rebalanceAllowed"
         type="blue"
@@ -29,13 +30,17 @@
       <div class="perks-wrap padding-5 font-size-25">
         <div
           class="currency-wrap"
+          :class="currencyData.unlocked ? 'state-unlocked' : 'state-locked'"
           v-for="(currencyData, currencyName) in perks"
           :key="currencyName"
         >
           <div class="currency-item">
             <strong>{{ currencyName }}</strong>
+            &nbsp;
+            <CustomButton v-show="!currencyData.unlocked && canIncrease" @click="unlockBranch(currencyName)">Unlock</CustomButton>
           </div>
           <div
+            class="tier-wrap"
             v-for="(tierData, tier) in currencyData.tiers"
             :key="currencyName + '_tier_' + tier"
           >
@@ -48,7 +53,7 @@
               :key="currencyName + '_tier_' + tier + '_perk_' + perkName"
             >
               <NumericValue
-                v-if="upgradeAllowed"
+                v-if="upgradeAllowed && currencyData.unlocked"
                 :id="'perk_' + currencyName + '_' + perkName"
                 :showMax="true"
                 :noExtra="true"
@@ -81,8 +86,6 @@ import CustomButton from "@/components/Button.vue";
 import NumericValue from "@/components/NumericValue.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 
-import { CURRENCY_CHRISTMAS_POINTS } from "../../../../knightlands-shared/xmas";
-
 export default {
   mixins: [],
   components: {
@@ -103,6 +106,12 @@ export default {
     newPerks: {}
   }),
   methods: {
+    unlockBranch(currencyName) {
+      if (this.canIncrease) {
+        this.newPerks[currencyName].unlocked = true;
+        this.$store.dispatch("xmas/commitPerks", this.newPerks);
+      }
+    },
     back() {
       this.$store.dispatch("xmas/toggleFlag", "perks");
     },
@@ -137,7 +146,7 @@ export default {
     },
     // TODO charge 1 level for branch reveal
     getMaxStatValue() {
-      return this.tower.level - 1 - this.newPerksSum;
+      return this.tower.level - this.newUnlockedBranchesCount - this.newPerksSum - 1;
     },
     canDecrease(currencyName, tier, perkName) {
       return (
@@ -207,6 +216,20 @@ export default {
     }
   },
   computed: {
+    newUnlockedBranchesCount() {
+      let sum = 0;
+      for (let currencyName in this.newPerks) {
+        sum += this.newPerks[currencyName].unlocked ? 1 : 0;
+      }
+      return sum;
+    },
+    unlockedBranchesCount() {
+      let sum = 0;
+      for (let currencyName in this.perks) {
+        sum += this.perks[currencyName].unlocked ? 1 : 0;
+      }
+      return sum;
+    },
     newPerksSum() {
       let sum = 0;
       for (let currencyName in this.newPerks) {
@@ -248,10 +271,12 @@ export default {
       return false;
     },
     canIncrease() {
-      return this.newPerksSum < this.tower.level - 1;
+      return (
+        this.newPerksSum < this.tower.level - this.newUnlockedBranchesCount - 1
+      );
     },
     upgradeAllowed() {
-      return this.perksSum < this.tower.level - 1;
+      return this.perksSum < this.tower.level - this.unlockedBranchesCount - 1;
     },
     rebalanceAllowed() {
       return this.perksSum > 0;
@@ -303,5 +328,8 @@ export default {
   position: absolute;
   top: 2.5rem;
   right: 2.5rem;
+}
+.state-locked .tier-wrap {
+  opacity: 0.35;
 }
 </style>
