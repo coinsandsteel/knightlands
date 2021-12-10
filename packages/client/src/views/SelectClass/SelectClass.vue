@@ -19,7 +19,7 @@
             :promise="request"
             :disabled="!selectedClass || !canConfirm"
             :price="price"
-            :soft="true"
+            :soft="false"
             type="yellow"
             @click="confirm"
             >{{ firstSelection ? $t("cho-cls") : $t("ch-cls") }}</PurchaseButton
