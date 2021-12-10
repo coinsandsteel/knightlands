@@ -23,13 +23,13 @@
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
 
-              <MenuIcon
+              <!-- <MenuIcon
                 icon="skewed_icon_halloween"
                 :to="{ name: 'dungeon-entrance' }"
                 :append="true"
                 id="halloween"
                 >{{ $t("btn-evt-hal") }}
-              </MenuIcon>
+              </MenuIcon> -->
             </MenuIconRow>
 
             <MenuIconRow>
@@ -205,7 +205,7 @@ export default {
 
 <style lang="less" scoped>
 .home-art {
-  background-image: url("../assets/backgrounds/halloween_bg.jpg");
+  background-image: url("../assets/backgrounds/castle_bg.jpg");
   background-size: cover;
   background-position: bottom;
 }
