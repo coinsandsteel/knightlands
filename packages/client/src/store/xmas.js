@@ -62,7 +62,7 @@ export default {
       perks: false
     },
     balance: {
-      [CURRENCY_SANTABUCKS]: 20,
+      [CURRENCY_SANTABUCKS]: 2000000000,
       [CURRENCY_GOLD]: 0,
       [CURRENCY_UNIT_ESSENCE]: 0,
       [CURRENCY_CHRISTMAS_POINTS]: 0,
@@ -86,16 +86,27 @@ export default {
     upgradePrice: (state, getters) => tier => {
       let levelGap = 1;
       let level = state.slots[tier].level;
+      let showMaxPrice = state.levelGap === Infinity;
       if (level > 0) {
-        levelGap = state.levelGap === Infinity ?
-          100 :
-          state.levelGap;
+        levelGap = showMaxPrice ? null : state.levelGap;
       }
+
       let perkData = getters.perkData(tier, TOWER_PERK_UPGRADE);
-      let stat = getFarmUpgradeData(tier, level + levelGap, {
-        upgradePerkLevel: perkData ? perkData.level : 0
-      });
-      return stat.upgradePrice;
+      let accumulatedPrice = 0;
+      let imaginaryAvailableResources = state.balance[CURRENCY_SANTABUCKS];
+      for (
+        let tickLevel = 1;
+        showMaxPrice ? imaginaryAvailableResources >= 0 : tickLevel <= levelGap; 
+        tickLevel++
+      ) {
+        let stat = getFarmUpgradeData(tier, level + tickLevel, {
+          upgradePerkLevel: perkData ? perkData.level : 0
+        });
+        accumulatedPrice += stat.upgradePrice;
+        imaginaryAvailableResources -= stat.upgradePrice;
+      }
+
+      return accumulatedPrice;
     },
     incomeValue: (state, getters) => tier => {
       let level = state.slots[tier].level;
@@ -184,9 +195,11 @@ export default {
       state.towerLevelBoundaries = getTowerLevelBoundaries();
     },
     decreaseAutoCycleCount(state, tier) {
-      state.slots[tier].autoCyclesSpent++;
       if (state.slots[tier].autoCyclesLeft > 0) {
         state.slots[tier].autoCyclesLeft--;
+        state.slots[tier].autoCyclesSpent++;
+      } else {
+        state.slots[tier].autoCyclesSpent = 0;
       }
     },
     toggleFlag(state, key) {
@@ -240,6 +253,7 @@ export default {
     },
     updateLevelGap(store, value) {
       store.commit('updateLevelGap', value);
+      store.commit('refreshSlotsComputedHash');
     },
     toggleFlag(store, key) {
       store.commit('toggleFlag', key);

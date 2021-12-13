@@ -27,7 +27,7 @@ export default {
   }),
   methods: {
     handleClick(value) {
-      this.$store.dispatch("xmas/updateMultiplier", value);
+      this.$store.dispatch("xmas/updateLevelGap", value);
     }
   },
   computed: {

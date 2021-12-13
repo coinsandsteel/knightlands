@@ -179,7 +179,7 @@ export default {
           this.totalCurrencyIncomeValue +=
             currentIncomeValue.currencyIncomePerCycle / 2;
           this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
-          if (this.slot.autoCyclesLeft) {
+          if (this.slot.autoCyclesLeft > 0) {
             this.$store.dispatch("xmas/cycleFinished", this.tier);
             this.resetTimer();
           } else {
