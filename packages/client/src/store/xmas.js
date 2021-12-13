@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { v1 as uuidv1 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import {
   perksTree,
   getTowerLevelBoundaries,
@@ -104,7 +104,7 @@ export default {
         });
         accumulatedPrice += stat.upgradePrice;
         imaginaryAvailableResources -= stat.upgradePrice;
-        maxAffordableLevel = tickLevel;
+        maxAffordableLevel = level + tickLevel;
       }
 
       return {
@@ -224,7 +224,7 @@ export default {
       }
     },
     refreshSlotsComputedHash(state) {
-      state.slotsComputedHash = uuidv1();
+      state.slotsComputedHash = uuidv4();
     }
   },
   actions: {
@@ -271,8 +271,8 @@ export default {
         store.commit('refreshSlotsComputedHash');
       }
     },
-    upgradeSlot(store, tier) {
-      let newLevel = store.state.slots[tier].level + 1;
+    upgradeSlot(store, { tier, level }) {
+      let newLevel = level;
       // Previous tier should be > 50 lvl
       if (newLevel > 0 && tier > 1 && store.state.slots[tier - 1].level < 50) {
         return;
@@ -296,7 +296,6 @@ export default {
         data.autoCyclesLeft = autoCyclesMax - slotData.autoCyclesSpent;
       }
 
-      console.log('updateTierPerks', _.cloneDeep({ slotData, perkData, data }));
       if (Object.keys(data).length) {
         store.dispatch('updateSlot', {
           tier,

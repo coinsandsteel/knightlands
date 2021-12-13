@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import ProgressBar from "@/components/ProgressBar.vue";
 import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -90,10 +91,10 @@ export default {
       }
     },
     slotsComputedHash: function(value) {
-      console.log("watcher slotsComputedHash", value);
       this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
         this.tier
       );
+      console.log("[Tier " + this.tier + "] watcher slotsComputedHash", value, _.cloneDeep(this.slotComputedCached));
     }
   },
   computed: {
@@ -242,7 +243,7 @@ export default {
           return;
         }
 
-        this.$store.dispatch("xmas/upgradeSlot", this.tier);
+        this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier, level: 1 });
 
         // Existing farm
       } else {
@@ -256,7 +257,10 @@ export default {
             amount: this.slotComputedCached.upgradePrice.value
           });
 
-          this.$store.dispatch("xmas/upgradeSlot", this.tier);
+          this.$store.dispatch("xmas/upgradeSlot", {
+            tier: this.tier,
+            level: this.slotComputedCached.upgradePrice.nextLevel
+          });
         } else if (this.mode === "collect") {
           this.handleHarvest();
         }
