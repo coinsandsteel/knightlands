@@ -34,8 +34,7 @@ const slots = {};
 const initialSlotState = {
   level: 0,
   autoCyclesLeft: 0,
-  autoCyclesSpent: 0,
-  previousCurrencyIncome: null
+  autoCyclesSpent: 0
 };
 for (let i = 1; i <= 9; i++) {
   slots[i] = _.clone(initialSlotState);
@@ -93,6 +92,7 @@ export default {
 
       let perkData = getters.perkData(tier, TOWER_PERK_UPGRADE);
       let accumulatedPrice = 0;
+      let maxAffordableLevel = level;
       let imaginaryAvailableResources = state.balance[CURRENCY_SANTABUCKS];
       for (
         let tickLevel = 1;
@@ -104,21 +104,28 @@ export default {
         });
         accumulatedPrice += stat.upgradePrice;
         imaginaryAvailableResources -= stat.upgradePrice;
+        maxAffordableLevel = tickLevel;
       }
 
-      return accumulatedPrice;
+      return {
+        value: accumulatedPrice,
+        nextLevel: maxAffordableLevel
+      };
     },
     incomeValue: (state, getters) => tier => {
       let level = state.slots[tier].level;
       let incomePerkData = getters.perkData(tier, TOWER_PERK_INCOME);
       let cyclePerkData = getters.perkData(tier, TOWER_PERK_CYCLE_DURATION);
-      let stat = getFarmIncomeData(tier, level, {
+      let upgradeData = getters.upgradePrice(tier);
+      let params = {
         incomePerkLevel: incomePerkData ? incomePerkData.level : 0,
         cycleDurationPerkLevel: cyclePerkData ? cyclePerkData.level : 0,
         [TOWER_PERK_BOOST]: false,
         [TOWER_PERK_SUPER_BOOST]: false
-      });
-      return stat;
+      };
+      let currentStat = getFarmIncomeData(tier, level, params);
+      let nextStat = getFarmIncomeData(tier, upgradeData.nextLevel, params);
+      return { current: currentStat, next: nextStat };
     },
     cycleLength: (state, getters) => tier => {
       let cyclePerkData = getters.perkData(tier, TOWER_PERK_CYCLE_DURATION);
@@ -260,7 +267,7 @@ export default {
     },
     updateSlot(store, { tier, data }) {
       store.commit('updateSlot', { tier, data });
-      if (data.level || data.previousCurrencyIncome) {
+      if (data.level) {
         store.commit('refreshSlotsComputedHash');
       }
     },
@@ -296,22 +303,6 @@ export default {
           data
         });
       }
-    },
-    captureIncomeValue(store, tier) {
-      store.dispatch('updateSlot', {
-        tier,
-        data: {
-          previousCurrencyIncome: store.getters.incomeValue(tier)
-        }
-      });
-    },
-    resetIncomeValue(store, tier) {
-      store.dispatch('updateSlot', {
-        tier,
-        data: {
-          previousCurrencyIncome: null
-        }
-      });
     },
     updateMode(store, value) {
       store.commit('updateMode', value);
