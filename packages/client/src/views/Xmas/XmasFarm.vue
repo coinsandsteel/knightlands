@@ -27,13 +27,14 @@
 
     <template v-if="mode === 'collect'">
       TIER:&nbsp;{{ tier }}<br />
-      Power:&nbsp;
-      <span v-html="power"/>&nbsp;{{ currency }}<br />
+      Power:&nbsp;<span v-html="power"/>&nbsp;{{ currency }}<br />
+      Power exp:&nbsp;{{ powerExp }}&nbsp;exp.<br />
+      Cycle length:&nbsp;{{ slotComputedCached.cycleLength }}&nbsp;sec.<br /><br />
+      Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
+      Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}<br />
       Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{
         currency
-      }}<br />
-      Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
-      Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}
+      }}
     </template>
 
     <progress-bar
@@ -138,6 +139,11 @@ export default {
       } else {
         return this.currentCurrencyIncomeValueFormatted;
       }
+    },
+    powerExp() {
+      return abbreviateNumber(
+        this.slotComputedCached.incomeValue.current.expIncomePerCycle
+      );
     },
     currentCurrencyIncomeValueFormatted() {
       return abbreviateNumber(
