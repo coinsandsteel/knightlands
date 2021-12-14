@@ -294,6 +294,7 @@ export default {
         this.incomes.splice(0, 1);
       }, 3000);
 
+      this.$store.dispatch("xmas/epochFinished", this.tier);
       this.resetTimer();
       this.progress = 0;
       this.totalCurrencyIncomeValue = 0;
