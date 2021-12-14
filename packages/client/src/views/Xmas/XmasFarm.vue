@@ -94,7 +94,7 @@ export default {
       this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
         this.tier
       );
-      console.log("[Tier " + this.tier + "] watcher slotsComputedHash", value, _.cloneDeep(this.slotComputedCached));
+      //console.log("[Tier " + this.tier + "] watcher slotsComputedHash", value, _.cloneDeep(this.slotComputedCached));
     }
   },
   computed: {
@@ -253,7 +253,7 @@ export default {
           }
 
           this.$store.commit("xmas/decreaseBalance", {
-            currency: this.slot.currency,
+            currency: CURRENCY_SANTABUCKS,
             amount: this.slotComputedCached.upgradePrice.value
           });
 

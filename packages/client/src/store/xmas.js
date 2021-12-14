@@ -8,7 +8,6 @@ import {
   getFarmTimeData,
   getFarmIncomeData,
   getFarmUpgradeData,
-  
   TOWER_PERK_INCOME,
   TOWER_PERK_UPGRADE,
   TOWER_PERK_SPEED,
@@ -17,7 +16,6 @@ import {
   TOWER_PERK_SUPER_BOOST,
   TOWER_PERK_AUTOCYCLES_COUNT,
   TOWER_PERK_CYCLE_DURATION,
-
   CURRENCY_SANTABUCKS,
   CURRENCY_GOLD,
   CURRENCY_UNIT_ESSENCE,
@@ -49,8 +47,8 @@ export default {
     user: {},
     towerLevelBoundaries: null,
     tower: {
-      expirience: 100,
-      level: 1,
+      expirience: 0,
+      level: 0,
       currentLevelPercentage: 0
     },
     levelGap: 1,
