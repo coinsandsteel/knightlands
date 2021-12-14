@@ -27,14 +27,14 @@
 
     <template v-if="mode === 'collect'">
       TIER:&nbsp;{{ tier }}<br />
-      Power:&nbsp;<span v-html="power"/>&nbsp;{{ currency }}<br />
+      Power:&nbsp;<span v-html="power" />&nbsp;{{ slot.currency }}<br />
       Power exp:&nbsp;{{ powerExp }}&nbsp;exp.<br />
-      Cycle length:&nbsp;{{ slotComputedCached.cycleLength }}&nbsp;sec.<br /><br />
+      Cycle length:&nbsp;{{
+        slotComputedCached.cycleLength
+      }}&nbsp;sec.<br /><br />
       Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
       Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}<br />
-      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{
-        currency
-      }}
+      Accumulated:&nbsp;{{ totalIncomeValueFormatted }}&nbsp;{{ currency }}
     </template>
 
     <progress-bar
@@ -105,10 +105,10 @@ export default {
     level() {
       if (this.slot.level > 0 && this.levelGap > 1) {
         return (
-          "<span style=\"color: cyan\">" + 
+          '<span style="color: cyan">' +
           this.slot.level +
           "&nbsp;&rarr;&nbsp;" +
-          (this.slotComputedCached.upgradePrice.nextLevel) +
+          this.slotComputedCached.upgradePrice.nextLevel +
           "</span>"
         );
       } else {
@@ -116,13 +116,7 @@ export default {
       }
     },
     currency() {
-      if (this.tier == 6) {
-        return this.slotComputedCached.incomeValue.current.currencyIncomePerCycle < 1
-          ? "XP"
-          : this.slot.currency;
-      } else {
-        return this.slot.currency;
-      }
+      return this.tier6IsNotReady ? "XP" : this.slot.currency;
     },
     upgradePriceFormatted() {
       return abbreviateNumber(this.slotComputedCached.upgradePrice.value);
@@ -130,10 +124,10 @@ export default {
     power() {
       if (this.slot.level > 0 && this.levelGap > 1) {
         return (
-          "<span style=\"color: cyan\">" + 
+          '<span style="color: cyan">' +
           this.currentCurrencyIncomeValueFormatted +
           "&nbsp;&rarr;&nbsp;" +
-          (this.nextCurrencyIncomeValueFormatted) +
+          this.nextCurrencyIncomeValueFormatted +
           "</span>"
         );
       } else {
@@ -155,8 +149,21 @@ export default {
         this.slotComputedCached.incomeValue.next.currencyIncomePerCycle
       );
     },
-    totalCurrencyIncomeValueFormatted() {
-      return abbreviateNumber(this.totalCurrencyIncomeValue);
+    totalIncomeValueFormatted() {
+      return abbreviateNumber(this.switchableTotalIncomeValue);
+    },
+    tier6IsNotReady() {
+      return (
+        this.tier == 6 &&
+        this.slotComputedCached.incomeValue.current.currencyIncomePerCycle < 1
+      );
+    },
+    switchableTotalIncomeValue() {
+      if (this.tier6IsNotReady) {
+        return this.totalExpIncomeValue;
+      } else {
+        return this.totalCurrencyIncomeValue;
+      }
     },
     buildingIsAllowed() {
       if (this.tier == 1) {
@@ -198,6 +205,7 @@ export default {
           this.totalCurrencyIncomeValue +=
             currentIncomeValue.currencyIncomePerCycle / 2;
           this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
+
           if (this.slot.autoCyclesLeft > 0) {
             this.$store.dispatch("xmas/cycleFinished", this.tier);
             this.resetTimer();
@@ -227,7 +235,6 @@ export default {
           );
           return;
         }
-
 
         const result = await this.showPrompt(
           "Building a farm",
