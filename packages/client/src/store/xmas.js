@@ -59,7 +59,7 @@ export default {
       perks: false
     },
     balance: {
-      [CURRENCY_SANTABUCKS]: 2000000000,
+      [CURRENCY_SANTABUCKS]: 1000000000000,
       [CURRENCY_GOLD]: 0,
       [CURRENCY_UNIT_ESSENCE]: 0,
       [CURRENCY_CHRISTMAS_POINTS]: 0,
