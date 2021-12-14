@@ -21,16 +21,15 @@
         </template>
       </div>
 
-      <CustomButton
+      <PurchaseButton
         v-if="!storageAtMaxLvl"
         type="grey"
         class="margin-top-1 flex-self-start"
         @click="$emit('upgrade-storage')"
-        :disabled="cantUpgradeStorage"
       >
         {{ $t("btn-upgrade") }}
         <IconWithValue iconClass="icon-gold">{{ storagePrice }}</IconWithValue>
-      </CustomButton>
+      </PurchaseButton>
       <CustomButton v-else type="grey" :disabled="true">{{
         $t("mine-max")
       }}</CustomButton>
@@ -43,6 +42,7 @@
 </template>
 
 <script>
+import PurchaseButton from "@/components/PurchaseButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
@@ -53,7 +53,8 @@ export default {
   components: {
     ProgressBar,
     CustomButton,
-    IconWithValue
+    IconWithValue,
+    PurchaseButton
   },
   props: ["disabled"],
   data: () => ({
@@ -67,7 +68,7 @@ export default {
     "$game.goldMines": {
       deep: true,
       handler() {
-        console.log("goldMines");
+        // console.log("goldMines");
         this.updateGold();
       }
     }
