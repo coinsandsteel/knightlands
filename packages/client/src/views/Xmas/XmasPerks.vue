@@ -3,7 +3,9 @@
     <div
       class="stat-commit font-size-25 flex flex-center width-100 margin-top-2 margin-bottom-2 flex-evenly-spaced margin-bottom-3"
     >
-      <div class="width-100 margin-bottom-1"><strong>TOWER lvl. {{ tower.level }}</strong></div>
+      <div class="width-100 margin-bottom-1">
+        <strong>TOWER lvl. {{ tower.level }}</strong>
+      </div>
       <CustomButton
         :disabled="!rebalanceAllowed"
         type="blue"
@@ -34,7 +36,11 @@
           <div class="currency-item">
             <strong>{{ currencyName }}</strong>
             &nbsp;
-            <CustomButton v-show="!currencyData.unlocked && canIncrease" @click="unlockBranch(currencyName)">Unlock</CustomButton>
+            <CustomButton
+              v-show="!currencyData.unlocked && canIncrease"
+              @click="unlockBranch(currencyName)"
+              >Unlock</CustomButton
+            >
           </div>
           <div
             class="tier-wrap"
@@ -105,7 +111,6 @@ export default {
     unlockBranch(currencyName) {
       if (this.canIncrease) {
         this.newPerks[currencyName].unlocked = true;
-        this.$store.dispatch("xmas/commitPerks", this.newPerks);
       }
     },
     back() {
@@ -142,7 +147,9 @@ export default {
     },
     // TODO charge 1 level for branch reveal
     getMaxStatValue() {
-      return this.tower.level - this.newUnlockedBranchesCount - this.newPerksSum - 1;
+      return (
+        this.tower.level - this.newUnlockedBranchesCount - this.newPerksSum - 1
+      );
     },
     canDecrease(currencyName, tier, perkName) {
       return (
@@ -253,6 +260,12 @@ export default {
     },
     perksModified() {
       for (let currencyName in this.newPerks) {
+        if (
+          this.newPerks[currencyName].unlocked !==
+          this.perks[currencyName].unlocked
+        ) {
+          return true;
+        }
         for (let tier in this.newPerks[currencyName].tiers) {
           for (let perkName in this.newPerks[currencyName].tiers[tier]) {
             if (

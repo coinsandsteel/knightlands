@@ -34,7 +34,8 @@
       }}&nbsp;sec.<br /><br />
       Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
       Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}<br />
-      Accumulated:&nbsp;{{ totalIncomeValueFormatted }}&nbsp;{{ currency }}
+      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{ slot.currency }}<br />
+      Accumulated exp:&nbsp;{{ totalExpIncomeValueFormatted }}&nbsp;exp.
     </template>
 
     <progress-bar
@@ -115,9 +116,6 @@ export default {
         return this.slot.level;
       }
     },
-    currency() {
-      return this.tier6IsNotReady ? "XP" : this.slot.currency;
-    },
     upgradePriceFormatted() {
       return abbreviateNumber(this.slotComputedCached.upgradePrice.value);
     },
@@ -149,8 +147,11 @@ export default {
         this.slotComputedCached.incomeValue.next.currencyIncomePerCycle
       );
     },
-    totalIncomeValueFormatted() {
-      return abbreviateNumber(this.switchableTotalIncomeValue);
+    totalCurrencyIncomeValueFormatted() {
+      return abbreviateNumber(this.totalCurrencyIncomeValue);
+    },
+    totalExpIncomeValueFormatted() {
+      return abbreviateNumber(this.totalExpIncomeValue);
     },
     tier6IsNotReady() {
       return (
@@ -196,14 +197,18 @@ export default {
         let currentIncomeValue = this.slotComputedCached.incomeValue.current;
 
         this.progress++;
-        this.totalCurrencyIncomeValue +=
-          currentIncomeValue.currencyIncomePerCycle / 200;
+        if (!this.tier6IsNotReady) {
+          this.totalCurrencyIncomeValue +=
+            currentIncomeValue.currencyIncomePerCycle / 200;
+        }
         this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 200;
 
         // Add 50% of resources at the end
         if (this.progress >= 100) {
-          this.totalCurrencyIncomeValue +=
-            currentIncomeValue.currencyIncomePerCycle / 2;
+          if (!this.tier6IsNotReady) {
+            this.totalCurrencyIncomeValue +=
+              currentIncomeValue.currencyIncomePerCycle / 2;
+          }
           this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
 
           if (this.slot.autoCyclesLeft > 0) {
@@ -269,21 +274,23 @@ export default {
             currency: CURRENCY_SANTABUCKS,
             amount: this.slotComputedCached.upgradePrice.value
           });
-
           this.$store.dispatch("xmas/upgradeSlot", {
             tier: this.tier,
             level: this.slotComputedCached.upgradePrice.nextLevel
           });
+          this.reset();
         } else if (this.mode === "collect") {
           this.handleHarvest();
         }
       }
     },
     handleHarvest() {
-      this.incomes.push({
-        income: this.totalIncomeValueFormatted,
-        id: this.incomeId++
-      });
+      if (!this.tier6IsNotReady) {
+        this.incomes.push({
+          income: this.totalIncomeValueFormatted,
+          id: this.incomeId++
+        });
+      }
       this.$store.dispatch("xmas/addExpirience", this.totalExpIncomeValue);
       this.$store.commit("xmas/increaseBalance", {
         currency: this.slot.currency,
@@ -294,6 +301,9 @@ export default {
         this.incomes.splice(0, 1);
       }, 3000);
 
+      this.reset();
+    },
+    reset() {
       this.$store.dispatch("xmas/epochFinished", this.tier);
       this.resetTimer();
       this.progress = 0;

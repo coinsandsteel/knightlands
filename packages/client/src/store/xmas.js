@@ -92,17 +92,26 @@ export default {
       let accumulatedPrice = 0;
       let maxAffordableLevel = level;
       let imaginaryAvailableResources = state.balance[CURRENCY_SANTABUCKS];
+      let stat = null;
       for (
         let tickLevel = 1;
-        showMaxPrice ? imaginaryAvailableResources >= 0 : tickLevel <= levelGap; 
+        showMaxPrice ? imaginaryAvailableResources >= 0 : tickLevel <= levelGap;
         tickLevel++
       ) {
-        let stat = getFarmUpgradeData(tier, level + tickLevel, {
+        stat = getFarmUpgradeData(tier, level + tickLevel, {
           upgradePerkLevel: perkData ? perkData.level : 0
         });
         accumulatedPrice += stat.upgradePrice;
         imaginaryAvailableResources -= stat.upgradePrice;
         maxAffordableLevel = level + tickLevel;
+        if (level === 0) {
+          break;
+        }
+      }
+
+      if (level > 0 && showMaxPrice) {
+        accumulatedPrice -= stat.upgradePrice;
+        maxAffordableLevel--;
       }
 
       return {
