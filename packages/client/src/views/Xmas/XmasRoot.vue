@@ -9,11 +9,11 @@ import { mapState } from "vuex";
 
 export default {
   async mounted() {
-    //this.$store.dispatch("xmas/subscribe");
-    //await this.$store.dispatch("xmas/load");
+    this.$store.dispatch("xmas/subscribe");
+    await this.$store.dispatch("xmas/load");
   },
   beforeDestroy() {
-    //this.$store.dispatch("xmas/unsubscribe");
+    this.$store.dispatch("xmas/unsubscribe");
   },
   computed: {
     ...mapState({

@@ -72,14 +72,13 @@ export default {
     ProgressBar
   },
   data: () => ({
-    cycleLengthCached: 10,
     totalCurrencyIncomeValue: 0,
     totalExpIncomeValue: 0,
     progress: 0,
     animation: null,
     incomeId: 0,
     incomes: [],
-    slotComputedCached: null
+    slotComputedCached: null // TODO re-map to slot data
   }),
   created() {
     this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
@@ -92,12 +91,13 @@ export default {
         this.resetTimer();
       }
     },
-    slotsComputedHash: function() {
+    // TODO re-map to slot data
+    /*slotsComputedHash: function(value) {
       this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
         this.tier
       );
       //console.log("[Tier " + this.tier + "] watcher slotsComputedHash", value, _.cloneDeep(this.slotComputedCached));
-    }
+    }*/
   },
   computed: {
     slot() {
@@ -166,25 +166,23 @@ export default {
         return this.totalCurrencyIncomeValue;
       }
     },
+    // TODO duplicate at the backend
     buildingIsAllowed() {
       if (this.tier == 1) {
         return true;
       }
       return this.slots[this.tier - 1].level >= 50;
     },
+    // TODO duplicate at the backend
     canAffordUpgrade() {
       return this.slotComputedCached.upgradePrice.value <= this.sbBalance;
     },
     ...mapState({
       mode: state => state.xmas.mode,
       slots: state => state.xmas.slots,
-      slotsComputedHash: state => state.xmas.slotsComputedHash,
       sbBalance: state => state.xmas.balance[CURRENCY_SANTABUCKS],
       levelGap: state => state.xmas.levelGap
     })
-  },
-  beforeDestroy() {
-    this.$app.$off("farm-blur");
   },
   methods: {
     resetTimer() {
@@ -198,24 +196,24 @@ export default {
 
         this.progress++;
         if (!this.tier6IsNotReady) {
-          this.totalCurrencyIncomeValue +=
-            currentIncomeValue.currencyIncomePerCycle / 200;
+          this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 200;
         }
         this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 200;
 
         // Add 50% of resources at the end
         if (this.progress >= 100) {
           if (!this.tier6IsNotReady) {
-            this.totalCurrencyIncomeValue +=
-              currentIncomeValue.currencyIncomePerCycle / 2;
+            this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 2;
           }
           this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
 
           if (this.slot.autoCyclesLeft > 0) {
-            this.$store.dispatch("xmas/cycleFinished", this.tier);
+            // TODO send a signal from backend
+            //this.$store.dispatch("xmas/cycleFinished", this.tier);
             this.resetTimer();
           } else {
-            this.$store.dispatch("xmas/epochFinished", this.tier);
+            // TODO send a signal from backend
+            //this.$store.dispatch("xmas/epochFinished", this.tier);
             clearInterval(this.animation);
           }
         }
@@ -261,7 +259,9 @@ export default {
           return;
         }
 
-        this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier, level: 1 });
+        await this.performRequestNoCatch(
+          this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
+        );
 
         // Existing farm
       } else {
@@ -270,6 +270,12 @@ export default {
             return;
           }
 
+          await this.performRequestNoCatch(
+            this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
+          );
+
+          // TODO move to backend
+          /*
           this.$store.commit("xmas/decreaseBalance", {
             currency: CURRENCY_SANTABUCKS,
             amount: this.slotComputedCached.upgradePrice.value
@@ -278,24 +284,25 @@ export default {
             tier: this.tier,
             level: this.slotComputedCached.upgradePrice.nextLevel
           });
+          */
+
           this.reset();
         } else if (this.mode === "collect") {
           this.handleHarvest();
         }
       }
     },
-    handleHarvest() {
+    async handleHarvest() {
       if (!this.tier6IsNotReady) {
         this.incomes.push({
           income: this.totalIncomeValueFormatted,
           id: this.incomeId++
         });
       }
-      this.$store.dispatch("xmas/addExpirience", this.totalExpIncomeValue);
-      this.$store.commit("xmas/increaseBalance", {
-        currency: this.slot.currency,
-        amount: this.totalCurrencyIncomeValue
-      });
+
+      await this.performRequestNoCatch(
+        this.$store.dispatch("xmas/harvest", { tier: this.tier })
+      );
 
       setTimeout(() => {
         this.incomes.splice(0, 1);
@@ -304,6 +311,7 @@ export default {
       this.reset();
     },
     reset() {
+      // TODO move to backend
       this.$store.dispatch("xmas/epochFinished", this.tier);
       this.resetTimer();
       this.progress = 0;
