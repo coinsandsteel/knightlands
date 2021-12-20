@@ -38,6 +38,7 @@
             &nbsp;
             <CustomButton
               v-show="!currencyData.unlocked && canIncrease"
+              :disabled="perksModified"
               @click="unlockBranch(currencyName)"
               >Unlock</CustomButton
             >
@@ -111,6 +112,7 @@ export default {
     unlockBranch(currencyName) {
       if (this.canIncrease) {
         this.newPerks[currencyName].unlocked = true;
+        this.$store.dispatch("xmas/commitPerks", this.newPerks);
       }
     },
     back() {
@@ -260,12 +262,6 @@ export default {
     },
     perksModified() {
       for (let currencyName in this.newPerks) {
-        if (
-          this.newPerks[currencyName].unlocked !==
-          this.perks[currencyName].unlocked
-        ) {
-          return true;
-        }
         for (let tier in this.newPerks[currencyName].tiers) {
           for (let perkName in this.newPerks[currencyName].tiers[tier]) {
             if (
