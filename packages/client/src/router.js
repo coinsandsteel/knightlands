@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*jshint esversion: 9 */
 
 import Router from "vue-router";
@@ -93,6 +94,7 @@ const ForsakenTower = () => import("./views/ForsakenTower/ForsakenTower.vue");
 const DailyRewards = () => import("./views/DailyRewards/DailyRewards.vue");
 
 const Settings = () => import("./views/Settings/Settings.vue");
+const NewXmasForm = () => import("./views/Xmas/NewXmasHome.vue");
 
 const router = new Router({
   routes: [
@@ -446,6 +448,10 @@ const router = new Router({
           path: "",
           name: "xmas-home",
           component: () => import("./views/Xmas/XmasHome.vue")
+        }, {
+          path: "new",
+          name: "xmas-new",
+          component: NewXmasForm
         }
       ],
       meta: {

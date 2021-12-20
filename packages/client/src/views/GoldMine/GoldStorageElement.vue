@@ -43,6 +43,8 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
+
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import ProgressBar from "@/components/ProgressBar.vue";

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import _ from "lodash";
+// import _ from "lodash";
 import ProgressBar from "@/components/ProgressBar.vue";
 import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -92,7 +92,7 @@ export default {
         this.resetTimer();
       }
     },
-    slotsComputedHash: function(value) {
+    slotsComputedHash: function() {
       this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
         this.tier
       );
