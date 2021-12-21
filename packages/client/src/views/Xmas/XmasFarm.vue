@@ -29,12 +29,12 @@
       TIER:&nbsp;{{ tier }}<br />
       Power:&nbsp;<span v-html="power" />&nbsp;{{ slot.currency }}<br />
       Power exp:&nbsp;{{ powerExp }}&nbsp;exp.<br />
-      Cycle length:&nbsp;{{
-        slotComputedCached.cycleLength
-      }}&nbsp;sec.<br /><br />
+      Cycle length:&nbsp;{{ slot.stats.cycleLength }}&nbsp;sec.<br /><br />
       Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
       Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}<br />
-      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{ slot.currency }}<br />
+      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{
+        slot.currency
+      }}<br />
       Accumulated exp:&nbsp;{{ totalExpIncomeValueFormatted }}&nbsp;exp.
     </template>
 
@@ -57,6 +57,7 @@
 import ProgressBar from "@/components/ProgressBar.vue";
 import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
 
 import {
@@ -66,7 +67,7 @@ import {
 
 export default {
   props: ["tier"],
-  mixins: [PromptMixin],
+  mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
     IncomeText,
     ProgressBar
@@ -77,27 +78,14 @@ export default {
     progress: 0,
     animation: null,
     incomeId: 0,
-    incomes: [],
-    slotComputedCached: null // TODO re-map to slot data
+    incomes: []
   }),
-  created() {
-    this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
-      this.tier
-    );
-  },
   watch: {
     "slot.level": function(value) {
       if (value === 1) {
         this.resetTimer();
       }
-    },
-    // TODO re-map to slot data
-    /*slotsComputedHash: function(value) {
-      this.slotComputedCached = this.$store.getters["xmas/slotComputed"](
-        this.tier
-      );
-      //console.log("[Tier " + this.tier + "] watcher slotsComputedHash", value, _.cloneDeep(this.slotComputedCached));
-    }*/
+    }
   },
   computed: {
     slot() {
@@ -109,7 +97,7 @@ export default {
           '<span style="color: cyan">' +
           this.slot.level +
           "&nbsp;&rarr;&nbsp;" +
-          this.slotComputedCached.upgradePrice.nextLevel +
+          this.slot.stats.upgrade.nextLevel +
           "</span>"
         );
       } else {
@@ -117,7 +105,7 @@ export default {
       }
     },
     upgradePriceFormatted() {
-      return abbreviateNumber(this.slotComputedCached.upgradePrice.value);
+      return abbreviateNumber(this.slot.stats.upgrade.value);
     },
     power() {
       if (this.slot.level > 0 && this.levelGap > 1) {
@@ -133,19 +121,13 @@ export default {
       }
     },
     powerExp() {
-      return abbreviateNumber(
-        this.slotComputedCached.incomeValue.current.expIncomePerCycle
-      );
+      return abbreviateNumber(this.slot.stats.income.current.expPerCycle);
     },
     currentCurrencyIncomeValueFormatted() {
-      return abbreviateNumber(
-        this.slotComputedCached.incomeValue.current.currencyIncomePerCycle
-      );
+      return abbreviateNumber(this.slot.stats.income.current.currencyPerCycle);
     },
     nextCurrencyIncomeValueFormatted() {
-      return abbreviateNumber(
-        this.slotComputedCached.incomeValue.next.currencyIncomePerCycle
-      );
+      return abbreviateNumber(this.slot.stats.income.next.currencyPerCycle);
     },
     totalCurrencyIncomeValueFormatted() {
       return abbreviateNumber(this.totalCurrencyIncomeValue);
@@ -155,8 +137,7 @@ export default {
     },
     tier6IsNotReady() {
       return (
-        this.tier == 6 &&
-        this.slotComputedCached.incomeValue.current.currencyIncomePerCycle < 1
+        this.tier == 6 && this.slot.stats.income.current.currencyPerCycle < 1
       );
     },
     switchableTotalIncomeValue() {
@@ -166,16 +147,14 @@ export default {
         return this.totalCurrencyIncomeValue;
       }
     },
-    // TODO duplicate at the backend
     buildingIsAllowed() {
       if (this.tier == 1) {
         return true;
       }
       return this.slots[this.tier - 1].level >= 50;
     },
-    // TODO duplicate at the backend
     canAffordUpgrade() {
-      return this.slotComputedCached.upgradePrice.value <= this.sbBalance;
+      return this.slot.stats.upgrade.value <= this.sbBalance;
     },
     ...mapState({
       mode: state => state.xmas.mode,
@@ -192,20 +171,22 @@ export default {
       }
 
       this.animation = setInterval(() => {
-        let currentIncomeValue = this.slotComputedCached.incomeValue.current;
+        let currentIncomeValue = this.slot.stats.income.current;
 
         this.progress++;
         if (!this.tier6IsNotReady) {
-          this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 200;
+          this.totalCurrencyIncomeValue +=
+            currentIncomeValue.currencyPerCycle / 200;
         }
-        this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 200;
+        this.totalExpIncomeValue += currentIncomeValue.expPerCycle / 200;
 
         // Add 50% of resources at the end
         if (this.progress >= 100) {
           if (!this.tier6IsNotReady) {
-            this.totalCurrencyIncomeValue += currentIncomeValue.currencyIncomePerCycle / 2;
+            this.totalCurrencyIncomeValue +=
+              currentIncomeValue.currencyPerCycle / 2;
           }
-          this.totalExpIncomeValue += currentIncomeValue.expIncomePerCycle / 2;
+          this.totalExpIncomeValue += currentIncomeValue.expPerCycle / 2;
 
           if (this.slot.autoCyclesLeft > 0) {
             // TODO send a signal from backend
@@ -217,7 +198,7 @@ export default {
             clearInterval(this.animation);
           }
         }
-      }, (this.slotComputedCached.cycleLength * 1000) / 100);
+      }, (this.slot.stats.cycleLength * 1000) / 100);
     },
     async handleClick() {
       const level = this.slot.level;
@@ -278,11 +259,11 @@ export default {
           /*
           this.$store.commit("xmas/decreaseBalance", {
             currency: CURRENCY_SANTABUCKS,
-            amount: this.slotComputedCached.upgradePrice.value
+            amount: this.slot.stats.upgrade.value
           });
           this.$store.dispatch("xmas/upgradeSlot", {
             tier: this.tier,
-            level: this.slotComputedCached.upgradePrice.nextLevel
+            level: this.slot.stats.upgrade.nextLevel
           });
           */
 
