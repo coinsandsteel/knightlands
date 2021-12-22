@@ -53,7 +53,7 @@ export default {
   },
   mutations: {
     updateState(state, data) {
-      console.log("Response from server", data);
+      console.log("Response", data);
 
       if (data.levelGap !== undefined) {
         state.levelGap = data.levelGap;
@@ -77,21 +77,30 @@ export default {
           ...state.slots[payload.tier].accumulated,
           ...payload.accumulated
         };
+        this.$app.$emit("accumulated", {
+          tier: payload.tier,
+          currency: payload.accumulated.currency,
+          exp: payload.accumulated.exp
+        });
         console.log("Farm accumulated", data.accumulated);
       }
 
       if (data.progress !== undefined) {
         let payload = data.progress;
-        state.slots[payload.tier].progress = {
-          ...state.slots[payload.tier].progress,
-          ...payload.progress
-        };
+        for (let tier in payload) {
+          state.slots[tier].progress = {
+            ...state.slots[tier].progress,
+            ...payload[tier]
+          };
+        }
         console.log("Tier progress", payload);
       }
 
       if (data.cycleLength !== undefined) {
         let payload = data.cycleLength;
-        state.slots[payload.tier].stats.cycleLength = payload.cycleLength;
+        for (let tier in payload) {
+          state.slots[tier].stats.cycleLength = payload[tier];
+        }
         console.log("Tier cycle length", payload);
       }
 
@@ -127,17 +136,20 @@ export default {
         console.log("Perk branch unlocked", payload);
       }
 
-      if (data.perk !== undefined) {
-        let payload = data.perk;
-        for (let tier in payload.tiers) {
-          for (let perkName in payload.tiers[tier]) {
-            state.perks[payload.currency].tiers[tier][perkName] = {
-              ...state.perks[payload.currency].tiers[tier][perkName],
-              ...payload.tiers[tier][perkName]
-            };
-            console.log("Perk changed", payload.currency, tier, perkName, payload.tiers[tier][perkName]);
+      if (data.perks !== undefined) {
+        let payload = data.perks;
+        for (let currency in payload) {
+          state.perks[currency].unlocked = payload[currency].unlocked;
+          for (let tier in payload[currency].tiers) {
+            for (let perkName in payload[currency].tiers[tier]) {
+              state.perks[currency].tiers[tier][perkName] = {
+                ...state.perks[currency].tiers[tier][perkName],
+                ...payload[currency].tiers[tier][perkName]
+              };
+            }
           }
         }
+        console.log("Perks updated", payload);
       }
 
       if (data.balance !== undefined) {
@@ -148,9 +160,14 @@ export default {
         console.log("Balance changed", data.balance);
       }
 
-      if (data.cycleStarted !== undefined) {
-        this.$app.$emit("cycle-started", data.cycleStarted.tier);
-        console.log("Cycle started", data.cycleStarted);
+      if (data.cycleStart !== undefined) {
+        this.$app.$emit("cycle-start", data.cycleStart.tier);
+        console.log("Cycle start", data.cycleStart);
+      }
+
+      if (data.cycleStop !== undefined) {
+        this.$app.$emit("cycle-stop", data.cycleStop.tier);
+        console.log("Cycle stop", data.cycleStop);
       }
     },
     updateMode(state, value) {
@@ -161,18 +178,6 @@ export default {
     },
     toggleFlag(state, key) {
       state.flags[key] = !state.flags[key];
-    },
-    // TODO refactor and use in the updateState mutation
-    commitPerks(state, payload) {
-      for (let currencyName in payload) {
-        state.perks[currencyName].unlocked = payload[currencyName].unlocked;
-        for (let tier in payload[currencyName].tiers) {
-          for (let perkName in payload[currencyName].tiers[tier]) {
-            state.perks[currencyName].tiers[tier][perkName].level =
-            payload[currencyName].tiers[tier][perkName].level;
-          }
-        }
-      }
     },
     setInitialState(state, data) {
       state.levelGap = data.levelGap;

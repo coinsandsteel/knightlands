@@ -30,12 +30,12 @@
       Power:&nbsp;<span v-html="power" />&nbsp;{{ slot.currency }}<br />
       Power exp:&nbsp;{{ powerExp }}&nbsp;exp.<br />
       Cycle length:&nbsp;{{ slot.stats.cycleLength }}&nbsp;sec.<br /><br />
-      Auto-cycles left:&nbsp;{{ slot.autoCyclesLeft }}<br />
-      Auto-cycles spent:&nbsp;{{ slot.autoCyclesSpent }}<br />
-      Accumulated:&nbsp;{{ totalCurrencyIncomeValueFormatted }}&nbsp;{{
+      Auto-cycles left:&nbsp;{{ slot.progress.autoCyclesLeft }}<br />
+      Auto-cycles spent:&nbsp;{{ slot.progress.autoCyclesSpent }}<br />
+      Accumulated:&nbsp;{{ localCurrencyIncomeValueFormatted }}&nbsp;{{
         slot.currency
       }}<br />
-      Accumulated exp:&nbsp;{{ totalExpIncomeValueFormatted }}&nbsp;exp.
+      Accumulated exp:&nbsp;{{ localExpIncomeValueFormatted }}&nbsp;exp.
     </template>
 
     <progress-bar
@@ -73,18 +73,22 @@ export default {
     ProgressBar
   },
   data: () => ({
-    totalCurrencyIncomeValue: 0,
-    totalExpIncomeValue: 0,
+    localCurrencyIncomeValue: 0,
+    localExpIncomeValue: 0,
     progress: 0,
     animation: null,
     incomeId: 0,
     incomes: []
   }),
   created() {
-    this.$store.$app.$on("cycle-started", this.resetTimer);
+    this.$store.$app.$on("cycle-start", this.resetTimer);
+    this.$store.$app.$on("cycle-stop", this.cycleStop);
+    this.$store.$app.$on("accumulated", this.accumulated);
   },
   destroyed() {
-    this.$store.$app.$off("cycle-started");
+    this.$store.$app.$off("cycle-start");
+    this.$store.$app.$off("cycle-stop");
+    this.$store.$app.$off("accumulated");
   },
   computed: {
     slot() {
@@ -128,11 +132,11 @@ export default {
     nextCurrencyIncomeValueFormatted() {
       return abbreviateNumber(this.slot.stats.income.next.currencyPerCycle);
     },
-    totalCurrencyIncomeValueFormatted() {
-      return abbreviateNumber(this.totalCurrencyIncomeValue);
+    localCurrencyIncomeValueFormatted() {
+      return abbreviateNumber(this.localCurrencyIncomeValue);
     },
-    totalExpIncomeValueFormatted() {
-      return abbreviateNumber(this.totalExpIncomeValue);
+    localExpIncomeValueFormatted() {
+      return abbreviateNumber(this.localExpIncomeValue);
     },
     tier6IsNotReady() {
       return (
@@ -141,9 +145,9 @@ export default {
     },
     switchableTotalIncomeValue() {
       if (this.tier6IsNotReady) {
-        return this.totalExpIncomeValue;
+        return this.localExpIncomeValue;
       } else {
-        return this.totalCurrencyIncomeValue;
+        return this.localCurrencyIncomeValue;
       }
     },
     buildingIsAllowed() {
@@ -163,11 +167,29 @@ export default {
     })
   },
   methods: {
+    accumulated(payload) {
+      if (this.tier != payload.tier) {
+        return;
+      }
+      this.localCurrencyIncomeValue = payload.currency;
+      this.localExpIncomeValue = payload.exp;
+    },
+    cycleStop(tier) {
+      if (this.tier != tier) {
+        return;
+      }
+      console.log('cycleStop', this.tier);
+      if (this.animation) {
+        clearInterval(this.animation);
+      }
+      this.progress = 0;
+    },
     resetTimer(tier) {
       if (this.tier != tier) {
         return;
       }
 
+      console.log('resetTimer', this.tier);
       this.progress = 0;
       if (this.animation) {
         clearInterval(this.animation);
@@ -178,23 +200,13 @@ export default {
 
         this.progress++;
         if (!this.tier6IsNotReady) {
-          this.totalCurrencyIncomeValue +=
+          this.localCurrencyIncomeValue +=
             currentIncomeValue.currencyPerCycle / 200;
         }
-        this.totalExpIncomeValue += currentIncomeValue.expPerCycle / 200;
+        this.localExpIncomeValue += currentIncomeValue.expPerCycle / 200;
 
-        // Add 50% of resources at the end
         if (this.progress >= 100) {
-          if (!this.tier6IsNotReady) {
-            this.totalCurrencyIncomeValue +=
-              currentIncomeValue.currencyPerCycle / 2;
-          }
-          this.totalExpIncomeValue += currentIncomeValue.expPerCycle / 2;
-          if (this.slot.autoCyclesLeft > 0) {
-            this.resetTimer();
-          } else {
-            clearInterval(this.animation);
-          }
+          clearInterval(this.animation);
         }
       }, (this.slot.stats.cycleLength * 1000) / 100);
     },
@@ -238,6 +250,7 @@ export default {
           return;
         }
 
+        this.reset();
         await this.performRequestNoCatch(
           this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
         );
@@ -249,15 +262,15 @@ export default {
             return;
           }
 
+          this.reset();
           await this.performRequestNoCatch(
             this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
           );
         } else if (this.mode === "collect") {
+          this.reset();
           this.handleHarvest();
         }
       }
-
-      this.reset();
     },
     async handleHarvest() {
       if (!this.tier6IsNotReady) {
@@ -266,6 +279,8 @@ export default {
           id: this.incomeId++
         });
       }
+
+      this.cycleStop(this.tier);
 
       await this.performRequestNoCatch(
         this.$store.dispatch("xmas/harvest", { tier: this.tier })
@@ -278,8 +293,8 @@ export default {
     reset() {
       console.log('Reset');
       this.progress = 0;
-      this.totalCurrencyIncomeValue = 0;
-      this.totalExpIncomeValue = 0;
+      this.localCurrencyIncomeValue = 0;
+      this.localExpIncomeValue = 0;
     }
   }
 };
