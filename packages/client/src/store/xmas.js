@@ -53,8 +53,6 @@ export default {
   },
   mutations: {
     updateState(state, data) {
-      console.log("Response", data);
-
       if (data.levelGap !== undefined) {
         state.levelGap = data.levelGap;
         console.log("Level gap changed", data.levelGap);
