@@ -80,6 +80,34 @@ export default {
     incomeId: 0,
     incomes: []
   }),
+  watch: {
+    "slot.launched": {
+      immediate: true,
+      handler: function(value) {
+        if (value) {
+          this.resetTimer(this.tier);
+        }
+      }
+    },
+    "slot.progress.percentage": {
+      immediate: true,
+      handler: function(value) {
+        this.progress = value;
+      }
+    },
+    "slot.accumulated.currency": {
+      immediate: true,
+      handler: function(value) {
+        this.localCurrencyIncomeValue = value;
+      }
+    },
+    "slot.accumulated.exp": {
+      immediate: true,
+      handler: function(value) {
+        this.localExpIncomeValue = value;
+      }
+    }
+  },
   created() {
     this.$store.$app.$on("cycle-start", this.resetTimer);
     this.$store.$app.$on("cycle-stop", this.cycleStop);
@@ -178,7 +206,6 @@ export default {
       if (this.tier != tier) {
         return;
       }
-      console.log('cycleStop', this.tier);
       if (this.animation) {
         clearInterval(this.animation);
       }
@@ -189,7 +216,6 @@ export default {
         return;
       }
 
-      console.log('resetTimer', this.tier);
       this.progress = 0;
       if (this.animation) {
         clearInterval(this.animation);
@@ -250,7 +276,6 @@ export default {
           return;
         }
 
-        this.reset();
         await this.performRequestNoCatch(
           this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
         );
@@ -262,7 +287,6 @@ export default {
             return;
           }
 
-          this.reset();
           await this.performRequestNoCatch(
             this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
           );
