@@ -80,12 +80,11 @@ export default {
     incomeId: 0,
     incomes: []
   }),
-  watch: {
-    "slot.level": function(value) {
-      if (value === 1) {
-        this.resetTimer();
-      }
-    }
+  created() {
+    this.$store.$app.$on("cycle-started", this.resetTimer);
+  },
+  destroyed() {
+    this.$store.$app.$off("cycle-started");
   },
   computed: {
     slot() {
@@ -164,7 +163,11 @@ export default {
     })
   },
   methods: {
-    resetTimer() {
+    resetTimer(tier) {
+      if (this.tier != tier) {
+        return;
+      }
+
       this.progress = 0;
       if (this.animation) {
         clearInterval(this.animation);
@@ -187,14 +190,9 @@ export default {
               currentIncomeValue.currencyPerCycle / 2;
           }
           this.totalExpIncomeValue += currentIncomeValue.expPerCycle / 2;
-
           if (this.slot.autoCyclesLeft > 0) {
-            // TODO send a signal from backend
-            //this.$store.dispatch("xmas/cycleFinished", this.tier);
             this.resetTimer();
           } else {
-            // TODO send a signal from backend
-            //this.$store.dispatch("xmas/epochFinished", this.tier);
             clearInterval(this.animation);
           }
         }
@@ -254,24 +252,12 @@ export default {
           await this.performRequestNoCatch(
             this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
           );
-
-          // TODO move to backend
-          /*
-          this.$store.commit("xmas/decreaseBalance", {
-            currency: CURRENCY_SANTABUCKS,
-            amount: this.slot.stats.upgrade.value
-          });
-          this.$store.dispatch("xmas/upgradeSlot", {
-            tier: this.tier,
-            level: this.slot.stats.upgrade.nextLevel
-          });
-          */
-
-          this.reset();
         } else if (this.mode === "collect") {
           this.handleHarvest();
         }
       }
+
+      this.reset();
     },
     async handleHarvest() {
       if (!this.tier6IsNotReady) {
@@ -288,13 +274,9 @@ export default {
       setTimeout(() => {
         this.incomes.splice(0, 1);
       }, 3000);
-
-      this.reset();
     },
     reset() {
-      // TODO move to backend
-      this.$store.dispatch("xmas/epochFinished", this.tier);
-      this.resetTimer();
+      console.log('Reset');
       this.progress = 0;
       this.totalCurrencyIncomeValue = 0;
       this.totalExpIncomeValue = 0;

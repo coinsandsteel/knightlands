@@ -15,7 +15,7 @@ import Operations from "@/../../knightlands-shared/operations";
 
 const slots = {};
 for (let i = 1; i <= 9; i++) {
-  slots[i] = _.clone(initialSlotState);
+  slots[i] = _.cloneDeep(initialSlotState);
 }
 
 export default {
@@ -25,7 +25,7 @@ export default {
     mode: "manage",
     towerLevelBoundaries: null,
     tower: {
-      expirience: 0,
+      exp: 0,
       level: 0,
       pecentage: 0
     },
@@ -77,7 +77,7 @@ export default {
           ...state.slots[payload.tier].accumulated,
           ...payload.accumulated
         };
-        console.log("Tower accumulated", data.accumulated);
+        console.log("Farm accumulated", data.accumulated);
       }
 
       if (data.progress !== undefined) {
@@ -97,23 +97,27 @@ export default {
 
       if (data.upgrade !== undefined) {
         let payload = data.upgrade;
-        state.slots[payload.tier].stats.upgrade = {
-          ...state.slots[payload.tier].stats.upgrade,
-          ...payload.upgrade
-        };
+        for (let tier in payload) {
+          state.slots[tier].stats.upgrade = {
+            ...state.slots[tier].stats.upgrade,
+            ...payload[tier]
+          };
+        }
         console.log("Upgrade price changed", payload);
       }
 
       if (data.income !== undefined) {
         let payload = data.income;
-        state.slots[payload.tier].stats.income.current = {
-          ...state.slots[payload.tier].stats.income.current,
-          ...payload.current
-        };
-        state.slots[payload.tier].stats.income.next = {
-          ...state.slots[payload.tier].stats.income.next,
-          ...payload.next
-        };
+        for (let tier in payload) {
+          state.slots[tier].stats.income.current = {
+            ...state.slots[tier].stats.income.current,
+            ...payload[tier].current
+          };
+          state.slots[tier].stats.income.next = {
+            ...state.slots[tier].stats.income.next,
+            ...payload[tier].next
+          };
+        }
         console.log("Income changed", payload);
       }
 
@@ -142,6 +146,11 @@ export default {
           ...data.balance
         };
         console.log("Balance changed", data.balance);
+      }
+
+      if (data.cycleStarted !== undefined) {
+        this.$app.$emit("cycle-started", data.cycleStarted.tier);
+        console.log("Cycle started", data.cycleStarted);
       }
     },
     updateMode(state, value) {
