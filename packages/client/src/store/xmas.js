@@ -2,6 +2,7 @@ import _ from "lodash";
 import {
   initialSlotState,
   perksTree,
+  burstPerksTree,
   farmConfig,
   CURRENCY_SANTABUCKS,
   CURRENCY_GOLD,
@@ -31,6 +32,7 @@ export default {
     },
     levelGap: 1,
     slots,
+    burstPerks: burstPerksTree,
     perks: perksTree,
     flags: {
       perks: false
@@ -161,6 +163,17 @@ export default {
         console.log("Perks updated", payload);
       }
 
+      if (data.burstPerks !== undefined) {
+        let payload = data.burstPerks;
+        for (let perkName in payload) {
+          state.burstPerks[perkName] = {
+            ...state.burstPerks[perkName],
+            ...payload[perkName]
+          };
+        }
+        console.log("Burst perks updated", payload);
+      }
+
       if (data.balance !== undefined) {
         state.balance = {
           ...state.balance,
@@ -204,6 +217,7 @@ export default {
       state.balance = { ...state.balance, ...data.balance };
       state.cpoints = { ...state.cpoints, ...data.cpoints };
       state.loaded = true;
+      console.log('setInitialState', data);
     }
   },
   actions: {
@@ -222,10 +236,8 @@ export default {
     unsubscribe() {
       this.$app.$game.offNetwork(Events.XmasUpdate);
     },
-    async commitPerks(store, perks) {
-      await this.$app.$game._wrapOperation(Operations.XmasCommitPerks, {
-        perks
-      });
+    async commitPerks(store, data) {
+      await this.$app.$game._wrapOperation(Operations.XmasCommitPerks, data);
     },
     async updateLevelGap(store, value) {
       await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, {
