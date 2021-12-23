@@ -6,10 +6,10 @@
     <PurchaseButton
       type="grey"
       class="margin-top-1 margin-bottom-1"
-      @click="$emit('purchase')"
+      @click="handleClick"
       minWidth="15rem"
       :price="10.0"
-    >{{getState}}
+      >{{ getState }}
     </PurchaseButton>
   </div>
 </template>
@@ -53,6 +53,14 @@ export default {
         this.currency = this.currency - this.upgradePrice;
       } else {
         this.state = 2;
+      }
+    },
+    handleClick() {
+      if (this.state === 0) {
+        this.buy();
+      }
+      if (this.state === 1) {
+        this.upgrade();
       }
     }
   },
