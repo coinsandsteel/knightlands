@@ -423,4 +423,10 @@ export default {
   padding: 0.1em 0.4em;
   background: rgba(0, 0, 0, 0.25);
 }
+
+.xmas-bg {
+  border-image: url("../assets/xmas/progress_bar_bg.png") repeat;
+  border-image-slice: 6 fill;
+  border-image-width: 6px;
+}
 </style>
