@@ -79,14 +79,7 @@
       </CustomButton>
 
       <template v-if="mode === 'collect'">
-        <ProgressWithLevel
-          v-if="
-            slot.level && progress !== null && localCurrencyIncomeValue <= 0
-          "
-          :level="slot.level"
-        ></ProgressWithLevel>
-
-        <CustomButton class="row3" type="green" @click="handleClick" v-else>
+        <CustomButton class="row3" type="green" @click="handleClick">
           Collect
           <IconWithValue :iconClass="icon">{{
             localCurrencyIncomeValueFormatted
