@@ -223,6 +223,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import PerksTree from "./PerksTree.vue";
 import XmasTower from "./XmasTower.vue";
 import Tabs from "@/components/Tabs.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import { create } from "vue-modal-dialogs";
 import UpgradePerk from "./UpgradePerk.vue";
@@ -238,7 +239,7 @@ import {
 } from "@/../../knightlands-shared/xmas";
 
 export default {
-  mixins: [PromptMixin],
+  mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
     Tabs,
     PerksTree,
@@ -293,10 +294,12 @@ export default {
     unlockBranch(currencyName) {
       if (this.canIncrease) {
         this.newPerks[currencyName].unlocked = true;
-        this.$store.dispatch("xmas/commitPerks", {
-          perks: this.newPerks,
-          burstPerks: this.newBurstPerks
-        });
+        this.performRequest(
+          this.$store.dispatch("xmas/commitPerks", {
+            perks: this.newPerks,
+            burstPerks: this.newBurstPerks
+          })
+        );
       }
     },
     back() {
@@ -356,10 +359,12 @@ export default {
       return true;
     },
     confirmPerks() {
-      this.$store.dispatch("xmas/commitPerks", {
-        perks: this.newPerks,
-        burstPerks: this.newBurstPerks
-      });
+      this.performRequest(
+        this.$store.dispatch("xmas/commitPerks", {
+          perks: this.newPerks,
+          burstPerks: this.newBurstPerks
+        })
+      );
     },
     reset(currencyName, tier, perkName) {
       while (this.canDecrease(currencyName, tier, perkName)) {

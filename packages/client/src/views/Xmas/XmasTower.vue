@@ -5,7 +5,7 @@
       <div class="tower-bg full-flex"></div>
       <ProgressWithLevel
         :level="tower.level"
-        :value="tower.currentLevelPercentage"
+        :value="tower.percentage"
       ></ProgressWithLevel>
     </div>
 
