@@ -1,7 +1,7 @@
 <template>
   <div class="multipliers flex">
     <a
-      class="multiplier font-size-25"
+      class="multiplier font-size-15"
       :class="[levelGap === data.value ? 'active' : '']"
       v-for="(data, id) in multipliers"
       :key="'multiplier' + id"
@@ -45,8 +45,8 @@ export default {
   z-index: 50;
 }
 .multiplier {
-  width: 8rem;
-  height: 8rem;
+  width: 4rem;
+  height: 4rem;
   background: lightseagreen;
   display: flex;
   align-items: center;
