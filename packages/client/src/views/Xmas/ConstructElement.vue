@@ -74,16 +74,21 @@ export default {
       return "Buy";
     },
     getBuildingType() {
-        return "../../assets/xmas/buildings/building_" + this.buildingType + ".png"
+        return "/images/xmas/buildings/building_" + this.buildingType + ".png"
     }
   }
 };
 </script>
 <style>
-.construct-element {
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  width: 150%;
+div.construct-element {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  background-image: url("../../assets/xmas/buy_bg.png");
+}
+img {
+  pointer-events: none;
+  max-width: 33%;
+  z-index: -1;
 }
 </style>
