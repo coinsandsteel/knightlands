@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-column flex-center">
+  <div class="flex flex-column flex-items-center flex-start">
     <div
       class="even-bg flex flex-center width-100 font-size-20 padding-top-1 padding-bottom-1 flex-no-wrap"
     >
-      <span class="icon-lock-big"></span>
+      <span class="icon-lock-big" v-if="!unlocked"></span>
       {{ $t(name) }}
     </div>
 
@@ -13,12 +13,19 @@
 
     <template v-else>
       <div
-        v-for="(p, id, index) in perks"
-        :key="id"
-        class="width-100 flex flex-center margin-bottom-1"
-        :class="{ 'even-bg': index % 2 == 0 }"
+        v-for="(levels, index) in perkLevels"
+        :key="index"
+        class="width-100 flex flex-center margin-bottom-2"
+        :class="{ 'even-bg': (index + 1) % 2 == 0 }"
       >
-        <PerkIcon :perk="id" :level="p.level" />
+        <PerkIcon
+          class="margin-right-1 margin-left-1 pointer"
+          v-for="p in levels"
+          :key="p"
+          :perk="p"
+          :level="perks[p].level"
+          :locked="!perks[p].enabled"
+        />
       </div>
     </template>
   </div>
@@ -29,7 +36,7 @@ import PerkIcon from "./PerkIcon.vue";
 import CustomButton from "@/components/Button.vue";
 
 export default {
-  props: ["perks", "name", "unlocked"],
+  props: ["perks", "name", "unlocked", "perkLevels"],
   components: { PerkIcon, CustomButton }
 };
 </script>

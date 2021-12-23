@@ -1,7 +1,8 @@
 <template>
   <div class="relative">
-    <div class="perk-lvl font-size-18">{{ 99 }}</div>
     <div :style="icon" class="perk-icon"></div>
+    <div class="perk-locked" v-if="locked"></div>
+    <div class="perk-lvl font-size-18 flex flex-center">{{ level }}</div>
   </div>
 </template>
 
@@ -33,10 +34,11 @@ const ICONS = {
 };
 
 export default {
-  props: ["perk", "level"],
+  props: ["perk", "level", "locked"],
   computed: {
     icon() {
       return {
+        opacity: this.locked ? "0.75" : "1",
         "background-image": `url(/images/xmas/perks/${ICONS[this.perk]}.png)`
       };
     }
@@ -45,6 +47,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../../style/ui.less";
+
 .perk-icon {
   background-repeat: no-repeat;
   background-size: contain;
@@ -61,5 +65,15 @@ export default {
   position: absolute;
   top: 0rem;
   left: -1rem;
+}
+
+.perk-locked {
+  .icon_lock_big;
+  width: 3rem;
+  height: 3rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

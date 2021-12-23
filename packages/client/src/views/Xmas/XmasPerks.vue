@@ -23,27 +23,30 @@
 
     <div class="full-flex dummy-height" v-bar>
       <div class="dummy-height">
-        <div class="width-100 flex flex-center" v-if="currentTab == 'base'">
+        <div class="width-100 flex" v-if="currentTab == 'base'">
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_UNIT_ESSENCE)"
             :unlocked="perks[currencies.CURRENCY_UNIT_ESSENCE].unlocked"
-            :perks="perksTree[currencies.CURRENCY_UNIT_ESSENCE].tiers.all"
+            :perks="perks[currencies.CURRENCY_UNIT_ESSENCE].tiers.all"
             :name="currencies.CURRENCY_UNIT_ESSENCE"
+            :perkLevels="perkLevels[currencies.CURRENCY_UNIT_ESSENCE]"
           />
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_SANTABUCKS)"
             :unlocked="perks[currencies.CURRENCY_SANTABUCKS].unlocked"
-            :perks="perksTree[currencies.CURRENCY_SANTABUCKS].tiers.all"
+            :perks="perks[currencies.CURRENCY_SANTABUCKS].tiers.all"
             :name="currencies.CURRENCY_SANTABUCKS"
+            :perkLevels="perkLevels[currencies.CURRENCY_SANTABUCKS]"
           />
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_GOLD)"
             :unlocked="perks[currencies.CURRENCY_GOLD].unlocked"
-            :perks="perksTree[currencies.CURRENCY_GOLD].tiers.all"
+            :perks="perks[currencies.CURRENCY_GOLD].tiers.all"
             :name="currencies.CURRENCY_GOLD"
+            :perkLevels="perkLevels[currencies.CURRENCY_GOLD]"
           />
         </div>
 
@@ -52,36 +55,36 @@
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
-            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['4']"
-            name="tier 4"
+            :perks="perks[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['4']"
+            name="Tier 4"
           />
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
-            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['7']"
-            name="tier 7"
+            :perks="perks[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['7']"
+            name="Tier 7"
           />
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
-            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['8']"
-            name="tier 8"
+            :perks="perks[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['8']"
+            name="Tier 8"
           />
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
-            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['9']"
-            name="tier 9"
+            :perks="perks[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['9']"
+            name="Tier 9"
           />
         </div>
 
         <div class="width-100 flex flex-center" v-if="currentTab == 'shinies'">
           <PerksTree
             class="flex-1"
-            :perks="perksTree[currencies.CURRENCY_SHINIES].tiers.all"
+            :perks="perks[currencies.CURRENCY_SHINIES].tiers.all"
             :name="currencies.CURRENCY_SHINIES"
           />
         </div>
@@ -185,7 +188,7 @@ import {
   CURRENCY_CHRISTMAS_POINTS,
   CURRENCY_UNIT_ESSENCE,
   CURRENCY_SHINIES,
-  perksTree
+  perkLevels
 } from "@/../../knightlands-shared/xmas";
 
 export default {
@@ -209,7 +212,7 @@ export default {
   },
   data: () => ({
     newPerks: {},
-    perksTree,
+    perkLevels,
     currencies: {
       CURRENCY_SANTABUCKS: CURRENCY_SANTABUCKS,
       CURRENCY_CHRISTMAS_POINTS: CURRENCY_CHRISTMAS_POINTS,
