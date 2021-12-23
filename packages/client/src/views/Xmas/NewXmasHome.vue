@@ -12,6 +12,13 @@
           <div class="flex flex-column">
             <RankingsMenu />
             <Multipliers />
+            <progress-bar
+              :maxValue="100"
+              iconClass="icon-health"
+              :hideMaxValue="true"
+              plusButton="grey"
+              class="flex-full pointer"
+            ></progress-bar>
             <MenuIconRow>
               <MenuIcon
                 icon="skewed_icon_quest"
@@ -31,6 +38,14 @@
                 id="xmas"
                 >{{ $t("btn-evt-xmas") }}
               </MenuIcon>
+
+              <MenuIcon
+                icon="skewed_icon_quests"
+                to="quest"
+                :append="true"
+                id="quests"
+                >{{ $t("btn-quests") }}</MenuIcon
+              >
             </MenuIconRow>
 
             <MenuIconRow>
@@ -162,7 +177,7 @@ import MenuIconRow from "@/components/MenuIconRow.vue";
 
 import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
 import Multipliers from "./NewMultipliers.vue";
-
+import ProgressBar from "@/components/ProgressBar.vue";
 export default {
   props: ["scrollToBottom"],
   mixins: [AppSection],
@@ -176,7 +191,8 @@ export default {
     MenuIconRow,
     GoldMinesMarker,
     DailyTasksMarker,
-    Multipliers
+    Multipliers,
+    ProgressBar
   },
   created() {
     this.title = this.$t("window-title-home");

@@ -36,11 +36,11 @@ import HintHandler from "@/components/HintHandler.vue";
 import AppSection from "@/AppSection.vue";
 import EquipmentContent from "./Equipment/EquipmentContent.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import { create as CreateDialog } from "vue-modal-dialogs";
-import StatDetails from "./Equipment/StatDetails.vue";
+// import { create as CreateDialog } from "vue-modal-dialogs";
+// import StatDetails from "./Equipment/StatDetails.vue";
 import LegionPreview from "./LegionPreview.vue";
 
-const ShowDetails = CreateDialog(StatDetails, "maxStats");
+// const ShowDetails = CreateDialog(StatDetails, "maxStats");
 
 export default {
   mixins: [AppSection, HintHandler, NetworkRequestErrorMixin],
