@@ -11,7 +11,9 @@
     </div>
 
     <portal to="footer">
-      <CustomButton type="blue">{{ $t("btn-cp") }}</CustomButton>
+      <CustomButton type="blue" @click="goToCP">{{
+        $t("btn-cp")
+      }}</CustomButton>
     </portal>
   </div>
 </template>
@@ -55,7 +57,11 @@ export default {
       playerStats: "xmas/playerStats"
     })
   },
-  methods: {}
+  methods: {
+    goToCP() {
+      this.$router.push({ name: "cpoints" });
+    }
+  }
 };
 </script>
 

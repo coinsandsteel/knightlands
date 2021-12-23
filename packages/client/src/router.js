@@ -453,6 +453,11 @@ const router = new Router({
           path: "new",
           name: "xmas-new",
           component: NewXmasForm
+        },
+        {
+          path: "cp",
+          name: "cpoints",
+          component: () => import("./views/Xmas/XmasCPoints.vue")
         }
       ],
       meta: {

@@ -41,10 +41,15 @@ export default {
       [CURRENCY_UNIT_ESSENCE]: 0,
       [CURRENCY_CHRISTMAS_POINTS]: 0,
       [CURRENCY_SHINIES]: 0
+    },
+    cpoints: {
+      score: 0,
+      shares: 0,
+      lastClaimed: 0
     }
   },
   getters: {
-    slot: (state) => tier => {
+    slot: state => tier => {
       return {
         ...state.slots[tier],
         currency: farmConfig[tier].currency
@@ -53,6 +58,12 @@ export default {
   },
   mutations: {
     updateState(state, data) {
+      if (data.cpoints !== undefined) {
+        state.cpoints.score = data.cpoints.score;
+        state.cpoints.shares = data.cpoints.shares;
+        state.cpoints.lastClaimed = data.cpoints.lastClaimed;
+      }
+
       if (data.levelGap !== undefined) {
         state.levelGap = data.levelGap;
         console.log("Level gap changed", data.levelGap);
@@ -185,6 +196,7 @@ export default {
       state.slots = { ...state.slots, ...data.slots };
       state.perks = { ...state.perks, ...data.perks };
       state.balance = { ...state.balance, ...data.balance };
+      state.cpoints = { ...state.cpoints, ...data.cpoints };
       state.loaded = true;
     }
   },
@@ -205,22 +217,33 @@ export default {
       this.$app.$game.offNetwork(Events.XmasUpdate);
     },
     async commitPerks(store, perks) {
-      await this.$app.$game._wrapOperation(Operations.XmasCommitPerks, { perks });
+      await this.$app.$game._wrapOperation(Operations.XmasCommitPerks, {
+        perks
+      });
     },
     async updateLevelGap(store, value) {
-      await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, { value });
+      await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, {
+        value
+      });
     },
     toggleFlag(store, key) {
-      store.commit('toggleFlag', key);
+      store.commit("toggleFlag", key);
     },
     async upgradeSlot(store, { tier }) {
-      await this.$app.$game._wrapOperation(Operations.XmasFarmUpgrade, { tier });
+      await this.$app.$game._wrapOperation(Operations.XmasFarmUpgrade, {
+        tier
+      });
+    },
+    async cpStatus() {
+      return (
+        await this.$app.$game._wrapOperation(Operations.XmasCPointsStatus)
+      ).response;
     },
     async harvest(store, { tier }) {
       await this.$app.$game._wrapOperation(Operations.XmasHarvest, { tier });
     },
     updateMode(store, value) {
-      store.commit('updateMode', value);
+      store.commit("updateMode", value);
     }
   }
 };
