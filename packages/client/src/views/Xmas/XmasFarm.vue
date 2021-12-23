@@ -15,10 +15,12 @@
       <div class="row13 build-bg" v-if="!isBuilt"></div>
 
       <div
-        class="row2"
-        :class="{ row13: isBuilt }"
+        class="row2 flex flex-center"
+        :class="[{ row13: isBuilt }, { na: !buildingIsAllowed }]"
         :style="buildingImage"
-      ></div>
+      >
+        <span class="icon-lock-big huge" v-if="!buildingIsAllowed"></span>
+      </div>
 
       <div class="flex flex-items-center row1 flex-no-wrap">
         <div class="slot_common flex flex-center margin-right-half">
@@ -33,40 +35,44 @@
         </div>
       </div>
 
+      <div
+        class="row3 padding-bottom-1 font-weight-900"
+        v-if="!buildingIsAllowed"
+      >
+        LOCKED
+      </div>
+
       <CustomButton
         class="row3"
         type="green"
-        v-if="showDesc"
+        v-else-if="showDesc"
         @click="handleClick"
       >
         Build
-        <IconWithValue iconClass="icon-sb">{{ purchasePrice }}</IconWithValue>
+        <IconWithValue iconClass="icon-sb">{{
+          upgradePriceFormatted
+        }}</IconWithValue>
       </CustomButton>
 
       <CustomButton
         class="row3"
         type="yellow"
-        v-if="showUpgrade"
+        v-else-if="showUpgrade"
         @click="handleClick"
       >
         Upgrade
-        <IconWithValue iconClass="icon-sb">{{ purchasePrice }}</IconWithValue>
+        <IconWithValue iconClass="icon-sb">{{
+          upgradePriceFormatted
+        }}</IconWithValue>
       </CustomButton>
 
       <template v-if="mode === 'collect'">
-        <progress-bar
-          class="progress-bar row3"
+        <ProgressWithLevel
           v-if="
             slot.level && progress !== null && localCurrencyIncomeValue <= 0
           "
-          ref="progress"
-          barClasses="no-animation"
-          :maxValue="100"
-          :percentMode="false"
-          :hideMaxValue="false"
-          v-model="progress"
-          barType="green"
-        ></progress-bar>
+          :level="slot.level"
+        ></ProgressWithLevel>
 
         <CustomButton class="row3" type="green" @click="handleClick" v-else>
           Collect
@@ -81,13 +87,13 @@
 
 <script>
 // import _ from "lodash";
-import ProgressBar from "@/components/ProgressBar.vue";
 import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import ProgressWithLevel from "./ProgressWithLevel.vue";
 
 import {
   abbreviateNumber,
@@ -103,8 +109,8 @@ export default {
   props: ["tier"],
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
+    ProgressWithLevel,
     IncomeText,
-    ProgressBar,
     CustomButton,
     IconWithValue
   },
@@ -155,9 +161,6 @@ export default {
     this.$store.$app.$off("accumulated");
   },
   computed: {
-    purchasePrice() {
-      return farmConfig[this.tier].baseBuildingPrice;
-    },
     isBuilt() {
       return this.slot.level != 0;
     },
@@ -398,36 +401,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .building {
-//   position: relative;
-//   text-align: center;
-//   color: black;
-//   margin-bottom: 5rem;
-// }
-// .building-farm {
-//   padding: 5rem 0;
-// }
-// .building-slot {
-//   padding: 5rem 0;
-//   background: grey;
-//   opacity: 0.8;
-// }
-// .building-farm {
-//   background: aquamarine;
-//   &.building-mode-manage {
-//     background: darkslateblue;
-//     color: white;
-//   }
-//   &.building-mode-collect {
-//     background: darkgreen;
-//     color: white;
-//   }
-// }
-// .progress-bar {
-//   position: absolute;
-//   bottom: 0;
-// }
-
 .building-grid {
   display: grid;
   grid-template-rows: 5rem 180fr 113fr;
@@ -462,6 +435,10 @@ export default {
   display: flex !important;
   width: 5rem;
   height: 5rem;
+}
+
+.na {
+  opacity: 0.6;
 }
 
 .label-bg {

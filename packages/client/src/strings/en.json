@@ -2513,5 +2513,7 @@
   "your-reward": "Reward:",
   "your-score": "Score:",
   "zalaras": "zalaras",
-  "zombie_lord": "zombielord"
+  "zombie_lord": "zombielord",
+  "d-boost": "Increase income by 2. ({n} seconds)",
+  "d-super_boost": "Increase income by 5. ({n} seconds)"
 }

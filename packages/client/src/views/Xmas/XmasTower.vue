@@ -29,7 +29,9 @@
       <CustomButton type="green">Upgrade Perks</CustomButton>
     </div>
     <div class="row2 flex flex-items-center flex-start" v-else>
-      <CustomButton type="green" class="btn">Activate Perk</CustomButton>
+      <CustomButton type="green" class="btn" @click="showActivePerks"
+        >Activate Perk</CustomButton
+      >
     </div>
 
     <NewMultipliers class="row3" v-if="mode != 'collect'" />
@@ -40,10 +42,14 @@
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import { mapState } from "vuex";
+import { create } from "vue-modal-dialogs";
 
 import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
 import ProgressWithLevel from "./ProgressWithLevel.vue";
 import NewMultipliers from "./NewMultipliers.vue";
+import ActivatePerks from "./ActivatePerks.vue";
+
+const ShowActivePerks = create(ActivatePerks);
 
 export default {
   props: ["tier"],
@@ -74,6 +80,9 @@ export default {
   methods: {
     togglePerks() {
       this.$store.dispatch("xmas/toggleFlag", "perks");
+    },
+    showActivePerks() {
+      ShowActivePerks();
     }
   }
 };
