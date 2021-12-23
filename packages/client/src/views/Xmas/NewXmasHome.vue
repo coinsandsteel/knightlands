@@ -8,16 +8,7 @@
         >
           <div class="flex flex-column">
             <MenuIconRow>
-              <MenuIcon
-                icon="skewed_icon_quest"
-                to="daily-tasks"
-                :append="true"
-                id="daily-tasks"
-                section="dailyTasks"
-                >{{ $t("btn-daily-quests") }}
-
-                <template v-slot:marker> <DailyTasksMarker /> </template
-              ></MenuIcon>
+              <ConcstructElement />
 
               <MenuIcon
                 icon="skewed_icon_tower"
@@ -155,7 +146,7 @@
 import AppSection from "@/AppSection.vue";
 import AdventuresMarker from "@/components/Markers/Home/AdventuresMarker.vue";
 import CheckinMarker from "@/components/Markers/Home/CheckinMarker.vue";
-import DailyTasksMarker from "@/components/Markers/Home/DailyTasksMarker.vue";
+// import DailyTasksMarker from "@/components/Markers/Home/DailyTasksMarker.vue";
 import GoldMinesMarker from "@/components/Markers/Home/GoldMinesMarker.vue";
 import OnyxTowerMarker from "@/components/Markers/Home/OnyxTowerMarker.vue";
 import TrialsMarker from "@/components/Markers/Home/TrialsMarker.vue";
@@ -164,7 +155,7 @@ import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 
 // import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
-
+import ConcstructElement from "./ConstructElement";
 export default {
   props: ["scrollToBottom"],
   mixins: [AppSection],
@@ -176,7 +167,8 @@ export default {
     MenuIcon,
     MenuIconRow,
     GoldMinesMarker,
-    DailyTasksMarker,
+    // DailyTasksMarker,
+    ConcstructElement
   },
   created() {
     this.title = this.$t("window-title-home");
