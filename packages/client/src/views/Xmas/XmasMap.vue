@@ -1,7 +1,7 @@
 <template>
   <div ref="port" class="relative width-100" v-bar>
     <div class="flex flex-column">
-      <XmasTower @click="$emit('toggle-perks')" />
+      <XmasTower />
 
       <div class="farm-grid">
         <XmasFarm

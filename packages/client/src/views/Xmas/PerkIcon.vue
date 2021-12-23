@@ -1,5 +1,8 @@
 <template>
-  <div :style="icon" class="perk-icon"></div>
+  <div class="relative">
+    <div class="perk-lvl font-size-18">{{ 99 }}</div>
+    <div :style="icon" class="perk-icon"></div>
+  </div>
 </template>
 
 <script>
@@ -26,7 +29,7 @@ const ICONS = {
 };
 
 export default {
-  props: ["perk"],
+  props: ["perk", "level"],
   computed: {
     icon() {
       return {
@@ -43,5 +46,16 @@ export default {
   background-size: contain;
   width: 5rem;
   height: 5rem;
+}
+
+.perk-lvl {
+  background-image: url("../../assets/ui/perk_lvl.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 3rem;
+  height: 3rem;
+  position: absolute;
+  top: 0rem;
+  left: -1rem;
 }
 </style>

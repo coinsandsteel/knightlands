@@ -23,7 +23,7 @@
       </div>
 
       <div class="flex flex-items-center row1 flex-no-wrap">
-        <div class="slot_common flex flex-center margin-right-half">
+        <div class="icon-farm flex flex-center margin-right-half">
           <div :class="icon" class="big"></div>
         </div>
 
@@ -127,7 +127,7 @@ export default {
       immediate: true,
       handler: function(value) {
         if (value) {
-          console.log('Launched watcher', this.tier, value);
+          console.log("Launched watcher", this.tier, value);
           this.resetTimer(this.tier);
         }
       }
@@ -135,21 +135,21 @@ export default {
     "slot.progress.percentage": {
       immediate: true,
       handler: function(value) {
-        console.log('Percentage watcher', this.tier, value);
+        console.log("Percentage watcher", this.tier, value);
         this.progress = value;
       }
     },
     "slot.accumulated.currency": {
       immediate: true,
       handler: function(value) {
-        console.log('Currency watcher', this.tier, value);
+        console.log("Currency watcher", this.tier, value);
         this.localCurrencyIncomeValue = value;
       }
     },
     "slot.accumulated.exp": {
       immediate: true,
       handler: function(value) {
-        console.log('Exp watcher', this.tier, value);
+        console.log("Exp watcher", this.tier, value);
         this.localExpIncomeValue = value;
       }
     }
@@ -451,6 +451,11 @@ export default {
   border-image-width: 14px;
   border-image-outset: 0px 0px 0px 0px;
   border-image-repeat: stretch stretch;
+}
+
+.icon-farm {
+  background-image: url("../../assets/ui/spritesheet/slot_common.png");
+  background-size: contain;
 }
 
 .build-bg {

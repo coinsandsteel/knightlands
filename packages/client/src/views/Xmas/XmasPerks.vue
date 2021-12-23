@@ -1,11 +1,41 @@
 <template>
-  <div ref="port" class="perks-port relative width-100 height-100">
-    <div
+  <div ref="port" class="relative width-100 height-100">
+    <XmasTower>
+      <template>
+        <div class="row13 flex flex-center flex-column flex-space-evenly">
+          <div class="flex flex-center flex-space-between relative">
+            <div class="label-bg flex flex-center ">
+              Upgrade points: {{ 1 }}
+            </div>
+          </div>
+
+          <CustomButton type="green">
+            Reset perks
+            <IconWithValue iconClass="icon-sb">{{ 99999 }}</IconWithValue>
+          </CustomButton>
+        </div>
+      </template>
+    </XmasTower>
+    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+
+    <div class="width-100 flex flex-center">
+      <PerksTree
+        class="flex-1"
+        :perks="perksTree[currencies.CURRENCY_UNIT_ESSENCE].tiers.all"
+      />
+      <PerksTree
+        class="flex-1"
+        :perks="perksTree[currencies.CURRENCY_SANTABUCKS].tiers.all"
+      />
+      <PerksTree
+        class="flex-1"
+        :perks="perksTree[currencies.CURRENCY_GOLD].tiers.all"
+      />
+    </div>
+
+    <!-- <div
       class="stat-commit font-size-25 flex flex-center width-100 margin-top-2 margin-bottom-2 flex-evenly-spaced margin-bottom-3"
     >
-      <div class="width-100 margin-bottom-1">
-        <strong>TOWER lvl. {{ tower.level }}</strong>
-      </div>
       <CustomButton
         :disabled="!rebalanceAllowed"
         type="blue"
@@ -24,8 +54,8 @@
         >{{ $t("btn-apply") }}</CustomButton
       >
       <a class="close-btn" @click.prevent="back"></a>
-    </div>
-    <div class="height-100" v-bar>
+    </div> -->
+    <!-- <div class="height-100" v-bar>
       <div class="perks-wrap padding-5 font-size-25">
         <div
           class="currency-wrap"
@@ -78,8 +108,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="font-size-25" @click="back">Close</div>
+    </div> -->
+    <!-- <div class="font-size-25" @click="back">Close</div> -->
   </div>
 </template>
 
@@ -87,12 +117,29 @@
 import _ from "lodash";
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 import NumericValue from "@/components/NumericValue.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import PerksTree from "./PerksTree.vue";
+import XmasTower from "./XmasTower.vue";
+import Tabs from "@/components/Tabs.vue";
+
+import {
+  CURRENCY_SANTABUCKS,
+  CURRENCY_GOLD,
+  CURRENCY_CHRISTMAS_POINTS,
+  CURRENCY_UNIT_ESSENCE,
+  CURRENCY_SHINIES,
+  perksTree
+} from "@/../../knightlands-shared/xmas";
 
 export default {
   mixins: [PromptMixin],
   components: {
+    Tabs,
+    PerksTree,
+    IconWithValue,
+    XmasTower,
     CustomButton,
     NumericValue
   },
@@ -106,9 +153,35 @@ export default {
     }
   },
   data: () => ({
-    newPerks: {}
+    newPerks: {},
+    perksTree,
+    currencies: {
+      CURRENCY_SANTABUCKS: CURRENCY_SANTABUCKS,
+      CURRENCY_CHRISTMAS_POINTS: CURRENCY_CHRISTMAS_POINTS,
+      CURRENCY_GOLD: CURRENCY_GOLD,
+      CURRENCY_UNIT_ESSENCE: CURRENCY_UNIT_ESSENCE,
+      CURRENCY_SHINIES: CURRENCY_SHINIES
+    },
+    tabs: [
+      {
+        value: "base",
+        title: "Base"
+      },
+      {
+        value: "cp",
+        title: "Xmas Points"
+      },
+      {
+        value: "shinies",
+        title: "Shinies"
+      }
+    ],
+    currentTab: "base"
   }),
   methods: {
+    switchTab(newTab) {
+      this.currentTab = newTab;
+    },
     unlockBranch(currencyName) {
       if (this.canIncrease) {
         this.newPerks[currencyName].unlocked = true;
@@ -294,13 +367,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.perks-port {
-  position: absolute;
-  top: 0;
-  z-index: 75;
-  background: rgb(49, 49, 49);
-  color: white;
-}
+// .perks-port {
+//   position: absolute;
+//   top: 0;
+//   z-index: 75;
+//   background: rgb(49, 49, 49);
+//   color: white;
+// }
 .perks-wrap {
   padding-top: 0;
 }
@@ -335,5 +408,19 @@ export default {
 }
 .state-locked .tier-wrap {
   opacity: 0.35;
+}
+
+.label-bg {
+  border-image: url("../../assets/xmas/text_input_blue.png");
+  border-image-slice: 27 27 27 27 fill;
+  border-image-width: 14px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+  padding: 1rem;
+}
+
+& .row13 {
+  grid-row: ~"1/4";
+  grid-column: 2;
 }
 </style>
