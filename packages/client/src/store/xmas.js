@@ -25,7 +25,7 @@ export default {
     loaded: true,
     mode: "manage",
     towerLevelBoundaries: null,
-    reset: {
+    rebalance: {
       price: 0,
       counter: 1
     },
@@ -186,12 +186,12 @@ export default {
         console.log("Balance changed", data.balance);
       }
 
-      if (data.reset !== undefined) {
-        state.reset = {
-          ...state.reset,
-          ...data.reset
+      if (data.rebalance !== undefined) {
+        state.rebalance = {
+          ...state.rebalance,
+          ...data.rebalance
         };
-        console.log("Perks reset update", data.reset);
+        console.log("Perks rebalance", data.rebalance);
       }
 
       if (data.cycleStart !== undefined) {
@@ -250,6 +250,9 @@ export default {
     },
     async commitPerks(store, data) {
       await this.$app.$game._wrapOperation(Operations.XmasCommitPerks, data);
+    },
+    async rebalancePerks() {
+      await this.$app.$game._wrapOperation(Operations.XmasRebalancePerks);
     },
     async updateLevelGap(store, value) {
       await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, {

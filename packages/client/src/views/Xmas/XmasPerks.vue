@@ -14,11 +14,11 @@
 
           <CustomButton
             type="green"
-            :disabled="rebalanceAllowed"
+            :disabled="!rebalanceAllowed"
             @click="rebalancePerks"
           >
-            Reset perks
-            <IconWithValue iconClass="icon-sb">{{ 99999 }}</IconWithValue>
+            Rebalance perks
+            <IconWithValue iconClass="icon-sb">{{ rebalancePriceFormatted }}</IconWithValue>
           </CustomButton>
         </div>
       </template>
@@ -224,6 +224,7 @@ import PerksTree from "./PerksTree.vue";
 import XmasTower from "./XmasTower.vue";
 import Tabs from "@/components/Tabs.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
 
 import { create } from "vue-modal-dialogs";
 import UpgradePerk from "./UpgradePerk.vue";
@@ -366,11 +367,11 @@ export default {
         })
       );
     },
-    reset(currencyName, tier, perkName) {
+    /*reset(currencyName, tier, perkName) {
       while (this.canDecrease(currencyName, tier, perkName)) {
         this.decreaseAttribute(currencyName, tier, perkName);
       }
-    },
+    },*/
     resetPerks() {
       let perksClone = _.cloneDeep(this.perks);
       for (let currencyName in this.newPerks) {
@@ -415,27 +416,13 @@ export default {
         return;
       }
 
-      let newPerks = _.cloneDeep(this.perks);
-      for (let currencyName in newPerks) {
-        for (let tier in newPerks[currencyName].tiers) {
-          for (let perkName in newPerks[currencyName].tiers[tier]) {
-            newPerks[currencyName].tiers[tier][perkName].level = 0;
-          }
-        }
-      }
-
-      let newBurstPerks = _.cloneDeep(this.burstPerks);
-      for (let perkName in newBurstPerks) {
-        newBurstPerks[perkName].level = 0;
-      }
-
-      this.$store.dispatch("xmas/commitPerks", {
-        perks: newPerks,
-        burstPerks: newBurstPerks
-      });
+      this.$store.dispatch("xmas/rebalancePerks");
     }
   },
   computed: {
+    rebalancePriceFormatted() {
+      return abbreviateNumber(this.rebalance.price);
+    },
     newUnlockedBranchesCount() {
       let sum = 0;
       for (let currencyName in this.newPerks) {
@@ -517,7 +504,8 @@ export default {
     },
     ...mapState({
       tower: state => state.xmas.tower,
-      perks: state => state.xmas.perks
+      perks: state => state.xmas.perks,
+      rebalance: state => state.xmas.rebalance
     })
   }
 };
