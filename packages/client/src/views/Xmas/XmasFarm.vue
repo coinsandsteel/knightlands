@@ -6,6 +6,7 @@
       !slot.level ? 'building-slot' : 'building-farm',
       slot.level ? 'building-mode-' + mode : null
     ]"
+    @click="handleClick"
   >
     <IncomeText v-for="income in incomes" :key="income.id">{{
       income.income
@@ -77,7 +78,7 @@
         <CustomButton class="row3" type="green" @click="handleClick" v-else>
           Collect
           <IconWithValue :iconClass="icon">{{
-            localCurrencyIncomeValue
+            localCurrencyIncomeValueFormatted
           }}</IconWithValue>
         </CustomButton>
       </template>
@@ -383,8 +384,6 @@ export default {
           id: this.incomeId++
         });
       }
-
-      this.cycleStop(this.tier);
 
       await this.performRequestNoCatch(
         this.$store.dispatch("xmas/harvest", { tier: this.tier })
