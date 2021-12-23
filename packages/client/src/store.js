@@ -293,7 +293,7 @@ const store = new Vuex.Store({
   }
 });
 
-store.subscribe((mutation, state) => {
+/*store.subscribe((mutation, state) => {
   if (
     !mutation.type.includes('training')
     &&
@@ -311,6 +311,6 @@ store.subscribeAction((action, state) => {
   ) {
     console.log('Action', action.type, action.payload);
   }
-});
+});*/
 
 export default store;

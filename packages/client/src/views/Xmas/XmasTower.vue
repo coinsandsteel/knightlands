@@ -32,7 +32,7 @@ export default {
   data: () => ({}),
   computed: {
     expirienceValueFormatted() {
-      return abbreviateNumber(this.tower.expirience);
+      return abbreviateNumber(this.tower.exp);
     },
     towerStyle() {
       return {};

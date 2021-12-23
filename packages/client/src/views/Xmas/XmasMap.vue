@@ -38,9 +38,6 @@ export default {
     XmasFarm
   },
   watch: {},
-  mounted() {
-    this.$store.dispatch("xmas/setInitialState");
-  },
   data: () => {
     return {
       slots: {

@@ -147,7 +147,6 @@ export default {
     getStatValue(currencyName, tier, perkName) {
       return this.newPerks[currencyName].tiers[tier][perkName].level;
     },
-    // TODO charge 1 level for branch reveal
     getMaxStatValue() {
       return (
         this.tower.level - this.newUnlockedBranchesCount - this.newPerksSum - 1
