@@ -6,7 +6,6 @@
         <div
           class="flex flex-column min-height-100 width-100 flex-space-between"
         >
-          <Header />
           <div class="flex flex-column">
             <MenuIconRow>
               <MenuIcon
@@ -165,7 +164,6 @@ import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 
 // import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
-import Header from "./NewConstructHeader.vue";
 
 export default {
   props: ["scrollToBottom"],
@@ -179,7 +177,6 @@ export default {
     MenuIconRow,
     GoldMinesMarker,
     DailyTasksMarker,
-    Header
   },
   created() {
     this.title = this.$t("window-title-home");
