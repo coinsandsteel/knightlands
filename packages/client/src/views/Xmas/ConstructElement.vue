@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-column flex-center construct-element">
-    <img :src="getBuildingType" />
+    <img class="building-type" :src="getBuildingType" />
     <div class="padding-2">
+      <img src="/images/xmas/item_cp.png" />
       <PurchaseButton
         type="grey"
         class="margin-top-1"
@@ -74,7 +75,7 @@ export default {
       return "Buy";
     },
     getBuildingType() {
-        return "/images/xmas/buildings/building_" + this.buildingType + ".png"
+      return "/images/xmas/buildings/building_" + this.buildingType + ".png";
     }
   }
 };
@@ -86,7 +87,7 @@ div.construct-element {
   position: relative;
   background-image: url("../../assets/xmas/buy_bg.png");
 }
-img {
+img.building-type {
   pointer-events: none;
   max-width: 33%;
   z-index: -1;

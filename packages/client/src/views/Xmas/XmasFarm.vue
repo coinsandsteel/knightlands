@@ -127,6 +127,7 @@ export default {
       immediate: true,
       handler: function(value) {
         if (value) {
+          console.log('Launched watcher', this.tier, value);
           this.resetTimer(this.tier);
         }
       }
@@ -134,18 +135,21 @@ export default {
     "slot.progress.percentage": {
       immediate: true,
       handler: function(value) {
+        console.log('Percentage watcher', this.tier, value);
         this.progress = value;
       }
     },
     "slot.accumulated.currency": {
       immediate: true,
       handler: function(value) {
+        console.log('Currency watcher', this.tier, value);
         this.localCurrencyIncomeValue = value;
       }
     },
     "slot.accumulated.exp": {
       immediate: true,
       handler: function(value) {
+        console.log('Exp watcher', this.tier, value);
         this.localExpIncomeValue = value;
       }
     }
@@ -391,7 +395,7 @@ export default {
       }, 3000);
     },
     reset() {
-      console.log("Reset");
+      // console.log("Reset");
       this.progress = 0;
       this.localCurrencyIncomeValue = 0;
       this.localExpIncomeValue = 0;

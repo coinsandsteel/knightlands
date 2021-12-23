@@ -170,15 +170,21 @@ export default {
       }
 
       if (data.cycleStart !== undefined) {
-        state.slots[data.cycleStart.tier].launched = true;
         this.$app.$emit("cycle-start", data.cycleStart.tier);
         console.log("Cycle start", data.cycleStart);
       }
 
       if (data.cycleStop !== undefined) {
-        state.slots[data.cycleStop.tier].launched = false;
         this.$app.$emit("cycle-stop", data.cycleStop.tier);
         console.log("Cycle stop", data.cycleStop);
+      }
+
+      if (data.launched !== undefined) {
+        let payload = data.launched;
+        for (let tier in payload) {
+          state.slots[tier].launched = payload[tier];
+        }
+        console.log("Launch state", data.launched);
       }
     },
     updateMode(state, value) {

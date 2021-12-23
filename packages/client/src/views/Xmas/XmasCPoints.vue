@@ -129,7 +129,6 @@ export default {
       const info = await this.performRequest(
         this.$store.dispatch("xmas/cpStatus")
       );
-      console.log(info);
       this.updateShares(info);
     },
     updateShares(data) {
