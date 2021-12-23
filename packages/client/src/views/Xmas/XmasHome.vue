@@ -13,12 +13,6 @@
     </keep-alive>
 
     <XmasPerks v-if="perksVisible" />
-    <!-- <XmasHeader />
-      <XmasMap ref="area" />
-      <XmasPerks v-if="perksVisible" />
-      <ModeSwitchBtn />
-      <StatisticsBtn />
-      <Multipliers /> -->
   </div>
 </template>
 

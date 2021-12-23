@@ -21,7 +21,7 @@
 
         <div class="label-bg flex flex-center width-45">
           <IconWithValue :inline="false" iconClass="icon-cp">{{
-            balanceFormatted.christmas_points
+            score
           }}</IconWithValue>
         </div>
       </div>
@@ -58,6 +58,8 @@ import ActivatePerks from "./ActivatePerks.vue";
 
 const ShowActivePerks = create(ActivatePerks);
 
+const PRECISION = 10000;
+
 export default {
   props: ["tier"],
   components: {
@@ -71,6 +73,7 @@ export default {
       return abbreviateNumber(this.tower.exp);
     },
     ...mapState({
+      cpoints: state => state.xmas.cpoints,
       mode: state => state.xmas.mode,
       tower: state => state.xmas.tower,
       balance: state => state.xmas.balance,
@@ -82,6 +85,9 @@ export default {
         formattedBalance[key] = abbreviateNumber(this.balance[key]);
       }
       return formattedBalance;
+    },
+    score() {
+      return Math.floor(this.cpoints.score * PRECISION) / PRECISION;
     }
   },
   methods: {
