@@ -31,14 +31,14 @@
         <span>
           {{ $t("rp-score") }}
         </span>
-        <IconWithValue iconClass="icon-rp">{{ score }}</IconWithValue>
+        <IconWithValue iconClass="icon-cp">{{ score }}</IconWithValue>
       </div>
 
       <div class="row">
         <span>
           {{ $t("rp-s-total") }}
         </span>
-        <IconWithValue iconClass="icon-rp">{{ totalPointsUI }}</IconWithValue>
+        <IconWithValue iconClass="icon-cp">{{ totalPointsUI }}</IconWithValue>
       </div>
     </div>
 
