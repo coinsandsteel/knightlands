@@ -1,11 +1,14 @@
 <template>
-  <div ref="port" class="relative width-100 height-100">
+  <div ref="port" class="screen-content width-100">
+    <div class="screen-background"></div>
     <XmasTower>
       <template>
+        <a class="close-btn" @click.prevent="back"></a>
+
         <div class="row13 flex flex-center flex-column flex-space-evenly">
           <div class="flex flex-center flex-space-between relative">
             <div class="label-bg flex flex-center ">
-              Upgrade points: {{ 1 }}
+              Upgrade points: {{ perkPoints }}
             </div>
           </div>
 
@@ -18,19 +21,71 @@
     </XmasTower>
     <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
 
-    <div class="width-100 flex flex-center">
-      <PerksTree
-        class="flex-1"
-        :perks="perksTree[currencies.CURRENCY_UNIT_ESSENCE].tiers.all"
-      />
-      <PerksTree
-        class="flex-1"
-        :perks="perksTree[currencies.CURRENCY_SANTABUCKS].tiers.all"
-      />
-      <PerksTree
-        class="flex-1"
-        :perks="perksTree[currencies.CURRENCY_GOLD].tiers.all"
-      />
+    <div class="full-flex dummy-height" v-bar>
+      <div class="dummy-height">
+        <div class="width-100 flex flex-center" v-if="currentTab == 'base'">
+          <PerksTree
+            class="flex-1"
+            @unlock="unlockBranch(currencies.CURRENCY_UNIT_ESSENCE)"
+            :unlocked="perks[currencies.CURRENCY_UNIT_ESSENCE].unlocked"
+            :perks="perksTree[currencies.CURRENCY_UNIT_ESSENCE].tiers.all"
+            :name="currencies.CURRENCY_UNIT_ESSENCE"
+          />
+          <PerksTree
+            class="flex-1"
+            @unlock="unlockBranch(currencies.CURRENCY_SANTABUCKS)"
+            :unlocked="perks[currencies.CURRENCY_SANTABUCKS].unlocked"
+            :perks="perksTree[currencies.CURRENCY_SANTABUCKS].tiers.all"
+            :name="currencies.CURRENCY_SANTABUCKS"
+          />
+          <PerksTree
+            class="flex-1"
+            @unlock="unlockBranch(currencies.CURRENCY_GOLD)"
+            :unlocked="perks[currencies.CURRENCY_GOLD].unlocked"
+            :perks="perksTree[currencies.CURRENCY_GOLD].tiers.all"
+            :name="currencies.CURRENCY_GOLD"
+          />
+        </div>
+
+        <div class="width-100 flex flex-center" v-if="currentTab == 'cp'">
+          <PerksTree
+            class="flex-1"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
+            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['4']"
+            name="tier 4"
+          />
+          <PerksTree
+            class="flex-1"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
+            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['7']"
+            name="tier 7"
+          />
+          <PerksTree
+            class="flex-1"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
+            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['8']"
+            name="tier 8"
+          />
+          <PerksTree
+            class="flex-1"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
+            :perks="perksTree[currencies.CURRENCY_CHRISTMAS_POINTS].tiers['9']"
+            name="tier 9"
+          />
+        </div>
+
+        <div class="width-100 flex flex-center" v-if="currentTab == 'shinies'">
+          <PerksTree
+            class="flex-1"
+            :perks="perksTree[currencies.CURRENCY_SHINIES].tiers.all"
+            :name="currencies.CURRENCY_SHINIES"
+          />
+        </div>
+      </div>
     </div>
 
     <!-- <div
@@ -347,13 +402,14 @@ export default {
       }
       return false;
     },
+    perkPoints() {
+      return this.tower.level - this.unlockedBranchesCount;
+    },
     canIncrease() {
-      return (
-        this.newPerksSum < this.tower.level - this.newUnlockedBranchesCount - 1
-      );
+      return this.newPerksSum < this.perkPoints;
     },
     upgradeAllowed() {
-      return this.perksSum < this.tower.level - this.unlockedBranchesCount - 1;
+      return this.perksSum < this.perkPoints;
     },
     rebalanceAllowed() {
       return this.perksSum > 0;
@@ -403,8 +459,8 @@ export default {
 }
 .close-btn {
   position: absolute;
-  top: 2.5rem;
-  right: 2.5rem;
+  top: 1.5rem;
+  right: 1.5rem;
 }
 .state-locked .tier-wrap {
   opacity: 0.35;

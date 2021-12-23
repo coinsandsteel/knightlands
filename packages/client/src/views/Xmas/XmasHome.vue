@@ -1,12 +1,18 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
-    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+    <Tabs
+      :tabs="tabs"
+      :currentTab="currentTab"
+      @onClick="switchTab"
+      v-if="!perksVisible"
+    />
     <Background />
     <keep-alive>
       <XmasMap v-if="!perksVisible && isMapMode"></XmasMap>
       <XmasCPoints v-else-if="!perksVisible"></XmasCPoints>
-      <XmasPerks v-else-if="perksVisible" />
     </keep-alive>
+
+    <XmasPerks v-if="perksVisible" />
     <!-- <XmasHeader />
       <XmasMap ref="area" />
       <XmasPerks v-if="perksVisible" />
