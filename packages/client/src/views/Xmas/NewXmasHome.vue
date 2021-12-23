@@ -1,22 +1,12 @@
 <template>
   <div class="screen-content flex-end flex-items-center full-flex">
     <div class="home-art screen-background"></div>
-
-    <div class="width-100 height-100" v-bar ref="scroll">
+    <div class="width-100" v-bar ref="scroll">
       <div class="width-100">
         <div
           class="flex flex-column min-height-100 width-100 flex-space-between"
         >
           <div class="flex flex-column">
-            <RankingsMenu />
-            <Multipliers />
-            <progress-bar
-              :maxValue="100"
-              iconClass="icon-health"
-              :hideMaxValue="true"
-              plusButton="grey"
-              class="flex-full pointer"
-            ></progress-bar>
             <MenuIconRow>
               <MenuIcon
                 icon="skewed_icon_quest"
@@ -173,14 +163,12 @@ import TrialsMarker from "@/components/Markers/Home/TrialsMarker.vue";
 import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 
-import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
-import Multipliers from "./NewMultipliers.vue";
-import ProgressBar from "@/components/ProgressBar.vue";
+// import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
+
 export default {
   props: ["scrollToBottom"],
   mixins: [AppSection],
   components: {
-    PrizePoolWidget,
     TrialsMarker,
     OnyxTowerMarker,
     AdventuresMarker,
@@ -189,8 +177,6 @@ export default {
     MenuIconRow,
     GoldMinesMarker,
     DailyTasksMarker,
-    Multipliers,
-    ProgressBar
   },
   created() {
     this.title = this.$t("window-title-home");
@@ -222,5 +208,20 @@ export default {
 .home-art {
   background-size: cover;
   background-position: bottom;
+}
+
+.card {
+  background-color: dodgerblue;
+  color: white;
+  padding: 1rem;
+  height: 4rem;
+}
+
+.cards {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 </style>
