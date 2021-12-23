@@ -5,7 +5,7 @@
       <div class="tower-bg full-flex"></div>
       <ProgressWithLevel
         :level="tower.level"
-        :value="tower.currentLevelPercent"
+        :value="tower.currentLevelPercentage"
       ></ProgressWithLevel>
     </div>
 
@@ -66,7 +66,6 @@ export default {
     CustomButton,
     NewMultipliers
   },
-  data: () => ({}),
   computed: {
     expirienceValueFormatted() {
       return abbreviateNumber(this.tower.exp);

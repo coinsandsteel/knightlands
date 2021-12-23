@@ -7,14 +7,18 @@
       {{ $t(name) }}
     </div>
 
-    <CustomButton v-if="!unlocked" type="green" @click="$emit('unlock')"
+    <CustomButton
+      v-if="!unlocked"
+      type="green"
+      @click="$emit('unlock')"
+      :disabled="!canUnlock"
       >Unlock</CustomButton
     >
 
     <template v-else>
       <div
         v-for="(levels, index) in perkLevels"
-        :key="index"
+        :key="`${currency}_${index}`"
         class="width-100 flex flex-center margin-bottom-2"
         :class="{ 'even-bg': (index + 1) % 2 == 0 }"
       >
@@ -22,7 +26,7 @@
           class="margin-right-1 margin-left-1"
           :class="{ pointer: perks[p].enabled }"
           v-for="p in levels"
-          :key="p"
+          :key="`${currency}_${tier}_${p}`"
           :perk="p"
           :level="perks[p].level"
           :locked="!perks[p].enabled"
@@ -38,7 +42,15 @@ import PerkIcon from "./PerkIcon.vue";
 import CustomButton from "@/components/Button.vue";
 
 export default {
-  props: ["perks", "name", "unlocked", "perkLevels", "tier", "currency"],
+  props: [
+    "perks",
+    "name",
+    "unlocked",
+    "perkLevels",
+    "tier",
+    "currency",
+    "canUnlock"
+  ],
   components: { PerkIcon, CustomButton },
   methods: {
     handleClick(perk) {

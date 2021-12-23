@@ -6,7 +6,7 @@
       !slot.level ? 'building-slot' : 'building-farm',
       slot.level ? 'building-mode-' + mode : null
     ]"
-    @click="handleClick"
+    @click.self="handleClick"
   >
     <IncomeText v-for="income in incomes" :key="income.id">{{
       income.income
