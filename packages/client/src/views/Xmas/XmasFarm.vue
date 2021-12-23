@@ -315,7 +315,7 @@ export default {
       }, 3000);
     },
     reset() {
-      console.log("Reset");
+      // console.log("Reset");
       this.progress = 0;
       this.localCurrencyIncomeValue = 0;
       this.localExpIncomeValue = 0;

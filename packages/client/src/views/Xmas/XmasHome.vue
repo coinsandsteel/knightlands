@@ -20,7 +20,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 
-import CustomButton from "@/components/Button.vue";
+// import CustomButton from "@/components/Button.vue";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
@@ -28,10 +28,10 @@ import Tabs from "@/components/Tabs.vue";
 
 import Background from "./Background.vue";
 import XmasMap from "./XmasMap.vue";
-import XmasPerks from "./XmasPerks.vue";
-import ModeSwitchBtn from "./ModeSwitchBtn.vue";
-import StatisticsBtn from "./StatisticsBtn.vue";
-import Multipliers from "./Multipliers.vue";
+// import XmasPerks from "./XmasPerks.vue";
+// import ModeSwitchBtn from "./ModeSwitchBtn.vue";
+// import StatisticsBtn from "./StatisticsBtn.vue";
+// import Multipliers from "./Multipliers.vue";
 import XmasCPoints from "./XmasCPoints.vue";
 
 export default {
@@ -40,12 +40,12 @@ export default {
     Tabs,
     Background,
     XmasCPoints,
-    XmasPerks,
-    XmasMap,
-    ModeSwitchBtn,
-    StatisticsBtn,
-    Multipliers,
-    CustomButton
+    // XmasPerks,
+    XmasMap
+    // ModeSwitchBtn,
+    // StatisticsBtn,
+    // Multipliers,
+    // CustomButton
   },
   data: () => ({
     tabs: [
