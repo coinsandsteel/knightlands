@@ -1,9 +1,12 @@
 <template>
   <div class="building font-size-25">
     <div class="bg"></div>
-    <div class="img relative">
-      <img src="../../assets/xmas/buildings/building_base.png" />
-      <ProgressWithLevel :level="tower.level" :value="50"></ProgressWithLevel>
+    <div class="img relative flex flex-column">
+      <div class="tower-bg full-flex"></div>
+      <ProgressWithLevel
+        :level="tower.level"
+        :value="tower.currentLevelPercent"
+      ></ProgressWithLevel>
     </div>
     <div class="row1 flex flex-center flex-space-between relative">
       <div class="label-bg width-45 flex flex-center ">
@@ -20,13 +23,13 @@
     </div>
 
     <div
-      class="row2 flex flex-items-center flex-start flex-column"
-      v-if="mode == 'collect'"
+      class="row2 flex flex-items-center flex-start"
+      v-if="mode != 'collect'"
     >
       <CustomButton type="green">Upgrade Perks</CustomButton>
     </div>
-    <div class="row2" v-else>
-      <CustomButton type="green" class="btn">Change</CustomButton>
+    <div class="row2 flex flex-items-center flex-start" v-else>
+      <CustomButton type="green" class="btn">Activate Perk</CustomButton>
     </div>
 
     <NewMultipliers class="row3" v-if="mode != 'collect'" />
@@ -79,10 +82,12 @@ export default {
 <style lang="less" scoped>
 .building {
   position: relative;
-  padding: 0 5rem;
+  padding: 0 3rem;
+  padding-bottom: 3rem;
   width: 100%;
-  height: 20rem;
+  height: 23rem;
   display: grid;
+  column-gap: 2rem;
   grid-template-columns: 3fr 5fr;
   grid-template-rows: 1fr 1fr 1fr;
   justify-items: stretch;
@@ -113,15 +118,11 @@ export default {
     grid-column: 2;
   }
 }
-.progress-bar {
-  position: absolute;
-  bottom: 0;
-}
 
 .label-bg {
   border-image: url("../../assets/xmas/text_input_blue.png");
   border-image-slice: 27 27 27 27 fill;
-  border-image-width: 20px 20px 20px 20px;
+  border-image-width: 14px;
   border-image-outset: 0px 0px 0px 0px;
   border-image-repeat: stretch stretch;
   padding: 1rem;
@@ -132,5 +133,13 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
+  background-size: 100% 100%;
+}
+
+.tower-bg {
+  background-image: url("../../assets/xmas/buildings/building_base.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 </style>
