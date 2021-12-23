@@ -8,7 +8,7 @@
         >
           <div class="flex flex-column">
             <MenuIconRow>
-              <ConcstructElement />
+              <ConcstructElement initialBuildingType="base" />
 
               <MenuIcon
                 icon="skewed_icon_tower"

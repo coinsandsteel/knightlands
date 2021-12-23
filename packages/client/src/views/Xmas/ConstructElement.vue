@@ -1,16 +1,16 @@
 <template>
-  <div class="flex flex-column flex-center">
-    <div class="padding-1 price-l">
-      <IconWithValue iconClass="icon-gold">10.0</IconWithValue>
+  <div class="flex flex-column flex-center construct-element">
+    <img :src="getBuildingType" />
+    <div class="padding-2">
+      <PurchaseButton
+        type="grey"
+        class="margin-top-1"
+        @click="handleClick"
+        minWidth="10rem"
+        :price="10.0"
+        >{{ getState }}
+      </PurchaseButton>
     </div>
-    <PurchaseButton
-      type="grey"
-      class="margin-top-1 margin-bottom-1"
-      @click="handleClick"
-      minWidth="15rem"
-      :price="10.0"
-      >{{ getState }}
-    </PurchaseButton>
   </div>
 </template>
 <script>
@@ -22,12 +22,12 @@ states = {
 }
 
 */
-import IconWithValue from "@/components/IconWithValue.vue";
+// import IconWithValue from "@/components/IconWithValue.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
 
 export default {
+  props: ['initialBuildingType'],
   components: {
-    IconWithValue,
     PurchaseButton
   },
   data() {
@@ -35,7 +35,9 @@ export default {
       currency: 100.0,
       buyPrice: 12.0,
       upgradePrice: 15.0,
-      state: 0
+      state: 0,
+      buildingType: this.initialBuildingType,
+      buildingTypes: ['base', 'buck1s', 'bucks2', 'cp01', 'cp02', 'cp03', 'cp04', 'essence', 'gold', 'shiny']
     };
   },
   methods: {
@@ -70,7 +72,18 @@ export default {
       if (this.state === 1) return "Upgrade";
       if (this.state === 2) return "Not enough currency";
       return "Buy";
+    },
+    getBuildingType() {
+        return "../../assets/xmas/buildings/building_" + this.buildingType + ".png"
     }
   }
 };
 </script>
+<style>
+.construct-element {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 150%;
+}
+</style>
