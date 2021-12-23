@@ -2,7 +2,9 @@
   <div class="relative">
     <div :style="icon" class="perk-icon"></div>
     <div class="perk-locked" v-if="locked"></div>
-    <div class="perk-lvl font-size-18 flex flex-center">{{ level }}</div>
+    <div class="perk-lvl font-size-18 flex flex-center" v-if="level">
+      {{ level }}
+    </div>
   </div>
 </template>
 

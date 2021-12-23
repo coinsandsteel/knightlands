@@ -29,10 +29,21 @@
         </div>
 
         <div
-          class="label-bg font-size-18 flex flex-center height-100 margin-right-half"
+          class="label-bg font-size-18 flex flex-center padding-1 margin-right-half flex-self-center"
           v-if="showDesc"
         >
           <span>{{ description }}</span>
+        </div>
+
+        <div
+          class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap flex-self-center"
+          v-if="showUpgrade"
+        >
+          <span>{{ currentCurrencyIncomeValueFormatted }}</span>
+          <span class="nav-arrow"></span>
+          <span class="rarity-rare">{{
+            nextCurrencyIncomeValueFormatted
+          }}</span>
         </div>
       </div>
 
@@ -275,7 +286,22 @@ export default {
       };
     },
     description() {
-      return "Produces Unit ESSENCES";
+      switch (this.tier) {
+        case "1":
+        case "5":
+          return "Santabucks";
+
+        case "2":
+          return "Gold";
+
+        case "3":
+          return "Essence of Life";
+
+        case "6":
+          return "Shinies";
+      }
+
+      return "Xmas Points";
     }
   },
   methods: {
