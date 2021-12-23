@@ -459,7 +459,7 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
+    $route() {
       this.footer = undefined;
       this.showBackButton();
     }
