@@ -339,7 +339,7 @@ export default {
         }
       }, (this.slot.stats.cycleLength * 1000) / 100);
     },
-    async handleClick() {
+    async handleClick(e) {
       if (!this.isBuilt) {
         if (!this.buildingIsAllowed) {
           await this.showPrompt(
@@ -391,7 +391,7 @@ export default {
             this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
           );
         } else if (this.mode === "collect") {
-          this.reset();
+          //this.reset();
           this.handleHarvest();
         }
       }
