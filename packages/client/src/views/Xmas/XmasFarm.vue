@@ -391,7 +391,7 @@ export default {
             this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
           );
         } else if (this.mode === "collect") {
-          //this.reset();
+          this.reset();
           this.handleHarvest();
         }
       }
