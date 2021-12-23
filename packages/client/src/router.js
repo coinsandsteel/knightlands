@@ -447,7 +447,19 @@ const router = new Router({
         {
           path: "",
           name: "xmas-home",
-          component: () => import("./views/Xmas/XmasHome.vue")
+          component: () => import("./views/Xmas/XmasHome.vue"),
+          children: [
+            {
+              path: "",
+              name: "xmas-map",
+              component: () => import("./views/Xmas/XmasMap.vue")
+            },
+            {
+              path: "build",
+              name: "xmas-build",
+              component: () => import("./views/Xmas/XmasMap.vue")
+            }
+          ]
         },
         {
           path: "new",

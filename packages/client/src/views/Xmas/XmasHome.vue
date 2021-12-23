@@ -3,18 +3,19 @@
     <div class="screen-background"></div>
 
     <div class="wrapper relative width-100 height-100">
+      <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+
+      <keep-alive>
+        <XmasMap v-if="isMapMode"></XmasMap>
+        <XmasCPoints v-else></XmasCPoints>
+      </keep-alive>
+      <!-- <XmasHeader />
       <XmasMap ref="area" />
       <XmasPerks v-if="perksVisible" />
       <ModeSwitchBtn />
       <StatisticsBtn />
-      <Multipliers />
+      <Multipliers /> -->
     </div>
-
-    <portal to="footer">
-      <CustomButton type="blue" @click="goToCP">{{
-        $t("btn-cp")
-      }}</CustomButton>
-    </portal>
   </div>
 </template>
 
@@ -25,16 +26,20 @@ import CustomButton from "@/components/Button.vue";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import Tabs from "@/components/Tabs.vue";
 
 import XmasMap from "./XmasMap.vue";
 import XmasPerks from "./XmasPerks.vue";
 import ModeSwitchBtn from "./ModeSwitchBtn.vue";
 import StatisticsBtn from "./StatisticsBtn.vue";
 import Multipliers from "./Multipliers.vue";
+import XmasCPoints from "./XmasCPoints.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
   components: {
+    Tabs,
+    XmasCPoints,
     XmasPerks,
     XmasMap,
     ModeSwitchBtn,
@@ -42,12 +47,41 @@ export default {
     Multipliers,
     CustomButton
   },
+  data: () => ({
+    tabs: [
+      {
+        value: "collect",
+        title: "Collect",
+        to: {
+          name: "xmas-map"
+        }
+      },
+      {
+        value: "built",
+        title: "Build",
+        to: {
+          name: "unit-equip"
+        }
+      },
+      {
+        value: "cp",
+        title: "Xmas points",
+        to: {
+          name: "unit-promo"
+        }
+      }
+    ],
+    currentTab: "collect"
+  }),
   activated() {},
   created() {
     this.title = "w-xmas";
   },
   destroyed() {},
   computed: {
+    isMapMode() {
+      return this.currentTab != "cp";
+    },
     ...mapState({
       area: state => state.xmas.area,
       user: state => state.xmas.user,
@@ -58,8 +92,14 @@ export default {
     })
   },
   methods: {
-    goToCP() {
-      this.$router.push({ name: "cpoints" });
+    switchTab(newTab) {
+      if (newTab != "cp") {
+        this.$store.dispatch(
+          "xmas/updateMode",
+          newTab === "collect" ? "manage" : "collect"
+        );
+      }
+      this.currentTab = newTab;
     }
   }
 };
