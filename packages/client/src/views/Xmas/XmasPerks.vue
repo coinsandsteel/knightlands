@@ -213,6 +213,7 @@ export default {
   data: () => ({
     newPerks: {},
     perkLevels,
+    newBurstPerks: {},
     currencies: {
       CURRENCY_SANTABUCKS: CURRENCY_SANTABUCKS,
       CURRENCY_CHRISTMAS_POINTS: CURRENCY_CHRISTMAS_POINTS,
@@ -243,7 +244,10 @@ export default {
     unlockBranch(currencyName) {
       if (this.canIncrease) {
         this.newPerks[currencyName].unlocked = true;
-        this.$store.dispatch("xmas/commitPerks", this.newPerks);
+        this.$store.dispatch("xmas/commitPerks", {
+          perks: this.newPerks,
+          burstPerks: this.newBurstPerks
+        });
       }
     },
     back() {
@@ -274,6 +278,11 @@ export default {
           }
         }
       }
+
+      let burstPerksClone = _.cloneDeep(this.burstPerks);
+      for (let perkName in burstPerksClone) {
+        this.$set(this.newBurstPerks, perkName, burstPerksClone[perkName]);
+      }
     },
     getStatValue(currencyName, tier, perkName) {
       return this.newPerks[currencyName].tiers[tier][perkName].level;
@@ -298,7 +307,10 @@ export default {
       return true;
     },
     confirmPerks() {
-      this.$store.dispatch("xmas/commitPerks", this.newPerks);
+      this.$store.dispatch("xmas/commitPerks", {
+        perks: this.newPerks,
+        burstPerks: this.newBurstPerks
+      });
     },
     reset(currencyName, tier, perkName) {
       while (this.canDecrease(currencyName, tier, perkName)) {
@@ -310,10 +322,20 @@ export default {
       for (let currencyName in this.newPerks) {
         for (let tier in this.newPerks[currencyName].tiers) {
           for (let perkName in this.newPerks[currencyName].tiers[tier]) {
-            this.newPerks[currencyName].tiers[tier][perkName].level =
-              perksClone[currencyName].tiers[tier][perkName].level;
+            this.newPerks[currencyName].tiers[tier][perkName] = {
+              ...this.newPerks[currencyName].tiers[tier][perkName],
+              ...perksClone[currencyName].tiers[tier][perkName]
+            };
           }
         }
+      }
+
+      let burstPerksClone = _.cloneDeep(this.burstPerks);
+      for (let perkName in this.newBurstPerks) {
+        this.newBurstPerks[perkName] = {
+          ...this.newBurstPerks[perkName],
+          ...burstPerksClone[perkName]
+        };
       }
     },
     async rebalancePerks() {
@@ -347,7 +369,16 @@ export default {
           }
         }
       }
-      this.$store.dispatch("xmas/commitPerks", newPerks);
+
+      let newBurstPerks = _.cloneDeep(this.burstPerks);
+      for (let perkName in newBurstPerks) {
+        newBurstPerks[perkName].level = 0;
+      }
+
+      this.$store.dispatch("xmas/commitPerks", {
+        perks: newPerks,
+        burstPerks: newBurstPerks
+      });
     }
   },
   computed: {
@@ -377,6 +408,9 @@ export default {
           );
         }
       }
+      for (let perkName in this.newBurstPerks) {
+        sum += this.newBurstPerks[perkName].level;
+      }
       return sum;
     },
     perksSum() {
@@ -387,6 +421,9 @@ export default {
             _.map(Object.values(this.perks[currencyName].tiers[tier]), "level")
           );
         }
+      }
+      for (let perkName in this.burstPerks) {
+        sum += this.burstPerks[perkName].level;
       }
       return sum;
     },
@@ -401,6 +438,13 @@ export default {
               return true;
             }
           }
+        }
+      }
+      for (let perkName in this.burstPerks) {
+        if (
+          this.newBurstPerks[perkName].level !== this.burstPerks[perkName].level
+        ) {
+          return true;
         }
       }
       return false;
