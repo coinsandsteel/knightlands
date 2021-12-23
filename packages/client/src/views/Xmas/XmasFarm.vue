@@ -6,49 +6,76 @@
       !slot.level ? 'building-slot' : 'building-farm',
       slot.level ? 'building-mode-' + mode : null
     ]"
-    @click="handleClick"
   >
     <IncomeText v-for="income in incomes" :key="income.id">{{
       income.income
     }}</IncomeText>
 
-    <template v-if="mode === 'manage'">
-      TIER: {{ tier }}<br />
-      Level: <span v-html="level"></span><br />
-      <template v-if="!slot.level">
-        Build price {{ upgradePriceFormatted }} SB
-      </template>
-      <template v-else>
-        <span :style="{ color: !canAffordUpgrade ? 'orangered' : null }"
-          >Upgrade price {{ upgradePriceFormatted }} SB</span
+    <div class="building-grid">
+      <div class="row13 build-bg" v-if="!isBuilt"></div>
+
+      <div
+        class="row2"
+        :class="{ row13: isBuilt }"
+        :style="buildingImage"
+      ></div>
+
+      <div class="flex flex-items-center row1 flex-no-wrap">
+        <div class="slot_common flex flex-center margin-right-half">
+          <div :class="icon" class="big"></div>
+        </div>
+
+        <div
+          class="label-bg font-size-18 flex flex-center height-100 margin-right-half"
+          v-if="showDesc"
         >
+          <span>{{ description }}</span>
+        </div>
+      </div>
+
+      <CustomButton
+        class="row3"
+        type="green"
+        v-if="showDesc"
+        @click="handleClick"
+      >
+        Build
+        <IconWithValue iconClass="icon-sb">{{ purchasePrice }}</IconWithValue>
+      </CustomButton>
+
+      <CustomButton
+        class="row3"
+        type="yellow"
+        v-if="showUpgrade"
+        @click="handleClick"
+      >
+        Upgrade
+        <IconWithValue iconClass="icon-sb">{{ purchasePrice }}</IconWithValue>
+      </CustomButton>
+
+      <template v-if="mode === 'collect'">
+        <progress-bar
+          class="progress-bar row3"
+          v-if="
+            slot.level && progress !== null && localCurrencyIncomeValue <= 0
+          "
+          ref="progress"
+          barClasses="no-animation"
+          :maxValue="100"
+          :percentMode="false"
+          :hideMaxValue="false"
+          v-model="progress"
+          barType="green"
+        ></progress-bar>
+
+        <CustomButton class="row3" type="green" @click="handleClick" v-else>
+          Collect
+          <IconWithValue :iconClass="icon">{{
+            localCurrencyIncomeValue
+          }}</IconWithValue>
+        </CustomButton>
       </template>
-    </template>
-
-    <template v-if="mode === 'collect'">
-      TIER:&nbsp;{{ tier }}<br />
-      Power:&nbsp;<span v-html="power" />&nbsp;{{ slot.currency }}<br />
-      Power exp:&nbsp;{{ powerExp }}&nbsp;exp.<br />
-      Cycle length:&nbsp;{{ slot.stats.cycleLength }}&nbsp;sec.<br /><br />
-      Auto-cycles left:&nbsp;{{ slot.progress.autoCyclesLeft }}<br />
-      Auto-cycles spent:&nbsp;{{ slot.progress.autoCyclesSpent }}<br />
-      Accumulated:&nbsp;{{ localCurrencyIncomeValueFormatted }}&nbsp;{{
-        slot.currency
-      }}<br />
-      Accumulated exp:&nbsp;{{ localExpIncomeValueFormatted }}&nbsp;exp.
-    </template>
-
-    <progress-bar
-      class="progress-bar"
-      v-if="slot.level && progress !== null"
-      ref="progress"
-      barClasses="no-animation"
-      :maxValue="100"
-      :percentMode="false"
-      :hideMaxValue="false"
-      v-model="progress"
-      barType="green"
-    ></progress-bar>
+    </div>
   </div>
 </template>
 
@@ -59,10 +86,17 @@ import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
+import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 import {
   abbreviateNumber,
-  CURRENCY_SANTABUCKS
+  CURRENCY_SANTABUCKS,
+  CURRENCY_GOLD,
+  CURRENCY_CHRISTMAS_POINTS,
+  CURRENCY_UNIT_ESSENCE,
+  CURRENCY_SHINIES,
+  farmConfig
 } from "../../../../knightlands-shared/xmas";
 
 export default {
@@ -70,7 +104,9 @@ export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
     IncomeText,
-    ProgressBar
+    ProgressBar,
+    CustomButton,
+    IconWithValue
   },
   data: () => ({
     localCurrencyIncomeValue: 0,
@@ -119,6 +155,34 @@ export default {
     this.$store.$app.$off("accumulated");
   },
   computed: {
+    purchasePrice() {
+      return farmConfig[this.tier].baseBuildingPrice;
+    },
+    isBuilt() {
+      return this.slot.level != 0;
+    },
+    showDesc() {
+      return this.mode == "manage" && !this.isBuilt;
+    },
+    showUpgrade() {
+      return this.mode == "manage" && this.isBuilt;
+    },
+    icon() {
+      switch (farmConfig[this.tier].currency) {
+        case CURRENCY_GOLD:
+          return "icon-gold";
+        case CURRENCY_SHINIES:
+          return "icon-premium";
+        case CURRENCY_SANTABUCKS:
+          return "icon-sb";
+        case CURRENCY_UNIT_ESSENCE:
+          return "unit-essence";
+        case CURRENCY_CHRISTMAS_POINTS:
+          return "icon-cp";
+      }
+
+      return "";
+    },
     slot() {
       return this.$store.getters["xmas/slot"](this.tier);
     },
@@ -191,8 +255,20 @@ export default {
       mode: state => state.xmas.mode,
       slots: state => state.xmas.slots,
       sbBalance: state => state.xmas.balance[CURRENCY_SANTABUCKS],
-      levelGap: state => state.xmas.levelGap
-    })
+      levelGap: state => state.xmas.levelGap,
+      balance: state => state.xmas.balance
+    }),
+    buildingImage() {
+      return {
+        "background-image": `url(/images/xmas/buildings/building${this.tier}.png)`,
+        "background-size": "contain",
+        "background-repeat": "no-repeat",
+        "background-position": "center"
+      };
+    },
+    description() {
+      return "Produces Unit ESSENCES";
+    }
   },
   methods: {
     accumulated(payload) {
@@ -237,10 +313,7 @@ export default {
       }, (this.slot.stats.cycleLength * 1000) / 100);
     },
     async handleClick() {
-      const level = this.slot.level;
-
-      // Empty slot
-      if (level === 0) {
+      if (!this.isBuilt) {
         if (!this.buildingIsAllowed) {
           await this.showPrompt(
             "Upgrade previous farm",
@@ -325,33 +398,94 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.building {
-  position: relative;
-  text-align: center;
-  color: black;
-  margin-bottom: 5rem;
-}
-.building-farm {
-  padding: 5rem 0;
-}
-.building-slot {
-  padding: 5rem 0;
-  background: grey;
-  opacity: 0.8;
-}
-.building-farm {
-  background: aquamarine;
-  &.building-mode-manage {
-    background: darkslateblue;
-    color: white;
+// .building {
+//   position: relative;
+//   text-align: center;
+//   color: black;
+//   margin-bottom: 5rem;
+// }
+// .building-farm {
+//   padding: 5rem 0;
+// }
+// .building-slot {
+//   padding: 5rem 0;
+//   background: grey;
+//   opacity: 0.8;
+// }
+// .building-farm {
+//   background: aquamarine;
+//   &.building-mode-manage {
+//     background: darkslateblue;
+//     color: white;
+//   }
+//   &.building-mode-collect {
+//     background: darkgreen;
+//     color: white;
+//   }
+// }
+// .progress-bar {
+//   position: absolute;
+//   bottom: 0;
+// }
+
+.building-grid {
+  display: grid;
+  grid-template-rows: 5rem 180fr 113fr;
+  grid-template-columns: 1fr;
+  margin-bottom: 1rem;
+  justify-items: stretch;
+  height: 20vh;
+
+  & .row1 {
+    grid-column: 1;
+    grid-row: 1;
   }
-  &.building-mode-collect {
-    background: darkgreen;
-    color: white;
+
+  & .row2 {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  & .row3 {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: flex-end;
+  }
+
+  & .row13 {
+    grid-column: 1;
+    grid-row: ~"1/4";
   }
 }
-.progress-bar {
-  position: absolute;
-  bottom: 0;
+
+.slot_common {
+  display: flex !important;
+  width: 5rem;
+  height: 5rem;
+}
+
+.label-bg {
+  border-image: url("../../assets/xmas/text_input_blue.png");
+  border-image-slice: 27 27 27 27 fill;
+  border-image-width: 14px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+}
+
+.build-bg {
+  background-image: url("../../assets/xmas/buy_bg.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+</style>
+
+<style lang="less">
+@import (reference) "../../style/common.less";
+@import (reference) "../../style/sprites.less";
+
+.unit-essence {
+  .essence;
+  .item-icon;
 }
 </style>

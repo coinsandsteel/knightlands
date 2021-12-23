@@ -1,23 +1,16 @@
 <template>
-  <div ref="port" class="relative width-100 height-100" v-bar>
-    <div id="map">
-      <!-- <div
-        class="flex flex-center width-100 margin-top-3 margin-bottom-3 font-size-25"
-      >
-        Santabucks: {{ balanceFormatted.santa_bucks }}<br />
-        Gold: {{ balanceFormatted.gold }}<br />
-        Unit Essence: {{ balanceFormatted.unit_essence }}<br />
-        Christmas Points: {{ balanceFormatted.christmas_points }}<br />
-        Shinies: {{ balanceFormatted.shinies }}
-      </div> -->
-
+  <div ref="port" class="relative width-100" v-bar>
+    <div class="flex flex-column">
       <XmasTower @click="$emit('toggle-perks')" />
-      <XmasFarm
-        :key="'tier-' + tier"
-        v-for="(slot, tier) in slots"
-        :style="slot.style"
-        :tier="tier"
-      />
+
+      <div class="farm-grid">
+        <XmasFarm
+          :key="'tier-' + tier"
+          v-for="(slot, tier) in slots"
+          :style="slot.style"
+          :tier="tier"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +20,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import XmasTower from "./XmasTower.vue";
 import XmasFarm from "./XmasFarm.vue";
+import { mapState } from "vuex";
 
 export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
@@ -34,30 +28,34 @@ export default {
     XmasTower,
     XmasFarm
   },
-  watch: {},
-  data: () => {
-    return {
-      slots: {
-        1: {},
-        2: {},
-        3: {},
-        4: {},
-        5: {},
-        6: {},
-        7: {},
-        8: {},
-        9: {}
+  computed: {
+    ...mapState({
+      mode: state => state.xmas.mode,
+      builtSlots: state => state.xmas.slots
+    }),
+    slots() {
+      let slots = this.builtSlots;
+      if (this.mode == "collect") {
+        slots = {};
+        for (const k in this.builtSlots) {
+          if (this.builtSlots[k].level > 0) {
+            slots[k] = this.builtSlots[k];
+          }
+        }
       }
-    };
+
+      return slots;
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
-#map {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: start;
+.farm-grid {
+  width: 100%;
+  display: grid;
+  column-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  justify-items: stretch;
 }
 </style>

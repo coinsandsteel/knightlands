@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-center">
+  <div class="flex flex-items-center flex-start">
     <CustomButton
       class="no-margin"
       :lockPressed="levelGap === data.value"
@@ -23,7 +23,7 @@ export default {
       { title: "10x", value: 10 },
       { title: "25x", value: 25 },
       { title: "50x", value: 50 },
-      { title: "Max", value: Infinity }
+      { title: "Max", value: 10000 }
     ]
   }),
   components: { CustomButton },

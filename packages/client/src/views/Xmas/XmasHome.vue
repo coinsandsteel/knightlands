@@ -1,19 +1,17 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
-    <div class="wrapper relative width-100 height-100">
-      <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-      <Background />
-      <keep-alive>
-        <XmasMap v-if="isMapMode"></XmasMap>
-        <XmasCPoints v-else></XmasCPoints>
-      </keep-alive>
-      <!-- <XmasHeader />
+    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+    <Background />
+    <keep-alive>
+      <XmasMap v-if="isMapMode"></XmasMap>
+      <XmasCPoints v-else></XmasCPoints>
+    </keep-alive>
+    <!-- <XmasHeader />
       <XmasMap ref="area" />
       <XmasPerks v-if="perksVisible" />
       <ModeSwitchBtn />
       <StatisticsBtn />
       <Multipliers /> -->
-    </div>
   </div>
 </template>
 
@@ -73,11 +71,10 @@ export default {
     ],
     currentTab: "collect"
   }),
-  activated() {},
   created() {
     this.title = "w-xmas";
+    this.switchTab(this.currentTab);
   },
-  destroyed() {},
   computed: {
     isMapMode() {
       return this.currentTab != "cp";
@@ -96,7 +93,7 @@ export default {
       if (newTab != "cp") {
         this.$store.dispatch(
           "xmas/updateMode",
-          newTab === "collect" ? "manage" : "collect"
+          newTab === "collect" ? "collect" : "manage"
         );
       }
       this.currentTab = newTab;
@@ -104,11 +101,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-@import (reference) "../../style/common.less";
-
-.wrapper {
-  overflow: hidden;
-}
-</style>
