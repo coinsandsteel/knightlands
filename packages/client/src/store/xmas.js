@@ -25,6 +25,10 @@ export default {
     loaded: true,
     mode: "manage",
     towerLevelBoundaries: null,
+    reset: {
+      price: 0,
+      counter: 1
+    },
     tower: {
       exp: 0,
       level: 0,
@@ -180,6 +184,14 @@ export default {
           ...data.balance
         };
         console.log("Balance changed", data.balance);
+      }
+
+      if (data.reset !== undefined) {
+        state.reset = {
+          ...state.reset,
+          ...data.reset
+        };
+        console.log("Perks reset update", data.reset);
       }
 
       if (data.cycleStart !== undefined) {
