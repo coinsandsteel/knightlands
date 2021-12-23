@@ -60,6 +60,8 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
 
+import XmasHeader from "./XmasHeader.vue";
+
 import {
   abbreviateNumber,
   CURRENCY_SANTABUCKS
@@ -69,6 +71,7 @@ export default {
   props: ["tier"],
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
+    XmasHeader,
     IncomeText,
     ProgressBar
   },
@@ -315,7 +318,7 @@ export default {
       }, 3000);
     },
     reset() {
-      console.log('Reset');
+      console.log("Reset");
       this.progress = 0;
       this.localCurrencyIncomeValue = 0;
       this.localExpIncomeValue = 0;
