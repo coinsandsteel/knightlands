@@ -7,8 +7,6 @@
         <div
           class="flex flex-column min-height-100 width-100 flex-space-between"
         >
-          <PrizePoolWidget class="self-justify-start margin-bottom-3" />
-
           <div class="flex flex-column">
             <RankingsMenu />
             <Multipliers />
