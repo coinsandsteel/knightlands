@@ -208,6 +208,11 @@ export default {
     height: 100%;
     transform: translateY(-0.2rem);
   }
+
+  &.no-margin {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .disabled {

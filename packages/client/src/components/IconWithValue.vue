@@ -1,6 +1,7 @@
 <template>
   <div
-    class="flex-inline flex-items-center flex-no-wrap"
+    class="flex flex-items-center flex-no-wrap"
+    :class="{ 'flex-inline': inline }"
     @click="$emit('click')"
   >
     <span
@@ -29,7 +30,11 @@ export default {
       type: String,
       default: "font-size-20"
     },
-    iconMargin: Boolean
+    iconMargin: Boolean,
+    inline: {
+      type: Boolean,
+      default: true
+    }
   }
 };
 </script>

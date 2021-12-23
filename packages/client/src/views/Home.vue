@@ -24,7 +24,7 @@
               ></MenuIcon>
 
               <MenuIcon
-                icon="skewed_icon_tower"
+                icon="skewed_icon_xmas"
                 :to="{ name: 'xmas-home' }"
                 :append="true"
                 id="xmas"

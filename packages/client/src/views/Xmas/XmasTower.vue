@@ -1,48 +1,75 @@
 <template>
-  <div class="building building-tower font-size-25" :style="towerStyle" @click="handleClick">
-    TOWER<br />
-    Exp: {{ expirienceValueFormatted }}<br />
-    Level: {{ tower.level }}
-    <progress-bar
-      class="farm-progress-bar"
-      ref="progress"
-      barClasses="no-animation"
-      :maxValue="100"
-      :percentMode="false"
-      :hideMaxValue="false"
-      v-model="tower.currentLevelPercentage"
-      barType="green"
-    ></progress-bar>
+  <div class="building font-size-25">
+    <div class="bg"></div>
+    <div class="img relative">
+      <img src="../../assets/xmas/buildings/building_base.png" />
+      <ProgressWithLevel :level="tower.level" :value="50"></ProgressWithLevel>
+    </div>
+    <div class="row1 flex flex-center flex-space-between relative">
+      <div class="label-bg width-45 flex flex-center ">
+        <IconWithValue :inline="false" iconClass="icon-sb">{{
+          balanceFormatted.santa_bucks
+        }}</IconWithValue>
+      </div>
+
+      <div class="label-bg flex flex-center width-45">
+        <IconWithValue :inline="false" iconClass="icon-cp">{{
+          balanceFormatted.christmas_points
+        }}</IconWithValue>
+      </div>
+    </div>
+
+    <div
+      class="row2 flex flex-items-center flex-start flex-column"
+      v-if="mode == 'collect'"
+    >
+      <CustomButton type="green">Upgrade Perks</CustomButton>
+    </div>
+    <div class="row2" v-else>
+      <CustomButton type="green" class="btn">Change</CustomButton>
+    </div>
+
+    <NewMultipliers class="row3" v-if="mode != 'collect'" />
   </div>
 </template>
 
 <script>
-import ProgressBar from "@/components/ProgressBar.vue";
-import IncomeText from "./IncomeText.vue";
+import CustomButton from "@/components/Button.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 import { mapState } from "vuex";
 
 import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
+import ProgressWithLevel from "./ProgressWithLevel.vue";
+import NewMultipliers from "./NewMultipliers.vue";
 
 export default {
   props: ["tier"],
   components: {
-    IncomeText,
-    ProgressBar
+    ProgressWithLevel,
+    IconWithValue,
+    CustomButton,
+    NewMultipliers
   },
   data: () => ({}),
   computed: {
     expirienceValueFormatted() {
       return abbreviateNumber(this.tower.exp);
     },
-    towerStyle() {
-      return {};
-    },
     ...mapState({
-      tower: state => state.xmas.tower
-    })
+      mode: state => state.xmas.mode,
+      tower: state => state.xmas.tower,
+      balance: state => state.xmas.balance
+    }),
+    balanceFormatted() {
+      let formattedBalance = {};
+      for (let key in this.balance) {
+        formattedBalance[key] = abbreviateNumber(this.balance[key]);
+      }
+      return formattedBalance;
+    }
   },
   methods: {
-    handleClick() {
+    togglePerks() {
       this.$store.dispatch("xmas/toggleFlag", "perks");
     }
   }
@@ -52,16 +79,58 @@ export default {
 <style lang="less" scoped>
 .building {
   position: relative;
-  text-align: center;
-  color: black;
-  margin-bottom: 5rem;
-}
-.building-tower {
-  background: coral;
-  padding: 5rem 0;
+  padding: 0 5rem;
+  width: 100%;
+  height: 20rem;
+  display: grid;
+  grid-template-columns: 3fr 5fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-items: stretch;
+
+  & .img {
+    grid-row: ~"1/4";
+    grid-column: 1;
+
+    & .tower-bg {
+      background-image: url("../../assets/xmas/buildings/building_base.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+
+  & .row1 {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  & .row2 {
+    grid-row: 2;
+    grid-column: 2;
+  }
+
+  & .row3 {
+    grid-row: 3;
+    grid-column: 2;
+  }
 }
 .progress-bar {
   position: absolute;
   bottom: 0;
+}
+
+.label-bg {
+  border-image: url("../../assets/xmas/text_input_blue.png");
+  border-image-slice: 27 27 27 27 fill;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+  padding: 1rem;
+}
+
+.bg {
+  background-image: url("../../assets/xmas/dashboard_bg.png");
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 </style>

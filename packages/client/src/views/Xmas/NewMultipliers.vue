@@ -1,19 +1,20 @@
 <template>
-  <div class="multipliers flex">
-    <a
-      class="multiplier font-size-15"
-      :class="[levelGap === data.value ? 'active' : '']"
+  <div class="flex flex-center">
+    <CustomButton
+      class="no-margin"
+      :lockPressed="levelGap === data.value"
       v-for="(data, id) in multipliers"
       :key="'multiplier' + id"
       @click="handleClick(data.value)"
     >
       {{ data.title }}
-    </a>
+    </CustomButton>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import CustomButton from "@/components/Button.vue";
 
 export default {
   data: () => ({
@@ -25,6 +26,7 @@ export default {
       { title: "Max", value: Infinity }
     ]
   }),
+  components: { CustomButton },
   methods: {
     handleClick(value) {
       this.$store.dispatch("xmas/updateLevelGap", value);
@@ -37,22 +39,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.multipliers {
-  overflow: hidden;
-  border-radius: 2rem 0 0 2rem;
-  z-index: 50;
-}
-.multiplier {
-  width: 4rem;
-  height: 4rem;
-  background: lightseagreen;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-.multiplier.active {
-  background: goldenrod;
-}
-</style>

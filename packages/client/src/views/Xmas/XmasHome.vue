@@ -1,10 +1,8 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
-    <div class="screen-background"></div>
-
     <div class="wrapper relative width-100 height-100">
       <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-
+      <Background />
       <keep-alive>
         <XmasMap v-if="isMapMode"></XmasMap>
         <XmasCPoints v-else></XmasCPoints>
@@ -28,6 +26,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import PromptMixin from "@/components/PromptMixin.vue";
 import Tabs from "@/components/Tabs.vue";
 
+import Background from "./Background.vue";
 import XmasMap from "./XmasMap.vue";
 import XmasPerks from "./XmasPerks.vue";
 import ModeSwitchBtn from "./ModeSwitchBtn.vue";
@@ -39,6 +38,7 @@ export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
   components: {
     Tabs,
+    Background,
     XmasCPoints,
     XmasPerks,
     XmasMap,
