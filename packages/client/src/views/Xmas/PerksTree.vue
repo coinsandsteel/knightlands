@@ -19,12 +19,14 @@
         :class="{ 'even-bg': (index + 1) % 2 == 0 }"
       >
         <PerkIcon
-          class="margin-right-1 margin-left-1 pointer"
+          class="margin-right-1 margin-left-1"
+          :class="{ pointer: perks[p].enabled }"
           v-for="p in levels"
           :key="p"
           :perk="p"
           :level="perks[p].level"
           :locked="!perks[p].enabled"
+          @click="handleClick(p)"
         />
       </div>
     </template>
@@ -36,8 +38,13 @@ import PerkIcon from "./PerkIcon.vue";
 import CustomButton from "@/components/Button.vue";
 
 export default {
-  props: ["perks", "name", "unlocked", "perkLevels"],
-  components: { PerkIcon, CustomButton }
+  props: ["perks", "name", "unlocked", "perkLevels", "tier", "currency"],
+  components: { PerkIcon, CustomButton },
+  methods: {
+    handleClick(perk) {
+      this.$emit("upgrade", this.currency, this.tier, perk);
+    }
+  }
 };
 </script>
 

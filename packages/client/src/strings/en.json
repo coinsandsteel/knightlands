@@ -2515,6 +2515,12 @@
   "zalaras": "zalaras",
   "zombie_lord": "zombielord",
   "santa_bucks": "Santa Bucks",
-  "d-boost": "Increase income by 2. ({n} seconds)",
-  "d-super_boost": "Increase income by 5. ({n} seconds)"
+  "d-autocycles_count": "Increase maximum auto cycle by {n}.",
+  "d-boost": "Increase income by 2 for {n} seconds.",
+  "d-super_boost": "Increase income by 5 for {n} seconds.",
+  "d-cycle_duration": "Decrease cycle length by {n}%.",
+  "d-income": "Increase income by {n}%",
+  "d-upgrade": "Decrease upgrade cost by {n}%",
+  "d-speed": "Decrease cycle length by 2 for {n} seconds.",
+  "d-super_speed": "Decrease cycle length by 5 for {n} seconds."
 }

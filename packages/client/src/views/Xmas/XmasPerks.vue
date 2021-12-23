@@ -12,7 +12,11 @@
             </div>
           </div>
 
-          <CustomButton type="green">
+          <CustomButton
+            type="green"
+            :disabled="rebalanceAllowed"
+            @click="rebalancePerks"
+          >
             Reset perks
             <IconWithValue iconClass="icon-sb">{{ 99999 }}</IconWithValue>
           </CustomButton>
@@ -27,6 +31,9 @@
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_UNIT_ESSENCE)"
+            @upgrade="handleUpgrade"
+            :currency="currencies.CURRENCY_UNIT_ESSENCE"
+            tier="all"
             :unlocked="perks[currencies.CURRENCY_UNIT_ESSENCE].unlocked"
             :perks="perks[currencies.CURRENCY_UNIT_ESSENCE].tiers.all"
             :name="currencies.CURRENCY_UNIT_ESSENCE"
@@ -35,6 +42,9 @@
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_SANTABUCKS)"
+            @upgrade="handleUpgrade"
+            :currency="currencies.CURRENCY_SANTABUCKS"
+            tier="all"
             :unlocked="perks[currencies.CURRENCY_SANTABUCKS].unlocked"
             :perks="perks[currencies.CURRENCY_SANTABUCKS].tiers.all"
             :name="currencies.CURRENCY_SANTABUCKS"
@@ -43,6 +53,9 @@
           <PerksTree
             class="flex-1"
             @unlock="unlockBranch(currencies.CURRENCY_GOLD)"
+            @upgrade="handleUpgrade"
+            :currency="currencies.CURRENCY_GOLD"
+            tier="all"
             :unlocked="perks[currencies.CURRENCY_GOLD].unlocked"
             :perks="perks[currencies.CURRENCY_GOLD].tiers.all"
             :name="currencies.CURRENCY_GOLD"
@@ -182,6 +195,10 @@ import PerksTree from "./PerksTree.vue";
 import XmasTower from "./XmasTower.vue";
 import Tabs from "@/components/Tabs.vue";
 
+import { create } from "vue-modal-dialogs";
+import UpgradePerk from "./UpgradePerk.vue";
+const ShowUpgradePerk = create(UpgradePerk, "currency", "tier", "perkName");
+
 import {
   CURRENCY_SANTABUCKS,
   CURRENCY_GOLD,
@@ -238,6 +255,9 @@ export default {
     currentTab: "base"
   }),
   methods: {
+    handleUpgrade(currency, tier, perkName) {
+      ShowUpgradePerk(currency, tier, perkName);
+    },
     switchTab(newTab) {
       this.currentTab = newTab;
     },

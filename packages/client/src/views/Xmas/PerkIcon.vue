@@ -1,8 +1,11 @@
 <template>
-  <div class="relative">
+  <div class="relative" @click="handleClick">
     <div :style="icon" class="perk-icon"></div>
     <div class="perk-locked" v-if="locked"></div>
-    <div class="perk-lvl font-size-18 flex flex-center" v-if="level">
+    <div
+      class="perk-lvl font-size-18 flex flex-center"
+      v-if="level !== undefined"
+    >
       {{ level }}
     </div>
   </div>
@@ -43,6 +46,15 @@ export default {
         opacity: this.locked ? "0.75" : "1",
         "background-image": `url(/images/xmas/perks/${ICONS[this.perk]}.png)`
       };
+    }
+  },
+  methods: {
+    handleClick() {
+      if (this.locked) {
+        return;
+      }
+
+      this.$emit("click");
     }
   }
 };

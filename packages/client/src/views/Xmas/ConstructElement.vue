@@ -27,7 +27,7 @@ states = {
 import PurchaseButton from "@/components/PurchaseButton.vue";
 
 export default {
-  props: ['initialBuildingType'],
+  props: ["initialBuildingType"],
   components: {
     PurchaseButton
   },
@@ -38,7 +38,18 @@ export default {
       upgradePrice: 15.0,
       state: 0,
       buildingType: this.initialBuildingType,
-      buildingTypes: ['base', 'buck1s', 'bucks2', 'cp01', 'cp02', 'cp03', 'cp04', 'essence', 'gold', 'shiny']
+      buildingTypes: [
+        "base",
+        "buck1s",
+        "bucks2",
+        "cp01",
+        "cp02",
+        "cp03",
+        "cp04",
+        "essence",
+        "gold",
+        "shiny"
+      ]
     };
   },
   methods: {
