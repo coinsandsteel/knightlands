@@ -8,7 +8,7 @@
     />
     <Background />
     <keep-alive>
-      <XmasMap v-if="!perksVisible && isMapMode"></XmasMap>
+      <XmasMap v-if="!perksVisible && isMapMode" @build="goToBuild"></XmasMap>
       <XmasCPoints v-else-if="!perksVisible"></XmasCPoints>
     </keep-alive>
 
@@ -56,7 +56,7 @@ export default {
         }
       },
       {
-        value: "built",
+        value: "build",
         title: "Build",
         to: {
           name: "unit-equip"
@@ -90,6 +90,9 @@ export default {
     })
   },
   methods: {
+    goToBuild() {
+      this.switchTab("build");
+    },
     switchTab(newTab) {
       if (newTab != "cp") {
         this.$store.dispatch(
