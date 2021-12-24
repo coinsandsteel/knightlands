@@ -72,18 +72,18 @@ export default {
 
       if (data.levelGap !== undefined) {
         state.levelGap = data.levelGap;
-        console.log("Level gap changed", data.levelGap);
+        // console.log("Level gap changed", data.levelGap);
       }
 
       if (data.tower !== undefined) {
         state.tower = { ...state.tower, ...data.tower };
-        console.log("Tower data", data.tower);
+        // console.log("Tower data", data.tower);
       }
 
       if (data.level !== undefined) {
         let payload = data.level;
         state.slots[payload.tier].level = payload.level;
-        console.log("Farm level", data.level);
+        // console.log("Farm level", data.level);
       }
 
       if (data.accumulated !== undefined) {
@@ -97,7 +97,7 @@ export default {
           currency: payload.accumulated.currency,
           exp: payload.accumulated.exp
         });
-        console.log("Farm accumulated", data.accumulated);
+        // console.log("Farm accumulated", data.accumulated);
       }
 
       if (data.progress !== undefined) {
@@ -108,7 +108,7 @@ export default {
             ...payload[tier]
           };
         }
-        console.log("Tier progress", payload);
+        // console.log("Tier progress", payload);
       }
 
       if (data.cycleLength !== undefined) {
@@ -116,7 +116,7 @@ export default {
         for (let tier in payload) {
           state.slots[tier].stats.cycleLength = payload[tier];
         }
-        console.log("Tier cycle length", payload);
+        // console.log("Tier cycle length", payload);
       }
 
       if (data.upgrade !== undefined) {
@@ -127,7 +127,7 @@ export default {
             ...payload[tier]
           };
         }
-        console.log("Upgrade price changed", payload);
+        // console.log("Upgrade price changed", payload);
       }
 
       if (data.income !== undefined) {
@@ -142,13 +142,13 @@ export default {
             ...payload[tier].next
           };
         }
-        console.log("Income changed", payload);
+        // console.log("Income changed", payload);
       }
 
       if (data.branch !== undefined) {
         let payload = data.branch;
         state.perks[payload.currency].unlocked = payload.unlocked;
-        console.log("Perk branch unlocked", payload);
+        // console.log("Perk branch unlocked", payload);
       }
 
       if (data.perks !== undefined) {
@@ -164,7 +164,7 @@ export default {
             }
           }
         }
-        console.log("Perks updated", payload);
+        // console.log("Perks updated", payload);
       }
 
       if (data.burstPerks !== undefined) {
@@ -175,7 +175,7 @@ export default {
             ...payload[perkName]
           };
         }
-        console.log("Burst perks updated", payload);
+        // console.log("Burst perks updated", payload);
       }
 
       if (data.balance !== undefined) {
@@ -183,7 +183,7 @@ export default {
           ...state.balance,
           ...data.balance
         };
-        console.log("Balance changed", data.balance);
+        // console.log("Balance changed", data.balance);
       }
 
       if (data.rebalance !== undefined) {
@@ -191,7 +191,7 @@ export default {
           ...state.rebalance,
           ...data.rebalance
         };
-        console.log("Perks rebalance", data.rebalance);
+        // console.log("Perks rebalance", data.rebalance);
       }
 
       if (data.cycleStart !== undefined) {
@@ -209,7 +209,7 @@ export default {
         for (let tier in payload) {
           state.slots[tier].launched = payload[tier];
         }
-        console.log("Launch state", data.launched);
+        // console.log("Launch state", data.launched);
       }
     },
     updateMode(state, value) {
@@ -230,7 +230,7 @@ export default {
       state.rebalance = { ...state.rebalance, ...data.rebalance };
       state.cpoints = { ...state.cpoints, ...data.cpoints };
       state.loaded = true;
-      console.log('setInitialState', data);
+      console.log("setInitialState", data);
     }
   },
   actions: {
@@ -259,7 +259,10 @@ export default {
       await this.$app.$game._wrapOperation(Operations.XmasActivatePerk, data);
     },
     async activateSlotPerk(store, data) {
-      await this.$app.$game._wrapOperation(Operations.XmasActivateSlotPerk, data);
+      await this.$app.$game._wrapOperation(
+        Operations.XmasActivateSlotPerk,
+        data
+      );
     },
     async updateLevelGap(store, value) {
       await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, {

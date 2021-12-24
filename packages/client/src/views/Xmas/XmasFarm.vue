@@ -171,14 +171,19 @@ export default {
     }
   },
   created() {
-    this.$store.$app.$on("cycle-start", this.resetTimer);
-    this.$store.$app.$on("cycle-stop", this.cycleStop);
-    this.$store.$app.$on("accumulated", this.accumulated);
+    this._start = this.resetTimer.bind(this);
+    this._stop = this.cycleStop.bind(this);
+    this._accumulated = this.accumulated.bind(this);
+
+    this.$store.$app.$on("cycle-start", this._start);
+    this.$store.$app.$on("cycle-stop", this._stop);
+    this.$store.$app.$on("accumulated", this._accumulated);
   },
   destroyed() {
-    this.$store.$app.$off("cycle-start");
-    this.$store.$app.$off("cycle-stop");
-    this.$store.$app.$off("accumulated");
+    this.$store.$app.$off("cycle-start", this._start);
+    this.$store.$app.$off("cycle-stop", this._stop);
+    this.$store.$app.$off("accumulated", this._accumulated);
+    this.cycleStop(this.tier);
   },
   computed: {
     isBuilt() {
@@ -379,7 +384,10 @@ export default {
           return;
         }
 
-        if (this.sbBalance < 1000000000 && !this.perks[this.slot.currency].unlocked) {
+        if (
+          this.sbBalance < 1000000000 &&
+          !this.perks[this.slot.currency].unlocked
+        ) {
           await this.showPrompt(
             "Unlock the branch",
             `In order to build this farm you should unlock ${this.slot.currency} perks branch`,
@@ -436,20 +444,20 @@ export default {
       }
     },
     async handleHarvest() {
-      if (!this.tier6IsNotReady) {
-        this.incomes.push({
-          income: this.totalIncomeValueFormatted,
-          id: this.incomeId++
-        });
-      }
+      // if (!this.tier6IsNotReady) {
+      //   this.incomes.push({
+      //     income: this.totalIncomeValueFormatted,
+      //     id: this.incomeId++
+      //   });
+      // }
 
       await this.performRequestNoCatch(
         this.$store.dispatch("xmas/harvest", { tier: this.tier })
       );
 
-      setTimeout(() => {
-        this.incomes.splice(0, 1);
-      }, 3000);
+      // setTimeout(() => {
+      //   this.incomes.splice(0, 1);
+      // }, 3000);
     },
     reset() {
       // console.log("Reset");
