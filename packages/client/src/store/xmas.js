@@ -258,6 +258,9 @@ export default {
     async activatePerk(store, data) {
       await this.$app.$game._wrapOperation(Operations.XmasActivatePerk, data);
     },
+    async activateSlotPerk(store, data) {
+      await this.$app.$game._wrapOperation(Operations.XmasActivateSlotPerk, data);
+    },
     async updateLevelGap(store, value) {
       await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, {
         value
