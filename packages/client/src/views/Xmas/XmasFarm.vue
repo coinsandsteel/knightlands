@@ -121,7 +121,7 @@ export default {
   props: ["tier"],
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
-    // ProgressWithLevel,
+    ProgressWithLevel,
     IncomeText,
     CustomButton,
     IconWithValue
@@ -244,7 +244,18 @@ export default {
       return abbreviateNumber(this.slot.stats.income.next.currencyPerCycle);
     },
     localCurrencyIncomeValueFormatted() {
-      return abbreviateNumber(this.localCurrencyIncomeValue);
+      let income = this.localCurrencyIncomeValue;
+
+      switch (farmConfig[this.tier].currency) {
+        case CURRENCY_SHINIES:
+        case CURRENCY_GOLD:
+        case CURRENCY_SANTABUCKS:
+        case CURRENCY_UNIT_ESSENCE:
+          income = Math.floor(income);
+          break;
+      }
+
+      return abbreviateNumber(income);
     },
     localExpIncomeValueFormatted() {
       return abbreviateNumber(this.localExpIncomeValue);
