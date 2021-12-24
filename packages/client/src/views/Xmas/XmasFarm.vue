@@ -105,8 +105,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-// import ProgressWithLevel from "./ProgressWithLevel.vue";
-import NotEnoughSantabuck from "./NotEnoughSantabuck.vue";
+import ProgressWithLevel from "./ProgressWithLevel.vue";
 
 import {
   abbreviateNumber,
@@ -117,8 +116,11 @@ import {
   CURRENCY_SHINIES,
   farmConfig
 } from "../../../../knightlands-shared/xmas";
-import { create } from 'vue-modal-dialogs';
-const ShowNotEnoughSantabuckPopup = create(NotEnoughSantabuck, 'santabuckId');
+
+import NotEnoughSantabuck from "./NotEnoughSantabuck.vue";
+import { create } from "vue-modal-dialogs";
+const ShowNotEnoughSantabuckPopup = create(NotEnoughSantabuck, "santabuckId");
+
 export default {
   props: ["tier"],
   mixins: [PromptMixin, NetworkRequestErrorMixin],
@@ -360,7 +362,6 @@ export default {
       }, (this.slot.stats.cycleLength * 1000) / 100);
     },
     async handleClick() {
-      
       if (!this.isBuilt) {
         if (!this.buildingIsAllowed) {
           await this.showPrompt(
