@@ -33,9 +33,12 @@
           <CustomButton type="red" @click="$close(false)">{{
             $t("btn-cancel")
           }}</CustomButton>
-          <CustomButton type="green" :disabled="!perksModified" @click="confirmPerks">{{
-            $t("btn-confirm")
-          }}</CustomButton>
+          <CustomButton
+            type="green"
+            :disabled="!perksModified"
+            @click="confirmPerks"
+            >{{ $t("btn-confirm") }}</CustomButton
+          >
         </div>
       </div>
     </template>
@@ -68,11 +71,15 @@ export default {
   },
   computed: {
     value() {
-      return getMainTowerPerkValue(
-        +this.tier,
-        this.perkName,
-        this.getStatValue(this.currency, this.tier, this.perkName),
-        this.currency
+      return (
+        Math.floor(
+          getMainTowerPerkValue(
+            +this.tier,
+            this.perkName,
+            this.getStatValue(this.currency, this.tier, this.perkName),
+            this.currency
+          ) * 1000
+        ) / 1000
       );
     },
     perk() {

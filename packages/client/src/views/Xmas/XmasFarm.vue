@@ -69,6 +69,7 @@
       <CustomButton
         class="row3"
         type="yellow"
+        :disabled="!canAffordUpgrade"
         v-else-if="showUpgrade"
         @click="handleClick"
       >
