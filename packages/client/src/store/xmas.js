@@ -178,6 +178,15 @@ export default {
         // console.log("Burst perks updated", payload);
       }
 
+      if (data.slotPerks !== undefined) {
+        let payload = data.slotPerks;
+        state.slots[payload.tier].slotPerks = {
+          ...state.slots[payload.tier].slotPerks,
+          ...payload.slotPerks
+        };
+        console.log("Slot perks updated", payload);
+      }
+
       if (data.balance !== undefined) {
         state.balance = {
           ...state.balance,
@@ -258,11 +267,8 @@ export default {
     async activatePerk(store, data) {
       await this.$app.$game._wrapOperation(Operations.XmasActivatePerk, data);
     },
-    async activateSlotPerk(store, data) {
-      await this.$app.$game._wrapOperation(
-        Operations.XmasActivateSlotPerk,
-        data
-      );
+    async commitSlotPerks(store, data) {
+      await this.$app.$game._wrapOperation(Operations.XmasCommitSlotPerks, data);
     },
     async updateLevelGap(store, value) {
       await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, {
