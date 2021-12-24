@@ -326,6 +326,19 @@ export default {
     }
   },
   methods: {
+    async showNotEnoughSantabucks() {
+      await this.showPrompt(
+        "Not enough Santabucks!",
+        `Defeat groupd raids and earn Santabucks! To earn more use raid tickets and deal as much damage as possible.`,
+        [
+          {
+            type: "grey",
+            title: this.$t("btn-ok"),
+            response: true
+          }
+        ]
+      );
+    },
     async accumulated(payload) {
       if (this.tier != payload.tier) {
         return;
@@ -369,6 +382,11 @@ export default {
     },
     async handleClick() {
       if (!this.isBuilt) {
+        if (!this.canAffordUpgrade) {
+          this.showNotEnoughSantabucks();
+          return;
+        }
+
         if (!this.buildingIsAllowed) {
           await this.showPrompt(
             "Upgrade previous farm",
@@ -427,7 +445,7 @@ export default {
       } else {
         if (this.mode === "manage") {
           if (!this.canAffordUpgrade) {
-            // await ShowNotEnoughSantabuckPopup();
+            this.showNotEnoughSantabucks();
             return;
           }
 
