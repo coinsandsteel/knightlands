@@ -2,6 +2,7 @@ import _ from "lodash";
 import {
   initialSlotState,
   perksTree,
+  burstPerksTree,
   farmConfig,
   CURRENCY_SANTABUCKS,
   CURRENCY_GOLD,
@@ -24,6 +25,10 @@ export default {
     loaded: true,
     mode: "manage",
     towerLevelBoundaries: null,
+    rebalance: {
+      price: 0,
+      counter: 1
+    },
     tower: {
       exp: 0,
       level: 0,
@@ -31,6 +36,7 @@ export default {
     },
     levelGap: 1,
     slots,
+    burstPerks: burstPerksTree,
     perks: perksTree,
     flags: {
       perks: false
@@ -161,6 +167,17 @@ export default {
         console.log("Perks updated", payload);
       }
 
+      if (data.burstPerks !== undefined) {
+        let payload = data.burstPerks;
+        for (let perkName in payload) {
+          state.burstPerks[perkName] = {
+            ...state.burstPerks[perkName],
+            ...payload[perkName]
+          };
+        }
+        console.log("Burst perks updated", payload);
+      }
+
       if (data.balance !== undefined) {
         state.balance = {
           ...state.balance,
@@ -169,16 +186,30 @@ export default {
         console.log("Balance changed", data.balance);
       }
 
+      if (data.rebalance !== undefined) {
+        state.rebalance = {
+          ...state.rebalance,
+          ...data.rebalance
+        };
+        console.log("Perks rebalance", data.rebalance);
+      }
+
       if (data.cycleStart !== undefined) {
-        state.slots[data.cycleStart.tier].launched = true;
         this.$app.$emit("cycle-start", data.cycleStart.tier);
         console.log("Cycle start", data.cycleStart);
       }
 
       if (data.cycleStop !== undefined) {
-        state.slots[data.cycleStop.tier].launched = false;
         this.$app.$emit("cycle-stop", data.cycleStop.tier);
         console.log("Cycle stop", data.cycleStop);
+      }
+
+      if (data.launched !== undefined) {
+        let payload = data.launched;
+        for (let tier in payload) {
+          state.slots[tier].launched = payload[tier];
+        }
+        console.log("Launch state", data.launched);
       }
     },
     updateMode(state, value) {
@@ -196,8 +227,10 @@ export default {
       state.slots = { ...state.slots, ...data.slots };
       state.perks = { ...state.perks, ...data.perks };
       state.balance = { ...state.balance, ...data.balance };
+      state.rebalance = { ...state.rebalance, ...data.rebalance };
       state.cpoints = { ...state.cpoints, ...data.cpoints };
       state.loaded = true;
+      console.log('setInitialState', data);
     }
   },
   actions: {
@@ -216,10 +249,11 @@ export default {
     unsubscribe() {
       this.$app.$game.offNetwork(Events.XmasUpdate);
     },
-    async commitPerks(store, perks) {
-      await this.$app.$game._wrapOperation(Operations.XmasCommitPerks, {
-        perks
-      });
+    async commitPerks(store, data) {
+      await this.$app.$game._wrapOperation(Operations.XmasCommitPerks, data);
+    },
+    async rebalancePerks() {
+      await this.$app.$game._wrapOperation(Operations.XmasRebalancePerks);
     },
     async updateLevelGap(store, value) {
       await this.$app.$game._wrapOperation(Operations.XmasUpdateLevelGap, {

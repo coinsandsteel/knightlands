@@ -6,6 +6,7 @@
       !slot.level ? 'building-slot' : 'building-farm',
       slot.level ? 'building-mode-' + mode : null
     ]"
+    @click.self="handleClick"
   >
     <IncomeText v-for="income in incomes" :key="income.id">{{
       income.income
@@ -15,63 +16,74 @@
       <div class="row13 build-bg" v-if="!isBuilt"></div>
 
       <div
-        class="row2"
-        :class="{ row13: isBuilt }"
+        class="row2 flex flex-center"
+        :class="[{ row13: isBuilt }, { na: !buildingIsAllowed }]"
         :style="buildingImage"
-      ></div>
+      >
+        <span class="icon-lock-big huge" v-if="!buildingIsAllowed"></span>
+      </div>
 
       <div class="flex flex-items-center row1 flex-no-wrap">
-        <div class="slot_common flex flex-center margin-right-half">
+        <div class="icon-farm flex flex-center margin-right-half">
           <div :class="icon" class="big"></div>
         </div>
 
         <div
-          class="label-bg font-size-18 flex flex-center height-100 margin-right-half"
+          class="label-bg font-size-18 flex flex-center padding-1 margin-right-half flex-self-center"
           v-if="showDesc"
         >
           <span>{{ description }}</span>
         </div>
+
+        <div
+          class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap flex-self-center"
+          v-if="showUpgrade"
+        >
+          <span>{{ currentCurrencyIncomeValueFormatted }}</span>
+          <span class="nav-arrow"></span>
+          <span class="rarity-rare">{{
+            nextCurrencyIncomeValueFormatted
+          }}</span>
+        </div>
+      </div>
+
+      <div
+        class="row3 padding-bottom-1 font-weight-900"
+        v-if="!buildingIsAllowed"
+      >
+        LOCKED
       </div>
 
       <CustomButton
         class="row3"
         type="green"
-        v-if="showDesc"
+        v-else-if="showDesc"
         @click="handleClick"
       >
         Build
-        <IconWithValue iconClass="icon-sb">{{ purchasePrice }}</IconWithValue>
+        <IconWithValue iconClass="icon-sb">{{
+          upgradePriceFormatted
+        }}</IconWithValue>
       </CustomButton>
 
       <CustomButton
         class="row3"
         type="yellow"
-        v-if="showUpgrade"
+        :disabled="!canAffordUpgrade"
+        v-else-if="showUpgrade"
         @click="handleClick"
       >
         Upgrade
-        <IconWithValue iconClass="icon-sb">{{ purchasePrice }}</IconWithValue>
+        <IconWithValue iconClass="icon-sb">{{
+          upgradePriceFormatted
+        }}</IconWithValue>
       </CustomButton>
 
       <template v-if="mode === 'collect'">
-        <progress-bar
-          class="progress-bar row3"
-          v-if="
-            slot.level && progress !== null && localCurrencyIncomeValue <= 0
-          "
-          ref="progress"
-          barClasses="no-animation"
-          :maxValue="100"
-          :percentMode="false"
-          :hideMaxValue="false"
-          v-model="progress"
-          barType="green"
-        ></progress-bar>
-
-        <CustomButton class="row3" type="green" @click="handleClick" v-else>
+        <CustomButton class="row3" type="green" @click="handleClick">
           Collect
           <IconWithValue :iconClass="icon">{{
-            localCurrencyIncomeValue
+            localCurrencyIncomeValueFormatted
           }}</IconWithValue>
         </CustomButton>
       </template>
@@ -81,13 +93,13 @@
 
 <script>
 // import _ from "lodash";
-import ProgressBar from "@/components/ProgressBar.vue";
 import IncomeText from "./IncomeText.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import ProgressWithLevel from "./ProgressWithLevel.vue";
 
 import {
   abbreviateNumber,
@@ -103,8 +115,8 @@ export default {
   props: ["tier"],
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
+    // ProgressWithLevel,
     IncomeText,
-    ProgressBar,
     CustomButton,
     IconWithValue
   },
@@ -121,6 +133,7 @@ export default {
       immediate: true,
       handler: function(value) {
         if (value) {
+          // console.log("Launched watcher", this.tier, value);
           this.resetTimer(this.tier);
         }
       }
@@ -128,18 +141,21 @@ export default {
     "slot.progress.percentage": {
       immediate: true,
       handler: function(value) {
+        // console.log("Percentage watcher", this.tier, value);
         this.progress = value;
       }
     },
     "slot.accumulated.currency": {
       immediate: true,
       handler: function(value) {
+        // console.log("Currency watcher", this.tier, value);
         this.localCurrencyIncomeValue = value;
       }
     },
     "slot.accumulated.exp": {
       immediate: true,
       handler: function(value) {
+        // console.log("Exp watcher", this.tier, value);
         this.localExpIncomeValue = value;
       }
     }
@@ -155,9 +171,6 @@ export default {
     this.$store.$app.$off("accumulated");
   },
   computed: {
-    purchasePrice() {
-      return farmConfig[this.tier].baseBuildingPrice;
-    },
     isBuilt() {
       return this.slot.level != 0;
     },
@@ -267,7 +280,22 @@ export default {
       };
     },
     description() {
-      return "Produces Unit ESSENCES";
+      switch (this.tier) {
+        case "1":
+        case "5":
+          return "Santabucks";
+
+        case "2":
+          return "Gold";
+
+        case "3":
+          return "Essence of Life";
+
+        case "6":
+          return "Shinies";
+      }
+
+      return "Xmas Points";
     }
   },
   methods: {
@@ -312,7 +340,7 @@ export default {
         }
       }, (this.slot.stats.cycleLength * 1000) / 100);
     },
-    async handleClick() {
+    async handleClick(e) {
       if (!this.isBuilt) {
         if (!this.buildingIsAllowed) {
           await this.showPrompt(
@@ -377,8 +405,6 @@ export default {
         });
       }
 
-      this.cycleStop(this.tier);
-
       await this.performRequestNoCatch(
         this.$store.dispatch("xmas/harvest", { tier: this.tier })
       );
@@ -398,36 +424,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .building {
-//   position: relative;
-//   text-align: center;
-//   color: black;
-//   margin-bottom: 5rem;
-// }
-// .building-farm {
-//   padding: 5rem 0;
-// }
-// .building-slot {
-//   padding: 5rem 0;
-//   background: grey;
-//   opacity: 0.8;
-// }
-// .building-farm {
-//   background: aquamarine;
-//   &.building-mode-manage {
-//     background: darkslateblue;
-//     color: white;
-//   }
-//   &.building-mode-collect {
-//     background: darkgreen;
-//     color: white;
-//   }
-// }
-// .progress-bar {
-//   position: absolute;
-//   bottom: 0;
-// }
-
 .building-grid {
   display: grid;
   grid-template-rows: 5rem 180fr 113fr;
@@ -464,12 +460,21 @@ export default {
   height: 5rem;
 }
 
+.na {
+  opacity: 0.6;
+}
+
 .label-bg {
   border-image: url("../../assets/xmas/text_input_blue.png");
   border-image-slice: 27 27 27 27 fill;
   border-image-width: 14px;
   border-image-outset: 0px 0px 0px 0px;
   border-image-repeat: stretch stretch;
+}
+
+.icon-farm {
+  background-image: url("../../assets/ui/spritesheet/slot_common.png");
+  background-size: contain;
 }
 
 .build-bg {

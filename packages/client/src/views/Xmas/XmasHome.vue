@@ -1,17 +1,18 @@
 <template>
   <div class="screen-content flex-items-center full-flex">
-    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+    <Tabs
+      :tabs="tabs"
+      :currentTab="currentTab"
+      @onClick="switchTab"
+      v-if="!perksVisible"
+    />
     <Background />
     <keep-alive>
-      <XmasMap v-if="isMapMode"></XmasMap>
-      <XmasCPoints v-else></XmasCPoints>
+      <XmasMap v-if="!perksVisible && isMapMode"></XmasMap>
+      <XmasCPoints v-else-if="!perksVisible"></XmasCPoints>
     </keep-alive>
-    <!-- <XmasHeader />
-      <XmasMap ref="area" />
-      <XmasPerks v-if="perksVisible" />
-      <ModeSwitchBtn />
-      <StatisticsBtn />
-      <Multipliers /> -->
+
+    <XmasPerks v-if="perksVisible" />
   </div>
 </template>
 
@@ -26,7 +27,7 @@ import Tabs from "@/components/Tabs.vue";
 
 import Background from "./Background.vue";
 import XmasMap from "./XmasMap.vue";
-// import XmasPerks from "./XmasPerks.vue";
+import XmasPerks from "./XmasPerks.vue";
 // import ModeSwitchBtn from "./ModeSwitchBtn.vue";
 // import StatisticsBtn from "./StatisticsBtn.vue";
 // import Multipliers from "./Multipliers.vue";
@@ -38,7 +39,7 @@ export default {
     Tabs,
     Background,
     XmasCPoints,
-    // XmasPerks,
+    XmasPerks,
     XmasMap
     // ModeSwitchBtn,
     // StatisticsBtn,

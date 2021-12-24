@@ -5,34 +5,43 @@
       <div class="tower-bg full-flex"></div>
       <ProgressWithLevel
         :level="tower.level"
-        :value="tower.currentLevelPercent"
+        :value="tower.percentage"
       ></ProgressWithLevel>
     </div>
-    <div class="row1 flex flex-center flex-space-between relative">
-      <div class="label-bg width-45 flex flex-center ">
-        <IconWithValue :inline="false" iconClass="icon-sb">{{
-          balanceFormatted.santa_bucks
-        }}</IconWithValue>
+
+    <slot v-if="perksVisible"></slot>
+
+    <template v-else>
+      <div class="row1 flex flex-center flex-space-between relative">
+        <div class="label-bg width-45 flex flex-center ">
+          <IconWithValue :inline="false" iconClass="icon-sb">{{
+            balanceFormatted.santa_bucks
+          }}</IconWithValue>
+        </div>
+
+        <div class="label-bg flex flex-center width-45">
+          <IconWithValue :inline="false" iconClass="icon-cp">{{
+            score
+          }}</IconWithValue>
+        </div>
       </div>
 
-      <div class="label-bg flex flex-center width-45">
-        <IconWithValue :inline="false" iconClass="icon-cp">{{
-          balanceFormatted.christmas_points
-        }}</IconWithValue>
+      <div
+        class="row2 flex flex-items-center flex-start"
+        v-if="mode != 'collect'"
+      >
+        <CustomButton type="green" @click="togglePerks"
+          >Upgrade Perks</CustomButton
+        >
       </div>
-    </div>
+      <div class="row2 flex flex-items-center flex-start" v-else>
+        <CustomButton type="green" class="btn" @click="showActivePerks"
+          >Activate Perk</CustomButton
+        >
+      </div>
 
-    <div
-      class="row2 flex flex-items-center flex-start"
-      v-if="mode != 'collect'"
-    >
-      <CustomButton type="green">Upgrade Perks</CustomButton>
-    </div>
-    <div class="row2 flex flex-items-center flex-start" v-else>
-      <CustomButton type="green" class="btn">Activate Perk</CustomButton>
-    </div>
-
-    <NewMultipliers class="row3" v-if="mode != 'collect'" />
+      <NewMultipliers class="row3" v-if="mode != 'collect'" />
+    </template>
   </div>
 </template>
 
@@ -40,10 +49,16 @@
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import { mapState } from "vuex";
+import { create } from "vue-modal-dialogs";
 
 import { abbreviateNumber } from "../../../../knightlands-shared/xmas";
 import ProgressWithLevel from "./ProgressWithLevel.vue";
 import NewMultipliers from "./NewMultipliers.vue";
+import ActivatePerks from "./ActivatePerks.vue";
+
+const ShowActivePerks = create(ActivatePerks);
+
+const PRECISION = 10000;
 
 export default {
   props: ["tier"],
@@ -53,15 +68,16 @@ export default {
     CustomButton,
     NewMultipliers
   },
-  data: () => ({}),
   computed: {
     expirienceValueFormatted() {
       return abbreviateNumber(this.tower.exp);
     },
     ...mapState({
+      cpoints: state => state.xmas.cpoints,
       mode: state => state.xmas.mode,
       tower: state => state.xmas.tower,
-      balance: state => state.xmas.balance
+      balance: state => state.xmas.balance,
+      perksVisible: state => state.xmas.flags.perks
     }),
     balanceFormatted() {
       let formattedBalance = {};
@@ -69,11 +85,17 @@ export default {
         formattedBalance[key] = abbreviateNumber(this.balance[key]);
       }
       return formattedBalance;
+    },
+    score() {
+      return Math.floor(this.cpoints.score * PRECISION) / PRECISION;
     }
   },
   methods: {
     togglePerks() {
       this.$store.dispatch("xmas/toggleFlag", "perks");
+    },
+    showActivePerks() {
+      ShowActivePerks();
     }
   }
 };

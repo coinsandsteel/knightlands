@@ -31,14 +31,14 @@
         <span>
           {{ $t("rp-score") }}
         </span>
-        <IconWithValue iconClass="icon-rp">{{ score }}</IconWithValue>
+        <IconWithValue iconClass="icon-cp">{{ score }}</IconWithValue>
       </div>
 
       <div class="row">
         <span>
           {{ $t("rp-s-total") }}
         </span>
-        <IconWithValue iconClass="icon-rp">{{ totalPointsUI }}</IconWithValue>
+        <IconWithValue iconClass="icon-cp">{{ totalPointsUI }}</IconWithValue>
       </div>
     </div>
 
@@ -46,7 +46,8 @@
       class="color-panel-1 margin-top-4 flex flex-column padding-left-1 padding-right-1"
     >
       <span
-        >At the end of the day, you will get FLESH based on your CP score.</span
+        >At the end of the day, you will get FLESH based on your Xmas
+        points.</span
       >
     </div>
   </div>

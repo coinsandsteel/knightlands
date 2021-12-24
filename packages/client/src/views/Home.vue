@@ -4,10 +4,8 @@
 
     <div class="width-100 height-100" v-bar ref="scroll">
       <div class="width-100">
-        <div
-          class="flex flex-column min-height-100 width-100 flex-space-between"
-        >
-          <PrizePoolWidget class="self-justify-start margin-bottom-3" />
+        <div class="flex flex-column min-height-100 width-100 flex-end">
+          <!-- <PrizePoolWidget class="self-justify-start margin-bottom-3" /> -->
 
           <div class="flex flex-column">
             <RankingsMenu />
@@ -205,7 +203,7 @@ export default {
 
 <style lang="less" scoped>
 .home-art {
-  background-image: url("../assets/backgrounds/castle_bg.jpg");
+  background-image: url("../assets/backgrounds/xmas_bg.jpg");
   background-size: cover;
   background-position: bottom;
 }
