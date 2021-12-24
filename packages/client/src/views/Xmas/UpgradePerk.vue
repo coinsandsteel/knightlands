@@ -142,10 +142,10 @@ export default {
       return this.perks[this.currency].tiers[this.tier][this.perkName].level;
     },
     freePerkPoints() {
-      return this.tower.level - this.unlockedBranchesCount - this.newPerksSum;
+      return this.tower.level - this.unlockedBranchesCount - this.perksSum;
     },
     canIncrease() {
-      return this.freePerkPoints;
+      return this.newPerksSum - this.perksSum < this.freePerkPoints;
     },
     ...mapState({
       tower: state => state.xmas.tower,
