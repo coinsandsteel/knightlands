@@ -379,7 +379,7 @@ export default {
           return;
         }
 
-        if (!this.perks[this.slot.currency].unlocked) {
+        if (this.sbBalance < 1000000000 && !this.perks[this.slot.currency].unlocked) {
           await this.showPrompt(
             "Unlock the branch",
             `In order to build this farm you should unlock ${this.slot.currency} perks branch`,
