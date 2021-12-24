@@ -213,6 +213,7 @@ export default {
         perks: this.newPerks,
         burstPerks: this.newBurstPerks
       });
+      this.$close(true);
     },
     reset(currencyName, tier, perkName) {
       while (this.canDecrease(currencyName, tier, perkName)) {
