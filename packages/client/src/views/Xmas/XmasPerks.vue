@@ -425,12 +425,13 @@ export default {
       return this.freePerkPoints > 0;
     },
     rebalanceAllowed() {
-      return this.perksSum > 0;
+      return this.perksSum > 0 && this.rebalance.price <= this.sbBalance;
     },
     ...mapState({
       tower: state => state.xmas.tower,
       perks: state => state.xmas.perks,
-      rebalance: state => state.xmas.rebalance
+      rebalance: state => state.xmas.rebalance,
+      sbBalance: state => state.xmas.balance[CURRENCY_SANTABUCKS]
     })
   }
 };
