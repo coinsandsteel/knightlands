@@ -114,6 +114,14 @@ export default class EthereumClient extends BlockchainClient {
       );
     }
 
+    if (this._artifacts.USDCPot) {
+      this._usdcPot = new ethers.Contract(
+        this._artifacts.USDCPot.address,
+        this._artifacts.USDCPot.abi,
+        provider
+      );
+    }
+
     this._inited = true;
   }
 
@@ -219,5 +227,11 @@ export default class EthereumClient extends BlockchainClient {
     await this._presaleCardsGate
       .connect(this._provider.getSigner())
       .deposit(depositId, tokenIds);
+  }
+
+  async withdrawUSDCPot({ withdrawalId, amount, signature }) {
+    await this._usdcPot
+      .connect(this._provider.getSigner())
+      .withdraw(withdrawalId, amount, signature);
   }
 }

@@ -20,7 +20,6 @@
 
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
-
               <MenuIcon
                 icon="skewed_icon_xmas"
                 :to="{ name: 'xmas-home' }"
@@ -158,13 +157,10 @@ import MenuIcon from "@/components/MenuIcon.vue";
 import MenuIconRow from "@/components/MenuIconRow.vue";
 import RankingsMenu from "./Rankings/RankingsMenu.vue";
 
-import PrizePoolWidget from "@/views/Rankings/PrizePool/PrizePoolWidget.vue";
-
 export default {
   props: ["scrollToBottom"],
   mixins: [AppSection],
   components: {
-    PrizePoolWidget,
     TrialsMarker,
     OnyxTowerMarker,
     AdventuresMarker,

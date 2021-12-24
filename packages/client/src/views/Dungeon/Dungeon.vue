@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content flex-items-center full-flex">
+  <div class="screen-content flex-items-center full-flex relative">
     <div class="hallowen-bg"></div>
     <Title class="enemy-title-font margin-top-1 margin-bottom-1 font-outline">
       {{ $t("depth", { val: maze.floor }) }}
@@ -108,6 +108,25 @@
       </div>
     </div>
     <Maze ref="maze" />
+    <div
+      class="overlay-color absolute-stretch flex flex-column flex-center"
+      v-if="isFinished"
+    >
+      <span class="font-size-22"
+        >Halloween dungeon is closed! Thank you for participating!</span
+      >
+      <CustomButton
+        type="yellow"
+        class="margin-top-2"
+        @click="claimReward"
+        v-if="hasReward && !claimed"
+      >
+        <div class="flex flex-center">
+          <span>Claim</span>
+          <IconWithValue iconClass="icon-usdc">{{ reward }}</IconWithValue>
+        </div>
+      </CustomButton>
+    </div>
   </div>
 </template>
 
@@ -123,6 +142,12 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import anime from "animejs/lib/anime.es.js";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
+import meta from "@/metadata/halloween/dungeon_meta";
+import Blockchains from "@/../../knightlands-shared/blockchains";
+
+import ConnectWallet from "@/views/Account/ConnectWallet.vue";
+import { create } from "vue-modal-dialogs";
+const ShowWallet = create(ConnectWallet, "chain");
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
@@ -155,7 +180,8 @@ export default {
     }),
     ...mapGetters({
       playerStats: "dungeon/playerStats",
-      nextExp: "dungeon/nextExp"
+      nextExp: "dungeon/nextExp",
+      isFinished: "dungeon/isFinished"
     }),
     energyRegen() {
       const playerStats = this.playerStats(null);
@@ -166,7 +192,58 @@ export default {
       return Math.floor(3600 / playerStats.hpRegen);
     }
   },
+  asyncComputed: {
+    async rank() {
+      const currentRank = await this.performRequest(
+        this.$store.dispatch("dungeon/fetchRank")
+      );
+
+      return currentRank;
+    },
+    async hasReward() {
+      let rank = await this.rank;
+      if (!rank) {
+        return false;
+      }
+
+      rank = rank.rank;
+      if (!rank) {
+        return false;
+      }
+
+      if (rank - 1 >= meta.rewards.length) {
+        return false;
+      }
+
+      return true;
+    },
+    async reward() {
+      if (await this.hasReward) {
+        const rank = await this.rank;
+        if (!rank) {
+          return 0;
+        }
+        return meta.rewards[rank.rank - 1];
+      }
+
+      return 0;
+    },
+    async claimed() {
+      let rank = await this.rank;
+      if (!rank) {
+        return false;
+      }
+      return rank.claimed;
+    }
+  },
   methods: {
+    async claimReward() {
+      const { address } = await ShowWallet(Blockchains.Polygon);
+      const txDetails = await this.performRequest(
+        this.$store.dispatch("dungeon/claimReward", address)
+      );
+      await this.$game.blockchain.withdrawUSDCPot(txDetails);
+    },
     goToUser() {
       this.$router.push({ name: "dungeon-user" });
     },
@@ -264,5 +341,9 @@ export default {
 .btns {
   grid-row: ~"2/4";
   grid-column: 2;
+}
+
+.overlay-color {
+  z-index: 98;
 }
 </style>

@@ -302,10 +302,11 @@ export default {
       const data = await this.performRequest(
         this.$game.summonRaid(this.raid, this.isFreeRaid, this.options)
       );
-      this.$app.logEvent("raid-summon", {
-        raidMetaId: this.raid,
-        isFree: this.isFreeRaid
-      });
+      if (!this.isFreeRaid) {
+        this.$app.logEvent("raid-summon", {
+          raidMetaId: this.raid
+        });
+      }
       this.$router.push({
         name: "view-raid",
         params: { raidId: data.raid }
