@@ -24,6 +24,12 @@
             />
           </div>
         </div>
+
+        <span
+          class="font-size-22 font-weight-900 flex-self-center"
+          v-if="Object.keys(nonEmptyBranches).length == 0"
+          >No active perks yet</span
+        >
       </div>
     </template>
   </UserDialog>
