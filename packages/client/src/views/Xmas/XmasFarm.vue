@@ -1,7 +1,7 @@
 <template>
   <div
     ref="farm"
-    class="building font-size-25"
+    class="building font-size-25 relative"
     :class="[
       !slot.level ? 'building-slot' : 'building-farm',
       slot.level ? 'building-mode-' + mode : null
@@ -79,6 +79,12 @@
       </CustomButton>
 
       <template v-if="mode === 'collect'">
+        <ProgressWithLevel
+          v-if="slot.level && progress !== null"
+          :value="progress"
+          :level="slot.level"
+        ></ProgressWithLevel>
+
         <CustomButton class="row3" type="green" @click="handleClick">
           Collect
           <IconWithValue :iconClass="icon">{{
