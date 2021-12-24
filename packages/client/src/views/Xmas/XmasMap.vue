@@ -20,7 +20,7 @@
           >To begin your production, purchase your first building!</span
         >
 
-        <CustomButton type="green" class="margin-top-2" @click="$emit('build')"
+        <CustomButton type="yellow" class="margin-top-2" @click="$emit('build')"
           >Purchase first building</CustomButton
         >
       </div>

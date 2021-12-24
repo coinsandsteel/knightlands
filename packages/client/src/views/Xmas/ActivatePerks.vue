@@ -25,11 +25,18 @@
           </div>
         </div>
 
-        <span
-          class="font-size-22 font-weight-900 flex-self-center"
+        <div
+          class="flex flex-column flex-center"
           v-if="Object.keys(nonEmptyBranches).length == 0"
-          >No active perks yet</span
         >
+          <span class="font-size-22 font-weight-900 flex-self-center"
+            >No active perks yet</span
+          >
+
+          <CustomButton type="yellow" class="margin-top-2" @click="goToPerkList"
+            >Upgrade Perks</CustomButton
+          >
+        </div>
       </div>
     </template>
   </UserDialog>
@@ -38,6 +45,7 @@
 <script>
 import { mapState } from "vuex";
 import UserDialog from "@/components/UserDialog.vue";
+import CustomButton from "@/components/Button.vue";
 import {
   CURRENCY_SANTABUCKS,
   CURRENCY_GOLD,
@@ -56,6 +64,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 
 export default {
   components: {
+    CustomButton,
     UserDialog,
     ActivatePerkElement,
     IconWithValue
@@ -97,6 +106,10 @@ export default {
     })
   },
   methods: {
+    goToPerkList() {
+      this.$store.dispatch("xmas/toggleFlag", "perks");
+      this.$close();
+    },
     iconClass(currency) {
       switch (currency) {
         case CURRENCY_GOLD:

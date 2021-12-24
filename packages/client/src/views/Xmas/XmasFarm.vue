@@ -329,7 +329,7 @@ export default {
     async showNotEnoughSantabucks() {
       await this.showPrompt(
         "Not enough Santabucks!",
-        `Defeat groupd raids and earn Santabucks! To earn more use raid tickets and deal as much damage as possible.`,
+        `Defeat group raids and earn Santabucks! To earn more use raid tickets and deal as much damage as possible.`,
         [
           {
             type: "grey",
