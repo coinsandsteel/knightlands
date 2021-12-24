@@ -1,54 +1,59 @@
 <template>
-  <div class="screen-content font-size-25">
-    <div class="screen-background"></div>
+  <div class="screen-content font-size-25 width-100">
+    <Background />
 
-    <div class="color-panel-1 margin-bottom-4">
-      <IconWithValue :flip="true" iconClass="icon-dkt" class="margin-right-1">{{
-        emission
-      }}</IconWithValue>
+    <div class="xmas-bg width-100">
+      <div class="margin-bottom-4 margin-top-1 width-100">
+        <IconWithValue
+          :flip="true"
+          iconClass="icon-dkt"
+          class="margin-right-1"
+          >{{ emission }}</IconWithValue
+        >
 
-      <span class="font-size-22">{{
-        $t("time-till-rp", { time: nextPayout.value })
-      }}</span>
-    </div>
-
-    <div class="score-stats">
-      <div class="row">
-        <span>
-          {{ $t("rp-d-b") }}
-        </span>
-        <IconWithValue iconClass="icon-dkt">{{ dkt }}</IconWithValue>
+        <span class="font-size-22">{{
+          $t("time-till-rp", { time: nextPayout.value })
+        }}</span>
       </div>
 
-      <div class="row">
-        <span>
-          {{ $t("ex-dkt") }}
-        </span>
-        <IconWithValue iconClass="icon-dkt">{{ expectedDkt }}</IconWithValue>
+      <div class="score-stats">
+        <div class="row">
+          <span>
+            {{ $t("rp-d-b") }}
+          </span>
+          <IconWithValue iconClass="icon-dkt">{{ dkt }}</IconWithValue>
+        </div>
+
+        <div class="row">
+          <span>
+            {{ $t("ex-dkt") }}
+          </span>
+          <IconWithValue iconClass="icon-dkt">{{ expectedDkt }}</IconWithValue>
+        </div>
+
+        <div class="row">
+          <span>
+            {{ $t("rp-score") }}
+          </span>
+          <IconWithValue iconClass="icon-cp">{{ score }}</IconWithValue>
+        </div>
+
+        <div class="row">
+          <span>
+            {{ $t("rp-s-total") }}
+          </span>
+          <IconWithValue iconClass="icon-cp">{{ totalPointsUI }}</IconWithValue>
+        </div>
       </div>
 
-      <div class="row">
-        <span>
-          {{ $t("rp-score") }}
-        </span>
-        <IconWithValue iconClass="icon-cp">{{ score }}</IconWithValue>
-      </div>
-
-      <div class="row">
-        <span>
-          {{ $t("rp-s-total") }}
-        </span>
-        <IconWithValue iconClass="icon-cp">{{ totalPointsUI }}</IconWithValue>
-      </div>
-    </div>
-
-    <div
-      class="color-panel-1 margin-top-4 flex flex-column padding-left-1 padding-right-1"
-    >
-      <span
-        >At the end of the day, you will get FLESH based on your Xmas
-        points.</span
+      <div
+        class="margin-top-4 flex flex-column padding-left-1 padding-right-1 font-outline"
       >
+        <span
+          >At the end of the day, you will get FLESH based on your Xmas
+          points.</span
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -60,6 +65,7 @@ import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import Background from "./Background.vue";
 import { mapState } from "vuex";
 
 const PAYOUT_PERIOD = 86400;
@@ -69,7 +75,7 @@ const FLESH_PRECISION = 1000000;
 
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
-  components: { IconWithValue },
+  components: { IconWithValue, Background },
   created() {
     this.title = "Christmas Points";
   },
@@ -163,5 +169,12 @@ export default {
       grid-column: 3;
     }
   }
+}
+
+.xmas-bg {
+  background-image: url("../../assets/xmas/dashboard_bg.png");
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
 }
 </style>
