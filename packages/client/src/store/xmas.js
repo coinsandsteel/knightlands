@@ -227,6 +227,7 @@ export default {
       state.slots = { ...state.slots, ...data.slots };
       state.perks = { ...state.perks, ...data.perks };
       state.balance = { ...state.balance, ...data.balance };
+      state.rebalance = { ...state.rebalance, ...data.rebalance };
       state.cpoints = { ...state.cpoints, ...data.cpoints };
       state.loaded = true;
       console.log('setInitialState', data);
