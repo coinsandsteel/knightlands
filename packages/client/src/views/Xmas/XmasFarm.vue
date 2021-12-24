@@ -290,7 +290,8 @@ export default {
       slots: state => state.xmas.slots,
       sbBalance: state => state.xmas.balance[CURRENCY_SANTABUCKS],
       levelGap: state => state.xmas.levelGap,
-      balance: state => state.xmas.balance
+      balance: state => state.xmas.balance,
+      perks: state => state.xmas.perks
     }),
     buildingImage() {
       return {
@@ -367,6 +368,21 @@ export default {
           await this.showPrompt(
             "Upgrade previous farm",
             `In order to build this farm you should upgrade the previous farm to 50-th level `,
+            [
+              {
+                type: "grey",
+                title: this.$t("btn-ok"),
+                response: true
+              }
+            ]
+          );
+          return;
+        }
+
+        if (!this.perks[this.slot.currency].unlocked) {
+          await this.showPrompt(
+            "Unlock the branch",
+            `In order to build this farm you should unlock ${this.slot.currency} perks branch`,
             [
               {
                 type: "grey",

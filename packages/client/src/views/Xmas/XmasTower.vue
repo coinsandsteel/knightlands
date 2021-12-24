@@ -31,7 +31,7 @@
         v-if="mode != 'collect'"
       >
         <CustomButton type="green" @click="togglePerks"
-          >Upgrade Perks</CustomButton
+          >Perks List</CustomButton
         >
       </div>
       <div class="row2 flex flex-items-center flex-start" v-else>
