@@ -18,7 +18,9 @@
             @click="rebalancePerks"
           >
             Rebalance perks
-            <IconWithValue iconClass="icon-sb">{{ rebalancePriceFormatted }}</IconWithValue>
+            <IconWithValue iconClass="icon-sb">{{
+              rebalancePriceFormatted
+            }}</IconWithValue>
           </CustomButton>
         </div>
       </template>
@@ -123,6 +125,7 @@
             @unlock="unlockBranch(currencies.CURRENCY_SHINIES)"
             @upgrade="handleUpgrade"
             :canUnlock="canIncrease"
+            :unlocked="perks[currencies.CURRENCY_SHINIES].unlocked"
             :perks="perks[currencies.CURRENCY_SHINIES].tiers.all"
             :name="currencies.CURRENCY_SHINIES"
             :currency="currencies.CURRENCY_SHINIES"
