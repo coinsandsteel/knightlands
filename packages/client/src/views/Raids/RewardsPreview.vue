@@ -9,6 +9,14 @@
     >
 
     <IconWithValue
+      v-if="rewards.santabucks > 0"
+      class="margin-bottom-1"
+      valueClass="font-size-20 digit-font"
+      iconClass="icon-sb"
+      >{{ rewards.santabucks }}</IconWithValue
+    >
+
+    <IconWithValue
       v-if="rewards.gold > 0"
       class="margin-bottom-1"
       valueClass="font-size-20 digit-font"

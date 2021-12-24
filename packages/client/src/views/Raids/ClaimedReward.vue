@@ -1,10 +1,15 @@
 <template>
-  <UserDialog :title="$t('raid-reward-title', {boss: $t(bossName)})" @close="$close">
+  <UserDialog
+    :title="$t('raid-reward-title', { boss: $t(bossName) })"
+    @close="$close"
+  >
     <template v-slot:content>
       <RewardsPreview :rewards="rewards"></RewardsPreview>
     </template>
     <template v-slot:footer>
-      <CustomButton type="grey" @click="$close">{{$t("continue")}}</CustomButton>
+      <CustomButton type="grey" @click="$close">{{
+        $t("continue")
+      }}</CustomButton>
     </template>
   </UserDialog>
 </template>
