@@ -69,7 +69,7 @@
         <div class="width-100 flex flex-center" v-if="currentTab == 'cp'">
           <PerksTree
             class="flex-1"
-            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS, 4)"
             @upgrade="handleUpgrade"
             :canUnlock="canIncrease"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
@@ -81,7 +81,7 @@
           />
           <PerksTree
             class="flex-1"
-            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS, 7)"
             @upgrade="handleUpgrade"
             :canUnlock="canIncrease"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
@@ -93,7 +93,7 @@
           />
           <PerksTree
             class="flex-1"
-            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS, 8)"
             @upgrade="handleUpgrade"
             :canUnlock="canIncrease"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
@@ -105,7 +105,7 @@
           />
           <PerksTree
             class="flex-1"
-            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS)"
+            @unlock="unlockBranch(currencies.CURRENCY_CHRISTMAS_POINTS, 9)"
             @upgrade="handleUpgrade"
             :canUnlock="canIncrease"
             :unlocked="perks[currencies.CURRENCY_CHRISTMAS_POINTS].unlocked"
@@ -123,11 +123,12 @@
             @unlock="unlockBranch(currencies.CURRENCY_SHINIES)"
             @upgrade="handleUpgrade"
             :canUnlock="canIncrease"
+            :unlocked="perks[currencies.CURRENCY_SHINIES].unlocked"
             :perks="perks[currencies.CURRENCY_SHINIES].tiers.all"
-            :name="currencies.CURRENCY_SHINIES"
             :currency="currencies.CURRENCY_SHINIES"
             :perkLevels="perkLevels[currencies.CURRENCY_SHINIES]"
             tier="all"
+            :name="currencies.CURRENCY_SHINIES"
           />
         </div>
       </div>
@@ -494,7 +495,7 @@ export default {
       return this.tower.level - this.unlockedBranchesCount - this.perksSum;
     },
     canIncrease() {
-      return this.newPerksSum < this.freePerkPoints;
+      return this.newPerksSum - this.perksSum < this.freePerkPoints;
     },
     upgradeAllowed() {
       return this.freePerkPoints > 0;
