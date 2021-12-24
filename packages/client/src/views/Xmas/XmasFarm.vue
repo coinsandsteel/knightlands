@@ -69,6 +69,7 @@
       <CustomButton
         class="row3"
         type="yellow"
+        :disabled="!canAffordUpgrade"
         v-else-if="showUpgrade"
         @click="handleClick"
       >
@@ -120,7 +121,7 @@ export default {
   props: ["tier"],
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   components: {
-    ProgressWithLevel,
+    // ProgressWithLevel,
     IncomeText,
     CustomButton,
     IconWithValue
@@ -138,7 +139,7 @@ export default {
       immediate: true,
       handler: function(value) {
         if (value) {
-          console.log("Launched watcher", this.tier, value);
+          // console.log("Launched watcher", this.tier, value);
           this.resetTimer(this.tier);
         }
       }
@@ -146,21 +147,21 @@ export default {
     "slot.progress.percentage": {
       immediate: true,
       handler: function(value) {
-        console.log("Percentage watcher", this.tier, value);
+        // console.log("Percentage watcher", this.tier, value);
         this.progress = value;
       }
     },
     "slot.accumulated.currency": {
       immediate: true,
       handler: function(value) {
-        console.log("Currency watcher", this.tier, value);
+        // console.log("Currency watcher", this.tier, value);
         this.localCurrencyIncomeValue = value;
       }
     },
     "slot.accumulated.exp": {
       immediate: true,
       handler: function(value) {
-        console.log("Exp watcher", this.tier, value);
+        // console.log("Exp watcher", this.tier, value);
         this.localExpIncomeValue = value;
       }
     }
@@ -397,7 +398,7 @@ export default {
             this.$store.dispatch("xmas/upgradeSlot", { tier: this.tier })
           );
         } else if (this.mode === "collect") {
-          //this.reset();
+          this.reset();
           this.handleHarvest();
         }
       }

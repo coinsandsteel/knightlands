@@ -1,17 +1,18 @@
 <template>
   <div class="flex flex-column flex-center construct-element">
-    <img class="building-type" :src="getBuildingType" />
-    <div class="padding-2">
-      <img src="/images/xmas/item_cp.png" />
-      <PurchaseButton
-        type="grey"
-        class="margin-top-1"
-        @click="handleClick"
-        minWidth="10rem"
-        :price="10.0"
-        >{{ getState }}
-      </PurchaseButton>
-    </div>
+    <img :src="getBuildingType" />
+
+    <CustomButton
+      class="margin-top-1 margin-bottom-1"
+      type="grey"
+      minWidth="15rem"
+      @click="handleClick"
+    >
+      <div class="price-l">
+        {{ getState }}
+        <IconWithValue iconClass="icon-premium">100</IconWithValue>
+      </div>
+    </CustomButton>
   </div>
 </template>
 <script>
@@ -23,13 +24,14 @@ states = {
 }
 
 */
-// import IconWithValue from "@/components/IconWithValue.vue";
-import PurchaseButton from "@/components/PurchaseButton.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
+import CustomButton from "@/components/Button.vue";
 
 export default {
   props: ["initialBuildingType"],
   components: {
-    PurchaseButton
+    CustomButton,
+    IconWithValue
   },
   data() {
     return {
@@ -37,19 +39,7 @@ export default {
       buyPrice: 12.0,
       upgradePrice: 15.0,
       state: 0,
-      buildingType: this.initialBuildingType,
-      buildingTypes: [
-        "base",
-        "buck1s",
-        "bucks2",
-        "cp01",
-        "cp02",
-        "cp03",
-        "cp04",
-        "essence",
-        "gold",
-        "shiny"
-      ]
+      buildingType: this.initialBuildingType
     };
   },
   methods: {
@@ -86,7 +76,7 @@ export default {
       return "Buy";
     },
     getBuildingType() {
-      return "/images/xmas/buildings/building_" + this.buildingType + ".png";
+      return "/images/xmas/buildings/building" + this.buildingType + ".png";
     }
   }
 };
@@ -97,6 +87,7 @@ div.construct-element {
   overflow: hidden;
   position: relative;
   background-image: url("../../assets/xmas/buy_bg.png");
+  margin: 1rem;
 }
 img.building-type {
   pointer-events: none;
