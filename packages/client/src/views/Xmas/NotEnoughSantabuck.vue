@@ -1,37 +1,33 @@
 <template>
-  <UserDialog @close="$close(true)">
+  <UserDialog @close="$close(true)" title="Purchase Santabucks">
     <template v-slot:content>
-      <div class="flex flex-column flex-center flex-start">
-        <div
-          class="
-            font-size-30
-            rarity-rare
-            font-outline
-            margin-bottom-2
-            capitalize
-          "
-        >
-          Test<span class="rarity-rare">test</span>!
+      <PaymentStatus
+        :cancel="true"
+        @purchase="purchase"
+        @pay="continuePurchase"
+        @cancel="cancelPurchase"
+      >
+        <div class="shop-container">
+          <div class="outer" v-for="data in iaps" :key="data.iap">
+            <div class="inner flex flex-column flex-center gold-pack">
+              <img src="../../assets/xmas/item_bucks.png" />
+              <div class="padding-1 price-l">
+                <IconWithValue iconClass="icon-sb">{{
+                  data.count
+                }}</IconWithValue>
+              </div>
+              <CustomButton
+                class="margin-top-1 margin-bottom-1"
+                type="grey"
+                minWidth="15rem"
+                @click="purchase(data.iap)"
+              >
+                <PriceTag :iap="data.iap" :dark="true" />
+              </CustomButton>
+            </div>
+          </div>
         </div>
-        <div class="description font-size-22 flex flex-center">
-          {{ $t('you-receive') }}
-          <IconWithValue class="margin-left-1" :iconClass="icon">10</IconWithValue>
-        </div>
-        <img :src="altarImage" alt="" class="popup-img" />
-      </div>
-    </template>
-
-    <template v-slot:footer>
-      <div class="flex width-100 flex-evenly-spaced">
-        <CustomButton width="30%" type="green" @click="$close(true)">
-          {{ $t("btn-use") }}
-          <IconWithValue class="margin-left-1" iconClass="h-energy">10</IconWithValue>
-        </CustomButton>
-
-        <CustomButton width="30%" type="red" @click="$close(false)">
-          {{ $t("btn-cancel") }}
-        </CustomButton>
-      </div>
+      </PaymentStatus>
     </template>
   </UserDialog>
 </template>
@@ -39,46 +35,102 @@
 <script>
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
-import { AltarType } from "@/../../knightlands-shared/dungeon_types";
 import IconWithValue from "@/components/IconWithValue.vue";
+import PriceTag from "@/components/PriceTag.vue";
+import PaymentStatus from "@/components/PaymentStatus.vue";
+import PaymentHandler from "@/components/PaymentHandler.vue";
+
+import { create } from "vue-modal-dialogs";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import ConnectWallet from "@/views/Account/ConnectWallet.vue";
+const ShowWallet = create(ConnectWallet);
+const IAPS = [
+  { iap: "sb_1", count: 9999 },
+  { iap: "sb_2", count: 9999 },
+  { iap: "sb_3", count: 9999 },
+  { iap: "sb_4", count: 9999 },
+  { iap: "sb_5", count: 9999 },
+  { iap: "sb_6", count: 9999 }
+];
 
 export default {
-  props: ["altarId"],
-  components: { UserDialog, CustomButton, IconWithValue },
+  mixins: [NetworkRequestErrorMixin, PaymentHandler],
+  components: {
+    UserDialog,
+    CustomButton,
+    IconWithValue,
+    PriceTag,
+    PaymentStatus
+  },
   data: () => ({
-    types: AltarType
+    iaps: IAPS
   }),
-  computed: {
-    altarImage() {
-      return `/images/xmas/item_bucks.png`;
+  mounted() {
+    this.fetchPaymentStatus();
+  },
+  methods: {
+    async purchase(iap) {
+      const result = await ShowWallet();
+      if (result) {
+        await this.performRequest(
+          this.purchaseRequest(this.$game.purchase(iap))
+        );
+      }
     },
-    icon() {
-      return "h-energy";
+    async fetchPaymentStatus() {
+      await this.performRequest(this.$store.dispatch("shop/refreshStatus"));
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-@import (reference) "../../style/common.less";
+.outer {
+  position: relative;
 
-.description {
-  padding: 0 5%;
+  &:before {
+    content: "";
+    width: 100%;
+    display: inline-block;
+    padding-bottom: calc(100% / (9 / 16));
+  }
+
+  & > .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
-.popup-img {
-  max-height: 20vh;
+
+.shop-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  justify-items: stretch;
+  row-gap: 1rem;
+  column-gap: 1rem;
 }
-.flex-evenly-spaced {
-  justify-content: space-evenly;
-}
-.color-energy {
-  color: rgb(165, 230, 118);
-}
-.color-hp {
-  color: #f44a64;
-}
-.energy-hallowen {
-  .icon_nrg_halloween;
-  .icon();
+
+.gold-pack {
+  // background-image: url("../../assets/xmas/buy_bg.png");
+  // background-size: 100% 100%;
+  // background-repeat: no-repeat;
+  // background-position: center;
+
+  border-image: url("../../assets/ui/shop_packs_bg.svg");
+  border-image-slice: 19 fill;
+  border-image-width: 18px;
+  border-image-repeat: stretch stretch;
+
+  & img {
+    max-width: 100%;
+  }
+
+  & .price-l {
+    width: calc(100% - 6px);
+    background-color: #172b44;
+  }
 }
 </style>

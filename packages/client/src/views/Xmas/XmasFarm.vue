@@ -69,7 +69,6 @@
       <CustomButton
         class="row3"
         type="yellow"
-        :disabled="!canAffordUpgrade"
         v-else-if="showUpgrade"
         @click="handleClick"
       >
@@ -422,7 +421,7 @@ export default {
       } else {
         if (this.mode === "manage") {
           if (!this.canAffordUpgrade) {
-            await ShowNotEnoughSantabuckPopup();
+            // await ShowNotEnoughSantabuckPopup();
             return;
           }
 
