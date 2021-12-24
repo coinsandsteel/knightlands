@@ -184,7 +184,7 @@ export default {
           ...state.slots[payload.tier].slotPerks,
           ...payload.slotPerks
         };
-        console.log("Slot perks updated", payload);
+        //console.log("Slot perks updated", payload);
       }
 
       if (data.balance !== undefined) {
@@ -205,12 +205,12 @@ export default {
 
       if (data.cycleStart !== undefined) {
         this.$app.$emit("cycle-start", data.cycleStart.tier);
-        console.log("Cycle start", data.cycleStart);
+        //console.log("Cycle start", data.cycleStart);
       }
 
       if (data.cycleStop !== undefined) {
         this.$app.$emit("cycle-stop", data.cycleStop.tier);
-        console.log("Cycle stop", data.cycleStop);
+        //console.log("Cycle stop", data.cycleStop);
       }
 
       if (data.launched !== undefined) {
@@ -239,7 +239,7 @@ export default {
       state.rebalance = { ...state.rebalance, ...data.rebalance };
       state.cpoints = { ...state.cpoints, ...data.cpoints };
       state.loaded = true;
-      console.log("setInitialState", data);
+      //console.log("setInitialState", data);
     }
   },
   actions: {
