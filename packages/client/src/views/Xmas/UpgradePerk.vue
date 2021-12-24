@@ -21,7 +21,7 @@
           :rowStyle="{ 'align-items': 'center' }"
           :btnStyle="{ width: '1em', height: '1em' }"
           :value="getStatValue(currency, tier, perkName)"
-          :maxValue="perkPoints + currentLevel"
+          :maxValue="freePerkPoints"
           :decreaseCondition="canDecrease(currency, tier, perkName)"
           :increaseCondition="canIncrease"
           @inc="increaseAttribute(currency, tier, perkName)"
@@ -33,7 +33,7 @@
           <CustomButton type="red" @click="$close(false)">{{
             $t("btn-cancel")
           }}</CustomButton>
-          <CustomButton type="green" @click="confirmPerks">{{
+          <CustomButton type="green" :disabled="!perksModified" @click="confirmPerks">{{
             $t("btn-confirm")
           }}</CustomButton>
         </div>
@@ -77,13 +77,6 @@ export default {
     },
     perk() {
       return this.perks[this.currency].tiers[this.tier];
-    },
-    newUnlockedBranchesCount() {
-      let sum = 0;
-      for (let currencyName in this.newPerks) {
-        sum += this.newPerks[currencyName].unlocked ? 1 : 0;
-      }
-      return sum;
     },
     unlockedBranchesCount() {
       let sum = 0;
@@ -148,17 +141,11 @@ export default {
     currentLevel() {
       return this.perks[this.currency].tiers[this.tier][this.perkName].level;
     },
-    perkPoints() {
-      return this.tower.level - this.unlockedBranchesCount;
+    freePerkPoints() {
+      return this.tower.level - this.unlockedBranchesCount - this.newPerksSum;
     },
     canIncrease() {
-      return this.newPerksSum < this.perkPoints;
-    },
-    upgradeAllowed() {
-      return this.perksSum < this.perkPoints;
-    },
-    rebalanceAllowed() {
-      return this.perksSum > 0;
+      return this.freePerkPoints;
     },
     ...mapState({
       tower: state => state.xmas.tower,
@@ -223,27 +210,6 @@ export default {
     reset(currencyName, tier, perkName) {
       while (this.canDecrease(currencyName, tier, perkName)) {
         this.decreaseAttribute(currencyName, tier, perkName);
-      }
-    },
-    resetPerks() {
-      let perksClone = _.cloneDeep(this.perks);
-      for (let currencyName in this.newPerks) {
-        for (let tier in this.newPerks[currencyName].tiers) {
-          for (let perkName in this.newPerks[currencyName].tiers[tier]) {
-            this.newPerks[currencyName].tiers[tier][perkName] = {
-              ...this.newPerks[currencyName].tiers[tier][perkName],
-              ...perksClone[currencyName].tiers[tier][perkName]
-            };
-          }
-        }
-      }
-
-      let burstPerksClone = _.cloneDeep(this.burstPerks);
-      for (let perkName in this.newBurstPerks) {
-        this.newBurstPerks[perkName] = {
-          ...this.newBurstPerks[perkName],
-          ...burstPerksClone[perkName]
-        };
       }
     }
   }
