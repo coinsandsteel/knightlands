@@ -115,7 +115,7 @@ export default {
       }
       return (
         Math.floor(
-          (this.cpoints.shares / this.totalShares) *
+          (this.cpoints.shares / this.totalPoints) *
             this.emission *
             FLESH_PRECISION
         ) / FLESH_PRECISION
