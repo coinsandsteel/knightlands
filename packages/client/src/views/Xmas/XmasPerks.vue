@@ -79,7 +79,7 @@
             :perkLevels="perkLevels[currencies.CURRENCY_CHRISTMAS_POINTS]['4']"
             :currency="currencies.CURRENCY_CHRISTMAS_POINTS"
             :tier="4"
-            name="Tier 4"
+            name="Xmas Building 1"
           />
           <PerksTree
             class="flex-1"
@@ -91,7 +91,7 @@
             :currency="currencies.CURRENCY_CHRISTMAS_POINTS"
             :perkLevels="perkLevels[currencies.CURRENCY_CHRISTMAS_POINTS]['7']"
             :tier="7"
-            name="Tier 7"
+            name="Xmas Building 2"
           />
           <PerksTree
             class="flex-1"
@@ -103,7 +103,7 @@
             :currency="currencies.CURRENCY_CHRISTMAS_POINTS"
             :perkLevels="perkLevels[currencies.CURRENCY_CHRISTMAS_POINTS]['8']"
             :tier="8"
-            name="Tier 8"
+            name="Xmas Building 3"
           />
           <PerksTree
             class="flex-1"
@@ -115,7 +115,7 @@
             :currency="currencies.CURRENCY_CHRISTMAS_POINTS"
             :perkLevels="perkLevels[currencies.CURRENCY_CHRISTMAS_POINTS]['9']"
             :tier="9"
-            name="Tier 9"
+            name="Xmas Building 4"
           />
         </div>
 

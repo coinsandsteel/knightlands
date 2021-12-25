@@ -29,6 +29,9 @@ export default {
   components: { CustomButton },
   methods: {
     handleClick(value) {
+      if (this.levelGap == value) {
+        return;
+      }
       this.$store.dispatch("xmas/updateLevelGap", value);
     }
   },

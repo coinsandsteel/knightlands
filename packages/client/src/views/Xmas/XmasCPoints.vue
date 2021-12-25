@@ -69,7 +69,7 @@ import Background from "./Background.vue";
 import { mapState } from "vuex";
 
 const PAYOUT_PERIOD = 86400;
-const FLESH_EMISSION = 250;
+const FLESH_EMISSION = 750;
 const PRECISION = 10000;
 const FLESH_PRECISION = 1000000;
 
