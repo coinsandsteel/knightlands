@@ -35,6 +35,8 @@
           <span>{{ description }}</span>
         </div>
 
+        <LevelLabel :level="nextLevel" v-if="showUpgrade" />
+
         <div
           class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap flex-self-center"
           v-if="showUpgrade"
@@ -106,6 +108,7 @@ import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import ProgressWithLevel from "./ProgressWithLevel.vue";
+import LevelLabel from "./LevelLabel.vue";
 
 import {
   abbreviateNumber,
@@ -128,7 +131,8 @@ export default {
     ProgressWithLevel,
     IncomeText,
     CustomButton,
-    IconWithValue
+    IconWithValue,
+    LevelLabel
   },
   data: () => ({
     localCurrencyIncomeValue: 0,
@@ -214,18 +218,11 @@ export default {
     slot() {
       return this.$store.getters["xmas/slot"](this.tier);
     },
+    nextLevel() {
+      return this.slot.stats.upgrade.nextLevel;
+    },
     level() {
-      if (this.slot.level > 0 && this.levelGap > 1) {
-        return (
-          '<span style="color: cyan">' +
-          this.slot.level +
-          "&nbsp;&rarr;&nbsp;" +
-          this.slot.stats.upgrade.nextLevel +
-          "</span>"
-        );
-      } else {
-        return this.slot.level;
-      }
+      return this.slot.level;
     },
     upgradePriceFormatted() {
       return abbreviateNumber(this.slot.stats.upgrade.value);
