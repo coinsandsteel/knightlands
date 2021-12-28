@@ -24,31 +24,30 @@
       </div>
 
       <div class="flex row1 flex-column flex-start flex-items-center">
-        <div class="icon-farm flex flex-center margin-right-half">
-          <div :class="icon" class="big"></div>
-        </div>
-
         <div class="flex flex-center">
-          <LevelLabel :level="level" />
-          <span class="nav-arrow" v-if="showUpgrade"></span>
-          <LevelLabel
-            class="rarity-rare font-outline"
-            :level="nextLevel"
-            v-if="showUpgrade"
-          />
+          <template v-if="showUpgrade">
+            <LevelLabel :level="level" />
+            <span class="nav-arrow"></span>
+            <LevelLabel class="rarity-rare font-outline" :level="nextLevel" />
+          </template>
 
           <div
             class="label-bg font-size-18 flex flex-center padding-1 margin-right-half"
             v-if="showDesc"
           >
+            <div class="icon-farm flex flex-center margin-right-half">
+              <div :class="icon" class="big"></div>
+            </div>
             <span>{{ description }}</span>
           </div>
         </div>
 
         <div
-          class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap"
+          class="label-bg font-size-18 flex flex-center padding-half flex-no-wrap"
           v-if="showUpgrade"
         >
+          <span :class="icon" class="big"></span>
+
           <span>{{ currentCurrencyIncomeValueFormatted }}</span>
           <span class="nav-arrow"></span>
           <span class="rarity-rare">{{
@@ -56,9 +55,10 @@
           }}</span>
         </div>
         <div
-          class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap"
+          class="label-bg font-size-18 flex flex-center padding-half flex-no-wrap"
           v-if="showUpgrade"
         >
+          <span class="icon-exp big"></span>
           <span>{{ currentCurrencyIncomeValueFormatted }}</span>
           <span class="nav-arrow"></span>
           <span class="rarity-rare">{{
@@ -513,7 +513,7 @@ export default {
   & .row1 {
     z-index: 2;
     grid-column: 1;
-    grid-row: ~"1/3";
+    grid-row: ~"1/4";
   }
 
   & .row2 {
@@ -561,12 +561,6 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-}
-
-.icon-farm {
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 </style>
 
