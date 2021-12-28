@@ -23,22 +23,40 @@
         <span class="icon-lock-big huge" v-if="!buildingIsAllowed"></span>
       </div>
 
-      <div class="flex flex-items-center row1 flex-no-wrap">
+      <div class="flex row1 flex-column flex-start flex-items-center">
         <div class="icon-farm flex flex-center margin-right-half">
           <div :class="icon" class="big"></div>
         </div>
 
-        <div
-          class="label-bg font-size-18 flex flex-center padding-1 margin-right-half flex-self-center"
-          v-if="showDesc"
-        >
-          <span>{{ description }}</span>
+        <div class="flex flex-center">
+          <LevelLabel :level="level" />
+          <span class="nav-arrow" v-if="showUpgrade"></span>
+          <LevelLabel
+            class="rarity-rare font-outline"
+            :level="nextLevel"
+            v-if="showUpgrade"
+          />
+
+          <div
+            class="label-bg font-size-18 flex flex-center padding-1 margin-right-half"
+            v-if="showDesc"
+          >
+            <span>{{ description }}</span>
+          </div>
         </div>
 
-        <LevelLabel :level="nextLevel" v-if="showUpgrade" />
-
         <div
-          class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap flex-self-center"
+          class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap"
+          v-if="showUpgrade"
+        >
+          <span>{{ currentCurrencyIncomeValueFormatted }}</span>
+          <span class="nav-arrow"></span>
+          <span class="rarity-rare">{{
+            nextCurrencyIncomeValueFormatted
+          }}</span>
+        </div>
+        <div
+          class="label-bg font-size-18 flex flex-center padding-1 flex-no-wrap"
           v-if="showUpgrade"
         >
           <span>{{ currentCurrencyIncomeValueFormatted }}</span>
@@ -493,8 +511,9 @@ export default {
   height: 20vh;
 
   & .row1 {
+    z-index: 2;
     grid-column: 1;
-    grid-row: 1;
+    grid-row: ~"1/3";
   }
 
   & .row2 {
@@ -542,6 +561,12 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.icon-farm {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
 
