@@ -25,7 +25,7 @@
 
       <div class="flex flex-items-center row1 flex-no-wrap">
         <div class="icon-farm flex flex-center margin-right-half">
-          <div :class="icon" class="big"></div>
+          <div :class="iconBig" class="big"></div>
         </div>
 
         <div
@@ -90,7 +90,7 @@
 
         <CustomButton class="row3" type="green" @click="handleClick">
           Collect
-          <IconWithValue :iconClass="icon">{{
+          <IconWithValue :iconClass="iconSmall">{{
             localCurrencyIncomeValueFormatted
           }}</IconWithValue>
         </CustomButton>
@@ -199,7 +199,7 @@ export default {
     showUpgrade() {
       return this.mode == "manage" && this.isBuilt;
     },
-    icon() {
+    iconBig() {
       switch (farmConfig[this.tier].currency) {
         case CURRENCY_GOLD:
           return "icon-gold";
@@ -212,7 +212,25 @@ export default {
         case CURRENCY_CHRISTMAS_POINTS:
           return "icon-cp";
       }
-
+      return "";
+    },
+    iconSmall() {
+      switch (farmConfig[this.tier].currency) {
+        case CURRENCY_GOLD:
+          return "icon-gold";
+        case CURRENCY_SHINIES: {
+          if (this.tier6IsNotReady) {
+            return "icon-exp";
+          }
+          return "icon-premium";
+        }
+        case CURRENCY_SANTABUCKS:
+          return "icon-sb";
+        case CURRENCY_UNIT_ESSENCE:
+          return "unit-essence";
+        case CURRENCY_CHRISTMAS_POINTS:
+          return "icon-cp";
+      }
       return "";
     },
     slot() {
@@ -250,17 +268,17 @@ export default {
       return abbreviateNumber(this.slot.stats.income.next.currencyPerCycle);
     },
     localCurrencyIncomeValueFormatted() {
-      let income = this.localCurrencyIncomeValue;
-
-      switch (farmConfig[this.tier].currency) {
-        case CURRENCY_SHINIES:
-        case CURRENCY_GOLD:
-        case CURRENCY_SANTABUCKS:
-        case CURRENCY_UNIT_ESSENCE:
-          income = Math.floor(income);
-          break;
+      let income = this.switchableTotalIncomeValue;
+      if (!this.tier6IsNotReady) {
+        switch (farmConfig[this.tier].currency) {
+          case CURRENCY_SHINIES:
+          case CURRENCY_GOLD:
+          case CURRENCY_SANTABUCKS:
+          case CURRENCY_UNIT_ESSENCE:
+            income = Math.floor(income);
+            break;
+        }
       }
-
       return abbreviateNumber(income);
     },
     localExpIncomeValueFormatted() {
