@@ -90,12 +90,16 @@ export default {
         this.currency
       );
 
-      if ([
-        TOWER_PERK_CYCLE_DURATION,
-        TOWER_PERK_INCOME,
-        TOWER_PERK_UPGRADE
-      ].includes(this.perkName)) {
+      if (TOWER_PERK_INCOME == this.perkName) {
         rawValue *= 100;
+      }
+
+      if (
+        TOWER_PERK_CYCLE_DURATION == this.perkName
+        ||
+        TOWER_PERK_UPGRADE == this.perkName
+      ) {
+        rawValue = (rawValue / (1 + rawValue)) * 100;
       }
 
       return Math.floor(rawValue * 1000) / 1000;
