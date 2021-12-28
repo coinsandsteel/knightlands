@@ -52,7 +52,19 @@ import NumericValue from "@/components/NumericValue.vue";
 import { mapState } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import PerkIcon from "./PerkIcon.vue";
-import { getMainTowerPerkValue } from "../../../../knightlands-shared/xmas";
+import {
+  TOWER_PERK_CYCLE_DURATION,
+  TOWER_PERK_INCOME,
+  TOWER_PERK_UPGRADE,
+  TOWER_PERK_AUTOCYCLES_COUNT,
+  TOWER_PERK_BOOST,
+  TOWER_PERK_SPEED,
+  TOWER_PERK_SUPER_BOOST,
+  TOWER_PERK_SUPER_SPEED,
+  TOWER_PERK_PRESENT,
+  TOWER_PERK_SLEEP,
+  getMainTowerPerkValue
+} from "../../../../knightlands-shared/xmas";
 
 export default {
   components: {
@@ -71,16 +83,22 @@ export default {
   },
   computed: {
     value() {
-      return (
-        Math.floor(
-          getMainTowerPerkValue(
-            +this.tier,
-            this.perkName,
-            this.getStatValue(this.currency, this.tier, this.perkName),
-            this.currency
-          ) * 1000
-        ) / 1000
+      let rawValue = getMainTowerPerkValue(
+        +this.tier,
+        this.perkName,
+        this.getStatValue(this.currency, this.tier, this.perkName),
+        this.currency
       );
+
+      if ([
+        TOWER_PERK_CYCLE_DURATION,
+        TOWER_PERK_INCOME,
+        TOWER_PERK_UPGRADE
+      ].includes(this.perkName)) {
+        rawValue *= 100;
+      }
+
+      return Math.floor(rawValue * 1000) / 1000;
     },
     perk() {
       return this.perks[this.currency].tiers[this.tier];
