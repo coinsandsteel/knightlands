@@ -28,7 +28,10 @@
           <template v-if="showUpgrade">
             <LevelLabel :level="level" />
             <span class="nav-arrow"></span>
-            <LevelLabel class="rarity-rare font-outline" :level="nextLevel" />
+            <LevelLabel
+              class="rarity-rare font-outline font-weight-900"
+              :level="nextLevel"
+            />
           </template>
 
           <div
