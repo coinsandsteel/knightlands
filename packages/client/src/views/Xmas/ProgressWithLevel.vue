@@ -3,7 +3,7 @@
     <LevelLabel :level="level"></LevelLabel>
     <ProgressBar
       barClasses="no-animation"
-      :maxValue="100"
+      :maxValue="maxValue || 100"
       :percentMode="false"
       :hideMaxValue="false"
       v-model="value"
@@ -21,6 +21,6 @@ export default {
     ProgressBar,
     LevelLabel
   },
-  props: ["level", "value"]
+  props: ["level", "value", "maxValue"]
 };
 </script>

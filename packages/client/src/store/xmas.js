@@ -31,8 +31,10 @@ export default {
     },
     tower: {
       exp: 0,
+      currentLevelExp: 0,
+      nextLevelExp: 0,
       level: 0,
-      pecentage: 0
+      percentage: 0
     },
     levelGap: 1,
     slots,

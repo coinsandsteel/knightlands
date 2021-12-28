@@ -5,7 +5,8 @@
       <div class="tower-bg full-flex"></div>
       <ProgressWithLevel
         :level="tower.level"
-        :value="tower.percentage"
+        :value="progress.value"
+        :maxValue="progress.maxValue"
       ></ProgressWithLevel>
     </div>
 
@@ -69,6 +70,12 @@ export default {
     NewMultipliers
   },
   computed: {
+    progress() {
+      return {
+        value: abbreviateNumber(this.tower.currentLevelExp || this.tower.percentage),
+        maxValue: abbreviateNumber(this.tower.nextLevelExp || 100)
+      };
+    },
     expirienceValueFormatted() {
       return abbreviateNumber(this.tower.exp);
     },
