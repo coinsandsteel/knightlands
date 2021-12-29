@@ -109,7 +109,7 @@
         ></ProgressWithLevel>
 
         <CustomButton class="row3" type="green" @click="handleClick">
-          <IconWithValue v-if="!tier6IsNotReady" :iconClass="icon">{{
+          <IconWithValue :iconClass="icon">{{
             localCurrencyIncomeValueFormatted
           }}</IconWithValue>
           &nbsp;
@@ -278,33 +278,19 @@ export default {
       return abbreviateNumber(this.slot.stats.income.next.expPerCycle);
     },
     localCurrencyIncomeValueFormatted() {
-      let income = this.switchableTotalIncomeValue;
-      if (!this.tier6IsNotReady) {
-        switch (farmConfig[this.tier].currency) {
-          case CURRENCY_SHINIES:
-          case CURRENCY_GOLD:
-          case CURRENCY_SANTABUCKS:
-          case CURRENCY_UNIT_ESSENCE:
-            income = Math.floor(income);
-            break;
-        }
+      let income = this.localCurrencyIncomeValue;
+      switch (farmConfig[this.tier].currency) {
+        case CURRENCY_SHINIES:
+        case CURRENCY_GOLD:
+        case CURRENCY_SANTABUCKS:
+        case CURRENCY_UNIT_ESSENCE:
+          income = Math.floor(income);
+          break;
       }
       return abbreviateNumber(income);
     },
     localExpIncomeValueFormatted() {
       return abbreviateNumber(this.localExpIncomeValue);
-    },
-    tier6IsNotReady() {
-      return (
-        this.tier == 6 && this.slot.stats.income.current.currencyPerCycle < 1
-      );
-    },
-    switchableTotalIncomeValue() {
-      if (this.tier6IsNotReady) {
-        return this.localExpIncomeValue;
-      } else {
-        return this.localCurrencyIncomeValue;
-      }
     },
     buildingIsAllowed() {
       if (this.tier == 1) {
@@ -394,10 +380,7 @@ export default {
         let currentIncomeValue = this.slot.stats.income.current;
 
         this.progress++;
-        if (!this.tier6IsNotReady) {
-          this.localCurrencyIncomeValue +=
-            currentIncomeValue.currencyPerCycle / 200;
-        }
+        this.localCurrencyIncomeValue += currentIncomeValue.currencyPerCycle / 200;
         this.localExpIncomeValue += currentIncomeValue.expPerCycle / 200;
 
         if (this.progress >= 100) {
@@ -484,23 +467,11 @@ export default {
       }
     },
     async handleHarvest() {
-      // if (!this.tier6IsNotReady) {
-      //   this.incomes.push({
-      //     income: this.totalIncomeValueFormatted,
-      //     id: this.incomeId++
-      //   });
-      // }
-
       await this.performRequestNoCatch(
         this.$store.dispatch("xmas/harvest", { tier: this.tier })
       );
-
-      // setTimeout(() => {
-      //   this.incomes.splice(0, 1);
-      // }, 3000);
     },
     reset() {
-      // console.log("Reset");
       this.progress = 0;
       this.localCurrencyIncomeValue = 0;
       this.localExpIncomeValue = 0;
