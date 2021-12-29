@@ -114,7 +114,7 @@
             localCurrencyIncomeValueFormatted
           }}</IconWithValue>
           &nbsp;
-          <IconWithValue iconClass="icon-exp">{{
+          <IconWithValue valueClass="exp-value" iconClass="icon-exp">{{
             localExpIncomeValueFormatted
           }}</IconWithValue>
         </CustomButton>
@@ -525,6 +525,7 @@ export default {
   }
 
   & .row3 {
+    z-index: 3;
     grid-column: 1;
     grid-row: 3;
     align-self: flex-end;
@@ -574,5 +575,13 @@ export default {
 .unit-essence {
   .essence;
   .item-icon;
+}
+.exp-value {
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+}
+.icon-exp {
+  width: 3rem;
+  height: 3rem;
 }
 </style>
