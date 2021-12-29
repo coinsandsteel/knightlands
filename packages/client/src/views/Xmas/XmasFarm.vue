@@ -107,6 +107,7 @@
           v-if="slot.level && progress !== null"
           :value="progress"
           :level="slot.level"
+          :abbreviate="false"
         ></ProgressWithLevel>
 
         <CustomButton class="row3" type="green" @click="handleClick">

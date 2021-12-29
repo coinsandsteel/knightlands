@@ -91,6 +91,7 @@ export default {
     valueClass: { default: "" },
     iconClass: { type: String },
     hideMaxValue: { type: Boolean },
+    abbreviate: { type: Boolean, default: false },
     value: { type: [Number, String], default: 0 },
     value2: { type: [Number, String], default: 0 },
     timer: { type: Object },
@@ -145,8 +146,14 @@ export default {
         ? Math.floor((useValue / this.maxValue) * 100)
         : useValue;
 
+      let maxValue = this.maxValue;
+      if (this.abbreviate) {
+        value = this.abbreviateNumber(value);
+        maxValue = this.abbreviateNumber(maxValue);
+      }
+
       if (!this.hideMaxValue && !this.percentMode) {
-        value += `/${this.maxValue}`;
+        value += `/${maxValue}`;
       }
 
       if (this.percentMode) {
@@ -176,6 +183,18 @@ export default {
     }
   },
   methods: {
+    abbreviateNumber(value) {
+      let newValue = value;
+      const suffixes = ["", "K", "M", "B", "T", "QV", "QN", "S"];
+      let suffixNum = 0;
+      while (newValue >= 1000) {
+        newValue /= 1000;
+        suffixNum++;
+      }
+      newValue = newValue.toPrecision(3);
+      newValue += suffixes[suffixNum];
+      return newValue;
+    },
     toggleTimer() {
       if (!this.timer) {
         return;

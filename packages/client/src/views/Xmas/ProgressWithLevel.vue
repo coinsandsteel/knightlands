@@ -8,6 +8,7 @@
       :hideMaxValue="false"
       v-model="value"
       barType="blue"
+      :abbreviate="abbreviate"
     ></ProgressBar>
   </div>
 </template>
@@ -21,6 +22,6 @@ export default {
     ProgressBar,
     LevelLabel
   },
-  props: ["level", "value", "maxValue"]
+  props: ["level", "value", "maxValue", "abbreviate"]
 };
 </script>

@@ -7,6 +7,7 @@
         :level="tower.level"
         :value="progress.value"
         :maxValue="progress.maxValue"
+        :abbreviate="true"
       ></ProgressWithLevel>
     </div>
 
@@ -72,8 +73,8 @@ export default {
   computed: {
     progress() {
       return {
-        value: abbreviateNumber(this.tower.currentLevelExp || this.tower.percentage),
-        maxValue: abbreviateNumber(this.tower.nextLevelExp || 100)
+        value: this.tower.currentLevelExp || this.tower.percentage,
+        maxValue: this.tower.nextLevelExp || 100
       };
     },
     expirienceValueFormatted() {
