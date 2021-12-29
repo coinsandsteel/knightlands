@@ -62,11 +62,9 @@
           v-if="showUpgrade"
         >
           <span class="icon-exp big"></span>
-          <span>{{ currentCurrencyIncomeValueFormatted }}</span>
+          <span>{{ currentExpIncomeValueFormatted }}</span>
           <span class="nav-arrow"></span>
-          <span class="rarity-rare">{{
-            nextCurrencyIncomeValueFormatted
-          }}</span>
+          <span class="rarity-rare">{{ nextExpIncomeValueFormatted }}</span>
         </div>
       </div>
 
@@ -272,6 +270,12 @@ export default {
     },
     nextCurrencyIncomeValueFormatted() {
       return abbreviateNumber(this.slot.stats.income.next.currencyPerCycle);
+    },
+    currentExpIncomeValueFormatted() {
+      return abbreviateNumber(this.slot.stats.income.current.expPerCycle);
+    },
+    nextExpIncomeValueFormatted() {
+      return abbreviateNumber(this.slot.stats.income.next.expPerCycle);
     },
     localCurrencyIncomeValueFormatted() {
       let income = this.switchableTotalIncomeValue;
