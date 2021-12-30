@@ -146,11 +146,14 @@ export default {
       this.newPerks[perkName]--;
       return true;
     },
-    confirmPerks() {
-      this.$store.dispatch("xmas/commitSlotPerks", {
+    async confirmPerks() {
+      await this.$store.dispatch("xmas/commitSlotPerks", {
         slotPerks: this.newPerks,
         tier: this.tier
       });
+      if (!this.freePerkPoints) {
+        this.$close(true);
+      }
     },
     reset(tier, perkName) {
       while (this.canDecrease(tier, perkName)) {
