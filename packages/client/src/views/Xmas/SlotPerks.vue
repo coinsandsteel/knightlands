@@ -37,7 +37,7 @@
             />
 
             <span class="font-size-20">{{
-              $t(`d-${perkName}`, { n: perks[perkName] })
+              $t(`d-${perkName}`, { n: newPerks[perkName] })
             }}</span>
           </div>
         </div>
