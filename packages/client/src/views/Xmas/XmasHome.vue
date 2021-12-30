@@ -28,10 +28,11 @@ import Tabs from "@/components/Tabs.vue";
 import Background from "./Background.vue";
 import XmasMap from "./XmasMap.vue";
 import XmasPerks from "./XmasPerks.vue";
-// import ModeSwitchBtn from "./ModeSwitchBtn.vue";
-// import StatisticsBtn from "./StatisticsBtn.vue";
-// import Multipliers from "./Multipliers.vue";
 import XmasCPoints from "./XmasCPoints.vue";
+import SlotPerks from "./SlotPerks.vue";
+import { create } from "vue-modal-dialogs";
+
+const ShowSlotPerks = create(SlotPerks, "tier");
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PromptMixin],
@@ -41,10 +42,6 @@ export default {
     XmasCPoints,
     XmasPerks,
     XmasMap
-    // ModeSwitchBtn,
-    // StatisticsBtn,
-    // Multipliers,
-    // CustomButton
   },
   data: () => ({
     tabs: [
@@ -75,6 +72,10 @@ export default {
   created() {
     this.title = "w-xmas";
     this.switchTab(this.currentTab);
+    this.$store.$app.$on("show-slot-perks", this.showSlotPerks.bind(this));
+  },
+  beforeDestroy() {
+    this.$store.$app.$off("show-slot-perks");
   },
   computed: {
     isMapMode() {
@@ -90,6 +91,9 @@ export default {
     })
   },
   methods: {
+    showSlotPerks(tier) {
+      ShowSlotPerks(tier);
+    },
     goToBuild() {
       this.switchTab("build");
     },

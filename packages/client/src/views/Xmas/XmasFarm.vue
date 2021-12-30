@@ -166,6 +166,12 @@ export default {
     incomes: []
   }),
   watch: {
+    "slot.level": {
+      immediate: false,
+      handler: function() {
+        this.showSlotPerks();
+      }
+    },
     "slot.launched": {
       immediate: true,
       handler: function(value) {
@@ -337,6 +343,19 @@ export default {
     }
   },
   methods: {
+    showSlotPerks() {
+      let freePerkPoints = Math.floor(this.slot.level / 25);
+      let enabledPerksCount = Object.values(this.slot.slotPerks).reduce(
+        (previousValue, currentValue) => previousValue + currentValue,
+        0
+      );
+
+      if (freePerkPoints <= enabledPerksCount) {
+        return;
+      }
+
+      this.$store.$app.$emit("show-slot-perks", this.tier);
+    },
     async showNotEnoughSantabucks() {
       await this.showPrompt(
         "Not enough Santabucks!",
@@ -380,7 +399,8 @@ export default {
         let currentIncomeValue = this.slot.stats.income.current;
 
         this.progress++;
-        this.localCurrencyIncomeValue += currentIncomeValue.currencyPerCycle / 200;
+        this.localCurrencyIncomeValue +=
+          currentIncomeValue.currencyPerCycle / 200;
         this.localExpIncomeValue += currentIncomeValue.expPerCycle / 200;
 
         if (this.progress >= 100) {
