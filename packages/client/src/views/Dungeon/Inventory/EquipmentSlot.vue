@@ -5,7 +5,7 @@
     :class="{ pointer: id }"
   >
     <span class="font-size-20 font-weight-900" v-html="damage"></span>
-    <div class="loot-slot flex relative flex-column ">
+    <div class="element-slot flex relative flex-column ">
       <div class="inner-border item_slot_dark" :class="rarity">
         <div
           :style="icon"
@@ -83,7 +83,7 @@ export default {
 <style lang="less" scoped>
 @import (reference) "../../../style/common.less";
 
-.loot-slot {
+.element-slot {
   position: relative;
 
   width: @lootCellSize;

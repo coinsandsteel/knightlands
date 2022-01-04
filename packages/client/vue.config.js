@@ -72,11 +72,11 @@ module.exports = {
     devtool: "source-map",
     optimization: optimization
   },
-  chainWebpack: config => { 
-    config.output 
+  chainWebpack: config => {
+    config.output
       .filename(`js/[name].[hash:8].js`)
-      .chunkFilename(`js/[name].[hash:8].js`) 
-  }, 
+      .chunkFilename(`js/[name].[hash:8].js`);
+  },
   // css: {
   //     loaderOptions: {
   //         postcss: {
@@ -84,6 +84,9 @@ module.exports = {
   //         }
   //     }
   // },
+  css: {
+    sourceMap: process.env.NODE_ENV !== "production"
+  },
   lintOnSave: false,
   productionSourceMap: false
 };

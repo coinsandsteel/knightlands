@@ -27,6 +27,13 @@
                 id="xmas"
                 >{{ $t("btn-evt-xmas") }}
               </MenuIcon>
+              <MenuIcon
+                icon="skewed_icon_xmas"
+                :to="{ name: 'lunar-home' }"
+                :append="true"
+                id="lunar"
+                >{{ $t("btn-evt-lunar") }}
+              </MenuIcon>
             </MenuIconRow>
 
             <MenuIconRow>

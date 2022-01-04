@@ -72,6 +72,8 @@ const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
 const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
 
+const LunarRoot = () => import("./views/Lunar/LunarRoot.vue");
+
 const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
 const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
 const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
@@ -453,6 +455,25 @@ const router = new Router({
           path: "new",
           name: "xmas-new",
           component: NewXmasForm
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/lunar",
+      component: LunarRoot,
+      children: [
+        {
+          path: "",
+          name: "lunar-home",
+          component: () => import("./views/Lunar/LunarHome.vue")
+        },
+        {
+          path: "recipe-book",
+          name: "lunar-recipe-book",
+          component: () => import("./views/Lunar/LunarRecipeBook.vue")
         }
       ],
       meta: {
