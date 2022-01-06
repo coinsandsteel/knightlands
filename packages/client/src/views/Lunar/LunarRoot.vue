@@ -33,12 +33,12 @@ export default {
     return {
       tabs: [
         {
-          title: "Matching Altar???",
+          title: this.$t("matching-alter"),
           value: MatchingAltarTab,
           to: { name: MatchingAltarTab }
         },
         {
-          title: "Recipe Book???",
+          title: this.$t("recipe-book"),
           value: RecipeBookTab,
           to: { name: RecipeBookTab }
         }
@@ -47,7 +47,7 @@ export default {
     };
   },
   created() {
-    this.title = "Lunar???";
+    this.title = this.$t("window-lunar");
   },
   computed: {
     loaded() {
