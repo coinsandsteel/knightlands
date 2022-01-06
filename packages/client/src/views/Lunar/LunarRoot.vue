@@ -10,9 +10,7 @@
         :replace="true"
       >
       </tabs>
-      <keep-alive>
-        <router-view v-if="loaded"></router-view>
-      </keep-alive>
+      <router-view v-if="loaded"></router-view>
     </div>
   </div>
 </template>
@@ -21,7 +19,7 @@
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 
-const MatchingAltarTab = "lunar-home";
+const MatchingAltarTab = "lunar-matching-altar";
 const RecipeBookTab = "lunar-recipe-book";
 
 export default {
@@ -33,7 +31,7 @@ export default {
     return {
       tabs: [
         {
-          title: this.$t("matching-alter"),
+          title: this.$t("matching-altar"),
           value: MatchingAltarTab,
           to: { name: MatchingAltarTab }
         },

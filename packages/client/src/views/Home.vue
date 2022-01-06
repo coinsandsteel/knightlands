@@ -29,7 +29,7 @@
               </MenuIcon>
               <MenuIcon
                 icon="skewed_icon_xmas"
-                :to="{ name: 'lunar-home' }"
+                :to="{ path: '/lunar' }"
                 :append="true"
                 id="lunar"
                 >{{ $t("btn-evt-lunar") }}

@@ -467,8 +467,12 @@ const router = new Router({
       children: [
         {
           path: "",
-          name: "lunar-home",
-          component: () => import("./views/Lunar/LunarHome.vue")
+          redirect: { name: "lunar-matching-altar" }
+        },
+        {
+          path: "matching-altar",
+          name: "lunar-matching-altar",
+          component: () => import("./views/Lunar/LunarMatchingAltar.vue")
         },
         {
           path: "recipe-book",
@@ -477,7 +481,8 @@ const router = new Router({
         }
       ],
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        noBackButton: true
       }
     },
     {

@@ -38,6 +38,26 @@
           </div>
         </div>
       </div>
+
+      <portal to="footer" :slim="true">
+        <div class="flex flex-items-end">
+          <CustomButton type="grey" class="inline-block margin-right-1">
+            {{ $t("advanced") }}
+          </CustomButton>
+          <CustomButton
+            type="grey"
+            class="inline-block margin-right-2 margin-top-1"
+          >
+            {{ $t("expert") }}
+          </CustomButton>
+          <CustomButton
+            type="grey"
+            class="inline-block margin-right-2 margin-top-1"
+          >
+            {{ $t("NFT") }}
+          </CustomButton>
+        </div>
+      </portal>
     </div>
   </div>
 </template>
@@ -45,11 +65,13 @@
 <script>
 import MatchingContainer from "@/views/Lunar/MatchingContainer.vue";
 import Loot from "@/components/Loot.vue";
+import CustomButton from "@/components/Button.vue";
 
 export default {
   components: {
     MatchingContainer,
-    Loot
+    Loot,
+    CustomButton
   },
   data() {
     return {
@@ -64,7 +86,7 @@ export default {
     items() {
       const items = [];
 
-      for (let i = 1; i < 100; i++) {
+      for (let i = 1; i < 10; i++) {
         items.push({
           id: i,
           template: 2495,

@@ -13,36 +13,13 @@
       />
     </div>
     <div class="text-center margin-top-4">
-      <!-- <CustomButton type="yellow" class="inline-block margin-right-2">
-        {{ $t("btn-search") }}
-      </CustomButton> -->
       <CustomButton type="green" class="inline-block">
         {{ $t("btn-match") }}
-      </CustomButton>
-    </div>
-    <div
-      class="absolute-top-right height-100 flex flex-column flex-justify-center"
-    >
-      <CustomButton type="grey" class="inline-block margin-right-1">
-        {{ $t("advanced") }}
-      </CustomButton>
-      <CustomButton
-        type="grey"
-        class="inline-block margin-right-2 margin-top-1"
-      >
-        {{ $t("expert") }}
-      </CustomButton>
-      <CustomButton
-        type="grey"
-        class="inline-block margin-right-2 margin-top-1"
-      >
-        {{ $t("NFT") }}
       </CustomButton>
     </div>
   </div>
 </template>
 <script>
-// import Element from "@/views/Lunar/Element.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
 export default {
@@ -78,3 +55,10 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.matching-container {
+  background-color: #2e7285;
+  padding-bottom: 1rem;
+}
+</style>
