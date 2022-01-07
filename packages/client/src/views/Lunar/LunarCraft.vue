@@ -1,14 +1,11 @@
 <template>
   <div class="screen-content">
-    Craft
+    <ElementCrafting />
   </div>
 </template>
 <script>
+import ElementCrafting from "@/views/Lunar/ElementCrafting.vue";
 export default {
-  components: {},
-  data() {
-    return {};
-  }
+  components: { ElementCrafting }
 };
 </script>
-<style scoped lang="less"></style>

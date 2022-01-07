@@ -38,41 +38,14 @@
           </div>
         </div>
       </div>
-
-      <portal to="footer" :slim="true">
-        <div class="flex flex-items-end">
-          <CustomButton type="grey" class="inline-block margin-right-1">
-            {{ $t("advanced") }}
-          </CustomButton>
-          <CustomButton
-            type="grey"
-            class="inline-block margin-right-2 margin-top-1"
-          >
-            {{ $t("expert") }}
-          </CustomButton>
-          <CustomButton
-            type="grey"
-            class="inline-block margin-right-2 margin-top-1"
-          >
-            {{ $t("NFT") }}
-          </CustomButton>
-        </div>
-      </portal>
     </div>
   </div>
 </template>
-
 <script>
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import Loot from "@/components/Loot.vue";
-import CustomButton from "@/components/Button.vue";
-
 export default {
-  components: {
-    CraftContainer,
-    Loot,
-    CustomButton
-  },
+  components: { CraftContainer, Loot },
   data() {
     return {
       selectedItems: [],
@@ -86,7 +59,7 @@ export default {
     items() {
       const items = [];
 
-      for (let i = 1; i < 10; i++) {
+      for (let i = 1; i < 100; i++) {
         items.push({
           id: i,
           template: 2495,
@@ -124,8 +97,7 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
+<style scoped lang="less">
 .v-bar-fix {
   & > div {
     overflow: auto !important;
@@ -135,16 +107,6 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
   justify-items: center;
-  row-gap: 0.5rem;
-  column-gap: 0.5rem;
-}
-.select-overlay {
-  background-color: #102a2491;
-  border-radius: 2px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  grid-gap: 2rem;
 }
 </style>
