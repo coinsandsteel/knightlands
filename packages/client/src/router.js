@@ -467,17 +467,37 @@ const router = new Router({
       children: [
         {
           path: "",
-          redirect: { name: "lunar-matching-altar" }
+          redirect: { name: "lunar-craft" }
+        },
+        // {
+        //   path: "craft",
+        //   name: "lunar-craft",
+        //   component: () => import("./views/Lunar/LunarMatchingAltar.vue")
+        // },
+        // {
+        //   path: "recipe-book",
+        //   name: "lunar-recipe-book",
+        //   component: () => import("./views/Lunar/LunarRecipeBook.vue")
+        // },
+        {
+          path: "craft",
+          name: "lunar-craft",
+          component: () => import("./views/Lunar/LunarCraft.vue")
         },
         {
-          path: "matching-altar",
-          name: "lunar-matching-altar",
-          component: () => import("./views/Lunar/LunarMatchingAltar.vue")
+          path: "recipes",
+          name: "lunar-recipes",
+          component: () => import("./views/Lunar/LunarRecipes.vue")
         },
         {
-          path: "recipe-book",
-          name: "lunar-recipe-book",
-          component: () => import("./views/Lunar/LunarRecipeBook.vue")
+          path: "exchange",
+          name: "lunar-exchange",
+          component: () => import("./views/Lunar/LunarExchange.vue")
+        },
+        {
+          path: "nft",
+          name: "lunar-nft",
+          component: () => import("./views/Lunar/LunarNft.vue")
         }
       ],
       meta: {

@@ -11,6 +11,26 @@
       >
       </tabs>
       <router-view v-if="loaded"></router-view>
+
+      <portal v-if="isActive" to="footer" :slim="true">
+        <div class="flex flex-items-end">
+          <CustomButton
+            type="red"
+            class="inline-block margin-right-2 margin-top-1"
+          >
+            {{ $t("button-expert") }}
+          </CustomButton>
+          <CustomButton type="yellow" class="inline-block margin-right-1">
+            {{ $t("btn-advanced") }}
+          </CustomButton>
+          <CustomButton
+            type="grey"
+            class="inline-block margin-right-2 margin-top-1"
+          >
+            {{ $t("btn-basic") }}
+          </CustomButton>
+        </div>
+      </portal>
     </div>
   </div>
 </template>
@@ -18,30 +38,44 @@
 <script>
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
+import CustomButton from "@/components/Button.vue";
 
-const MatchingAltarTab = "lunar-matching-altar";
-const RecipeBookTab = "lunar-recipe-book";
+const CraftTab = "lunar-craft";
+const RecipesTab = "lunar-recipes";
+const ExchangeTab = "lunar-exchange";
+const NftTab = "lunar-nft";
 
 export default {
   mixins: [AppSection],
   components: {
-    Tabs
+    Tabs,
+    CustomButton
   },
   data() {
     return {
       tabs: [
         {
-          title: this.$t("matching-altar"),
-          value: MatchingAltarTab,
-          to: { name: MatchingAltarTab }
+          title: this.$t("tab-craft"),
+          value: CraftTab,
+          to: { name: CraftTab }
         },
         {
-          title: this.$t("recipe-book"),
-          value: RecipeBookTab,
-          to: { name: RecipeBookTab }
+          title: this.$t("tab-recipes"),
+          value: RecipesTab,
+          to: { name: RecipesTab }
+        },
+        {
+          title: this.$t("tab-exchange"),
+          value: ExchangeTab,
+          to: { name: ExchangeTab }
+        },
+        {
+          title: this.$t("tab-nft"),
+          value: NftTab,
+          to: { name: NftTab }
         }
       ],
-      currentTab: MatchingAltarTab
+      currentTab: CraftTab
     };
   },
   created() {
