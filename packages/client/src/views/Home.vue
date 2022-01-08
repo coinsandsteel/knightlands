@@ -20,13 +20,13 @@
 
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
-              <MenuIcon
+              <!-- <MenuIcon
                 icon="skewed_icon_xmas"
                 :to="{ name: 'xmas-home' }"
                 :append="true"
                 id="xmas"
                 >{{ $t("btn-evt-xmas") }}
-              </MenuIcon>
+              </MenuIcon> -->
             </MenuIconRow>
 
             <MenuIconRow>

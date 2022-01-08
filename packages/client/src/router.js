@@ -440,25 +440,25 @@ const router = new Router({
         requiresAuth: true
       }
     },
-    {
-      path: "/xmas",
-      component: XmasRoot,
-      children: [
-        {
-          path: "",
-          name: "xmas-home",
-          component: () => import("./views/Xmas/XmasHome.vue")
-        },
-        {
-          path: "new",
-          name: "xmas-new",
-          component: NewXmasForm
-        }
-      ],
-      meta: {
-        requiresAuth: true
-      }
-    },
+    // {
+    //   path: "/xmas",
+    //   component: XmasRoot,
+    //   children: [
+    //     {
+    //       path: "",
+    //       name: "xmas-home",
+    //       component: () => import("./views/Xmas/XmasHome.vue")
+    //     },
+    //     {
+    //       path: "new",
+    //       name: "xmas-new",
+    //       component: NewXmasForm
+    //     }
+    //   ],
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
     {
       path: "/home/adventures",
       component: AdventuresRoot,
