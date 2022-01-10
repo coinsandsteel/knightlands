@@ -1,6 +1,6 @@
 <template>
   <div class="screen-content">
-    Recipes
+    Recipes 123
   </div>
 </template>
 <script>

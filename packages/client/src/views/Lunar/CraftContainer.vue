@@ -4,7 +4,30 @@
   >
     <div class="relative-position">
       <div class="absolute-position width-100">
-        <template v-if="selectedItems.length > 0">
+        <!-- crafted -->
+        <template v-if="hasCrafted">
+          <Loot
+            :item="craftedItem"
+            :inventory="false"
+            :itemSlotClasses="
+              craftedItem && craftedItem.itemSlotClasses
+                ? craftedItem.itemSlotClasses
+                : null
+            "
+            :iconClasses="
+              craftedItem && craftedItem.iconClasses
+                ? craftedItem.iconClasses
+                : null
+            "
+            class="crafted-element margin-left-auto margin-right-auto relative-position"
+          />
+          <div
+            class="upgraded-message font-size-22 margin-top-3 text-center padding-left-2 padding-right-2"
+            v-html="upgradedMessage"
+          />
+        </template>
+        <!-- crafting -->
+        <template v-else-if="selectedItems.length > 0">
           <div class="flex flex-center margin-top-4">
             <Loot
               v-for="(item, index) in filteredItems"
@@ -26,23 +49,26 @@
           </div>
           <div
             v-if="upgradeMessage"
-            class="upgrade-message font-size-22 margin-top-2"
+            class="upgrade-message font-size-22 margin-top-2 text-center padding-left-2 padding-right-2"
             v-html="upgradeMessage"
           />
         </template>
+        <!-- ready to craft -->
         <div
           v-else
           class="combine-lantern-message uppercase font-size-30 text-center margin-left-auto margin-right-auto"
         >
           {{ $t("lunar_combine_lantern_message") }}
         </div>
+        <!-- craft / ok button -->
         <div class="text-center margin-top-4">
           <CustomButton
-            :disabled="selectedItems.length !== maxSelectedItems"
+            :disabled="!hasCrafted && selectedItems.length !== maxSelectedItems"
             type="green"
             class="btn-combine inline-block uppercase padding-left-2"
+            @click="craftHandler"
           >
-            {{ $t("btn-combine") }}
+            {{ $t(hasCrafted ? "btn-ok" : "btn-combine") }}
           </CustomButton>
         </div>
       </div>
@@ -63,7 +89,14 @@ export default {
   },
   data() {
     return {
-      items: [null, null, null]
+      items: [null, null, null],
+      hasCrafted: false,
+      craftedItem: {
+        id: 1,
+        isCustomElement: true,
+        itemSlotClasses: "lunar-lantern-slot",
+        iconClasses: "basic-lantern1"
+      }
     };
   },
   computed: {
@@ -74,7 +107,7 @@ export default {
           count: null
         })),
         ...Array(this.maxSelectedItems).fill({
-          customElement: true,
+          isCustomElement: true,
           itemSlotClasses: "lunar-lantern-slot"
         })
       ].slice(0, this.maxSelectedItems);
@@ -82,6 +115,11 @@ export default {
     upgradeMessage() {
       return this.$t("lunar_combine_lantern_upgrade_message", {
         level: `<b class="capitalize">${this.$t("advanced")}</b>`
+      });
+    },
+    upgradedMessage() {
+      return this.$t("lunar_combine_lantern_success_message", {
+        element: `<b class="capitalize">Spring Spirit</b>`
       });
     }
   },
@@ -91,6 +129,15 @@ export default {
         return;
       }
       this.$emit("item-removed", item);
+    },
+    craftHandler() {
+      if (this.hasCrafted) {
+        this.hasCrafted = false;
+        this.$emit("items-reset");
+        return;
+      }
+
+      this.hasCrafted = true;
     }
   }
 };
@@ -98,7 +145,7 @@ export default {
 
 <style lang="less" scoped>
 .craft-container {
-  width: 400px;
+  width: 440px;
   max-width: 90%;
 }
 .craft-container > div {
@@ -118,6 +165,7 @@ export default {
 .btn-combine {
   padding-left: 3rem;
   padding-right: 3rem;
+  min-width: 15rem;
 }
 .btn-remove {
   top: 0;
@@ -125,7 +173,7 @@ export default {
   width: 3rem;
   height: 3rem;
   background: rgba(255, 255, 255, 0.7);
-  border-radius: 3px;
+  border-radius: 0.5rem;
 }
 .btn-remove::after {
   content: "";
@@ -139,13 +187,26 @@ export default {
   transform: translate(-50%, -50%);
 }
 .upgrade-message {
-  margin-bottom: -2rem;
+  margin-bottom: -1.5rem;
 }
-.upgrade-message {
-  margin-bottom: -2rem;
-
+.upgraded-message {
+  margin-bottom: -0.5rem;
+}
+.upgrade-message,
+.upgraded-message {
   &::v-deep b {
     color: #70ee70;
   }
+}
+.crafted-element::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+  background-image: url("/images/lunar/glow.png");
+  background-size: 100% 100%;
 }
 </style>

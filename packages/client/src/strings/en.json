@@ -2541,5 +2541,6 @@
   
   "lunar_combine_lantern_message": "Put lanterns here to craft a new one",
   "lunar_combine_lantern_upgrade_message": "There is a change to get an {level} latern as a result",
+  "lunar_combine_lantern_success_message": "You've got a {element} lantern!<br/> New recipe is successfully added",
   "advanced": "advanced"
 }
