@@ -2537,5 +2537,9 @@
   "your-reward": "Reward:",
   "your-score": "Score:",
   "zalaras": "zalaras",
-  "zombie_lord": "zombielord"
+  "zombie_lord": "zombielord",
+  
+  "lunar_combine_lantern_message": "Put lanterns here to craft a new one",
+  "lunar_combine_lantern_upgrade_message": "There is a change to get an {level} latern as a result",
+  "advanced": "advanced"
 }
