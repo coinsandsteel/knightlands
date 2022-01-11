@@ -1,9 +1,9 @@
 <template>
   <div
-    class="craft-container margin-left-auto margin-right-auto padding-top-4 padding-bottom-4 relative-position"
+    class="craft-container margin-left-auto margin-right-auto padding-top-4 padding-bottom-4 relative"
   >
-    <div class="relative-position">
-      <div class="absolute-position width-100">
+    <div class="relative">
+      <div class="absolute width-100">
         <!-- crafted -->
         <template v-if="hasCrafted">
           <Loot
@@ -19,7 +19,7 @@
                 ? craftedItem.iconClasses
                 : null
             "
-            class="crafted-element margin-left-auto margin-right-auto relative-position"
+            class="crafted-element margin-left-auto margin-right-auto relative"
           />
           <div
             class="upgraded-message font-size-22 margin-top-3 text-center padding-left-2 padding-right-2"
@@ -38,13 +38,10 @@
                 item && item.itemSlotClasses ? item.itemSlotClasses : null
               "
               :iconClasses="item && item.iconClasses ? item.iconClasses : null"
-              class="margin-left-2 margin-right-2 relative-position"
+              class="margin-left-2 margin-right-2 relative"
               @hint="removeItem(item)"
             >
-              <div
-                v-if="item && item.id"
-                class="btn-remove absolute-position"
-              />
+              <div v-if="item && item.id" class="btn-remove absolute" />
             </Loot>
           </div>
           <div
