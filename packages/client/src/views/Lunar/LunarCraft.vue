@@ -28,14 +28,18 @@
                   class="element-group width-100 dummy-height inventory-container margin-top-1 margin-bottom-1  padding-left-1 padding-right-1"
                 >
                   <Loot
-                    v-for="item in group.items"
+                    v-for="(item, itemIndex) in group.items"
                     :id="`i-${item.template}`"
-                    :item="item.template"
-                    :quantity="item.quantity"
-                    :key="`i-${item.template}`"
+                    :item="item"
+                    :key="itemIndex"
                     :inventory="false"
                     :selected="selectedItemId === item.id"
-                    :itemSlotClasses="'lunar-lantern-slot'"
+                    :itemSlotClasses="
+                      item && item.itemSlotClasses ? item.itemSlotClasses : null
+                    "
+                    :iconClasses="
+                      item && item.iconClasses ? item.iconClasses : null
+                    "
                     @hint="handleHint"
                   >
                     <div
@@ -56,14 +60,14 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import Loot from "@/components/Loot.vue";
-import {
-  ITEM_GROUP_BASIC,
-  ITEM_GROUP_ADVANCED,
-  ITEM_GROUP_EXPERT
-} from "@/../../knightlands-shared/lunar";
+
+const GROUP = {
+  BASIC: "basic",
+  ADVANCED: "advanced",
+  EXPERT: "expert"
+};
 
 export default {
   components: { CraftContainer, Loot },
@@ -75,67 +79,129 @@ export default {
       selectedItemId: null,
       maxSelectedItems: 3,
       selectedGroupId: null
-      /* DEMO items structure
-      items: [
-        {
-          id: 1,
-          template: 1,
-          caption: "l111",
-          quantity: 1
-        }
-      ]*/
     };
   },
   computed: {
-    ...mapState({
-      items: state => state.lunar.items
-    }),
-    itemsComputed() {
-      // We detect a group by a caption length
-      // That's a long story...
-      let captionLengthToGroupMap = {
-        2: ITEM_GROUP_BASIC,
-        4: ITEM_GROUP_ADVANCED,
-        7: ITEM_GROUP_EXPERT
-      };
-      return this.items.map(data => ({
-        ...data,
-        group: captionLengthToGroupMap[data.caption.length]
-      }));
-    },
     itemGroups() {
-      const groups = [
-        {
-          id: ITEM_GROUP_BASIC,
-          name: this.$t("btn-basic"),
-          items: this.itemsComputed.filter(
-            item => item.group === ITEM_GROUP_BASIC
-          ),
-          nameClasses: "group-basic-name",
-          craftItemsCount: 3
-        },
-        {
-          id: ITEM_GROUP_ADVANCED,
-          name: this.$t("btn-advanced"),
-          items: this.itemsComputed.filter(
-            item => item.group === ITEM_GROUP_ADVANCED
-          ),
-          nameClasses: "group-advanced-name",
-          craftItemsCount: 2
-        },
-        {
-          id: ITEM_GROUP_EXPERT,
-          name: this.$t("button-expert"),
-          items: this.itemsComputed.filter(
-            item => item.group === ITEM_GROUP_EXPERT
-          ),
-          nameClasses: "group-expert-name",
-          craftItemsCount: 10
-        }
-      ];
+      const groups = [];
+
+      // basic
+      let group = {
+        id: GROUP.BASIC,
+        name: this.$t("btn-basic"),
+        items: [],
+        nameClasses: "group-basic-name",
+        craftItemsCount: 3
+      };
+      for (let i = 1; i < 50; i++) {
+        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+        group.items.push({
+          id: i,
+          itemSlotClasses: "lunar-lantern-slot",
+          iconClasses: "basic-lantern" + index,
+          isCustomElement: true,
+          // template: 2928
+          count: index,
+          group: GROUP.BASIC
+          // level: 1,
+          // exp: 0,
+          // equipped: false,
+          // breakLimit: 0,
+          // unique: false,
+          // rarity: "epic",
+          // element: "physical",
+          // index: 13
+        });
+      }
+      groups.push(group);
+
+      // advanced
+      group = {
+        id: GROUP.ADVANCED,
+        name: this.$t("btn-advanced"),
+        items: [],
+        nameClasses: "group-advanced-name",
+        craftItemsCount: 2
+      };
+      for (let i = 1; i < 50; i++) {
+        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+        group.items.push({
+          id: i,
+          itemSlotClasses: "lunar-lantern-slot",
+          iconClasses: "basic-lantern" + index,
+          isCustomElement: true,
+          // template: 2928
+          count: index,
+          group: GROUP.ADVANCED
+          // level: 1,
+          // exp: 0,
+          // equipped: false,
+          // breakLimit: 0,
+          // unique: false,
+          // rarity: "epic",
+          // element: "physical",
+          // index: 13
+        });
+      }
+      groups.push(group);
+
+      // expert
+      group = {
+        id: GROUP.EXPERT,
+        name: this.$t("btn-expert"),
+        items: [],
+        nameClasses: "group-expert-name",
+        craftItemsCount: 10
+      };
+      for (let i = 1; i < 50; i++) {
+        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+        group.items.push({
+          id: i,
+          itemSlotClasses: "lunar-lantern-slot",
+          iconClasses: "basic-lantern" + index,
+          isCustomElement: true,
+          // template: 2928
+          count: index,
+          group: GROUP.EXPERT
+          // level: 1,
+          // exp: 0,
+          // equipped: false,
+          // breakLimit: 0,
+          // unique: false,
+          // rarity: "epic",
+          // element: "physical",
+          // index: 13
+        });
+      }
+      groups.push(group);
 
       return groups;
     },
+    // items() {
+    //   const items = [];
+
+    //   for (let i = 1; i < 100; i++) {
+    //     const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+    //     items.push({
+    //       id: i,
+    //       itemSlotClasses: "lunar-lantern-slot",
+    //       iconClasses: "basic-lantern" + index,
+    //       isCustomElement: true,
+    //       // template: 2928
+    //       count: index
+    //       // level: 1,
+    //       // exp: 0,
+    //       // equipped: false,
+    //       // breakLimit: 0,
+    //       // unique: false,
+    //       // rarity: "epic",
+    //       // element: "physical",
+    //       // index: 13
+    //     });
+    //   }
+
+    //   return items;
+    // },
     selectedItemIds() {
       return this.selectedItems.map(({ id }) => id);
     },

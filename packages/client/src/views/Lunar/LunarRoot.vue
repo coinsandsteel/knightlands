@@ -18,7 +18,7 @@
             type="red"
             class="inline-block margin-right-2 margin-top-1"
           >
-            {{ $t("button-expert") }}
+            {{ $t("btn-expert") }}
           </CustomButton>
           <CustomButton type="yellow" class="inline-block margin-right-1">
             {{ $t("btn-advanced") }}
