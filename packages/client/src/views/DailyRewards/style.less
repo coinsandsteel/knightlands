@@ -1,0 +1,49 @@
+@import (reference) "../../style/common.less";
+
+.content-header {
+    position: relative;
+    width: 100%;
+}
+
+.stat-button {
+    cursor: pointer;
+}
+
+.equipment {
+  background-color: #2E7285;
+  padding-bottom: 1rem;
+
+  &.preview {
+    height: unset;
+    min-height: 25rem;
+  }
+}
+
+.equipment-container {
+    width: 100%;
+
+    .equipment-container-row {
+        margin: 0.5rem;
+    }
+}
+
+.equipment-preview {
+  width: 100%;
+  overflow: hidden;
+}
+
+.att-row {
+  padding: 1rem 1rem 1rem 3rem;
+
+  &:first-child {
+    padding-top: 2.5rem;
+  }
+
+  &:nth-child(even) {
+    background-color: #284d6e;
+  }
+
+  &:nth-child(odd) {
+    background-color: #163856;
+  }
+}

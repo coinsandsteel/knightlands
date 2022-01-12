@@ -7,7 +7,7 @@ export default {
   mixins: [CheckinMarkerMixin],
   computed: {
     active() {
-      return this.canCollectDailyRewards;
+      return this.canCollectDailyRewards || this.canCollectDailyLunarRewards;
     }
   }
 };

@@ -26,6 +26,7 @@ export default {
       return (
         this.canCollectGold ||
         this.canCollectDailyRewards ||
+        this.canCollectDailyLunarRewards ||
         this.canCollectAdventures ||
         this.canClaimDailyTask ||
         this.canEngageTower ||

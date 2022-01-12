@@ -94,6 +94,8 @@ const ForsakenTowerRoot = () =>
 const ForsakenTower = () => import("./views/ForsakenTower/ForsakenTower.vue");
 
 const DailyRewards = () => import("./views/DailyRewards/DailyRewards.vue");
+const DailyRewardsItem = () => import("./views/DailyRewards/Item/Item.vue");
+const DailyRewardsLunar = () => import("./views/DailyRewards/Lunar/Lunar.vue");
 
 const Settings = () => import("./views/Settings/Settings.vue");
 const NewXmasForm = () => import("./views/Xmas/NewXmasHome.vue");
@@ -396,7 +398,23 @@ const router = new Router({
     },
     {
       path: "/home/daily-rewards",
-      component: DailyRewards
+      component: DailyRewards,
+      meta: {
+        requiresAuth: true,
+        noBackButton: true
+      },
+      children: [
+        {
+          path: "",
+          name: "item",
+          component: DailyRewardsItem
+        },
+        {
+          path: "lunar",
+          name: "lunar",
+          component: DailyRewardsLunar
+        }
+      ]
     },
     {
       path: "/halloween",
