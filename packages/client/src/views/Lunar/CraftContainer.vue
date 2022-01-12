@@ -1,11 +1,97 @@
 <template>
   <div
-    class="craft-container margin-left-auto margin-right-auto padding-top-4 padding-bottom-4 relative"
+    class="craft-container margin-left-auto margin-right-auto padding-top-2 padding-bottom-2 relative"
   >
     <div class="relative">
-      <div class="absolute width-100">
+      <div
+        class="absolute width-100 flex flex-column flex-no-wrap flex-space-between"
+      >
+        <!-- top -->
+        <div>
+          <!-- message -->
+          <div
+            v-if="selectedItems.length > 0 && upgradeMessage && !hasCrafted"
+            class="upgrade-message font-size-22 text-center padding-left-2 padding-right-2 margin-left-auto margin-right-auto"
+            v-html="upgradeMessage"
+          />
+        </div>
+        <!-- middle -->
+        <div>
+          <!-- crafted -->
+          <template v-if="hasCrafted">
+            <Loot
+              :item="craftedItem"
+              :inventory="false"
+              :itemSlotClasses="
+                craftedItem && craftedItem.itemSlotClasses
+                  ? craftedItem.itemSlotClasses
+                  : null
+              "
+              :iconClasses="
+                craftedItem && craftedItem.iconClasses
+                  ? craftedItem.iconClasses
+                  : null
+              "
+              class="crafted-element margin-left-auto margin-right-auto relative"
+            />
+            <!-- message -->
+            <div
+              class="upgraded-message font-size-22 margin-top-3 text-center padding-left-2 padding-right-2"
+              v-html="upgradedMessage"
+            />
+          </template>
+          <!-- crafting -->
+          <div
+            v-else-if="selectedItems.length > 0"
+            class="crafting-elements margin-left-auto margin-right-auto flex flex-center margin-top-4"
+          >
+            <Loot
+              v-for="(item, index) in filteredItems"
+              :key="index"
+              :item="item"
+              :inventory="false"
+              :itemSlotClasses="
+                item && item.itemSlotClasses ? item.itemSlotClasses : null
+              "
+              :iconClasses="item && item.iconClasses ? item.iconClasses : null"
+              :selected="!(item && item.id)"
+              class="margin-left-half margin-right-half margin-bottom-1 relative"
+              @hint="removeItem(item)"
+            >
+              <div v-if="item && item.id" class="btn-remove absolute" />
+            </Loot>
+          </div>
+          <!-- ready to craft -->
+          <div
+            v-else
+            class="combine-lantern-message uppercase font-size-30 text-center margin-left-auto margin-right-auto"
+          >
+            {{ $t("lunar_combine_lantern_message") }}
+          </div>
+        </div>
+        <!-- bottom -->
+        <div class="text-center">
+          <CustomButton
+            :disabled="!hasCrafted && selectedItems.length !== maxSelectedItems"
+            type="green"
+            class="btn-combine inline-block uppercase padding-left-2"
+            @click="craftHandler"
+          >
+            {{ $t(hasCrafted ? "btn-ok" : "btn-combine") }}
+          </CustomButton>
+        </div>
+        <!-- <div class="text-center margin-top-4">
+          <CustomButton
+            :disabled="!hasCrafted && selectedItems.length !== maxSelectedItems"
+            type="green"
+            class="btn-combine inline-block uppercase padding-left-2"
+            @click="craftHandler"
+          >
+            {{ $t(hasCrafted ? "btn-ok" : "btn-combine") }}
+          </CustomButton>
+        </div> -->
         <!-- crafted -->
-        <template v-if="hasCrafted">
+        <!-- <template v-if="false && hasCrafted">
           <Loot
             :item="craftedItem"
             :inventory="false"
@@ -25,9 +111,9 @@
             class="upgraded-message font-size-22 margin-top-3 text-center padding-left-2 padding-right-2"
             v-html="upgradedMessage"
           />
-        </template>
+        </template> -->
         <!-- crafting -->
-        <template v-else-if="selectedItems.length > 0">
+        <!-- <template v-else-if="false && selectedItems.length > 0">
           <div class="flex flex-center margin-top-4">
             <Loot
               v-for="(item, index) in filteredItems"
@@ -49,16 +135,16 @@
             class="upgrade-message font-size-22 margin-top-2 text-center padding-left-2 padding-right-2"
             v-html="upgradeMessage"
           />
-        </template>
+        </template> -->
         <!-- ready to craft -->
-        <div
-          v-else
+        <!-- <div
+          v-else-if="false"
           class="combine-lantern-message uppercase font-size-30 text-center margin-left-auto margin-right-auto"
         >
           {{ $t("lunar_combine_lantern_message") }}
-        </div>
+        </div> -->
         <!-- craft / ok button -->
-        <div class="text-center margin-top-4">
+        <!-- <div v-if="false" class="text-center margin-top-4">
           <CustomButton
             :disabled="!hasCrafted && selectedItems.length !== maxSelectedItems"
             type="green"
@@ -67,7 +153,7 @@
           >
             {{ $t(hasCrafted ? "btn-ok" : "btn-combine") }}
           </CustomButton>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -149,22 +235,28 @@ export default {
 
 <style lang="less" scoped>
 .craft-container {
-  width: 440px;
-  max-width: 90%;
+  width: 456px;
+  max-width: calc(100% - 4rem);
 }
 .craft-container > div {
-  background-image: url("/images/lunar/element-crafting-background.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  padding-top: 75%;
+  background-color: #7c264b;
+  border: 1px solid transparent;
+  border-image-source: url("/images/lunar/element-crafting-background.png");
+  border-image-width: 65px;
+  border-image-slice: 130;
+  border-image-outset: 0;
+  border-image-repeat: round;
+  padding-top: 60%;
 }
 .craft-container > div > div {
+  height: calc(100% - 6rem);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 .combine-lantern-message {
   max-width: 30rem;
+  color: #fdd78e;
 }
 .btn-combine {
   padding-left: 3rem;
@@ -191,11 +283,12 @@ export default {
   transform: translate(-50%, -50%);
 }
 .upgrade-message {
-  margin-bottom: -1.5rem;
+  // margin-bottom: -1.5rem;
+  max-width: calc(100% - 130px);
 }
-.upgraded-message {
-  margin-bottom: -0.5rem;
-}
+// .upgraded-message {
+//   margin-bottom: -0.5rem;
+// }
 .upgrade-message,
 .upgraded-message {
   &::v-deep b {
@@ -212,5 +305,8 @@ export default {
   transform: translate(-50%, -50%);
   background-image: url("/images/lunar/glow.png");
   background-size: 100% 100%;
+}
+.crafting-elements {
+  max-width: 50rem;
 }
 </style>

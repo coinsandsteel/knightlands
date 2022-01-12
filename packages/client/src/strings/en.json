@@ -2533,14 +2533,17 @@
   "btn-basic": "Basic",
   "btn-combine": "Combine",
   "btn-search": "Search",
-  "button-expert": "Expert",
+  "btn-expert": "Expert",
   "lunar_combine_lantern_message": "Put lanterns here to craft a new one",
   "lunar_combine_lantern_success_message": "You've got a {element} lantern!<br/> New recipe is successfully added",
-  "lunar_combine_lantern_upgrade_message": "There is a change to get an {level} latern as a result",
+  "lunar_combine_lantern_upgrade_message": "There is a change to craft an {level} latern",
   "recipe-book": "Recipe Book",
   "tab-craft": "Craft",
   "tab-exchange": "Exchange",
   "tab-nft": "NFT",
   "tab-recipes": "Recipes",
-  "window-lunar": "Halls of the dead"
+  "window-lunar": "Halls of the dead",
+  "basic-elements": "Basic elements",
+  "advanced-elements": "Advanced elements",
+  "expert-elements": "Expert elements"
 }

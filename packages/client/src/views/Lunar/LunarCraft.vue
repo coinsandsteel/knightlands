@@ -10,9 +10,7 @@
           @item-removed="itemRemovedHandler"
           @items-reset="itemsResetHandler"
         />
-        <div
-          class="inv-root dummy-height full-flex width-100 height-100 margin-top-1"
-        >
+        <div class="inv-root dummy-height full-flex width-100 height-100">
           <div v-bar class="center width-100 height-100 dummy-height">
             <div>
               <template v-for="(group, groupIndex) in itemGroups">
@@ -33,13 +31,17 @@
                     :item="item"
                     :key="itemIndex"
                     :inventory="false"
-                    :selected="selectedItemId === item.id"
+                    :_selected="selectedItemId === item.id"
                     :itemSlotClasses="
                       item && item.itemSlotClasses ? item.itemSlotClasses : null
                     "
                     :iconClasses="
                       item && item.iconClasses ? item.iconClasses : null
                     "
+                    :class="{
+                      'opacity-50':
+                        selectedGroupId && item.group !== selectedGroupId
+                    }"
                     @hint="handleHint"
                   >
                     <div
@@ -57,10 +59,15 @@
         </div>
       </div>
     </div>
+    <!-- levels switcher -->
+    <portal to="footer" :slim="true">
+      <LunarElementLevelsSwitcher @level-updated="levelUpdatedHandler" />
+    </portal>
   </div>
 </template>
 <script>
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
+import LunarElementLevelsSwitcher from "@/views/Lunar/LunarElementLevelsSwitcher.vue";
 import Loot from "@/components/Loot.vue";
 
 const GROUP = {
@@ -70,7 +77,11 @@ const GROUP = {
 };
 
 export default {
-  components: { CraftContainer, Loot },
+  components: {
+    CraftContainer,
+    Loot,
+    LunarElementLevelsSwitcher
+  },
   data() {
     return {
       selectedItems: [],
@@ -88,12 +99,12 @@ export default {
       // basic
       let group = {
         id: GROUP.BASIC,
-        name: this.$t("btn-basic"),
+        name: this.$t("basic-elements"),
         items: [],
         nameClasses: "group-basic-name",
         craftItemsCount: 3
       };
-      for (let i = 1; i < 50; i++) {
+      for (let i = 1; i < 15; i++) {
         const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
         group.items.push({
           id: i,
@@ -118,7 +129,7 @@ export default {
       // advanced
       group = {
         id: GROUP.ADVANCED,
-        name: this.$t("btn-advanced"),
+        name: this.$t("advanced-elements"),
         items: [],
         nameClasses: "group-advanced-name",
         craftItemsCount: 2
@@ -148,7 +159,7 @@ export default {
       // expert
       group = {
         id: GROUP.EXPERT,
-        name: this.$t("btn-expert"),
+        name: this.$t("expert-elements"),
         items: [],
         nameClasses: "group-expert-name",
         craftItemsCount: 10
@@ -213,6 +224,26 @@ export default {
       return this.itemGroups.find(({ id }) => id === this.selectedGroupId);
     }
   },
+  // watch: {
+  //   "$route.params.group": {
+  //     handler: function(group) {
+  //       if (this.$route.name !== "lunar-craft") {
+  //         return;
+  //       }
+  //       if (group && !Object.values(GROUP).includes(group)) {
+  //         this.$router.replace({ params: null });
+  //         return;
+  //       }
+  //       // eslint-disable-next-line no-console
+  //       console.log("group", group);
+  //       // if () {
+
+  //       // }
+  //     },
+  //     deep: true,
+  //     immediate: true
+  //   }
+  // },
   methods: {
     handleHint(item) {
       if (this.selectedGroupId && item.group !== this.selectedGroupId) {
@@ -257,6 +288,15 @@ export default {
     itemsResetHandler() {
       this.selectedItems = [];
       this.selectedItemId = null;
+      this.selectedGroupId = null;
+    },
+
+    levelUpdatedHandler(level) {
+      if (this.selectedGroupId === level) {
+        return;
+      }
+      this.itemsResetHandler();
+      this.selectedGroupId = level;
     }
   }
 };

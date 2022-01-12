@@ -12,25 +12,31 @@
       </tabs>
       <router-view v-if="loaded"></router-view>
 
-      <portal v-if="isActive" to="footer" :slim="true">
+      <!-- <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-end">
           <CustomButton
             type="red"
             class="inline-block margin-right-2 margin-top-1"
+            @click="redirectToLunarCraft('expert')"
           >
             {{ $t("btn-expert") }}
           </CustomButton>
-          <CustomButton type="yellow" class="inline-block margin-right-1">
+          <CustomButton
+            type="yellow"
+            class="inline-block margin-right-1"
+            @click="redirectToLunarCraft('advanced')"
+          >
             {{ $t("btn-advanced") }}
           </CustomButton>
           <CustomButton
             type="grey"
             class="inline-block margin-right-2 margin-top-1"
+            @click="redirectToLunarCraft('basic')"
           >
             {{ $t("btn-basic") }}
           </CustomButton>
         </div>
-      </portal>
+      </portal> -->
     </div>
   </div>
 </template>
@@ -40,7 +46,7 @@ import { mapState } from "vuex";
 
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
-import CustomButton from "@/components/Button.vue";
+// import CustomButton from "@/components/Button.vue";
 
 const CraftTab = "lunar-craft";
 const RecipesTab = "lunar-recipes";
@@ -50,8 +56,8 @@ const NftTab = "lunar-nft";
 export default {
   mixins: [AppSection],
   components: {
-    Tabs,
-    CustomButton
+    Tabs
+    // CustomButton
   },
   async mounted() {
     this.$store.dispatch("lunar/subscribe");
@@ -98,6 +104,16 @@ export default {
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
+    },
+    redirectToLunarCraft(group) {
+      if (
+        this.$route.name === "lunar-craft" &&
+        this.$route.params &&
+        this.$route.params.group === group
+      ) {
+        return;
+      }
+      this.$router.replace({ name: "lunar-craft", params: { group } });
     }
   }
 };
