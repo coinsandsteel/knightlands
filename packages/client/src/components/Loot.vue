@@ -160,14 +160,14 @@ export default {
       return !this.itemData ? "" : `${this.itemData.template}`;
     },
     rarity() {
-      if (!this.itemData || this.itemData?.isCustomElement) {
+      if (!this.itemData || this.itemData.isCustomElement) {
         return "";
       }
 
       return `slot_${this.$game.itemsDB.getRarity(this.itemData)}`;
     },
     element() {
-      if (this.itemData?.isCustomElement) {
+      if (this.itemData.isCustomElement) {
         return null;
       }
 
@@ -212,7 +212,7 @@ export default {
       if ((!this.itemData || !this.itemData.id) && this.equipment) {
         return SlotPlaceholders[this.equipmentSlot];
       }
-      if (this.itemData && !this.itemData?.isCustomElement) {
+      if (this.itemData && !this.itemData.isCustomElement) {
         return this.$game.itemsDB.getIcon(
           this.itemData.template,
           this.$game.itemsDB.getRarity(this.itemData)
