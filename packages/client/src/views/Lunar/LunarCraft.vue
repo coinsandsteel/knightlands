@@ -63,11 +63,11 @@
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import Loot from "@/components/Loot.vue";
 
-const GROUP = {
-  BASIC: "basic",
-  ADVANCED: "advanced",
-  EXPERT: "expert"
-};
+import {
+  ITEM_GROUP_BASIC,
+  ITEM_GROUP_ADVANCED,
+  ITEM_GROUP_EXPERT
+} from "@/../../knightlands-shared/lunar";
 
 export default {
   components: { CraftContainer, Loot },
@@ -87,7 +87,7 @@ export default {
 
       // basic
       let group = {
-        id: GROUP.BASIC,
+        id: ITEM_GROUP_BASIC,
         name: this.$t("btn-basic"),
         items: [],
         nameClasses: "group-basic-name",
@@ -102,7 +102,7 @@ export default {
           isCustomElement: true,
           // template: 2928
           count: index,
-          group: GROUP.BASIC
+          group: ITEM_GROUP_BASIC
           // level: 1,
           // exp: 0,
           // equipped: false,
@@ -117,7 +117,7 @@ export default {
 
       // advanced
       group = {
-        id: GROUP.ADVANCED,
+        id: ITEM_GROUP_ADVANCED,
         name: this.$t("btn-advanced"),
         items: [],
         nameClasses: "group-advanced-name",
@@ -132,7 +132,7 @@ export default {
           isCustomElement: true,
           // template: 2928
           count: index,
-          group: GROUP.ADVANCED
+          group: ITEM_GROUP_ADVANCED
           // level: 1,
           // exp: 0,
           // equipped: false,
@@ -147,7 +147,7 @@ export default {
 
       // expert
       group = {
-        id: GROUP.EXPERT,
+        id: ITEM_GROUP_EXPERT,
         name: this.$t("button-expert"),
         items: [],
         nameClasses: "group-expert-name",
@@ -162,7 +162,7 @@ export default {
           isCustomElement: true,
           // template: 2928
           count: index,
-          group: GROUP.EXPERT
+          group: ITEM_GROUP_EXPERT
           // level: 1,
           // exp: 0,
           // equipped: false,

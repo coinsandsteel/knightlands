@@ -1,11 +1,4 @@
 import _ from "lodash";
-
-import {
-  ITEM_CATEGORY_BASIC,
-  ITEM_CATEGORY_ADVANCED,
-  ITEM_CATEGORY_EXPERT
-} from "@/../../knightlands-shared/lunar";
-
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 
@@ -13,16 +6,12 @@ export default {
   namespaced: true,
   state: {
     loaded: false,
-    itemCategory: ITEM_CATEGORY_BASIC,
     inventory: [],
     newElement: null
   },
   getters: {},
   mutations: {
     updateState(state, data) {},
-    updateCategory(state, value) {
-      state.itemCategory = value;
-    },
     setInitialState(state, data) {
       state.inventory = data.inventory;
       state.loaded = true;
@@ -49,9 +38,6 @@ export default {
     },
     unsubscribe() {
       this.$app.$game.offNetwork(Events.LunarUpdate);
-    },
-    updateItemCategory(store, value) {
-      store.commit("updateItemCategory", value);
     }
   }
 };

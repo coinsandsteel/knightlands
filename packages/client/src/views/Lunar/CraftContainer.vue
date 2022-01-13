@@ -75,7 +75,10 @@
 <script>
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+
 export default {
+  mixins: [NetworkRequestErrorMixin],
   components: {
     Loot,
     CustomButton
@@ -127,12 +130,16 @@ export default {
       }
       this.$emit("item-removed", item);
     },
-    craftHandler() {
+    async craftHandler() {
       if (this.hasCrafted) {
         this.hasCrafted = false;
         this.$emit("items-reset");
         return;
       }
+
+      await this.performRequestNoCatch(
+        this.$store.dispatch("lunar/craft", this.selectedItems)
+      );
 
       this.hasCrafted = true;
     }

@@ -7,13 +7,25 @@
 <script>
 import AnimatedBackground from "@/components/AnimatedBackground.vue";
 import BaseMatching from "@/views/Lunar/BaseMatching.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+
 export default {
+  mixins: [NetworkRequestErrorMixin],
   components: {
     AnimatedBackground,
     BaseMatching
   },
   data() {
-    return {};
+    return {
+      selectedItems: []
+    };
+  },
+  methods: {
+    async exchangeHandler() {
+      await this.performRequestNoCatch(
+        this.$store.dispatch("lunar/exchange", this.selectedItems)
+      );
+    }
   }
 };
 </script>

@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
@@ -50,6 +52,13 @@ export default {
   components: {
     Tabs,
     CustomButton
+  },
+  async mounted() {
+    this.$store.dispatch("lunar/subscribe");
+    await this.$store.dispatch("lunar/load");
+  },
+  beforeDestroy() {
+    this.$store.dispatch("lunar/unsubscribe");
   },
   data() {
     return {
@@ -82,9 +91,9 @@ export default {
     this.title = this.$t("window-lunar");
   },
   computed: {
-    loaded() {
-      return true;
-    }
+    ...mapState({
+      loaded: state => state.lunar.loaded
+    })
   },
   methods: {
     switchTab(newTab) {
