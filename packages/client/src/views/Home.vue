@@ -22,13 +22,6 @@
               ></MenuIcon>
               <MenuIcon
                 icon="skewed_icon_xmas"
-                :to="{ name: 'xmas-home' }"
-                :append="true"
-                id="xmas"
-                >{{ $t("btn-evt-xmas") }}
-              </MenuIcon>
-              <MenuIcon
-                icon="skewed_icon_xmas"
                 :to="{ path: '/lunar' }"
                 :append="true"
                 id="lunar"

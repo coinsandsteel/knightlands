@@ -22,6 +22,7 @@ import Shop from "@/store/shop";
 import Settings from "@/store/settings";
 import Dungeon from "@/store/dungeon";
 import Xmas from "@/store/xmas";
+import Lunar from "@/store/lunar";
 import Elements from "@/../../knightlands-shared/elements";
 import ArmyUnitTypes from "@/army_unit_types";
 
@@ -291,7 +292,8 @@ const store = new Vuex.Store({
     settings: Settings,
     shop: Shop,
     dungeon: Dungeon,
-    xmas: Xmas
+    xmas: Xmas,
+    lunar: Lunar
   }
 });
 
