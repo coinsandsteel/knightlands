@@ -6,14 +6,18 @@ export default {
   namespaced: true,
   state: {
     loaded: false,
-    inventory: [],
+    items: [],
     newElement: null
   },
   getters: {},
   mutations: {
-    updateState(state, data) {},
+    updateState(state, data) {
+      if (data.items !== undefined) {
+        state.items = data.items;
+      }
+    },
     setInitialState(state, data) {
-      state.inventory = data.inventory;
+      state.items = data.items;
       state.loaded = true;
     }
   },
