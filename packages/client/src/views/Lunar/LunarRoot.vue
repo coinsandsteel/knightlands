@@ -11,7 +11,7 @@
       >
       </tabs>
       <router-view v-if="loaded"></router-view>
-
+      <!-- <LunarDailyRewards /> -->
       <!-- <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-end">
           <CustomButton
@@ -47,6 +47,8 @@ import { mapState } from "vuex";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 // import CustomButton from "@/components/Button.vue";
+import LunarDailyRewards from "@/views/Lunar/LunarDailyRewards.vue";
+import { create } from "vue-modal-dialogs";
 
 const CraftTab = "lunar-craft";
 const RecipesTab = "lunar-recipes";
@@ -57,6 +59,7 @@ export default {
   mixins: [AppSection],
   components: {
     Tabs
+    // LunarDailyRewards
     // CustomButton
   },
   async mounted() {
@@ -96,10 +99,13 @@ export default {
   created() {
     this.title = this.$t("window-lunar");
   },
+  // mounted() {
+  activated() {
+    const showDailyRewardsDialog = create(LunarDailyRewards);
+    showDailyRewardsDialog();
+  },
   computed: {
-    ...mapState({
-      loaded: state => state.lunar.loaded
-    })
+    ...mapState("lunar", ["loaded"])
   },
   methods: {
     switchTab(newTab) {

@@ -10,7 +10,7 @@
         <div>
           <!-- message -->
           <div
-            v-if="selectedItems.length > 0 && upgradeMessage && !hasCrafted"
+            v-if="isCrafting && upgradeMessage && !hasCrafted"
             class="upgrade-message font-size-22 text-center padding-left-2 padding-right-2 margin-left-auto margin-right-auto"
             v-html="upgradeMessage"
           />
@@ -42,7 +42,7 @@
           </template>
           <!-- crafting -->
           <div
-            v-else-if="selectedItems.length > 0"
+            v-else-if="isCrafting"
             class="crafting-elements margin-left-auto margin-right-auto flex flex-center margin-top-4"
           >
             <Loot
@@ -171,12 +171,15 @@ export default {
   },
   props: {
     maxSelectedItems: { type: Number, required: true },
-    selectedItems: { type: Array, required: true }
+    selectedItems: { type: Array, required: true },
+    isCrafting: { type: Boolean, default: false },
+    hasCrafted: { type: Boolean, default: false },
+    selectedGroupId: { type: String, default: null }
   },
   data() {
     return {
       items: [null, null, null],
-      hasCrafted: false,
+      // hasCrafted: false,
       craftedItem: {
         id: 1,
         isCustomElement: true,
@@ -199,9 +202,15 @@ export default {
       ].slice(0, this.maxSelectedItems);
     },
     upgradeMessage() {
-      return this.$t("lunar_combine_lantern_upgrade_message", {
-        level: `<b class="capitalize">${this.$t("advanced")}</b>`
-      });
+      if (!this.selectedGroupId) {
+        return null;
+      }
+
+      // return this.$t("lunar_combine_lantern_upgrade_message", {
+      //   level: `<b class="capitalize">${this.$t(this.nextLevel)}</b>`
+      // });
+
+      return this.$t(`lunar_combine_${this.selectedGroupId}_lantern_message`);
     },
     upgradedMessage() {
       return this.$t("lunar_combine_lantern_success_message", {
@@ -218,16 +227,17 @@ export default {
     },
     async craftHandler() {
       if (this.hasCrafted) {
-        this.hasCrafted = false;
-        this.$emit("items-reset");
+        this.$emit("reset-requested");
         return;
       }
+
 
       await this.performRequestNoCatch(
         this.$store.dispatch("lunar/craft", this.selectedItems)
       );
 
-      this.hasCrafted = true;
+
+      this.$emit("craft-requested");
     }
   }
 };
@@ -237,6 +247,30 @@ export default {
 .craft-container {
   width: 456px;
   max-width: calc(100% - 4rem);
+}
+.craft-container--basic {
+  .upgrade-message,
+  .upgraded-message {
+    &::v-deep b {
+      color: #70ee70;
+    }
+  }
+}
+.craft-container--advanced {
+  .upgrade-message,
+  .upgraded-message {
+    &::v-deep b {
+      color: #fe55ff;
+    }
+  }
+}
+.craft-container--expert {
+  .upgrade-message,
+  .upgraded-message {
+    &::v-deep b {
+      color: #1ae4f6;
+    }
+  }
 }
 .craft-container > div {
   background-color: #7c264b;
@@ -256,7 +290,7 @@ export default {
 }
 .combine-lantern-message {
   max-width: 30rem;
-  color: #fdd78e;
+  color: #fde648;
 }
 .btn-combine {
   padding-left: 3rem;
@@ -289,12 +323,6 @@ export default {
 // .upgraded-message {
 //   margin-bottom: -0.5rem;
 // }
-.upgrade-message,
-.upgraded-message {
-  &::v-deep b {
-    color: #70ee70;
-  }
-}
 .crafted-element::before {
   content: "";
   position: absolute;

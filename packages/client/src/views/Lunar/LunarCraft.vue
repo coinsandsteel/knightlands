@@ -7,8 +7,15 @@
         <CraftContainer
           :maxSelectedItems="selectedGroup ? selectedGroup.craftItemsCount : 0"
           :selectedItems="selectedItems"
+          :hasCrafted="hasCrafted"
+          :isCrafting="isCrafting"
+          :selectedGroupId="selectedGroupId"
+          :class="
+            selectedGroupId ? `craft-container--${selectedGroupId}` : null
+          "
           @item-removed="itemRemovedHandler"
-          @items-reset="itemsResetHandler"
+          @reset-requested="itemsResetHandler"
+          @craft-requested="craftHandler"
         />
         <div class="inv-root dummy-height full-flex width-100 height-100">
           <div v-bar class="center width-100 height-100 dummy-height">
@@ -31,7 +38,6 @@
                     :item="item"
                     :key="itemIndex"
                     :inventory="false"
-                    :_selected="selectedItemId === item.id"
                     :itemSlotClasses="
                       item && item.itemSlotClasses ? item.itemSlotClasses : null
                     "
@@ -43,15 +49,7 @@
                         selectedGroupId && item.group !== selectedGroupId
                     }"
                     @hint="handleHint"
-                  >
-                    <div
-                      v-if="
-                        selectedItemIds.includes(item.id) &&
-                          selectedItemId !== item.id
-                      "
-                      class="select-overlay flex flex-center"
-                    />
-                  </Loot>
+                  />
                 </div>
               </template>
             </div>
@@ -60,7 +58,7 @@
       </div>
     </div>
     <!-- levels switcher -->
-    <portal to="footer" :slim="true">
+    <portal v-if="isActive" to="footer" :slim="true">
       <LunarElementLevelsSwitcher @level-updated="levelUpdatedHandler" />
     </portal>
   </div>
@@ -68,6 +66,7 @@
 <script>
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import LunarElementLevelsSwitcher from "@/views/Lunar/LunarElementLevelsSwitcher.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
 
 const GROUP = {
@@ -82,6 +81,7 @@ export default {
     Loot,
     LunarElementLevelsSwitcher
   },
+  mixins: [ActivityMixin],
   data() {
     return {
       selectedItems: [],
@@ -89,7 +89,8 @@ export default {
       selected: {},
       selectedItemId: null,
       maxSelectedItems: 3,
-      selectedGroupId: null
+      selectedGroupId: null,
+      hasCrafted: false
     };
   },
   computed: {
@@ -216,13 +217,32 @@ export default {
     selectedItemIds() {
       return this.selectedItems.map(({ id }) => id);
     },
+
     selectedGroup() {
       if (!this.selectedGroupId) {
         return null;
       }
 
       return this.itemGroups.find(({ id }) => id === this.selectedGroupId);
+    },
+
+    isCrafting() {
+      return this.selectedItemIds.length > 0;
     }
+
+    // nextLevel() {
+    //   switch (this.selectedGroupId) {
+    //     case GROUP.BASIC:
+    //       return GROUP.ADVANCED;
+    //     case GROUP.ADVANCED:
+    //       return GROUP.EXPERT;
+    //     case GROUP.EXPERT:
+    //       return "nft";
+
+    //     default:
+    //       return null;
+    //   }
+    // }
   },
   // watch: {
   //   "$route.params.group": {
@@ -289,6 +309,7 @@ export default {
       this.selectedItems = [];
       this.selectedItemId = null;
       this.selectedGroupId = null;
+      this.hasCrafted = false;
     },
 
     levelUpdatedHandler(level) {
@@ -297,6 +318,14 @@ export default {
       }
       this.itemsResetHandler();
       this.selectedGroupId = level;
+    },
+
+    craftHandler() {
+      if (this.hasCrafted) {
+        return;
+      }
+
+      this.hasCrafted = true;
     }
   }
 };
