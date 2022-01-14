@@ -7,13 +7,16 @@ export default {
   state: {
     loaded: false,
     items: [],
-    newElement: null
+    newItem: null
   },
   getters: {},
   mutations: {
     updateState(state, data) {
       if (data.items !== undefined) {
         state.items = data.items;
+      }
+      if (data.newItem !== undefined) {
+        state.newItem = data.newItem;
       }
     },
     setInitialState(state, data) {

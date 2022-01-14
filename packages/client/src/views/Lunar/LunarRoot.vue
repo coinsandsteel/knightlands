@@ -111,15 +111,15 @@ export default {
     switchTab(newTab) {
       this.currentTab = newTab;
     },
-    redirectToLunarCraft(group) {
+    redirectToLunarCraft(rarity) {
       if (
         this.$route.name === "lunar-craft" &&
         this.$route.params &&
-        this.$route.params.group === group
+        this.$route.params.rarity === rarity
       ) {
         return;
       }
-      this.$router.replace({ name: "lunar-craft", params: { group } });
+      this.$router.replace({ name: "lunar-craft", params: { rarity } });
     }
   }
 };

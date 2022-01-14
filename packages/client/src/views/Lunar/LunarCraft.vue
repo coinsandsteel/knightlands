@@ -5,13 +5,13 @@
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
         <CraftContainer
-          :maxSelectedItems="selectedGroup ? selectedGroup.craftItemsCount : 0"
+          :maxSelectedItems="selectedRarity ? selectedRarity.craftItemsCount : 0"
           :selectedItems="selectedItems"
           :hasCrafted="hasCrafted"
           :isCrafting="isCrafting"
-          :selectedGroupId="selectedGroupId"
+          :selectedRarityId="selectedRarityId"
           :class="
-            selectedGroupId ? `craft-container--${selectedGroupId}` : null
+            selectedRarityId ? `craft-container--${selectedRarityId}` : null
           "
           @item-removed="itemRemovedHandler"
           @reset-requested="itemsResetHandler"
@@ -20,20 +20,20 @@
         <div class="inv-root dummy-height full-flex width-100 height-100">
           <div v-bar class="center width-100 height-100 dummy-height">
             <div>
-              <template v-for="(group, groupIndex) in itemGroups">
+              <template v-for="(rarity, rarityIndex) in itemRaritys">
                 <div
-                  class="group-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2"
-                  :key="`group-name-${groupIndex}`"
-                  :class="group.nameClasses"
+                  class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2"
+                  :key="`rarity-name-${rarityIndex}`"
+                  :class="rarity.nameClasses"
                 >
-                  {{ group.name }}
+                  {{ rarity.name }}
                 </div>
                 <div
-                  :key="`group-${groupIndex}`"
-                  class="element-group width-100 dummy-height inventory-container margin-top-1 margin-bottom-1  padding-left-1 padding-right-1"
+                  :key="`rarity-${rarityIndex}`"
+                  class="element-rarity width-100 dummy-height inventory-container margin-top-1 margin-bottom-1  padding-left-1 padding-right-1"
                 >
                   <Loot
-                    v-for="(item, itemIndex) in group.items"
+                    v-for="(item, itemIndex) in rarity.items"
                     :id="`i-${item.template}`"
                     :item="item"
                     :key="itemIndex"
@@ -46,7 +46,7 @@
                     "
                     :class="{
                       'opacity-50':
-                        selectedGroupId && item.group !== selectedGroupId
+                        selectedRarityId && item.rarity !== selectedRarityId
                     }"
                     @hint="handleHint"
                   />
@@ -64,16 +64,17 @@
   </div>
 </template>
 <script>
+import {
+  ITEM_RARITY_BASIC,
+  ITEM_RARITY_ADVANCED,
+  ITEM_RARITY_EXPERT
+} from "../../../../knightlands-shared/lunar";
+
+import { mapState } from "vuex";
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import LunarElementLevelsSwitcher from "@/views/Lunar/LunarElementLevelsSwitcher.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
-
-const GROUP = {
-  BASIC: "basic",
-  ADVANCED: "advanced",
-  EXPERT: "expert"
-};
 
 export default {
   components: {
@@ -89,105 +90,49 @@ export default {
       selected: {},
       selectedItemId: null,
       maxSelectedItems: 3,
-      selectedGroupId: null,
-      hasCrafted: false
+      selectedRarityId: null
+      /* DEMO items structure
+      items: [
+        {
+          id: 1,
+          template: 100,
+          rarity: "common"
+          caption: "l111",
+          quantity: 2
+        }
+      ]*/
     };
   },
   computed: {
-    itemGroups() {
-      const groups = [];
+    ...mapState({
+      items: state => state.lunar.items
+    }),
+    itemRaritys() {
+      const raritys = [
+        {
+          id: ITEM_RARITY_BASIC,
+          name: this.$t("btn-basic"),
+          items: this.items.filter(item => item.rarity === ITEM_RARITY_BASIC),
+          nameClasses: "rarity-basic-name",
+          craftItemsCount: 3
+        },
+        {
+          id: ITEM_RARITY_ADVANCED,
+          name: this.$t("btn-advanced"),
+          items: this.items.filter(item => item.rarity === ITEM_RARITY_ADVANCED),
+          nameClasses: "rarity-advanced-name",
+          craftItemsCount: 2
+        },
+        {
+          id: ITEM_RARITY_EXPERT,
+          name: this.$t("button-expert"),
+          items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
+          nameClasses: "rarity-expert-name",
+          craftItemsCount: 10
+        }
+      ];
 
-      // basic
-      let group = {
-        id: GROUP.BASIC,
-        name: this.$t("basic-elements"),
-        items: [],
-        nameClasses: "group-basic-name",
-        craftItemsCount: 3
-      };
-      for (let i = 1; i < 15; i++) {
-        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-        group.items.push({
-          id: i,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern" + index,
-          isCustomElement: true,
-          // template: 2928
-          count: index,
-          group: GROUP.BASIC
-          // level: 1,
-          // exp: 0,
-          // equipped: false,
-          // breakLimit: 0,
-          // unique: false,
-          // rarity: "epic",
-          // element: "physical",
-          // index: 13
-        });
-      }
-      groups.push(group);
-
-      // advanced
-      group = {
-        id: GROUP.ADVANCED,
-        name: this.$t("advanced-elements"),
-        items: [],
-        nameClasses: "group-advanced-name",
-        craftItemsCount: 2
-      };
-      for (let i = 1; i < 50; i++) {
-        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-        group.items.push({
-          id: i,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern" + index,
-          isCustomElement: true,
-          // template: 2928
-          count: index,
-          group: GROUP.ADVANCED
-          // level: 1,
-          // exp: 0,
-          // equipped: false,
-          // breakLimit: 0,
-          // unique: false,
-          // rarity: "epic",
-          // element: "physical",
-          // index: 13
-        });
-      }
-      groups.push(group);
-
-      // expert
-      group = {
-        id: GROUP.EXPERT,
-        name: this.$t("expert-elements"),
-        items: [],
-        nameClasses: "group-expert-name",
-        craftItemsCount: 10
-      };
-      for (let i = 1; i < 50; i++) {
-        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-        group.items.push({
-          id: i,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern" + index,
-          isCustomElement: true,
-          // template: 2928
-          count: index,
-          group: GROUP.EXPERT
-          // level: 1,
-          // exp: 0,
-          // equipped: false,
-          // breakLimit: 0,
-          // unique: false,
-          // rarity: "epic",
-          // element: "physical",
-          // index: 13
-        });
-      }
-      groups.push(group);
-
-      return groups;
+      return raritys;
     },
     // items() {
     //   const items = [];
@@ -218,12 +163,12 @@ export default {
       return this.selectedItems.map(({ id }) => id);
     },
 
-    selectedGroup() {
-      if (!this.selectedGroupId) {
+    selectedRarity() {
+      if (!this.selectedRarityId) {
         return null;
       }
 
-      return this.itemGroups.find(({ id }) => id === this.selectedGroupId);
+      return this.itemRaritys.find(({ id }) => id === this.selectedRarityId);
     },
 
     isCrafting() {
@@ -231,7 +176,7 @@ export default {
     }
 
     // nextLevel() {
-    //   switch (this.selectedGroupId) {
+    //   switch (this.selectedRarityId) {
     //     case GROUP.BASIC:
     //       return GROUP.ADVANCED;
     //     case GROUP.ADVANCED:
@@ -245,17 +190,17 @@ export default {
     // }
   },
   // watch: {
-  //   "$route.params.group": {
-  //     handler: function(group) {
+  //   "$route.params.rarity": {
+  //     handler: function(rarity) {
   //       if (this.$route.name !== "lunar-craft") {
   //         return;
   //       }
-  //       if (group && !Object.values(GROUP).includes(group)) {
+  //       if (rarity && !Object.values(GROUP).includes(rarity)) {
   //         this.$router.replace({ params: null });
   //         return;
   //       }
   //       // eslint-disable-next-line no-console
-  //       console.log("group", group);
+  //       console.log("rarity", rarity);
   //       // if () {
 
   //       // }
@@ -266,11 +211,11 @@ export default {
   // },
   methods: {
     handleHint(item) {
-      if (this.selectedGroupId && item.group !== this.selectedGroupId) {
+      if (this.selectedRarityId && item.rarity !== this.selectedRarityId) {
         return;
       }
       // if (this.selectedItems.length <= 0) {
-      //   this.selectedGroupId = item.group;
+      //   this.selectedRarityId = item.rarity;
       // }
       const index = this.selectedItems.findIndex(({ id }) => id === item.id);
       // if (index >= 0) {
@@ -284,13 +229,13 @@ export default {
       // }
       if (
         index < 0 &&
-        (!this.selectedGroup ||
-          (this.selectedGroup &&
-            this.selectedItems.length < this.selectedGroup.craftItemsCount))
+        (!this.selectedRarity ||
+          (this.selectedRarity &&
+            this.selectedItems.length < this.selectedRarity.craftItemsCount))
       ) {
         this.selectedItems.push(item);
         this.selectedItemId = item.id;
-        this.selectedGroupId = item.group;
+        this.selectedRarityId = item.rarity;
         return;
       }
       this.selectedItemId = null;
@@ -301,23 +246,23 @@ export default {
       this.selectedItems.splice(index, 1);
       this.selectedItemId = null;
       if (this.selectedItems.length <= 0) {
-        this.selectedGroupId = null;
+        this.selectedRarityId = null;
       }
     },
 
     itemsResetHandler() {
       this.selectedItems = [];
       this.selectedItemId = null;
-      this.selectedGroupId = null;
+      this.selectedRarityId = null;
       this.hasCrafted = false;
     },
 
     levelUpdatedHandler(level) {
-      if (this.selectedGroupId === level) {
+      if (this.selectedRarityId === level) {
         return;
       }
       this.itemsResetHandler();
-      this.selectedGroupId = level;
+      this.selectedRarityId = level;
     },
 
     craftHandler() {
@@ -336,19 +281,19 @@ export default {
     overflow: auto !important;
   }
 }
-.element-group {
+.element-rarity {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
   justify-items: center;
   grid-gap: 2rem;
 }
-.group-name {
+.rarity-name {
   background: rgba(0, 0, 0, 0.5);
 }
-.group-advanced-name {
+.rarity-advanced-name {
   color: #09fa08;
 }
-.group-expert-name {
+.rarity-expert-name {
   color: #fe55ff;
 }
 </style>

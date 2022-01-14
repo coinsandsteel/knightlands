@@ -174,7 +174,7 @@ export default {
     selectedItems: { type: Array, required: true },
     isCrafting: { type: Boolean, default: false },
     hasCrafted: { type: Boolean, default: false },
-    selectedGroupId: { type: String, default: null }
+    selectedRarityId: { type: String, default: null }
   },
   data() {
     return {
@@ -202,7 +202,7 @@ export default {
       ].slice(0, this.maxSelectedItems);
     },
     upgradeMessage() {
-      if (!this.selectedGroupId) {
+      if (!this.selectedRarityId) {
         return null;
       }
 
@@ -210,7 +210,7 @@ export default {
       //   level: `<b class="capitalize">${this.$t(this.nextLevel)}</b>`
       // });
 
-      return this.$t(`lunar_combine_${this.selectedGroupId}_lantern_message`);
+      return this.$t(`lunar_combine_${this.selectedRarityId}_lantern_message`);
     },
     upgradedMessage() {
       return this.$t("lunar_combine_lantern_success_message", {
