@@ -75,6 +75,11 @@ import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import LunarElementLevelsSwitcher from "@/views/Lunar/LunarElementLevelsSwitcher.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
+import {
+  ITEM_RARITY_BASIC,
+  ITEM_RARITY_ADVANCED,
+  ITEM_RARITY_EXPERT
+} from "@/../../knightlands-shared/lunar";
 
 export default {
   components: {
