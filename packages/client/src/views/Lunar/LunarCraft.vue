@@ -89,7 +89,8 @@ export default {
       selected: {},
       selectedItemId: null,
       maxSelectedItems: 3,
-      selectedRarityId: null
+      selectedRarityId: null,
+      hasCrafted: false,
       /* DEMO items structure
       items: [
         {
