@@ -2203,16 +2203,6 @@ class Game {
       })
     ).response;
   }
-
-  // Lunar
-  async fetchDailyLunarRewardStatus() {
-    return (await this._wrapOperation(Operations.FetchDailyLunarRewardStatus))
-      .response;
-  }
-
-  async collectDailyLunarReward() {
-    return (await this._wrapOperation(Operations.CollectDailyLunarReward)).response;
-  }
 }
 
 export default Game;

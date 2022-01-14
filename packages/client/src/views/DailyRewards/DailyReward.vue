@@ -38,11 +38,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import (reference) "../../../style/ui.less";
-@import (reference) "../../../style/common.less";
+@import (reference) "../../style/ui.less";
+@import (reference) "../../style/common.less";
 
 .active {
-  background-image: url("../../../assets/ui/slot_selected.png");
+  background-image: url("../../assets/ui/slot_selected.png");
   position: relative;
   background-size: contain;
   background-repeat: no-repeat;
