@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-items-end">
-    <CustomButton
+    <!-- <CustomButton
       type="red"
       class="inline-block margin-right-2 margin-top-1"
       @click="$emit('level-updated', 'expert')"
     >
       {{ $t("btn-expert") }}
-    </CustomButton>
+    </CustomButton> -->
     <CustomButton
       type="yellow"
       class="inline-block margin-right-1"

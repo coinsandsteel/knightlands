@@ -10,7 +10,15 @@
           <div v-bar class="center width-100 height-100 dummy-height">
             <div>
               <div style="height: 300px;">
-                Search 1
+                <!-- searchbox -->
+                <input
+                  type="text"
+                  :placeholder="$t('lantern-name')"
+                  class="input lantern-name-input white-font margin-bottom-2"
+                  aria-describedby="input name input"
+                  v-model="searchText"
+                  v-on:keyup.enter="searchHandler"
+                />
               </div>
               <LunarCraftingRecipe
                 v-for="(recipe, index) in recipesList"
@@ -31,7 +39,9 @@ export default {
     LunarCraftingRecipe
   },
   data() {
-    return {};
+    return {
+      searchText: ""
+    };
   },
   computed: {
     recipesList() {
@@ -60,7 +70,7 @@ export default {
             itemSlotClasses: "lunar-lantern-slot",
             iconClasses: "basic-lantern3"
           }
-        ],
+        ]
       };
       const recipe = {
         title: "Basic",
@@ -74,6 +84,9 @@ export default {
 
       return result;
     }
+  },
+  methods: {
+    searchHandler() {}
   }
 };
 </script>

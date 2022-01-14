@@ -231,12 +231,6 @@ export default {
         return;
       }
 
-
-      await this.performRequestNoCatch(
-        this.$store.dispatch("lunar/craft", this.selectedItems)
-      );
-
-
       this.$emit("craft-requested");
     }
   }

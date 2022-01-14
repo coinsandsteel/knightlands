@@ -275,6 +275,11 @@ export default {
         return;
       }
 
+      // @todo: uncomment
+      // await this.performRequestNoCatch(
+      //   this.$store.dispatch("lunar/craft", this.selectedItems)
+      // );
+
       this.hasCrafted = true;
     }
   }

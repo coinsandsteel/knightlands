@@ -10,7 +10,7 @@
         :replace="true"
       >
       </tabs>
-      <router-view v-if="loaded"></router-view>
+      <router-view v-if="true || loaded"></router-view>
       <!-- <LunarDailyRewards /> -->
       <!-- <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-end">
