@@ -5,7 +5,9 @@
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
         <CraftContainer
-          :maxSelectedItems="selectedRarity ? selectedRarity.craftItemsCount : 0"
+          :maxSelectedItems="
+            selectedRarity ? selectedRarity.craftItemsCount : 0
+          "
           :selectedItems="selectedItems"
           :hasCrafted="hasCrafted"
           :isCrafting="isCrafting"
@@ -59,14 +61,14 @@
     </div>
     <!-- levels switcher -->
     <portal v-if="isActive" to="footer" :slim="true">
-      <LunarElementLevelsSwitcher @level-updated="levelUpdatedHandler" />
+      <LunarElementRaritiesSwitcher @rarity-updated="rarityUpdatedHandler" />
     </portal>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
-import LunarElementLevelsSwitcher from "@/views/Lunar/LunarElementLevelsSwitcher.vue";
+import LunarElementRaritiesSwitcher from "@/views/Lunar/LunarElementRaritiesSwitcher.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
 import {
@@ -79,7 +81,7 @@ export default {
   components: {
     CraftContainer,
     Loot,
-    LunarElementLevelsSwitcher
+    LunarElementRaritiesSwitcher
   },
   mixins: [ActivityMixin],
   data() {
@@ -90,7 +92,7 @@ export default {
       selectedItemId: null,
       maxSelectedItems: 3,
       selectedRarityId: null,
-      hasCrafted: false,
+      hasCrafted: false
       /* DEMO items structure
       items: [
         {
@@ -111,21 +113,23 @@ export default {
       const raritys = [
         {
           id: ITEM_RARITY_BASIC,
-          name: this.$t("btn-basic"),
+          name: this.$t("basic"),
           items: this.items.filter(item => item.rarity === ITEM_RARITY_BASIC),
           nameClasses: "rarity-basic-name",
           craftItemsCount: 3
         },
         {
           id: ITEM_RARITY_ADVANCED,
-          name: this.$t("btn-advanced"),
-          items: this.items.filter(item => item.rarity === ITEM_RARITY_ADVANCED),
+          name: this.$t("advanced"),
+          items: this.items.filter(
+            item => item.rarity === ITEM_RARITY_ADVANCED
+          ),
           nameClasses: "rarity-advanced-name",
           craftItemsCount: 2
         },
         {
           id: ITEM_RARITY_EXPERT,
-          name: this.$t("button-expert"),
+          name: this.$t("expert"),
           items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
           nameClasses: "rarity-expert-name",
           craftItemsCount: 10
@@ -257,12 +261,12 @@ export default {
       this.hasCrafted = false;
     },
 
-    levelUpdatedHandler(level) {
-      if (this.selectedRarityId === level) {
+    rarityUpdatedHandler(rarity) {
+      if (this.selectedRarityId === rarity) {
         return;
       }
       this.itemsResetHandler();
-      this.selectedRarityId = level;
+      this.selectedRarityId = rarity;
     },
 
     craftHandler() {

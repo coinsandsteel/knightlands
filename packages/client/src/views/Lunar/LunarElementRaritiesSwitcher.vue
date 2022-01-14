@@ -1,23 +1,24 @@
 <template>
   <div class="flex flex-items-end">
-    <!-- <CustomButton
+    <CustomButton
+      v-if="isExpertRarityVisible"
       type="red"
       class="inline-block margin-right-2 margin-top-1"
-      @click="$emit('level-updated', 'expert')"
+      @click="$emit('rarity-updated', 'expert')"
     >
       {{ $t("btn-expert") }}
-    </CustomButton> -->
+    </CustomButton>
     <CustomButton
       type="yellow"
       class="inline-block margin-right-1"
-      @click="$emit('level-updated', 'advanced')"
+      @click="$emit('rarity-updated', 'advanced')"
     >
       {{ $t("btn-advanced") }}
     </CustomButton>
     <CustomButton
       type="grey"
       class="inline-block margin-right-2 margin-top-1"
-      @click="$emit('level-updated', 'basic')"
+      @click="$emit('rarity-updated', 'basic')"
     >
       {{ $t("btn-basic") }}
     </CustomButton>
@@ -30,6 +31,9 @@ import CustomButton from "@/components/Button.vue";
 export default {
   components: {
     CustomButton
+  },
+  props: {
+    isExpertRarityVisible: { type: Boolean, default: false }
   }
 };
 </script>
