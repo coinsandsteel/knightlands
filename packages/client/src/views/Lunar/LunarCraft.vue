@@ -64,12 +64,6 @@
   </div>
 </template>
 <script>
-import {
-  ITEM_RARITY_BASIC,
-  ITEM_RARITY_ADVANCED,
-  ITEM_RARITY_EXPERT
-} from "../../../../knightlands-shared/lunar";
-
 import { mapState } from "vuex";
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import LunarElementLevelsSwitcher from "@/views/Lunar/LunarElementLevelsSwitcher.vue";
