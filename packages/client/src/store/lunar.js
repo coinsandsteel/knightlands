@@ -1,6 +1,7 @@
-import _ from "lodash";
+// import _ from "lodash";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
+import store from "../store";
 
 export default {
   namespaced: true,
@@ -8,22 +9,8 @@ export default {
     loaded: false,
     items: [],
     newItem: {},
-    dailyRewards: [
-      /*{ collected: true, active: false, quantity: 3 },
-      { collected: true, active: false, quantity: 3 },
-      { collected: true, active: false, quantity: 3 },
-      { collected: true, active: false, quantity: 3 },
-      { collected: false, active: true, quantity: 3 }*/
-    ],
-    currentDailyReward: [
-      /*{
-        id: 1,
-        template: 100,
-        rarity: "common",
-        caption: "l111",
-        quantity: 2
-      }*/
-    ]
+    dailyRewards: [],
+    currentDailyReward: []
   },
   getters: {},
   mutations: {
@@ -44,6 +31,47 @@ export default {
     setInitialState(state, data) {
       state.items = data.items;
       state.loaded = true;
+
+      state.dailyRewards = [
+        { collected: true, active: false, quantity: 3 },
+        { collected: true, active: false, quantity: 4 },
+        { collected: true, active: false, quantity: 6 },
+        { collected: true, active: false, quantity: 2 },
+        { collected: false, active: true, quantity: 7 },
+        { collected: false, active: false, quantity: 3 },
+        { collected: false, active: false, quantity: 8 }
+      ];
+
+      store.currentDailyReward = [
+        {
+          id: 1,
+          template: 100,
+          rarity: "common",
+          caption: "l111",
+          quantity: 2
+        },
+        {
+          id: 2,
+          template: 100,
+          rarity: "common",
+          caption: "l111",
+          quantity: 5
+        },
+        {
+          id: 3,
+          template: 100,
+          rarity: "common",
+          caption: "l111",
+          quantity: 5
+        },
+        {
+          id: 4,
+          template: 100,
+          rarity: "common",
+          caption: "l111",
+          quantity: 3
+        }
+      ];
     }
   },
   actions: {
@@ -56,6 +84,9 @@ export default {
     },
     async exchange(store, items) {
       await this.$app.$game._wrapOperation(Operations.LunarExchange, items);
+    },
+    collectDailyReward() {
+      this.$app.$game._wrapOperation(Operations.LunarCollectDailyReward);
     },
     update(store, data) {
       store.commit("updateState", data);

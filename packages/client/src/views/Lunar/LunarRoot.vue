@@ -10,7 +10,7 @@
         :replace="true"
       >
       </tabs>
-      <router-view v-if="true || loaded"></router-view>
+      <router-view v-if="loaded"></router-view>
       <!-- <LunarDailyRewards /> -->
       <!-- <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-end">
@@ -43,7 +43,6 @@
 
 <script>
 import { mapState } from "vuex";
-
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 // import CustomButton from "@/components/Button.vue";
@@ -93,7 +92,8 @@ export default {
           to: { name: NftTab }
         }
       ],
-      currentTab: CraftTab
+      currentTab: CraftTab,
+      isDailyRewardPopupVisible: false
     };
   },
   created() {
@@ -101,26 +101,35 @@ export default {
   },
   // mounted() {
   activated() {
-    const showDailyRewardsDialog = create(LunarDailyRewards);
-    showDailyRewardsDialog();
+    // const showDailyRewardsDialog = create(LunarDailyRewards);
+    // showDailyRewardsDialog();
+    if (
+      this.dailyRewards?.find(({ active, collected }) => active && !collected)
+    ) {
+      this.showDailyRewards();
+    }
   },
   computed: {
-    ...mapState("lunar", ["loaded"])
+    ...mapState("lunar", ["loaded", "dailyRewards"])
   },
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
     },
-    redirectToLunarCraft(rarity) {
-      if (
-        this.$route.name === "lunar-craft" &&
-        this.$route.params &&
-        this.$route.params.rarity === rarity
-      ) {
-        return;
-      }
-      this.$router.replace({ name: "lunar-craft", params: { rarity } });
+    showDailyRewards() {
+      const showDailyRewardsDialog = create(LunarDailyRewards);
+      showDailyRewardsDialog();
     }
+    // redirectToLunarCraft(rarity) {
+    //   if (
+    //     this.$route.name === "lunar-craft" &&
+    //     this.$route.params &&
+    //     this.$route.params.rarity === rarity
+    //   ) {
+    //     return;
+    //   }
+    //   this.$router.replace({ name: "lunar-craft", params: { rarity } });
+    // }
   }
 };
 </script>

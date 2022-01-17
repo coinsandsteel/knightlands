@@ -11,16 +11,16 @@
           v-for="(item, itemIndex) in mysteryItems"
           :id="`i-${item.template}`"
           :item="item"
-          :key="itemIndex"
+          :key="`mystery-lantern-${itemIndex}`"
           :inventory="false"
           :itemSlotClasses="
             item && item.itemSlotClasses ? item.itemSlotClasses : null
           "
           :iconClasses="item && item.iconClasses ? item.iconClasses : null"
-          :selected="item.isCurrent"
+          :selected="item.active"
           class="mystery-lantern-loot"
         >
-          <CheckedIcon v-if="item.isCollected" class="checked-icon absolute" />
+          <CheckedIcon v-if="item.collected" class="checked-icon absolute" />
         </Loot>
       </div>
       <!-- daily rewards -->
@@ -33,7 +33,7 @@
             v-for="(item, itemIndex) in rewardItems"
             :id="`i-${item.template}`"
             :item="item"
-            :key="itemIndex"
+            :key="`reward-lantern-${itemIndex}`"
             :inventory="false"
             :itemSlotClasses="
               item && item.itemSlotClasses ? item.itemSlotClasses : null
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
@@ -64,21 +65,30 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("lunar", ["dailyRewards", "currentDailyReward"]),
     mysteryItems() {
-      const newItem = () => {
-        return {
-          id: result.length + 1,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "mystery-lantern",
-          isCustomElement: true,
-          isCollected: false,
-          isCurrent: false,
-          count: 3
-        };
-      };
+      // const newItem = () => {
+      //   return {
+      //     id: result.length + 1,
+      //     itemSlotClasses: "lunar-lantern-slot",
+      //     iconClasses: "mystery-lantern",
+      //     isCustomElement: true,
+      //     isCollected: false,
+      //     isCurrent: false,
+      //     count: 3
+      //   };
+      // };
       const result = [];
-      for (let i = 0; i < 7; i++) {
-        const item = { ...newItem(), isCollected: i < 4, isCurrent: i === 4 };
+      // for (let i = 0; i < 7; i++) {
+      //   const item = { ...newItem(), isCollected: i < 4, isCurrent: i === 4 };
+      //   result.push(item);
+      // }
+      for (let i = 0; i < this.dailyRewards?.length; i++) {
+        const item = { ...this.dailyRewards[i] };
+        item.itemSlotClasses = "lunar-lantern-slot";
+        item.iconClasses = "mystery-lantern";
+        item.isCustomElement = true;
+        item.count = item.quantity;
         result.push(item);
       }
 
@@ -86,19 +96,29 @@ export default {
     },
 
     rewardItems() {
-      const newItem = () => {
-        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-        return {
-          id: result.length + 1,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern" + index,
-          isCustomElement: true,
-          count: 4
-        };
-      };
+      // const newItem = () => {
+      //   const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+      //   return {
+      //     id: result.length + 1,
+      //     itemSlotClasses: "lunar-lantern-slot",
+      //     iconClasses: "basic-lantern" + index,
+      //     isCustomElement: true,
+      //     count: 4
+      //   };
+      // };
       const result = [];
-      for (let i = 0; i < 5; i++) {
-        const item = newItem();
+
+      // for (let i = 0; i < 4; i++) {
+      //   const item = newItem();
+      //   result.push(item);
+      // }
+
+      for (let i = 0; i < this.currentDailyReward?.length; i++) {
+        const item = { ...this.currentDailyReward[i] };
+        item.itemSlotClasses = "lunar-lantern-slot";
+        item.iconClasses = "basic-lantern" + ((i % 4) + 1);
+        item.isCustomElement = true;
+        item.count = item.quantity;
         result.push(item);
       }
 
@@ -107,6 +127,7 @@ export default {
   },
   methods: {
     collectRewards() {
+      this.$store.dispatch("lunar/collectDailyReward");
       this.$close();
     }
   }
