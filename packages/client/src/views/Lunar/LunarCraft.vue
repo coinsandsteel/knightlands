@@ -269,7 +269,7 @@ export default {
       this.selectedRarityId = rarity;
     },
 
-    craftHandler() {
+    async craftHandler() {
       if (this.hasCrafted) {
         return;
       }

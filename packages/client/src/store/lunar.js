@@ -7,7 +7,23 @@ export default {
   state: {
     loaded: false,
     items: [],
-    newItem: null
+    newItem: {},
+    dailyRewards: [
+      /*{ collected: true, active: false, quantity: 3 },
+      { collected: true, active: false, quantity: 3 },
+      { collected: true, active: false, quantity: 3 },
+      { collected: true, active: false, quantity: 3 },
+      { collected: false, active: true, quantity: 3 }*/
+    ],
+    currentDailyReward: [
+      /*{
+        id: 1,
+        template: 100,
+        rarity: "common",
+        caption: "l111",
+        quantity: 2
+      }*/
+    ]
   },
   getters: {},
   mutations: {
@@ -17,6 +33,12 @@ export default {
       }
       if (data.newItem !== undefined) {
         state.newItem = data.newItem;
+      }
+      if (data.dailyRewards !== undefined) {
+        state.dailyRewards = data.dailyRewards;
+      }
+      if (data.currentDailyReward !== undefined) {
+        state.currentDailyReward = data.currentDailyReward;
       }
     },
     setInitialState(state, data) {
