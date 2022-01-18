@@ -9,9 +9,10 @@
             selectedRarity ? selectedRarity.exchangeItemsCount : 0
           "
           :selectedItems="selectedItems"
-          :hasExchanged="hasExchanged"
+          :hasExchanged="hasExchanged && !!exchangedItem"
           :isExchanging="isExchanging"
           :selectedRarityId="selectedRarityId"
+          :exchangedItem="exchangedItem"
           :class="
             selectedRarityId ? `exchange-container--${selectedRarityId}` : null
           "
@@ -69,6 +70,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ExchangeContainer from "@/views/Lunar/ExchangeContainer.vue";
 import LunarElementRaritiesSwitcher from "@/views/Lunar/LunarElementRaritiesSwitcher.vue";
@@ -77,7 +79,8 @@ import Loot from "@/components/Loot.vue";
 import {
   ITEM_RARITY_BASIC,
   ITEM_RARITY_ADVANCED,
-  ITEM_RARITY_EXPERT
+  ITEM_RARITY_EXPERT,
+  RARITY_CLASS_MAP
 } from "@/../../knightlands-shared/lunar";
 
 export default {
@@ -109,16 +112,33 @@ export default {
     };
   },
   computed: {
+    ...mapState("lunar", ["newItem"]),
+    exchangedItem() {
+      if (!this.newItem) {
+        return null;
+      }
+
+      const rarity = this.$game.itemsDB.getRarity(this.newItem.template);
+      const info = this.$game.itemsDB.getTemplate(this.newItem.template);
+      const lanternNumber = info.caption[info.caption.length - 1];
+
+      return {
+        id: this.newItem._id,
+        rarity: rarity,
+        caption: this.newItem,
+        template: this.newItem.template,
+        iconClasses: `${
+          RARITY_CLASS_MAP[this.newItem.rarity]
+        } basic-lantern${lanternNumber}`,
+        itemSlotClasses: "lunar-lantern-slot",
+        isCustomElement: true
+      };
+    },
     items() {
       let items = this.$game.inventory.items;
       let i = 0;
       const length = items.length;
       let filteredItems = [];
-      let rarityClassMap = {
-        common: "rarity-basic-name",
-        rare: "rarity-advanced-name",
-        epic: "rarity-expert-name"
-      };
       for (; i < length; ++i) {
         const item = items[i];
         if (item.template >= 3214) {
@@ -127,8 +147,9 @@ export default {
           const lanternNumber = info.caption[info.caption.length - 1];
           filteredItems.push({
             ...item,
+            info,
             rarity,
-            iconClasses: `${rarityClassMap[rarity]} basic-lantern${lanternNumber}`,
+            iconClasses: `${RARITY_CLASS_MAP[rarity]} basic-lantern${lanternNumber}`,
             itemSlotClasses: "lunar-lantern-slot",
             isCustomElement: true
           });
@@ -197,6 +218,15 @@ export default {
     //   }
     // }
   },
+
+  watch: {
+    newItem(value) {
+      if (value) {
+        this.hasExchanged = true;
+      }
+    }
+  },
+
   methods: {
     handleHint(item) {
       if (this.selectedRarityId && item.rarity !== this.selectedRarityId) {
@@ -219,7 +249,7 @@ export default {
       //   this.selectedItemId = null;
       // }
       if (
-        selectedItemsWithSameId.length < item.count - 1 &&
+        selectedItemsWithSameId.length < item.count &&
         (!this.selectedRarity ||
           (this.selectedRarity &&
             this.selectedItems.length < this.selectedRarity.exchangeItemsCount))
@@ -246,6 +276,7 @@ export default {
       this.selectedItemId = null;
       this.selectedRarityId = null;
       this.hasExchanged = false;
+      this.$store.commit("lunar/updateState", { newItem: null });
     },
 
     rarityUpdatedHandler(rarity) {
@@ -265,7 +296,7 @@ export default {
         this.$store.dispatch("lunar/exchange", this.selectedItems)
       );
 
-      this.hasExchanged = true;
+      // this.hasExchanged = true;
     }
   }
 };

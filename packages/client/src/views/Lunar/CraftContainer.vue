@@ -73,7 +73,12 @@
         <!-- bottom -->
         <div class="text-center">
           <CustomButton
-            :disabled="!hasCrafted && selectedItems.length !== maxSelectedItems"
+            :disabled="
+              !hasCrafted &&
+                (maxSelectedItems === 0 ||
+                  (maxSelectedItems > 0 &&
+                    selectedItems.length !== maxSelectedItems))
+            "
             type="green"
             class="btn-combine inline-block uppercase padding-left-2"
             @click="craftHandler"
@@ -175,18 +180,12 @@ export default {
     selectedItems: { type: Array, required: true },
     isCrafting: { type: Boolean, default: false },
     hasCrafted: { type: Boolean, default: false },
-    selectedRarityId: { type: String, default: null }
+    selectedRarityId: { type: String, default: null },
+    craftedItem: { type: Object, default: null }
   },
   data() {
     return {
-      items: [null, null, null],
-      // hasCrafted: false,
-      craftedItem: {
-        id: 1,
-        isCustomElement: true,
-        itemSlotClasses: "lunar-lantern-slot",
-        iconClasses: "basic-lantern1"
-      }
+      items: [null, null, null]
     };
   },
   computed: {

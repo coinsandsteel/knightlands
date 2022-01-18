@@ -74,7 +74,10 @@
         <div class="text-center">
           <CustomButton
             :disabled="
-              !hasExchanged && selectedItems.length !== maxSelectedItems
+              !hasExchanged &&
+                (maxSelectedItems === 0 ||
+                  (maxSelectedItems > 0 &&
+                    selectedItems.length !== maxSelectedItems))
             "
             type="green"
             class="btn-exchange inline-block uppercase padding-left-2"
@@ -177,17 +180,12 @@ export default {
     selectedItems: { type: Array, required: true },
     isExchanging: { type: Boolean, default: false },
     hasExchanged: { type: Boolean, default: false },
-    selectedRarityId: { type: String, default: null }
+    selectedRarityId: { type: String, default: null },
+    exchangedItem: { type: Object, default: null }
   },
   data() {
     return {
-      items: [null, null, null],
-      exchangedItem: {
-        id: 1,
-        isCustomElement: true,
-        itemSlotClasses: "lunar-lantern-slot",
-        iconClasses: "basic-lantern1"
-      }
+      items: [null, null, null]
     };
   },
   computed: {

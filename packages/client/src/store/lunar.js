@@ -6,7 +6,7 @@ export default {
   namespaced: true,
   state: {
     loaded: false,
-    newItem: {},
+    newItem: null,
     dailyRewards: [],
     currentDailyReward: []
   },
@@ -17,6 +17,8 @@ export default {
   },
   mutations: {
     updateState(state, data) {
+      // eslint-disable-next-line no-console
+      console.log("lunar updateState", data);
       if (data.items !== undefined) {
         state.items = data.items;
       }
