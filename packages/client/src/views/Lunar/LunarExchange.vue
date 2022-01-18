@@ -26,7 +26,7 @@
                 <div
                   class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2"
                   :key="`rarity-name-${rarityIndex}`"
-                  :class="rarity.nameClasses"
+                  :class="rarity.class"
                 >
                   {{ rarity.name }}
                 </div>
@@ -69,7 +69,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ExchangeContainer from "@/views/Lunar/ExchangeContainer.vue";
 import LunarElementRaritiesSwitcher from "@/views/Lunar/LunarElementRaritiesSwitcher.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
@@ -86,7 +86,7 @@ export default {
     Loot,
     LunarElementRaritiesSwitcher
   },
-  mixins: [ActivityMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin],
   data() {
     return {
       selectedItems: [],
@@ -109,160 +109,62 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      items: state => state.lunar.items
-    }),
-    // itemRaritys() {
-    //   const raritys = [
-    //     {
-    //       id: ITEM_RARITY_BASIC,
-    //       name: this.$t("basic"),
-    //       items: this.items.filter(item => item.rarity === ITEM_RARITY_BASIC),
-    //       nameClasses: "rarity-basic-name",
-    //       exchangeItemsCount: 2
-    //     },
-    //     {
-    //       id: ITEM_RARITY_ADVANCED,
-    //       name: this.$t("advanced"),
-    //       items: this.items.filter(
-    //         item => item.rarity === ITEM_RARITY_ADVANCED
-    //       ),
-    //       nameClasses: "rarity-advanced-name",
-    //       exchangeItemsCount: 2
-    //     },
-    //     {
-    //       id: ITEM_RARITY_EXPERT,
-    //       name: this.$t("expert"),
-    //       items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
-    //       nameClasses: "rarity-expert-name",
-    //       exchangeItemsCount: 2
-    //     }
-    //   ];
-
-    //   return raritys;
-    // },
+    items() {
+      let items = this.$game.inventory.items;
+      let i = 0;
+      const length = items.length;
+      let filteredItems = [];
+      let rarityClassMap = {
+        common: "rarity-basic-name",
+        rare: "rarity-advanced-name",
+        epic: "rarity-expert-name"
+      };
+      for (; i < length; ++i) {
+        const item = items[i];
+        if (item.template >= 3214) {
+          let rarity = this.$game.itemsDB.getRarity(item.template);
+          filteredItems.push({
+            ...item,
+            rarity,
+            iconClasses: rarityClassMap[rarity],
+            itemSlotClasses: "lunar-lantern-slot",
+            isCustomElement: true
+          });
+        }
+      }
+      return filteredItems;
+    },
 
     itemRaritys() {
-      const raritys = [];
-
-      // basic
-      let rarity = {
-        id: ITEM_RARITY_BASIC,
-        name: this.$t("common-elements"),
-        items: [],
-        nameClasses: "rarity-common-name",
-        exchangeItemsCount: 2
-      };
-      for (let i = 1; i < 15; i++) {
-        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-        rarity.items.push({
-          id: i,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern" + index,
-          isCustomElement: true,
-          // template: 2928
-          count: index,
-          rarity: ITEM_RARITY_BASIC
-          // level: 1,
-          // exp: 0,
-          // equipped: false,
-          // breakLimit: 0,
-          // unique: false,
-          // rarity: "epic",
-          // element: "physical",
-          // index: 13
-        });
-      }
-      raritys.push(rarity);
-
-      // advanced
-      rarity = {
-        id: ITEM_RARITY_ADVANCED,
-        name: this.$t("rare-elements"),
-        items: [],
-        nameClasses: "rarity-rare-name",
-        exchangeItemsCount: 2
-      };
-      for (let i = 1; i < 50; i++) {
-        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-        rarity.items.push({
-          id: i,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern" + index,
-          isCustomElement: true,
-          // template: 2928
-          count: index,
-          rarity: ITEM_RARITY_ADVANCED
-          // level: 1,
-          // exp: 0,
-          // equipped: false,
-          // breakLimit: 0,
-          // unique: false,
-          // rarity: "epic",
-          // element: "physical",
-          // index: 13
-        });
-      }
-      raritys.push(rarity);
-
-      // expert
-      rarity = {
-        id: ITEM_RARITY_EXPERT,
-        name: this.$t("epic-elements"),
-        items: [],
-        nameClasses: "rarity-epic-name",
-        exchangeItemsCount: 2
-      };
-      for (let i = 1; i < 50; i++) {
-        const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-        rarity.items.push({
-          id: i,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern" + index,
-          isCustomElement: true,
-          // template: 2928
-          count: index,
-          rarity: ITEM_RARITY_EXPERT
-          // level: 1,
-          // exp: 0,
-          // equipped: false,
-          // breakLimit: 0,
-          // unique: false,
-          // rarity: "epic",
-          // element: "physical",
-          // index: 13
-        });
-      }
-      raritys.push(rarity);
+      const raritys = [
+        {
+          id: ITEM_RARITY_BASIC,
+          name: this.$t("basic-elements"),
+          items: this.items.filter(item => item.rarity === ITEM_RARITY_BASIC),
+          exchangeItemsCount: 2,
+          class: "rarity-basic-name"
+        },
+        {
+          id: ITEM_RARITY_ADVANCED,
+          name: this.$t("advanced-elements"),
+          items: this.items.filter(
+            item => item.rarity === ITEM_RARITY_ADVANCED
+          ),
+          exchangeItemsCount: 2,
+          class: "rarity-advanced-name"
+        },
+        {
+          id: ITEM_RARITY_EXPERT,
+          name: this.$t("expert-elements"),
+          items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
+          exchangeItemsCount: 2,
+          class: "rarity-expert-name"
+        }
+      ];
 
       return raritys;
     },
 
-    // items() {
-    //   const items = [];
-
-    //   for (let i = 1; i < 100; i++) {
-    //     const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-    //     items.push({
-    //       id: i,
-    //       itemSlotClasses: "lunar-lantern-slot",
-    //       iconClasses: "basic-lantern" + index,
-    //       isCustomElement: true,
-    //       // template: 2928
-    //       count: index
-    //       // level: 1,
-    //       // exp: 0,
-    //       // equipped: false,
-    //       // breakLimit: 0,
-    //       // unique: false,
-    //       // rarity: "epic",
-    //       // element: "physical",
-    //       // index: 13
-    //     });
-    //   }
-
-    //   return items;
-    // },
     selectedItemIds() {
       return this.selectedItems.map(({ id }) => id);
     },
@@ -349,15 +251,14 @@ export default {
       this.selectedRarityId = rarity;
     },
 
-    exchangeHandler() {
+    async exchangeHandler() {
       if (this.hasExchanged) {
         return;
       }
 
-      // @todo: uncomment
-      // await this.performRequestNoCatch(
-      //   this.$store.dispatch("lunar/exchange", this.selectedItems)
-      // );
+      await this.performRequestNoCatch(
+        this.$store.dispatch("lunar/exchange", this.selectedItems)
+      );
 
       this.hasExchanged = true;
     }

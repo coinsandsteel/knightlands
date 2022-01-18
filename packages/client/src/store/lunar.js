@@ -1,18 +1,20 @@
 // import _ from "lodash";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
-import store from "../store";
 
 export default {
   namespaced: true,
   state: {
     loaded: false,
-    items: [],
     newItem: {},
     dailyRewards: [],
     currentDailyReward: []
   },
-  getters: {},
+  getters: {
+    currentDailyReward: state => day => {
+      return state.dailyRewards[day].items;
+    }
+  },
   mutations: {
     updateState(state, data) {
       if (data.items !== undefined) {
@@ -24,59 +26,19 @@ export default {
       if (data.dailyRewards !== undefined) {
         state.dailyRewards = data.dailyRewards;
       }
-      if (data.currentDailyReward !== undefined) {
-        state.currentDailyReward = data.currentDailyReward;
-      }
     },
     setInitialState(state, data) {
       // eslint-disable-next-line no-console
       console.log("setInitialState", data);
       state.items = data.items;
       state.loaded = true;
-
-      state.dailyRewards = [
-        { collected: true, active: false, quantity: 3 },
-        { collected: true, active: false, quantity: 4 },
-        { collected: true, active: false, quantity: 6 },
-        { collected: true, active: false, quantity: 2 },
-        { collected: false, active: true, quantity: 7 },
-        { collected: false, active: false, quantity: 3 },
-        { collected: false, active: false, quantity: 8 }
-      ];
-
-      store.currentDailyReward = [
-        {
-          id: 1,
-          template: 100,
-          rarity: "common",
-          caption: "l111",
-          quantity: 2
-        },
-        {
-          id: 2,
-          template: 100,
-          rarity: "common",
-          caption: "l111",
-          quantity: 5
-        },
-        {
-          id: 3,
-          template: 100,
-          rarity: "common",
-          caption: "l111",
-          quantity: 5
-        },
-        {
-          id: 4,
-          template: 100,
-          rarity: "common",
-          caption: "l111",
-          quantity: 3
-        }
-      ];
+      state.dailyRewards = data.dailyRewards;
     }
   },
   actions: {
+    async testAction(store, payload) {
+      await this.$app.$game._wrapOperation(Operations.LunarTestAction, payload);
+    },
     async load(store) {
       let result = await this.$app.$game._wrapOperation(Operations.LunarLoad);
       store.commit("setInitialState", result.response);

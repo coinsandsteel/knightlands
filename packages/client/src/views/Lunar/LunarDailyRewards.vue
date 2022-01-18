@@ -19,6 +19,7 @@
           :iconClasses="item && item.iconClasses ? item.iconClasses : null"
           :selected="item.active"
           class="mystery-lantern-loot"
+          @click="hadleDayClick(itemIndex)"
         >
           <CheckedIcon v-if="item.collected" class="checked-icon absolute" />
         </Loot>
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
@@ -61,73 +63,46 @@ import CheckedIcon from "@/views/Lunar/Checked.vue";
 
 export default {
   components: { UserDialog, CustomButton, Loot, CheckedIcon },
+  mixins: [NetworkRequestErrorMixin],
   data() {
     return {};
   },
   computed: {
-    ...mapState("lunar", ["dailyRewards", "currentDailyReward"]),
+    ...mapState({
+      dailyRewards: state => state.lunar.dailyRewards
+    }),
     mysteryItems() {
-      // const newItem = () => {
-      //   return {
-      //     id: result.length + 1,
-      //     itemSlotClasses: "lunar-lantern-slot",
-      //     iconClasses: "mystery-lantern",
-      //     isCustomElement: true,
-      //     isCollected: false,
-      //     isCurrent: false,
-      //     count: 3
-      //   };
-      // };
       const result = [];
-      // for (let i = 0; i < 7; i++) {
-      //   const item = { ...newItem(), isCollected: i < 4, isCurrent: i === 4 };
-      //   result.push(item);
-      // }
-      for (let i = 0; i < this.dailyRewards?.length; i++) {
-        const item = { ...this.dailyRewards[i] };
-        item.itemSlotClasses = "lunar-lantern-slot";
-        item.iconClasses = "mystery-lantern";
-        item.isCustomElement = true;
-        item.count = item.quantity;
-        result.push(item);
+      for (let i = 0; i < this.dailyRewards.length; i++) {
+        const day = { ...this.dailyRewards[i] };
+        day.itemSlotClasses = "lunar-lantern-slot";
+        day.iconClasses = "mystery-lantern";
+        day.isCustomElement = true;
+        day.count = day.quantity;
+        result.push(day);
       }
-
       return result;
     },
 
     rewardItems() {
-      // const newItem = () => {
-      //   const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-      //   return {
-      //     id: result.length + 1,
-      //     itemSlotClasses: "lunar-lantern-slot",
-      //     iconClasses: "basic-lantern" + index,
-      //     isCustomElement: true,
-      //     count: 4
-      //   };
-      // };
       const result = [];
-
-      // for (let i = 0; i < 4; i++) {
-      //   const item = newItem();
-      //   result.push(item);
-      // }
-
-      for (let i = 0; i < this.currentDailyReward?.length; i++) {
-        const item = { ...this.currentDailyReward[i] };
+      let index = this.dailyRewards.findIndex(({ active }) => active);
+      const currentDailyReward = this.dailyRewards[index];
+      for (let i = 0; i < currentDailyReward.items.length; i++) {
+        const item = { ...currentDailyReward.items[i] };
         item.itemSlotClasses = "lunar-lantern-slot";
-        item.iconClasses = "basic-lantern" + ((i % 4) + 1);
         item.isCustomElement = true;
         item.count = item.quantity;
         result.push(item);
       }
-
       return result;
     }
   },
   methods: {
-    collectRewards() {
-      this.$store.dispatch("lunar/collectDailyReward");
+    async collectRewards() {
+      await this.performRequestNoCatch(
+        this.$store.dispatch("lunar/collectDailyReward")
+      );
       this.$close();
     }
   }

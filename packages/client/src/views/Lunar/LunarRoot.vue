@@ -11,32 +11,31 @@
       >
       </tabs>
       <router-view v-if="loaded"></router-view>
-      <!-- <LunarDailyRewards /> -->
-      <!-- <portal v-if="isActive" to="footer" :slim="true">
-        <div class="flex flex-items-end">
-          <CustomButton
-            type="red"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="redirectToLunarCraft('expert')"
-          >
-            {{ $t("btn-expert") }}
-          </CustomButton>
-          <CustomButton
-            type="yellow"
-            class="inline-block margin-right-1"
-            @click="redirectToLunarCraft('advanced')"
-          >
-            {{ $t("btn-advanced") }}
-          </CustomButton>
+      <portal v-if="isActive" to="footer" :slim="true">
+        <div class="flex flex-items-start">
           <CustomButton
             type="grey"
             class="inline-block margin-right-2 margin-top-1"
-            @click="redirectToLunarCraft('basic')"
+            @click="testAction('addTestItems')"
           >
-            {{ $t("btn-basic") }}
+            Add 10 items
+          </CustomButton>
+          <CustomButton
+            type="red"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('resetDailyRewards')"
+          >
+            Reset daily rewards
+          </CustomButton>
+          <CustomButton
+            type="green"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('plus1Day')"
+          >
+            +1 day
           </CustomButton>
         </div>
-      </portal> -->
+      </portal>
     </div>
   </div>
 </template>
@@ -45,9 +44,10 @@
 import { mapState } from "vuex";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
-// import CustomButton from "@/components/Button.vue";
+import CustomButton from "@/components/Button.vue";
 import LunarDailyRewards from "@/views/Lunar/LunarDailyRewards.vue";
 import { create } from "vue-modal-dialogs";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const CraftTab = "lunar-craft";
 const RecipesTab = "lunar-recipes";
@@ -55,11 +55,11 @@ const ExchangeTab = "lunar-exchange";
 const NftTab = "lunar-nft";
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
-    Tabs
+    Tabs,
+    CustomButton
     // LunarDailyRewards
-    // CustomButton
   },
   async mounted() {
     this.$store.dispatch("lunar/subscribe");
@@ -99,20 +99,30 @@ export default {
   created() {
     this.title = this.$t("window-lunar");
   },
-  // mounted() {
-  activated() {
-    // const showDailyRewardsDialog = create(LunarDailyRewards);
-    // showDailyRewardsDialog();
-    if (
-      this.dailyRewards?.find(({ active, collected }) => active && !collected)
-    ) {
-      this.showDailyRewards();
+  watch: {
+    dailyRewards() {
+      this.tryToShowRewards();
     }
+  },
+  activated() {
+    this.tryToShowRewards();
   },
   computed: {
     ...mapState("lunar", ["loaded", "dailyRewards"])
   },
   methods: {
+    tryToShowRewards() {
+      if (
+        this.dailyRewards.find(({ active, collected }) => active && !collected)
+      ) {
+        this.showDailyRewards();
+      }
+    },
+    async testAction(action) {
+      await this.performRequestNoCatch(
+        this.$store.dispatch("lunar/testAction", { action })
+      );
+    },
     switchTab(newTab) {
       this.currentTab = newTab;
     },

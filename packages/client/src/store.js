@@ -30,7 +30,7 @@ Vue.use(Vuex);
 const vuexPersist = new VuexPersist({
   key: "knightlands",
   storage: localStorage,
-  reducer: (state) => _.omit(state, ['dungeon', 'xmas'])
+  reducer: (state) => _.omit(state, ['dungeon', 'xmas', 'lunar'])
 });
 
 const DefaultRarityFilters = {};
@@ -295,7 +295,7 @@ const store = new Vuex.Store({
   }
 });
 
-/*store.subscribe((mutation, state) => {
+store.subscribe((mutation, state) => {
   if (
     !mutation.type.includes('training')
     &&
@@ -313,6 +313,6 @@ store.subscribeAction((action, state) => {
   ) {
     console.log('Action', action.type, action.payload);
   }
-});*/
+});
 
 export default store;

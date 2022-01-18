@@ -26,7 +26,7 @@
                 <div
                   class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2 capitalize"
                   :key="`rarity-name-${rarityIndex}`"
-                  :class="rarity.nameClasses"
+                  :class="rarity.class"
                 >
                   {{ rarity.name }}
                 </div>
@@ -66,7 +66,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import LunarElementRaritiesSwitcher from "@/views/Lunar/LunarElementRaritiesSwitcher.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
@@ -82,7 +82,7 @@ export default {
     Loot,
     LunarElementRaritiesSwitcher
   },
-  mixins: [ActivityMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin],
   data() {
     return {
       selectedItems: [],
@@ -92,30 +92,42 @@ export default {
       maxSelectedItems: 3,
       selectedRarityId: null,
       hasCrafted: false
-      /* DEMO items structure
-      items: [
-        {
-          id: 1,
-          template: 100,
-          rarity: "common"
-          caption: "l111",
-          quantity: 2
-        }
-      ]*/
     };
   },
   computed: {
-    ...mapState({
-      items: state => state.lunar.items
-    }),
+    items() {
+      let items = this.$game.inventory.items;
+      let i = 0;
+      const length = items.length;
+      let filteredItems = [];
+      let rarityClassMap = {
+        common: "rarity-basic-name",
+        rare: "rarity-advanced-name",
+        epic: "rarity-expert-name"
+      };
+      for (; i < length; ++i) {
+        const item = items[i];
+        if (item.template >= 3214) {
+          let rarity = this.$game.itemsDB.getRarity(item.template);
+          filteredItems.push({
+            ...item,
+            rarity,
+            iconClasses: rarityClassMap[rarity],
+            itemSlotClasses: "lunar-lantern-slot",
+            isCustomElement: true
+          });
+        }
+      }
+      return filteredItems;
+    },
     itemRaritys() {
       const raritys = [
         {
           id: ITEM_RARITY_BASIC,
           name: this.$t("lunar-common"),
           items: this.items.filter(item => item.rarity === ITEM_RARITY_BASIC),
-          nameClasses: "rarity-basic-name",
-          craftItemsCount: 3
+          craftItemsCount: 3,
+          class: "rarity-basic-name"
         },
         {
           id: ITEM_RARITY_ADVANCED,
@@ -273,10 +285,9 @@ export default {
         return;
       }
 
-      // @todo: uncomment
-      // await this.performRequestNoCatch(
-      //   this.$store.dispatch("lunar/craft", this.selectedItems)
-      // );
+      await this.performRequestNoCatch(
+        this.$store.dispatch("lunar/craft", this.selectedItems)
+      );
 
       this.hasCrafted = true;
     }
