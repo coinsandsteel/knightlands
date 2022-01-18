@@ -1,5 +1,5 @@
 <template>
-  <div class="width-100 relative recipe color-panel-2">
+  <div class="width-100 relative recipe padding-bottom-4">
     <Title :stackTop="true">{{ recipe.title }}</Title>
 
     <div

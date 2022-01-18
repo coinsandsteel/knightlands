@@ -1,6 +1,7 @@
 <template>
   <div
     class="craft-container margin-left-auto margin-right-auto padding-top-2 padding-bottom-2 relative"
+    :class="`lunar-exchange--${selectedRarityId}`"
   >
     <div class="relative">
       <div
@@ -242,7 +243,7 @@ export default {
   width: 456px;
   max-width: calc(100% - 4rem);
 }
-.craft-container--basic {
+.craft-container--common {
   .upgrade-message,
   .upgraded-message {
     &::v-deep b {
@@ -250,7 +251,7 @@ export default {
     }
   }
 }
-.craft-container--advanced {
+.craft-container--rare {
   .upgrade-message,
   .upgraded-message {
     &::v-deep b {
@@ -258,7 +259,7 @@ export default {
     }
   }
 }
-.craft-container--expert {
+.craft-container--epic {
   .upgrade-message,
   .upgraded-message {
     &::v-deep b {

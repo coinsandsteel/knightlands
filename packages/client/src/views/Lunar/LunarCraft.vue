@@ -24,7 +24,7 @@
             <div>
               <template v-for="(rarity, rarityIndex) in itemRaritys">
                 <div
-                  class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2"
+                  class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2 capitalize"
                   :key="`rarity-name-${rarityIndex}`"
                   :class="rarity.nameClasses"
                 >
@@ -113,27 +113,27 @@ export default {
       const raritys = [
         {
           id: ITEM_RARITY_BASIC,
-          name: this.$t("basic"),
+          name: this.$t("lunar-common"),
           items: this.items.filter(item => item.rarity === ITEM_RARITY_BASIC),
           nameClasses: "rarity-basic-name",
           craftItemsCount: 3
         },
         {
           id: ITEM_RARITY_ADVANCED,
-          name: this.$t("advanced"),
+          name: this.$t("lunar-rare"),
           items: this.items.filter(
             item => item.rarity === ITEM_RARITY_ADVANCED
           ),
           nameClasses: "rarity-advanced-name",
           craftItemsCount: 2
         },
-        {
-          id: ITEM_RARITY_EXPERT,
-          name: this.$t("expert"),
-          items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
-          nameClasses: "rarity-expert-name",
-          craftItemsCount: 10
-        }
+        // {
+        //   id: ITEM_RARITY_EXPERT,
+        //   name: this.$t("lunar-epic"),
+        //   items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
+        //   nameClasses: "rarity-expert-name",
+        //   craftItemsCount: 10
+        // }
       ];
 
       return raritys;

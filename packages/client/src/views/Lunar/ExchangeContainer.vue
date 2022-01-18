@@ -1,6 +1,7 @@
 <template>
   <div
     class="exchange-container margin-left-auto margin-right-auto padding-top-2 padding-bottom-2 relative"
+    :class="`lunar-exchange--${selectedRarityId}`"
   >
     <div class="relative">
       <div
@@ -211,8 +212,10 @@ export default {
       //   level: `<b class="capitalize">${this.$t(this.nextLevel)}</b>`
       // });
 
-      return this.$t(`lunar_exchange_basic_lantern_message`, {
-        element: `<b class="capitalize">${this.$t(this.selectedRarityId)}</b>`
+      return this.$t(`lunar_exchange_common_lantern_message`, {
+        element: `<b class="capitalize">${this.$t(
+          "lunar-" + this.selectedRarityId
+        )}</b>`
       });
     },
     upgradedMessage() {
@@ -245,7 +248,7 @@ export default {
   width: 456px;
   max-width: calc(100% - 4rem);
 }
-// .exchange-container--basic {
+// .exchange-container--common {
 //   .upgrade-message,
 //   .upgraded-message {
 //     &::v-deep b {
@@ -253,7 +256,7 @@ export default {
 //     }
 //   }
 // }
-.exchange-container--advanced {
+.exchange-container--rare {
   .upgrade-message,
   .upgraded-message {
     &::v-deep b {
@@ -261,7 +264,7 @@ export default {
     }
   }
 }
-.exchange-container--expert {
+.exchange-container--epic {
   .upgrade-message,
   .upgraded-message {
     &::v-deep b {

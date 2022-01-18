@@ -148,9 +148,9 @@ export default {
       // basic
       let rarity = {
         id: ITEM_RARITY_BASIC,
-        name: this.$t("basic-elements"),
+        name: this.$t("common-elements"),
         items: [],
-        nameClasses: "rarity-basic-name",
+        nameClasses: "rarity-common-name",
         exchangeItemsCount: 2
       };
       for (let i = 1; i < 15; i++) {
@@ -178,9 +178,9 @@ export default {
       // advanced
       rarity = {
         id: ITEM_RARITY_ADVANCED,
-        name: this.$t("advanced-elements"),
+        name: this.$t("rare-elements"),
         items: [],
-        nameClasses: "rarity-advanced-name",
+        nameClasses: "rarity-rare-name",
         exchangeItemsCount: 2
       };
       for (let i = 1; i < 50; i++) {
@@ -208,9 +208,9 @@ export default {
       // expert
       rarity = {
         id: ITEM_RARITY_EXPERT,
-        name: this.$t("expert-elements"),
+        name: this.$t("epic-elements"),
         items: [],
-        nameClasses: "rarity-expert-name",
+        nameClasses: "rarity-epic-name",
         exchangeItemsCount: 2
       };
       for (let i = 1; i < 50; i++) {
@@ -379,10 +379,10 @@ export default {
 .rarity-name {
   background: rgba(0, 0, 0, 0.5);
 }
-.rarity-advanced-name {
+.rarity-rare-name {
   color: #09fa08;
 }
-.rarity-expert-name {
+.rarity-epic-name {
   color: #fe55ff;
 }
 </style>

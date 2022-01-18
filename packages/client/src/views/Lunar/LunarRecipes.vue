@@ -9,17 +9,29 @@
         >
           <div v-bar class="center width-100 height-100 dummy-height">
             <div>
-              <div style="height: 300px;">
-                <!-- searchbox -->
-                <input
-                  type="text"
-                  :placeholder="$t('lantern-name')"
-                  class="input lantern-name-input white-font margin-bottom-2"
-                  aria-describedby="input name input"
-                  v-model="searchText"
-                  v-on:keyup.enter="searchHandler"
-                />
+              <div
+                class="search-container flex flex-justify-center flex-items-center"
+              >
+                <div>
+                  <!-- searchbox -->
+                  <input
+                    type="text"
+                    :placeholder="$t('lantern-name')"
+                    class="recipes-search-input input lantern-name-input white-font margin-bottom-1 text-align-center"
+                    aria-describedby="input name input"
+                    v-model="searchText"
+                    v-on:keyup.enter="searchHandler"
+                  />
+                  <CustomButton
+                    type="blue"
+                    class="btn-search inline-block uppercase padding-left-2"
+                    @click="searchHandler"
+                  >
+                    {{ $t("btn-search") }}
+                  </CustomButton>
+                </div>
               </div>
+              <!-- recipe list -->
               <LunarCraftingRecipe
                 v-for="(recipe, index) in recipesList"
                 :key="index"
@@ -33,14 +45,19 @@
   </div>
 </template>
 <script>
+import { capitalize } from "@/helpers/utils";
 import LunarCraftingRecipe from "@/views/Lunar/LunarCraftingRecipe.vue";
+import CustomButton from "@/components/Button.vue";
+
 export default {
   components: {
-    LunarCraftingRecipe
+    LunarCraftingRecipe,
+    CustomButton
   },
   data() {
     return {
-      searchText: ""
+      searchText: "",
+      appliedSearchText: ""
     };
   },
   computed: {
@@ -73,21 +90,34 @@ export default {
         ]
       };
       const recipe = {
-        title: "Basic",
+        title: capitalize(this.$t("lunar-common")),
         items: [item, item, item, item]
       };
       const result = [];
 
       result.push(recipe);
-      result.push({ ...recipe, title: "Advanced" });
-      result.push({ ...recipe, title: "Expert" });
+      result.push({ ...recipe, title: capitalize(this.$t("lunar-rare")) });
+      // result.push({ ...recipe, title: "lunar-epic" });
 
       return result;
     }
   },
   methods: {
-    searchHandler() {}
+    searchHandler() {
+      this.appliedSearchText = this.searchText.trim();
+    }
   }
 };
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.search-container {
+  background: #2e7285;
+  height: 80px;
+}
+.recipes-search-input {
+  height: 5rem;
+  width: 230px;
+  margin-left: 70px;
+  max-width: calc(100% - 150px);
+}
+</style>
