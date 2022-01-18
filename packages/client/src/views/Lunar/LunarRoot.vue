@@ -14,6 +14,13 @@
       <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-start">
           <CustomButton
+            type="red"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('clearInventory')"
+          >
+            Clear inventory
+          </CustomButton>
+          <CustomButton
             type="grey"
             class="inline-block margin-right-2 margin-top-1"
             @click="testAction('addTestItems')"
@@ -98,11 +105,10 @@ export default {
   },
   created() {
     this.title = this.$t("window-lunar");
+    this.$store.$app.$on("lunar-show-daily-reward", this.tryToShowRewards);
   },
-  watch: {
-    dailyRewards() {
-      this.tryToShowRewards();
-    }
+  destroyed() {
+    this.$store.$app.$off("lunar-show-daily-reward");
   },
   activated() {
     this.tryToShowRewards();

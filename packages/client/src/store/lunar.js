@@ -25,6 +25,7 @@ export default {
       }
       if (data.dailyRewards !== undefined) {
         state.dailyRewards = data.dailyRewards;
+        this.$app.$emit("lunar-show-daily-reward");
       }
     },
     setInitialState(state, data) {

@@ -112,6 +112,7 @@ export default {
           filteredItems.push({
             ...item,
             rarity,
+            info: this.$game.itemsDB.getTemplate(item.template),
             iconClasses: rarityClassMap[rarity],
             itemSlotClasses: "lunar-lantern-slot",
             isCustomElement: true
