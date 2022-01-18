@@ -29,6 +29,8 @@ export default {
       }
     },
     setInitialState(state, data) {
+      // eslint-disable-next-line no-console
+      console.log("setInitialState", data);
       state.items = data.items;
       state.loaded = true;
 

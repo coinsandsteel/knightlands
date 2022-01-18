@@ -73,8 +73,7 @@ import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
 import {
   ITEM_RARITY_BASIC,
-  ITEM_RARITY_ADVANCED,
-  ITEM_RARITY_EXPERT
+  ITEM_RARITY_ADVANCED
 } from "@/../../knightlands-shared/lunar";
 
 export default {
@@ -126,7 +125,7 @@ export default {
           ),
           nameClasses: "rarity-advanced-name",
           craftItemsCount: 2
-        },
+        }
         // {
         //   id: ITEM_RARITY_EXPERT,
         //   name: this.$t("lunar-epic"),

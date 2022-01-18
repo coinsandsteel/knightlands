@@ -46,6 +46,10 @@
 </template>
 <script>
 import { capitalize } from "@/helpers/utils";
+import {
+  ADVANCED_RECIPES,
+  EXPERT_RECIPES
+} from "@/../../knightlands-shared/lunar";
 import LunarCraftingRecipe from "@/views/Lunar/LunarCraftingRecipe.vue";
 import CustomButton from "@/components/Button.vue";
 
@@ -62,42 +66,82 @@ export default {
   },
   computed: {
     recipesList() {
-      const item = {
-        id: 4,
+      // const item = {
+      //   id: 4,
+      //   isCustomElement: true,
+      //   itemSlotClasses: "lunar-lantern-slot",
+      //   iconClasses: "basic-lantern4",
+      //   name: "Spring Spirit",
+      //   ingredients: [
+      //     {
+      //       id: 1,
+      //       isCustomElement: true,
+      //       itemSlotClasses: "lunar-lantern-slot",
+      //       iconClasses: "basic-lantern1"
+      //     },
+      //     {
+      //       id: 2,
+      //       isCustomElement: true,
+      //       itemSlotClasses: "lunar-lantern-slot",
+      //       iconClasses: "basic-lantern2"
+      //     },
+      //     {
+      //       id: 3,
+      //       isCustomElement: true,
+      //       itemSlotClasses: "lunar-lantern-slot",
+      //       iconClasses: "basic-lantern3"
+      //     }
+      //   ]
+      // };
+      // const recipe = {
+      //   title: capitalize(this.$t("lunar-common")),
+      //   items: [item, item, item, item]
+      // };
+      // const result = [];
+
+      // result.push(recipe);
+      // result.push({ ...recipe, title: capitalize(this.$t("lunar-rare")) });
+      // // result.push({ ...recipe, title: "lunar-epic" });
+
+      const result = [];
+
+      const basicRecipes = {
+        title: capitalize(this.$t("lunar-common")),
+        items: []
+      };
+      basicRecipes.items = ADVANCED_RECIPES.map((recipe, recipeIndex) => ({
+        id: recipeIndex,
         isCustomElement: true,
         itemSlotClasses: "lunar-lantern-slot",
         iconClasses: "basic-lantern4",
         name: "Spring Spirit",
-        ingredients: [
-          {
-            id: 1,
-            isCustomElement: true,
-            itemSlotClasses: "lunar-lantern-slot",
-            iconClasses: "basic-lantern1"
-          },
-          {
-            id: 2,
-            isCustomElement: true,
-            itemSlotClasses: "lunar-lantern-slot",
-            iconClasses: "basic-lantern2"
-          },
-          {
-            id: 3,
-            isCustomElement: true,
-            itemSlotClasses: "lunar-lantern-slot",
-            iconClasses: "basic-lantern3"
-          }
-        ]
-      };
-      const recipe = {
-        title: capitalize(this.$t("lunar-common")),
-        items: [item, item, item, item]
-      };
-      const result = [];
+        ingredients: recipe.ingredients.map((ingredient, ingredientIndex) => ({
+          id: ingredientIndex,
+          isCustomElement: true,
+          itemSlotClasses: "lunar-lantern-slot",
+          iconClasses: "basic-lantern1"
+        }))
+      }));
+      result.push(basicRecipes);
 
-      result.push(recipe);
-      result.push({ ...recipe, title: capitalize(this.$t("lunar-rare")) });
-      // result.push({ ...recipe, title: "lunar-epic" });
+      const advancedRecipes = {
+        title: capitalize(this.$t("lunar-rare")),
+        items: []
+      };
+      advancedRecipes.items = EXPERT_RECIPES.map((recipe, recipeIndex) => ({
+        id: recipeIndex,
+        isCustomElement: true,
+        itemSlotClasses: "lunar-lantern-slot",
+        iconClasses: "basic-lantern4",
+        name: "Spring Spirit",
+        ingredients: recipe.ingredients.map((ingredient, ingredientIndex) => ({
+          id: ingredientIndex,
+          isCustomElement: true,
+          itemSlotClasses: "lunar-lantern-slot",
+          iconClasses: "basic-lantern1"
+        }))
+      }));
+      result.push(advancedRecipes);
 
       return result;
     }
