@@ -122,11 +122,13 @@ export default {
       for (; i < length; ++i) {
         const item = items[i];
         if (item.template >= 3214) {
-          let rarity = this.$game.itemsDB.getRarity(item.template);
+          const rarity = this.$game.itemsDB.getRarity(item.template);
+          const info = this.$game.itemsDB.getTemplate(item.template);
+          const lanternNumber = info.caption[info.caption.length - 1];
           filteredItems.push({
             ...item,
             rarity,
-            iconClasses: rarityClassMap[rarity],
+            iconClasses: `${rarityClassMap[rarity]} basic-lantern${lanternNumber}`,
             itemSlotClasses: "lunar-lantern-slot",
             isCustomElement: true
           });
@@ -203,7 +205,10 @@ export default {
       // if (this.selectedItems.length <= 0) {
       //   this.selectedRarityId = item.rarity;
       // }
-      const index = this.selectedItems.findIndex(({ id }) => id === item.id);
+      // const index = this.selectedItems.findIndex(({ id }) => id === item.id);
+      const selectedItemsWithSameId = this.selectedItems.filter(
+        ({ id }) => id === item.id
+      );
       // if (index >= 0) {
       //   this.selectedItems.splice(index, 1);
       //   this.selectedItemId = null;
@@ -214,7 +219,7 @@ export default {
       //   this.selectedItemId = null;
       // }
       if (
-        index < 0 &&
+        selectedItemsWithSameId.length < item.count - 1 &&
         (!this.selectedRarity ||
           (this.selectedRarity &&
             this.selectedItems.length < this.selectedRarity.exchangeItemsCount))
