@@ -60,6 +60,7 @@ import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import CheckedIcon from "@/views/Lunar/Checked.vue";
+import { RARITY_CLASS_MAP } from "@/../../knightlands-shared/lunar";
 
 export default {
   components: { UserDialog, CustomButton, Loot, CheckedIcon },
@@ -90,7 +91,14 @@ export default {
       const currentDailyReward = this.dailyRewards[index];
       for (let i = 0; i < currentDailyReward.items.length; i++) {
         const item = { ...currentDailyReward.items[i] };
-        item.itemSlotClasses = "lunar-lantern-slot";
+        const info = this.$game.itemsDB.getTemplate(item.template);
+        const lanternNumber = info.caption[info.caption.length - 1];
+        item.info = info;
+        item.id = item._id;
+        (item.iconClasses = `${
+          RARITY_CLASS_MAP[item.rarity]
+        } basic-lantern${lanternNumber}`),
+          (item.itemSlotClasses = "lunar-lantern-slot");
         item.isCustomElement = true;
         item.count = item.quantity;
         result.push(item);
