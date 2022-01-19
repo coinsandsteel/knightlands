@@ -111,7 +111,7 @@ export default {
       return {
         id: this.newItem._id,
         rarity: rarity,
-        caption: this.newItem,
+        caption: this.newItem.caption,
         template: this.newItem.template,
         iconClasses: `${
           RARITY_CLASS_MAP[this.newItem.rarity]

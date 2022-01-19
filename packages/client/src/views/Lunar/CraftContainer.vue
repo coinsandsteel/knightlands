@@ -213,8 +213,14 @@ export default {
       return this.$t(`lunar_combine_${this.selectedRarityId}_lantern_message`);
     },
     upgradedMessage() {
+      if (!this.exchangedItem) {
+        return null;
+      }
+
       return this.$t("lunar_combine_lantern_success_message", {
-        element: `<b class="capitalize">Spring Spirit</b>`
+        element: `<b class="capitalize">${this.$t(
+          this.exchangedItem.caption
+        )}</b>`
       });
     }
   },

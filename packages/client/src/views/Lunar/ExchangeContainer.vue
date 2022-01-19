@@ -217,8 +217,14 @@ export default {
       });
     },
     upgradedMessage() {
+      if (!this.exchangedItem) {
+        return null;
+      }
+
       return this.$t("lunar_exchange_lantern_success_message", {
-        element: `<b class="capitalize">Spring Spirit</b>`
+        element: `<b class="capitalize">${this.$t(
+          this.exchangedItem.caption
+        )}</b>`
       });
     }
   },
