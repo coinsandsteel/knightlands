@@ -46,6 +46,7 @@
 </template>
 <script>
 import { capitalize } from "@/helpers/utils";
+import items from "@/items.json";
 import {
   ADVANCED_RECIPES,
   EXPERT_RECIPES
@@ -65,6 +66,16 @@ export default {
     };
   },
   computed: {
+    allLunarItems() {
+      return Object.values(items).filter(
+        ({ type }) => type === "lunarResource"
+      );
+    },
+    lunarItems() {
+      return this.$game.inventory.items.filter(
+        ({ template }) => template >= 3214
+      );
+    },
     recipesList() {
       // const item = {
       //   id: 4,
@@ -142,6 +153,8 @@ export default {
         }))
       }));
       result.push(advancedRecipes);
+
+      // filter by search text
 
       return result;
     }

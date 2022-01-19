@@ -121,26 +121,26 @@ export default {
       };
     },
     items() {
-      let items = this.$game.inventory.items;
+      let items = this.$game.inventory.items.filter(
+        ({ template }) => template >= 3214
+      );
       let i = 0;
       const length = items.length;
       let filteredItems = [];
       for (; i < length; ++i) {
         const item = items[i];
-        if (item.template >= 3214) {
-          const rarity = this.$game.itemsDB.getRarity(item.template);
-          const info = this.$game.itemsDB.getTemplate(item.template);
-          const lanternNumber = info.caption[info.caption.length - 1];
+        const rarity = this.$game.itemsDB.getRarity(item.template);
+        const info = this.$game.itemsDB.getTemplate(item.template);
+        const lanternNumber = info.caption[info.caption.length - 1];
 
-          filteredItems.push({
-            ...item,
-            info,
-            rarity,
-            iconClasses: `${RARITY_CLASS_MAP[rarity]} basic-lantern${lanternNumber}`,
-            itemSlotClasses: "lunar-lantern-slot",
-            isCustomElement: true
-          });
-        }
+        filteredItems.push({
+          ...item,
+          info,
+          rarity,
+          iconClasses: `${RARITY_CLASS_MAP[rarity]} basic-lantern${lanternNumber}`,
+          itemSlotClasses: "lunar-lantern-slot",
+          isCustomElement: true
+        });
       }
       return filteredItems;
     },
