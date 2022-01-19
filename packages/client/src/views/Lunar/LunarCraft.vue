@@ -76,6 +76,7 @@ import Loot from "@/components/Loot.vue";
 import {
   ITEM_RARITY_BASIC,
   ITEM_RARITY_ADVANCED,
+  ITEM_RARITY_EXPERT,
   RARITY_CLASS_MAP
 } from "@/../../knightlands-shared/lunar";
 
@@ -161,43 +162,18 @@ export default {
           ),
           nameClasses: "rarity-advanced-name",
           craftItemsCount: 2
+        },
+        {
+          id: ITEM_RARITY_EXPERT,
+          name: this.$t("lunar-epic"),
+          items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
+          nameClasses: "rarity-expert-name",
+          craftItemsCount: 10
         }
-        // {
-        //   id: ITEM_RARITY_EXPERT,
-        //   name: this.$t("lunar-epic"),
-        //   items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
-        //   nameClasses: "rarity-expert-name",
-        //   craftItemsCount: 10
-        // }
       ];
 
       return raritys;
     },
-    // items() {
-    //   const items = [];
-
-    //   for (let i = 1; i < 100; i++) {
-    //     const index = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-    //     items.push({
-    //       id: i,
-    //       itemSlotClasses: "lunar-lantern-slot",
-    //       iconClasses: "basic-lantern" + index,
-    //       isCustomElement: true,
-    //       // template: 2928
-    //       count: index
-    //       // level: 1,
-    //       // exp: 0,
-    //       // equipped: false,
-    //       // breakLimit: 0,
-    //       // unique: false,
-    //       // rarity: "epic",
-    //       // element: "physical",
-    //       // index: 13
-    //     });
-    //   }
-
-    //   return items;
-    // },
     selectedItemIds() {
       return this.selectedItems.map(({ id }) => id);
     },

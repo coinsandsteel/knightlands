@@ -99,16 +99,6 @@ export default {
       maxSelectedItems: 3,
       selectedRarityId: null,
       hasExchanged: false
-      /* DEMO items structure
-      items: [
-        {
-          id: 1,
-          template: 100,
-          rarity: "common"
-          caption: "l111",
-          quantity: 2
-        }
-      ]*/
     };
   },
   computed: {
