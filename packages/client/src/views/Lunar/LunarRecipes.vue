@@ -137,9 +137,9 @@ export default {
       //     )
       //   };
       // });
-      basicRecipes.items = ADVANCED_RECIPES.map(this.generateRecipeItem).filter(
-        item => !!item
-      );
+      basicRecipes.items = ADVANCED_RECIPES.map(this.generateRecipeItem)
+        .filter(this.filterIngredient)
+        .sort(this.sortIngredient);
       result.push(basicRecipes);
 
       const advancedRecipes = {
@@ -159,9 +159,9 @@ export default {
       //     iconClasses: "basic-lantern1"
       //   }))
       // }));
-      advancedRecipes.items = EXPERT_RECIPES.map(
-        this.generateRecipeItem
-      ).filter(item => !!item);
+      advancedRecipes.items = EXPERT_RECIPES.map(this.generateRecipeItem)
+        .filter(this.filterIngredient)
+        .sort(this.sortIngredient);
       result.push(advancedRecipes);
 
       // filter by search text
@@ -170,6 +170,20 @@ export default {
     }
   },
   methods: {
+    filterIngredient(item) {
+      return !!item;
+    },
+    sortIngredient(a, b) {
+      if (a.ingredients.length < b.ingredients.length) {
+        return -1;
+      }
+
+      if (a.ingredients.length > b.ingredients.length) {
+        return 1;
+      }
+
+      return 0;
+    },
     generateRecipeItem(recipe) {
       const text = this.appliedSearchText.trim().toLowerCase();
       let searchMatched = !(text.length > 0);
@@ -197,14 +211,34 @@ export default {
           iconClasses:
             "basic-lantern" +
             recipe.ingredients[i][recipe.ingredients[i].length - 1],
-          name: this.$t(recipe.ingredients[i])
+          name: this.$t(recipe.ingredients[i]),
+          ingredientCount: 1,
+          quantity: 0,
+          ingredientId: 0
         };
-        ingredients.push(ingredient);
-        searchMatched =
-          searchMatched || ingredient.name.toLowerCase().includes(text);
+        const ownedItem = this.lunarItems.find(
+          ({ template }) => template === ingredient.id
+        );
+        if (ownedItem) {
+          ingredient.quantity = ownedItem.count;
+          ingredient.ingredientId = ownedItem.id;
+        }
+        const addedIngredient = ingredients.find(
+          ({ id }) => id === ingredient.id
+        );
+        if (addedIngredient) {
+          addedIngredient.ingredientCount++;
+        } else {
+          ingredients.push(ingredient);
+          searchMatched =
+            searchMatched || ingredient.name.toLowerCase().includes(text);
+        }
       }
 
       achievement.ingredients = ingredients;
+      achievement.canCraft = ingredients.every(
+        ({ quantity, ingredientCount }) => quantity >= ingredientCount
+      );
 
       return searchMatched ? achievement : null;
     },
