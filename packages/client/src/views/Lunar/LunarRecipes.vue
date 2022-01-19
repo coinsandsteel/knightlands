@@ -120,38 +120,48 @@ export default {
         title: capitalize(this.$t("lunar-common")),
         items: []
       };
-      basicRecipes.items = ADVANCED_RECIPES.map((recipe, recipeIndex) => ({
-        id: recipeIndex,
-        isCustomElement: true,
-        itemSlotClasses: "lunar-lantern-slot",
-        iconClasses: "basic-lantern4",
-        name: "Spring Spirit",
-        ingredients: recipe.ingredients.map((ingredient, ingredientIndex) => ({
-          id: ingredientIndex,
-          isCustomElement: true,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern1"
-        }))
-      }));
+      // basicRecipes.items = ADVANCED_RECIPES.map((recipe, recipeIndex) => {
+      //   return {
+      //     id: recipeIndex,
+      //     isCustomElement: true,
+      //     itemSlotClasses: "lunar-lantern-slot",
+      //     iconClasses: "basic-lantern4",
+      //     name: "Spring Spirit",
+      //     ingredients: recipe.ingredients.map(
+      //       (ingredient, ingredientIndex) => ({
+      //         id: ingredientIndex,
+      //         isCustomElement: true,
+      //         itemSlotClasses: "lunar-lantern-slot",
+      //         iconClasses: "basic-lantern1"
+      //       })
+      //     )
+      //   };
+      // });
+      basicRecipes.items = ADVANCED_RECIPES.map(this.generateRecipeItem).filter(
+        item => !!item
+      );
       result.push(basicRecipes);
 
       const advancedRecipes = {
         title: capitalize(this.$t("lunar-rare")),
         items: []
       };
-      advancedRecipes.items = EXPERT_RECIPES.map((recipe, recipeIndex) => ({
-        id: recipeIndex,
-        isCustomElement: true,
-        itemSlotClasses: "lunar-lantern-slot",
-        iconClasses: "basic-lantern4",
-        name: "Spring Spirit",
-        ingredients: recipe.ingredients.map((ingredient, ingredientIndex) => ({
-          id: ingredientIndex,
-          isCustomElement: true,
-          itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: "basic-lantern1"
-        }))
-      }));
+      // advancedRecipes.items = EXPERT_RECIPES.map((recipe, recipeIndex) => ({
+      //   id: recipeIndex,
+      //   isCustomElement: true,
+      //   itemSlotClasses: "lunar-lantern-slot",
+      //   iconClasses: "basic-lantern4",
+      //   name: "Spring Spirit",
+      //   ingredients: recipe.ingredients.map((ingredient, ingredientIndex) => ({
+      //     id: ingredientIndex,
+      //     isCustomElement: true,
+      //     itemSlotClasses: "lunar-lantern-slot",
+      //     iconClasses: "basic-lantern1"
+      //   }))
+      // }));
+      advancedRecipes.items = EXPERT_RECIPES.map(
+        this.generateRecipeItem
+      ).filter(item => !!item);
       result.push(advancedRecipes);
 
       // filter by search text
@@ -160,6 +170,44 @@ export default {
     }
   },
   methods: {
+    generateRecipeItem(recipe) {
+      const text = this.appliedSearchText.trim().toLowerCase();
+      let searchMatched = !(text.length > 0);
+      const achievement = {
+        ...this.allLunarItems.find(
+          ({ caption }) => caption === recipe.achievement
+        ),
+        isCustomElement: true,
+        itemSlotClasses: "lunar-lantern-slot",
+        iconClasses:
+          "basic-lantern" + recipe.achievement[recipe.achievement.length - 1],
+        name: this.$t(recipe.achievement)
+      };
+      searchMatched =
+        searchMatched || achievement.name.toLowerCase().includes(text);
+      const ingredients = [];
+
+      for (let i = 0; i < recipe.ingredients.length; i++) {
+        const ingredient = {
+          ...this.allLunarItems.find(
+            ({ caption }) => caption === recipe.ingredients[i]
+          ),
+          isCustomElement: true,
+          itemSlotClasses: "lunar-lantern-slot",
+          iconClasses:
+            "basic-lantern" +
+            recipe.ingredients[i][recipe.ingredients[i].length - 1],
+          name: this.$t(recipe.ingredients[i])
+        };
+        ingredients.push(ingredient);
+        searchMatched =
+          searchMatched || ingredient.name.toLowerCase().includes(text);
+      }
+
+      achievement.ingredients = ingredients;
+
+      return searchMatched ? achievement : null;
+    },
     searchHandler() {
       this.appliedSearchText = this.searchText.trim();
     }
