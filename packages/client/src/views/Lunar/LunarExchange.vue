@@ -61,7 +61,7 @@
       </div>
     </div>
     <!-- levels switcher -->
-    <portal v-if="isActive" to="footer" :slim="true">
+    <portal v-if="false && isActive" to="footer" :slim="true">
       <LunarElementRaritiesSwitcher
         isExpertRarityVisible
         @rarity-updated="rarityUpdatedHandler"
