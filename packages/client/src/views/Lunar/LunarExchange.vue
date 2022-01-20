@@ -141,6 +141,12 @@ export default {
         const item = items[i];
         const rarity = this.$game.itemsDB.getRarity(item.template);
         const info = this.$game.itemsDB.getTemplate(item.template);
+        if (rarity === ITEM_RARITY_EXPERT) {
+          let lanternIds = [1,2,3,4,1,2,3,4,1,2];
+          let idString = item.id.toString();
+          let lanternId = lanternIds[idString[idString.length - 1]];
+          info.icon = "basic_lantern" + lanternId;
+        }
         const newItem = {
           ...item,
           info,
