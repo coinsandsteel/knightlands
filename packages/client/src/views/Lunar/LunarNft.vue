@@ -61,6 +61,7 @@
               :id="`i-${item.id}`"
               :item="item.id"
               :key="itemIndex"
+              :quantity="item.quantity"
               :inventory="false"
               :itemSlotClasses="
                 item && item.itemSlotClasses ? item.itemSlotClasses : null
