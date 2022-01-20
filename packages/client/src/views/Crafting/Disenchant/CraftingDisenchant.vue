@@ -104,6 +104,10 @@ export default {
         if (item.equipped) {
           continue;
         }
+        const template = this.$game.itemsDB.getTemplate(item.template);
+        if (template.type === "lunarResource") {
+          continue;
+        }
         filteredItems[insertedItems++] = item;
       }
 

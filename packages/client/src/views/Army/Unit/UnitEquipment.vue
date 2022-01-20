@@ -96,7 +96,10 @@ export default {
       return slots;
     },
     items() {
-      return this.$game.inventory.items;
+      return this.$game.inventory.items.filter(item => {
+        const template = this.$game.itemsDB.getTemplate(item.template);
+        return template.type !== "lunarResource";
+      });
     },
     hintItems() {
       if (this.equippedHint) {
