@@ -34,6 +34,12 @@
               >{{ ingredient.quantity }}</span
             >/{{ ingredient.ingredientCount }}
           </div>
+          <!-- @todo: remove -->
+          <div
+            style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+          >
+            {{ ingredient ? ingredient.caption : null }}
+          </div>
         </Loot>
       </div>
       <!-- arrow -->
@@ -50,7 +56,7 @@
           {{ item.name }}
         </div>
         <CustomButton
-          v-if="item.canCraft"
+          v-if="false && item.canCraft"
           class="btn-craft"
           type="green"
           @click="craftHandler(item)"

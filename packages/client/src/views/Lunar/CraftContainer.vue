@@ -230,13 +230,13 @@ export default {
       return this.$t(`lunar_combine_${this.selectedRarityId}_lantern_message`);
     },
     upgradedMessage() {
-      if (!this.exchangedItem) {
+      if (!this.craftedItem) {
         return null;
       }
 
       return this.$t("lunar_combine_lantern_success_message", {
         element: `<b class="capitalize">${this.$t(
-          this.exchangedItem.caption
+          this.craftedItem.caption
         )}</b>`
       });
     }
