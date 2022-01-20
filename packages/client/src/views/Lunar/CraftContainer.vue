@@ -34,7 +34,18 @@
                   : null
               "
               class="crafted-element margin-left-auto margin-right-auto relative"
-            />
+            >
+              <!-- @todo: remove -->
+              <div
+                style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+              >
+                {{
+                  craftedItem && craftedItem.info
+                    ? craftedItem.info.caption
+                    : null
+                }}
+              </div>
+            </Loot>
             <!-- message -->
             <div
               class="upgraded-message font-size-22 margin-top-3 text-center padding-left-2 padding-right-2"
@@ -60,6 +71,12 @@
               @hint="removeItem(item)"
             >
               <div v-if="item && item.id" class="btn-remove absolute" />
+              <!-- @todo: remove -->
+              <div
+                style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+              >
+                {{ item && item.info ? item.info.caption : null }}
+              </div>
             </Loot>
           </div>
           <!-- ready to craft -->

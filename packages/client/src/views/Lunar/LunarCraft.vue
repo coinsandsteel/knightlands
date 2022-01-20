@@ -52,7 +52,14 @@
                         selectedRarityId && item.rarity !== selectedRarityId
                     }"
                     @hint="handleHint"
-                  />
+                  >
+                    <!-- @todo: remove -->
+                    <div
+                      style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+                    >
+                      {{ item && item.info ? item.info.caption : null }}
+                    </div>
+                  </Loot>
                 </div>
               </template>
             </div>
@@ -110,6 +117,7 @@ export default {
 
       return {
         id: this.newItem._id,
+        info,
         rarity: rarity,
         caption: this.newItem.caption,
         template: this.newItem.template,
