@@ -8,19 +8,14 @@ export default {
     loaded: false,
     newItem: null,
     dailyRewards: [],
-    currentDailyReward: []
-  },
-  getters: {
-    currentDailyReward: state => day => {
-      return state.dailyRewards[day].items;
-    }
+    usedRecipes: []
   },
   mutations: {
     updateState(state, data) {
       // eslint-disable-next-line no-console
       console.log("lunar updateState", data);
-      if (data.items !== undefined) {
-        state.items = data.items;
+      if (data.usedRecipes !== undefined) {
+        state.usedRecipes = data.usedRecipes;
       }
       if (data.newItem !== undefined) {
         state.newItem = data.newItem;
