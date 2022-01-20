@@ -158,7 +158,7 @@ export default {
         }
 
         const template = this.$game.itemsDB.getTemplate(item.template);
-        if (template.rarity == Rarity.Mythical) {
+        if (template.rarity == Rarity.Mythical || template.type === "lunarResource") {
           continue;
         }
 

@@ -45,7 +45,7 @@ export default {
         const item = items[i];
         const template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (!template.unbindable || item.breakLimit == 2) {
+        if (!template.unbindable || item.breakLimit == 2 || template.type === "lunarResource") {
           continue;
         }
 

@@ -73,7 +73,11 @@ export default {
   }),
   computed: {
     computedItems() {
-      const items = this.items || this.$game.inventory.items;
+      let items = this.items || this.$game.inventory.items;
+      items = items.filter(item => {
+        const template = this.$game.itemsDB.getTemplate(item.template);
+        return template.type !== "lunarResource";
+      });
       if (!this.noEquipped) {
         return items.filter(x => !x.equipped);
       }
