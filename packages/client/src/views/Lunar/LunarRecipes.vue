@@ -45,14 +45,19 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { capitalize } from "@/helpers/utils";
-import items from "@/items.json";
+import recipes from "@/crafting_recipes.json";
 import {
-  ADVANCED_RECIPES,
-  EXPERT_RECIPES
+  ITEM_RARITY_ADVANCED,
+  ITEM_RARITY_EXPERT
 } from "@/../../knightlands-shared/lunar";
 import LunarCraftingRecipe from "@/views/Lunar/LunarCraftingRecipe.vue";
 import CustomButton from "@/components/Button.vue";
+
+const lunarRecipes = Object.values(recipes).filter(
+  ({ category }) => category === "lunar"
+);
 
 export default {
   components: {
@@ -66,105 +71,38 @@ export default {
     };
   },
   computed: {
-    allLunarItems() {
-      return Object.values(items).filter(
-        ({ type }) => type === "lunarResource"
-      );
-    },
+    ...mapState("lunar", ["usedRecipes"]),
     lunarItems() {
       return this.$game.inventory.items.filter(
         ({ template }) => template >= 3214
       );
     },
     recipesList() {
-      // const item = {
-      //   id: 4,
-      //   isCustomElement: true,
-      //   itemSlotClasses: "lunar-lantern-slot",
-      //   iconClasses: "basic-lantern4",
-      //   name: "Spring Spirit",
-      //   ingredients: [
-      //     {
-      //       id: 1,
-      //       isCustomElement: true,
-      //       itemSlotClasses: "lunar-lantern-slot",
-      //       iconClasses: "basic-lantern1"
-      //     },
-      //     {
-      //       id: 2,
-      //       isCustomElement: true,
-      //       itemSlotClasses: "lunar-lantern-slot",
-      //       iconClasses: "basic-lantern2"
-      //     },
-      //     {
-      //       id: 3,
-      //       isCustomElement: true,
-      //       itemSlotClasses: "lunar-lantern-slot",
-      //       iconClasses: "basic-lantern3"
-      //     }
-      //   ]
-      // };
-      // const recipe = {
-      //   title: capitalize(this.$t("lunar-common")),
-      //   items: [item, item, item, item]
-      // };
-      // const result = [];
-
-      // result.push(recipe);
-      // result.push({ ...recipe, title: capitalize(this.$t("lunar-rare")) });
-      // // result.push({ ...recipe, title: "lunar-epic" });
-
       const result = [];
+      const list = lunarRecipes
+        .filter(({ id }) => this.usedRecipes && this.usedRecipes.includes(id))
+        .map(this.generateRecipeItem)
+        .filter(item => !!item);
 
       const basicRecipes = {
         title: capitalize(this.$t("lunar-common")),
-        items: []
+        items: list
+          .filter(item => item && item.rarity === ITEM_RARITY_ADVANCED)
+          .sort(this.sortIngredient)
       };
-      // basicRecipes.items = ADVANCED_RECIPES.map((recipe, recipeIndex) => {
-      //   return {
-      //     id: recipeIndex,
-      //     isCustomElement: true,
-      //     itemSlotClasses: "lunar-lantern-slot",
-      //     iconClasses: "basic-lantern4",
-      //     name: "Spring Spirit",
-      //     ingredients: recipe.ingredients.map(
-      //       (ingredient, ingredientIndex) => ({
-      //         id: ingredientIndex,
-      //         isCustomElement: true,
-      //         itemSlotClasses: "lunar-lantern-slot",
-      //         iconClasses: "basic-lantern1"
-      //       })
-      //     )
-      //   };
-      // });
-      basicRecipes.items = ADVANCED_RECIPES.map(this.generateRecipeItem)
-        .filter(this.filterIngredient)
-        .sort(this.sortIngredient);
-      result.push(basicRecipes);
+      if (basicRecipes.items.length > 0) {
+        result.push(basicRecipes);
+      }
 
       const advancedRecipes = {
         title: capitalize(this.$t("lunar-rare")),
-        items: []
+        items: list
+          .filter(item => item && item.rarity === ITEM_RARITY_EXPERT)
+          .sort(this.sortIngredient)
       };
-      // advancedRecipes.items = EXPERT_RECIPES.map((recipe, recipeIndex) => ({
-      //   id: recipeIndex,
-      //   isCustomElement: true,
-      //   itemSlotClasses: "lunar-lantern-slot",
-      //   iconClasses: "basic-lantern4",
-      //   name: "Spring Spirit",
-      //   ingredients: recipe.ingredients.map((ingredient, ingredientIndex) => ({
-      //     id: ingredientIndex,
-      //     isCustomElement: true,
-      //     itemSlotClasses: "lunar-lantern-slot",
-      //     iconClasses: "basic-lantern1"
-      //   }))
-      // }));
-      advancedRecipes.items = EXPERT_RECIPES.map(this.generateRecipeItem)
-        .filter(this.filterIngredient)
-        .sort(this.sortIngredient);
-      result.push(advancedRecipes);
-
-      // filter by search text
+      if (advancedRecipes.items.length > 0) {
+        result.push(advancedRecipes);
+      }
 
       return result;
     }
@@ -187,41 +125,36 @@ export default {
     generateRecipeItem(recipe) {
       const text = this.appliedSearchText.trim().toLowerCase();
       let searchMatched = !(text.length > 0);
+
+      const achievementInfo = this.$game.itemsDB.getTemplate(recipe.resultItem);
       const achievement = {
-        ...this.allLunarItems.find(
-          ({ caption }) => caption === recipe.achievement
-        ),
+        ...achievementInfo,
         isCustomElement: true,
         itemSlotClasses: "lunar-lantern-slot",
-        iconClasses:
-          "basic_lantern" + recipe.achievement[recipe.achievement.length - 1],
-        name: this.$t(recipe.achievement)
+        iconClasses: achievementInfo.icon,
+        name: this.$t(achievementInfo.caption)
       };
       searchMatched =
         searchMatched || achievement.name.toLowerCase().includes(text);
-      const ingredients = [];
 
-      for (let i = 0; i < recipe.ingredients.length; i++) {
+      const ingredients = [];
+      for (let i = 0; i < recipe.ingridients.length; i++) {
+        const ingredientId = recipe.ingridients[i].itemId;
+        const ingredientInfo = this.$game.itemsDB.getTemplate(ingredientId);
         const ingredient = {
-          ...this.allLunarItems.find(
-            ({ caption }) => caption === recipe.ingredients[i]
-          ),
+          ...ingredientInfo,
           isCustomElement: true,
           itemSlotClasses: "lunar-lantern-slot",
-          iconClasses:
-            "basic_lantern" +
-            recipe.ingredients[i][recipe.ingredients[i].length - 1],
-          name: this.$t(recipe.ingredients[i]),
+          iconClasses: ingredientInfo.icon,
+          name: this.$t(ingredientInfo.caption),
           ingredientCount: 1,
-          quantity: 0,
-          ingredientId: 0
+          quantity: 0
         };
         const ownedItem = this.lunarItems.find(
           ({ template }) => template === ingredient.id
         );
         if (ownedItem) {
           ingredient.quantity = ownedItem.count;
-          ingredient.ingredientId = ownedItem.id;
         }
         const addedIngredient = ingredients.find(
           ({ id }) => id === ingredient.id
