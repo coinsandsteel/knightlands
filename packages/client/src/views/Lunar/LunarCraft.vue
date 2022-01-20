@@ -166,14 +166,14 @@ export default {
           ),
           nameClasses: "rarity-advanced-name",
           craftItemsCount: 2
-        },
+        }/*,
         {
           id: ITEM_RARITY_EXPERT,
           name: this.$t("lunar-epic"),
           items: this.items.filter(item => item.rarity === ITEM_RARITY_EXPERT),
           nameClasses: "rarity-expert-name",
           craftItemsCount: 10
-        }
+        }*/
       ];
 
       return raritys;

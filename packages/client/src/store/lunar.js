@@ -31,6 +31,7 @@ export default {
       state.items = data.items;
       state.loaded = true;
       state.dailyRewards = data.dailyRewards;
+      state.usedRecipes = data.usedRecipes;
     }
   },
   actions: {

@@ -140,14 +140,24 @@ export default {
         const item = items[i];
         const rarity = this.$game.itemsDB.getRarity(item.template);
         const info = this.$game.itemsDB.getTemplate(item.template);
-        filteredItems.push({
+        const newItem = {
           ...item,
           info,
           rarity,
           iconClasses: `${RARITY_CLASS_MAP[rarity]} ${info.icon}`,
           itemSlotClasses: "lunar-lantern-slot",
           isCustomElement: true
-        });
+        };
+        if (rarity === ITEM_RARITY_EXPERT) {
+          if (newItem.count > 1) {
+            newItem.count = newItem.count - 1;
+            filteredItems.push(newItem);
+          } else {
+            continue;
+          }
+        } else {
+          filteredItems.push(newItem);
+        }
       }
       return filteredItems;
     },
