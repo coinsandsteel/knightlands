@@ -1,87 +1,81 @@
 <template>
   <div class="screen-content">
-    <div class="full-flex dummy-height width-100">
+    <div class="full-flex width-100" v-bar>
       <div
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
-        <div class="inv-root dummy-height full-flex width-100 height-100">
-          <div v-bar class="center width-100 height-100 dummy-height">
-            <div
-              v-for="(recipe, recipeIndex) in recipes"
-              :key="`recipe-${recipeIndex}`"
-              class="margin-bottom-5"
-            >
-              <div
-                class="recipe-name font-size-25 text-align-center padding-top-2 padding-bottom-2 capitalize"
-                :key="`recipe-name-${recipeIndex}`"
-              >
-                <div class="flex flex-center flex-column">
-                  <div class="margin-bottom-3">
-                    {{ recipe.name }}
-                  </div>
-                  <div class="margin-bottom-2">
-                    <Loot
-                      :key="`recipe-result-${recipeIndex}`"
-                      :item="recipe.id"
-                      :inventory="false"
-                      :quantity="recipe.resultItemQuantity"
-                      :itemSlotClasses="
-                        recipe && recipe.itemSlotClasses
-                          ? recipe.itemSlotClasses
-                          : null
-                      "
-                      :iconClasses="
-                        recipe && recipe.iconClasses ? recipe.iconClasses : null
-                      "
-                    >
-                      <div
-                        style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
-                      >
-                        {{ recipe && recipe.name ? recipe.name : null }}
-                      </div>
-                    </Loot>
-                  </div>
-                  <div class="text-center" :key="`craft-btn-${recipeIndex}`">
-                    <CustomButton
-                      :disabled="!recipe.canCraft"
-                      type="green"
-                      class="btn-combine inline-block uppercase padding-left-2"
-                      @click="craftHandler(recipe.recipeId)"
-                    >
-                      {{ $t("btn-combine") }}
-                    </CustomButton>
-                  </div>
-                </div>
+        <div
+          v-for="(recipe, recipeIndex) in recipes"
+          :key="`recipe-${recipeIndex}`"
+          class="margin-bottom-5"
+        >
+          <div
+            class="recipe-name font-size-25 text-align-center padding-top-2 padding-bottom-2 capitalize"
+            :key="`recipe-name-${recipeIndex}`"
+          >
+            <div class="flex flex-center flex-column">
+              <div class="margin-bottom-3">
+                {{ recipe.name }}
               </div>
-
-              <div
-                :key="`recipe-ingredients-${recipeIndex}`"
-                class="recipe-ingredients width-100 dummy-height inventory-container margin-top-2 margin-bottom-3 padding-left-1 padding-right-1"
-              >
+              <div class="margin-bottom-2">
                 <Loot
-                  v-for="(item, itemIndex) in recipe.ingredients"
-                  :id="`i-${item.id}`"
-                  :item="item.id"
-                  :key="itemIndex"
+                  :key="`recipe-result-${recipeIndex}`"
+                  :item="recipe.id"
                   :inventory="false"
+                  :quantity="recipe.resultItemQuantity"
                   :itemSlotClasses="
-                    item && item.itemSlotClasses ? item.itemSlotClasses : null
+                    recipe && recipe.itemSlotClasses
+                      ? recipe.itemSlotClasses
+                      : null
                   "
                   :iconClasses="
-                    item && item.iconClasses ? item.iconClasses : null
+                    recipe && recipe.iconClasses ? recipe.iconClasses : null
                   "
-                  :class="{
-                    'opacity-50': !item.quantity
-                  }"
                 >
                   <div
                     style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
                   >
-                    {{ item && item.name ? item.name : null }}
+                    {{ recipe && recipe.name ? recipe.name : null }}
                   </div>
                 </Loot>
               </div>
+              <div class="text-center" :key="`craft-btn-${recipeIndex}`">
+                <CustomButton
+                  :disabled="!recipe.canCraft"
+                  type="green"
+                  class="btn-combine inline-block uppercase padding-left-2"
+                  @click="craftHandler(recipe.recipeId)"
+                >
+                  {{ $t("btn-combine") }}
+                </CustomButton>
+              </div>
             </div>
+          </div>
+
+          <div
+            :key="`recipe-ingredients-${recipeIndex}`"
+            class="recipe-ingredients width-100 inventory-container padding-top-4 padding-bottom-2 padding-left-1 padding-right-1"
+          >
+            <Loot
+              v-for="(item, itemIndex) in recipe.ingredients"
+              :id="`i-${item.id}`"
+              :item="item.id"
+              :key="itemIndex"
+              :inventory="false"
+              :itemSlotClasses="
+                item && item.itemSlotClasses ? item.itemSlotClasses : null
+              "
+              :iconClasses="item && item.iconClasses ? item.iconClasses : null"
+              :class="{
+                'opacity-50': !item.quantity
+              }"
+            >
+              <div
+                style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+              >
+                {{ item && item.name ? item.name : null }}
+              </div>
+            </Loot>
           </div>
         </div>
       </div>
@@ -158,7 +152,9 @@ export default {
       const achievementInfo = this.$game.itemsDB.getTemplate(recipe.resultItem);
       const achievement = {
         ...achievementInfo,
-        resultItemQuantity: this.$game.inventory.getItemsCountByTemplate(recipe.resultItem),
+        resultItemQuantity: this.$game.inventory.getItemsCountByTemplate(
+          recipe.resultItem
+        ),
         recipeId: recipe.id,
         isCustomElement: true,
         itemSlotClasses: "lunar-lantern-slot",
