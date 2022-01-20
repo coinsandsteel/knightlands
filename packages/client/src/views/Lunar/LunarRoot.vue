@@ -14,18 +14,25 @@
       <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-start">
           <CustomButton
+            type="grey"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('addTestItems')"
+          >
+            Add 10 random
+          </CustomButton>
+          <CustomButton
+            type="grey"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('addBaseItems')"
+          >
+            Add 4 base
+          </CustomButton>
+          <CustomButton
             type="red"
             class="inline-block margin-right-2 margin-top-1"
             @click="testAction('clearInventory')"
           >
             Clear inventory
-          </CustomButton>
-          <CustomButton
-            type="grey"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAction('addTestItems')"
-          >
-            Add 10 items
           </CustomButton>
           <CustomButton
             type="red"
