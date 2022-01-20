@@ -130,12 +130,10 @@ export default {
       };
     },
     items() {
-      let items = this.$game.inventory.items.filter(
-        ({ template }) => {
-          const info = this.$game.itemsDB.getTemplate(template);
-          return info.type === "lunarResource";
-        }
-      );
+      let items = this.$game.inventory.items.filter(({ template }) => {
+        const info = this.$game.itemsDB.getTemplate(template);
+        return info.type === "lunarResource";
+      });
       let i = 0;
       const length = items.length;
       let filteredItems = [];
@@ -244,7 +242,7 @@ export default {
       // }
       // const index = this.selectedItems.findIndex(({ id }) => id === item.id);
       const selectedItemsWithSameId = this.selectedItems.filter(
-        ({ id }) => id === item.id
+        ({ template }) => template === item.template
       );
       // if (index >= 0) {
       //   this.selectedItems.splice(index, 1);
@@ -262,7 +260,7 @@ export default {
             this.selectedItems.length < this.selectedRarity.exchangeItemsCount))
       ) {
         this.selectedItems.push(item);
-        this.selectedItemId = item.id;
+        this.selectedItemId = item.template;
         this.selectedRarityId = item.rarity;
         return;
       }
@@ -270,7 +268,9 @@ export default {
     },
 
     itemRemovedHandler(item) {
-      const index = this.selectedItems.findIndex(({ id }) => id === item.id);
+      const index = this.selectedItems.findIndex(
+        ({ template }) => template === item.template
+      );
       this.selectedItems.splice(index, 1);
       this.selectedItemId = null;
       if (this.selectedItems.length <= 0) {

@@ -8,12 +8,11 @@ export default {
     loaded: false,
     newItem: null,
     dailyRewards: [],
-    usedRecipes: []
+    usedRecipes: [],
+    craftingElementsFromRecipe: []
   },
   mutations: {
     updateState(state, data) {
-      // eslint-disable-next-line no-console
-      console.log("lunar updateState", data);
       if (data.usedRecipes !== undefined) {
         state.usedRecipes = data.usedRecipes;
       }
@@ -24,10 +23,11 @@ export default {
         state.dailyRewards = data.dailyRewards;
         this.$app.$emit("lunar-show-daily-reward");
       }
+      if (data.craftingElementsFromRecipe !== undefined) {
+        state.craftingElementsFromRecipe = data.craftingElementsFromRecipe;
+      }
     },
     setInitialState(state, data) {
-      // eslint-disable-next-line no-console
-      console.log("setInitialState", data);
       state.items = data.items;
       state.loaded = true;
       state.dailyRewards = data.dailyRewards;

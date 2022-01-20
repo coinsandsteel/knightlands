@@ -66,11 +66,12 @@
                 item && item.itemSlotClasses ? item.itemSlotClasses : null
               "
               :iconClasses="item && item.iconClasses ? item.iconClasses : null"
-              :selected="!(item && item.id)"
+              :selected="!(item && item.template)"
               class="margin-left-half margin-right-half margin-bottom-1 relative"
+              :class="{ 'opacity-50': item.template && !item.isEnabled }"
               @hint="removeItem(item)"
             >
-              <div v-if="item && item.id" class="btn-remove absolute" />
+              <div v-if="item && item.template" class="btn-remove absolute" />
               <!-- @todo: remove -->
               <div
                 style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
@@ -94,7 +95,10 @@
               !hasCrafted &&
                 (maxSelectedItems === 0 ||
                   (maxSelectedItems > 0 &&
-                    selectedItems.length !== maxSelectedItems))
+                    !(
+                      selectedItems.length === maxSelectedItems &&
+                      filteredItems.every(({ isEnabled }) => isEnabled)
+                    )))
             "
             type="green"
             class="btn-combine inline-block uppercase padding-left-2"
@@ -210,11 +214,15 @@ export default {
       return [
         ...this.selectedItems.map(item => ({
           ...item,
-          count: null
+          count: null,
+          isEnabled: item.count > 0
         })),
         ...Array(this.maxSelectedItems).fill({
+          count: null,
+          template: null,
           isCustomElement: true,
-          itemSlotClasses: "lunar-lantern-slot"
+          itemSlotClasses: "lunar-lantern-slot",
+          isEnabled: false
         })
       ].slice(0, this.maxSelectedItems);
     },
@@ -243,7 +251,7 @@ export default {
   },
   methods: {
     removeItem(item) {
-      if (!(item && item.id)) {
+      if (!(item && item.template)) {
         return;
       }
       this.$emit("item-removed", item);

@@ -118,8 +118,6 @@ export default {
   },
   methods: {
     tryToShowRewards() {
-      // eslint-disable-next-line no-console
-      console.log("this.dailyRewards", this.dailyRewards);
       if (
         this.dailyRewards &&
         this.dailyRewards.find(({ active, collected }) => active && !collected)

@@ -35,31 +35,35 @@
                   :key="`rarity-${rarityIndex}`"
                   class="element-rarity width-100 dummy-height inventory-container margin-top-1 margin-bottom-1  padding-left-1 padding-right-1"
                 >
-                  <Loot
-                    v-for="(item, itemIndex) in rarity.items"
-                    :id="`i-${item.template}`"
-                    :item="item"
-                    :key="itemIndex"
-                    :inventory="false"
-                    :itemSlotClasses="
-                      item && item.itemSlotClasses ? item.itemSlotClasses : null
-                    "
-                    :iconClasses="
-                      item && item.iconClasses ? item.iconClasses : null
-                    "
-                    :class="{
-                      'opacity-50':
-                        selectedRarityId && item.rarity !== selectedRarityId
-                    }"
-                    @hint="handleHint"
-                  >
-                    <!-- @todo: remove -->
-                    <div
-                      style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+                  <template v-for="(item, itemIndex) in rarity.items">
+                    <Loot
+                      v-if="item.count > 0"
+                      :id="`i-${item.template}`"
+                      :item="item"
+                      :key="itemIndex"
+                      :inventory="false"
+                      :itemSlotClasses="
+                        item && item.itemSlotClasses
+                          ? item.itemSlotClasses
+                          : null
+                      "
+                      :iconClasses="
+                        item && item.iconClasses ? item.iconClasses : null
+                      "
+                      :class="{
+                        'opacity-50':
+                          selectedRarityId && item.rarity !== selectedRarityId
+                      }"
+                      @hint="handleHint"
                     >
-                      {{ item && item.info ? item.info.caption : null }}
-                    </div>
-                  </Loot>
+                      <!-- @todo: remove -->
+                      <div
+                        style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+                      >
+                        {{ item && item.info ? item.info.caption : null }}
+                      </div>
+                    </Loot>
+                  </template>
                 </div>
               </template>
             </div>
@@ -102,7 +106,8 @@ export default {
       selectedItemId: null,
       maxSelectedItems: 3,
       selectedRarityId: null,
-      hasCrafted: false
+      hasCrafted: false,
+      craftingElementsFromRecipe: []
     };
   },
   computed: {
@@ -127,16 +132,14 @@ export default {
       };
     },
     items() {
-      let items = this.$game.inventory.items.filter(
-        ({ template }) => {
-          const info = this.$game.itemsDB.getTemplate(template);
-          return info.type === "lunarResource";
-        }
-      );
-      let i = 0;
+      let items = this.$game.inventory.items.filter(({ template }) => {
+        const info = this.$game.itemsDB.getTemplate(template);
+        return info.type === "lunarResource";
+      });
+
       const length = items.length;
       let filteredItems = [];
-      for (; i < length; ++i) {
+      for (let i = 0; i < length; ++i) {
         const item = items[i];
         const rarity = this.$game.itemsDB.getRarity(item.template);
         const info = this.$game.itemsDB.getTemplate(item.template);
@@ -149,6 +152,24 @@ export default {
           itemSlotClasses: "lunar-lantern-slot",
           isCustomElement: true
         });
+      }
+      // items from recipes
+      const ingredientsLength = this.craftingElementsFromRecipe.length;
+      for (let i = 0; i < ingredientsLength; i++) {
+        const item = { ...this.craftingElementsFromRecipe[i], count: 0 };
+        const rarity = this.$game.itemsDB.getRarity(item.template);
+        const info = this.$game.itemsDB.getTemplate(item.template);
+
+        if (!filteredItems.find(({ template }) => template === item.template)) {
+          filteredItems.push({
+            ...item,
+            info,
+            rarity,
+            iconClasses: `${RARITY_CLASS_MAP[rarity]} ${info.icon}`,
+            itemSlotClasses: "lunar-lantern-slot",
+            isCustomElement: true
+          });
+        }
       }
       return filteredItems;
     },
@@ -169,7 +190,7 @@ export default {
           ),
           nameClasses: "rarity-advanced-name",
           craftItemsCount: 2
-        }/*,
+        } /*,
         {
           id: ITEM_RARITY_EXPERT,
           name: this.$t("lunar-epic"),
@@ -182,7 +203,7 @@ export default {
       return raritys;
     },
     selectedItemIds() {
-      return this.selectedItems.map(({ id }) => id);
+      return this.selectedItems.map(({ template }) => template);
     },
 
     selectedRarity() {
@@ -240,6 +261,32 @@ export default {
     }
   },
 
+  created() {
+    this.craftingElementsFromRecipe = [
+      ...(this.$store.state.lunar.craftingElementsFromRecipe || [])
+    ];
+    this.$store.commit("lunar/updateState", { craftingElementsFromRecipe: [] });
+  },
+
+  mounted() {
+    // added selected items from recipes
+    if (this.craftingElementsFromRecipe.length > 0) {
+      let rarity = null;
+      this.selectedItems = [];
+      for (let i = 0; i < this.craftingElementsFromRecipe.length; i++) {
+        const template = this.craftingElementsFromRecipe[i].template;
+        rarity = this.craftingElementsFromRecipe[i].rarity;
+        const item = this.items.find(
+          ({ template: itemTemplate }) => template === itemTemplate
+        );
+        if (item) {
+          this.selectedItems.push(item);
+        }
+      }
+      this.selectedRarityId = rarity;
+    }
+  },
+
   methods: {
     handleHint(item) {
       if (this.selectedRarityId && item.rarity !== this.selectedRarityId) {
@@ -250,7 +297,7 @@ export default {
       // }
       // const index = this.selectedItems.findIndex(({ id }) => id === item.id);
       const selectedItemsWithSameId = this.selectedItems.filter(
-        ({ id }) => id === item.id
+        ({ template }) => template === item.template
       );
       // if (index >= 0) {
       //   this.selectedItems.splice(index, 1);
@@ -268,7 +315,7 @@ export default {
             this.selectedItems.length < this.selectedRarity.craftItemsCount))
       ) {
         this.selectedItems.push(item);
-        this.selectedItemId = item.id;
+        this.selectedItemId = item.template;
         this.selectedRarityId = item.rarity;
         return;
       }
@@ -276,7 +323,9 @@ export default {
     },
 
     itemRemovedHandler(item) {
-      const index = this.selectedItems.findIndex(({ id }) => id === item.id);
+      const index = this.selectedItems.findIndex(
+        ({ template }) => template === item.template
+      );
       this.selectedItems.splice(index, 1);
       this.selectedItemId = null;
       if (this.selectedItems.length <= 0) {

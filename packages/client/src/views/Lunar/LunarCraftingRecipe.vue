@@ -51,6 +51,7 @@
         :itemSlotClasses="item.itemSlotClasses ? item.itemSlotClasses : null"
         :iconClasses="item.iconClasses ? item.iconClasses : null"
         class="margin-left-2 margin-right-2 relative"
+        @hint="craftHandler"
       >
         <div class="achievement-name absolute font-size-20 nowrap uppercase">
           {{ item.name }}
@@ -80,29 +81,42 @@ export default {
     recipe: Object
   },
   methods: {
-    craftHandler(recipe) {
-      if (!recipe.canCraft) {
-        return;
-      }
+    // craftHandler(recipe) {
+    //   if (!recipe.canCraft) {
+    //     return;
+    //   }
 
+    //   const items = [];
+    //   for (let i = 0; i < recipe.ingredients.length; i++) {
+    //     const ingredient = recipe.ingredients[i];
+    //     const item = {
+    //       id: ingredient.ingredientId,
+    //       template: ingredient.id,
+    //       rarity: ingredient.rarity,
+    //       caption: ingredient.caption,
+    //       info: { caption: ingredient.caption }
+    //     };
+    //     // eslint-disable-next-line no-console
+    //     console.log("ingredient.rarity", ingredient.rarity);
+    //     for (let j = 0; j < ingredient.ingredientCount; j++) {
+    //       items.push(item);
+    //     }
+    //   }
+
+    //   this.performRequestNoCatch(this.$store.dispatch("lunar/craft", items));
+    // }
+    craftHandler(recipe) {
       const items = [];
       for (let i = 0; i < recipe.ingredients.length; i++) {
         const ingredient = recipe.ingredients[i];
-        const item = {
-          id: ingredient.ingredientId,
-          template: ingredient.id,
-          rarity: ingredient.rarity,
-          caption: ingredient.caption,
-          info: { caption: ingredient.caption }
-        };
-        // eslint-disable-next-line no-console
-        console.log("ingredient.rarity", ingredient.rarity);
         for (let j = 0; j < ingredient.ingredientCount; j++) {
-          items.push(item);
+          items.push({ template: ingredient.id, rarity: ingredient.rarity });
         }
       }
-
-      this.performRequestNoCatch(this.$store.dispatch("lunar/craft", items));
+      this.$store.commit("lunar/updateState", {
+        craftingElementsFromRecipe: items
+      });
+      this.$router.push({ name: "lunar-craft" });
     }
   }
 };

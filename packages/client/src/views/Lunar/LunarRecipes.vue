@@ -73,12 +73,10 @@ export default {
   computed: {
     ...mapState("lunar", ["usedRecipes"]),
     lunarItems() {
-      return this.$game.inventory.items.filter(
-        ({ template }) => {
-          const info = this.$game.itemsDB.getTemplate(template);
-          return info.type === "lunarResource";
-        }
-      );
+      return this.$game.inventory.items.filter(({ template }) => {
+        const info = this.$game.itemsDB.getTemplate(template);
+        return info.type === "lunarResource";
+      });
     },
     recipesList() {
       const result = [];
