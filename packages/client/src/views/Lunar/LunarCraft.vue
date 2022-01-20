@@ -128,7 +128,10 @@ export default {
     },
     items() {
       let items = this.$game.inventory.items.filter(
-        ({ template }) => template >= 3214
+        ({ template }) => {
+          const info = this.$game.itemsDB.getTemplate(template);
+          return info.type === "lunarResource";
+        }
       );
       let i = 0;
       const length = items.length;
