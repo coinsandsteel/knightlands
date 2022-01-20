@@ -92,13 +92,10 @@ export default {
       for (let i = 0; i < currentDailyReward.items.length; i++) {
         const item = { ...currentDailyReward.items[i] };
         const info = this.$game.itemsDB.getTemplate(item.template);
-        const lanternNumber = info.caption[info.caption.length - 1];
         item.info = info;
         item.id = item._id;
-        (item.iconClasses = `${
-          RARITY_CLASS_MAP[item.rarity]
-        } basic-lantern${lanternNumber}`),
-          (item.itemSlotClasses = "lunar-lantern-slot");
+        item.iconClasses = `${RARITY_CLASS_MAP[item.rarity]} ${info.icon}`;
+        item.itemSlotClasses = "lunar-lantern-slot";
         item.isCustomElement = true;
         item.count = item.quantity;
         result.push(item);

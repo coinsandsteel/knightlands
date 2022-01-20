@@ -194,7 +194,7 @@ export default {
         isCustomElement: true,
         itemSlotClasses: "lunar-lantern-slot",
         iconClasses:
-          "basic-lantern" + recipe.achievement[recipe.achievement.length - 1],
+          "basic_lantern" + recipe.achievement[recipe.achievement.length - 1],
         name: this.$t(recipe.achievement)
       };
       searchMatched =
@@ -209,7 +209,7 @@ export default {
           isCustomElement: true,
           itemSlotClasses: "lunar-lantern-slot",
           iconClasses:
-            "basic-lantern" +
+            "basic_lantern" +
             recipe.ingredients[i][recipe.ingredients[i].length - 1],
           name: this.$t(recipe.ingredients[i]),
           ingredientCount: 1,

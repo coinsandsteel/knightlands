@@ -107,16 +107,13 @@ export default {
 
       const rarity = this.$game.itemsDB.getRarity(this.newItem.template);
       const info = this.$game.itemsDB.getTemplate(this.newItem.template);
-      const lanternNumber = info.caption[info.caption.length - 1];
 
       return {
         id: this.newItem._id,
         rarity: rarity,
         caption: this.newItem.caption,
         template: this.newItem.template,
-        iconClasses: `${
-          RARITY_CLASS_MAP[this.newItem.rarity]
-        } basic-lantern${lanternNumber}`,
+        iconClasses: `${RARITY_CLASS_MAP[this.newItem.rarity]} ${info.icon}`,
         itemSlotClasses: "lunar-lantern-slot",
         isCustomElement: true
       };
@@ -132,13 +129,12 @@ export default {
         const item = items[i];
         const rarity = this.$game.itemsDB.getRarity(item.template);
         const info = this.$game.itemsDB.getTemplate(item.template);
-        const lanternNumber = info.caption[info.caption.length - 1];
 
         filteredItems.push({
           ...item,
           info,
           rarity,
-          iconClasses: `${RARITY_CLASS_MAP[rarity]} basic-lantern${lanternNumber}`,
+          iconClasses: `${RARITY_CLASS_MAP[rarity]} ${info.icon}`,
           itemSlotClasses: "lunar-lantern-slot",
           isCustomElement: true
         });
