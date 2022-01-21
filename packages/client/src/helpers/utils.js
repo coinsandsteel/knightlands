@@ -5,3 +5,7 @@ export function capitalize(str) {
 
   return str;
 }
+
+export function getLanternIcon(num) {
+  return "basic_lantern" + ((num % 4) + 1);
+}

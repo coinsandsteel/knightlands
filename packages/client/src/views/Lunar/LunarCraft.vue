@@ -79,6 +79,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import { getLanternIcon } from "@/helpers/utils";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import CraftContainer from "@/views/Lunar/CraftContainer.vue";
 import LunarElementRaritiesSwitcher from "@/views/Lunar/LunarElementRaritiesSwitcher.vue";
@@ -119,6 +120,7 @@ export default {
 
       const rarity = this.$game.itemsDB.getRarity(this.newItem.template);
       const info = this.$game.itemsDB.getTemplate(this.newItem.template);
+      const icon = info.icon || getLanternIcon(info.id);
 
       return {
         id: this.newItem._id,
@@ -126,7 +128,7 @@ export default {
         rarity: rarity,
         caption: this.newItem.caption,
         template: this.newItem.template,
-        iconClasses: `${RARITY_CLASS_MAP[this.newItem.rarity]} ${info.icon}`,
+        iconClasses: `${RARITY_CLASS_MAP[this.newItem.rarity]} ${icon}`,
         itemSlotClasses: "lunar-lantern-slot",
         isCustomElement: true
       };
@@ -143,12 +145,13 @@ export default {
         const item = items[i];
         const rarity = this.$game.itemsDB.getRarity(item.template);
         const info = this.$game.itemsDB.getTemplate(item.template);
+        const icon = info.icon || getLanternIcon(info.id);
 
         filteredItems.push({
           ...item,
           info,
           rarity,
-          iconClasses: `${RARITY_CLASS_MAP[rarity]} ${info.icon}`,
+          iconClasses: `${RARITY_CLASS_MAP[rarity]} ${icon}`,
           itemSlotClasses: "lunar-lantern-slot",
           isCustomElement: true
         });
@@ -159,13 +162,14 @@ export default {
         const item = { ...this.craftingElementsFromRecipe[i], count: 0 };
         const rarity = this.$game.itemsDB.getRarity(item.template);
         const info = this.$game.itemsDB.getTemplate(item.template);
+        const icon = info.icon || getLanternIcon(info.id);
 
         if (!filteredItems.find(({ template }) => template === item.template)) {
           filteredItems.push({
             ...item,
             info,
             rarity,
-            iconClasses: `${RARITY_CLASS_MAP[rarity]} ${info.icon}`,
+            iconClasses: `${RARITY_CLASS_MAP[rarity]} ${icon}`,
             itemSlotClasses: "lunar-lantern-slot",
             isCustomElement: true
           });

@@ -2558,5 +2558,6 @@
   "lunar-daily-rewards-title": "Daily Gift",
   "lunar-daily-rewards-tips": "Come back every day to collect your Mystery Lantern!",
   "lunar-daily-rewards-message": "Your daily reward:",
-  "lantern-name": "lantern name"
+  "lantern-name": "lantern name",
+  "btn-evt-lunar": "Lunar"
 }

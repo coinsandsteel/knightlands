@@ -78,6 +78,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import { getLanternIcon } from "@/helpers/utils";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ExchangeContainer from "@/views/Lunar/ExchangeContainer.vue";
 import LunarElementRaritiesSwitcher from "@/views/Lunar/LunarElementRaritiesSwitcher.vue";
@@ -117,6 +118,7 @@ export default {
 
       const rarity = this.$game.itemsDB.getRarity(this.newItem.template);
       const info = this.$game.itemsDB.getTemplate(this.newItem.template);
+      const icon = info.icon || getLanternIcon(info.id);
 
       return {
         id: this.newItem._id,
@@ -124,7 +126,7 @@ export default {
         rarity: rarity,
         caption: this.newItem.caption,
         template: this.newItem.template,
-        iconClasses: `${RARITY_CLASS_MAP[this.newItem.rarity]} ${info.icon}`,
+        iconClasses: `${RARITY_CLASS_MAP[this.newItem.rarity]} ${icon}`,
         itemSlotClasses: "lunar-lantern-slot",
         isCustomElement: true
       };
@@ -141,17 +143,12 @@ export default {
         const item = items[i];
         const rarity = this.$game.itemsDB.getRarity(item.template);
         const info = this.$game.itemsDB.getTemplate(item.template);
-        if (rarity === ITEM_RARITY_EXPERT) {
-          let lanternIds = [1,2,3,4,1,2,3,4,1,2];
-          let idString = item.id.toString();
-          let lanternId = lanternIds[idString[idString.length - 1]];
-          info.icon = "basic_lantern" + lanternId;
-        }
+        const icon = info.icon || getLanternIcon(info.id);
         const newItem = {
           ...item,
           info,
           rarity,
-          iconClasses: `${RARITY_CLASS_MAP[rarity]} ${info.icon}`,
+          iconClasses: `${RARITY_CLASS_MAP[rarity]} ${icon}`,
           itemSlotClasses: "lunar-lantern-slot",
           isCustomElement: true
         };

@@ -46,7 +46,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import { capitalize } from "@/helpers/utils";
+import { capitalize, getLanternIcon } from "@/helpers/utils";
 import recipes from "@/crafting_recipes.json";
 import {
   ITEM_RARITY_ADVANCED,
@@ -132,7 +132,7 @@ export default {
         ...achievementInfo,
         isCustomElement: true,
         itemSlotClasses: "lunar-lantern-slot",
-        iconClasses: achievementInfo.icon,
+        iconClasses: achievementInfo.icon || getLanternIcon(achievementInfo.id),
         name: this.$t(achievementInfo.caption)
       };
       searchMatched =
@@ -146,7 +146,7 @@ export default {
           ...ingredientInfo,
           isCustomElement: true,
           itemSlotClasses: "lunar-lantern-slot",
-          iconClasses: ingredientInfo.icon,
+          iconClasses: ingredientInfo.icon || getLanternIcon(ingredientId),
           name: this.$t(ingredientInfo.caption),
           ingredientCount: 1,
           quantity: 0
