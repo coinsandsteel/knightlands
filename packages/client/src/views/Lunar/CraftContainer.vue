@@ -211,12 +211,47 @@ export default {
   },
   computed: {
     filteredItems() {
-      return [
-        ...this.selectedItems.map(item => ({
-          ...item,
+      const result = [];
+      const list = [];
+
+      for (let i = 0; i < this.selectedItems.length; i++) {
+        const selectedItem = this.selectedItems[i];
+        const item = {
+          ...selectedItem,
           count: null,
-          isEnabled: item.count > 0
-        })),
+          isEnabled: false
+        };
+        let addedItem = list.find(
+          ({ template }) => template === selectedItem.template
+        );
+
+        if (addedItem) {
+          addedItem.count++;
+        } else {
+          addedItem = {
+            template: selectedItem.template,
+            count: 1
+          };
+          list.push(addedItem);
+        }
+        if (selectedItem.count >= addedItem.count) {
+          item.isEnabled = true;
+        }
+        result.push(item);
+      }
+
+      result.sort((a, b) => {
+        if (a.isEnabled && !b.isEnabled) {
+          return -1;
+        }
+        if (!a.isEnabled && b.isEnabled) {
+          return 1;
+        }
+        return 0;
+      });
+
+      return [
+        ...result,
         ...Array(this.maxSelectedItems).fill({
           count: null,
           template: null,
