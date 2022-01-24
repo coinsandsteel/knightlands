@@ -88,7 +88,7 @@ import Loot from "@/components/Loot.vue";
 import {
   ITEM_RARITY_BASIC,
   ITEM_RARITY_ADVANCED,
-  ITEM_RARITY_EXPERT,
+  // ITEM_RARITY_EXPERT,
   RARITY_CLASS_MAP
 } from "@/../../knightlands-shared/lunar";
 
@@ -221,41 +221,7 @@ export default {
     isCrafting() {
       return this.selectedItemIds.length > 0;
     }
-
-    // nextLevel() {
-    //   switch (this.selectedRarityId) {
-    //     case GROUP.BASIC:
-    //       return GROUP.ADVANCED;
-    //     case GROUP.ADVANCED:
-    //       return GROUP.EXPERT;
-    //     case GROUP.EXPERT:
-    //       return "nft";
-
-    //     default:
-    //       return null;
-    //   }
-    // }
   },
-  // watch: {
-  //   "$route.params.rarity": {
-  //     handler: function(rarity) {
-  //       if (this.$route.name !== "lunar-craft") {
-  //         return;
-  //       }
-  //       if (rarity && !Object.values(GROUP).includes(rarity)) {
-  //         this.$router.replace({ params: null });
-  //         return;
-  //       }
-  //       // eslint-disable-next-line no-console
-  //       console.log("rarity", rarity);
-  //       // if () {
-
-  //       // }
-  //     },
-  //     deep: true,
-  //     immediate: true
-  //   }
-  // },
 
   watch: {
     newItem(value) {
@@ -269,7 +235,10 @@ export default {
     this.craftingElementsFromRecipe = [
       ...(this.$store.state.lunar.craftingElementsFromRecipe || [])
     ];
-    this.$store.commit("lunar/updateState", { craftingElementsFromRecipe: [] });
+    this.$store.commit("lunar/updateState", {
+      craftingElementsFromRecipe: [],
+      hasNewRecipe: false
+    });
   },
 
   mounted() {
@@ -296,22 +265,11 @@ export default {
       if (this.selectedRarityId && item.rarity !== this.selectedRarityId) {
         return;
       }
-      // if (this.selectedItems.length <= 0) {
-      //   this.selectedRarityId = item.rarity;
-      // }
-      // const index = this.selectedItems.findIndex(({ id }) => id === item.id);
+
       const selectedItemsWithSameId = this.selectedItems.filter(
         ({ template }) => template === item.template
       );
-      // if (index >= 0) {
-      //   this.selectedItems.splice(index, 1);
-      //   this.selectedItemId = null;
-      // } else if (this.selectedItems.length < this.maxSelectedItems) {
-      //   this.selectedItems.push(item);
-      //   this.selectedItemId = item.id;
-      // } else {
-      //   this.selectedItemId = null;
-      // }
+
       if (
         selectedItemsWithSameId.length < item.count &&
         (!this.selectedRarity ||
@@ -342,7 +300,10 @@ export default {
       this.selectedItemId = null;
       this.selectedRarityId = null;
       this.hasCrafted = false;
-      this.$store.commit("lunar/updateState", { newItem: null });
+      this.$store.commit("lunar/updateState", {
+        newItem: null,
+        hasNewRecipe: false
+      });
     },
 
     rarityUpdatedHandler(rarity) {
@@ -361,8 +322,6 @@ export default {
       await this.performRequestNoCatch(
         this.$store.dispatch("lunar/craft", this.selectedItems)
       );
-
-      // this.hasCrafted = true;
     }
   }
 };

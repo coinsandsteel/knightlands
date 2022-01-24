@@ -469,16 +469,6 @@ const router = new Router({
           path: "",
           redirect: { name: "lunar-craft" }
         },
-        // {
-        //   path: "craft",
-        //   name: "lunar-craft",
-        //   component: () => import("./views/Lunar/LunarMatchingAltar.vue")
-        // },
-        // {
-        //   path: "recipe-book",
-        //   name: "lunar-recipe-book",
-        //   component: () => import("./views/Lunar/LunarRecipeBook.vue")
-        // },
         {
           path: "craft",
           name: "lunar-craft",

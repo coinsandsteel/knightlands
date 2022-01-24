@@ -211,20 +211,6 @@ export default {
     isExchanging() {
       return this.selectedItemIds.length > 0;
     }
-
-    // nextLevel() {
-    //   switch (this.selectedRarityId) {
-    //     case GROUP.BASIC:
-    //       return GROUP.ADVANCED;
-    //     case GROUP.ADVANCED:
-    //       return GROUP.EXPERT;
-    //     case GROUP.EXPERT:
-    //       return "nft";
-
-    //     default:
-    //       return null;
-    //   }
-    // }
   },
 
   watch: {
@@ -240,22 +226,11 @@ export default {
       if (this.selectedRarityId && item.rarity !== this.selectedRarityId) {
         return;
       }
-      // if (this.selectedItems.length <= 0) {
-      //   this.selectedRarityId = item.rarity;
-      // }
-      // const index = this.selectedItems.findIndex(({ id }) => id === item.id);
+
       const selectedItemsWithSameId = this.selectedItems.filter(
         ({ template }) => template === item.template
       );
-      // if (index >= 0) {
-      //   this.selectedItems.splice(index, 1);
-      //   this.selectedItemId = null;
-      // } else if (this.selectedItems.length < this.maxSelectedItems) {
-      //   this.selectedItems.push(item);
-      //   this.selectedItemId = item.id;
-      // } else {
-      //   this.selectedItemId = null;
-      // }
+
       if (
         selectedItemsWithSameId.length < item.count &&
         (!this.selectedRarity ||
@@ -305,8 +280,6 @@ export default {
       await this.performRequestNoCatch(
         this.$store.dispatch("lunar/exchange", this.selectedItems)
       );
-
-      // this.hasExchanged = true;
     }
   }
 };

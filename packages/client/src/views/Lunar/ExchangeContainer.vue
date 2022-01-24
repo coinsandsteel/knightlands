@@ -103,80 +103,6 @@
             {{ $t(hasExchanged ? "btn-ok" : "btn-exchange") }}
           </CustomButton>
         </div>
-        <!-- <div class="text-center margin-top-4">
-          <CustomButton
-            :disabled="!hasCrafted && selectedItems.length !== maxSelectedItems"
-            type="green"
-            class="btn-combine inline-block uppercase padding-left-2"
-            @click="craftHandler"
-          >
-            {{ $t(hasCrafted ? "btn-ok" : "btn-combine") }}
-          </CustomButton>
-        </div> -->
-        <!-- crafted -->
-        <!-- <template v-if="false && hasCrafted">
-          <Loot
-            :item="craftedItem"
-            :inventory="false"
-            :itemSlotClasses="
-              craftedItem && craftedItem.itemSlotClasses
-                ? craftedItem.itemSlotClasses
-                : null
-            "
-            :iconClasses="
-              craftedItem && craftedItem.iconClasses
-                ? craftedItem.iconClasses
-                : null
-            "
-            class="crafted-element margin-left-auto margin-right-auto relative"
-          />
-          <div
-            class="upgraded-message font-size-22 margin-top-3 text-center padding-left-2 padding-right-2"
-            v-html="upgradedMessage"
-          />
-        </template> -->
-        <!-- crafting -->
-        <!-- <template v-else-if="false && selectedItems.length > 0">
-          <div class="flex flex-center margin-top-4">
-            <Loot
-              v-for="(item, index) in filteredItems"
-              :key="index"
-              :item="item"
-              :inventory="false"
-              :itemSlotClasses="
-                item && item.itemSlotClasses ? item.itemSlotClasses : null
-              "
-              :iconClasses="item && item.iconClasses ? item.iconClasses : null"
-              class="margin-left-2 margin-right-2 relative"
-              @hint="removeItem(item)"
-            >
-              <div v-if="item && item.id" class="btn-remove absolute" />
-            </Loot>
-          </div>
-          <div
-            v-if="upgradeMessage"
-            class="upgrade-message font-size-22 margin-top-2 text-center padding-left-2 padding-right-2"
-            v-html="upgradeMessage"
-          />
-        </template> -->
-        <!-- ready to craft -->
-        <!-- <div
-          v-else-if="false"
-          class="combine-lantern-message uppercase font-size-30 text-center margin-left-auto margin-right-auto"
-        >
-          {{ $t("lunar_combine_lantern_message") }}
-        </div> -->
-        <!-- craft / ok button -->
-        <!-- <div v-if="false" class="text-center margin-top-4">
-          <CustomButton
-            :disabled="!hasCrafted && selectedItems.length !== maxSelectedItems"
-            type="green"
-            class="btn-combine inline-block uppercase padding-left-2"
-            @click="craftHandler"
-          >
-            {{ $t(hasCrafted ? "btn-ok" : "btn-combine") }}
-          </CustomButton>
-        </div> -->
       </div>
     </div>
   </div>
@@ -223,10 +149,6 @@ export default {
         return null;
       }
 
-      // return this.$t("lunar_combine_lantern_upgrade_message", {
-      //   level: `<b class="capitalize">${this.$t(this.nextLevel)}</b>`
-      // });
-
       return this.$t(`lunar_exchange_common_lantern_message`, {
         element: `<b class="capitalize">${this.$t(
           "lunar-" + this.selectedRarityId
@@ -269,14 +191,6 @@ export default {
   width: 456px;
   max-width: calc(100% - 4rem);
 }
-// .exchange-container--common {
-//   .upgrade-message,
-//   .upgraded-message {
-//     &::v-deep b {
-//       color: #70ee70;
-//     }
-//   }
-// }
 .exchange-container--rare {
   .upgrade-message,
   .upgraded-message {
@@ -337,12 +251,8 @@ export default {
   transform: translate(-50%, -50%);
 }
 .upgrade-message {
-  // margin-bottom: -1.5rem;
   max-width: calc(100% - 130px);
 }
-// .upgraded-message {
-//   margin-bottom: -0.5rem;
-// }
 .exchanged-element::before {
   content: "";
   position: absolute;

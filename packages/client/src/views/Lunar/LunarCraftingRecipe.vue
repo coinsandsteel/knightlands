@@ -81,30 +81,6 @@ export default {
     recipe: Object
   },
   methods: {
-    // craftHandler(recipe) {
-    //   if (!recipe.canCraft) {
-    //     return;
-    //   }
-
-    //   const items = [];
-    //   for (let i = 0; i < recipe.ingredients.length; i++) {
-    //     const ingredient = recipe.ingredients[i];
-    //     const item = {
-    //       id: ingredient.ingredientId,
-    //       template: ingredient.id,
-    //       rarity: ingredient.rarity,
-    //       caption: ingredient.caption,
-    //       info: { caption: ingredient.caption }
-    //     };
-    //     // eslint-disable-next-line no-console
-    //     console.log("ingredient.rarity", ingredient.rarity);
-    //     for (let j = 0; j < ingredient.ingredientCount; j++) {
-    //       items.push(item);
-    //     }
-    //   }
-
-    //   this.performRequestNoCatch(this.$store.dispatch("lunar/craft", items));
-    // }
     craftHandler(recipe) {
       const items = [];
       for (let i = 0; i < recipe.ingredients.length; i++) {

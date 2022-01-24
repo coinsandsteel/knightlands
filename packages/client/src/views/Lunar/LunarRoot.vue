@@ -73,7 +73,6 @@ export default {
   components: {
     Tabs,
     CustomButton
-    // LunarDailyRewards
   },
   async mounted() {
     this.$store.dispatch("lunar/subscribe");
@@ -144,16 +143,6 @@ export default {
       const showDailyRewardsDialog = create(LunarDailyRewards);
       showDailyRewardsDialog();
     }
-    // redirectToLunarCraft(rarity) {
-    //   if (
-    //     this.$route.name === "lunar-craft" &&
-    //     this.$route.params &&
-    //     this.$route.params.rarity === rarity
-    //   ) {
-    //     return;
-    //   }
-    //   this.$router.replace({ name: "lunar-craft", params: { rarity } });
-    // }
   }
 };
 </script>

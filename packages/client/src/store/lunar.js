@@ -1,4 +1,3 @@
-// import _ from "lodash";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 
@@ -9,7 +8,8 @@ export default {
     newItem: null,
     dailyRewards: [],
     usedRecipes: [],
-    craftingElementsFromRecipe: []
+    craftingElementsFromRecipe: [],
+    hasNewRecipe: false
   },
   mutations: {
     updateState(state, data) {
@@ -25,6 +25,9 @@ export default {
       }
       if (data.craftingElementsFromRecipe !== undefined) {
         state.craftingElementsFromRecipe = data.craftingElementsFromRecipe;
+      }
+      if (data.hasNewRecipe !== undefined) {
+        state.hasNewRecipe = data.hasNewRecipe;
       }
     },
     setInitialState(state, data) {
