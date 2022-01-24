@@ -36,7 +36,8 @@
           </div>
           <!-- @todo: remove -->
           <div
-            style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+            style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); color: red;"
+            class="font-size-18"
           >
             {{ ingredient ? ingredient.caption : null }}
           </div>

@@ -33,7 +33,8 @@
                   "
                 >
                   <div
-                    style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+                    style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); color: red;"
+                    class="font-size-18"
                   >
                     {{ recipe && recipe.name ? recipe.name : null }}
                   </div>
@@ -72,7 +73,8 @@
               }"
             >
               <div
-                style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); font-size: 10px; color: red;"
+                style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); color: red;"
+                class="font-size-18"
               >
                 {{ item && item.name ? item.name : null }}
               </div>
