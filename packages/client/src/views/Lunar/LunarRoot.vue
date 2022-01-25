@@ -13,6 +13,16 @@
       <router-view v-if="loaded"></router-view>
       <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-start">
+          <!-- KEEP IN PRODUCTION -->
+          <CustomButton
+            type="green"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="goToShop"
+          >
+            Purchase base elements
+          </CustomButton>
+
+          <!-- REMOVE IN PRODUCTION-->
           <CustomButton
             type="grey"
             class="inline-block margin-right-2 margin-top-1"
@@ -135,6 +145,9 @@ export default {
       await this.performRequestNoCatch(
         this.$store.dispatch("lunar/testAction", { action })
       );
+    },
+    async goToShop() {
+      this.$router.push({ name: "lunar-shop" });
     },
     switchTab(newTab) {
       this.currentTab = newTab;

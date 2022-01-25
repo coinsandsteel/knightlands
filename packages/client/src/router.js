@@ -488,6 +488,11 @@ const router = new Router({
           path: "nft",
           name: "lunar-nft",
           component: () => import("./views/Lunar/LunarNft.vue")
+        },
+        {
+          path: "shop",
+          name: "lunar-shop",
+          component: () => import("./views/Lunar/LunarShop.vue")
         }
       ],
       meta: {

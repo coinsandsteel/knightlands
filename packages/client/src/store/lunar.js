@@ -51,6 +51,9 @@ export default {
     async exchange(store, items) {
       await this.$app.$game._wrapOperation(Operations.LunarExchange, items);
     },
+    async purchase(store, payload) {
+      await this.$app.$game._wrapOperation(Operations.LunarPurchase, payload);
+    },
     collectDailyReward() {
       this.$app.$game._wrapOperation(Operations.LunarCollectDailyReward);
     },
