@@ -13,14 +13,20 @@
     </keep-alive>
 
     <portal to="footer" v-if="isActive">
-      <CustomButton type="yellow" @click="summonRaid" id="btn-summon">{{
-        $t("btn-summon")
-      }}</CustomButton>
+      <CustomButton
+        :disabled="!canSummonCurrentRaid"
+        type="yellow"
+        @click="summonRaid"
+        id="btn-summon"
+        >{{ $t("btn-summon") }} {{ limitCount }}</CustomButton
+      >
     </portal>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import UiConstants from "@/ui_constants";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
@@ -52,6 +58,15 @@ export default {
     ],
     currentTab: YOUR_RAIDS
   }),
+  computed: {
+    ...mapGetters("raids", ["canSummonCurrentRaid", "currentActiveRaids"]),
+    limitCount() {
+      return `${Math.min(
+        this.currentActiveRaids.length,
+        UiConstants.maxActiveRaids
+      )}/${UiConstants.maxActiveRaids}`;
+    }
+  },
   methods: {
     handleTabChanged(tab) {
       this.currentTab = tab;

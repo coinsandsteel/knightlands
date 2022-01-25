@@ -69,5 +69,6 @@ export default {
       width: rect.width,
       height: rect.height
     };
-  }
+  },
+  maxActiveRaids: 25
 };
