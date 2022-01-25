@@ -18,7 +18,7 @@
         type="yellow"
         @click="summonRaid"
         id="btn-summon"
-        >{{ $t("btn-summon") }} {{ limitCount }}</CustomButton
+        >{{ $t("btn-summon") }}</CustomButton
       >
     </portal>
   </div>
@@ -42,24 +42,26 @@ export default {
     this.$options.useRouterBack = true;
   },
   data: () => ({
-    tabs: [
-      {
-        title: YOUR_RAIDS,
-        to: {
-          name: "raids"
-        }
-      },
-      {
-        title: PUBLIC_RAIDS,
-        to: {
-          name: "pub-raids"
-        }
-      }
-    ],
     currentTab: YOUR_RAIDS
   }),
   computed: {
     ...mapGetters("raids", ["canSummonCurrentRaid", "currentActiveRaids"]),
+    tabs() {
+      return [
+        {
+          title: `${this.$t(YOUR_RAIDS)} ${this.limitCount}`,
+          to: {
+            name: "raids"
+          }
+        },
+        {
+          title: PUBLIC_RAIDS,
+          to: {
+            name: "pub-raids"
+          }
+        }
+      ];
+    },
     limitCount() {
       return `${Math.min(
         this.currentActiveRaids.length,
