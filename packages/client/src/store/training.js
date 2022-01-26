@@ -1,8 +1,19 @@
+import Vue from "vue";
 import UpgradableCharacterStats from "@/../../knightlands-shared/upgradable_character_stats";
 import TrainingCamp from "@/../../knightlands-shared/training_camp";
+import { StatConversions } from "@/../../knightlands-shared/character_stat";
 import TrainingCampMeta from "@/training_camp";
 
-import Vue from "vue";
+function getMaxStatValue(stat) {
+  return (
+    TrainingCamp.getMaxStat(Vue.prototype.$character.level) *
+    StatConversions[stat]
+  );
+}
+
+function getStatValue(stat) {
+  return getAttributeValue(stat) * StatConversions[stat];
+}
 
 function getResource(stat) {
   return {
@@ -14,6 +25,13 @@ function getResource(stat) {
 function hasEnoughResource(resourceItems, stat) {
   const res = getResource(stat);
   return resourceItems[stat] && resourceItems[stat].count >= res.quantity;
+}
+
+function canTrainMore(stat) {
+  const statValue = getStatValue(stat);
+  const maxStatValue = getMaxStatValue(stat);
+
+  return statValue < maxStatValue;
 }
 
 function getAttributeValue(stat) {
@@ -48,7 +66,11 @@ export default {
           TrainingCampMeta.find(x => x.stat == stat).resource
         );
 
-        if (hasEnoughResource(resourceItems, stat) && hasEnoughGold(stat)) {
+        if (
+          hasEnoughResource(resourceItems, stat) &&
+          hasEnoughGold(stat) &&
+          canTrainMore(stat)
+        ) {
           anyStatCanBeTrained = true;
           break;
         }
