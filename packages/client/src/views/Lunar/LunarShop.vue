@@ -4,16 +4,14 @@
       <div
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
-        <div
-          class="option-name font-size-25 text-align-center padding-top-2 padding-bottom-2"
-        >
+        <div class="option-name font-size-25 text-align-center padding-1">
           <div class="flex flex-center flex-column">
             Choose a payment option:
           </div>
         </div>
 
         <div
-          class="option-items width-100 flex flex-center flex-space-evenly padding-top-4 padding-bottom-2 padding-left-1 padding-right-1 margin-bottom-5"
+          class="option-items width-100 flex flex-center flex-space-evenly padding-1"
         >
           <div
             class="flex flex-column flex-center margin-1 padding-1"
@@ -57,7 +55,7 @@
         </div>
 
         <div
-          class="option-name font-size-25 text-align-center padding-top-2 padding-bottom-2"
+          class="option-name font-size-25 text-align-center padding-1"
           v-if="shopIndex !== null"
         >
           <div class="flex flex-center flex-column">
@@ -66,7 +64,7 @@
         </div>
 
         <div
-          class="option-items width-100 flex flex-center flex-space-evenly padding-top-4 padding-bottom-2 padding-left-1 padding-right-1"
+          class="option-items width-100 flex flex-center flex-space-evenly padding-1"
           v-if="shopIndex !== null"
         >
           <div
@@ -88,7 +86,7 @@
               :rowStyle="{ 'align-items': 'center' }"
               :btnStyle="{ width: '1em', height: '1em' }"
               :value="getStatValue(index)"
-              :decreaseCondition="entry.quantity > 1"
+              :decreaseCondition="entry.quantity > 0"
               :increaseCondition="canIncrease"
               @inc="increaseAttribute(index)"
               @dec="decreaseAttribute(index)"
@@ -97,7 +95,7 @@
         </div>
 
         <div
-          class="font-size-22 flex flex-center flex-column margin-bottom-5"
+          class="font-size-22 flex flex-center flex-column margin-bottom-2"
           v-if="shopIndex !== null"
         >
           Items left: {{ itemsLeft }}
