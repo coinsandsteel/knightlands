@@ -13,6 +13,16 @@
     </keep-alive>
 
     <portal to="footer" v-if="isActive">
+      <progress-bar
+        class="raid-progress flex-grow-1 padding-left-1 padding-right-1 translate-y--30"
+        :maxValue="maxActiveRaids"
+        :value="currentActiveRaids.length"
+        valueClass="white-font font-outline"
+        valuePosition="top"
+        height="0.5rem"
+        :thresholds="thresholds"
+        :expand="false"
+      />
       <CustomButton
         :disabled="!canSummonCurrentRaid"
         type="yellow"
@@ -30,19 +40,22 @@ import UiConstants from "@/ui_constants";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 
 const PUBLIC_RAIDS = "pub-raids";
 const YOUR_RAIDS = "your-raids";
 
 export default {
   mixins: [AppSection],
-  components: { Tabs, CustomButton },
+  components: { Tabs, CustomButton, ProgressBar },
   created() {
     this.title = "raids";
     this.$options.useRouterBack = true;
   },
   data: () => ({
-    currentTab: YOUR_RAIDS
+    currentTab: YOUR_RAIDS,
+    thresholds: UiConstants.raidsSummonProgressThresholds,
+    maxActiveRaids: UiConstants.maxActiveRaids
   }),
   computed: {
     ...mapGetters("raids", ["canSummonCurrentRaid", "currentActiveRaids"]),
@@ -63,10 +76,7 @@ export default {
       ];
     },
     limitCount() {
-      return `${Math.min(
-        this.currentActiveRaids.length,
-        UiConstants.maxActiveRaids
-      )}/${UiConstants.maxActiveRaids}`;
+      return `${this.currentActiveRaids.length}/${UiConstants.maxActiveRaids}`;
     }
   },
   methods: {
