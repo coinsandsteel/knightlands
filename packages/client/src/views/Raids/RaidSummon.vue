@@ -207,6 +207,9 @@ export default {
       handler() {
         this.fetchInfo();
       }
+    },
+    raid() {
+      this.refreshSummonTimer();
     }
   },
   activated() {
