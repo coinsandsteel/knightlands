@@ -41,12 +41,7 @@ export default {
   },
   computed: {
     computedItems() {
-      let items = this.items || this.$game.inventory.items;
-      items = items.filter(item => {
-        const template = this.$game.itemsDB.getTemplate(item.template);
-        return template.type !== "lunarResource";
-      });
-      return items;
+      return this.items || this.$game.inventory.items;
     }
   },
   methods: {

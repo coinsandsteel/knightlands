@@ -45,6 +45,7 @@ import Title from "@/components/Title.vue";
 import Inventory from "./Inventory.vue";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 const ItemType = require("@/../../knightlands-shared/item_type");
+import { ITEM_RARITY_NFT } from "@/../../knightlands-shared/lunar";
 
 export default {
   components: {
@@ -59,7 +60,12 @@ export default {
       let filteredItems = [];
       for (; i < length; ++i) {
         const item = items[i];
-        if (!item.rarity) {
+        const template = this.$game.itemsDB.getTemplate(item.template);
+        if (
+          (template.type !== ItemType.Lunar && !item.rarity) ||
+          (template.type === ItemType.Lunar &&
+            template.rarity === ITEM_RARITY_NFT)
+        ) {
           filteredItems.push(item);
         }
       }
