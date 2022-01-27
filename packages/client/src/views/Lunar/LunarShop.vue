@@ -68,7 +68,7 @@
           v-if="shopIndex !== null"
         >
           <div
-            class="flex flex-column flex-center margin-1"
+            class="flex flex-column flex-center margin-1 quantity-item"
             v-for="(entry, index) in itemsCount"
             :key="'quantity-item-' + entry.item"
           >
@@ -114,7 +114,11 @@
               balance.hard
             }}</IconWithValue>
           </div>
-          <CustomButton :disabled="!!itemsLeft" type="green" @click="purchase">
+          <CustomButton
+            :disabled="!!itemsLeft || !enoughCurrency"
+            type="green"
+            @click="purchase"
+          >
             Purchase&nbsp;<IconWithValue :iconClass="iconClasses[currency]">{{
               price
             }}</IconWithValue>
@@ -167,6 +171,9 @@ export default {
     },
     currentOption() {
       return this.options[this.shopIndex];
+    },
+    enoughCurrency() {
+      return this.balance[this.currency] >= this.price;
     },
     balance() {
       return {
@@ -234,5 +241,8 @@ export default {
 }*/
 .option-name {
   background: rgba(0, 0, 0, 0.5);
+}
+.quantity-item {
+  min-width: 18%;
 }
 </style>
