@@ -21,7 +21,11 @@
 
     <div class="flex flex-column padding-top-1">
       <div class="flex flex-items-center flex-self-start margin-bottom-half">
-        <span :class="classIcon" @click="$emit('changeClass')"></span>
+        <span
+          class="pointer"
+          :class="classIcon"
+          @click="changeClassHandler"
+        ></span>
         <span class="font-size-22 font-weight-900 font-shadow">{{
           nickname
         }}</span>
@@ -89,6 +93,11 @@ import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Loot from "@/components/Loot.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import Avatar from "../Avatars/Avatar.vue";
+import NoShinies from "@/components/Modals/NoShinies.vue";
+import { create } from "vue-modal-dialogs";
+import Meta from "@/meta";
+
+const ShowShiniesDialog = create(NoShinies);
 
 export default {
   props: [
@@ -130,11 +139,25 @@ export default {
       stats.push(CharacterStat.Defense);
 
       return stats;
+    },
+    firstSelection() {
+      return !this.$character.class;
+    },
+    price() {
+      return this.firstSelection ? 0 : Meta.classPrice;
     }
   },
   methods: {
     totalPower() {
       return this.$game.itemsDB.getPower(this.stats);
+    },
+    changeClassHandler() {
+      if (this.price > this.$game.hardCurrency) {
+        ShowShiniesDialog();
+        return;
+      }
+
+      this.$emit("changeClass");
     }
   }
 };
