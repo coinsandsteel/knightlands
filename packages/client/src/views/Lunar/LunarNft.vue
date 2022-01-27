@@ -78,6 +78,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
+import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 
 import {
   ITEM_RARITY_EXPERT,
@@ -96,7 +97,7 @@ export default {
     Loot,
     CustomButton
   },
-  mixins: [ActivityMixin, NetworkRequestErrorMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin, ShowItemsMixin],
   data() {
     return {};
   },
@@ -192,9 +193,11 @@ export default {
       if (this.hasCrafted) {
         return;
       }
-      await this.performRequestNoCatch(
+      const items = await this.performRequest(
         this.$store.dispatch("lunar/craft", { recipeId })
       );
+      
+      await this.showItems(items);
     }
   }
 };
