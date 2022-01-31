@@ -254,7 +254,7 @@ export default {
       return this.stepData.soft <= this.$game.softCurrency;
     },
     enoughAsh() {
-      return this.ashPrice <= this.$game.dkt;
+      return this.ashPrice <= this.fleshBalance;
     },
     enoughResources() {
       return this.$game.crafting.hasEnoughIngridients(this.ingridients);
