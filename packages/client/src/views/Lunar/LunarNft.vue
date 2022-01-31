@@ -58,10 +58,8 @@
               :key="itemIndex"
               :quantity="item.quantity"
               :inventory="false"
-              :itemSlotClasses="
-                item && item.itemSlotClasses ? item.itemSlotClasses : null
-              "
-              :iconClasses="item && item.iconClasses ? item.iconClasses : null"
+              :itemSlotClasses="item && item.icon ? item.itemSlotClasses : null"
+              :iconClasses="item && item.icon ? item.icon : null"
               :class="{
                 'opacity-50': !item.quantity
               }"
@@ -123,14 +121,8 @@ export default {
       let filteredItems = [];
       for (; i < length; ++i) {
         const item = items[i];
-        const rarity = this.$game.itemsDB.getRarity(item.template);
-        let lanternIds = [1, 2, 3, 4, 1, 2, 3, 4, 1, 2];
-        let idString = item.id.toString();
-        let lanternId = lanternIds[idString[idString.length - 1]];
-        let icon = "basic_lantern" + lanternId;
         filteredItems.push({
           ...item,
-          iconClasses: `${RARITY_CLASS_MAP[rarity]} ${icon}`,
           itemSlotClasses: "lunar-lantern-slot",
           isCustomElement: true
         });
@@ -196,7 +188,7 @@ export default {
       const items = await this.performRequest(
         this.$store.dispatch("lunar/craft", { recipeId })
       );
-      
+
       await this.showItems(items);
     }
   }
