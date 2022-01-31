@@ -34,13 +34,6 @@
               >{{ ingredient.quantity }}</span
             >/{{ ingredient.ingredientCount }}
           </div>
-          <!-- @todo: remove -->
-          <div
-            style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); color: red;"
-            class="font-size-18"
-          >
-            {{ ingredient ? ingredient.caption : null }}
-          </div>
         </Loot>
       </div>
       <!-- arrow -->

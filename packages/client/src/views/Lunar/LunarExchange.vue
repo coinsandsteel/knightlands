@@ -53,13 +53,6 @@
                     }"
                     @hint="handleHint"
                   >
-                    <!-- @todo: remove -->
-                    <div
-                      style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); color: red;"
-                      class="font-size-18"
-                    >
-                      {{ item && item.info ? item.info.caption : null }}
-                    </div>
                   </Loot>
                 </div>
               </template>

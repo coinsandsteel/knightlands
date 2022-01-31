@@ -46,7 +46,9 @@ export default {
       store.commit("setInitialState", result.response);
     },
     async craft(store, items) {
-      await this.$app.$game._wrapOperation(Operations.LunarCraft, items);
+      return (
+        await this.$app.$game._wrapOperation(Operations.LunarCraft, items)
+      ).response;
     },
     async exchange(store, items) {
       await this.$app.$game._wrapOperation(Operations.LunarExchange, items);

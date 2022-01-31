@@ -32,12 +32,6 @@
                     recipe && recipe.iconClasses ? recipe.iconClasses : null
                   "
                 >
-                  <div
-                    style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); color: red;"
-                    class="font-size-18"
-                  >
-                    {{ recipe && recipe.name ? recipe.name : null }}
-                  </div>
                 </Loot>
               </div>
               <div class="text-center" :key="`craft-btn-${recipeIndex}`">
@@ -72,12 +66,6 @@
                 'opacity-50': !item.quantity
               }"
             >
-              <div
-                style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); color: red;"
-                class="font-size-18"
-              >
-                {{ item && item.name ? item.name : null }}
-              </div>
             </Loot>
           </div>
         </div>
@@ -90,6 +78,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
+import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 
 import {
   ITEM_RARITY_EXPERT,
@@ -108,7 +97,7 @@ export default {
     Loot,
     CustomButton
   },
-  mixins: [ActivityMixin, NetworkRequestErrorMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin, ShowItemsMixin],
   data() {
     return {};
   },
@@ -204,9 +193,11 @@ export default {
       if (this.hasCrafted) {
         return;
       }
-      await this.performRequestNoCatch(
+      const items = await this.performRequest(
         this.$store.dispatch("lunar/craft", { recipeId })
       );
+      
+      await this.showItems(items);
     }
   }
 };
