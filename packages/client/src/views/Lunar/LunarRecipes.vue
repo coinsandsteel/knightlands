@@ -86,7 +86,7 @@ export default {
         .filter(item => !!item);
 
       const basicRecipes = {
-        title: capitalize(this.$t("lunar-common")),
+        title: capitalize(this.$t("lunar-rare")),
         items: list
           .filter(item => item && item.rarity === ITEM_RARITY_ADVANCED)
           .sort(this.sortIngredient)
@@ -96,7 +96,7 @@ export default {
       }
 
       const advancedRecipes = {
-        title: capitalize(this.$t("lunar-rare")),
+        title: capitalize(this.$t("lunar-epic")),
         items: list
           .filter(item => item && item.rarity === ITEM_RARITY_EXPERT)
           .sort(this.sortIngredient)

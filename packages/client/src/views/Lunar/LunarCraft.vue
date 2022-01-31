@@ -29,7 +29,7 @@
                   :key="`rarity-name-${rarityIndex}`"
                   :class="rarity.class"
                 >
-                  {{ rarity.name }}
+                  {{ $t(`${rarity.name}-elements`) }}
                 </div>
                 <div
                   :key="`rarity-${rarityIndex}`"

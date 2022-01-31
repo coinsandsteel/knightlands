@@ -1,6 +1,12 @@
 <template>
   <div class="width-100 relative recipe padding-bottom-4">
-    <Title :stackTop="true">{{ recipe.title }}</Title>
+    <!-- <Title :stackTop="true">{{ recipe.title }}</Title> -->
+
+    <div
+      class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2 capitalize"
+    >
+      {{ $t(`${recipe.title}-elements`) }}
+    </div>
 
     <div
       v-for="(item, index) in recipe.items"
@@ -64,12 +70,11 @@
 
 <script>
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import Title from "@/components/Title.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
 
 export default {
-  components: { Title, Loot, CustomButton },
+  components: { Loot, CustomButton },
   mixins: [NetworkRequestErrorMixin],
   props: {
     recipe: Object
@@ -115,5 +120,8 @@ export default {
   height: 4rem;
   min-width: 100%;
   margin: 0;
+}
+.rarity-name {
+  background: rgba(0, 0, 0, 0.5);
 }
 </style>

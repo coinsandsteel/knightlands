@@ -25,7 +25,7 @@
             <div>
               <template v-for="(rarity, rarityIndex) in itemRaritys">
                 <div
-                  class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2"
+                  class="rarity-name font-size-25 text-align-left padding-top-1 padding-bottom-1 padding-left-2 padding-right-2 capitalize"
                   :key="`rarity-name-${rarityIndex}`"
                   :class="rarity.class"
                 >
