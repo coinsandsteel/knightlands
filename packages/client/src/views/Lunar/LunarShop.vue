@@ -137,6 +137,7 @@ import meta from "@/lunar_meta.json";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import NumericValue from "@/components/NumericValue.vue";
+import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 
 const BASE_ELEMENTS = [3214, 3215, 3216, 3217];
 
@@ -147,7 +148,7 @@ export default {
     CustomButton,
     NumericValue
   },
-  mixins: [ActivityMixin, NetworkRequestErrorMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin, ShowItemsMixin],
   data() {
     return {
       options: meta.shop,
@@ -214,7 +215,7 @@ export default {
       });
     },
     async purchase() {
-      await this.performRequestNoCatch(
+      const newItems = await this.performRequestNoCatch(
         this.$store.dispatch("lunar/purchase", {
           shopIndex: this.shopIndex,
           itemsCount: _.fromPairs(
@@ -223,6 +224,7 @@ export default {
           currency: this.currency
         })
       );
+      await this.showItems(newItems);
     }
   }
 };
