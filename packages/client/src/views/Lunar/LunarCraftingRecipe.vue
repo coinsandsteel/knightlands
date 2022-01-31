@@ -8,7 +8,7 @@
       class="flex flex-no-wrap flex-center padding-left-2 padding-right-2 margin-top-4"
     >
       <!-- ingredients -->
-      <div class="flex flex-no-wrap">
+      <div class="flex">
         <Loot
           v-for="(ingredient, ingredientIndex) in item.ingredients"
           :key="ingredientIndex"

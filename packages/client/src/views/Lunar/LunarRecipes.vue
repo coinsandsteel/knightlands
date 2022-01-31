@@ -56,7 +56,7 @@ import LunarCraftingRecipe from "@/views/Lunar/LunarCraftingRecipe.vue";
 import CustomButton from "@/components/Button.vue";
 
 const lunarRecipes = Object.values(recipes).filter(
-  ({ category }) => category === "lunar"
+  ({ category, ingridients }) => category === "lunar" && ingridients.length < 10
 );
 
 export default {
