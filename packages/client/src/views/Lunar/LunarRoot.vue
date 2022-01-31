@@ -13,50 +13,12 @@
       <router-view v-if="loaded"></router-view>
       <portal v-if="isActive" to="footer" :slim="true">
         <div class="flex flex-items-start">
-          <!-- KEEP IN PRODUCTION -->
           <CustomButton
             type="green"
             class="inline-block margin-right-2 margin-top-1"
             @click="goToShop"
           >
             Purchase base elements
-          </CustomButton>
-
-          <!-- REMOVE IN PRODUCTION-->
-          <CustomButton
-            type="grey"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAction('addTestItems')"
-          >
-            Add 10 random
-          </CustomButton>
-          <CustomButton
-            type="grey"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAction('addBaseItems')"
-          >
-            Add 4 base
-          </CustomButton>
-          <CustomButton
-            type="red"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAction('clearInventory')"
-          >
-            Clear inventory
-          </CustomButton>
-          <CustomButton
-            type="red"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAction('resetDailyRewards')"
-          >
-            Reset daily rewards
-          </CustomButton>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAction('plus1Day')"
-          >
-            +1 day
           </CustomButton>
         </div>
       </portal>

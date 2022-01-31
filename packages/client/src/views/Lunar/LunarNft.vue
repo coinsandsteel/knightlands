@@ -76,7 +76,9 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
 import CustomButton from "@/components/Button.vue";
-import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
+import { create as CreateDialog } from "vue-modal-dialogs";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+const ShowItems = CreateDialog(ItemsReceived, "items", "drown");
 
 import {
   ITEM_RARITY_EXPERT,
@@ -95,7 +97,7 @@ export default {
     Loot,
     CustomButton
   },
-  mixins: [ActivityMixin, NetworkRequestErrorMixin, ShowItemsMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin],
   data() {
     return {};
   },
@@ -189,7 +191,7 @@ export default {
         this.$store.dispatch("lunar/craft", { recipeId })
       );
 
-      await this.showItems(items);
+      await ShowItems(items, true);
     }
   }
 };

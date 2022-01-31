@@ -1,5 +1,9 @@
 <template>
-  <UserDialog :title="$t('box-opened-title')" @close="$close" class="over-top">
+  <UserDialog
+    :title="$t('box-opened-title')"
+    @close="$close"
+    :class="{ 'over-top': !drown }"
+  >
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
         <IconWithValue
@@ -73,7 +77,7 @@ export default {
     CustomButton,
     Loot
   },
-  props: ["items", "soft", "hard", "exp", "dkt"]
+  props: ["items", "soft", "hard", "exp", "dkt", "drown"]
 };
 </script>
 
