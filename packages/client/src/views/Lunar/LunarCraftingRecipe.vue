@@ -30,7 +30,9 @@
           "
           class="margin-left-2 margin-right-2 relative"
         >
-          <div class="ingredient-count absolute font-size-18">
+          <div
+            class="ingredient-count absolute font-size-18 font-size-18 font-weight-700 flex flex-end"
+          >
             <span
               :class="
                 ingredient.quantity < ingredient.ingredientCount
@@ -98,16 +100,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) "../../style/common.less";
+
 .achievement-name {
-  top: -0.75rem;
   left: 50%;
   transform: translate(-50%, -100%);
 }
 .ingredient-count {
-  bottom: 0.5rem;
-  right: 1rem;
-  text-shadow: -1px 0 1px #000, 1px 0 1px #000;
-  letter-spacing: 1px;
+  background: rgba(33, 0, 40, 0.7);
+  background: linear-gradient(
+    90deg,
+    rgba(33, 0, 40, 0) 0%,
+    rgba(33, 0, 40, 0.7) 80%,
+    rgba(33, 0, 40, 0.3) 100%
+  );
+
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0;
+  padding-top: 0.2rem;
+  padding-right: 0.6rem;
+  left: 0;
+
+  .mobile({bottom: 0.4rem;});
 }
 .ingredient-missing {
   color: #f00;

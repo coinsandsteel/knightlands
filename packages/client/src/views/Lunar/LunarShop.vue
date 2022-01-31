@@ -5,8 +5,8 @@
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
         <div class="option-name font-size-25 text-align-center padding-1">
-          <div class="flex flex-center flex-column">
-            Choose a payment option:
+          <div class="text-align-left">
+            Choose payment option
           </div>
         </div>
 
@@ -58,8 +58,8 @@
           class="option-name font-size-25 text-align-center padding-1"
           v-if="shopIndex !== null"
         >
-          <div class="flex flex-center flex-column">
-            Choose elements to buy:
+          <div class="text-align-left">
+            Choose elements to buy
           </div>
         </div>
 
@@ -101,16 +101,16 @@
           Items left: {{ itemsLeft }}
         </div>
 
-        <div class="flex flex-center flex-column" v-if="shopIndex !== null">
-          <div class="font-size-22">
+        <div class="flex flex-center flex-column " v-if="shopIndex !== null">
+          <div class="font-size-22 flex flex-center margin-bottom-1">
             FLESH balance:
-            <IconWithValue iconClass="icon-dkt">{{
+            <IconWithValue iconClass="icon-dkt" class="margin-left-1">{{
               balance.flesh
             }}</IconWithValue>
           </div>
-          <div class="font-size-22 margin-bottom-3">
-            Shinees balance:
-            <IconWithValue iconClass="icon-premium">{{
+          <div class="font-size-22 margin-bottom-3 flex flex-center">
+            Shinies balance:
+            <IconWithValue iconClass="icon-premium" class="margin-left-1">{{
               balance.hard
             }}</IconWithValue>
           </div>
