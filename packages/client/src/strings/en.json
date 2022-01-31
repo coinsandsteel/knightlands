@@ -1477,7 +1477,7 @@
   "luck_res_desc": "Used to increase Luck attribute for your character",
   "lucky_wheel_ticket": "lucky_wheel_ticket",
   "lucky_wheel_ticket_desc": "lucky_wheel_ticket_desc",
-  "lunar_combine_common_lantern_message": "There is a change to craft an <b>Advanced</b> latern",
+  "lunar_combine_common_lantern_message": "Add lanterns to craft an <b>Advanced</b> latern",
   "lunar_combine_lantern_message": "Add lanterns to craft new one",
   "lunar_combine_lantern_success_message": "You've got a {element} lantern!",
   "lunar_combine_nft_lantern_message": "Add lanterns  to craft an <b>NFT</b>",
