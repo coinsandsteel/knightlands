@@ -7,16 +7,53 @@
         <MarchMainMenu />
       </div>
     </div> -->
-    <MarchMainMenu />
+    <MarchPetsSelect
+      v-if="currentStep === PET_SELECT_STEP"
+      @next="nextHandler"
+      @back="backHandler"
+    />
+    <MarchBoosterSelect
+      v-if="currentStep === BOOSTER_SELECT_STEP"
+      @next="nextHandler"
+      @back="backHandler"
+    />
+    <portal v-if="isActive" to="footer" :slim="true">
+      <div class="width-100 flex flex-items-start">
+        <BackButton class="back-button" @click="backHandler"></BackButton>
+      </div>
+    </portal>
   </div>
 </template>
 <script>
-import MarchMainMenu from "@/views/March/MarchMainMenu.vue";
+import AppSection from "@/AppSection.vue";
+import MarchPetsSelect from "@/views/March/MarchPetsSelect.vue";
+import MarchBoosterSelect from "@/views/March/MarchBoosterSelect.vue";
+import BackButton from "@/views/Common/BackButton.vue";
+const PET_SELECT_STEP = "PET_SELECT_STEP";
+const BOOSTER_SELECT_STEP = "BOOSTER_SELECT_STEP";
+const PLAY_STEP = "PLAY_STEP";
 export default {
-  components: { MarchMainMenu },
+  mixins: [AppSection],
+  components: { MarchPetsSelect, MarchBoosterSelect, BackButton },
   data() {
-    return {};
+    return {
+      PET_SELECT_STEP,
+      BOOSTER_SELECT_STEP,
+      PLAY_STEP,
+      currentStep: PET_SELECT_STEP
+    };
+  },
+  methods: {
+    backHandler() {
+      if (this.currentStep === BOOSTER_SELECT_STEP) {
+        this.currentStep = PET_SELECT_STEP;
+      }
+    },
+    nextHandler() {
+      if (this.currentStep === PET_SELECT_STEP) {
+        this.currentStep = BOOSTER_SELECT_STEP;
+      }
+    }
   }
 };
 </script>
-<style scoped lang="less"></style>
