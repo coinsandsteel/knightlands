@@ -1,5 +1,5 @@
 import _ from "lodash";
-import * as unitClass from "@/../../knightlands-shared/march";
+import * as march from "@/../../knightlands-shared/march";
 
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
@@ -8,16 +8,7 @@ export default {
   namespaced: true,
   state: {
     loaded: true,
-    stat: {
-      stepsToNextBoss: 10,
-      bossesKilled: 0
-    },
-    pet: {
-      penaltySteps: 0,
-      class: 1,
-      level: 1,
-      armor: 0
-    },
+    // User
     balance: {
       tickets: 15,
       gold: 300
@@ -27,54 +18,65 @@ export default {
       extraLife: 0,
       key: 0
     },
+    // Playground
+    stat: {
+      stepsToNextBoss: 10,
+      bossesKilled: 0,
+      penaltySteps: 0
+    },
+    pet: {
+      petClass: 1,
+      level: 1,
+      armor: 0
+    },
     cards: [
       {
         _id: "dc8c4aefc000",
-        class: unitClass.UNIT_CLASS_PET,
+        unitClass: march.UNIT_CLASS_PET,
         hp: 10
       },
       {
         _id: "dc8c4aefc001",
-        class: unitClass.UNIT_CLASS_BOMB,
+        unitClass: march.UNIT_CLASS_BOMB,
         hp: 5
       },
       {
         _id: "dc8c4aefc002",
-        class: unitClass.UNIT_CLASS_CHEST,
+        unitClass: march.UNIT_CLASS_CHEST,
         hp: 5
       },
       {
         _id: "dc8c4aefc003",
-        class: unitClass.UNIT_CLASS_BARRELL,
+        unitClass: march.UNIT_CLASS_BARRELL,
         hp: 5
       },
       {
         _id: "dc8c4aefc004",
-        class: unitClass.UNIT_CLASS_ENEMY,
+        unitClass: march.UNIT_CLASS_ENEMY,
         hp: 3
       },
       {
         _id: "dc8c4aefc005",
-        class: unitClass.UNIT_CLASS_ENEMY_BOSS,
+        class: march.UNIT_CLASS_ENEMY_BOSS,
         hp: 8
       },
       {
         _id: "dc8c4aefc006",
-        class: unitClass.UNIT_CLASS_TRAP,
+        class: march.UNIT_CLASS_TRAP,
         hp: 3,
-        opened: false
+        opened: true
       },
       {
         _id: "dc8c4aefc007",
-        class: unitClass.UNIT_CLASS_HP,
+        class: march.UNIT_CLASS_HP,
         hp: 1
       },
       {
         _id: "dc8c4aefc008",
-        class: unitClass.UNIT_CLASS_GOLD,
+        class: march.UNIT_CLASS_GOLD,
         hp: 4
       }
-    ],
+    ]
   },
   getters: {},
   mutations: {
