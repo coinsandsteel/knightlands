@@ -22,6 +22,7 @@ import Settings from "@/store/settings";
 import Dungeon from "@/store/dungeon";
 import Xmas from "@/store/xmas";
 import Lunar from "@/store/lunar";
+import March from "@/store/march";
 import Elements from "@/../../knightlands-shared/elements";
 import ArmyUnitTypes from "@/army_unit_types";
 
@@ -30,7 +31,7 @@ Vue.use(Vuex);
 const vuexPersist = new VuexPersist({
   key: "knightlands",
   storage: localStorage,
-  reducer: (state) => _.omit(state, ['dungeon', 'xmas', 'lunar'])
+  reducer: (state) => _.omit(state, ['dungeon', 'xmas', 'lunar', 'march'])
 });
 
 const DefaultRarityFilters = {};
@@ -291,11 +292,12 @@ const store = new Vuex.Store({
     shop: Shop,
     dungeon: Dungeon,
     xmas: Xmas,
-    lunar: Lunar
+    lunar: Lunar,
+    march: March
   }
 });
 
-/*store.subscribe((mutation, state) => {
+store.subscribe((mutation, state) => {
   if (
     !mutation.type.includes('training')
     &&
@@ -313,6 +315,6 @@ store.subscribeAction((action, state) => {
   ) {
     console.log('Action', action.type, action.payload);
   }
-});*/
+});
 
 export default store;
