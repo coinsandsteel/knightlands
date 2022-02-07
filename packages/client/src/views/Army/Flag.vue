@@ -1,8 +1,11 @@
 <template>
   <div class="flex flex-column flag-icons flex-no-wrap">
-    <span :class="`unit_type_${type}`"></span>
-    <span :class="`unit_element_${element}`"></span>
-    <span :class="`weapon-badge ${weaponType}`"></span>
+    <span v-if="type" :class="`unit_type_${type}`"></span>
+    <span v-if="element" :class="`unit_element_${element}`"></span>
+    <span v-if="weaponType" :class="`weapon-badge ${weaponType}`"></span>
+    <span v-if="!type"></span>
+    <span v-if="!element"></span>
+    <span v-if="!weaponType"></span>
   </div>
 </template>
 

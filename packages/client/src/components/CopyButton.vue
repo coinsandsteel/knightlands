@@ -1,11 +1,7 @@
 <template>
-  <CustomButton
-    ref="btn"
-    type="grey"
-    :caption="btnCaption"
-    :data-clipboard-text="data"
-    >{{ $t(btnCaption) }}</CustomButton
-  >
+  <CustomButton ref="btn" type="grey" :data-clipboard-text="data">{{
+    btnCaption
+  }}</CustomButton>
 </template>
 
 <script>
@@ -16,17 +12,25 @@ export default {
   components: { CustomButton },
   props: ["data", "caption"],
   data: () => ({
-    btnCaption: ""
+    isCopied: false,
+    timeout: null
   }),
+  computed: {
+    btnCaption() {
+      if (this.isCopied) {
+        return this.$t("copied");
+      }
+      return this.$t(this.caption);
+    }
+  },
   mounted() {
-    this.btnCaption = this.$t(this.caption);
-
     this.$nextTick(() => {
       this.cp = new ClipboardJS(this.$refs.btn.$el);
-      this.cp.on("success", e => {
-        this.btnCaption = this.$t("copied");
-        setTimeout(() => {
-          this.btnCaption = this.$t(this.caption);
+      this.cp.on("success", () => {
+        this.isCopied = true;
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.isCopied = false;
         }, 4000);
       });
     });
