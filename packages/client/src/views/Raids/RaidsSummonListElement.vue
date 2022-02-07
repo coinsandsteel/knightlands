@@ -28,9 +28,13 @@
           class="font-error font-size-22 font-weight-900 margin-bottom-3"
           >{{ $t("no-raid-level", { level: raidLevel }) }}</span
         >
-        <custom-button type="yellow" @click="openSummon" :id="`s-${index}`">{{
-          $t("btn-summon-raid")
-        }}</custom-button>
+        <custom-button
+          :disabled="!canSummonCurrentRaid"
+          type="yellow"
+          @click="openSummon"
+          :id="`s-${index}`"
+          >{{ $t("btn-summon-raid") }}</custom-button
+        >
       </div>
     </div>
   </div>
@@ -38,7 +42,7 @@
 
 <script>
 "use strict";
-
+import { mapGetters } from "vuex";
 import CustomButton from "@/components/Button.vue";
 import Title from "@/components/Title.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
@@ -47,6 +51,9 @@ export default {
   props: ["raid", "pendingList", "index"],
   mixins: [RaidGetterMixin],
   components: { CustomButton, Title },
+  computed: {
+    ...mapGetters("raids", ["canSummonCurrentRaid", "currentActiveRaids"])
+  },
   methods: {
     openSummon() {
       this.$router.push({ name: "summon-raid", params: { raid: this.raid } });
