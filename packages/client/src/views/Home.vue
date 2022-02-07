@@ -27,6 +27,13 @@
                 id="lunar"
                 >{{ $t("btn-evt-lunar") }}
               </MenuIcon>
+              <MenuIcon
+                icon="skewed_icon_xmas"
+                :to="{ path: '/march' }"
+                :append="true"
+                id="lunar"
+                >{{ $t("March???") }}
+              </MenuIcon>
             </MenuIconRow>
 
             <MenuIconRow>

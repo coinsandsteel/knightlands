@@ -20,6 +20,7 @@ import EasySlider from "vue-easy-slider";
 import AsyncComputed from "vue-async-computed";
 import VueLazyload from "vue-lazyload";
 import VueResizeText from "vue-resize-text";
+import CustomButton from "@/components/Button.vue";
 
 Vue.use(VueResizeText);
 Vue.use(VueLazyload);
@@ -38,6 +39,7 @@ Vue.use(VueCollapse);
 Vue.use(ModalDialogs);
 Vue.use(VueAgile);
 Vue.use(LoadScript);
+Vue.component("CustomButton", CustomButton);
 
 Vue.config.debug = true;
 Vue.config.productionTip = false;

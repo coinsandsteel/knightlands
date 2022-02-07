@@ -73,6 +73,7 @@ const SummonHome = () => import("./views/Summon/SummonHome.vue");
 const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
 
 const LunarRoot = () => import("./views/Lunar/LunarRoot.vue");
+const MarchRoot = () => import("./views/March/MarchRoot.vue");
 
 const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
 const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
@@ -493,6 +494,35 @@ const router = new Router({
           path: "shop",
           name: "lunar-shop",
           component: () => import("./views/Lunar/LunarShop.vue")
+        }
+      ],
+      meta: {
+        requiresAuth: true,
+        noBackButton: true
+      }
+    },
+    {
+      path: "/march",
+      component: MarchRoot,
+      children: [
+        {
+          path: "",
+          redirect: { name: "march-play" }
+        },
+        {
+          path: "play",
+          name: "march-play",
+          component: () => import("./views/March/MarchPlay.vue")
+        },
+        {
+          path: "pets",
+          name: "march-pets",
+          component: () => import("./views/March/MarchPets.vue")
+        },
+        {
+          path: "rating",
+          name: "march-rating",
+          component: () => import("./views/March/MarchRating.vue")
         }
       ],
       meta: {
