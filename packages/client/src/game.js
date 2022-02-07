@@ -22,7 +22,8 @@ import Army from "@/army/army";
 import Subscription from "./subscription";
 import Notifications from "./notifications";
 import SectionsProgress from "@/sections_progress";
-
+import DividendsMeta from "@/dividends";
+import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
 
@@ -35,6 +36,7 @@ class Game {
     this.Ready = "ready";
     this.SignUp = "signup";
     this.SignedOut = "signed_out";
+    this.Shutdown = "shutdown";
     this.Disconnected = "disconnected";
     this.WalletSignedIn = "wallet_sign_in";
     this.WalletSignedOut = "wallet_sign_out";
@@ -131,9 +133,6 @@ class Game {
       Events.RaidJoinStatus,
       this._handleRaidJoinStatus.bind(this)
     );
-    this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
-    this.racesChannel = this.createChannel(Events.RaceFinished, false);
-    this.racesChannel.watch(this._handleRaceFinished.bind(this));
 
     this._socket.on(Events.CraftingStatus, this._handleCraftStatus.bind(this));
     this._socket.on(Events.TimerRefilled, this._handleTimerRefilled.bind(this));
@@ -391,6 +390,27 @@ class Game {
     return !this._vm.accountType;
   }
 
+  get dktBonus() {
+    let factor = 1;
+    const bonuses = this.subscription.cardBonuses;
+    const dividends = this.dividends;
+    factor += this.character.maxStats[CharacterStats.ExtraDkt] / 1000;
+    if (dividends.dropRateLevel > 0) {
+      factor *= 1 + DividendsMeta.dropRate[dividends.dropRateLevel - 1].rate;
+    }
+
+    factor *= 1 + bonuses.dkt / 100;
+    return factor;
+  }
+
+  onNetwork(event, callback) {
+    this._socket.on(event, callback);
+  }
+
+  offNetwork(event, callback) {
+    this._socket.off(event, callback);
+  }
+
   on(event, callback) {
     this._vm.$on(event, callback);
   }
@@ -417,6 +437,14 @@ class Game {
 
   openRefill(stat) {
     this._vm.$emit("refill", stat);
+  }
+
+  joinRaceChannel() {
+    if (!this.racesChannel) {
+      this._socket.on(Events.RaceFinished, this._handleRaceFinished.bind(this));
+      this.racesChannel = this.createChannel(Events.RaceFinished, false);
+      this.racesChannel.watch(this._handleRaceFinished.bind(this));
+    }
   }
 
   async signMessage(message) {
@@ -560,17 +588,51 @@ class Game {
     });
   }
 
-  _handleSocketError() {
-    this._vm.$emit(this.ConnectionError);
+  _handleSocketError(error) {
+    if (error.code === DisconnectCodes.ServerShutdown) {
+      this._vm.$emit(this.Shutdown);
+      return;
+    }
+
+    /*
+    SCClientSocket.errorStatuses:
+      1001: 'Socket was disconnected',
+      1002: 'A WebSocket protocol error was encountered',
+      1003: 'Server terminated socket because it received invalid data',
+      1005: 'Socket closed without status code',
+      1006: 'Socket hung up',
+      1007: 'Message format was incorrect',
+      1008: 'Encountered a policy violation',
+      1009: 'Message was too big to process',
+      1010: 'Client ended the connection because the server did not comply with extension requirements',
+      1011: 'Server encountered an unexpected fatal condition',
+      4000: 'Server ping timed out',
+      4001: 'Client pong timed out',
+      4002: 'Server failed to sign auth token',
+      4003: 'Failed to complete handshake',
+      4004: 'Client failed to save auth token',
+      4005: 'Did not receive #handshake from client before timeout',
+      4006: 'Failed to bind socket to message broker',
+      4007: 'Client connection establishment timed out',
+      4008: 'Server rejected handshake from client'
+    };
+    */
+    if (error.code >= 1002 && error.code <= 4008) {
+      this._vm.$emit(this.ConnectionError);
+      return;
+    }
   }
 
   _handleDisconnect(errorCode) {
     switch (errorCode) {
+      case DisconnectCodes.ServerShutdown:
+      case DisconnectCodes.ServerDown:
       case DisconnectCodes.OtherClientSignedIn:
       case DisconnectCodes.NotAllowed:
-      case DisconnectCodes.NotAuthorized:
+      case DisconnectCodes.NotAuthorized: {
         this.logout();
         break;
+      }
     }
     this._vm.$emit(this.Disconnected);
   }
@@ -718,12 +780,17 @@ class Game {
   }
 
   _handleRaceFinished(data) {
-    this._vm.$emit(Events.RaceFinished);
-    Vue.notify({
-      group: "race",
-      data,
-      duration: 5000
-    });
+    if (this.racesChannel) {
+      this._vm.$emit(Events.RaceFinished, data);
+      const currentRace = this.$store.state.rankings.currentRace;
+      if (currentRace && currentRace.id == data.race) {
+        Vue.notify({
+          group: "race",
+          data,
+          duration: 5000
+        });
+      }
+    }
   }
 
   _handleCraftStatus(data) {
@@ -1942,12 +2009,18 @@ class Game {
     return (await this._wrapOperation(Operations.GetPrizePoolRewards)).response;
   }
 
+  async withdrawPrizePool(to) {
+    return (await this._wrapOperation(Operations.PrizePoolWithdraw, { to }))
+      .response;
+  }
+
   // Races
   async fetchRaces() {
     return (await this._wrapOperation(Operations.FetchRaces)).response;
   }
 
   async joinRace(raceId) {
+    this.joinRaceChannel();
     return (await this._wrapOperation(Operations.JoinRace, { raceId }))
       .response;
   }

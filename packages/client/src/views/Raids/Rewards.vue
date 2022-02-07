@@ -67,8 +67,6 @@ import Title from "@/components/Title.vue";
 import LootHint from "@/components/LootHint.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import { create as CreateDialog } from "vue-modal-dialogs";
-import DividendsMeta from "@/dividends";
-import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 
 const Hint = CreateDialog(LootHint, "item", "equip", "unequip", "hideButtons");
 
@@ -107,16 +105,7 @@ export default {
       return this.$game.subscription.cardBonuses;
     },
     computedDktFactor() {
-      let factor = 1;
-      const bonuses = this.$game.subscription.cardBonuses;
-      const dividends = this.$game.dividends;
-      factor += this.$game.character.maxStats[CharacterStats.ExtraDkt] / 1000;
-      if (dividends.dropRateLevel > 0) {
-        factor *= 1 + DividendsMeta.dropRate[dividends.dropRateLevel - 1].rate;
-      }
-
-      factor *= 1 + bonuses.dkt / 100;
-      return factor;
+      return this.$game.dktBonus;
     }
   },
   methods: {

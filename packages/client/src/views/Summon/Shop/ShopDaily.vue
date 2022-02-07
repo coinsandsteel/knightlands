@@ -38,7 +38,6 @@ import ActivityMixin from "@/components/ActivityMixin.vue";
 import DailyShopMeta from "@/daily_shop";
 import Timer from "@/timer";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import PromptMixin from "@/components/PromptMixin.vue";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import { create } from "vue-modal-dialogs";
@@ -46,7 +45,7 @@ import { create } from "vue-modal-dialogs";
 const ShowDialog = create(ItemsReceived, "items");
 
 export default {
-  mixins: [ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin],
   components: { DailyShopElement, PurchaseButton },
   data: () => ({
     timer: new Timer(true)
@@ -78,27 +77,6 @@ export default {
       await this.performRequest(this.$game.refreshDailyShop());
     },
     async purchase(itemIndex, fixed = false) {
-      const response = await this.showPrompt(
-        this.$t("buy-i-t"),
-        this.$t("buy-i-q"),
-        [
-          {
-            type: "red",
-            title: this.$t("buy-i-n"),
-            response: false
-          },
-          {
-            type: "green",
-            title: this.$t("buy-i-y"),
-            response: true
-          }
-        ]
-      );
-
-      if (!response) {
-        return;
-      }
-
       const item = await this.performRequest(
         this.$game.purchaseDailyItem(itemIndex, fixed)
       );

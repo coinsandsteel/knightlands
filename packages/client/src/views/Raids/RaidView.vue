@@ -546,6 +546,10 @@ export default {
     async join() {
       await this.performRequest(this.$game.joinRaid(this.raidId));
       await this.init();
+      this.$app.logEvent("raid-join", {
+        raidMetaId: this.raid,
+        isFree: this.isFreeRaid
+      });
     },
     async claimReward() {
       let rewards = await this.$game.claimRaidLoot(this.raidId);

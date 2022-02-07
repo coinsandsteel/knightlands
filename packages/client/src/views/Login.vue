@@ -4,7 +4,7 @@
 
     <MusicButton class="sounds-btn"></MusicButton>
 
-    <img class="logo-intro" src="../assets/logo_beta.svg" />
+    <img class="logo-intro" src="../assets/logo.svg" />
 
     <input
       id="input"
@@ -34,7 +34,7 @@
       />
     </div>
 
-    <Locale/>
+    <Locale />
   </div>
 </template>
 

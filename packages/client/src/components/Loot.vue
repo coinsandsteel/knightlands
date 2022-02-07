@@ -28,8 +28,8 @@
       <span v-else-if="itemData" :class="`icon-${element} element`"></span>
 
       <div class="icon-locked" v-if="showLocked && itemData && itemData.locked">
-        <span class="icon-locked-corner"/>
-        <span class="icon-locked-text">L</span>
+        <span class="icon-locked-corner" />
+        <span class="icon-locked-text"></span>
       </div>
 
       <div
@@ -335,26 +335,6 @@ export default {
   right: 0;
 }
 
-// .slot-common {
-//   background-image: url("../assets/ui/slot_common.png");
-// }
-
-// .slot-rare {
-//   background-image: url("../assets/ui/slot_rare.png");
-// }
-
-// .slot-epic {
-//   background-image: url("../assets/ui/slot_epic.png");
-// }
-
-// .slot-legendary {
-//   background-image: url("../assets/ui/slot_legendary.png");
-// }
-
-// .slot-mythical {
-//   background-image: url("../assets/ui/slot_mythical.png");
-// }
-
 .loot-equipped {
   background-image: url("../assets/ui/slot_selected.png");
   background-repeat: no-repeat;
@@ -443,19 +423,9 @@ export default {
 .icon-locked-corner {
   width: 0;
   height: 0;
-  border-top: 2.5rem solid #bd270c !important;
-  border-right: 2.5rem solid transparent !important;
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.icon-locked-text {
-  top: 0.15rem;
-  left: 0.25rem;
-  font-size: 1.3rem;
-  position: absolute;
-  text-shadow: 1px 1px black;
 }
 
 .element {

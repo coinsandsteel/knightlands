@@ -6,7 +6,7 @@
 
 <script>
 import spine from "@/spine.js";
- 
+
 export default {
   props: {
     skeletonFile: String,
@@ -80,7 +80,7 @@ export default {
       }
     }
   },
-  mounted() {     
+  mounted() {
     this.$nextTick(() => {
       this.canvas = this.$refs.canvas;
       this.context = this.canvas.getContext("2d");

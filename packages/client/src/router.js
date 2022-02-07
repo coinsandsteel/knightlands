@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*jshint esversion: 9 */
 
 import Router from "vue-router";
@@ -69,6 +70,16 @@ const CraftingDisenchant = () =>
 const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
 const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
+const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
+
+const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
+const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
+const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
+const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
+const DungeonRankings = () =>
+  import("./views/Dungeon/Rankings/DungeonRankings.vue");
+const DungeonUser = () => import("./views/Dungeon/DungeonUser.vue");
+
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
 const ChooseChest = () => import("./views/Summon/Chests/ChooseChest.vue");
 const OpenChest = () => import("./views/Summon/Chests/OpenChest.vue");
@@ -83,6 +94,7 @@ const ForsakenTower = () => import("./views/ForsakenTower/ForsakenTower.vue");
 const DailyRewards = () => import("./views/DailyRewards/DailyRewards.vue");
 
 const Settings = () => import("./views/Settings/Settings.vue");
+const NewXmasForm = () => import("./views/Xmas/NewXmasHome.vue");
 
 const router = new Router({
   routes: [
@@ -384,6 +396,69 @@ const router = new Router({
       path: "/home/daily-rewards",
       component: DailyRewards
     },
+    {
+      path: "/halloween",
+      component: DungeonRoot,
+      children: [
+        {
+          path: "",
+          name: "dungeon-entrance",
+          component: () => import("./views/Dungeon/Entrance.vue"),
+          meta: { noTopBar: true }
+        },
+        {
+          path: "fight",
+          name: "dungeon-fight",
+          component: DungeonFight,
+          meta: { noTopBar: true, noBackButton: true }
+        },
+        {
+          path: "dungeon",
+          name: "dungeon-sections",
+          component: DungeonSections,
+          meta: { noTopBar: true },
+          children: [
+            {
+              path: "",
+              name: "dungeon",
+              component: Dungeon
+            },
+            {
+              path: "rankings",
+              name: "dungeon-rankings",
+              component: DungeonRankings
+            },
+            {
+              path: "user",
+              name: "dungeon-user",
+              component: DungeonUser
+            }
+          ]
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
+    },
+    // {
+    //   path: "/xmas",
+    //   component: XmasRoot,
+    //   children: [
+    //     {
+    //       path: "",
+    //       name: "xmas-home",
+    //       component: () => import("./views/Xmas/XmasHome.vue")
+    //     },
+    //     {
+    //       path: "new",
+    //       name: "xmas-new",
+    //       component: NewXmasForm
+    //     }
+    //   ],
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
     {
       path: "/home/adventures",
       component: AdventuresRoot,

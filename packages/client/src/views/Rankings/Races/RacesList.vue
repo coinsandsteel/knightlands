@@ -44,6 +44,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import Timer from "@/timer";
 import Events from "@/../../knightlands-shared/events";
+import { mapState } from "vuex";
 
 export default {
   mixins: [AppSection, PromptMixin, NetworkRequestErrorMixin],
@@ -53,17 +54,17 @@ export default {
     this.$options.useRouterBack = true;
   },
   mounted() {
-    this.listener = this.fetchList.bind(this);
-    this.$game.on(Events.RaceFinished, this.listener);
-    this.cooldownTimer.on("finished", this.listener);
+    this.cooldownTimer.on("finished", this.finishedRaceHandler);
   },
   activated() {
     this.fetchList();
     this.fetchFinishedRaces();
   },
   beforeDestroy() {
-    this.$game.off(Events.RaceFinished, this.listener);
-    this.cooldownTimer.off("finsihed", this.listener);
+    if (this.current) {
+      this.leaveRaceChannel();
+    }
+    this.cooldownTimer.off("finsihed", this.finishedRaceHandler);
   },
   data: () => ({
     races: [],
@@ -71,7 +72,28 @@ export default {
     finishedRaces: [],
     cooldownTimer: new Timer(true)
   }),
+  watch: {
+    "current.id": function(newId, oldId) {
+      if (oldId && !newId) {
+        this.removeListener();
+      }
+      if (!oldId && newId) {
+        this.addListener();
+      }
+    }
+  },
   methods: {
+    finishedRaceHandler(data) {
+      if (this.currentRace && this.currentRace.id == data.race) {
+        this.fetchList();
+      }
+    },
+    removeListener() {
+      this.$game.off(Events.RaceFinished, this.finishedRaceHandler);
+    },
+    addListener() {
+      this.$game.on(Events.RaceFinished, this.finishedRaceHandler);
+    },
     previewRewards() {
       this.$router.push({
         name: "race-claim-rewards",
@@ -90,6 +112,10 @@ export default {
       this.races = info.list;
       this.current = info.currentRace;
       this.cooldownTimer.timeLeft = info.cooldown;
+
+      this.$store.commit("rankings/setCurrentRace", {
+        currentRace: info.currentRace
+      });
 
       this.races.sort((x, y) => {
         let subject = x.config.tier - y.config.tier;
@@ -156,6 +182,11 @@ export default {
         params: { id: race._id }
       });
     }
+  },
+  computed: {
+    ...mapState({
+      currentRace: state => state.rankings.currentRace
+    })
   }
 };
 </script>

@@ -22,14 +22,14 @@
           </div>
 
           <div class="flex flex-center flex-space-evenly width-100">
-            <CustomButton type="yellow" @click="$emit('pay', status)">{{
+            <CustomButton type="yellow" @click="$emit('pay', computedStatus)">{{
               $t("btn-pay")
             }}</CustomButton>
 
             <CustomButton
               v-if="cancel"
               type="red"
-              @click="$emit('cancel', status)"
+              @click="$emit('cancel', computedStatus)"
               >{{ $t("btn-cancel-pay") }}</CustomButton
             >
           </div>
@@ -48,6 +48,7 @@ import { mapState } from "vuex";
 export default {
   components: { LoadingIndicator, CustomButton },
   props: {
+    overrideStatus: Object,
     cancel: {
       type: Boolean,
       default: false
@@ -57,11 +58,14 @@ export default {
     ...mapState({
       status: state => state.shop.status
     }),
+    computedStatus() {
+      return this.overrideStatus || this.status;
+    },
     pending() {
-      return (this.status || {}).status === PaymentStatus.Pending;
+      return (this.computedStatus || {}).status === PaymentStatus.Pending;
     },
     waitingForPayment() {
-      return (this.status || {}).status === PaymentStatus.WaitingForTx;
+      return (this.computedStatus || {}).status === PaymentStatus.WaitingForTx;
     }
   }
 };

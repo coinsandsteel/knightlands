@@ -23,7 +23,7 @@
 
     <div class="right flex flex-column flex-center">
       <div class="timer flex flex-items-center flex-no-wrap width-100">
-        <span class="icon-timer yellow small"></span>
+        <span class="icon-timer yellow small" v-if="timer.timeLeft > 0"></span>
         <div
           class="full-flex"
           v-resize-text="{
@@ -33,9 +33,10 @@
             delay: 200
           }"
         >
-          <span class="font-outline nowrap">{{
+          <span class="font-outline nowrap" v-if="timer.timeLeft > 0">{{
             $t("d-s-f-at", { timer: timeLeft })
           }}</span>
+          <span class="font-outline nowrap" v-else>{{ $t("d-s-f") }}</span>
         </div>
       </div>
 
@@ -47,13 +48,12 @@
 </template>
 
 <script>
-import HintButton from "@/components/HintButton.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import Timer from "@/timer";
 
 export default {
-  components: { IconWithValue, CustomButton, HintButton },
+  components: { IconWithValue, CustomButton },
   data: () => ({
     timer: new Timer(true)
   }),

@@ -96,13 +96,14 @@ import { Flipper, Flipped } from "vue-flip-toolkit";
 import anime from "animejs/lib/anime.es.js";
 import SpinePlayer from "@/components/SpinePlayer.vue";
 import HintHandler from "@/components/HintHandler.vue";
-import ChestsMeta from "@/chests_meta";
+import ChestsMeta from "@/metadata/chests_meta";
 import SoundEffect from "@/components/SoundEffect.vue";
 
 const ChestSkeletons = {
   wooden_chest: "small",
   silver_chest: "medium",
-  velvet_chest: "large"
+  velvet_chest: "large",
+  halloween_chest: "halloween"
 };
 
 export default {
@@ -354,6 +355,11 @@ export default {
       rgba(184, 29, 116, 1) 0%,
       rgba(74, 0, 90, 1) 100%
     );
+  }
+
+  &.halloween_chest {
+    background: #7bce5d;
+    background: linear-gradient(0deg, #7bce5d 0%, #623b9f 100%);
   }
 }
 

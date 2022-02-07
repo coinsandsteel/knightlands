@@ -12,13 +12,15 @@ function BlockchainFactory(blockchain) {
       const PaymentGateway = require("./artifacts/polygon/PaymentGateway.json");
       const PresaleCardsGate = require("./artifacts/polygon/PresaleCardsGate.json");
       const PresaleCards = require("./artifacts/polygon/PresaleCards.json");
+      const USDCPot = require("./artifacts/polygon/USDCPot.json");
 
       return new EthereumClient(
         { chainId: 137, id: Blockchains.Polygon },
         {
           PaymentGateway,
           PresaleCardsGate,
-          PresaleCards
+          PresaleCards,
+          USDCPot
         },
         {
           chainId: "0x89",
@@ -50,6 +52,7 @@ function BlockchainFactory(blockchain) {
         const PresaleCardsGate = require("./artifacts/goerli/PresaleCardsGate.json");
         const PresaleCards = require("./artifacts/goerli/PresaleCardsTest.json");
         const TokensDepositGateway = require("./artifacts/goerli/TokensDepositGateway.json");
+        const USDCPot = require("./artifacts/goerli/USDCPot.json");
 
         return new EthereumClient(
           { chainId: 5, id: Blockchains.Ethereum },
@@ -58,7 +61,8 @@ function BlockchainFactory(blockchain) {
             Flesh,
             PresaleCards,
             PresaleCardsGate,
-            TokensDepositGateway
+            TokensDepositGateway,
+            USDCPot
           }
         );
       }

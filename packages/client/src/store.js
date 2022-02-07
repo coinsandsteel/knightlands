@@ -1,5 +1,6 @@
 /*jshint esversion: 9 */
 
+import _ from "lodash";
 import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
@@ -12,11 +13,14 @@ import EquipmentType from "@/../../knightlands-shared/equipment_type";
 
 import DailyLoginStore from "@/store/dailyLogin";
 import Adventures from "@/store/adventures";
+import Rankings from "@/store/rankings";
 import Summon from "@/store/summon";
 import Training from "@/store/training";
 import Tutorial from "@/store/tutorial";
 import Shop from "@/store/shop";
 import Settings from "@/store/settings";
+import Dungeon from "@/store/dungeon";
+import Xmas from "@/store/xmas";
 import Elements from "@/../../knightlands-shared/elements";
 import ArmyUnitTypes from "@/army_unit_types";
 
@@ -24,7 +28,8 @@ Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
   key: "knightlands",
-  storage: localStorage
+  storage: localStorage,
+  reducer: (state) => _.omit(state, ['dungeon', 'xmas'])
 });
 
 const DefaultRarityFilters = {};
@@ -277,12 +282,35 @@ const store = new Vuex.Store({
   modules: {
     dailyLogin: DailyLoginStore,
     adventures: Adventures,
+    rankings: Rankings,
     summon: Summon,
     training: Training,
     tutorial: Tutorial,
     settings: Settings,
-    shop: Shop
+    shop: Shop,
+    dungeon: Dungeon,
+    xmas: Xmas
   }
 });
+
+/*store.subscribe((mutation, state) => {
+  if (
+    !mutation.type.includes('training')
+    &&
+    !mutation.type.includes('tutorial')
+  ) {
+    console.log('Mutation', mutation.type, mutation.payload);
+  }
+});
+
+store.subscribeAction((action, state) => {
+  if (
+    !action.type.includes('training')
+    &&
+    !action.type.includes('tutorial')
+  ) {
+    console.log('Action', action.type, action.payload);
+  }
+});*/
 
 export default store;

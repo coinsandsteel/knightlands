@@ -175,6 +175,9 @@ const ShowChangeNickname = create(ChangeNickname);
 import ItemsReceived from "@/components/ItemsReceived.vue";
 const ShowItemsReceived = create(ItemsReceived, "items", "soft", "hard");
 
+import Shutdown from "@/views/Shutdown.vue";
+const ShowShutdown = create(Shutdown);
+
 import ChangeAvatar from "@/views/Character/Avatars/ChangeAvatar.vue";
 const ShowChangeAvatar = create(ChangeAvatar);
 
@@ -208,13 +211,19 @@ export default {
       ready: false,
       footers: [],
       footerProps: [],
-      hideTopBar: false
+      hideTopBar: false,
+      connectionErrorPrompt: false
     };
   },
   sectionBackButton: null,
   beforeCreate() {
     this.$game.on(Events.PurchaseComplete, context => {
       context = context.context;
+
+      if (!context) {
+        return;
+      }
+
       if (context.item) {
         ShowItemsReceived([context]);
       } else {
@@ -262,12 +271,11 @@ export default {
 
     this.firebase = initializeApp(firebaseConfig);
     this.analytics = getAnalytics(this.firebase);
-    this.logEvent = (name, params) => {
-      logEvent(this.analytics, name, params);
-    };
   },
   async created() {
     Vue.prototype.$app = this;
+
+    this.isProd = process.env.NODE_ENV == "production";
 
     this.$game.on("change-class", async () => {
       if (this.selectionShown) {
@@ -334,6 +342,8 @@ export default {
         await ShowChangeAvatar();
       }
 
+      await this.joinRaceChannel();
+
       this.logEvent("log", {
         account: this.$game.account
       });
@@ -348,23 +358,30 @@ export default {
       }
     });
 
-    // this.$game.on(this.$game.ConnectionError, async () => {
-    //   this.$game.disconnect();
+    this.$game.on(this.$game.Shutdown, async () => {
+      await ShowShutdown();
+    });
 
-    //   await this.showPrompt(
-    //     this.$t("prompt-conn-t"),
-    //     this.$t("prompt-conn-m"),
-    //     [
-    //       {
-    //         type: "green",
-    //         title: this.$t("btn-retry"),
-    //         response: true
-    //       }
-    //     ]
-    //   );
-
-    //   this.$game.connect();
-    // });
+    this.$game.on(this.$game.ConnectionError, async () => {
+      if (this.connectionErrorPrompt) {
+        return;
+      }
+      this.$game.disconnect();
+      this.connectionErrorPrompt = true;
+      await this.showPrompt(
+        this.$t("prompt-conn-t"),
+        this.$t("prompt-conn-m"),
+        [
+          {
+            type: "green",
+            title: this.$t("btn-retry"),
+            response: true
+          }
+        ]
+      );
+      this.$game.connect();
+      this.connectionErrorPrompt = false;
+    });
 
     this.$game.on(this.$game.Ready, () => {
       if (this.$route.matched.some(record => record.meta.requiresAuth)) {
@@ -386,6 +403,15 @@ export default {
     });
   },
   methods: {
+    logEvent(name, params) {
+      logEvent(this.analytics, name, params);
+    },
+    async joinRaceChannel() {
+      await this.$store.dispatch("rankings/update");
+      if (this.$store.state.rankings.currentRace) {
+        this.$game.joinRaceChannel();
+      }
+    },
     tutorial() {
       return this.$refs.tutorial;
     },
@@ -433,7 +459,7 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
+    $route() {
       this.footer = undefined;
       this.showBackButton();
     }

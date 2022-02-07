@@ -21,7 +21,7 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import ChestsMeta from "@/chests_meta";
+import ChestsMeta from "@/metadata/chests_meta";
 import ChestElement from "./ChestElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 

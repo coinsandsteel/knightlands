@@ -1,6 +1,6 @@
 <template>
   <div
-    class="outer unit-ingr relative margin-right-half"
+    class="outer unit-ingr relative margin-right-half pointer"
     @click="$emit('click')"
   >
     <div class="inner" v-if="unit && ingridient">
@@ -12,14 +12,16 @@
       <div v-else class="bg absolute-stretch unit-bg-any"></div>
       <div
         class="flex flex-column height-100 relative flex-no-wrap flex-items-start unit-ingr-content"
+        :class="{ 'unit-ingr-content--without-flag': !targetElement }"
       >
         <div class="unit-ingr-shadow absolute-stretch"></div>
         <UnitStars
+          v-if="!ingridient.copy"
           class="stars relative"
           :stars="ingridient.stars"
           size="mini"
         />
-        <Flag :element="element" />
+        <Flag :element="targetElement" class="unit-ingredient-flag" />
 
         <span
           class="width-100 font-size-18 font-weight-900 unit-ingr-lvl center-transform"
@@ -45,7 +47,7 @@ export default {
         return this.element;
       }
 
-      return this.element;
+      return null;
     },
     required() {
       return this.ingridient.amount;
@@ -71,7 +73,14 @@ export default {
     grid-column: ~"2/3";
     grid-row: 1;
     justify-self: start;
+    &::v-deep .star.active {
+      width: 1.1rem !important;
+      max-width: 1.1rem !important;
+    }
   }
+}
+.unit-ingr-content--without-flag {
+  grid-template-columns: 5% 1fr;
 }
 
 .outer {
@@ -125,5 +134,10 @@ export default {
   background-image: url("../../../assets/ui/troops_any_unit.png");
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.unit-ingredient-flag {
+  grid-column: 1;
+  grid-row: ~"1/4";
 }
 </style>

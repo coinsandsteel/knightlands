@@ -16,14 +16,20 @@ class Timer extends EventEmitter {
   }
 
   set timeLeft(value) {
+    this._lastUpdate = new Date().getTime();
+
     if (this._timeLeft < 1 || value < 1) {
       this.stop();
     }
 
     this._timeLeft = Math.floor(value);
-    if (this._timeLeft > 0 && !this._timerTimeout) {
-      this._update();
+    if (this._timeLeft > 0) {
+      this.update(true);
     }
+  }
+
+  destroy() {
+    this.removeAllListeners("finished");
   }
 
   stop() {
@@ -36,7 +42,7 @@ class Timer extends EventEmitter {
       return;
     }
 
-    if (force) {
+    if (force && this._timerTimeout) {
       clearTimeout(this._timerTimeout);
     }
 

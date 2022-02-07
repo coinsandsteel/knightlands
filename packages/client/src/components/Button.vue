@@ -91,9 +91,9 @@ export default {
     }
   },
   methods: {
-    handleClick() {
+    handleClick(e) {
       this.$refs.fx.play();
-      this.$emit("click");
+      this.$emit("click", e);
       if (this.cb) {
         this.cb();
       }
@@ -207,6 +207,11 @@ export default {
   & > .btn-content {
     height: 100%;
     transform: translateY(-0.2rem);
+  }
+
+  &.no-margin {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 

@@ -3,7 +3,7 @@
     class="width-100 relative flex flex-end unit-view-container flex-no-wrap"
   >
     <template v-if="unit">
-      <div class="bg" :class="element"></div>
+      <div class="bg" :class="[element, { general: !unit.troop }]"></div>
 
       <!-- Title -->
       <UnitTitle
@@ -185,6 +185,10 @@ export default {
 
   &.physical {
     background-image: url("../../assets/backgrounds/elem_phys.png");
+  }
+
+  &.general {
+    background-image: url("../../assets/backgrounds/general.png");
   }
 }
 

@@ -77,7 +77,10 @@ const ShowChangeNickname = CreateDialog({
 const ShowDetails = CreateDialog(StatDetails);
 
 import SelectClass from "@/views/SelectClass/SelectClass.vue";
-const ShowSelectClass = CreateDialog(SelectClass);
+const ShowSelectClass = CreateDialog({
+  component: SelectClass,
+  wrapper: "equipment"
+});
 
 export default {
   mixins: [ActivityMixin, HintHandler, ItemActionHandler],

@@ -34,7 +34,7 @@
         <span class="font-size-20 margin-right-1">
           {{ type }}
         </span>
-        <template v-if="isEquipment && !isPreview">
+        <template v-if="isEquipment && !isPreview && unbindable">
           <span class="star" :class="{ active: stars >= 1 }"></span>
           <span class="star" :class="{ active: stars >= 2 }"></span>
           <span class="arrow-up" v-if="stars < 2"></span>

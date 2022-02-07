@@ -24,6 +24,7 @@
           <div class="icon-timer small"></div>
           <span>{{ timerValue.value }}</span>
         </div>
+        <slot name="after-label"></slot>
       </div>
 
       <div class="bar" :style="barStyle()" :class="{ top: isTop }">
@@ -51,11 +52,13 @@
           :class="valueClass"
           v-if="!hideValues && !isTop"
         >
-          <slot name="label"></slot>
-          <div v-show="showValue">{{ currentValue }}</div>
-          <div v-show="!showValue" class="status-bar-font flex flex-center">
-            <div class="icon-timer small"></div>
-            <span>{{ timerValue.value }}</span>
+          <div class="flex flex-center" :class="labelClass">
+            <slot name="label"></slot>
+            <div v-show="showValue">{{ currentValue }}</div>
+            <div v-show="!showValue" class="status-bar-font flex flex-center">
+              <div class="icon-timer small"></div>
+              <span>{{ timerValue.value }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -88,6 +91,7 @@ export default {
     valueClass: { default: "" },
     iconClass: { type: String },
     hideMaxValue: { type: Boolean },
+    abbreviate: { type: Boolean, default: false },
     value: { type: [Number, String], default: 0 },
     value2: { type: [Number, String], default: 0 },
     timer: { type: Object },
@@ -105,7 +109,8 @@ export default {
     expand: {
       type: Boolean,
       default: true
-    }
+    },
+    labelClass: { type: String }
   },
   data() {
     return {
@@ -141,8 +146,14 @@ export default {
         ? Math.floor((useValue / this.maxValue) * 100)
         : useValue;
 
+      let maxValue = this.maxValue;
+      if (this.abbreviate) {
+        value = this.abbreviateNumber(value);
+        maxValue = this.abbreviateNumber(maxValue);
+      }
+
       if (!this.hideMaxValue && !this.percentMode) {
-        value += `/${this.maxValue}`;
+        value += `/${maxValue}`;
       }
 
       if (this.percentMode) {
@@ -172,6 +183,18 @@ export default {
     }
   },
   methods: {
+    abbreviateNumber(value) {
+      let newValue = value;
+      const suffixes = ["", "K", "M", "B", "T", "QV", "QN", "S"];
+      let suffixNum = 0;
+      while (newValue >= 1000) {
+        newValue /= 1000;
+        suffixNum++;
+      }
+      newValue = newValue.toPrecision(3);
+      newValue += suffixes[suffixNum];
+      return newValue;
+    },
     toggleTimer() {
       if (!this.timer) {
         return;
@@ -318,6 +341,17 @@ export default {
         right: 0;
       }
     }
+
+    &.no-animation {
+      .progress {
+        transition: none;
+      }
+      .progress-delta {
+        &.show {
+          animation: none;
+        }
+      }
+    }
   }
 }
 
@@ -374,6 +408,12 @@ export default {
   border-image-width: 3px;
 }
 
+.green-h {
+  border-image: url("../assets/ui/progress_bar_halloween.png") repeat;
+  border-image-slice: 1 fill;
+  border-image-width: 3px;
+}
+
 .bar-value {
   color: #210028;
   position: absolute;
@@ -397,5 +437,15 @@ export default {
 
 .icon {
   position: relative;
+}
+.label-panel {
+  padding: 0.1em 0.4em;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.xmas-bg {
+  border-image: url("../assets/xmas/progress_bar_bg.png") repeat;
+  border-image-slice: 6 fill;
+  border-image-width: 6px;
 }
 </style>

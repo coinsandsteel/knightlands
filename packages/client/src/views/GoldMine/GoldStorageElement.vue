@@ -21,16 +21,16 @@
         </template>
       </div>
 
-      <CustomButton
+      <PurchaseButton
         v-if="!storageAtMaxLvl"
         type="grey"
+        :soft="true"
         class="margin-top-1 flex-self-start"
         @click="$emit('upgrade-storage')"
-        :disabled="cantUpgradeStorage"
+        :price="storagePrice"
       >
         {{ $t("btn-upgrade") }}
-        <IconWithValue iconClass="icon-gold">{{ storagePrice }}</IconWithValue>
-      </CustomButton>
+      </PurchaseButton>
       <CustomButton v-else type="grey" :disabled="true">{{
         $t("mine-max")
       }}</CustomButton>
@@ -43,17 +43,19 @@
 </template>
 
 <script>
-import IconWithValue from "@/components/IconWithValue.vue";
+/* eslint-disable no-console */
+
 import CustomButton from "@/components/Button.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import GoldMineGoldGetterMixin from "./GoldMineGoldGetterMixin.vue";
+import PurchaseButton from "@/components/PurchaseButton.vue";
 
 export default {
   mixins: [GoldMineGoldGetterMixin],
   components: {
     ProgressBar,
     CustomButton,
-    IconWithValue
+    PurchaseButton
   },
   props: ["disabled"],
   data: () => ({
@@ -77,14 +79,12 @@ export default {
       clearInterval(this.interval);
     }
   },
-  computed: {
-    cantUpgradeStorage() {
-      return !this.disabled && this.storagePrice > this.$game.softCurrency;
-    }
-  },
   methods: {
     updateGold() {
       this.gold = this.getGold();
+    },
+    upgradeGradeStorageHandler() {
+      this.$emit("upgrade-storage");
     }
   }
 };

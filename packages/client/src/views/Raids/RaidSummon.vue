@@ -207,6 +207,9 @@ export default {
       handler() {
         this.fetchInfo();
       }
+    },
+    raid() {
+      this.refreshSummonTimer();
     }
   },
   activated() {
@@ -250,6 +253,11 @@ export default {
       this.refreshSummonTimer();
     },
     refreshSummonTimer() {
+      if (this.isFreeRaid) {
+        this.summonRaidTimer.timeLeft = 0;
+        return;
+      }
+
       this.summonRaidTimer.timeLeft =
         this.groupRaidSummonCooldown -
         this.$game.nowSec +
@@ -294,13 +302,14 @@ export default {
       return true;
     },
     async confirmSummon() {
-      this.$app.logEvent("raid-summon", {
-        raid: this.raid,
-        solo: this.isFreeRaid
-      });
       const data = await this.performRequest(
         this.$game.summonRaid(this.raid, this.isFreeRaid, this.options)
       );
+      if (!this.isFreeRaid) {
+        this.$app.logEvent("raid-summon", {
+          raidMetaId: this.raid
+        });
+      }
       this.$router.push({
         name: "view-raid",
         params: { raidId: data.raid }

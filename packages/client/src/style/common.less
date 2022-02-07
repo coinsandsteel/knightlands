@@ -5,6 +5,10 @@
 @lootCellSize: 8rem;
 @mobileLootCellSize: 8rem;
 
+.empty-icon {
+    .icon();
+}
+
 .mobile(@rules) {
     @media only screen and (max-width: 480px) {
         @rules();
@@ -394,6 +398,10 @@ span {
         1px 1px #210028;
 }
 
+.font-outline-heavy {
+  text-shadow: 1px 1px 2px #210028;
+}
+
 .text-center {
     vertical-align: middle;
 }
@@ -447,11 +455,7 @@ span {
 }
 
 .screen-background {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     z-index: -1;
-    image-rendering: pixelated;
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
@@ -493,7 +497,7 @@ span {
 @panelColor2: #2E7285;
 @panelColor3: #00AC21;
 @panelColor4: #3D4A6A;
-@panelColor5: rgb(36, 81, 120);
+@panelColor5: #3f698b;
 
 .color-panel-1 {
     .color-panel();
@@ -726,6 +730,16 @@ span {
 
 .icon-eth {
     .ethereum;
+    .icon();
+}
+
+.icon-locked {
+    .icon_locked;
+    .icon();
+}
+
+.icon-lock-big {
+    .icon_lock_big;
     .icon();
 }
 
@@ -966,7 +980,6 @@ span {
 }
 
 .icon-custom-unit {
-    
     .icon_customize_unit;
     .icon();
 }
@@ -1065,6 +1078,21 @@ span {
 
 .icon-damage {
     .damage_icon;
+    .icon();
+}
+
+.icon-xmas {
+    .skewed_icon_xmas;
+    .icon();
+}
+
+.icon-sb {
+    .bucks;
+    .icon();
+}
+
+.icon-cp {
+    .cp;
     .icon();
 }
 
@@ -1202,9 +1230,13 @@ span {
     }
 }
 
+img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
 .absolute {
     position: absolute;
-    ;
 }
 
 .overlay-title {
@@ -1437,4 +1469,45 @@ span {
     &::placeholder {
         .grey-title;
     }
+}
+
+.d-das {
+    .action_dash;
+    .icon();
+}
+
+.d-blo {
+    .action_block;
+    .icon();
+}
+
+.d-sla {
+    .action_slash;
+    .icon();
+}
+
+.h-energy {
+  .icon_nrg_halloween;
+  .icon();
+}
+
+.hkey {
+  background-image: url("/images/halloween_assets/items/key.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  .icon();
+}
+
+.hscroll {
+  background-image: url("/images/halloween_assets/items/scroll.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  .icon();
+}
+
+.hpotion {
+  background-image: url("/images/halloween_assets/items/potion.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  .icon();
 }

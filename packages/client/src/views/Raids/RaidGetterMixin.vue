@@ -46,7 +46,7 @@ export default {
           ? this.raidMeta.soloData
           : this.raidMeta.data;
 
-      if (this.$game.isFreeAccount) {
+      if (this.isFreeRaid || this.$game.isFreeAccount) {
         return [];
       }
 
@@ -91,14 +91,14 @@ export default {
         return false;
       }
 
-      const data =
-        this.isFreeRaid || this.$game.isFreeAccount
-          ? this.raidMeta.soloData
-          : this.raidMeta.data;
-
-      const hasIngridients = this.$game.crafting.hasEnoughResourcesForRecipe(
-        data.summonRecipe
+      let hasIngridients = this.$game.crafting.hasEnoughIngridients(
+        this.requiredEssences
       );
+
+      if (this.$game.isFreeAccount) {
+        hasIngridients = true;
+      }
+
       let extra = true;
       if (this.isFreeRaid) {
         extra = this.soloAttempts > 0;
