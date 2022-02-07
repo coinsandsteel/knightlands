@@ -69,5 +69,20 @@ export default {
       width: rect.width,
       height: rect.height
     };
-  }
+  },
+  maxActiveRaids: 25,
+  raidsSummonProgressThresholds: [
+    {
+      value: 0.5,
+      type: "green"
+    },
+    {
+      value: 0.75,
+      type: "yellow"
+    },
+    {
+      value: 1,
+      type: "red"
+    }
+  ]
 };
