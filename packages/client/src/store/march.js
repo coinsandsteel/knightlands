@@ -27,7 +27,7 @@ export default {
       extraLife: 0,
       key: 0
     },
-    cells: [
+    cards: [
       {
         _id: "dc8c4aefc000",
         class: unitClass.UNIT_CLASS_PET,
