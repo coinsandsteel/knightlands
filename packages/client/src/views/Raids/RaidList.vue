@@ -17,12 +17,14 @@
         class="raid-progress flex-grow-1 padding-left-1 padding-right-1 translate-y--30"
         :maxValue="maxActiveRaids"
         :value="currentActiveRaids.length"
-        valueClass="white-font font-outline"
+        valueClass="white-font font-outline font-size-20"
         valuePosition="top"
         height="0.5rem"
         :thresholds="thresholds"
         :expand="false"
-      />
+      >
+        <template v-slot:label><span class="margin-right-1">{{$t("active-raids")}}</span></template>
+      </progress-bar>
       <CustomButton
         :disabled="!canSummonCurrentRaid"
         type="yellow"
