@@ -212,7 +212,7 @@
                 width="20rem"
                 type="yellow"
                 @click="join"
-                :disabled="!canJoin"
+                :disabled="!(canJoin && canSummonCurrentRaid)"
               >
                 <span class="margin-right-half">{{ $t("join") }}</span>
 
@@ -276,6 +276,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CopyButton from "@/components/CopyButton.vue";
 import AppSection from "@/AppSection.vue";
@@ -422,6 +423,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("raids", ["canSummonCurrentRaid"]),
     bossName() {
       return RaidsMeta[this.raidState.raidTemplateId].name;
     },

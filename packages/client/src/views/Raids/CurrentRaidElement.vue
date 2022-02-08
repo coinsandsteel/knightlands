@@ -46,6 +46,7 @@
         <custom-button
           class="margin-top-half"
           type="grey"
+          :disabled="join && !canSummonCurrentRaid"
           @click="viewRaid"
           minWidth="20rem"
           >{{ join ? $t("join") : $t("continue") }}</custom-button
@@ -65,6 +66,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
 import Title from "@/components/Title.vue";
@@ -98,6 +100,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("raids", ["canSummonCurrentRaid"]),
     weakness() {
       return this.raidState.weakness.current;
     },
