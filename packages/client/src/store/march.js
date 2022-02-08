@@ -57,23 +57,23 @@ export default {
       },
       {
         _id: "dc8c4aefc005",
-        class: march.UNIT_CLASS_ENEMY_BOSS,
+        unitClass: march.UNIT_CLASS_ENEMY_BOSS,
         hp: 8
       },
       {
         _id: "dc8c4aefc006",
-        class: march.UNIT_CLASS_TRAP,
+        unitClass: march.UNIT_CLASS_TRAP,
         hp: 3,
         opened: true
       },
       {
         _id: "dc8c4aefc007",
-        class: march.UNIT_CLASS_HP,
+        unitClass: march.UNIT_CLASS_HP,
         hp: 1
       },
       {
         _id: "dc8c4aefc008",
-        class: march.UNIT_CLASS_GOLD,
+        unitClass: march.UNIT_CLASS_GOLD,
         hp: 4
       }
     ]
@@ -100,6 +100,6 @@ export default {
     },
     unsubscribe() {
       this.$app.$game.offNetwork(Events.MarchUpdate);
-    },
+    }
   }
 };
