@@ -64,7 +64,7 @@ export default {
       BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
       PLAY_SUMMARY_STEP,
-      currentStep: PLAY_FIELD_STEP
+      currentStep: PET_SELECT_STEP
     };
   },
   methods: {

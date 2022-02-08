@@ -25,6 +25,7 @@ export default {
       penaltySteps: 0
     },
     pet: {
+      maxHp: 10,
       petClass: 1,
       level: 1,
       armor: 0
@@ -52,8 +53,8 @@ export default {
       },
       {
         _id: "dc8c4aefc004",
-        unitClass: march.UNIT_CLASS_ENEMY,
-        hp: 3
+        unitClass: march.UNIT_CLASS_PET,
+        hp: 8
       },
       {
         _id: "dc8c4aefc005",
@@ -78,7 +79,47 @@ export default {
       }
     ]
   },
-  getters: {},
+  getters: {
+    cards: state => {
+      const result = state.cards.map((card, index) => {
+        const data = {
+          index,
+          isPet: card.unitClass === march.UNIT_CLASS_PET,
+          canSwipe: card.unitClass === march.UNIT_CLASS_PET,
+          canClick: false
+        };
+        return {
+          ...card,
+          ...data
+        };
+      });
+
+      const petCard = result.find(({ isPet }) => isPet);
+      const petCardIndex = petCard.index;
+
+      result.forEach((card, index) => {
+        if (
+          (petCardIndex % 3 === 0 &&
+            (index === petCardIndex + 1 ||
+              index === petCardIndex + 3 ||
+              index === petCardIndex - 3)) ||
+          (petCardIndex % 3 === 1 &&
+            (index === petCardIndex + 1 ||
+              index === petCardIndex - 1 ||
+              index === petCardIndex + 3 ||
+              index === petCardIndex - 3)) ||
+          (petCardIndex % 3 === 2 &&
+            (index === petCardIndex - 1 ||
+              index === petCardIndex + 3 ||
+              index === petCardIndex - 3))
+        ) {
+          card.canClick = true;
+        }
+      });
+
+      return result;
+    }
+  },
   mutations: {
     updateState(state, data) {},
     setInitialState(state, data) {

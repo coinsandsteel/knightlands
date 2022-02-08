@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import MarchPlayMiniGame from "@/views/March/MarchPlayMiniGame.vue";
 import MarchCard from "@/views/March/MarchCard.vue";
@@ -43,7 +43,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("march", ["cards"])
+    ...mapGetters("march", ["cards"])
   },
   mounted() {
     // this.showMiniGame();
