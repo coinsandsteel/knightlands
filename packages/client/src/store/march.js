@@ -25,6 +25,7 @@ export default {
       penaltySteps: 0
     },
     pet: {
+      maxHp: 10,
       petClass: 1,
       level: 1,
       armor: 0
