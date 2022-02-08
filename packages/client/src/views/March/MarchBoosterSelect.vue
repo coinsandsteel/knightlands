@@ -52,7 +52,9 @@ export default {
   },
   methods: {
     upgradeHandler() {},
-    startHandler() {}
+    startHandler() {
+      this.$emit("next");
+    }
   }
 };
 </script>
