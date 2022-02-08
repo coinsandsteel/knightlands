@@ -493,6 +493,7 @@ export default {
         this.raidState && this.raidState.finished && this.raidState.defeat;
     },
     async init() {
+      this.$store.dispatch("raids/fetchCurrentRaids");
       this.rewards = null;
       await this.getRaid();
       this.bossViewCenter = this.$refs.bossView.center;
