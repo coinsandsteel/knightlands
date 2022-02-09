@@ -1,5 +1,5 @@
 <template>
-  <div v-if="card" class="march-card relative">
+  <div v-if="card" class="march-card relative" v-on="$listeners">
     <div class="absolute-stretch width-100 height-100">
       <div class="font-size-22">{{ card.unitClass }}</div>
       <div
@@ -8,6 +8,7 @@
       >
         {{ card.hp }}
       </div>
+      <div class="march-card-effects absolute-stretch width-100 height-100" />
     </div>
   </div>
 </template>
