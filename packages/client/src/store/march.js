@@ -1,4 +1,3 @@
-import _ from "lodash";
 import * as march from "@/../../knightlands-shared/march";
 
 import Events from "@/../../knightlands-shared/events";
@@ -33,8 +32,8 @@ export default {
     cards: [
       {
         _id: "dc8c4aefc000",
-        unitClass: march.UNIT_CLASS_PET,
-        hp: 10
+        unitClass: march.UNIT_CLASS_ENEMY,
+        hp: 4
       },
       {
         _id: "dc8c4aefc001",
@@ -48,7 +47,7 @@ export default {
       },
       {
         _id: "dc8c4aefc003",
-        unitClass: march.UNIT_CLASS_BARRELL,
+        unitClass: march.UNIT_CLASS_BARREL,
         hp: 5
       },
       {
@@ -81,11 +80,13 @@ export default {
   },
   getters: {
     cards: state => {
-      const result = state.cards.map((card, index) => {
+      const items = [...state.cards];
+      const result = items.map((card, index) => {
         const data = {
           index,
           isPet: card.unitClass === march.UNIT_CLASS_PET,
           canSwipe: card.unitClass === march.UNIT_CLASS_PET,
+          isAdjacent: false,
           canClick: false
         };
         return {
@@ -95,6 +96,9 @@ export default {
       });
 
       const petCard = result.find(({ isPet }) => isPet);
+      if (!petCard) {
+        return result;
+      }
       const petCardIndex = petCard.index;
 
       result.forEach((card, index) => {
@@ -113,6 +117,7 @@ export default {
               index === petCardIndex + 3 ||
               index === petCardIndex - 3))
         ) {
+          card.isAdjacent = true;
           card.canClick = true;
         }
       });
@@ -121,7 +126,11 @@ export default {
     }
   },
   mutations: {
-    updateState(state, data) {},
+    updateState(state, data) {
+      if (data.cards !== undefined) {
+        state.cards = data.cards;
+      }
+    },
     setInitialState(state, data) {
       state.loaded = true;
     }

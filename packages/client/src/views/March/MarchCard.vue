@@ -1,5 +1,14 @@
 <template>
-  <div v-if="card" class="march-card relative" v-on="$listeners">
+  <div
+    v-if="card"
+    ref="card"
+    class="march-card relative restrict-selection"
+    :class="{
+      'march-card--pet': card.isPet,
+      'march-card--adjacent': card.isAdjacent
+    }"
+    @click="clickHandler"
+  >
     <div class="absolute-stretch width-100 height-100">
       <div class="font-size-22">{{ card.unitClass }}</div>
       <div
@@ -13,12 +22,67 @@
   </div>
 </template>
 <script>
+import useSwipe from "@/helpers/useSwipe";
 export default {
   props: {
     card: Object
   },
   data() {
-    return {};
+    return {
+      unregisterEvents: null
+    };
+  },
+  computed: {
+    canSwipe() {
+      return this.card && this.card.canSwipe;
+    }
+  },
+  watch: {
+    canSwipe(value) {
+      this.checkEvents(value);
+    }
+  },
+  methods: {
+    checkEvents(canSwipe) {
+      if (canSwipe) {
+        if (this.unregisterEvents) {
+          return;
+        }
+        this.registerEvents();
+      } else if (this.unregisterEvents) {
+        this.unregisterEvents();
+        this.unregisterEvents = null;
+      }
+    },
+
+    registerEvents() {
+      const {
+        registerEvents: register,
+        unregisterEvents: unregister
+      } = useSwipe();
+      register(this.$refs.card, this.swipeHandler);
+      this.unregisterEvents = unregister;
+    },
+
+    swipeHandler(direction) {
+      this.$emit("swipe", direction);
+    },
+
+    clickHandler(event) {
+      if (!(this.card && this.card.canClick)) {
+        return;
+      }
+      this.$emit("click", event);
+    }
+  },
+  mounted() {
+    this.checkEvents(this.canSwipe);
+  },
+  beforeDestroy() {
+    if (this.unregisterEvents) {
+      this.unregisterEvents();
+      this.unregisterEvents = null;
+    }
   }
 };
 </script>
