@@ -24,7 +24,6 @@ export default {
       penaltySteps: 0
     },
     pet: {
-      maxHp: 10,
       petClass: 1,
       level: 1,
       armor: 0
@@ -53,7 +52,8 @@ export default {
       {
         _id: "dc8c4aefc004",
         unitClass: march.UNIT_CLASS_PET,
-        hp: 8
+        hp: 8,
+        maxHp: 10
       },
       {
         _id: "dc8c4aefc005",
