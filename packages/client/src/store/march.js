@@ -1,4 +1,5 @@
 import * as march from "@/../../knightlands-shared/march";
+import * as testData from "@/helpers/testData";
 
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
@@ -28,55 +29,56 @@ export default {
       level: 1,
       armor: 0
     },
-    cards: [
-      {
-        _id: "dc8c4aefc000",
-        unitClass: march.UNIT_CLASS_ENEMY,
-        hp: 4
-      },
-      {
-        _id: "dc8c4aefc001",
-        unitClass: march.UNIT_CLASS_BOMB,
-        hp: 5
-      },
-      {
-        _id: "dc8c4aefc002",
-        unitClass: march.UNIT_CLASS_CHEST,
-        hp: 5
-      },
-      {
-        _id: "dc8c4aefc003",
-        unitClass: march.UNIT_CLASS_BARREL,
-        hp: 5
-      },
-      {
-        _id: "dc8c4aefc004",
-        unitClass: march.UNIT_CLASS_PET,
-        hp: 8,
-        maxHp: 10
-      },
-      {
-        _id: "dc8c4aefc005",
-        unitClass: march.UNIT_CLASS_ENEMY_BOSS,
-        hp: 8
-      },
-      {
-        _id: "dc8c4aefc006",
-        unitClass: march.UNIT_CLASS_TRAP,
-        hp: 3,
-        opened: true
-      },
-      {
-        _id: "dc8c4aefc007",
-        unitClass: march.UNIT_CLASS_HP,
-        hp: 1
-      },
-      {
-        _id: "dc8c4aefc008",
-        unitClass: march.UNIT_CLASS_GOLD,
-        hp: 4
-      }
-    ]
+    cards: [...testData.c1.data]
+    // cards: [
+    //   {
+    //     _id: "dc8c4aefc000",
+    //     unitClass: march.UNIT_CLASS_ENEMY,
+    //     hp: 4
+    //   },
+    //   {
+    //     _id: "dc8c4aefc001",
+    //     unitClass: march.UNIT_CLASS_BOMB,
+    //     hp: 5
+    //   },
+    //   {
+    //     _id: "dc8c4aefc002",
+    //     unitClass: march.UNIT_CLASS_CHEST,
+    //     hp: 5
+    //   },
+    //   {
+    //     _id: "dc8c4aefc003",
+    //     unitClass: march.UNIT_CLASS_BARREL,
+    //     hp: 5
+    //   },
+    //   {
+    //     _id: "dc8c4aefc004",
+    //     unitClass: march.UNIT_CLASS_PET,
+    //     hp: 8,
+    //     maxHp: 10
+    //   },
+    //   {
+    //     _id: "dc8c4aefc005",
+    //     unitClass: march.UNIT_CLASS_ENEMY_BOSS,
+    //     hp: 8
+    //   },
+    //   {
+    //     _id: "dc8c4aefc006",
+    //     unitClass: march.UNIT_CLASS_TRAP,
+    //     hp: 3,
+    //     opened: true
+    //   },
+    //   {
+    //     _id: "dc8c4aefc007",
+    //     unitClass: march.UNIT_CLASS_HP,
+    //     hp: 1
+    //   },
+    //   {
+    //     _id: "dc8c4aefc008",
+    //     unitClass: march.UNIT_CLASS_GOLD,
+    //     hp: 4
+    //   }
+    // ]
   },
   getters: {
     cards: state => {

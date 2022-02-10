@@ -46,6 +46,7 @@
 import { mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import anime from "animejs/lib/anime.es.js";
+import * as testData from "@/helpers/testData";
 // import { sleep } from "@/helpers/utils";
 import * as march from "@/../../knightlands-shared/march";
 import explode from "@/helpers/explodeAnimation";
@@ -66,7 +67,9 @@ export default {
   },
   data() {
     return {
-      initialized: false
+      initialized: false,
+      petCurrentIndex: null,
+      petMoveDirection: null
     };
   },
   computed: {
@@ -114,11 +117,61 @@ export default {
 
     swipeHandler(card, direction) {
       console.log("swipeHandler", direction);
-      this.testMove();
+      // this.testMove();
+      const petCardIndex = this.cards.findIndex(({ isPet }) => isPet);
+      const cardIndex =
+        direction === "left"
+          ? petCardIndex - 1
+          : direction === "right"
+          ? petCardIndex + 1
+          : direction === "up"
+          ? petCardIndex - 3
+          : petCardIndex + 3;
+
+      if (
+        !(
+          petCardIndex >= 0 &&
+          petCardIndex <= 8 &&
+          cardIndex >= 0 &&
+          cardIndex <= 8
+        )
+      ) {
+        return;
+      }
+
+      this.move(petCardIndex, cardIndex, direction);
     },
     clickHandler(card) {
       console.log("clickHandler");
-      this.testMove();
+      if (!card.canClick) {
+        return;
+      }
+
+      const petCardIndex = this.cards.findIndex(({ isPet }) => isPet);
+      const cardIndex = this.cards.findIndex(({ _id }) => _id === card._id);
+
+      if (
+        !(
+          petCardIndex >= 0 &&
+          petCardIndex <= 8 &&
+          cardIndex >= 0 &&
+          cardIndex <= 8
+        )
+      ) {
+        return;
+      }
+
+      const direction =
+        cardIndex === petCardIndex - 1
+          ? "left"
+          : cardIndex === petCardIndex + 1
+          ? "right"
+          : cardIndex < petCardIndex
+          ? "up"
+          : "down";
+      this.move(petCardIndex, cardIndex, direction);
+      // this.testMove();
+
       // this.animateShow(this.getCardElement(card.index), { resetStyle: true });
       // this.animateHide(this.getCardElement(card.index), { resetStyle: true });
       // this.animateMoveUp(this.getCardElement(card.index), {
@@ -137,6 +190,124 @@ export default {
       //   resetStyle: true
       // });
       // this.animateExplode(this.getCardElement(card.index));
+    },
+
+    async move(fromIndex, toIndex, direction) {
+      console.log("move fromIndex", fromIndex);
+      console.log("toIndex", toIndex);
+      console.log("direction", direction);
+      this.petCurrentIndex = fromIndex;
+      this.petMoveDirection = direction;
+
+      const response = await this.requestMove();
+      await this.animateMove(response);
+      // this.$store.commit("march/updateState", {
+      //   cards: [...response[0].state]
+      // });
+    },
+
+    async requestMove() {
+      await this.nextTickPromise();
+      return testData.c1.response;
+    },
+
+    async animateMove(response) {
+      await this.animateMoveStage(response[0]);
+      if (response.length > 1) {
+        await this.animateMoveStage(response[1]);
+      }
+    },
+
+    findElementsNotExist(arr1, arr2) {
+      const ids2 = arr2.map(({ _id }) => _id);
+      return arr1.filter(({ _id }) => !ids2.includes(_id));
+    },
+
+    findElementsExistButChangedPosition(arr1, arr2) {
+      const ids1 = arr1.map(({ _id }) => _id);
+      const ids2 = arr2.map(({ _id }) => _id);
+      return arr1.filter(
+        ({ _id }) =>
+          ids2.includes(_id) && ids1.indexOf(_id) !== ids2.indexOf(_id)
+      );
+    },
+
+    findCardIndex(id, arr) {
+      return arr.findIndex(({ _id }) => _id === id);
+    },
+
+    async animateMoveStage(stage) {
+      const updatedCards = stage.state;
+      const destroyedCards = this.findElementsNotExist(
+        this.cards,
+        updatedCards
+      );
+      console.log("destroyedCards", destroyedCards);
+
+      const movedCards = this.findElementsExistButChangedPosition(
+        this.cards,
+        updatedCards
+      );
+      console.log("movedCards", movedCards);
+      // const animationItems = [];
+      // if (destroyedCards.length > 0) {
+      //   destroyedCards.forEach((card) => {
+      //     const cardIndex =
+      //     animationItems.push(
+      //       this.animateHide(this.getCardElement(), { resetStyle: true }),
+      //     );
+      //   });
+      // }
+      await Promise.all([
+        Promise.all(
+          destroyedCards.map(card => {
+            return this.animateHide(
+              this.getCardElement(this.findCardIndex(card._id, this.cards)),
+              { resetStyle: false }
+            );
+          })
+        ),
+        Promise.all(
+          movedCards.map(card => {
+            const index = this.findCardIndex(card._id, this.cards);
+            const newIndex = this.findCardIndex(card._id, updatedCards);
+
+            if (newIndex === index - 1) {
+              return this.animateMoveLeft(this.getCardElement(index), {
+                resetStyle: false
+              });
+            } else if (newIndex === index + 1) {
+              return this.animateMoveRight(this.getCardElement(index), {
+                resetStyle: false
+              });
+            } else if (newIndex < index) {
+              return this.animateMoveUp(this.getCardElement(index), {
+                resetStyle: false
+              });
+            } else if (newIndex > index) {
+              return this.animateMoveRight(this.getCardElement(index), {
+                resetStyle: false
+              });
+            }
+          })
+        )
+      ]);
+
+      const newCards = this.findElementsNotExist(updatedCards, this.cards);
+      console.log("newCards", newCards);
+
+      this.$store.commit("march/updateState", { cards: updatedCards });
+      await this.nextTickPromise();
+      const elements = this.getCardElement();
+      this.resetStyle(elements, true);
+
+      await Promise.all(
+        newCards.map(card => {
+          const index = this.findCardIndex(card._id, updatedCards);
+          this.animateShow(this.getCardElement(index), { resetStyle: true });
+          return;
+        })
+      );
     },
 
     async testMove() {
@@ -227,7 +398,7 @@ export default {
         return;
       }
 
-      if (Array.isArray(el)) {
+      if (el && typeof el.length === "number") {
         el.forEach(item => item.removeAttribute("style"));
       } else {
         el.removeAttribute("style");

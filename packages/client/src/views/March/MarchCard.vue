@@ -2,7 +2,7 @@
   <div
     v-if="card"
     ref="card"
-    class="march-card relative restrict-selection"
+    class="march-card relative restrict-selection pointer"
     :class="{
       'march-card--pet': card.isPet,
       'march-card--adjacent': card.isAdjacent
