@@ -7,7 +7,11 @@
     </div>
     <div class="flex-full flex flex-center width-100">
       <div class="width-100 padding-left-6 padding-right-6">
-        <div v-if="cards && cards.length > 0" class="march-cards-container">
+        <div
+          v-if="cards && cards.length > 0"
+          class="march-cards-container"
+          ref="marchCardsContainer"
+        >
           <MarchCard
             v-for="card in cards"
             ref="cards"
@@ -42,6 +46,7 @@
 import { mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import anime from "animejs/lib/anime.es.js";
+// import { sleep } from "@/helpers/utils";
 import * as march from "@/../../knightlands-shared/march";
 import explode from "@/helpers/explodeAnimation";
 import MarchPlayMiniGame from "@/views/March/MarchPlayMiniGame.vue";
@@ -72,6 +77,13 @@ export default {
     this.init();
   },
   methods: {
+    async nextTickPromise() {
+      return new Promise(resolve => {
+        this.$nextTick(() => {
+          resolve();
+        });
+      });
+    },
     async showMiniGame() {
       const showMiniGameDialog = create(MarchPlayMiniGame);
       const result = await showMiniGameDialog();
@@ -87,15 +99,17 @@ export default {
     },
 
     getCardElement(index) {
+      // if (typeof index !== "number") {
+      //   return this.$refs.cards.map(({ $el }) => $el);
+      // }
+      // return this.$refs.cards.find(vm => vm.card.index === index).$el;
+      const elements = this.$refs.marchCardsContainer.querySelectorAll(
+        ".march-card"
+      );
       if (typeof index !== "number") {
-        return this.$refs.cards.map(({ $el }) => $el);
+        return elements;
       }
-      // console.log(
-      //   "this.$refs.cards[index]",
-      //   this.$refs.cards[index],
-      //   this.$refs.cards
-      // );
-      return this.$refs.cards.find(vm => vm.card.index === index).$el;
+      return elements[index];
     },
 
     swipeHandler(card, direction) {
@@ -141,6 +155,10 @@ export default {
           hp: 4
         };
         this.$store.commit("march/updateState", { cards });
+        // await sleep(0);
+        await this.nextTickPromise();
+        this.animateShow(this.getCardElement(7), { resetStyle: true });
+
         return;
       }
       if (this.cards[1].isPet) {
@@ -158,6 +176,8 @@ export default {
           hp: 4
         };
         this.$store.commit("march/updateState", { cards });
+        await this.nextTickPromise();
+        this.animateShow(this.getCardElement(2), { resetStyle: true });
         return;
       }
       if (this.cards[0].isPet) {
@@ -177,6 +197,8 @@ export default {
           hp: 4
         };
         this.$store.commit("march/updateState", { cards });
+        await this.nextTickPromise();
+        this.animateShow(this.getCardElement(2), { resetStyle: true });
         return;
       }
       if (this.cards[3].isPet) {
@@ -194,6 +216,8 @@ export default {
           hp: 4
         };
         this.$store.commit("march/updateState", { cards });
+        await this.nextTickPromise();
+        this.animateShow(this.getCardElement(6), { resetStyle: true });
         return;
       }
     },
