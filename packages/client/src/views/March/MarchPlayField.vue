@@ -237,7 +237,7 @@ export default {
     },
 
     async animateMoveStage(stage) {
-      const updatedCards = stage.state;
+      const updatedCards = stage.cards;
       const destroyedCards = this.findElementsNotExist(
         this.cards,
         updatedCards

@@ -37,7 +37,7 @@ export const c1 = {
   ],
   response: [
     {
-      state: [
+      cards: [
         { _id: "0", unitClass: march.UNIT_CLASS_ENEMY, hp: 4 },
         { _id: "4", unitClass: march.UNIT_CLASS_PET, hp: 8, maxHp: 10 },
         { _id: "2", unitClass: march.UNIT_CLASS_CHEST, hp: 5 },
@@ -70,7 +70,7 @@ export const c2 = {
   ],
   response: [
     {
-      state: [
+      cards: [
         { _id: "0", unitClass: march.UNIT_CLASS_ENEMY, hp: 4 },
         { _id: "1", unitClass: march.UNIT_CLASS_ENEMY, hp: 5 },
         { _id: "2", unitClass: march.UNIT_CLASS_CHEST, hp: 5 },
@@ -84,13 +84,13 @@ export const c2 = {
         { _id: "8", unitClass: march.UNIT_CLASS_GOLD, hp: 4 }
       ],
       effect: {
-        type: march.UNIT_CLASS_BOW,
-        sourceId: "4", // _id
-        targetIds: ["0", "5", "6"]
+        unitClass: march.UNIT_CLASS_BOW,
+        index: 3, // Cards array index
+        target: [0, 4, 6] // "Victim" indexes array
       }
     },
     {
-      state: [
+      cards: [
         { _id: "0", unitClass: march.UNIT_CLASS_ENEMY, hp: 4 },
         { _id: "1", unitClass: march.UNIT_CLASS_ENEMY, hp: 5 },
         { _id: "2", unitClass: march.UNIT_CLASS_CHEST, hp: 5 },
