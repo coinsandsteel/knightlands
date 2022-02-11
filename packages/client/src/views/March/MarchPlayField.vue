@@ -47,7 +47,7 @@ import { mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import anime from "animejs/lib/anime.es.js";
 import * as testData from "@/helpers/testData";
-// import { sleep } from "@/helpers/utils";
+import { sleep } from "@/helpers/utils";
 import * as march from "@/../../knightlands-shared/march";
 import explode from "@/helpers/explodeAnimation";
 import MarchPlayMiniGame from "@/views/March/MarchPlayMiniGame.vue";
@@ -208,12 +208,13 @@ export default {
 
     async requestMove() {
       await this.nextTickPromise();
-      return testData.c1.response;
+      return testData.c2.response;
     },
 
     async animateMove(response) {
       await this.animateMoveStage(response[0]);
       if (response.length > 1) {
+        await this.nextTickPromise();
         await this.animateMoveStage(response[1]);
       }
     },
@@ -237,15 +238,14 @@ export default {
     },
 
     async animateMoveStage(stage) {
-      const updatedCards = stage.cards;
-      const destroyedCards = this.findElementsNotExist(
-        this.cards,
-        updatedCards
-      );
+      console.log("animateMoveStage", [...this.cards], stage);
+      const cards = [...this.cards];
+      const updatedCards = [...stage.cards];
+      const destroyedCards = this.findElementsNotExist(cards, updatedCards);
       console.log("destroyedCards", destroyedCards);
 
       const movedCards = this.findElementsExistButChangedPosition(
-        this.cards,
+        cards,
         updatedCards
       );
       console.log("movedCards", movedCards);
@@ -259,17 +259,19 @@ export default {
       //   });
       // }
       await Promise.all([
+        // hide destroyed cards
         Promise.all(
           destroyedCards.map(card => {
             return this.animateHide(
-              this.getCardElement(this.findCardIndex(card._id, this.cards)),
+              this.getCardElement(this.findCardIndex(card._id, cards)),
               { resetStyle: false }
             );
           })
         ),
+        // move position updated cards
         Promise.all(
           movedCards.map(card => {
-            const index = this.findCardIndex(card._id, this.cards);
+            const index = this.findCardIndex(card._id, cards);
             const newIndex = this.findCardIndex(card._id, updatedCards);
 
             if (newIndex === index - 1) {
@@ -293,7 +295,7 @@ export default {
         )
       ]);
 
-      const newCards = this.findElementsNotExist(updatedCards, this.cards);
+      const newCards = this.findElementsNotExist(updatedCards, cards);
       console.log("newCards", newCards);
 
       this.$store.commit("march/updateState", { cards: updatedCards });
@@ -301,6 +303,7 @@ export default {
       const elements = this.getCardElement();
       this.resetStyle(elements, true);
 
+      // show new cards
       await Promise.all(
         newCards.map(card => {
           const index = this.findCardIndex(card._id, updatedCards);
@@ -308,6 +311,14 @@ export default {
           return;
         })
       );
+
+      // apply effect
+      if (stage.effect) {
+        const effect = stage.effect;
+        if (effect.unitClass === march.UNIT_CLASS_BOW) {
+          await this.animateBowEffect(effect);
+        }
+      }
     },
 
     async testMove() {
@@ -405,27 +416,54 @@ export default {
       }
     },
 
-    async animateShow(el, { resetStyle } = {}) {
+    async animateShow(el, { resetStyle, params } = {}) {
       const animation = anime({
         ...commonAnimationParams,
         targets: el,
         opacity: [0, 1],
-        scale: [0, 1]
+        scale: [0, 1],
+        ...(params || {})
       });
 
       await animation.finished;
       this.resetStyle(el, resetStyle);
     },
 
-    async animateHide(el, { resetStyle } = {}) {
+    async animateHide(el, { resetStyle, params } = {}) {
       const animation = anime({
         ...commonAnimationParams,
         targets: el,
         opacity: [1, 0],
-        scale: [1, 0]
+        scale: [1, 0],
+        ...(params || {})
       });
 
       await animation.finished;
+      this.resetStyle(el, resetStyle);
+    },
+
+    async animateFade(el, { resetStyle, params } = {}) {
+      const animation = anime({
+        ...commonAnimationParams,
+        // duration: Math.floor(commonAnimationParams.duration / 3),
+        targets: el,
+        opacity: [0, 1],
+        ...(params || {})
+      });
+
+      await animation.finished;
+
+      // await sleep(100);
+
+      const animation2 = anime({
+        ...commonAnimationParams,
+        // duration: Math.floor(commonAnimationParams.duration / 3),
+        targets: el,
+        opacity: [1, 0],
+        ...(params || {})
+      });
+
+      await animation2.finished;
       this.resetStyle(el, resetStyle);
     },
 
@@ -498,6 +536,75 @@ export default {
         70,
         explodeColors
       );
+    },
+
+    async animateBowEffect(effect) {
+      const el = this.getCardElement(effect.index);
+      if (!el) {
+        return;
+      }
+      const effectElement = el.querySelector(".march-card-effects");
+
+      // top arrow
+      let arrowTopElement = null;
+      if (effect.index > 2) {
+        arrowTopElement = document.createElement("div");
+        arrowTopElement.className =
+          "march-arrow-effect march-arrow-effect--top absolute-stretch flex flex-center";
+        effectElement.appendChild(arrowTopElement);
+      }
+      // bottom arrow
+      let arrowBottomElement = null;
+      if (effect.index < 6) {
+        arrowBottomElement = document.createElement("div");
+        arrowBottomElement.className =
+          "march-arrow-effect march-arrow-effect--bottom absolute-stretch flex flex-center";
+        effectElement.appendChild(arrowBottomElement);
+      }
+      // left arrow
+      let arrowLeftElement = null;
+      if (effect.index % 3 > 0) {
+        arrowLeftElement = document.createElement("div");
+        arrowLeftElement.className =
+          "march-arrow-effect march-arrow-effect--left absolute-stretch flex flex-center";
+        effectElement.appendChild(arrowLeftElement);
+      }
+      // right arrow
+      let arrowRightElement = null;
+      if (effect.index % 3 < 2) {
+        arrowRightElement = document.createElement("div");
+        arrowRightElement.className =
+          "march-arrow-effect march-arrow-effect--right absolute-stretch flex flex-center";
+        effectElement.appendChild(arrowRightElement);
+      }
+
+      // animate arrow
+      await Promise.all([
+        arrowTopElement
+          ? Promise.all([
+              this.animateMoveUp(arrowTopElement),
+              this.animateFade(arrowTopElement)
+            ])
+          : Promise.resolve(),
+        arrowBottomElement
+          ? Promise.all([
+              this.animateMoveDown(arrowBottomElement),
+              this.animateFade(arrowBottomElement)
+            ])
+          : Promise.resolve(),
+        arrowLeftElement
+          ? Promise.all([
+              this.animateMoveLeft(arrowLeftElement),
+              this.animateFade(arrowLeftElement)
+            ])
+          : Promise.resolve(),
+        arrowRightElement
+          ? Promise.all([
+              this.animateMoveRight(arrowRightElement),
+              this.animateFade(arrowRightElement)
+            ])
+          : Promise.resolve()
+      ]);
     }
   }
 };

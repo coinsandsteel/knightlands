@@ -29,7 +29,7 @@ export default {
       level: 1,
       armor: 0
     },
-    cards: [...testData.c1.data]
+    cards: [...testData.c2.data]
     // cards: [
     //   {
     //     _id: "dc8c4aefc000",
