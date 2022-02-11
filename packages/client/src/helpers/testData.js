@@ -47,8 +47,8 @@ export const c1 = {
         { _id: "5", unitClass: march.UNIT_CLASS_ENEMY_BOSS, hp: 8 },
 
         { _id: "6", unitClass: march.UNIT_CLASS_TRAP, hp: 3, opened: true },
-        { _id: "9", unitClass: march.UNIT_CLASS_GOLD, hp: 1 },
-        { _id: "8", unitClass: march.UNIT_CLASS_GOLD, hp: 4 }
+        { _id: "8", unitClass: march.UNIT_CLASS_GOLD, hp: 4 },
+        { _id: "9", unitClass: march.UNIT_CLASS_GOLD, hp: 1 }
       ]
     }
   ]
