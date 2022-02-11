@@ -207,14 +207,14 @@ export default {
     },
 
     async requestMove() {
-      await this.nextTickPromise();
-      return testData.c2.response;
+      return this.$store.dispatch("march/move");
     },
 
     async animateMove(response) {
       await this.animateMoveStage(response[0]);
       if (response.length > 1) {
         await this.nextTickPromise();
+        await sleep(100);
         await this.animateMoveStage(response[1]);
       }
     },
@@ -237,8 +237,24 @@ export default {
       return arr.findIndex(({ _id }) => _id === id);
     },
 
+    processStageData(stage) {
+      const cards = [...this.$store.state.march.cards];
+      const updatedCards = [...stage.cards];
+      for (let i = 0; i < updatedCards.length; i++) {
+        const updatedCard = updatedCards[i];
+        if (updatedCard && updatedCard._id) {
+          const card = cards.find(({ _id }) => _id === updatedCard._id);
+          updatedCards[i] = { ...(card || {}), ...updatedCard };
+        } else {
+          updatedCards[i] = { ...cards[i] };
+        }
+      }
+      stage.cards = updatedCards;
+    },
+
     async animateMoveStage(stage) {
       console.log("animateMoveStage", [...this.cards], stage);
+      this.processStageData(stage);
       const cards = [...this.cards];
       const updatedCards = [...stage.cards];
       const destroyedCards = this.findElementsNotExist(cards, updatedCards);
@@ -515,7 +531,7 @@ export default {
       const animation = anime({
         targets: el,
         duration: 50,
-        loop: 2,
+        loop: 6,
         direction: "alternate",
         easing: "easeOutBack",
         translateX: ["-.5rem", ".5rem"],
@@ -545,66 +561,84 @@ export default {
       }
       const effectElement = el.querySelector(".march-card-effects");
 
-      // top arrow
-      let arrowTopElement = null;
-      if (effect.index > 2) {
-        arrowTopElement = document.createElement("div");
-        arrowTopElement.className =
-          "march-arrow-effect march-arrow-effect--top absolute-stretch flex flex-center";
-        effectElement.appendChild(arrowTopElement);
-      }
-      // bottom arrow
-      let arrowBottomElement = null;
-      if (effect.index < 6) {
-        arrowBottomElement = document.createElement("div");
-        arrowBottomElement.className =
-          "march-arrow-effect march-arrow-effect--bottom absolute-stretch flex flex-center";
-        effectElement.appendChild(arrowBottomElement);
-      }
-      // left arrow
-      let arrowLeftElement = null;
-      if (effect.index % 3 > 0) {
-        arrowLeftElement = document.createElement("div");
-        arrowLeftElement.className =
-          "march-arrow-effect march-arrow-effect--left absolute-stretch flex flex-center";
-        effectElement.appendChild(arrowLeftElement);
-      }
-      // right arrow
-      let arrowRightElement = null;
-      if (effect.index % 3 < 2) {
-        arrowRightElement = document.createElement("div");
-        arrowRightElement.className =
-          "march-arrow-effect march-arrow-effect--right absolute-stretch flex flex-center";
-        effectElement.appendChild(arrowRightElement);
+      if (effect.target && effect.target.length > 0) {
+        let arrowTopElement = null;
+        let arrowBottomElement = null;
+        let arrowLeftElement = null;
+        let arrowRightElement = null;
+
+        for (let i = 0; i < effect.target.length; i++) {
+          const index = effect.target[i];
+          if (index === effect.index - 1) {
+            // left arrow
+            arrowLeftElement = document.createElement("div");
+            arrowLeftElement.className =
+              "march-arrow-effect march-arrow-effect--left absolute-stretch flex flex-center";
+            effectElement.appendChild(arrowLeftElement);
+          } else if (index === effect.index + 1) {
+            // right arrow
+            arrowRightElement = document.createElement("div");
+            arrowRightElement.className =
+              "march-arrow-effect march-arrow-effect--right absolute-stretch flex flex-center";
+            effectElement.appendChild(arrowRightElement);
+          } else if (index < effect.index) {
+            // top arrow
+            arrowTopElement = document.createElement("div");
+            arrowTopElement.className =
+              "march-arrow-effect march-arrow-effect--top absolute-stretch flex flex-center";
+            effectElement.appendChild(arrowTopElement);
+          } else if (index > effect.index) {
+            // bottom arrow
+            arrowBottomElement = document.createElement("div");
+            arrowBottomElement.className =
+              "march-arrow-effect march-arrow-effect--bottom absolute-stretch flex flex-center";
+            effectElement.appendChild(arrowBottomElement);
+          }
+        }
+
+        // animate arrow
+        await Promise.all([
+          arrowTopElement
+            ? Promise.all([
+                this.animateMoveUp(arrowTopElement),
+                this.animateFade(arrowTopElement)
+              ])
+            : Promise.resolve(),
+          arrowBottomElement
+            ? Promise.all([
+                this.animateMoveDown(arrowBottomElement),
+                this.animateFade(arrowBottomElement)
+              ])
+            : Promise.resolve(),
+          arrowLeftElement
+            ? Promise.all([
+                this.animateMoveLeft(arrowLeftElement),
+                this.animateFade(arrowLeftElement)
+              ])
+            : Promise.resolve(),
+          arrowRightElement
+            ? Promise.all([
+                this.animateMoveRight(arrowRightElement),
+                this.animateFade(arrowRightElement)
+              ])
+            : Promise.resolve()
+        ]);
+
+        // explode no await
+        Promise.all(
+          effect.target.map(target => {
+            return this.animateExplode(this.getCardElement(target));
+          })
+        );
+        // shake
+        await Promise.all(
+          effect.target.map(target => {
+            return this.animateShake(this.getCardElement(target));
+          })
+        );
       }
 
-      // animate arrow
-      await Promise.all([
-        arrowTopElement
-          ? Promise.all([
-              this.animateMoveUp(arrowTopElement),
-              this.animateFade(arrowTopElement)
-            ])
-          : Promise.resolve(),
-        arrowBottomElement
-          ? Promise.all([
-              this.animateMoveDown(arrowBottomElement),
-              this.animateFade(arrowBottomElement)
-            ])
-          : Promise.resolve(),
-        arrowLeftElement
-          ? Promise.all([
-              this.animateMoveLeft(arrowLeftElement),
-              this.animateFade(arrowLeftElement)
-            ])
-          : Promise.resolve(),
-        arrowRightElement
-          ? Promise.all([
-              this.animateMoveRight(arrowRightElement),
-              this.animateFade(arrowRightElement)
-            ])
-          : Promise.resolve()
-      ]);
+      effectElement.innerHTML = "";
     }
   }
 };

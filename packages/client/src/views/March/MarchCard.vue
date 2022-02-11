@@ -9,7 +9,7 @@
     }"
     @click="clickHandler"
   >
-    <div class="absolute-stretch width-100 height-100">
+    <div class="march-card-container absolute-stretch width-100 height-100">
       <div class="font-size-22">{{ card.unitClass }}</div>
       <div
         v-if="card.hp"
@@ -87,6 +87,12 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.march-card--pet .march-card-container {
+  background-image: url("/images/march/pet1.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 60%;
+}
 .march-card-hp {
   background: #fff;
   border: 0.5rem solid #222;

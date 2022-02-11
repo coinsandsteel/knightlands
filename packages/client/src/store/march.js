@@ -152,6 +152,9 @@ export default {
     },
     unsubscribe() {
       this.$app.$game.offNetwork(Events.MarchUpdate);
+    },
+    async move() {
+      return Promise.resolve(testData.c2.response);
     }
   }
 };
