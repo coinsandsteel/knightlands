@@ -73,13 +73,14 @@ export default function useSwipe() {
   }
 
   function unregisterEvents() {
-    track?.addEventListener("touchstart", handleMouseDown);
-    track?.addEventListener("touchend", handleMouseUp);
-    track?.addEventListener("touchmove", handleMouseMove);
-    track?.addEventListener("mousedown", handleMouseDown);
-    track?.addEventListener("mouseup", handleMouseUp);
-    track?.addEventListener("mouseout", handleMouseUp);
-    track?.addEventListener("mousemove", handleMouseMove);
+    if (!track) return;
+    track.addEventListener("touchstart", handleMouseDown);
+    track.addEventListener("touchend", handleMouseUp);
+    track.addEventListener("touchmove", handleMouseMove);
+    track.addEventListener("mousedown", handleMouseDown);
+    track.addEventListener("mouseup", handleMouseUp);
+    track.addEventListener("mouseout", handleMouseUp);
+    track.addEventListener("mousemove", handleMouseMove);
     track = null;
     callback = null;
   }
