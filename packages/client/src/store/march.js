@@ -29,7 +29,7 @@ export default {
       level: 1,
       armor: 0
     },
-    cards: [...testData.c2.data]
+    cards: [...testData.c4.data]
     // cards: [
     //   {
     //     _id: "dc8c4aefc000",
@@ -154,7 +154,7 @@ export default {
       this.$app.$game.offNetwork(Events.MarchUpdate);
     },
     async move() {
-      return Promise.resolve(testData.c2.response);
+      return Promise.resolve(testData.c4.response);
     }
   }
 };

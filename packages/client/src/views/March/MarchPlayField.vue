@@ -50,6 +50,7 @@ import * as testData from "@/helpers/testData";
 import { sleep } from "@/helpers/utils";
 import * as march from "@/../../knightlands-shared/march";
 import explode from "@/helpers/explodeAnimation";
+import lightningAnimation from "@/helpers/lightningAnimation";
 import MarchPlayMiniGame from "@/views/March/MarchPlayMiniGame.vue";
 import MarchCard from "@/views/March/MarchCard.vue";
 
@@ -68,6 +69,7 @@ export default {
   data() {
     return {
       initialized: false,
+      processing: false,
       petCurrentIndex: null,
       petMoveDirection: null
     };
@@ -211,12 +213,17 @@ export default {
     },
 
     async animateMove(response) {
+      if (this.processing || !this.initialized) {
+        return;
+      }
+      this.processing = true;
       await this.animateMoveStage(response[0]);
       if (response.length > 1) {
         await this.nextTickPromise();
         await sleep(100);
         await this.animateMoveStage(response[1]);
       }
+      this.processing = false;
     },
 
     findElementsNotExist(arr1, arr2) {
@@ -303,7 +310,7 @@ export default {
                 resetStyle: false
               });
             } else if (newIndex > index) {
-              return this.animateMoveRight(this.getCardElement(index), {
+              return this.animateMoveDown(this.getCardElement(index), {
                 resetStyle: false
               });
             }
@@ -333,6 +340,12 @@ export default {
         const effect = stage.effect;
         if (effect.unitClass === march.UNIT_CLASS_BOW) {
           await this.animateBowEffect(effect);
+        } else if (effect.unitClass === march.UNIT_CLASS_BOMB) {
+          await this.animateBombEffect(effect);
+        } else if (effect.unitClass === march.UNIT_CLASS_BALL_LIGHTNING) {
+          await this.animateBallLightningEffect(effect);
+        } else if (effect.unitClass === march.UNIT_CLASS_DRAGON_BREATH) {
+          await this.animateDragonBreathEffect(effect);
         }
       }
     },
@@ -554,6 +567,19 @@ export default {
       );
     },
 
+    async animateLightning(el) {
+      const bound = el.getBoundingClientRect();
+
+      const stop = lightningAnimation(
+        Math.round(bound.left),
+        Math.round(bound.top),
+        Math.round(bound.width)
+      );
+
+      await sleep(commonAnimationParams.duration);
+      stop();
+    },
+
     async animateBowEffect(effect) {
       const el = this.getCardElement(effect.index);
       if (!el) {
@@ -639,6 +665,125 @@ export default {
       }
 
       effectElement.innerHTML = "";
+    },
+
+    async animateBombEffect(effect) {
+      const el = this.getCardElement(effect.index);
+      if (!el) {
+        return;
+      }
+      const effectElement = el.querySelector(".march-card-effects");
+
+      if (effect.target && effect.target.length > 0) {
+        let bombTopElement = null;
+        let bombBottomElement = null;
+        let bombLeftElement = null;
+        let bombRightElement = null;
+
+        for (let i = 0; i < effect.target.length; i++) {
+          const index = effect.target[i];
+          if (index === effect.index - 1) {
+            // left bomb
+            bombLeftElement = document.createElement("div");
+            bombLeftElement.className =
+              "march-bomb-effect march-bomb-effect--left absolute-stretch flex flex-center";
+            effectElement.appendChild(bombLeftElement);
+          } else if (index === effect.index + 1) {
+            // right bomb
+            bombRightElement = document.createElement("div");
+            bombRightElement.className =
+              "march-bomb-effect march-bomb-effect--right absolute-stretch flex flex-center";
+            effectElement.appendChild(bombRightElement);
+          } else if (index < effect.index) {
+            // top bomb
+            bombTopElement = document.createElement("div");
+            bombTopElement.className =
+              "march-bomb-effect march-bomb-effect--top absolute-stretch flex flex-center";
+            effectElement.appendChild(bombTopElement);
+          } else if (index > effect.index) {
+            // bottom bomb
+            bombBottomElement = document.createElement("div");
+            bombBottomElement.className =
+              "march-bomb-effect march-bomb-effect--bottom absolute-stretch flex flex-center";
+            effectElement.appendChild(bombBottomElement);
+          }
+        }
+
+        // animate bomb
+        // await Promise.all([
+        //   bombTopElement
+        //     ? Promise.all([
+        //         this.animateMoveUp(bombTopElement),
+        //         this.animateFade(bombTopElement)
+        //       ])
+        //     : Promise.resolve(),
+        //   bombBottomElement
+        //     ? Promise.all([
+        //         this.animateMoveDown(bombBottomElement),
+        //         this.animateFade(bombBottomElement)
+        //       ])
+        //     : Promise.resolve(),
+        //   bombLeftElement
+        //     ? Promise.all([
+        //         this.animateMoveLeft(bombLeftElement),
+        //         this.animateFade(bombLeftElement)
+        //       ])
+        //     : Promise.resolve(),
+        //   bombRightElement
+        //     ? Promise.all([
+        //         this.animateMoveRight(bombRightElement),
+        //         this.animateFade(bombRightElement)
+        //       ])
+        //     : Promise.resolve()
+        // ]);
+
+        // explode no await
+        Promise.all([
+          this.animateExplode(this.getCardElement(effect.index)),
+          effect.target.map(target => {
+            return this.animateExplode(this.getCardElement(target));
+          })
+        ]);
+        // shake
+        await Promise.all([
+          this.animateExplode(this.getCardElement(effect.index)),
+          effect.target.map(target => {
+            return this.animateShake(this.getCardElement(target));
+          })
+        ]);
+      }
+
+      // effectElement.innerHTML = "";
+    },
+
+    async animateBallLightningEffect(effect) {
+      // explode no await
+      Promise.all(
+        effect.target.map(target => {
+          return this.animateLightning(this.getCardElement(target));
+        })
+      );
+      // shake
+      await Promise.all(
+        effect.target.map(target => {
+          return this.animateShake(this.getCardElement(target));
+        })
+      );
+    },
+
+    async animateDragonBreathEffect(effect) {
+      // explode no await
+      Promise.all(
+        effect.target.map(target => {
+          return this.animateExplode(this.getCardElement(target));
+        })
+      );
+      // shake
+      await Promise.all(
+        effect.target.map(target => {
+          return this.animateShake(this.getCardElement(target));
+        })
+      );
     }
   }
 };
