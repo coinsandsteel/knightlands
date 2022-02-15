@@ -1,5 +1,4 @@
 import * as march from "@/../../knightlands-shared/march";
-import * as testData from "@/helpers/testData";
 
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
@@ -29,56 +28,8 @@ export default {
       level: 1,
       armor: 0
     },
-    cards: [...testData.c4.data]
-    // cards: [
-    //   {
-    //     _id: "dc8c4aefc000",
-    //     unitClass: march.UNIT_CLASS_ENEMY,
-    //     hp: 4
-    //   },
-    //   {
-    //     _id: "dc8c4aefc001",
-    //     unitClass: march.UNIT_CLASS_BOMB,
-    //     hp: 5
-    //   },
-    //   {
-    //     _id: "dc8c4aefc002",
-    //     unitClass: march.UNIT_CLASS_CHEST,
-    //     hp: 5
-    //   },
-    //   {
-    //     _id: "dc8c4aefc003",
-    //     unitClass: march.UNIT_CLASS_BARREL,
-    //     hp: 5
-    //   },
-    //   {
-    //     _id: "dc8c4aefc004",
-    //     unitClass: march.UNIT_CLASS_PET,
-    //     hp: 8,
-    //     maxHp: 10
-    //   },
-    //   {
-    //     _id: "dc8c4aefc005",
-    //     unitClass: march.UNIT_CLASS_ENEMY_BOSS,
-    //     hp: 8
-    //   },
-    //   {
-    //     _id: "dc8c4aefc006",
-    //     unitClass: march.UNIT_CLASS_TRAP,
-    //     hp: 3,
-    //     opened: true
-    //   },
-    //   {
-    //     _id: "dc8c4aefc007",
-    //     unitClass: march.UNIT_CLASS_HP,
-    //     hp: 1
-    //   },
-    //   {
-    //     _id: "dc8c4aefc008",
-    //     unitClass: march.UNIT_CLASS_GOLD,
-    //     hp: 4
-    //   }
-    // ]
+    cards: [],
+    sequence: null
   },
   getters: {
     cards: state => {
@@ -129,12 +80,32 @@ export default {
   },
   mutations: {
     updateState(state, data) {
+      if (data.balance !== undefined) {
+        state.balance = data.balance;
+      }
+      if (data.boosters !== undefined) {
+        state.boosters = data.boosters;
+      }
+      if (data.stat !== undefined) {
+        state.stat = data.stat;
+      }
+      if (data.pet !== undefined) {
+        state.pet = data.pet;
+      }
       if (data.cards !== undefined) {
         state.cards = data.cards;
+      }
+      if (data.sequence !== undefined) {
+        state.sequence = data.sequence;
       }
     },
     setInitialState(state, data) {
       state.loaded = true;
+      state.balance = data.user.balance;
+      state.boosters = data.user.boosters;
+      state.stat = data.map.stat;
+      state.pet = data.map.pet;
+      state.cards = data.map.cards;
     }
   },
   actions: {
@@ -153,8 +124,8 @@ export default {
     unsubscribe() {
       this.$app.$game.offNetwork(Events.MarchUpdate);
     },
-    async move() {
-      return Promise.resolve(testData.c4.response);
+    async touchCard(index) {
+      await this.$app.$game._wrapOperation(Operations.MarchTouch, index);
     }
   }
 };

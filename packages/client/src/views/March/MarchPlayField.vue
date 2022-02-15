@@ -43,10 +43,9 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
 import anime from "animejs/lib/anime.es.js";
-import * as testData from "@/helpers/testData";
 import { sleep } from "@/helpers/utils";
 import * as march from "@/../../knightlands-shared/march";
 import explode from "@/helpers/explodeAnimation";
@@ -75,7 +74,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("march", ["cards"])
+    ...mapGetters("march", ["cards"]),
+    ...mapState({
+      sequence: state => state.march.sequence
+    })
+  },
+  watch: {
+    async sequence(value) {
+      await this.animateMove(value);
+    }
   },
   mounted() {
     // this.showMiniGame();
@@ -201,15 +208,14 @@ export default {
       this.petCurrentIndex = fromIndex;
       this.petMoveDirection = direction;
 
-      const response = await this.requestMove();
-      await this.animateMove(response);
+      await this.$store.dispatch("march/touchCard", toIndex);
+
+      // TODO implement a state.sequence watcher
+      //await this.animateMove(response);
+
       // this.$store.commit("march/updateState", {
       //   cards: [...response[0].state]
       // });
-    },
-
-    async requestMove() {
-      return this.$store.dispatch("march/move");
     },
 
     async animateMove(response) {
