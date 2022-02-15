@@ -6,7 +6,7 @@ import Operations from "@/../../knightlands-shared/operations";
 export default {
   namespaced: true,
   state: {
-    loaded: true,
+    loaded: false,
     // User
     balance: {
       tickets: 15,
@@ -124,8 +124,20 @@ export default {
     unsubscribe() {
       this.$app.$game.offNetwork(Events.MarchUpdate);
     },
-    async touchCard(index) {
+    async touchCard(store, index) {
       await this.$app.$game._wrapOperation(Operations.MarchTouch, index);
+    },
+    async startNewGame() {
+      await this.$app.$game._wrapOperation(Operations.MarchStartNewGame);
+    },
+    async testAction(store, action) {
+      await this.$app.$game._wrapOperation(Operations.MarchTestAction, { action });
+    },
+    async collectDailyReward() {
+      await this.$app.$game._wrapOperation(Operations.MarchCollectDailyReward);
+    },
+    async purchase() {
+      await this.$app.$game._wrapOperation(Operations.MarchPurchase);
     }
   }
 };

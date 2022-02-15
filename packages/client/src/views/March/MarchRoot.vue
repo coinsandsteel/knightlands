@@ -57,11 +57,11 @@ export default {
     this.title = this.$t("window-march???");
   },
   async mounted() {
-    // this.$store.dispatch("march/subscribe");
-    // await this.$store.dispatch("march/load");
+    this.$store.dispatch("march/subscribe");
+    await this.$store.dispatch("march/load");
   },
   beforeDestroy() {
-    // this.$store.dispatch("march/unsubscribe");
+    this.$store.dispatch("march/unsubscribe");
   },
   activated() {
     this.tryToShowRewards();

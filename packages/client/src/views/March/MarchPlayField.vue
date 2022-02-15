@@ -7,11 +7,7 @@
     </div>
     <div class="flex-full flex flex-center width-100">
       <div class="width-100 padding-left-6 padding-right-6">
-        <div
-          v-if="cards && cards.length > 0"
-          class="march-cards-container"
-          ref="marchCardsContainer"
-        >
+        <div class="march-cards-container" ref="marchCardsContainer">
           <MarchCard
             v-for="card in cards"
             ref="cards"
@@ -81,7 +77,9 @@ export default {
   },
   watch: {
     async sequence(value) {
-      await this.animateMove(value);
+      if (value) {
+        await this.animateMove(value);
+      }
     }
   },
   mounted() {

@@ -52,7 +52,8 @@ export default {
   },
   methods: {
     upgradeHandler() {},
-    startHandler() {
+    async startHandler() {
+      await this.$store.dispatch("march/startNewGame");
       this.$emit("next");
     }
   }
