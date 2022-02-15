@@ -16,10 +16,12 @@
 </template>
 <script>
 // import { mapState } from "vuex";
+import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 // import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import MarchDailyRewards from "@/views/March/MarchDailyRewards.vue";
 const PlayTab = "march-play";
 const PetsTab = "march-pets";
 const RatingTab = "march-rating";
@@ -61,9 +63,25 @@ export default {
   beforeDestroy() {
     // this.$store.dispatch("march/unsubscribe");
   },
+  activated() {
+    this.tryToShowRewards();
+  },
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
+    },
+    tryToShowRewards() {
+      // if (
+      //   this.dailyRewards &&
+      //   this.dailyRewards.find(({ active, collected }) => active && !collected)
+      // ) {
+      //   this.showDailyRewards();
+      // }
+      this.showDailyRewards();
+    },
+    showDailyRewards() {
+      const showDailyRewardsDialog = create(MarchDailyRewards);
+      showDailyRewardsDialog();
     }
   }
 };

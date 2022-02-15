@@ -28,12 +28,42 @@
       @back="backHandler"
     />
     <portal
-      v-if="isActive && currentStep === BOOSTER_SELECT_STEP"
+      v-if="
+        isActive &&
+          (currentStep === BOOSTER_SELECT_STEP ||
+            currentStep === PET_SELECT_STEP)
+      "
       to="footer"
       :slim="true"
     >
       <div class="width-100 flex flex-items-start">
-        <BackButton class="back-button" @click="backHandler"></BackButton>
+        <BackButton
+          v-if="currentStep === BOOSTER_SELECT_STEP"
+          class="back-button"
+          @click="backHandler"
+        ></BackButton>
+        <div class="flex-full"></div>
+        <div
+          v-if="
+            currentStep === PET_SELECT_STEP ||
+              currentStep === BOOSTER_SELECT_STEP
+          "
+        >
+          <CustomButton
+            type="green"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="goToShop"
+          >
+            Purchase
+          </CustomButton>
+          <CustomButton
+            type="blue"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="goToRewards"
+          >
+            Rewards
+          </CustomButton>
+        </div>
       </div>
     </portal>
   </div>
@@ -64,7 +94,7 @@ export default {
       BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
       PLAY_SUMMARY_STEP,
-      currentStep: PLAY_FIELD_STEP
+      currentStep: PET_SELECT_STEP
     };
   },
   methods: {
@@ -79,6 +109,12 @@ export default {
         return;
       }
       ++this.currentStep;
+    },
+    goToShop() {
+      this.$router.push({ name: "march-shop" });
+    },
+    goToRewards() {
+      this.$router.push({ name: "march-rewards" });
     }
   }
 };

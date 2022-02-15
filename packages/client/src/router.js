@@ -523,6 +523,16 @@ const router = new Router({
           path: "rating",
           name: "march-rating",
           component: () => import("./views/March/MarchRating.vue")
+        },
+        {
+          path: "shop",
+          name: "march-shop",
+          component: () => import("./views/March/MarchShop.vue")
+        },
+        {
+          path: "rewards",
+          name: "march-rewards",
+          component: () => import("./views/March/MarchRewards.vue")
         }
       ],
       meta: {

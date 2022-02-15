@@ -1,4 +1,5 @@
 export default function lightningAnimation(x, y, size = 100) {
+  let stopped = false;
   const container = document.body;
   const c = document.createElement("canvas");
   c.style.position = "absolute";
@@ -61,6 +62,10 @@ export default function lightningAnimation(x, y, size = 100) {
   }
 
   function render() {
+    if (stopped) {
+      return;
+    }
+
     ctx.shadowBlur = 0;
     ctx.globalCompositeOperation = "source-over";
     // ctx.fillRect(0, 0, size, size);
@@ -82,6 +87,7 @@ export default function lightningAnimation(x, y, size = 100) {
 
   function stop() {
     c.remove();
+    stopped = true;
   }
 
   render();

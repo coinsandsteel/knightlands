@@ -7,6 +7,7 @@
             ? '/images/march/pet1.png'
             : '/images/march/mystery-pet.png'
         "
+        draggable="false"
       />
       <div
         v-if="pet.level"
