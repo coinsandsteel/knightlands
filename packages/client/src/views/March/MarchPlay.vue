@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content">
+  <div class="screen-content" v-if="loaded">
     <!-- <div class="full-flex dummy-height width-100">
       <div
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
@@ -39,16 +39,19 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import AppSection from "@/AppSection.vue";
 import MarchPetsSelect from "@/views/March/MarchPetsSelect.vue";
 import MarchBoosterSelect from "@/views/March/MarchBoosterSelect.vue";
 import MarchPlayField from "@/views/March/MarchPlayField.vue";
 import MarchPlaySummary from "@/views/March/MarchPlaySummary.vue";
 import BackButton from "@/views/Common/BackButton.vue";
+
 const PET_SELECT_STEP = 1;
 const BOOSTER_SELECT_STEP = 2;
 const PLAY_FIELD_STEP = 3;
 const PLAY_SUMMARY_STEP = 4;
+
 export default {
   mixins: [AppSection],
   components: {
@@ -64,8 +67,13 @@ export default {
       BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
       PLAY_SUMMARY_STEP,
-      currentStep: PLAY_FIELD_STEP
+      currentStep: PET_SELECT_STEP
     };
+  },
+  computed: {
+    ...mapState({
+      loaded: state => state.march.loaded
+    })
   },
   methods: {
     backHandler() {
