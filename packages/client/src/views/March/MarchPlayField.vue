@@ -1,9 +1,26 @@
 <template>
   <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
     <div class="flex flex-row flex-no-wrap flex-justify-center font-size-22">
-      <div class="padding-right-2">HP???: 8/8</div>
-      <div class="padding-right-2 padding-left-2">Armor???: 4</div>
-      <div class="padding-left-2">Extra life???: 1</div>
+      <div class="padding-right-2">
+        HP???: {{ petCard ? petCard.hp + "/" + petCard.maxHp : 0 }}
+      </div>
+      <div class="padding-right-2 padding-left-2">
+        Armor???: {{ pet ? pet.armor : 0 }}
+      </div>
+      <div class="padding-left-2">
+        Extra life???: {{ boosters ? boosters.extraLife : 0 }}
+      </div>
+    </div>
+    <div class="flex flex-row flex-no-wrap flex-justify-center font-size-22">
+      <div class="padding-right-2">
+        Step to next boss???: {{ stat ? stat.stepsToNextBoss : 0 }}
+      </div>
+      <div class="padding-right-2 padding-left-2">
+        Bosses Killed???: {{ stat ? stat.bossesKilled : 0 }}
+      </div>
+      <div class="padding-left-2">
+        Gold???: {{ balance ? balance.gold : 0 }}
+      </div>
     </div>
     <div class="flex-full flex flex-center width-100">
       <div class="width-100 padding-left-6 padding-right-6">
@@ -66,14 +83,20 @@ export default {
       initialized: false,
       processing: false,
       petCurrentIndex: null,
-      petMoveDirection: null
+      petMoveDirection: null,
+      currentStage: 0,
+      isTargetABarrel: false
     };
   },
   computed: {
     ...mapGetters("march", ["cards"]),
-    ...mapState({
-      sequence: state => state.march.sequence
-    })
+    ...mapState("march", ["sequence", "pet", "boosters", "stat", "balance"]),
+    petCard() {
+      if (!(this.cards && this.cards.length > 0)) {
+        return;
+      }
+      return this.cards.find(card => card.isPet);
+    }
   },
   watch: {
     async sequence(value) {
@@ -205,6 +228,8 @@ export default {
       console.log("direction", direction);
       this.petCurrentIndex = fromIndex;
       this.petMoveDirection = direction;
+      this.isTargetABarrel =
+        this.cards[toIndex].unitClass === march.UNIT_CLASS_BARREL;
 
       await this.$store.dispatch("march/touchCard", toIndex);
 
@@ -221,10 +246,12 @@ export default {
         return;
       }
       this.processing = true;
+      this.currentStage = 0;
       await this.animateMoveStage(response[0]);
       if (response.length > 1) {
         await this.nextTickPromise();
         await sleep(100);
+        this.currentStage = 1;
         await this.animateMoveStage(response[1]);
       }
       this.processing = false;
@@ -288,11 +315,19 @@ export default {
       await Promise.all([
         // hide destroyed cards
         Promise.all(
-          destroyedCards.map(card => {
-            return this.animateHide(
-              this.getCardElement(this.findCardIndex(card._id, cards)),
-              { resetStyle: false }
+          destroyedCards.map(async card => {
+            const cardElement = this.getCardElement(
+              this.findCardIndex(card._id, cards)
             );
+            if (
+              this.currentStage === 0 &&
+              this.isTargetABarrel &&
+              card.unitClass === march.UNIT_CLASS_BARREL
+            ) {
+              this.animateExplode(cardElement);
+              await this.animateShake(cardElement);
+            }
+            await this.animateHide(cardElement);
           })
         ),
         // move position updated cards
@@ -803,9 +838,9 @@ export default {
   background: rgba(255, 0, 0, 0.2);
 }
 .march-card--pet {
-  background: rgba(green, 0.2);
+  // background: rgba(green, 0.2);
 }
 .march-card--adjacent {
-  background: rgba(blue, 0.2);
+  // background: rgba(blue, 0.2);
 }
 </style>
