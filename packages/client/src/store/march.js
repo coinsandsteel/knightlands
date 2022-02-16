@@ -17,7 +17,7 @@ export default {
       extraLife: 0,
       key: 0
     },
-    preGameBooster: {
+    preGameBoosters: {
       booster_hp: 0,
       life: 0,
       key: 0
@@ -35,8 +35,12 @@ export default {
     },
     cards: [],
     sequence: null,
-    miniGameReady: null,
-    miniGameResult: null
+    miniGameReady: {
+      isReady: false
+    },
+    miniGameResult: {
+      isSuccess: false
+    }
   },
   getters: {
     cards: state => {
@@ -93,8 +97,8 @@ export default {
       if (data.boosters !== undefined) {
         state.boosters = data.boosters;
       }
-      if (data.preGameBooster !== undefined) {
-        state.preGameBooster = data.preGameBooster;
+      if (data.preGameBoosters !== undefined) {
+        state.preGameBoosters = data.preGameBoosters;
       }
       if (data.stat !== undefined) {
         state.stat = data.stat;
@@ -108,8 +112,8 @@ export default {
       if (data.sequence !== undefined) {
         state.sequence = data.sequence;
       }
-      if (data.miniGameResult !== undefined) {
-        state.miniGameResult = data.miniGameResult;
+      if (data.miniGameReady !== undefined) {
+        state.miniGameReady = data.miniGameReady;
       }
       if (data.miniGameResult !== undefined) {
         state.miniGameResult = data.miniGameResult;
@@ -119,12 +123,10 @@ export default {
       state.loaded = true;
       state.balance = data.user.balance;
       state.boosters = data.user.boosters;
-      state.preGameBooster = data.user.preGameBoosters;
+      state.preGameBoosters = data.user.preGameBoosters;
       state.stat = data.map.stat;
       state.pet = data.map.pet;
       state.cards = data.map.cards;
-      state.miniGameReady = data.map.miniGameReady;
-      state.miniGameResult = data.map.miniGameResult;
     }
   },
   actions: {

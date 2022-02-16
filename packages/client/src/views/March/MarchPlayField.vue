@@ -41,7 +41,7 @@
       <CustomButton
         type="green"
         class="btn-start inline-block"
-        @click="showMiniGame"
+        @click="testShowMiniGame"
       >
         Mini game???
       </CustomButton>
@@ -90,7 +90,15 @@ export default {
   },
   computed: {
     ...mapGetters("march", ["cards"]),
-    ...mapState("march", ["sequence", "pet", "boosters", "stat", "balance"]),
+    ...mapState("march", [
+      "sequence",
+      "pet",
+      "boosters",
+      "stat",
+      "balance",
+      "miniGameReady",
+      "miniGameResult"
+    ]),
     petCard() {
       if (!(this.cards && this.cards.length > 0)) {
         return;
@@ -103,6 +111,15 @@ export default {
       if (value) {
         await this.animateMove(value);
       }
+    },
+    miniGameReady(value, oldValue) {
+      console.log("miniGameReady", value, oldValue);
+      if (value && value.isReady && !(oldValue && oldValue.isReady)) {
+        this.showMiniGame();
+      }
+    },
+    miniGameResult(value, oldValue) {
+      console.log("miniGameResult", value, oldValue);
     }
   },
   mounted() {
@@ -115,6 +132,14 @@ export default {
         this.$nextTick(() => {
           resolve();
         });
+      });
+    },
+    async testShowMiniGame() {
+      this.$store.commit("march/updateState", {
+        miniGameReady: { isReady: true }
+      });
+      this.$store.commit("march/updateState", {
+        miniGameResult: { isSuccess: false }
       });
     },
     async showMiniGame() {
@@ -246,13 +271,20 @@ export default {
         return;
       }
       this.processing = true;
-      this.currentStage = 0;
-      await this.animateMoveStage(response[0]);
-      if (response.length > 1) {
+      // this.currentStage = 0;
+      // await this.animateMoveStage(response[0]);
+      // if (response.length > 1) {
+      //   await this.nextTickPromise();
+      //   await sleep(100);
+      //   this.currentStage = 1;
+      //   await this.animateMoveStage(response[1]);
+      // }
+      // await Promise.all(response.map((stage, index) => {}));
+      for (let i = 0; i < response.length; i++) {
+        this.currentStage = i;
+        await this.animateMoveStage(response[i]);
         await this.nextTickPromise();
         await sleep(100);
-        this.currentStage = 1;
-        await this.animateMoveStage(response[1]);
       }
       this.processing = false;
     },

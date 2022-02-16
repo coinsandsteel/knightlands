@@ -8,7 +8,9 @@
             class="btn-booster"
             name="Max health???"
             :price="1000"
-            :hasBought="preGameBooster && preGameBooster[march.BOOSTER_HP] > 0"
+            :hasBought="
+              preGameBoosters && preGameBoosters[march.BOOSTER_HP] > 0
+            "
             @hint="maxHealthHintHandler"
             @buy="maxHealthBuyHandler"
           />
@@ -17,7 +19,7 @@
             name="Extra life???"
             :price="1000"
             :hasBought="
-              preGameBooster && preGameBooster[march.BOOSTER_LIFE] > 0
+              preGameBoosters && preGameBoosters[march.BOOSTER_LIFE] > 0
             "
             @hint="extraLifeHintHandler"
             @buy="extraLifeBuyHandler"
@@ -28,9 +30,11 @@
             class="btn-booster"
             name="Key???"
             :price="1000"
-            :hasBought="preGameBooster && preGameBooster[march.BOOSTER_KEY] > 0"
-            @hint="marchBoosterHintHandler"
-            @buy="marchBoosterBuyHandler"
+            :hasBought="
+              preGameBoosters && preGameBoosters[march.BOOSTER_KEY] > 0
+            "
+            @hint="marchBoosterKeyHintHandler"
+            @buy="marchBoosterKeyBuyHandler"
           />
         </div>
       </div>
@@ -58,8 +62,10 @@ import MarchBoosterExtraLifeHint from "@/views/March/MarchBoosterExtraLifeHint.v
 import MarchBoosterKeyHint from "@/views/March/MarchBoosterKeyHint.vue";
 // import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
 import MarchBoosterButton from "@/views/March/MarchBoosterButton.vue";
+import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
 
 export default {
+  mixins: [marchPurchaseMixin],
   components: {
     MarchBalance,
     MarchBoosterButton
@@ -70,7 +76,16 @@ export default {
     };
   },
   computed: {
-    ...mapState("march", ["preGameBooster"])
+    ...mapState("march", ["preGameBoosters"]),
+    hpPrice() {
+      return 0;
+    },
+    lifePrice() {
+      return 0;
+    },
+    keyPrice() {
+      return 0;
+    }
   },
   methods: {
     upgradeHandler() {},
@@ -83,6 +98,9 @@ export default {
       showDialog();
     },
     maxHealthBuyHandler() {
+      if (!this.checkGoldBalance(this.hpPrice)) {
+        return;
+      }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
     },
     extraLifeHintHandler() {
@@ -90,13 +108,19 @@ export default {
       showDialog();
     },
     extraLifeBuyHandler() {
+      if (!this.checkGoldBalance(this.lifePrice)) {
+        return;
+      }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_LIFE);
     },
-    marchBoosterHintHandler() {
+    marchBoosterKeyHintHandler() {
       const showDialog = create(MarchBoosterKeyHint);
       showDialog();
     },
-    marchBoosterBuyHandler() {
+    marchBoosterKeyBuyHandler() {
+      if (!this.checkGoldBalance(this.keyPrice)) {
+        return;
+      }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_KEY);
     }
   }
