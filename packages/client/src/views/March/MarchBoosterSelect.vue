@@ -8,9 +8,7 @@
             class="btn-booster"
             name="Max health???"
             :price="1000"
-            :hasBought="
-              preGameBoosters && preGameBoosters[march.BOOSTER_HP] > 0
-            "
+            :hasBought="preGameBoosters && preGameBoosters.maxHealth > 0"
             @hint="maxHealthHintHandler"
             @buy="maxHealthBuyHandler"
           />
@@ -18,9 +16,7 @@
             class="btn-booster margin-left-6"
             name="Extra life???"
             :price="1000"
-            :hasBought="
-              preGameBoosters && preGameBoosters[march.BOOSTER_LIFE] > 0
-            "
+            :hasBought="preGameBoosters && preGameBoosters.extraLife > 0"
             @hint="extraLifeHintHandler"
             @buy="extraLifeBuyHandler"
           />
@@ -30,9 +26,7 @@
             class="btn-booster"
             name="Key???"
             :price="1000"
-            :hasBought="
-              preGameBoosters && preGameBoosters[march.BOOSTER_KEY] > 0
-            "
+            :hasBought="preGameBoosters && preGameBoosters.key > 0"
             @hint="marchBoosterKeyHintHandler"
             @buy="marchBoosterKeyBuyHandler"
           />

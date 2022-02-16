@@ -167,6 +167,11 @@ export default {
         Operations.MarchPurchasePreGameBooster,
         { type }
       );
+    },
+    async openChest(store, keyNumber) {
+      await this.$app.$game._wrapOperation(Operations.MarchOpenChest, {
+        keyNumber
+      });
     }
   }
 };

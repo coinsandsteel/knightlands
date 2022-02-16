@@ -1,31 +1,35 @@
 <template>
   <UserDialog title="Mini game???" emitClose hideCloseBtn>
     <template v-slot:content>
-      <div class="text-center padding-top-2 padding-bottom-2 font-size-20">Keys: 1</div>
+      <div class="text-center padding-top-2 padding-bottom-2 font-size-20">
+        Keys: 1
+      </div>
       <div class="flex flex-row flex-no-wrap flex-space-around">
         <div
-          class="march-lock font-size-20"
+          class="march-lock font-size-20 pointer"
           v-for="(lock, lockIndex) in locks"
           :key="lockIndex"
-          @click="lockSelectHandler"
+          @click="lockSelectHandler(lockIndex)"
         >
           Lock
         </div>
       </div>
     </template>
-    <template v-slot:footer>
+    <!-- <template v-slot:footer>
       <CustomButton type="green" @click="close"
         >{{ $t("close???") }}
       </CustomButton>
-    </template>
+    </template> -->
   </UserDialog>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
-  data() {
-    return {};
-  },
+  // data() {
+  //   return {};
+  // },
   computed: {
+    ...mapState("march", ["miniGameResult"]),
     locks() {
       const result = [];
       result.push({ isMatched: false });
@@ -35,12 +39,24 @@ export default {
       return result;
     }
   },
+  watch: {
+    miniGameResult(value) {
+      this.close(value ? !!value.isSuccess : false);
+    }
+  },
   methods: {
-    close() {
-      this.$close("dialog result 123");
+    close(result) {
+      this.$close(result);
     },
-    lockSelectHandler() {
-      this.close();
+    async testMiniGameResult(isSuccess) {
+      this.$store.commit("march/updateState", {
+        miniGameResult: { isSuccess }
+      });
+    },
+    lockSelectHandler(index) {
+      // this.close();
+      this.$store.dispatch("march/openChest", index);
+      // this.testMiniGameResult(index === 2);
     }
   }
 };

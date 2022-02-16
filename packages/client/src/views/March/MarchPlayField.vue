@@ -114,7 +114,8 @@ export default {
     },
     miniGameReady(value, oldValue) {
       console.log("miniGameReady", value, oldValue);
-      if (value && value.isReady && !(oldValue && oldValue.isReady)) {
+      // if (value && value.isReady && !(oldValue && oldValue.isReady)) {
+      if (value && value.isReady) {
         this.showMiniGame();
       }
     },
@@ -138,14 +139,11 @@ export default {
       this.$store.commit("march/updateState", {
         miniGameReady: { isReady: true }
       });
-      this.$store.commit("march/updateState", {
-        miniGameResult: { isSuccess: false }
-      });
     },
     async showMiniGame() {
       const showMiniGameDialog = create(MarchPlayMiniGame);
       const result = await showMiniGameDialog();
-      console.log("result", result);
+      console.log("mini game result", result);
     },
 
     async init() {
