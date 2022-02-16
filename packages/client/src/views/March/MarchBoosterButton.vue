@@ -6,15 +6,15 @@
     </div>
     <div class="flex flex-row flex-nowrap flex-space-between">
       <div
-        class="booster-hint flex flex-center font-size-30"
-        @click="buyHandler"
+        class="booster-hint flex flex-center font-size-30 pointer"
+        @click="hintHandler"
       >
         ?
       </div>
       <CheckedIcon v-if="hasBought" class="checked-icon" />
       <div
         v-else
-        class="booster-buy flex flex-center font-size-30"
+        class="booster-buy flex flex-center font-size-30 pointer"
         @click="buyHandler"
       >
         +
@@ -36,8 +36,12 @@ export default {
     return {};
   },
   methods: {
-    hintHandler() {},
-    buyHandler() {}
+    hintHandler() {
+      this.$emit("hint");
+    },
+    buyHandler() {
+      this.$emit("buy");
+    }
   }
 };
 </script>

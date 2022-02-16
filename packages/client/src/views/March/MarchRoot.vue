@@ -77,6 +77,7 @@ export default {
       // ) {
       //   this.showDailyRewards();
       // }
+      // this.showDailyRewards();
     },
     showDailyRewards() {
       const showDailyRewardsDialog = create(MarchDailyRewards);

@@ -8,13 +8,19 @@
             class="btn-booster"
             name="Max health???"
             :price="1000"
-            :hasBought="false"
+            :hasBought="preGameBooster && preGameBooster[march.BOOSTER_HP] > 0"
+            @hint="maxHealthHintHandler"
+            @buy="maxHealthBuyHandler"
           />
           <MarchBoosterButton
             class="btn-booster margin-left-6"
             name="Extra life???"
             :price="1000"
-            :hasBought="true"
+            :hasBought="
+              preGameBooster && preGameBooster[march.BOOSTER_LIFE] > 0
+            "
+            @hint="extraLifeHintHandler"
+            @buy="extraLifeBuyHandler"
           />
         </div>
         <div class="margin-top-6 flex flex-justify-center">
@@ -22,7 +28,9 @@
             class="btn-booster"
             name="Key???"
             :price="1000"
-            :hasBought="true"
+            :hasBought="preGameBooster && preGameBooster[march.BOOSTER_KEY] > 0"
+            @hint="marchBoosterHintHandler"
+            @buy="marchBoosterBuyHandler"
           />
         </div>
       </div>
@@ -41,20 +49,55 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
+import { create } from "vue-modal-dialogs";
+import * as march from "@/../../knightlands-shared/march";
 import MarchBalance from "@/views/March/MarchBalance.vue";
+import MarchBoosterHpHint from "@/views/March/MarchBoosterHpHint.vue";
+import MarchBoosterExtraLifeHint from "@/views/March/MarchBoosterExtraLifeHint.vue";
+import MarchBoosterKeyHint from "@/views/March/MarchBoosterKeyHint.vue";
 // import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
 import MarchBoosterButton from "@/views/March/MarchBoosterButton.vue";
 
 export default {
-  components: { MarchBalance, MarchBoosterButton },
+  components: {
+    MarchBalance,
+    MarchBoosterButton
+  },
   data() {
-    return {};
+    return {
+      march
+    };
+  },
+  computed: {
+    ...mapState("march", ["preGameBooster"])
   },
   methods: {
     upgradeHandler() {},
     async startHandler() {
       await this.$store.dispatch("march/startNewGame");
       this.$emit("next");
+    },
+    maxHealthHintHandler() {
+      const showDialog = create(MarchBoosterHpHint);
+      showDialog();
+    },
+    maxHealthBuyHandler() {
+      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
+    },
+    extraLifeHintHandler() {
+      const showDialog = create(MarchBoosterExtraLifeHint);
+      showDialog();
+    },
+    extraLifeBuyHandler() {
+      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_LIFE);
+    },
+    marchBoosterHintHandler() {
+      const showDialog = create(MarchBoosterKeyHint);
+      showDialog();
+    },
+    marchBoosterBuyHandler() {
+      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_KEY);
     }
   }
 };

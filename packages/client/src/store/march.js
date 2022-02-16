@@ -9,12 +9,17 @@ export default {
     loaded: false,
     // User
     balance: {
-      tickets: 15,
-      gold: 300
+      tickets: 0,
+      gold: 0
     },
     boosters: {
       maxHealth: 0,
       extraLife: 0,
+      key: 0
+    },
+    preGameBooster: {
+      booster_hp: 0,
+      life: 0,
       key: 0
     },
     // Playground
@@ -29,7 +34,9 @@ export default {
       armor: 0
     },
     cards: [],
-    sequence: null
+    sequence: null,
+    miniGameReady: null,
+    miniGameResult: null
   },
   getters: {
     cards: state => {
@@ -86,6 +93,9 @@ export default {
       if (data.boosters !== undefined) {
         state.boosters = data.boosters;
       }
+      if (data.preGameBooster !== undefined) {
+        state.preGameBooster = data.preGameBooster;
+      }
       if (data.stat !== undefined) {
         state.stat = data.stat;
       }
@@ -98,14 +108,23 @@ export default {
       if (data.sequence !== undefined) {
         state.sequence = data.sequence;
       }
+      if (data.miniGameResult !== undefined) {
+        state.miniGameResult = data.miniGameResult;
+      }
+      if (data.miniGameResult !== undefined) {
+        state.miniGameResult = data.miniGameResult;
+      }
     },
     setInitialState(state, data) {
       state.loaded = true;
       state.balance = data.user.balance;
       state.boosters = data.user.boosters;
+      state.preGameBooster = data.user.preGameBoosters;
       state.stat = data.map.stat;
       state.pet = data.map.pet;
       state.cards = data.map.cards;
+      state.miniGameReady = data.map.miniGameReady;
+      state.miniGameResult = data.map.miniGameResult;
     }
   },
   actions: {
@@ -131,13 +150,21 @@ export default {
       await this.$app.$game._wrapOperation(Operations.MarchStartNewGame);
     },
     async testAction(store, action) {
-      await this.$app.$game._wrapOperation(Operations.MarchTestAction, { action });
+      await this.$app.$game._wrapOperation(Operations.MarchTestAction, {
+        action
+      });
     },
     async collectDailyReward() {
       await this.$app.$game._wrapOperation(Operations.MarchCollectDailyReward);
     },
-    async purchase() {
-      await this.$app.$game._wrapOperation(Operations.MarchPurchase);
+    async purchase(store, type) {
+      await this.$app.$game._wrapOperation(Operations.MarchPurchase, { type });
+    },
+    async purchasePreGameBooster(store, type) {
+      await this.$app.$game._wrapOperation(
+        Operations.MarchPurchasePreGameBooster,
+        { type }
+      );
     }
   }
 };
