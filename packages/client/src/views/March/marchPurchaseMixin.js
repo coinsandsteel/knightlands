@@ -11,15 +11,15 @@ export default {
       if (this.balance && this.balance.gold >= gold) {
         return true;
       }
-      const showDialog = create(MarchNotEnoughBalance, { type: "gold" });
-      showDialog();
+      const showDialog = create(MarchNotEnoughBalance, "type");
+      showDialog("gold");
     },
     checkTicketBalance(tickets) {
       if (this.balance && this.balance.gold >= tickets) {
         return true;
       }
-      const showDialog = create(MarchNotEnoughBalance, { type: "tickets" });
-      showDialog();
+      const showDialog = create(MarchNotEnoughBalance, "type");
+      showDialog("tickets");
     }
   }
 };

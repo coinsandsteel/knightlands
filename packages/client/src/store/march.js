@@ -33,6 +33,7 @@ export default {
       level: 1,
       armor: 0
     },
+    selectedPetIndex: 0,
     cards: [],
     sequence: null,
     miniGameReady: {
@@ -87,6 +88,20 @@ export default {
       });
 
       return result;
+    },
+    pets() {
+      const pets = [
+        { id: "1", name: "Pet 1", level: 3, hasOwned: true },
+        { id: "2", name: "Pet 2", level: 2, hasOwned: true },
+        { id: "3", name: "Pet 3", level: 1, hasOwned: false },
+        { id: "4", name: "Pet 4", level: 1, hasOwned: false },
+        { id: "5", name: "Pet 5", level: 1, hasOwned: false }
+      ];
+
+      return pets;
+    },
+    selectedPet(state, getters) {
+      return getters.pets ? getters.pets[state.selectedPetIndex] : null;
     }
   },
   mutations: {
@@ -120,6 +135,7 @@ export default {
       }
     },
     setInitialState(state, data) {
+      console.log("setInitialState", data);
       state.loaded = true;
       state.balance = data.user.balance;
       state.boosters = data.user.boosters;

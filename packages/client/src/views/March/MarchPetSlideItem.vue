@@ -3,7 +3,7 @@
     <div class="pet-slider-item pet-1 relative">
       <img
         :src="
-          pet.discovered
+          pet.hasOwned
             ? '/images/march/pet1.png'
             : '/images/march/mystery-pet.png'
         "

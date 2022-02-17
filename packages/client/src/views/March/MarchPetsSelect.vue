@@ -5,6 +5,15 @@
     <!-- <div class="flex-full">pet</div> -->
     <div class="padding-top-5 padding-bottom-5">
       <CustomButton
+        v-if="canBuy"
+        type="yellow"
+        class="btn-upgrade inline-block"
+        @click="buyHandler"
+      >
+        Buy???
+      </CustomButton>
+      <CustomButton
+        v-if="canUpgrade"
         type="yellow"
         class="btn-upgrade inline-block"
         @click="upgradeHandler"
@@ -23,16 +32,50 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
 import MarchBalance from "@/views/March/MarchBalance.vue";
 import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
 
 export default {
+  mixins: [marchPurchaseMixin],
   components: { MarchBalance, MarchPetsSlide },
   data() {
     return {};
   },
+  computed: {
+    ...mapGetters("march", ["selectedPet"]),
+    canBuy() {
+      return this.selectedPet && !this.selectedPet.hasOwned;
+    },
+    canUpgrade() {
+      return (
+        this.selectedPet &&
+        this.selectedPet.hasOwned &&
+        typeof this.selectedPet.level === "number" &&
+        this.selectedPet.level < 3
+      );
+    },
+    buyPrice() {
+      return 10;
+    },
+    upgradePrice() {
+      return 0;
+    }
+  },
   methods: {
-    upgradeHandler() {},
+    buyHandler() {
+      if (!this.checkGoldBalance(this.buyPrice)) {
+        return;
+      }
+      this.$store.dispatch("march/purchase");
+    },
+    upgradeHandler() {
+      if (!this.checkGoldBalance(this.upgradePrice)) {
+        return;
+      }
+      this.$store.dispatch("march/purchase");
+    },
     selectHandler() {
       this.$emit("next");
     }

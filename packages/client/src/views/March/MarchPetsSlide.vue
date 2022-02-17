@@ -13,7 +13,7 @@
       :autoplay="false"
       height="100%"
       @change="changeHandler"
-      v-model="sliderIndex"
+      v-model="$store.state.march.selectedPetIndex"
     >
       <slider-item v-for="(pet, petIndex) in pets" :key="petIndex">
         <div class="pet-slide-item width-100 height-100 flex flex-center">
@@ -28,6 +28,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import MarchPetSlideItem from "@/views/March/MarchPetSlideItem.vue";
 export default {
   components: {
@@ -35,29 +36,22 @@ export default {
   },
   data() {
     return {
-      sliderIndex: 0
+      // sliderIndex: 0
     };
   },
   computed: {
-    pets() {
-      return [
-        { id: 1, name: "Pet 1", discovered: true, level: 2 },
-        { id: 2, name: "Pet 2", discovered: false },
-        { id: 3, name: "Pet 3", discovered: false },
-        { id: 4, name: "Pet 4", discovered: false },
-        { id: 5, name: "Pet 5", discovered: false }
-      ];
-    }
+    ...mapGetters("march", ["pets"])
   },
   methods: {
     goToNext() {
-      this.sliderIndex = (this.sliderIndex + 1) % this.pets.length;
+      this.$store.state.march.selectedPetIndex =
+        (this.$store.state.march.selectedPetIndex + 1) % this.pets.length;
     },
     goToPrev() {
-      this.sliderIndex =
-        (this.sliderIndex - 1 < 0
+      this.$store.state.march.selectedPetIndex =
+        (this.$store.state.march.selectedPetIndex - 1 < 0
           ? this.pets.length - 1
-          : this.sliderIndex - 1) % this.pets.length;
+          : this.$store.state.march.selectedPetIndex - 1) % this.pets.length;
     },
     changeHandler() {}
   }
