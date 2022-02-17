@@ -8,9 +8,9 @@
         v-if="canBuy"
         type="yellow"
         class="btn-upgrade inline-block"
-        @click="buyHandler"
+        @click="unlockHandler"
       >
-        Buy???
+        Unlock???
       </CustomButton>
       <CustomButton
         v-if="canUpgrade"
@@ -46,12 +46,12 @@ export default {
   computed: {
     ...mapGetters("march", ["selectedPet"]),
     canBuy() {
-      return this.selectedPet && !this.selectedPet.hasOwned;
+      return this.selectedPet && !this.selectedPet.unlocked;
     },
     canUpgrade() {
       return (
         this.selectedPet &&
-        this.selectedPet.hasOwned &&
+        this.selectedPet.unlocked &&
         typeof this.selectedPet.level === "number" &&
         this.selectedPet.level < 3
       );
@@ -64,17 +64,17 @@ export default {
     }
   },
   methods: {
-    buyHandler() {
+    async unlockHandler() {
       if (!this.checkGoldBalance(this.buyPrice)) {
         return;
       }
-      this.$store.dispatch("march/purchase");
+      await this.$store.dispatch("march/unlockPet", this.selectedPet.petClass);
     },
-    upgradeHandler() {
+    async upgradeHandler() {
       if (!this.checkGoldBalance(this.upgradePrice)) {
         return;
       }
-      this.$store.dispatch("march/purchase");
+      await this.$store.dispatch("march/upgradePet", this.selectedPet.petClass);
     },
     selectHandler() {
       this.$emit("next");

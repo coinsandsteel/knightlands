@@ -27,6 +27,7 @@ export default {
       level: 1,
       armor: 0
     },
+    pets: [],
     selectedPetIndex: 0,
     dailyRewards: [],
     // Playground
@@ -90,14 +91,25 @@ export default {
 
       return result;
     },
-    pets() {
+    pets(state) {
       const pets = [
-        { id: "1", name: "Pet 1", level: 3, hasOwned: true },
-        { id: "2", name: "Pet 2", level: 2, hasOwned: true },
-        { id: "3", name: "Pet 3", level: 1, hasOwned: false },
-        { id: "4", name: "Pet 4", level: 1, hasOwned: false },
-        { id: "5", name: "Pet 5", level: 1, hasOwned: false }
+        { petClass: 1, name: "Pet 1", level: 1, unlocked: false },
+        { petClass: 2, name: "Pet 2", level: 1, unlocked: false },
+        { petClass: 3, name: "Pet 3", level: 1, unlocked: false },
+        { petClass: 4, name: "Pet 4", level: 1, unlocked: false },
+        { petClass: 5, name: "Pet 5", level: 1, unlocked: false }
       ];
+
+      pets.forEach(pet => {
+        const petIndex = state.pets.findIndex(
+          loadedPet => loadedPet.petClass === pet.petClass
+        );
+        if (petIndex !== -1) {
+          pet.unlocked = true;
+          pet.level = state.pets[petIndex].level;
+        }
+        return pet;
+      });
 
       return pets;
     },
@@ -122,6 +134,9 @@ export default {
       if (data.pet !== undefined) {
         state.pet = data.pet;
       }
+      if (data.pets !== undefined) {
+        state.pets = data.pets;
+      }
       if (data.cards !== undefined) {
         state.cards = data.cards;
       }
@@ -144,6 +159,7 @@ export default {
       state.loaded = true;
       state.balance = data.user.balance;
       state.boosters = data.user.boosters;
+      state.pets = data.user.pets;
       state.preGameBoosters = data.user.preGameBoosters;
       state.stat = data.map.stat;
       state.pet = data.map.pet;
@@ -196,6 +212,16 @@ export default {
     async openChest(store, keyNumber) {
       await this.$app.$game._wrapOperation(Operations.MarchOpenChest, {
         keyNumber
+      });
+    },
+    async unlockPet(store, petClass) {
+      await this.$app.$game._wrapOperation(Operations.MarchUnlockPet, {
+        petClass
+      });
+    },
+    async upgradePet(store, petClass) {
+      await this.$app.$game._wrapOperation(Operations.MarchUpgradePet, {
+        petClass
       });
     }
   }
