@@ -22,18 +22,19 @@ export default {
       life: 0,
       key: 0
     },
-    // Playground
-    stat: {
-      stepsToNextBoss: 10,
-      bossesKilled: 0,
-      penaltySteps: 0
-    },
     pet: {
       petClass: 1,
       level: 1,
       armor: 0
     },
     selectedPetIndex: 0,
+    dailyRewards: [],
+    // Playground
+    stat: {
+      stepsToNextBoss: 10,
+      bossesKilled: 0,
+      penaltySteps: 0
+    },
     cards: [],
     sequence: null,
     miniGameReady: {
@@ -133,6 +134,10 @@ export default {
       if (data.miniGameResult !== undefined) {
         state.miniGameResult = data.miniGameResult;
       }
+      if (data.dailyRewards !== undefined) {
+        state.dailyRewards = data.dailyRewards;
+        this.$app.$emit("march-show-daily-reward");
+      }
     },
     setInitialState(state, data) {
       console.log("setInitialState", data);
@@ -143,6 +148,10 @@ export default {
       state.stat = data.map.stat;
       state.pet = data.map.pet;
       state.cards = data.map.cards;
+      state.dailyRewards = data.user.dailyRewards;
+      // if (state.dailyRewards) {
+      //   this.$app.$emit("march-show-daily-reward");
+      // }
     }
   },
   actions: {

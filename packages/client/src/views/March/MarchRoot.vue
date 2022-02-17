@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-// import { mapState } from "vuex";
+import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      hasShowDailyRewards: false,
       tabs: [
         {
           title: this.$t("Event Menu???"),
@@ -53,8 +54,15 @@ export default {
       currentTab: PlayTab
     };
   },
+  computed: {
+    ...mapState("march", ["dailyRewards"])
+  },
   created() {
     this.title = this.$t("window-march???");
+    this.$store.$app.$on("march-show-daily-reward", this.tryToShowRewards);
+  },
+  destroyed() {
+    this.$store.$app.$off("march-show-daily-reward");
   },
   async mounted() {
     this.$store.dispatch("march/subscribe");
@@ -71,17 +79,22 @@ export default {
       this.currentTab = newTab;
     },
     tryToShowRewards() {
-      // if (
-      //   this.dailyRewards &&
-      //   this.dailyRewards.find(({ active, collected }) => active && !collected)
-      // ) {
-      //   this.showDailyRewards();
-      // }
-      // this.showDailyRewards();
+      // console.log("march root: this.dailyRewards", [...this.dailyRewards]);
+      if (
+        this.dailyRewards &&
+        this.dailyRewards.find(({ active, collected }) => active && !collected)
+      ) {
+        this.showDailyRewards();
+      }
     },
-    showDailyRewards() {
+    async showDailyRewards() {
+      if (this.hasShowDailyRewards) {
+        return;
+      }
+      this.hasShowDailyRewards = true;
       const showDailyRewardsDialog = create(MarchDailyRewards);
-      showDailyRewardsDialog();
+      await showDailyRewardsDialog();
+      this.hasShowDailyRewards = false;
     }
   }
 };

@@ -57,7 +57,7 @@ export default {
       );
     },
     buyPrice() {
-      return 10;
+      return 0;
     },
     upgradePrice() {
       return 0;
