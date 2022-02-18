@@ -23,7 +23,7 @@
       </div>
     </div> -->
     <div
-      class="march-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-4 padding-bottom-4"
+      class="march-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-4 padding-bottom-4 relative"
     >
       <MarchStep
         class="march-step--with-background padding-left-2 margin-right-2"
@@ -37,6 +37,8 @@
         class="march-gold--with-background padding-left-2 margin-left-2"
         :value="balance ? balance.gold : 0"
       />
+
+      <div class="close-btn" @click="stopHandler"></div>
     </div>
     <div class="march-play-cards flex-full flex flex-center width-100">
       <div class="width-100 padding-left-6 padding-right-6">
@@ -84,6 +86,7 @@ import MarchCard from "@/views/March/MarchCard.vue";
 import MarchStep from "@/views/March/MarchStep.vue";
 import MarchBosses from "@/views/March/MarchBosses.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
+import MarchStopGame from "@/views/March/MarchStopGame.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -875,6 +878,14 @@ export default {
           return this.animateShake(this.getCardElement(target));
         })
       );
+    },
+
+    async stopHandler() {
+      const showDialog = create(MarchStopGame);
+      const result = await showDialog();
+      if (result) {
+        this.$emit("next");
+      }
     }
   }
 };
@@ -898,5 +909,9 @@ export default {
 }
 .march-card--adjacent {
   // background: rgba(blue, 0.2);
+}
+.close-btn {
+  top: 50%;
+  transform: translateY(-50%) scale(0.9);
 }
 </style>

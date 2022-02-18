@@ -22,11 +22,11 @@
       @next="nextHandler"
       @back="backHandler"
     />
-    <MarchPlaySummary
+    <!-- <MarchPlaySummary
       v-if="currentStep === PLAY_SUMMARY_STEP"
       @next="nextHandler"
       @back="backHandler"
-    />
+    /> -->
     <portal
       v-if="
         isActive &&
@@ -70,6 +70,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import MarchPetsSelect from "@/views/March/MarchPetsSelect.vue";
 import MarchBoosterSelect from "@/views/March/MarchBoosterSelect.vue";
@@ -80,7 +81,7 @@ import BackButton from "@/views/Common/BackButton.vue";
 const PET_SELECT_STEP = 1;
 const BOOSTER_SELECT_STEP = 2;
 const PLAY_FIELD_STEP = 3;
-const PLAY_SUMMARY_STEP = 4;
+// const PLAY_SUMMARY_STEP = 4;
 
 export default {
   mixins: [AppSection],
@@ -88,15 +89,15 @@ export default {
     MarchPetsSelect,
     MarchBoosterSelect,
     BackButton,
-    MarchPlayField,
-    MarchPlaySummary
+    MarchPlayField
+    // MarchPlaySummary
   },
   data() {
     return {
       PET_SELECT_STEP,
       BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
-      PLAY_SUMMARY_STEP,
+      // PLAY_SUMMARY_STEP,
       currentStep: PET_SELECT_STEP
     };
   },
@@ -112,11 +113,20 @@ export default {
       }
     },
     nextHandler() {
-      if (this.currentStep === PLAY_SUMMARY_STEP) {
-        this.currentStep = PET_SELECT_STEP;
+      // if (this.currentStep === PLAY_SUMMARY_STEP) {
+      //   this.currentStep = PET_SELECT_STEP;
+      //   return;
+      // }
+      if (this.currentStep === PLAY_FIELD_STEP) {
+        this.showSummary();
         return;
       }
       ++this.currentStep;
+    },
+    async showSummary() {
+      const showDialog = create(MarchPlaySummary);
+      await showDialog("gold");
+      this.currentStep = PET_SELECT_STEP;
     },
     goToShop() {
       this.$router.push({ name: "march-shop" });

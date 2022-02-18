@@ -1,28 +1,29 @@
 <template>
-  <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
-    <div class="flex-full flex flex-center">
-      <div class="text-center">
-        <div class="font-size-3 font-weight-900 padding-bottom-4">
-          Congratulations!???
-        </div>
-        <div>
-          <MarchGold class="inline-block" />
-        </div>
-        <div>
-          <MarchBosses class="inline-block" />
+  <UserDialog title="Congratulations!???" @close="close">
+    <template v-slot:content>
+      <div
+        class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
+      >
+        <div class="flex-full flex flex-center font-size-22">
+          <div class="text-center margin-top-1">
+            <div class="flex flex-no-wrap flex-justify-center">
+              <div class="margin-right-2">Bosses killed:</div>
+              <MarchGold :value="-1" />
+            </div>
+            <div class="flex flex-no-wrap flex-justify-center margin-top-2">
+              <div class="margin-right-2">Coins earned:</div>
+              <MarchBosses :value="-1" />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="padding-top-5 padding-bottom-5">
-      <CustomButton
-        type="green"
-        class="btn-start inline-block"
-        @click="$emit('next')"
-      >
-        To main menu???
+    </template>
+    <template v-slot:footer>
+      <CustomButton type="green" class="btn-start inline-block" @click="close">
+        Ok???
       </CustomButton>
-    </div>
-  </div>
+    </template>
+  </UserDialog>
 </template>
 <script>
 import MarchGold from "@/views/March/MarchGold.vue";
@@ -35,6 +36,11 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    close() {
+      this.$close();
+    }
   }
 };
 </script>

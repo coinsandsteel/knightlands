@@ -27,12 +27,21 @@
       >
         {{ card.hp }}
       </div>
+      <div
+        v-if="secondaryHp"
+        class="march-card-secondary-hp absolute-top-right flex flex-center line-height-0 font-size-25 font-weight-700"
+      >
+        {{ secondaryHp }}
+      </div>
       <div class="march-card-effects absolute-stretch width-100 height-100" />
     </div>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import useSwipe from "@/helpers/useSwipe";
+import * as march from "@/../../knightlands-shared/march";
+
 export default {
   props: {
     card: Object
@@ -43,8 +52,24 @@ export default {
     };
   },
   computed: {
+    ...mapState("march", ["pet"]),
     canSwipe() {
       return this.card && this.card.canSwipe;
+    },
+    secondaryHp() {
+      if (!this.card) {
+        return null;
+      }
+
+      if (
+        this.card.unitClass === march.UNIT_CLASS_PET &&
+        this.pet &&
+        this.pet.armor > 0
+      ) {
+        return this.pet.armor;
+      }
+
+      return null;
     }
   },
   watch: {
@@ -154,7 +179,8 @@ export default {
   background-image: url("/images/march/march_gold.png");
   background-size: 25%;
 }
-.march-card-hp {
+.march-card-hp,
+.march-card-secondary-hp {
   // background: #fff;
   // border: 0.5rem solid #222;
   // border-radius: 50%;
@@ -165,6 +191,11 @@ export default {
   background-size: 100%;
   background-repeat: no-repeat;
   transform: translate(10%, 0);
+}
+.march-card-secondary-hp {
+  transform: translate(-10%, 0);
+  background-image: url("/images/march/pet_bg.png");
+  color: #fff;
 }
 // .march-card--pet .march-card-hp,
 // .march-card--ball_lightning .march-card-hp,
@@ -180,8 +211,9 @@ export default {
 // .march-card--extra_hp .march-card-hp,
 // .march-card--armor .march-card-hp,
 // .march-card--gold .march-card-hp
-{
+ {
   background-image: url("/images/march/red_marker.png");
+  color: #fff;
 }
 .march-card-effects {
   z-index: 1;
