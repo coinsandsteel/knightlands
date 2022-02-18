@@ -133,6 +133,7 @@ export default {
       }
       if (data.pet !== undefined) {
         state.pet = data.pet;
+        state.selectedPetIndex = data.pet.petClass - 1;
       }
       if (data.pets !== undefined) {
         state.pets = data.pets;
@@ -165,6 +166,10 @@ export default {
       state.pet = data.map.pet;
       state.cards = data.map.cards;
       state.dailyRewards = data.user.dailyRewards;
+
+      if (data.map.pet) {
+        state.selectedPetIndex = data.map.pet.petClass - 1;
+      }
       // if (state.dailyRewards) {
       //   this.$app.$emit("march-show-daily-reward");
       // }

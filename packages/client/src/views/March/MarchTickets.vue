@@ -1,5 +1,10 @@
 <template>
-  <div class="font-size-20">Tickets???: {{ tickets }}</div>
+  <div
+    class="march-tickets march-tickets--with-background font-size-20 flex flex-nowrap flex-items-center"
+  >
+    <div class="march-tickets-icons"></div>
+    {{ tickets }}
+  </div>
 </template>
 <script>
 export default {
@@ -18,4 +23,19 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.march-tickets-icons {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  background-image: url("../../assets/march/march_tickets.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.march-tickets--with-background {
+  background: #214c6c;
+  border-radius: 3px;
+  padding: 0 1rem;
+}
+</style>

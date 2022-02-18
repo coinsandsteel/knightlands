@@ -1,9 +1,13 @@
 <template>
   <div
-    class="flex width-100 flex-row flex-no-wrap flex-justify-center padding-top-2 padding-bottom-2"
+    class="flex width-100 flex-row flex-no-wrap flex-justify-center padding-top-4 padding-bottom-4"
   >
-    <MarchTickets class="padding-left-2" />
-    <MarchGold class="padding-left-2" />
+    <MarchTickets
+      class="march-tickets--with-background padding-left-2 margin-right-2"
+    />
+    <MarchGold
+      class="march-gold--with-background padding-left-2 margin-left-2"
+    />
   </div>
 </template>
 <script>

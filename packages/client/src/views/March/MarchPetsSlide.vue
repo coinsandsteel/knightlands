@@ -1,6 +1,9 @@
 <template>
   <div class="march-pets-grid">
-    <span class="zone-nav flex flex-center" @click="goToPrev">
+    <span
+      class="zone-nav flex flex-justify-end flex-items-center"
+      @click="goToPrev"
+    >
       <div class="nav-arrow left"></div>
     </span>
 
@@ -22,7 +25,10 @@
       </slider-item>
     </slider>
 
-    <span class="zone-nav right flex flex-center" @click="goToNext">
+    <span
+      class="zone-nav right flex flex-justify-start flex-items-center"
+      @click="goToNext"
+    >
       <div class="nav-arrow"></div>
     </span>
   </div>
@@ -59,11 +65,16 @@ export default {
 </script>
 <style scoped lang="less">
 @import (reference) "../../style/common.less";
+.slider {
+  width: 240px !important;
+  height: 200px;
+  min-height: 200px;
+  max-width: 80vw;
+}
 .march-pets-grid {
   display: grid;
-  grid-template-columns: 5rem 1fr 5rem;
+  grid-template-columns: 1fr auto 1fr;
   grid-template-rows: 1fr;
-  height: 25vh;
   justify-content: center;
 }
 .zone-nav {

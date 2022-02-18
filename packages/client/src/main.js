@@ -22,6 +22,7 @@ import VueLazyload from "vue-lazyload";
 import VueResizeText from "vue-resize-text";
 import CustomButton from "@/components/Button.vue";
 import UserDialog from "@/components/UserDialog.vue";
+import Title from "@/components/Title.vue";
 
 Vue.use(VueResizeText);
 Vue.use(VueLazyload);
@@ -42,6 +43,7 @@ Vue.use(VueAgile);
 Vue.use(LoadScript);
 Vue.component("CustomButton", CustomButton);
 Vue.component("UserDialog", UserDialog);
+Vue.component("Title", Title);
 
 Vue.config.debug = true;
 Vue.config.productionTip = false;
