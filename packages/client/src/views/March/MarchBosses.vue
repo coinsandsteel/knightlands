@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="march-bosses march-bosses--with-background font-size-20 flex flex-nowrap flex-items-center"
-  >
+  <div class="march-bosses font-size-20 flex flex-nowrap flex-items-center">
     <div class="march-bosses-icons"></div>
     {{ bosses }}
   </div>
@@ -29,7 +27,7 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 4px;
-  background-image: url("../../assets/march/icon_boss.png");
+  background-image: url("/images/march/icon_boss.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

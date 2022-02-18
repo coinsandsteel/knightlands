@@ -47,7 +47,7 @@ export default {
   max-width: 80vw;
   height: 0;
   padding-bottom: 100%;
-  background-image: url("../../assets/march/pet_container.png");
+  background-image: url("/images/march/pet_container.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

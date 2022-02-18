@@ -18,7 +18,7 @@ export default {
         return this.value;
       }
 
-      return this.$store.state.march.balance.tickets;
+      return this.$store.state.march.balance.tickets || 0;
     }
   }
 };
@@ -29,7 +29,7 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 4px;
-  background-image: url("../../assets/march/march_tickets.png");
+  background-image: url("/images/march/march_tickets.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

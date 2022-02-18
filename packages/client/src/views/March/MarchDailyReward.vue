@@ -72,7 +72,7 @@ export default {
 .ticket-background {
   background-repeat: no-repeat;
   // background-image: url("../../assets/sprites/icons.png");
-  background-image: url("../../assets/march/march_tickets.png");
+  background-image: url("/images/march/march_tickets.png");
   // background-position: 62.6488% 15.4234%;
   background-size: 100%;
   transform: scale(0.5, 0.5);

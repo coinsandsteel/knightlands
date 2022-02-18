@@ -3,17 +3,27 @@
     v-if="card"
     ref="card"
     class="march-card relative restrict-selection pointer"
-    :class="{
-      'march-card--pet': card.isPet,
-      'march-card--adjacent': card.isAdjacent
-    }"
+    :class="[
+      `march-card--${card.unitClass}`,
+      {
+        'march-card--pet': card.isPet,
+        'march-card--adjacent': card.isAdjacent
+      }
+    ]"
     @click="clickHandler"
   >
     <div class="march-card-container absolute-stretch width-100 height-100">
-      <div class="font-size-22">{{ card.unitClass }}</div>
+      <div class="march-card-unit-background absolute-stretch"></div>
+      <!-- @todo: remove -->
+      <div
+        class="font-size-22 absolute"
+        style="top: 14px; left: 0; width: 100%"
+      >
+        {{ card.unitClass }}
+      </div>
       <div
         v-if="card.hp"
-        class="march-card-hp absolute-bottom-left flex flex-center line-height-0 font-size-25 font-weight-700"
+        class="march-card-hp absolute-top-left flex flex-center line-height-0 font-size-25 font-weight-700"
       >
         {{ card.hp }}
       </div>
@@ -87,19 +97,91 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.march-card--pet .march-card-container {
-  background-image: url("/images/march/pet1.png");
+.march-card {
+  padding-bottom: 100%;
+  // background: rgba(255, 0, 0, 0.2);
+  background-image: url("/images/march/card_bg.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+.march-card-unit-background {
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 60%;
+  background-position: center;
+  background-size: 50%;
+}
+.march-card--pet .march-card-unit-background {
+  background-image: url("/images/march/pet.png");
+}
+.march-card--ball_lightning .march-card-unit-background {
+  background-image: url("/images/march/ball_lightning.png");
+}
+.march-card--dragon_breath .march-card-unit-background {
+  background-image: url("/images/march/dragon_breath.png");
+}
+.march-card--bomb .march-card-unit-background {
+  background-image: url("/images/march/bomb.png");
+}
+.march-card--bow .march-card-unit-background {
+  background-image: url("/images/march/bow.png");
+}
+.march-card--chest .march-card-unit-background {
+  background-image: url("/images/march/chest.png");
+}
+.march-card--barrel .march-card-unit-background {
+  background-image: url("/images/march/barrel.png");
+}
+.march-card--enemy .march-card-unit-background {
+  background-image: url("/images/march/enemy.png");
+}
+.march-card--enemy_boss .march-card-unit-background {
+  background-image: url("/images/march/enemy_boss.png");
+}
+.march-card--trap .march-card-unit-background {
+  background-image: url("/images/march/trap.png");
+}
+.march-card--hp .march-card-unit-background {
+  background-image: url("/images/march/hp.png");
+}
+.march-card--extra_hp .march-card-unit-background {
+  background-image: url("/images/march/extra_hp.png");
+}
+.march-card--armor .march-card-unit-background {
+  background-image: url("/images/march/armor.png");
+}
+.march-card--gold .march-card-unit-background {
+  background-image: url("/images/march/march_gold.png");
+  background-size: 25%;
 }
 .march-card-hp {
-  background: #fff;
-  border: 0.5rem solid #222;
-  border-radius: 50%;
+  // background: #fff;
+  // border: 0.5rem solid #222;
+  // border-radius: 50%;
   width: 4rem;
   height: 4rem;
-  color: #222;
+  color: #0f2b44;
+  background-image: url("/images/march/green_marker.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  transform: translate(10%, 0);
+}
+// .march-card--pet .march-card-hp,
+// .march-card--ball_lightning .march-card-hp,
+// .march-card--dragon_breath .march-card-hp,
+// .march-card--bomb .march-card-hp,
+// .march-card--bow .march-card-hp,
+.march-card--chest .march-card-hp,
+.march-card--barrel .march-card-hp,
+.march-card--enemy .march-card-hp,
+.march-card--enemy_boss .march-card-hp,
+.march-card--trap .march-card-hp
+// .march-card--hp .march-card-hp,
+// .march-card--extra_hp .march-card-hp,
+// .march-card--armor .march-card-hp,
+// .march-card--gold .march-card-hp
+{
+  background-image: url("/images/march/red_marker.png");
 }
 .march-card-effects {
   z-index: 1;

@@ -1,6 +1,6 @@
 <template>
   <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
-    <div class="flex flex-row flex-no-wrap flex-justify-center font-size-22">
+    <!-- <div class="flex flex-row flex-no-wrap flex-justify-center font-size-22">
       <div class="padding-right-2">
         HP???: {{ petCard ? petCard.hp + "/" + petCard.maxHp : 0 }}
       </div>
@@ -21,8 +21,24 @@
       <div class="padding-left-2">
         Gold???: {{ balance ? balance.gold : 0 }}
       </div>
+    </div> -->
+    <div
+      class="march-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-4 padding-bottom-4"
+    >
+      <MarchStep
+        class="march-step--with-background padding-left-2 margin-right-2"
+        :value="stat ? stat.stepsToNextBoss : 0"
+      />
+      <MarchBosses
+        class="march-bosses--with-background padding-left-2 margin-right-2 margin-left-2"
+        :value="stat ? stat.bossesKilled : 0"
+      />
+      <MarchGold
+        class="march-gold--with-background padding-left-2 margin-left-2"
+        :value="balance ? balance.gold : 0"
+      />
     </div>
-    <div class="flex-full flex flex-center width-100">
+    <div class="march-play-cards flex-full flex flex-center width-100">
       <div class="width-100 padding-left-6 padding-right-6">
         <div class="march-cards-container" ref="marchCardsContainer">
           <MarchCard
@@ -65,6 +81,9 @@ import explode from "@/helpers/explodeAnimation";
 import lightningAnimation from "@/helpers/lightningAnimation";
 import MarchPlayMiniGame from "@/views/March/MarchPlayMiniGame.vue";
 import MarchCard from "@/views/March/MarchCard.vue";
+import MarchStep from "@/views/March/MarchStep.vue";
+import MarchBosses from "@/views/March/MarchBosses.vue";
+import MarchGold from "@/views/March/MarchGold.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -76,7 +95,10 @@ const explodeColors = ["#aaa", "#ccc", "#eee"];
 
 export default {
   components: {
-    MarchCard
+    MarchCard,
+    MarchStep,
+    MarchBosses,
+    MarchGold
   },
   data() {
     return {
@@ -858,14 +880,18 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.march-play-stat {
+  background: #2f7285;
+}
+.march-play-cards {
+  background-image: url("/images/march/game_background.jpg");
+  background-size: cover;
+  background-position: bottom;
+}
 .march-cards-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
-}
-.march-card {
-  padding-bottom: 100%;
-  background: rgba(255, 0, 0, 0.2);
 }
 .march-card--pet {
   // background: rgba(green, 0.2);
