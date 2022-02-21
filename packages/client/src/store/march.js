@@ -9,7 +9,6 @@ export default {
     loaded: false,
     // User
     balance: {
-      tickets: 0,
       gold: 0
     },
     boosters: {
