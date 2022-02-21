@@ -55,6 +55,9 @@ export default {
       this.$emit("hint");
     },
     buyHandler() {
+      if (this.hasBought) {
+        return;
+      }
       this.$emit("buy");
     }
   }

@@ -161,6 +161,7 @@ export default {
         state.cards = data.cards;
       }
       if (data.sequence !== undefined) {
+        console.log("new sequence", [...data.sequence]);
         state.sequence = data.sequence;
       }
       if (data.miniGameReady !== undefined) {
