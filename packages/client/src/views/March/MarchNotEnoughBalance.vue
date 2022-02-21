@@ -6,7 +6,7 @@
     </template>
     <template v-slot:footer>
       <CustomButton type="yellow" @click="goToShop"
-        >{{ $t("purchase") }}
+        >{{ $t("Purchase") }}
       </CustomButton>
     </template>
   </UserDialog>

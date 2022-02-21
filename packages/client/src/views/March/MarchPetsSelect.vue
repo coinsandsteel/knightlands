@@ -50,6 +50,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import * as march from "@/../../knightlands-shared/march";
 import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
 import MarchBalance from "@/views/March/MarchBalance.vue";
 import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
@@ -78,9 +79,25 @@ export default {
       return this.selectedPet && this.selectedPet.unlocked;
     },
     buyPrice() {
+      if (!this.selectedPet) {
+        return 0;
+      }
+      if (!this.selectedPet.unlocked) {
+        return march.PETS_PRICE[this.selectedPet.petClass - 1][0];
+      }
+
       return 0;
     },
     upgradePrice() {
+      if (!this.selectedPet) {
+        return null;
+      }
+      if (this.selectedPet.level < 3) {
+        return march.PETS_PRICE[this.selectedPet.petClass - 1][
+          this.selectedPet.level
+        ];
+      }
+
       return 0;
     }
   },

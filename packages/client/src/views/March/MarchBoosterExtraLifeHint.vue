@@ -1,9 +1,13 @@
 <template>
-  <UserDialog title="March Booster extra life???" @close="close">
+  <UserDialog title="Extra life???" @close="close">
     <template v-slot:content>
       <!-- tips -->
       <div class="font-size-20">
-        {{ $t("march booster extra life hint???") }}
+        {{
+          $t(
+            "A booster is something that increases a positive or disirable quality???"
+          )
+        }}
       </div>
     </template>
     <template v-slot:footer>

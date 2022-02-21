@@ -2,11 +2,11 @@
   <UserDialog title="Abandon Game???" @close="close()">
     <template v-slot:footer>
       <div class="flex flex-no-wrap flex-justify-center">
-        <CustomButton type="green" @click="close()"
-          >{{ $t("Resume") }}
-        </CustomButton>
         <CustomButton type="red" @click="close(true)"
           >{{ $t("Exit") }}
+        </CustomButton>
+        <CustomButton type="green" @click="close()"
+          >{{ $t("Resume") }}
         </CustomButton>
       </div>
     </template>

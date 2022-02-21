@@ -1,40 +1,38 @@
 <template>
   <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
-    <MarchBalance />
-    <div class="flex-full width-100 flex flex-center">
-      <div>
-        <div class="flex flex-justify-center">
-          <MarchBoosterButton
-            class="btn-booster"
-            name="Max health???"
-            :price="1000"
-            :hasBought="preGameBoosters && preGameBoosters.maxHealth > 0"
-            @hint="maxHealthHintHandler"
-            @buy="maxHealthBuyHandler"
-          />
-          <MarchBoosterButton
-            class="btn-booster margin-left-6"
-            name="Extra life???"
-            :price="1000"
-            :hasBought="preGameBoosters && preGameBoosters.extraLife > 0"
-            @hint="extraLifeHintHandler"
-            @buy="extraLifeBuyHandler"
-          />
-        </div>
-        <div class="margin-top-6 flex flex-justify-center">
-          <MarchBoosterButton
-            class="btn-booster"
-            name="Key???"
-            :price="1000"
-            :hasBought="preGameBoosters && preGameBoosters.key > 0"
-            @hint="marchBoosterKeyHintHandler"
-            @buy="marchBoosterKeyBuyHandler"
-          />
-        </div>
-      </div>
+    <MarchBalance class="march-pets-select__balance padding-bottom-6" />
+    <Title class="">{{ $t("Choose Booster???") }}</Title>
+    <div class="march-boosters _flex-full width-100">
+      <MarchBoosterButton
+        class="btn-booster"
+        name="Max health???"
+        type="max-hp"
+        :price="maxHpPrice"
+        :hasBought="preGameBoosters && preGameBoosters.maxHealth > 0"
+        @hint="maxHealthHintHandler"
+        @buy="maxHealthBuyHandler"
+      />
+      <MarchBoosterButton
+        class="btn-booster"
+        name="Extra life???"
+        type="extra-life"
+        :price="lifePrice"
+        :hasBought="preGameBoosters && preGameBoosters.extraLife > 0"
+        @hint="extraLifeHintHandler"
+        @buy="extraLifeBuyHandler"
+      />
+      <MarchBoosterButton
+        class="btn-booster"
+        name="Key???"
+        type="key"
+        :price="keyPrice"
+        :hasBought="preGameBoosters && preGameBoosters.key > 0"
+        @hint="marchBoosterKeyHintHandler"
+        @buy="marchBoosterKeyBuyHandler"
+      />
     </div>
     <!-- <div class="flex-full">pet</div> -->
-    <div class="padding-top-5 padding-bottom-5">
+    <div class="">
       <CustomButton
         type="green"
         class="btn-start inline-block"
@@ -71,14 +69,14 @@ export default {
   },
   computed: {
     ...mapState("march", ["preGameBoosters"]),
-    hpPrice() {
-      return 0;
+    maxHpPrice() {
+      return march.MAX_HP_BOOSTER_PRICE;
     },
     lifePrice() {
-      return 0;
+      return march.EXTRA_LIFE_BOOSTER_PRICE;
     },
     keyPrice() {
-      return 0;
+      return march.KEY_BOOSTER_PRICE;
     }
   },
   methods: {
@@ -92,7 +90,7 @@ export default {
       showDialog();
     },
     maxHealthBuyHandler() {
-      if (!this.checkGoldBalance(this.hpPrice)) {
+      if (!this.checkGoldBalance(this.maxHpPrice)) {
         return;
       }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
@@ -121,8 +119,25 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.march-pets-select__balance {
+  background: #2f7285;
+}
+.common-title {
+  margin-top: -8px;
+}
 .btn-start {
   padding-left: 3rem;
   padding-right: 3rem;
+}
+.march-boosters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 3rem;
+  justify-content: center;
+  justify-items: center;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  margin-top: 8rem;
+  margin-bottom: 8rem;
 }
 </style>

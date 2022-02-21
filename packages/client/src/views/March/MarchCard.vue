@@ -194,7 +194,7 @@ export default {
 }
 .march-card-secondary-hp {
   transform: translate(-10%, 0);
-  background-image: url("/images/march/pet_bg.png");
+  background-image: url("/images/march/blue_marker.png");
   color: #fff;
 }
 // .march-card--pet .march-card-hp,
