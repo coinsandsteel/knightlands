@@ -28,7 +28,7 @@
         </div>
       </div> -->
     </div>
-    <div class="_pet-slider-item-pet-name font-size-25">{{ pet.name }}</div>
+    <!-- <div class="_pet-slider-item-pet-name font-size-25">{{ pet.name }}</div> -->
   </div>
 </template>
 <script>

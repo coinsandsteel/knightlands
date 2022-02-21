@@ -113,6 +113,25 @@ export default {
 
       return pets;
     },
+    allPets(state, getters) {
+      const result = [];
+
+      for (let i = 0; i < getters.pets.length; i++) {
+        const currentPet = getters.pets[i];
+        for (let j = 1; j <= 3; j++) {
+          const pet = { ...currentPet };
+          pet.key = `pet-${i + 1}-${j}`;
+          pet.level = j;
+          if (currentPet.unlocked) {
+            pet.unlocked = pet.level <= currentPet.level;
+          }
+
+          result.push(pet);
+        }
+      }
+
+      return result;
+    },
     selectedPet(state, getters) {
       return getters.pets ? getters.pets[state.selectedPetIndex] : null;
     }
