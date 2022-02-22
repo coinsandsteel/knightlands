@@ -1,5 +1,86 @@
 <template>
   <div class="screen-content">
+    <div class="march-rating-rewards-wrapper padding-bottom-2">
+      <div
+        class="march-rating-rewards font-size-20 padding-bottom-2 padding-top-2 text-align-left"
+      >
+        <!-- 1st -->
+        <div
+          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
+        >
+          <div class="r icon-rank1"></div>
+          <div class="margin-left-1">1st place:</div>
+          <IconWithValue
+            iconClass="icon-dkt"
+            valueClass="margin-half"
+            class="margin-left-1"
+          >
+            {{ 100500 }}
+          </IconWithValue>
+        </div>
+        <br />
+        <!-- 2nd -->
+        <div
+          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
+        >
+          <div class="r icon-rank2"></div>
+          <div class="margin-left-1">2nd place:</div>
+          <IconWithValue
+            iconClass="icon-dkt"
+            valueClass="margin-half"
+            class="margin-left-1"
+          >
+            {{ 10050 }}
+          </IconWithValue>
+        </div>
+        <br />
+        <!-- 3rd -->
+        <div
+          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
+        >
+          <div class="r icon-rank3"></div>
+          <div class="margin-left-1">3rd place:</div>
+          <IconWithValue
+            iconClass="icon-dkt"
+            valueClass="margin-half"
+            class="margin-left-1"
+          >
+            {{ 1005 }}
+          </IconWithValue>
+        </div>
+        <br />
+        <!-- 4-7 -->
+        <div
+          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
+        >
+          <div class="r icon-rank3 icon-rank3-4"></div>
+          <div class="margin-left-1">4-7 place:</div>
+          <IconWithValue
+            iconClass="icon-dkt"
+            valueClass="margin-half"
+            class="margin-left-1"
+          >
+            {{ 100 }}
+          </IconWithValue>
+        </div>
+        <br />
+        <!-- 8-10 -->
+        <div
+          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
+        >
+          <div class="r icon-rank3 icon-rank3-5"></div>
+          <div class="margin-left-1">8-10 place:</div>
+          <IconWithValue
+            iconClass="icon-dkt"
+            valueClass="margin-half"
+            class="margin-left-1"
+          >
+            {{ 10 }}
+          </IconWithValue>
+        </div>
+      </div>
+    </div>
+    <Title class="common-title">Top Player???</Title>
     <div
       class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
     >
@@ -20,13 +101,6 @@
             :height="itemSize"
           />
         </RecycleScroller>
-      </div>
-      <div class="font-size-20 padding-bottom-2 padding-top-2">
-        First place reward: <br />
-        Second place reward: <br />
-        Third place reward: <br />
-        4-7 place reward: <br />
-        8-10 place reward: <br />
       </div>
     </div>
   </div>
@@ -64,4 +138,22 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.march-rating-rewards-wrapper {
+  background: #2f7285;
+}
+.march-rating-rewards {
+  width: 140px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.common-title {
+  margin-top: -2rem;
+}
+.icon-rank3-4 {
+  filter: hue-rotate(240deg);
+}
+.icon-rank3-5 {
+  filter: hue-rotate(90deg);
+}
+</style>
