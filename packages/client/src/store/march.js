@@ -267,5 +267,13 @@ export default {
       ) % getters.pets.length;
       commit("setPetIndex", newIndex);
     },
+    async rankings(store, { personal = false, page = 1, total = false, petClass = 1 }) {
+      return (await this.$app.$game._wrapOperation(Operations.MarchRanking, {
+        petClass,
+        personal,
+        page,
+        total
+      })).response;
+    }
   }
 };

@@ -520,9 +520,9 @@ const router = new Router({
           component: () => import("./views/March/MarchPets.vue")
         },
         {
-          path: "rating",
-          name: "march-rating",
-          component: () => import("./views/March/MarchRating.vue")
+          path: "rankings",
+          name: "march-rankings",
+          component: () => import("./views/March/Rankings/MarchRankings.vue")
         },
         {
           path: "shop",
