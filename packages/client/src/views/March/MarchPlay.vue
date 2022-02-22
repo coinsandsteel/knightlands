@@ -98,6 +98,7 @@ import MarchBoosterSelect from "@/views/March/MarchBoosterSelect.vue";
 import MarchPlayField from "@/views/March/MarchPlayField.vue";
 import MarchPlaySummary from "@/views/March/MarchPlaySummary.vue";
 import BackButton from "@/views/Common/BackButton.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const PET_SELECT_STEP = 1;
 const BOOSTER_SELECT_STEP = 2;
@@ -105,7 +106,7 @@ const PLAY_FIELD_STEP = 3;
 // const PLAY_SUMMARY_STEP = 4;
 
 export default {
-  mixins: [AppSection],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
     MarchPetsSelect,
     MarchBoosterSelect,
