@@ -1,8 +1,8 @@
 <template>
   <UserDialog title="Mini game???" emitClose hideCloseBtn>
     <template v-slot:content>
-      <div class="text-center padding-top-2 padding-bottom-2 font-size-20">
-        Keys: 1
+      <div class="text-center padding-bottom-2 font-size-20">
+        Select 1 chest???
       </div>
       <div class="flex flex-row flex-no-wrap flex-space-around">
         <div
@@ -10,9 +10,7 @@
           v-for="(lock, lockIndex) in locks"
           :key="lockIndex"
           @click="lockSelectHandler(lockIndex)"
-        >
-          Lock
-        </div>
+        ></div>
       </div>
     </template>
     <!-- <template v-slot:footer>
@@ -65,7 +63,7 @@ export default {
 .march-lock {
   width: 40px;
   height: 40px;
-  background: #ccc;
+  background: url("/images/march/icon_chest.png") center / 100% no-repeat;
   color: #222;
   margin-left: 8px;
   margin-right: 8px;
