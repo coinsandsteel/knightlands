@@ -108,10 +108,10 @@ export default {
       if (!this.checkGoldBalance(this.maxHpPrice)) {
         return;
       }
-      const result = await this.confirm();
+      /*const result = await this.confirm();
       if (!result) {
         return;
-      }
+      }*/
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
     },
     extraLifeHintHandler() {
@@ -122,10 +122,10 @@ export default {
       if (!this.checkGoldBalance(this.lifePrice)) {
         return;
       }
-      const result = await this.confirm();
+      /*const result = await this.confirm();
       if (!result) {
         return;
-      }
+      }*/
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_LIFE);
     },
     marchBoosterKeyHintHandler() {
@@ -136,10 +136,10 @@ export default {
       if (!this.checkGoldBalance(this.keyPrice)) {
         return;
       }
-      const result = await this.confirm();
+      /*const result = await this.confirm();
       if (!result) {
         return;
-      }
+      }*/
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_KEY);
     }
   }

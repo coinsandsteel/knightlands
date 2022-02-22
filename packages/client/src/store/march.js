@@ -225,6 +225,9 @@ export default {
     async startNewGame() {
       await this.$app.$game._wrapOperation(Operations.MarchStartNewGame);
     },
+    async exitGame() {
+      await this.$app.$game._wrapOperation(Operations.MarchExitGame);
+    },
     async testAction(store, action) {
       await this.$app.$game._wrapOperation(Operations.MarchTestAction, {
         action
