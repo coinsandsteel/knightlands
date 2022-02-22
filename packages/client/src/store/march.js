@@ -9,6 +9,7 @@ export default {
     loaded: false,
     // User
     balance: {
+      sessionGold: 0,
       gold: 0
     },
     boosters: {
@@ -138,7 +139,7 @@ export default {
   mutations: {
     updateState(state, data) {
       if (data.balance !== undefined) {
-        state.balance = data.balance;
+        state.balance = { ...state.balance, ...data.balance };
       }
       if (data.boosters !== undefined) {
         state.boosters = data.boosters;

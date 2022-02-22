@@ -35,7 +35,7 @@
       />
       <MarchGold
         class="march-gold--with-background padding-left-2 margin-left-2"
-        :value="balance ? balance.gold : 0"
+        :value="balance ? balance.sessionGold : 0"
       />
 
       <div class="close-btn" @click="stopHandler"></div>
