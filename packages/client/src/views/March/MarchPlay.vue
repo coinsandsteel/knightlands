@@ -50,11 +50,32 @@
           "
         >
           <CustomButton
+            type="yellow"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('resetDailyRewards')"
+          >
+            Reset rewards
+          </CustomButton>
+          <CustomButton
+            type="yellow"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('plus1Day')"
+          >
+            +1 day
+          </CustomButton>
+          <CustomButton
+            type="blue"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('addTicket')"
+          >
+            Add ticket
+          </CustomButton>
+          <CustomButton
             type="green"
             class="inline-block margin-right-2 margin-top-1"
             @click="goToShop"
           >
-            Purchase
+            Purchase gold
           </CustomButton>
           <CustomButton
             type="blue"
@@ -107,6 +128,11 @@ export default {
     })
   },
   methods: {
+    async testAction(action) {
+      await this.performRequestNoCatch(
+        this.$store.dispatch("march/testAction", action)
+      );
+    },
     backHandler() {
       if (this.currentStep === BOOSTER_SELECT_STEP) {
         --this.currentStep;
