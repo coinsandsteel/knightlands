@@ -84,29 +84,29 @@
     <div
       class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
     >
-    <div class="flex-full width-100 dummy-height" v-if="records.length > 0">
-      <RecycleScroller
-        ref="scroller"
-        class="width-100 height-100"
-        :items="records"
-        :item-size="itemSize"
-        key-field="name"
-        v-slot="{ item, index }"
-        :emitUpdate="records.length > 0 && !fetchedAll"
-        @update="scrollUpdated"
-      >
-        <MarchRankingElement
-          :index="index"
-          :rank="index + 1"
-          :id="item.name"
-          :pId="item.id"
-          :avatar="item.avatar"
-          :score="item.score"
-          :height="itemSize"
-          :you="isYou(item.id)"
-        />
-      </RecycleScroller>
-    </div>
+      <div class="flex-full width-100 dummy-height" v-if="records.length > 0">
+        <RecycleScroller
+          ref="scroller"
+          class="width-100 height-100"
+          :items="records"
+          :item-size="itemSize"
+          key-field="name"
+          v-slot="{ item, index }"
+          :emitUpdate="records.length > 0 && !fetchedAll"
+          @update="scrollUpdated"
+        >
+          <MarchRankingElement
+            :index="index"
+            :rank="index + 1"
+            :id="item.name"
+            :pId="item.id"
+            :avatar="item.avatar"
+            :score="item.score"
+            :height="itemSize"
+            :you="isYou(item.id)"
+          />
+        </RecycleScroller>
+      </div>
     </div>
   </div>
 </template>
@@ -145,7 +145,10 @@ export default {
       this.currentRank = await this.performRequest(
         this.$store.dispatch("march/rankings", { personal: true })
       );
-      console.log("🚀 ~ file: MarchRankings.vue ~ line 65 ~ fetchCurrentRank ~ currentRank", this.currentRank)
+      console.log(
+        "🚀 ~ file: MarchRankings.vue ~ line 65 ~ fetchCurrentRank ~ currentRank",
+        this.currentRank
+      );
     },
     async fetchNextPage() {
       if (this.fetchInProcess || this.fetchedAll) {
@@ -156,9 +159,12 @@ export default {
 
       try {
         let newRecords = await this.performRequest(
-          this.$store.dispatch("march/rankings", { page: this.currentPage})
+          this.$store.dispatch("march/rankings", { page: this.currentPage })
         );
-        console.log("🚀 ~ file: MarchRankings.vue ~ line 77 ~ fetchNextPage ~ newRecords", newRecords)
+        console.log(
+          "🚀 ~ file: MarchRankings.vue ~ line 77 ~ fetchNextPage ~ newRecords",
+          newRecords
+        );
         if (newRecords) {
           this.fetchedAll = newRecords.finished;
           this.records.push(...newRecords.records);
@@ -195,4 +201,23 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>
+
+<style scoped lang="less">
+.march-rating-rewards-wrapper {
+  background: #2f7285;
+}
+.march-rating-rewards {
+  width: 140px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.common-title {
+  margin-top: -2rem;
+}
+.icon-rank3-4 {
+  filter: hue-rotate(240deg);
+}
+.icon-rank3-5 {
+  filter: hue-rotate(90deg);
+}
+</style>

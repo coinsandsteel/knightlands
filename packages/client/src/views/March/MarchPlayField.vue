@@ -891,7 +891,7 @@ export default {
       const showDialog = create(MarchStopGame);
       const result = await showDialog();
       if (result) {
-        this.$emit("next");
+        this.$emit("next", true);
       }
     }
   }

@@ -7,12 +7,12 @@
         <div class="flex-full flex flex-center font-size-22">
           <div class="text-center margin-top-1">
             <div class="flex flex-no-wrap flex-justify-center">
-              <div class="margin-right-2">Bosses killed:</div>
-              <MarchGold :value="-1" />
+              <div class="margin-right-2">Bosses killed???:</div>
+              <MarchGold :value="stat ? stat.bossesKilled : 0" />
             </div>
             <div class="flex flex-no-wrap flex-justify-center margin-top-2">
-              <div class="margin-right-2">Coins earned:</div>
-              <MarchBosses :value="-1" />
+              <div class="margin-right-2">Coins earned???:</div>
+              <MarchBosses :value="balance ? balance.sessionGold : 0" />
             </div>
           </div>
         </div>
@@ -26,6 +26,7 @@
   </UserDialog>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import MarchGold from "@/views/March/MarchGold.vue";
 import MarchBosses from "@/views/March/MarchBosses.vue";
 
@@ -34,8 +35,8 @@ export default {
     MarchGold,
     MarchBosses
   },
-  data() {
-    return {};
+  computed: {
+    ...mapGetters("march", ["balance", "stat"])
   },
   methods: {
     close() {

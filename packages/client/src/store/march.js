@@ -145,7 +145,10 @@ export default {
         state.boosters = { ...state.boosters, ...data.boosters };
       }
       if (data.preGameBoosters !== undefined) {
-        state.preGameBoosters = { ...state.preGameBoosters, ...data.preGameBoosters };
+        state.preGameBoosters = {
+          ...state.preGameBoosters,
+          ...data.preGameBoosters
+        };
       }
       if (data.stat !== undefined) {
         state.stat = { ...state.stat, ...data.stat };
@@ -259,21 +262,24 @@ export default {
       commit("setPetIndex", newIndex);
     },
     decreasePetIndex({ state, commit, getters }) {
-      const newIndex = (
-        state.selectedPetIndex - 1 < 0 ? 
-        getters.pets.length - 1
-          : 
-          state.selectedPetIndex - 1
-      ) % getters.pets.length;
+      const newIndex =
+        (state.selectedPetIndex - 1 < 0
+          ? getters.pets.length - 1
+          : state.selectedPetIndex - 1) % getters.pets.length;
       commit("setPetIndex", newIndex);
     },
-    async rankings(store, { personal = false, page = 1, total = false, petClass = 1 }) {
-      return (await this.$app.$game._wrapOperation(Operations.MarchRanking, {
-        petClass,
-        personal,
-        page,
-        total
-      })).response;
+    async rankings(
+      store,
+      { personal = false, page = 1, total = false, petClass = 1 }
+    ) {
+      return (
+        await this.$app.$game._wrapOperation(Operations.MarchRanking, {
+          petClass,
+          personal,
+          page,
+          total
+        })
+      ).response;
     }
   }
 };

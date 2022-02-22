@@ -55,9 +55,10 @@ import MarchBoosterKeyHint from "@/views/March/MarchBoosterKeyHint.vue";
 // import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
 import MarchBoosterButton from "@/views/March/MarchBoosterButton.vue";
 import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
+import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
-  mixins: [marchPurchaseMixin],
+  mixins: [marchPurchaseMixin, PromptMixin],
   components: {
     MarchBalance,
     MarchBoosterButton
@@ -89,8 +90,26 @@ export default {
       const showDialog = create(MarchBoosterHpHint);
       showDialog();
     },
-    maxHealthBuyHandler() {
+    async confirm() {
+      return this.showPrompt(this.$t("buy-i-t"), this.$t("buy-i-q"), [
+        {
+          type: "red",
+          title: this.$t("buy-i-n"),
+          response: false
+        },
+        {
+          type: "green",
+          title: this.$t("buy-i-y"),
+          response: true
+        }
+      ]);
+    },
+    async maxHealthBuyHandler() {
       if (!this.checkGoldBalance(this.maxHpPrice)) {
+        return;
+      }
+      const result = await this.confirm();
+      if (!result) {
         return;
       }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
@@ -99,8 +118,12 @@ export default {
       const showDialog = create(MarchBoosterExtraLifeHint);
       showDialog();
     },
-    extraLifeBuyHandler() {
+    async extraLifeBuyHandler() {
       if (!this.checkGoldBalance(this.lifePrice)) {
+        return;
+      }
+      const result = await this.confirm();
+      if (!result) {
         return;
       }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_LIFE);
@@ -109,8 +132,12 @@ export default {
       const showDialog = create(MarchBoosterKeyHint);
       showDialog();
     },
-    marchBoosterKeyBuyHandler() {
+    async marchBoosterKeyBuyHandler() {
       if (!this.checkGoldBalance(this.keyPrice)) {
+        return;
+      }
+      const result = await this.confirm();
+      if (!result) {
         return;
       }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_KEY);

@@ -139,12 +139,16 @@ export default {
         --this.currentStep;
       }
     },
-    nextHandler() {
+    nextHandler(skipSummary) {
       // if (this.currentStep === PLAY_SUMMARY_STEP) {
       //   this.currentStep = PET_SELECT_STEP;
       //   return;
       // }
       if (this.currentStep === PLAY_FIELD_STEP) {
+        if (skipSummary === true) {
+          this.currentStep = PET_SELECT_STEP;
+          return;
+        }
         this.showSummary();
         return;
       }
