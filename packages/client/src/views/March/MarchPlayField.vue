@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div class="padding-top-5 padding-bottom-5">
+    <div v-show="false" class="padding-top-5 padding-bottom-5">
       <CustomButton
         type="green"
         class="btn-start inline-block"
@@ -271,6 +271,11 @@ export default {
     },
 
     async move(fromIndex, toIndex, direction) {
+      if (this.processing || !this.initialized) {
+        return;
+      }
+      this.processing = true;
+      console.log("----------START----------");
       console.log("move fromIndex", fromIndex);
       console.log("toIndex", toIndex);
       console.log("direction", direction);
@@ -290,10 +295,6 @@ export default {
     },
 
     async animateMove(response) {
-      if (this.processing || !this.initialized) {
-        return;
-      }
-      this.processing = true;
       // this.currentStage = 0;
       // await this.animateMoveStage(response[0]);
       // if (response.length > 1) {
@@ -310,6 +311,7 @@ export default {
         await sleep(100);
       }
       this.processing = false;
+      console.log("----------END----------");
     },
 
     findElementsNotExist(arr1, arr2) {
