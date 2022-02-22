@@ -142,17 +142,19 @@ export default {
         state.balance = { ...state.balance, ...data.balance };
       }
       if (data.boosters !== undefined) {
-        state.boosters = data.boosters;
+        state.boosters = { ...state.boosters, ...data.boosters };
       }
       if (data.preGameBoosters !== undefined) {
-        state.preGameBoosters = data.preGameBoosters;
+        state.preGameBoosters = { ...state.preGameBoosters, ...data.preGameBoosters };
       }
       if (data.stat !== undefined) {
-        state.stat = data.stat;
+        state.stat = { ...state.stat, ...data.stat };
       }
       if (data.pet !== undefined) {
-        state.pet = data.pet;
-        state.selectedPetIndex = data.pet.petClass - 1;
+        state.pet = { ...state.pet, ...data.pet };
+        if (data.pet.petClass !== undefined) {
+          state.selectedPetIndex = data.pet.petClass - 1;
+        }
       }
       if (data.pets !== undefined) {
         state.pets = data.pets;
@@ -161,7 +163,7 @@ export default {
         state.cards = data.cards;
       }
       if (data.sequence !== undefined) {
-        console.log("new sequence", [...data.sequence]);
+        //console.log("new sequence", [...data.sequence]);
         state.sequence = data.sequence;
       }
       if (data.miniGameReady !== undefined) {
@@ -176,7 +178,7 @@ export default {
       }
     },
     setInitialState(state, data) {
-      console.log("setInitialState", data);
+      //console.log("setInitialState", data);
       state.loaded = true;
       state.balance = data.user.balance;
       state.boosters = data.user.boosters;
@@ -193,6 +195,9 @@ export default {
       // if (state.dailyRewards) {
       //   this.$app.$emit("march-show-daily-reward");
       // }
+    },
+    setPetIndex(state, value) {
+      state.selectedPetIndex = value;
     }
   },
   actions: {
@@ -248,6 +253,19 @@ export default {
       await this.$app.$game._wrapOperation(Operations.MarchUpgradePet, {
         petClass
       });
-    }
+    },
+    increasePetIndex({ state, commit, getters }) {
+      const newIndex = (state.selectedPetIndex + 1) % getters.pets.length;
+      commit("setPetIndex", newIndex);
+    },
+    decreasePetIndex({ state, commit, getters }) {
+      const newIndex = (
+        state.selectedPetIndex - 1 < 0 ? 
+        getters.pets.length - 1
+          : 
+          state.selectedPetIndex - 1
+      ) % getters.pets.length;
+      commit("setPetIndex", newIndex);
+    },
   }
 };

@@ -132,6 +132,11 @@ export default {
     }
   },
   watch: {
+    "petCard.hp": function(value) {
+      if (value <= 0) {
+        this.$emit("next");
+      }
+    },
     async sequence(value) {
       if (value) {
         await this.animateMove(value);
