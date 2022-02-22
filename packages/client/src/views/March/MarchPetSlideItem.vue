@@ -43,7 +43,7 @@ export default {
 </script>
 <style scoped lang="less">
 .pet-slider-item {
-  width: 200px;
+  width: 180px;
   max-width: 80vw;
   height: 0;
   padding-bottom: 100%;

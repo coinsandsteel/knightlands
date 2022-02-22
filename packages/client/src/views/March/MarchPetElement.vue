@@ -1,13 +1,9 @@
 <template>
   <div v-if="pet">
     <div class="font-size-22 font-weight-700 padding-bottom-1">
-      <span class="pet-name">{{
-        pet.unlocked ? pet.name : "Unknown pet???"
-      }}</span>
-      <span class="pet-level" v-if="pet.unlocked">lvl {{ pet.level }}</span>
-      <span v-if="pet.unlocked && pet.level === 3" class="pet-level-max"
-        >(MAX)</span
-      >
+      <span class="pet-name">{{ pet.name }}</span>
+      <span class="pet-level">lvl {{ pet.level }}</span>
+      <span v-if="pet.level === 3" class="pet-level-max">(MAX)</span>
     </div>
     <div
       class="march-pet-element pointer relative"
@@ -37,9 +33,6 @@ export default {
   },
   methods: {
     async petClickHandler() {
-      if (!this.pet.unlocked) {
-        return;
-      }
       this.$emit("click");
     }
   }

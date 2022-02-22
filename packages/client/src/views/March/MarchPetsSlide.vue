@@ -67,8 +67,8 @@ export default {
 @import (reference) "../../style/common.less";
 .slider {
   width: 240px !important;
-  height: 200px;
-  min-height: 200px;
+  height: 180px;
+  min-height: 180px;
   max-width: 80vw;
 }
 .march-pets-grid {

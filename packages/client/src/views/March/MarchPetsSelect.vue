@@ -16,8 +16,14 @@
           >
         </div>
         <MarchPetsSlide />
+        <MarchPetAbilities
+          v-if="selectedPet && selectedPet.unlocked"
+          :pet="selectedPet"
+          :shouldShowNoAbility="false"
+          class=" margin-top-2"
+        />
         <!-- <div class="flex-full">pet</div> -->
-        <div class="padding-top-6">
+        <div class="padding-top-2">
           <CustomButton
             v-if="canBuy"
             type="yellow"
@@ -55,10 +61,11 @@ import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
 import MarchBalance from "@/views/March/MarchBalance.vue";
 import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
+import MarchPetAbilities from "@/views/March/MarchPetAbilities.vue";
 
 export default {
   mixins: [marchPurchaseMixin],
-  components: { MarchBalance, MarchPetsSlide, MarchGold },
+  components: { MarchBalance, MarchPetsSlide, MarchGold, MarchPetAbilities },
   data() {
     return {};
   },
@@ -140,5 +147,10 @@ export default {
   display: inline-block;
   margin-left: 1rem;
   color: #00ec00;
+}
+::v-deep {
+  .march-pet-abilities {
+    grid-row-gap: 1rem;
+  }
 }
 </style>
