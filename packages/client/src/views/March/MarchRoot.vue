@@ -60,7 +60,7 @@ export default {
     ...mapState("march", ["dailyRewards"])
   },
   created() {
-    this.title = this.$t("window-march???");
+    this.title = this.$t("march-event???");
     this.$store.$app.$on("march-show-daily-reward", this.tryToShowRewards);
   },
   destroyed() {

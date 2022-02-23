@@ -232,8 +232,13 @@ export default {
     async collectDailyReward() {
       await this.$app.$game._wrapOperation(Operations.MarchCollectDailyReward);
     },
-    async purchase(store, type) {
-      await this.$app.$game._wrapOperation(Operations.MarchPurchase, { type });
+    async purchase(store, payload) {
+      return (
+        await this.$app.$game._wrapOperation(
+          Operations.MarchPurchaseGold,
+          payload
+        )
+      ).response;
     },
     async purchasePreGameBooster(store, type) {
       await this.$app.$game._wrapOperation(
@@ -268,9 +273,8 @@ export default {
       commit("setPetIndex", newIndex);
     },
     async rankings(store) {
-      return (
-        await this.$app.$game._wrapOperation(Operations.MarchRanking)
-      ).response;
+      return (await this.$app.$game._wrapOperation(Operations.MarchRanking))
+        .response;
     }
   }
 };

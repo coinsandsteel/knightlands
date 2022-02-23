@@ -38,6 +38,8 @@
           >{{ exp }}</IconWithValue
         >
 
+        <MarchGold v-if="marchGold" :value="marchGold" />
+
         <div
           class="flex flex-center flex-column margin-top-3"
           v-if="items.length > 0"
@@ -68,6 +70,7 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import HintHandler from "@/components/HintHandler.vue";
+import MarchGold from "@/views/March/MarchGold.vue";
 
 export default {
   mixins: [HintHandler],
@@ -75,9 +78,10 @@ export default {
     UserDialog,
     IconWithValue,
     CustomButton,
-    Loot
+    Loot,
+    MarchGold
   },
-  props: ["items", "soft", "hard", "exp", "dkt", "drown"]
+  props: ["items", "soft", "hard", "exp", "dkt", "drown", "marchGold"]
 };
 </script>
 
