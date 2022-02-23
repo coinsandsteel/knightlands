@@ -2,7 +2,7 @@
   <div class="screen-content">
     <div class="march-rating-rewards-wrapper padding-bottom-2">
       <div
-        class="march-rating-rewards font-size-20 padding-bottom-2 padding-top-2 text-align-left"
+        class="march-rating-rewards font-size-20 _padding-bottom-2 padding-top-2 text-align-left"
       >
         <!-- 1st -->
         <div
@@ -80,7 +80,7 @@
         </div>
       </div>
     </div>
-    <Title class="common-title">Top Player???</Title>
+    <!-- <Title class="common-title">Top Player???</Title> -->
     <div
       class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
     >
@@ -90,14 +90,19 @@
           class="width-100 height-100"
           :items="records"
           :item-size="itemSize"
-          key-field="name"
+          key-field="id"
           v-slot="{ item, index }"
           :emitUpdate="records.length > 0 && !fetchedAll"
           @update="scrollUpdated"
         >
+          <!-- <div v-if="item.isTitle">Pet {{ item.petClass }}</div> -->
+          <Title v-if="item.isTitle" class="common-title"
+            >Top Players??? - Pet {{ item.petClass }}</Title
+          >
           <MarchRankingElement
+            v-else
             :index="index"
-            :rank="index + 1"
+            :rank="item.rank"
             :id="item.name"
             :pId="item.id"
             :avatar="item.avatar"
@@ -134,7 +139,8 @@ export default {
     this.currentPage = 0;
     this.fetchedAll = false;
     await this.fetchCurrentRank();
-    await this.fetchNextPage();
+    // await this.fetchNextPage();
+    await this.fetchRankings();
   },
   methods: {
     isYou(id) {
@@ -142,6 +148,7 @@ export default {
       return this.currentRank.id == id;
     },
     async fetchCurrentRank() {
+      console.log("fetch current rankings");
       this.currentRank = await this.performRequest(
         this.$store.dispatch("march/rankings", { personal: true })
       );
@@ -150,34 +157,88 @@ export default {
         this.currentRank
       );
     },
-    async fetchNextPage() {
-      if (this.fetchInProcess || this.fetchedAll) {
-        return true;
-      }
+    async fetchRankings() {
+      console.log("fetch rankings");
+      const result = await Promise.all(
+        [1, 2, 3, 4, 5].map(petClass => {
+          return this.performRequest(
+            // @todo: check and uncomment
+            // this.$store.dispatch("march/rankings", { petClass })
 
-      this.fetchInProcess = true;
+            // @todo: remove and uncomment above
+            this.$store.dispatch("march/rankings", { page: this.currentPage })
+          );
+        })
+      );
+      console.log("rankings result", result);
+      let newRecords = [];
+      for (let i = 0; i < result.length; i++) {
+        let records = result[i] && result[i].records ? result[i].records : [];
 
-      try {
-        let newRecords = await this.performRequest(
-          this.$store.dispatch("march/rankings", { page: this.currentPage })
-        );
-        console.log(
-          "🚀 ~ file: MarchRankings.vue ~ line 77 ~ fetchNextPage ~ newRecords",
-          newRecords
-        );
-        if (newRecords) {
-          this.fetchedAll = newRecords.finished;
-          this.records.push(...newRecords.records);
-          this.currentPage++;
-        }
-      } finally {
-        this.fetchInProcess = false;
+        // @todo: start remove
+        records = [
+          ...records,
+          ...records,
+          ...records,
+          ...records,
+          ...records,
+          ...records,
+          ...records,
+          ...records,
+          ...records,
+          ...records
+        ];
+        // @todo: end remove
+
+        records = records.map((record, index) => {
+          const r = { ...record };
+
+          // @todo: start remove
+          r.id = r.id + "-" + i + "-" + index;
+          // @todo: end remove
+
+          r.rank = index + 1;
+          r.isTitle = false;
+          return r;
+        });
+        const titleRecord = {
+          id: "title-" + i,
+          isTitle: true,
+          petClass: i + 1
+        };
+        newRecords = [...newRecords, titleRecord, ...records];
       }
+      console.log("rankings result 222", newRecords);
+      this.records = newRecords;
     },
+    // async fetchNextPage() {
+    //   if (this.fetchInProcess || this.fetchedAll) {
+    //     return true;
+    //   }
+
+    //   this.fetchInProcess = true;
+
+    //   try {
+    //     let newRecords = await this.performRequest(
+    //       this.$store.dispatch("march/rankings", { page: this.currentPage })
+    //     );
+    //     console.log(
+    //       "🚀 ~ file: MarchRankings.vue ~ line 77 ~ fetchNextPage ~ newRecords",
+    //       newRecords
+    //     );
+    //     if (newRecords) {
+    //       this.fetchedAll = newRecords.finished;
+    //       this.records.push(...newRecords.records);
+    //       this.currentPage++;
+    //     }
+    //   } finally {
+    //     this.fetchInProcess = false;
+    //   }
+    // },
     scrollUpdated(start, end) {
-      if (end == this.records.length) {
-        this.fetchNextPage();
-      }
+      // if (end == this.records.length) {
+      //   this.fetchNextPage();
+      // }
     }
   },
   computed: {
@@ -212,7 +273,7 @@ export default {
   margin-right: auto;
 }
 .common-title {
-  margin-top: -2rem;
+  margin-top: 4px;
 }
 .icon-rank3-4 {
   filter: hue-rotate(240deg);
