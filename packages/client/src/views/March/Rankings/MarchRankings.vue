@@ -138,8 +138,6 @@ export default {
     this.records = [];
     this.currentPage = 0;
     this.fetchedAll = false;
-    await this.fetchCurrentRank();
-    // await this.fetchNextPage();
     await this.fetchRankings();
   },
   methods: {
@@ -147,43 +145,19 @@ export default {
       if (!this.participates) return false;
       return this.currentRank.id == id;
     },
-    async fetchCurrentRank() {
-      this.currentRank = await this.performRequest(
-        this.$store.dispatch("march/rankings", { personal: true })
-      );
-    },
     async fetchRankings() {
-      const result = await Promise.all(
-        [1, 2, 3, 4, 5].map(petClass => {
-          return this.performRequest(
-            // @todo: check and uncomment
-            // this.$store.dispatch("march/rankings", { petClass })
-
-            // @todo: remove and uncomment above
-            this.$store.dispatch("march/rankings", { page: this.currentPage })
-          );
-        })
+      const result = await this.performRequest(      
+          this.$store.dispatch("march/rankings")
       );
-      let newRecords = [];
-      for (let i = 0; i < result.length; i++) {
-        let records = result[i] && result[i].records ? result[i].records : [];
+      const records = [];
+      for (let i = 0; i < result.rankings.length; i++) {
+        const newRecords = [];
 
-        // @todo: start remove
-        records = [
-          ...records,
-          ...records,
-          ...records,
-          ...records,
-          ...records,
-          ...records,
-          ...records,
-          ...records,
-          ...records,
-          ...records
-        ];
-        // @todo: end remove
-
-        records = records.map((record, index) => {
+        for (let j = 0; j < result.rankings[i].length; j++) {
+          newRecords.push(result.rankings[i][j]);
+        }
+        
+        newRecords = newRecords.map((record, index) => {
           const r = { ...record };
 
           // @todo: start remove
@@ -199,9 +173,9 @@ export default {
           isTitle: true,
           petClass: i + 1
         };
-        newRecords = [...newRecords, titleRecord, ...records];
+        records.push(titleRecord, ...newRecords);
       }
-      this.records = newRecords;
+      this.records = records;
     },
     // async fetchNextPage() {
     //   if (this.fetchInProcess || this.fetchedAll) {
