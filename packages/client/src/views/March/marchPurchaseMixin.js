@@ -15,7 +15,10 @@ export default {
       showDialog("gold");
     },
     checkTicketBalance(tickets) {
-      if (this.balance && this.balance.gold >= tickets) {
+      const itemsCount =
+        this.$game.inventory.getItemsCountByTemplate(3461) || 0;
+
+      if (itemsCount >= tickets) {
         return true;
       }
       const showDialog = create(MarchNotEnoughBalance, "type");

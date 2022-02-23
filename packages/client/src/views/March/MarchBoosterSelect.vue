@@ -83,6 +83,9 @@ export default {
   methods: {
     upgradeHandler() {},
     async startHandler() {
+      if (!this.checkTicketBalance(1)) {
+        return;
+      }
       await this.$store.dispatch("march/startNewGame");
       this.$emit("next");
     },
