@@ -159,11 +159,7 @@ export default {
 
         newRecords = newRecords.map((record, index) => {
           const r = { ...record };
-
-          // @todo: start remove
           r.key = r.id + "-" + i + "-" + index;
-          // @todo: end remove
-
           r.rank = index + 1;
           r.isTitle = false;
           return r;

@@ -140,10 +140,10 @@ export default {
 .march-card--pet .march-card-unit-background {
   background-image: url("/images/march/pets/pet_1_1.png");
 }
-.march-card--ball_lightning .march-card-unit-background {
+.march-card--ballLightning .march-card-unit-background {
   background-image: url("/images/march/cards/ball_lightning.png");
 }
-.march-card--dragon_breath .march-card-unit-background {
+.march-card--dragonBreath .march-card-unit-background {
   background-image: url("/images/march/cards/dragon_breath.png");
 }
 .march-card--bomb .march-card-unit-background {
@@ -161,7 +161,7 @@ export default {
 .march-card--enemy .march-card-unit-background {
   background-image: url("/images/march/cards/enemy.png");
 }
-.march-card--enemy_boss .march-card-unit-background {
+.march-card--enemyBoss .march-card-unit-background {
   background-image: url("/images/march/cards/enemy_boss.png");
 }
 .march-card--trap .march-card-unit-background {
@@ -173,7 +173,7 @@ export default {
 .march-card--hp .march-card-unit-background {
   background-image: url("/images/march/cards/hp.png");
 }
-.march-card--extra_hp .march-card-unit-background {
+.march-card--extraHp .march-card-unit-background {
   background-image: url("/images/march/cards/extra_hp.png");
 }
 .march-card--armor .march-card-unit-background {
@@ -202,17 +202,17 @@ export default {
   color: #fff;
 }
 // .march-card--pet .march-card-hp,
-// .march-card--ball_lightning .march-card-hp,
-// .march-card--dragon_breath .march-card-hp,
+// .march-card--ballLightning .march-card-hp,
+// .march-card--dragonBreath .march-card-hp,
 // .march-card--bomb .march-card-hp,
 // .march-card--bow .march-card-hp,
 .march-card--chest .march-card-hp,
 .march-card--barrel .march-card-hp,
 .march-card--enemy .march-card-hp,
-.march-card--enemy_boss .march-card-hp,
+.march-card--enemyBoss .march-card-hp,
 .march-card--trap .march-card-hp
 // .march-card--hp .march-card-hp,
-// .march-card--extra_hp .march-card-hp,
+// .march-card--extraHp .march-card-hp,
 // .march-card--armor .march-card-hp,
 // .march-card--gold .march-card-hp
  {
