@@ -10,18 +10,21 @@
     <span class="icon-preview big"></span>
     <Avatar :preview="true" :avatar="avatar" :mini="true"></Avatar>
     <span class="flex-2">{{ id }}</span>
-    <span class="flex-2">{{ scoreComputed }}</span>
-    <div class="flex-3">
+    <span class="flex-2">
+      <MarchGold :value="scoreComputed" />
+    </span>
+    <!-- <div class="flex-3">
       <IconWithValue iconClass="icon-usdc big" v-if="reward > 0">
         {{ reward }}
       </IconWithValue>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import IconWithValue from "@/components/IconWithValue.vue";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
+import MarchGold from "@/views/March/MarchGold.vue";
 import meta from "@/metadata/halloween/dungeon_meta";
 
 export default {
@@ -37,7 +40,7 @@ export default {
     "showRank",
     "avatar"
   ],
-  components: { Avatar, IconWithValue },
+  components: { Avatar, MarchGold },
   computed: {
     reward() {
       if (this.index >= meta.rewards.length) {
