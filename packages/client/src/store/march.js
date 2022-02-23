@@ -267,17 +267,9 @@ export default {
           : state.selectedPetIndex - 1) % getters.pets.length;
       commit("setPetIndex", newIndex);
     },
-    async rankings(
-      store,
-      { personal = false, page = 1, total = false, petClass = 1 }
-    ) {
+    async rankings(store) {
       return (
-        await this.$app.$game._wrapOperation(Operations.MarchRanking, {
-          petClass,
-          personal,
-          page,
-          total
-        })
+        await this.$app.$game._wrapOperation(Operations.MarchRanking)
       ).response;
     }
   }
