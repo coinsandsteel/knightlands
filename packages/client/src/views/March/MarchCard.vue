@@ -138,46 +138,46 @@ export default {
   background-size: 50%;
 }
 .march-card--pet .march-card-unit-background {
-  background-image: url("/images/march/pet.png");
+  background-image: url("/images/march/pets/pet_1_1.png");
 }
 .march-card--ball_lightning .march-card-unit-background {
-  background-image: url("/images/march/ball_lightning.png");
+  background-image: url("/images/march/cards/ball_lightning.png");
 }
 .march-card--dragon_breath .march-card-unit-background {
-  background-image: url("/images/march/dragon_breath.png");
+  background-image: url("/images/march/cards/dragon_breath.png");
 }
 .march-card--bomb .march-card-unit-background {
-  background-image: url("/images/march/bomb.png");
+  background-image: url("/images/march/cards/bomb.png");
 }
 .march-card--bow .march-card-unit-background {
-  background-image: url("/images/march/bow.png");
+  background-image: url("/images/march/cards/bow.png");
 }
 .march-card--chest .march-card-unit-background {
-  background-image: url("/images/march/chest.png");
+  background-image: url("/images/march/cards/chest.png");
 }
 .march-card--barrel .march-card-unit-background {
-  background-image: url("/images/march/barrel.png");
+  background-image: url("/images/march/cards/barrel.png");
 }
 .march-card--enemy .march-card-unit-background {
-  background-image: url("/images/march/enemy.png");
+  background-image: url("/images/march/cards/enemy.png");
 }
 .march-card--enemy_boss .march-card-unit-background {
-  background-image: url("/images/march/enemy_boss.png");
+  background-image: url("/images/march/cards/enemy_boss.png");
 }
 .march-card--trap .march-card-unit-background {
-  background-image: url("/images/march/trap.png");
+  background-image: url("/images/march/cards/trap.png");
 }
 .march-card--trap--opened .march-card-unit-background {
-  background-image: url("/images/march/trap_opened.png");
+  background-image: url("/images/march/cards/trap_opened.png");
 }
 .march-card--hp .march-card-unit-background {
-  background-image: url("/images/march/hp.png");
+  background-image: url("/images/march/cards/hp.png");
 }
 .march-card--extra_hp .march-card-unit-background {
-  background-image: url("/images/march/extra_hp.png");
+  background-image: url("/images/march/cards/extra_hp.png");
 }
 .march-card--armor .march-card-unit-background {
-  background-image: url("/images/march/armor.png");
+  background-image: url("/images/march/cards/armor.png");
 }
 .march-card--gold .march-card-unit-background {
   background-image: url("/images/march/march_gold.png");
