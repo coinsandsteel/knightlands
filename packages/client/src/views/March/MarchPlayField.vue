@@ -867,7 +867,7 @@ export default {
       const showDialog = create(MarchStopGame);
       const result = await showDialog();
       if (result) {
-        await this.$store.dispatch("march/exitGame");
+        this.$store.dispatch("march/exitGame");
         this.$emit("next", true);
       }
     }

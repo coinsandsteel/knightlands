@@ -7,6 +7,8 @@
   </div>
 </template>
 <script>
+import * as march from "@/../../knightlands-shared/march";
+
 export default {
   props: ["value"],
   data() {
@@ -14,7 +16,9 @@ export default {
   },
   computed: {
     ticketsCount() {
-      const itemsCount = this.$game.inventory.getItemsCountByTemplate(3461);
+      const itemsCount = this.$game.inventory.getItemsCountByTemplate(
+        march.TICKET_ITEM_ID
+      );
 
       return itemsCount || 0;
     },

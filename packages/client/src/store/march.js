@@ -54,7 +54,8 @@ export default {
           isPet: card.unitClass === march.UNIT_CLASS_PET,
           canSwipe: card.unitClass === march.UNIT_CLASS_PET,
           isAdjacent: false,
-          canClick: false
+          canClick: false,
+          opened: !!card.opened
         };
         return {
           ...card,

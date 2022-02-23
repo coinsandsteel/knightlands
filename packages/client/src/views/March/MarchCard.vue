@@ -7,7 +7,8 @@
       `march-card--${card.unitClass}`,
       {
         'march-card--pet': card.isPet,
-        'march-card--adjacent': card.isAdjacent
+        'march-card--adjacent': card.isAdjacent,
+        [`march-card--${card.unitClass}--opened`]: card.opened
       }
     ]"
     @click="clickHandler"
@@ -165,6 +166,9 @@ export default {
 }
 .march-card--trap .march-card-unit-background {
   background-image: url("/images/march/trap.png");
+}
+.march-card--trap--opened .march-card-unit-background {
+  background-image: url("/images/march/trap_opened.png");
 }
 .march-card--hp .march-card-unit-background {
   background-image: url("/images/march/hp.png");
