@@ -90,7 +90,7 @@
           class="width-100 height-100"
           :items="records"
           :item-size="itemSize"
-          key-field="id"
+          key-field="key"
           v-slot="{ item, index }"
           :emitUpdate="records.length > 0 && !fetchedAll"
           @update="scrollUpdated"
@@ -146,22 +146,22 @@ export default {
       return this.currentRank.id == id;
     },
     async fetchRankings() {
-      const result = await this.performRequest(      
-          this.$store.dispatch("march/rankings")
+      const result = await this.performRequest(
+        this.$store.dispatch("march/rankings")
       );
       const records = [];
       for (let i = 0; i < result.rankings.length; i++) {
-        const newRecords = [];
+        let newRecords = [];
 
         for (let j = 0; j < result.rankings[i].length; j++) {
           newRecords.push(result.rankings[i][j]);
         }
-        
+
         newRecords = newRecords.map((record, index) => {
           const r = { ...record };
 
           // @todo: start remove
-          r.id = r.id + "-" + i + "-" + index;
+          r.key = r.id + "-" + i + "-" + index;
           // @todo: end remove
 
           r.rank = index + 1;
@@ -170,6 +170,7 @@ export default {
         });
         const titleRecord = {
           id: "title-" + i,
+          key: "title-" + i,
           isTitle: true,
           petClass: i + 1
         };
