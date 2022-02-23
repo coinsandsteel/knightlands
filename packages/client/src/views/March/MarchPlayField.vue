@@ -142,16 +142,12 @@ export default {
         await this.animateMove(value);
       }
     },
-    miniGameReady(value, oldValue) {
-      console.log("miniGameReady", value, oldValue);
-      // if (value && value.isReady && !(oldValue && oldValue.isReady)) {
+    miniGameReady(value) {
       if (value && value.isReady) {
         this.showMiniGame();
       }
     },
-    miniGameResult(value, oldValue) {
-      console.log("miniGameResult", value, oldValue);
-    }
+    miniGameResult(value, oldValue) {}
   },
   mounted() {
     // this.showMiniGame();
@@ -172,8 +168,7 @@ export default {
     },
     async showMiniGame() {
       const showMiniGameDialog = create(MarchPlayMiniGame);
-      const result = await showMiniGameDialog();
-      console.log("mini game result", result);
+      await showMiniGameDialog();
     },
 
     async init() {
@@ -199,7 +194,6 @@ export default {
     },
 
     swipeHandler(card, direction) {
-      console.log("swipeHandler", direction);
       // this.testMove();
       const petCardIndex = this.cards.findIndex(({ isPet }) => isPet);
       const cardIndex =
@@ -225,7 +219,6 @@ export default {
       this.move(petCardIndex, cardIndex, direction);
     },
     clickHandler(card) {
-      console.log("clickHandler");
       if (!card.canClick) {
         return;
       }
@@ -280,10 +273,6 @@ export default {
         return;
       }
       this.processing = true;
-      console.log("----------START----------");
-      console.log("move fromIndex", fromIndex);
-      console.log("toIndex", toIndex);
-      console.log("direction", direction);
       this.petCurrentIndex = fromIndex;
       this.petMoveDirection = direction;
       this.isTargetABarrel =
@@ -316,7 +305,6 @@ export default {
         await sleep(100);
       }
       this.processing = false;
-      console.log("----------END----------");
     },
 
     findElementsNotExist(arr1, arr2) {
@@ -353,27 +341,16 @@ export default {
     },
 
     async animateMoveStage(stage) {
-      console.log("animateMoveStage", [...this.cards], stage);
       this.processStageData(stage);
       const cards = [...this.cards];
       const updatedCards = [...stage.cards];
       const destroyedCards = this.findElementsNotExist(cards, updatedCards);
-      console.log("destroyedCards", destroyedCards);
 
       const movedCards = this.findElementsExistButChangedPosition(
         cards,
         updatedCards
       );
-      console.log("movedCards", movedCards);
-      // const animationItems = [];
-      // if (destroyedCards.length > 0) {
-      //   destroyedCards.forEach((card) => {
-      //     const cardIndex =
-      //     animationItems.push(
-      //       this.animateHide(this.getCardElement(), { resetStyle: true }),
-      //     );
-      //   });
-      // }
+
       await Promise.all([
         // hide destroyed cards
         Promise.all(
@@ -420,7 +397,6 @@ export default {
       ]);
 
       const newCards = this.findElementsNotExist(updatedCards, cards);
-      console.log("newCards", newCards);
 
       this.$store.commit("march/updateState", { cards: updatedCards });
       await this.nextTickPromise();

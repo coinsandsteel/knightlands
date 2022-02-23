@@ -166,7 +166,6 @@ export default {
         state.cards = data.cards;
       }
       if (data.sequence !== undefined) {
-        //console.log("new sequence", [...data.sequence]);
         state.sequence = data.sequence;
       }
       if (data.miniGameReady !== undefined) {
@@ -181,7 +180,6 @@ export default {
       }
     },
     setInitialState(state, data) {
-      //console.log("setInitialState", data);
       state.loaded = true;
       state.balance = data.user.balance;
       state.boosters = data.user.boosters;
@@ -195,9 +193,6 @@ export default {
       if (data.map.pet) {
         state.selectedPetIndex = data.map.pet.petClass - 1;
       }
-      // if (state.dailyRewards) {
-      //   this.$app.$emit("march-show-daily-reward");
-      // }
     },
     setPetIndex(state, value) {
       state.selectedPetIndex = value;

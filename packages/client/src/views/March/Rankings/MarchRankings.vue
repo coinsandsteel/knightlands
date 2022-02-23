@@ -148,17 +148,11 @@ export default {
       return this.currentRank.id == id;
     },
     async fetchCurrentRank() {
-      console.log("fetch current rankings");
       this.currentRank = await this.performRequest(
         this.$store.dispatch("march/rankings", { personal: true })
       );
-      console.log(
-        "🚀 ~ file: MarchRankings.vue ~ line 65 ~ fetchCurrentRank ~ currentRank",
-        this.currentRank
-      );
     },
     async fetchRankings() {
-      console.log("fetch rankings");
       const result = await Promise.all(
         [1, 2, 3, 4, 5].map(petClass => {
           return this.performRequest(
@@ -170,7 +164,6 @@ export default {
           );
         })
       );
-      console.log("rankings result", result);
       let newRecords = [];
       for (let i = 0; i < result.length; i++) {
         let records = result[i] && result[i].records ? result[i].records : [];
@@ -208,7 +201,6 @@ export default {
         };
         newRecords = [...newRecords, titleRecord, ...records];
       }
-      console.log("rankings result 222", newRecords);
       this.records = newRecords;
     },
     // async fetchNextPage() {

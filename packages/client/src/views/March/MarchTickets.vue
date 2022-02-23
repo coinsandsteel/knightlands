@@ -14,13 +14,6 @@ export default {
   },
   computed: {
     ticketsCount() {
-      // let items = this.$game.inventory.items.filter(({ template }) => {
-      //   return template === 3461;
-      // });
-
-      // console.log("items", items);
-
-      // return items && items.length > 0 ? 0 : 0;
       const itemsCount = this.$game.inventory.getItemsCountByTemplate(3461);
 
       return itemsCount || 0;
