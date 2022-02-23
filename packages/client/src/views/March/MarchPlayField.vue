@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div v-show="false" class="padding-top-5 padding-bottom-5">
+    <!-- <div class="padding-top-5 padding-bottom-5">
       <CustomButton
         type="green"
         class="btn-start inline-block"
@@ -70,7 +70,7 @@
       >
         Finish???
       </CustomButton>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -167,6 +167,9 @@ export default {
       });
     },
     async showMiniGame() {
+      this.$store.commit("march/updateState", {
+        miniGameResult: { isSuccess: false }
+      });
       const showMiniGameDialog = create(MarchPlayMiniGame);
       await showMiniGameDialog();
     },

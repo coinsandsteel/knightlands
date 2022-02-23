@@ -20,7 +20,7 @@
         class="font-size-22 absolute"
         style="top: 14px; left: 0; width: 100%"
       >
-        {{ card.unitClass }}
+        {{ card.unitClass }} {{ card.opened ? " - opened" : "" }}
       </div>
       <div
         v-if="card.hp"

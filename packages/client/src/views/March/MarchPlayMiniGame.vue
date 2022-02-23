@@ -1,16 +1,29 @@
 <template>
   <UserDialog title="Mini game???" emitClose hideCloseBtn>
     <template v-slot:content>
-      <div class="text-center padding-bottom-2 font-size-20">
-        Select 1 chest???
+      <div
+        class="text-center padding-bottom-2 font-size-20"
+        :class="{ 'opacity-0': isResultVisible }"
+      >
+        Select a chest???
       </div>
       <div class="flex flex-row flex-no-wrap flex-space-around">
         <div
-          class="march-lock font-size-20 pointer"
+          class="march-lock font-size-20 pointer relative"
           v-for="(lock, lockIndex) in locks"
           :key="lockIndex"
           @click="lockSelectHandler(lockIndex)"
-        ></div>
+        >
+          <transition name="result-fade">
+            <div
+              v-if="selectedIndex === lockIndex && isResultVisible"
+              class="mini-game-result absolute"
+              :class="{ 'mini-game-result--success': isSuccess }"
+            >
+              {{ isSuccess ? "Success???" : "Fail???" }}
+            </div>
+          </transition>
+        </div>
       </div>
     </template>
     <!-- <template v-slot:footer>
@@ -23,9 +36,16 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  // data() {
-  //   return {};
-  // },
+  data() {
+    return {
+      selectedIndex: null,
+      isSuccess: false,
+      isResultVisible: false
+      // index: 0,
+      // isSuccess: true,
+      // isResultVisible: true
+    };
+  },
   computed: {
     ...mapState("march", ["miniGameResult"]),
     locks() {
@@ -39,7 +59,12 @@ export default {
   },
   watch: {
     miniGameResult(value) {
-      this.close(value ? !!value.isSuccess : false);
+      this.isSuccess = !!value.isSuccess;
+      this.isResultVisible = true;
+
+      setTimeout(() => {
+        this.close(value ? !!value.isSuccess : false);
+      }, 1000);
     }
   },
   methods: {
@@ -52,9 +77,18 @@ export default {
       });
     },
     lockSelectHandler(index) {
+      if (this.selectedIndex !== null) {
+        return;
+      }
+      this.selectedIndex = index;
       // this.close();
       this.$store.dispatch("march/openChest", index);
       // this.testMiniGameResult(index === 2);
+
+      // @todo: remove
+      // setTimeout(() => {
+      //   this.testMiniGameResult(false);
+      // }, 500);
     }
   }
 };
@@ -67,5 +101,24 @@ export default {
   color: #222;
   margin-left: 8px;
   margin-right: 8px;
+}
+.mini-game-result {
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -300%);
+  text-shadow: 1px 1px 2px #000;
+}
+.mini-game-result--success {
+  color: #ffd766;
+}
+.result-fade-enter-active,
+.result-fade-leave-active {
+  transition: all 0.4s;
+}
+.result-fade-enter,
+.result-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 0);
 }
 </style>
