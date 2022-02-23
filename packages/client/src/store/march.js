@@ -218,8 +218,8 @@ export default {
     async touchCard(store, index) {
       await this.$app.$game._wrapOperation(Operations.MarchTouch, index);
     },
-    async startNewGame() {
-      await this.$app.$game._wrapOperation(Operations.MarchStartNewGame);
+    async startNewGame(store, data) {
+      await this.$app.$game._wrapOperation(Operations.MarchStartNewGame, data);
     },
     async exitGame() {
       await this.$app.$game._wrapOperation(Operations.MarchExitGame);
@@ -232,13 +232,8 @@ export default {
     async collectDailyReward() {
       await this.$app.$game._wrapOperation(Operations.MarchCollectDailyReward);
     },
-    async purchase(store, payload) {
-      return (
-        await this.$app.$game._wrapOperation(
-          Operations.MarchPurchaseGold,
-          payload
-        )
-      ).response;
+    async purchase(store, type) {
+      await this.$app.$game._wrapOperation(Operations.MarchPurchase, { type });
     },
     async purchasePreGameBooster(store, type) {
       await this.$app.$game._wrapOperation(
@@ -273,8 +268,9 @@ export default {
       commit("setPetIndex", newIndex);
     },
     async rankings(store) {
-      return (await this.$app.$game._wrapOperation(Operations.MarchRanking))
-        .response;
+      return (
+        await this.$app.$game._wrapOperation(Operations.MarchRanking)
+      ).response;
     }
   }
 };

@@ -45,8 +45,9 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as march from "@/../../knightlands-shared/march";
 import MarchBalance from "@/views/March/MarchBalance.vue";
 import MarchBoosterHpHint from "@/views/March/MarchBoosterHpHint.vue";
@@ -58,7 +59,7 @@ import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
 import PromptMixin from "@/components/PromptMixin.vue";
 
 export default {
-  mixins: [marchPurchaseMixin, PromptMixin],
+  mixins: [marchPurchaseMixin, PromptMixin, NetworkRequestErrorMixin],
   components: {
     MarchBalance,
     MarchBoosterButton
@@ -70,6 +71,7 @@ export default {
   },
   computed: {
     ...mapState("march", ["preGameBoosters"]),
+    ...mapGetters("march", ["selectedPet"]),
     maxHpPrice() {
       return march.MAX_HP_BOOSTER_PRICE;
     },
@@ -86,7 +88,10 @@ export default {
       if (!this.checkTicketBalance(1)) {
         return;
       }
-      await this.$store.dispatch("march/startNewGame");
+      await this.$store.dispatch("march/startNewGame", {
+        petClass: this.selectedPet.petClass, 
+        level: this.selectedPet.level
+      })
       this.$emit("next");
     },
     maxHealthHintHandler() {
