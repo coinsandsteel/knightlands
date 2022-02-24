@@ -22,7 +22,6 @@
           :shouldShowNoAbility="false"
           class=" margin-top-2"
         />
-        <!-- <div class="flex-full">pet</div> -->
         <div class="padding-top-2">
           <CustomButton
             v-if="canBuy"
@@ -51,7 +50,6 @@
         </div>
       </div>
     </div>
-    <!-- <div style="inv-root dummy-height full-flex width-100 height-100">333</div> -->
   </div>
 </template>
 <script>
@@ -66,9 +64,6 @@ import MarchPetAbilities from "@/views/March/MarchPetAbilities.vue";
 export default {
   mixins: [marchPurchaseMixin],
   components: { MarchBalance, MarchPetsSlide, MarchGold, MarchPetAbilities },
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters("march", ["selectedPet"]),
     canBuy() {

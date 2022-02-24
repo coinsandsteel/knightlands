@@ -95,7 +95,6 @@
           :emitUpdate="records.length > 0 && !fetchedAll"
           @update="scrollUpdated"
         >
-          <!-- <div v-if="item.isTitle">Pet {{ item.petClass }}</div> -->
           <Title v-if="item.isTitle" class="common-title"
             >Top Players??? - Pet {{ item.petClass }}</Title
           >
@@ -174,35 +173,7 @@ export default {
       }
       this.records = records;
     },
-    // async fetchNextPage() {
-    //   if (this.fetchInProcess || this.fetchedAll) {
-    //     return true;
-    //   }
-
-    //   this.fetchInProcess = true;
-
-    //   try {
-    //     let newRecords = await this.performRequest(
-    //       this.$store.dispatch("march/rankings", { page: this.currentPage })
-    //     );
-    //     console.log(
-    //       "🚀 ~ file: MarchRankings.vue ~ line 77 ~ fetchNextPage ~ newRecords",
-    //       newRecords
-    //     );
-    //     if (newRecords) {
-    //       this.fetchedAll = newRecords.finished;
-    //       this.records.push(...newRecords.records);
-    //       this.currentPage++;
-    //     }
-    //   } finally {
-    //     this.fetchInProcess = false;
-    //   }
-    // },
-    scrollUpdated(start, end) {
-      // if (end == this.records.length) {
-      //   this.fetchNextPage();
-      // }
-    }
+    scrollUpdated(start, end) {}
   },
   computed: {
     reward() {

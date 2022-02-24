@@ -14,24 +14,7 @@
 </template>
 
 <script>
-// import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-// import { mapState } from "vuex";
-// import UserDialog from "@/components/UserDialog.vue";
-
 export default {
-  // components: {
-  //   UserDialog
-  // },
-  // mixins: [NetworkRequestErrorMixin],
-  // data() {
-  //   return {};
-  // },
-  // props: ["type"], // gold, tickets
-  // computed: {
-  //   ...mapState({
-  //     // dailyRewards: state => state.march.dailyRewards
-  //   })
-  // },
   methods: {
     async close(result = false) {
       this.$close(result);

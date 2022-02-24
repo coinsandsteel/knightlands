@@ -7,9 +7,6 @@
 <script>
 export default {
   props: ["value"],
-  data() {
-    return {};
-  },
   computed: {
     gold() {
       if (typeof this.value === "number") {

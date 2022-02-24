@@ -18,10 +18,6 @@ export default {
   components: {
     MarchTickets,
     MarchGold
-  },
-  data() {
-    return {};
   }
 };
 </script>
-<style scoped lang="less"></style>

@@ -185,9 +185,6 @@ export default {
 }
 .march-card-hp,
 .march-card-secondary-hp {
-  // background: #fff;
-  // border: 0.5rem solid #222;
-  // border-radius: 50%;
   width: 4rem;
   height: 4rem;
   color: #0f2b44;
@@ -232,7 +229,6 @@ export default {
     right: 0;
     width: 100%;
     height: 100%;
-    // background: rgba(yellow, 0.5);
     background-image: url("/images/march/arrow.png");
     background-position: center;
     background-repeat: no-repeat;

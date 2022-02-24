@@ -24,9 +24,6 @@ export default {
   },
   computed: {
     ...mapGetters("march", ["allPets"])
-    // pets() {
-    //   return new Array(15).fill(0).map((item, index) => index);
-    // }
   },
   methods: {
     async petClickHandler(pet) {

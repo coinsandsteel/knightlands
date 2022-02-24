@@ -40,11 +40,6 @@ export default {
   components: {
     MarchPetSlideItem
   },
-  data() {
-    return {
-      //sliderIndex: 0
-    };
-  },
   computed: {
     ...mapGetters("march", ["pets"]),
     ...mapState("march", ["selectedPetIndex"]),

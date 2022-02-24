@@ -28,9 +28,6 @@ export default {
       default: true
     }
   },
-  data() {
-    return {};
-  },
   methods: {
     async petClickHandler() {
       this.$emit("click");

@@ -26,11 +26,6 @@
         </div>
       </div>
     </template>
-    <!-- <template v-slot:footer>
-      <CustomButton type="green" @click="close"
-        >{{ $t("close???") }}
-      </CustomButton>
-    </template> -->
   </UserDialog>
 </template>
 <script>
@@ -41,9 +36,6 @@ export default {
       selectedIndex: null,
       isSuccess: false,
       isResultVisible: false
-      // index: 0,
-      // isSuccess: true,
-      // isResultVisible: true
     };
   },
   computed: {
@@ -81,7 +73,6 @@ export default {
         return;
       }
       this.selectedIndex = index;
-      // this.close();
       this.$store.dispatch("march/openChest", index);
       // this.testMiniGameResult(index === 2);
 

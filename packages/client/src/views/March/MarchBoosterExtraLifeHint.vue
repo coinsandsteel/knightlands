@@ -5,7 +5,7 @@
       <div class="font-size-20">
         {{
           $t(
-            "A booster is something that increases a positive or disirable quality???"
+            "A booster is something that increases a positive or desirable quality???"
           )
         }}
       </div>
@@ -20,7 +20,6 @@
 
 <script>
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import { mapState } from "vuex";
 import UserDialog from "@/components/UserDialog.vue";
 
 export default {
@@ -28,14 +27,6 @@ export default {
     UserDialog
   },
   mixins: [NetworkRequestErrorMixin],
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapState({
-      // dailyRewards: state => state.march.dailyRewards
-    })
-  },
   methods: {
     async close() {
       this.$close();
@@ -43,5 +34,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped></style>

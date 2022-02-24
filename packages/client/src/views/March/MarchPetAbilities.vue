@@ -67,29 +67,9 @@ export default {
       );
     }
   }
-  // methods: {
-  //   close() {
-  //     this.$close("dialog result 123");
-  //   }
-  // }
 };
 </script>
 <style scoped lang="less">
-// .pet-image {
-//   max-width: 100%;
-//   max-height: 40vh;
-// }
-// .march-pet-element-wrapper {
-//   background: #1b3d60;
-//   margin-left: -1px;
-//   margin-right: -1px;
-// }
-// .march-pet-element-details {
-//   width: 200px;
-//   max-width: 40%;
-// }
-.march-pet-abilities-container {
-}
 .march-pet-abilities {
   display: inline-grid;
   grid-template-columns: 4rem 1fr;
@@ -109,21 +89,4 @@ export default {
   background-repeat: none;
   position: relative;
 }
-// .march-pet-ability-wrapper--locked {
-//   .march-pet-ability {
-//     opacity: 0.5;
-//   }
-//   &::after {
-//     content: "";
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     width: 2rem;
-//     height: 2rem;
-//     transform: translate(-50%, -50%);
-//     background-image: url("/images/march/icon_locked.png");
-//     background-size: 100%;
-//     background-repeat: none;
-//   }
-// }
 </style>

@@ -1,27 +1,5 @@
 <template>
   <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
-    <!-- <div class="flex flex-row flex-no-wrap flex-justify-center font-size-22">
-      <div class="padding-right-2">
-        HP???: {{ petCard ? petCard.hp + "/" + petCard.maxHp : 0 }}
-      </div>
-      <div class="padding-right-2 padding-left-2">
-        Armor???: {{ pet ? pet.armor : 0 }}
-      </div>
-      <div class="padding-left-2">
-        Extra life???: {{ boosters ? boosters.extraLife : 0 }}
-      </div>
-    </div>
-    <div class="flex flex-row flex-no-wrap flex-justify-center font-size-22">
-      <div class="padding-right-2">
-        Step to next boss???: {{ stat ? stat.stepsToNextBoss : 0 }}
-      </div>
-      <div class="padding-right-2 padding-left-2">
-        Bosses Killed???: {{ stat ? stat.bossesKilled : 0 }}
-      </div>
-      <div class="padding-left-2">
-        Gold???: {{ balance ? balance.gold : 0 }}
-      </div>
-    </div> -->
     <div
       class="march-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-4 padding-bottom-4 relative"
     >
@@ -282,25 +260,9 @@ export default {
         this.cards[toIndex].unitClass === march.UNIT_CLASS_BARREL;
 
       await this.$store.dispatch("march/touchCard", toIndex);
-
-      // TODO implement a state.sequence watcher
-      //await this.animateMove(response);
-
-      // this.$store.commit("march/updateState", {
-      //   cards: [...response[0].state]
-      // });
     },
 
     async animateMove(response) {
-      // this.currentStage = 0;
-      // await this.animateMoveStage(response[0]);
-      // if (response.length > 1) {
-      //   await this.nextTickPromise();
-      //   await sleep(100);
-      //   this.currentStage = 1;
-      //   await this.animateMoveStage(response[1]);
-      // }
-      // await Promise.all(response.map((stage, index) => {}));
       for (let i = 0; i < response.length; i++) {
         this.currentStage = i;
         await this.animateMoveStage(response[i]);

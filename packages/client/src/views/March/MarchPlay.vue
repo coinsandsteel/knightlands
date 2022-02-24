@@ -1,12 +1,5 @@
 <template>
   <div class="screen-content" v-if="loaded">
-    <!-- <div class="full-flex dummy-height width-100">
-      <div
-        class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
-      >
-        <MarchMainMenu />
-      </div>
-    </div> -->
     <MarchPetsSelect
       v-if="currentStep === PET_SELECT_STEP"
       @next="nextHandler"
@@ -22,11 +15,6 @@
       @next="nextHandler"
       @back="backHandler"
     />
-    <!-- <MarchPlaySummary
-      v-if="currentStep === PLAY_SUMMARY_STEP"
-      @next="nextHandler"
-      @back="backHandler"
-    /> -->
     <portal
       v-if="
         isActive &&
@@ -103,7 +91,6 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 const PET_SELECT_STEP = 1;
 const BOOSTER_SELECT_STEP = 2;
 const PLAY_FIELD_STEP = 3;
-// const PLAY_SUMMARY_STEP = 4;
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -112,14 +99,12 @@ export default {
     MarchBoosterSelect,
     BackButton,
     MarchPlayField
-    // MarchPlaySummary
   },
   data() {
     return {
       PET_SELECT_STEP,
       BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
-      // PLAY_SUMMARY_STEP,
       currentStep: PET_SELECT_STEP
     };
   },
@@ -140,10 +125,6 @@ export default {
       }
     },
     nextHandler(skipSummary) {
-      // if (this.currentStep === PLAY_SUMMARY_STEP) {
-      //   this.currentStep = PET_SELECT_STEP;
-      //   return;
-      // }
       if (this.currentStep === PLAY_FIELD_STEP) {
         if (skipSummary === true) {
           this.currentStep = PET_SELECT_STEP;

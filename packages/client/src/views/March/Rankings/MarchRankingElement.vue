@@ -7,22 +7,15 @@
   >
     <span :class="rankIcon" class="r"></span>
     <span class="flex-1">#{{ rank }}</span>
-    <!-- <span class="icon-preview big"></span> -->
     <Avatar :preview="false" :avatar="avatar" :mini="true"></Avatar>
     <span class="flex-2">{{ id }}</span>
     <span class="flex-2">
       <MarchGold :value="scoreComputed" />
     </span>
-    <!-- <div class="flex-3">
-      <IconWithValue iconClass="icon-usdc big" v-if="reward > 0">
-        {{ reward }}
-      </IconWithValue>
-    </div> -->
   </div>
 </template>
 
 <script>
-// import IconWithValue from "@/components/IconWithValue.vue";
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
 import meta from "@/metadata/halloween/dungeon_meta";

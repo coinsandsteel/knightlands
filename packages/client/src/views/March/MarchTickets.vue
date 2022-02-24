@@ -11,9 +11,6 @@ import * as march from "@/../../knightlands-shared/march";
 
 export default {
   props: ["value"],
-  data() {
-    return {};
-  },
   computed: {
     ticketsCount() {
       const itemsCount = this.$game.inventory.getItemsCountByTemplate(

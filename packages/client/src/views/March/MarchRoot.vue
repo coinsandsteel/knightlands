@@ -21,7 +21,6 @@ import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
-// import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import MarchDailyRewards from "@/views/March/MarchDailyRewards.vue";
 const PlayTab = "march-play";
@@ -81,7 +80,6 @@ export default {
       this.currentTab = newTab;
     },
     tryToShowRewards() {
-      // console.log("march root: this.dailyRewards", [...this.dailyRewards]);
       if (
         this.dailyRewards &&
         this.dailyRewards.find(({ active, collected }) => active && !collected)
@@ -101,4 +99,3 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>

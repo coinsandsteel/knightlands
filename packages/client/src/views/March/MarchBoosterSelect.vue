@@ -31,7 +31,6 @@
         @buy="marchBoosterKeyBuyHandler"
       />
     </div>
-    <!-- <div class="flex-full">pet</div> -->
     <div class="">
       <CustomButton
         type="green"
@@ -41,7 +40,6 @@
         Start???
       </CustomButton>
     </div>
-    <!-- <div style="inv-root dummy-height full-flex width-100 height-100">333</div> -->
   </div>
 </template>
 <script>
@@ -53,7 +51,6 @@ import MarchBalance from "@/views/March/MarchBalance.vue";
 import MarchBoosterHpHint from "@/views/March/MarchBoosterHpHint.vue";
 import MarchBoosterExtraLifeHint from "@/views/March/MarchBoosterExtraLifeHint.vue";
 import MarchBoosterKeyHint from "@/views/March/MarchBoosterKeyHint.vue";
-// import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
 import MarchBoosterButton from "@/views/March/MarchBoosterButton.vue";
 import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
 import PromptMixin from "@/components/PromptMixin.vue";

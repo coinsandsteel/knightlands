@@ -4,7 +4,6 @@
     :class="{ slot_selected: active }"
     @click="$emit('hint', reward)"
   >
-    <!-- <div :class="[{ trans: collected }]" class="iicon" /> -->
     <div class="absolute-stretch ticket-background"></div>
 
     <span
@@ -15,12 +14,6 @@
 
     <div class="absolute-stretch" :class="{ collected: collected }"></div>
     <div class="absolute-stretch active" v-if="active"></div>
-
-    <!-- <span
-      :class="{ trans: collected }"
-      class="font-size-18 font-weight-700 font-outline z-index-1 day"
-      >{{ $t("daily-reward-day", { day: index + 1 }) }}</span
-    > -->
   </div>
 </template>
 
@@ -28,9 +21,6 @@
 export default {
   props: ["reward", "index", "current", "collected"],
   computed: {
-    // icon() {
-    //   return this.$game.itemsDB.getIcon(this.reward.itemId);
-    // },
     active() {
       return this.current;
     }
@@ -57,9 +47,6 @@ export default {
 .slot-daily-reward {
   position: relative;
   .slot_effect;
-  // background-image: url("../../assets/ui/slot_effect.png");
-  // background-size: contain;
-  // background-repeat: no-repeat;
 
   width: @lootCellSize;
   height: @lootCellSize;
@@ -71,9 +58,7 @@ export default {
 }
 .ticket-background {
   background-repeat: no-repeat;
-  // background-image: url("../../assets/sprites/icons.png");
   background-image: url("/images/march/march_tickets.png");
-  // background-position: 62.6488% 15.4234%;
   background-size: 100%;
   transform: scale(0.5, 0.5);
 }
