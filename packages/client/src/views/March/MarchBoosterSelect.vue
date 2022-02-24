@@ -69,6 +69,9 @@ export default {
   computed: {
     ...mapState("march", ["preGameBoosters"]),
     ...mapGetters("march", ["selectedPet"]),
+    boosters() {
+      return march.BOOSTERS;
+    },
     maxHpPrice() {
       return march.MAX_HP_BOOSTER_PRICE;
     },
@@ -86,7 +89,7 @@ export default {
         return;
       }
       await this.$store.dispatch("march/startNewGame", {
-        petClass: this.selectedPet.petClass, 
+        petClass: this.selectedPet.petClass,
         level: this.selectedPet.level
       })
       this.$emit("next");
@@ -110,7 +113,7 @@ export default {
       ]);
     },
     async maxHealthBuyHandler() {
-      if (!this.checkGoldBalance(this.maxHpPrice)) {
+      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_HP])) {
         return;
       }
       /*const result = await this.confirm();
@@ -124,7 +127,7 @@ export default {
       showDialog();
     },
     async extraLifeBuyHandler() {
-      if (!this.checkGoldBalance(this.lifePrice)) {
+      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_LIFE])) {
         return;
       }
       /*const result = await this.confirm();
@@ -138,7 +141,7 @@ export default {
       showDialog();
     },
     async marchBoosterKeyBuyHandler() {
-      if (!this.checkGoldBalance(this.keyPrice)) {
+      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_KEY])) {
         return;
       }
       /*const result = await this.confirm();
