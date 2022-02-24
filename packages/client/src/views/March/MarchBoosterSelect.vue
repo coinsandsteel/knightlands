@@ -71,15 +71,6 @@ export default {
     ...mapGetters("march", ["selectedPet"]),
     boosters() {
       return march.BOOSTERS;
-    },
-    maxHpPrice() {
-      return march.MAX_HP_BOOSTER_PRICE;
-    },
-    lifePrice() {
-      return march.EXTRA_LIFE_BOOSTER_PRICE;
-    },
-    keyPrice() {
-      return march.KEY_BOOSTER_PRICE;
     }
   },
   methods: {
