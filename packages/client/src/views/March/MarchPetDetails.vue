@@ -17,39 +17,9 @@
   </UserDialog>
 </template>
 <script>
+import * as march from "@/../../knightlands-shared/march";
 import MarchPetElement from "@/views/March/MarchPetElement.vue";
 import MarchPetAbilities from "@/views/March/MarchPetAbilities.vue";
-
-const PET_ABILITIES = [
-  [
-    {},
-    { name: "Health booster value +1???" },
-    { name: "Armor booster value +1???" }
-  ],
-  [
-    { name: "Bow damage +1???" },
-    { name: "When 2 bows are stacked, +2 damage???" },
-    { name: "Bomb explosion does not damage???" }
-  ],
-  [
-    { name: "Max HP +1???" },
-    { name: "50% chance to block 1 damage???" },
-    { name: "Extra life at the start of the session???" }
-  ],
-  [
-    { name: "Gold +1 from gold card???" },
-    { name: "+20% extra gold per session???" },
-    { name: "Chest opens without mini-game???" }
-  ],
-  [
-    { name: "All barrels have only good content???" },
-    {
-      name:
-        "HP can exceed the maximum, but if the maximum is exceeded, then the booster does not have an effect???"
-    },
-    { name: "Turns armor into ball lightning???" }
-  ]
-];
 
 export default {
   components: { MarchPetElement, MarchPetAbilities },
@@ -66,7 +36,10 @@ export default {
         return [];
       }
 
-      return PET_ABILITIES[this.pet.petClass - 1].slice(0, this.pet.level);
+      return march.PET_ABILITIES[this.pet.petClass - 1].slice(
+        0,
+        this.pet.level
+      );
     }
   },
   methods: {
