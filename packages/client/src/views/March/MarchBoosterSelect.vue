@@ -8,7 +8,7 @@
         name="Max health???"
         type="max-hp"
         :price="boosters[march.BOOSTER_HP]"
-        :hasBought="preGameBoosters && preGameBoosters.maxHealth > 0"
+        :hasBought="!!preGameBoosters[march.BOOSTER_HP]"
         @hint="maxHealthHintHandler"
         @buy="maxHealthBuyHandler"
       />
@@ -17,7 +17,7 @@
         name="Extra life???"
         type="extra-life"
         :price="boosters[march.BOOSTER_LIFE]"
-        :hasBought="preGameBoosters && preGameBoosters.extraLife > 0"
+        :hasBought="!!preGameBoosters[march.BOOSTER_LIFE]"
         @hint="extraLifeHintHandler"
         @buy="extraLifeBuyHandler"
       />
@@ -26,7 +26,7 @@
         name="Key???"
         type="key"
         :price="boosters[march.BOOSTER_KEY]"
-        :hasBought="preGameBoosters && preGameBoosters.key > 0"
+        :hasBought="!!preGameBoosters[march.BOOSTER_KEY]"
         @hint="marchBoosterKeyHintHandler"
         @buy="marchBoosterKeyBuyHandler"
       />
@@ -81,8 +81,9 @@ export default {
       }
       await this.$store.dispatch("march/startNewGame", {
         petClass: this.selectedPet.petClass,
-        level: this.selectedPet.level
-      })
+        level: this.selectedPet.level,
+        boosters: this.preGameBoosters
+      });
       this.$emit("next");
     },
     maxHealthHintHandler() {
@@ -107,11 +108,7 @@ export default {
       if (!this.checkGoldBalance(this.boosters[march.BOOSTER_HP])) {
         return;
       }
-      /*const result = await this.confirm();
-      if (!result) {
-        return;
-      }*/
-      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
+      this.$store.dispatch("march/updatePreGameBooster", march.BOOSTER_HP);
     },
     extraLifeHintHandler() {
       const showDialog = create(MarchBoosterExtraLifeHint);
@@ -121,11 +118,7 @@ export default {
       if (!this.checkGoldBalance(this.boosters[march.BOOSTER_LIFE])) {
         return;
       }
-      /*const result = await this.confirm();
-      if (!result) {
-        return;
-      }*/
-      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_LIFE);
+      this.$store.dispatch("march/updatePreGameBooster", march.BOOSTER_LIFE);
     },
     marchBoosterKeyHintHandler() {
       const showDialog = create(MarchBoosterKeyHint);
@@ -135,11 +128,7 @@ export default {
       if (!this.checkGoldBalance(this.boosters[march.BOOSTER_KEY])) {
         return;
       }
-      /*const result = await this.confirm();
-      if (!result) {
-        return;
-      }*/
-      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_KEY);
+      this.$store.dispatch("march/updatePreGameBooster", march.BOOSTER_KEY);
     }
   }
 };

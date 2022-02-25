@@ -18,9 +18,9 @@ export default {
       key: 0
     },
     preGameBoosters: {
-      booster_hp: 0,
-      life: 0,
-      key: 0
+      [march.BOOSTER_HP]: 0,
+      [march.BOOSTER_LIFE]: 0,
+      [march.BOOSTER_KEY]: 0
     },
     pet: {
       petClass: 1,
@@ -197,6 +197,9 @@ export default {
     },
     setPetIndex(state, value) {
       state.selectedPetIndex = value;
+    },
+    updatePreGameBooster(state, type) {
+      state.preGameBoosters[type] = state.preGameBoosters[type] ? 0 : 1;
     }
   },
   actions: {
@@ -235,11 +238,8 @@ export default {
     async purchase(store, type) {
       await this.$app.$game._wrapOperation(Operations.MarchPurchase, { type });
     },
-    async purchasePreGameBooster(store, type) {
-      await this.$app.$game._wrapOperation(
-        Operations.MarchPurchasePreGameBooster,
-        { type }
-      );
+    async updatePreGameBooster({ commit }, type) {
+      commit("updatePreGameBooster", type);
     },
     async openChest(store, keyNumber) {
       await this.$app.$game._wrapOperation(Operations.MarchOpenChest, {
