@@ -24,8 +24,33 @@
                 :value="shopItem.quantity"
               />
 
-              <CustomButton type="grey" @click="purchase(shopIndex)">
-                <div class="flex flex-center">${{ shopItem.price }}</div>
+              <CustomButton
+                :disabled="balance.hard < shopItem.hardPrice"
+                type="grey"
+                @click="purchase(shopIndex, 'hard')"
+                :class="'margin-bottom-1'"
+              >
+                <div class="flex flex-center">
+                  <IconWithValue iconClass="icon-premium">
+                    <div class="inline-block margin-left-half">
+                      {{ shopItem.hardPrice }}
+                    </div>
+                  </IconWithValue>
+                </div>
+              </CustomButton>
+
+              <CustomButton
+                :disabled="balance.flesh < shopItem.fleshPrice"
+                type="grey"
+                @click="purchase(shopIndex, 'flesh')"
+              >
+                <div class="flex flex-center">
+                  <IconWithValue iconClass="icon-dkt">
+                    <div class="inline-block margin-left-half">
+                      {{ shopItem.fleshPrice }}
+                    </div>
+                  </IconWithValue>
+                </div>
               </CustomButton>
             </div>
           </div>
@@ -53,11 +78,20 @@ export default {
       shopIndex: null
     };
   },
+  computed: {
+    balance() {
+      return {
+        hard: this.$game.hardCurrency,
+        flesh: this.$game.dkt
+      };
+    }
+  },
   methods: {
-    async purchase(shopIndex) {
+    async purchase(shopIndex, currency) {
       await this.performRequestNoCatch(
         this.$store.dispatch("march/purchase", {
-          shopIndex
+          shopIndex,
+          currency
         })
       );
 
