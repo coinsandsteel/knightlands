@@ -27,7 +27,7 @@
               <CustomButton
                 :disabled="balance.hard < shopItem.hardPrice"
                 type="grey"
-                @click="purchase(shopIndex, 'hard')"
+                @click="purchase(shopIndex, 'hard', shopItem.quantity)"
                 :class="'margin-bottom-1'"
               >
                 <div class="flex flex-center">
@@ -42,7 +42,7 @@
               <CustomButton
                 :disabled="balance.flesh < shopItem.fleshPrice"
                 type="grey"
-                @click="purchase(shopIndex, 'flesh')"
+                @click="purchase(shopIndex, 'dkt', shopItem.quantity)"
               >
                 <div class="flex flex-center">
                   <IconWithValue iconClass="icon-dkt">
@@ -87,11 +87,12 @@ export default {
     }
   },
   methods: {
-    async purchase(shopIndex, currency) {
+    async purchase(shopIndex, currency, amount) {
       await this.performRequestNoCatch(
         this.$store.dispatch("march/purchaseGold", {
           shopIndex,
-          currency
+          currency,
+          amount
         })
       );
 
