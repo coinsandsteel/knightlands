@@ -235,8 +235,8 @@ export default {
     async collectDailyReward() {
       await this.$app.$game._wrapOperation(Operations.MarchCollectDailyReward);
     },
-    async purchase(store, type) {
-      await this.$app.$game._wrapOperation(Operations.MarchPurchase, { type });
+    async purchaseGold(store, payload) {
+      await this.$app.$game._wrapOperation(Operations.MarchPurchaseGold, payload);
     },
     async updatePreGameBooster({ commit }, type) {
       commit("updatePreGameBooster", type);

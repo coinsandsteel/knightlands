@@ -50,14 +50,16 @@ export default {
   data() {
     return {
       options: march.SHOP,
-      shopIndex: null
+      shopIndex: null,
+      currency: "flesh"
     };
   },
   methods: {
     async purchase(shopIndex) {
       await this.performRequestNoCatch(
-        this.$store.dispatch("march/purchase", {
-          shopIndex
+        this.$store.dispatch("march/purchaseGold", {
+          shopIndex,
+          currency: this.currency
         })
       );
 
