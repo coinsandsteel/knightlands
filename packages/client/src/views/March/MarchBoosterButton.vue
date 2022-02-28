@@ -75,12 +75,12 @@ export default {
   padding-bottom: 50%;
 }
 .march-booster-image--max-hp {
-  background-image: url("/images/march/max_hp.png");
+  background-image: url("/images/march/cards/hp.png");
 }
 .march-booster-image--extra-life {
-  background-image: url("/images/march/extra_life.png");
+  background-image: url("/images/march/cards/extra_life.png");
 }
 .march-booster-image--key {
-  background-image: url("/images/march/key.png");
+  background-image: url("/images/march/cards/key.png");
 }
 </style>

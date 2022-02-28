@@ -203,8 +203,8 @@ export default {
 // .march-card--dragonBreath .march-card-hp,
 // .march-card--bomb .march-card-hp,
 // .march-card--bow .march-card-hp,
-.march-card--chest .march-card-hp,
-.march-card--barrel .march-card-hp,
+// .march-card--chest .march-card-hp,
+// .march-card--barrel .march-card-hp,
 .march-card--enemy .march-card-hp,
 .march-card--enemyBoss .march-card-hp,
 .march-card--trap .march-card-hp
