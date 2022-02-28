@@ -89,7 +89,7 @@ export default {
   methods: {
     async purchase(shopIndex, currency) {
       await this.performRequestNoCatch(
-        this.$store.dispatch("march/purchase", {
+        this.$store.dispatch("march/purchaseGold", {
           shopIndex,
           currency
         })
