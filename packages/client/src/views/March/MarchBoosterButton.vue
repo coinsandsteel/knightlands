@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="march-booster-button relative">
-      <svg viewBox="0 0 300 330" class="width-100" />
+      <svg viewBox="0 0 300 300" class="width-100" />
+      <div class="march-booster-button-background absolute"></div>
       <div class="absolute-stretch flex flex-center" @click="buyHandler">
         <div
           class="march-booster-image"
@@ -48,15 +49,22 @@ export default {
 </script>
 <style scoped lang="less">
 .march-booster-button {
-  background-image: url("/images/march/booster_container.png");
-  background-size: 100%;
-  background-repeat: no-repeat;
+  // background-image: url("/images/march/booster_container.png");
+  // background-size: 100%;
+  // background-repeat: no-repeat;
+
+  border: 1px solid transparent;
+  border-image-source: url("/images/march/pet_bg.png");
+  border-image-width: 14px;
+  border-image-slice: 30;
+  border-image-outset: 0;
+  border-image-repeat: round;
 }
 .booster-hint {
   width: 4rem;
   height: 4rem;
-  color: #fff;
-  background-image: url("/images/march/blue_marker.png");
+  color: #0f2b44;
+  background-image: url("/images/march/green_marker.png");
   background-size: 100%;
   background-repeat: no-repeat;
   transform: translate(-40%, -40%);
@@ -82,5 +90,14 @@ export default {
 }
 .march-booster-image--key {
   background-image: url("/images/march/cards/key.png");
+}
+.march-booster-button-background {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-color: #00a3ee;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  top: 5px;
+  left: 5px;
 }
 </style>

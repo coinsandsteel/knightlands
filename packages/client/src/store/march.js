@@ -3,6 +3,19 @@ import * as march from "@/../../knightlands-shared/march";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 
+function preprocessCards(cards, state) {
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    if (card && card.unitClass && card.hp) {
+      if (card.unitClass === march.UNIT_CLASS_ENEMY) {
+        card.unitIndex = (card.hp - 1) % 6;
+      } else if (card.unitClass === march.UNIT_CLASS_ENEMY_BOSS) {
+        card.unitIndex = state.bossIndex++ % 4;
+      }
+    }
+  }
+}
+
 export default {
   namespaced: true,
   state: {
@@ -43,7 +56,8 @@ export default {
     },
     miniGameResult: {
       isSuccess: false
-    }
+    },
+    bossIndex: 0
   },
   getters: {
     cards: state => {
@@ -55,7 +69,8 @@ export default {
           canSwipe: card.unitClass === march.UNIT_CLASS_PET,
           isAdjacent: false,
           canClick: false,
-          opened: !!card.opened
+          opened: !!card.opened,
+          unitIndex: card.unitIndex || 0
         };
         return {
           ...card,
@@ -164,9 +179,15 @@ export default {
         state.pets = data.pets;
       }
       if (data.cards !== undefined) {
+        if (!(data.shouldIgnoreProcess === true)) {
+          preprocessCards(data.cards, state);
+        }
         state.cards = data.cards;
       }
       if (data.sequence !== undefined) {
+        for (let i = 0; i < data.sequence.length; i++) {
+          preprocessCards(data.sequence[i].cards, state, true);
+        }
         state.sequence = data.sequence;
       }
       if (data.miniGameReady !== undefined) {
@@ -188,6 +209,7 @@ export default {
       state.preGameBoosters = data.user.preGameBoosters;
       state.stat = data.map.stat;
       state.pet = data.map.pet;
+      preprocessCards(data.map.cards, state);
       state.cards = data.map.cards;
       state.dailyRewards = data.user.dailyRewards;
 
@@ -236,7 +258,10 @@ export default {
       await this.$app.$game._wrapOperation(Operations.MarchCollectDailyReward);
     },
     async purchaseGold(store, payload) {
-      await this.$app.$game._wrapOperation(Operations.MarchPurchaseGold, payload);
+      await this.$app.$game._wrapOperation(
+        Operations.MarchPurchaseGold,
+        payload
+      );
     },
     async updatePreGameBooster({ commit }, type) {
       commit("updatePreGameBooster", type);
@@ -267,10 +292,9 @@ export default {
           : state.selectedPetIndex - 1) % getters.pets.length;
       commit("setPetIndex", newIndex);
     },
-    async rankings(store) {
-      return (
-        await this.$app.$game._wrapOperation(Operations.MarchRanking)
-      ).response;
+    async rankings() {
+      return (await this.$app.$game._wrapOperation(Operations.MarchRanking))
+        .response;
     }
   }
 };

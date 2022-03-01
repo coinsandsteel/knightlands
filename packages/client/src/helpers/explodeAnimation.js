@@ -40,7 +40,6 @@ export default function explode(
   colors = ["#ffc000", "#ff3b3b", "#ff8400"]
 ) {
   return new Promise(resolve => {
-    console.log("width", width);
     let particles = [];
     let ratio = window.devicePixelRatio;
     let c = document.createElement("canvas");

@@ -156,7 +156,7 @@ export default {
       if (this.initialized) {
         return;
       }
-      await this.animateShow(this.getCardElement());
+      await this.animateShow(this.getCardElement(), { resetStyle: true });
       this.initialized = true;
     },
 
@@ -363,7 +363,10 @@ export default {
 
       const newCards = this.findElementsNotExist(updatedCards, cards);
 
-      this.$store.commit("march/updateState", { cards: updatedCards });
+      this.$store.commit("march/updateState", {
+        cards: updatedCards,
+        shouldIgnoreProcess: true
+      });
       await this.nextTickPromise();
       const elements = this.getCardElement();
       this.resetStyle(elements, true);
@@ -392,88 +395,88 @@ export default {
       }
     },
 
-    async testMove() {
-      if (this.cards[4].isPet) {
-        await Promise.all([
-          this.animateHide(this.getCardElement(1), { resetStyle: true }),
-          this.animateMoveUp(this.getCardElement(4), { resetStyle: true }),
-          this.animateMoveUp(this.getCardElement(7), { resetStyle: true })
-        ]);
-        const cards = [...this.$store.state.march.cards];
-        cards[1] = cards[4];
-        cards[4] = cards[7];
-        cards[7] = {
-          _id: new Date().getTime().toString(),
-          unitClass: march.UNIT_CLASS_ENEMY,
-          hp: 4
-        };
-        this.$store.commit("march/updateState", { cards });
-        // await sleep(0);
-        await this.nextTickPromise();
-        this.animateShow(this.getCardElement(7), { resetStyle: true });
+    // async testMove() {
+    //   if (this.cards[4].isPet) {
+    //     await Promise.all([
+    //       this.animateHide(this.getCardElement(1), { resetStyle: true }),
+    //       this.animateMoveUp(this.getCardElement(4), { resetStyle: true }),
+    //       this.animateMoveUp(this.getCardElement(7), { resetStyle: true })
+    //     ]);
+    //     const cards = [...this.$store.state.march.cards];
+    //     cards[1] = cards[4];
+    //     cards[4] = cards[7];
+    //     cards[7] = {
+    //       _id: new Date().getTime().toString(),
+    //       unitClass: march.UNIT_CLASS_ENEMY,
+    //       hp: 4
+    //     };
+    //     this.$store.commit("march/updateState", { cards });
+    //     // await sleep(0);
+    //     await this.nextTickPromise();
+    //     this.animateShow(this.getCardElement(7), { resetStyle: true });
 
-        return;
-      }
-      if (this.cards[1].isPet) {
-        await Promise.all([
-          this.animateHide(this.getCardElement(0), { resetStyle: true }),
-          this.animateMoveLeft(this.getCardElement(1), { resetStyle: true }),
-          this.animateMoveLeft(this.getCardElement(2), { resetStyle: true })
-        ]);
-        const cards = [...this.$store.state.march.cards];
-        cards[0] = cards[1];
-        cards[1] = cards[2];
-        cards[2] = {
-          _id: new Date().getTime().toString(),
-          unitClass: march.UNIT_CLASS_GOLD,
-          hp: 4
-        };
-        this.$store.commit("march/updateState", { cards });
-        await this.nextTickPromise();
-        this.animateShow(this.getCardElement(2), { resetStyle: true });
-        return;
-      }
-      if (this.cards[0].isPet) {
-        await Promise.all([
-          this.animateHide(this.getCardElement(3), { resetStyle: true }),
-          this.animateMoveDown(this.getCardElement(0), { resetStyle: true }),
-          this.animateMoveLeft(this.getCardElement(1), { resetStyle: true }),
-          this.animateMoveLeft(this.getCardElement(2), { resetStyle: true })
-        ]);
-        const cards = [...this.$store.state.march.cards];
-        cards[3] = cards[0];
-        cards[0] = cards[1];
-        cards[1] = cards[2];
-        cards[2] = {
-          _id: new Date().getTime().toString(),
-          unitClass: march.UNIT_CLASS_TRAP,
-          hp: 4
-        };
-        this.$store.commit("march/updateState", { cards });
-        await this.nextTickPromise();
-        this.animateShow(this.getCardElement(2), { resetStyle: true });
-        return;
-      }
-      if (this.cards[3].isPet) {
-        await Promise.all([
-          this.animateHide(this.getCardElement(4), { resetStyle: true }),
-          this.animateMoveRight(this.getCardElement(3), { resetStyle: true }),
-          this.animateMoveUp(this.getCardElement(6), { resetStyle: true })
-        ]);
-        const cards = [...this.$store.state.march.cards];
-        cards[4] = cards[3];
-        cards[3] = cards[6];
-        cards[6] = {
-          _id: new Date().getTime().toString(),
-          unitClass: march.UNIT_CLASS_CHEST,
-          hp: 4
-        };
-        this.$store.commit("march/updateState", { cards });
-        await this.nextTickPromise();
-        this.animateShow(this.getCardElement(6), { resetStyle: true });
-        return;
-      }
-    },
+    //     return;
+    //   }
+    //   if (this.cards[1].isPet) {
+    //     await Promise.all([
+    //       this.animateHide(this.getCardElement(0), { resetStyle: true }),
+    //       this.animateMoveLeft(this.getCardElement(1), { resetStyle: true }),
+    //       this.animateMoveLeft(this.getCardElement(2), { resetStyle: true })
+    //     ]);
+    //     const cards = [...this.$store.state.march.cards];
+    //     cards[0] = cards[1];
+    //     cards[1] = cards[2];
+    //     cards[2] = {
+    //       _id: new Date().getTime().toString(),
+    //       unitClass: march.UNIT_CLASS_GOLD,
+    //       hp: 4
+    //     };
+    //     this.$store.commit("march/updateState", { cards });
+    //     await this.nextTickPromise();
+    //     this.animateShow(this.getCardElement(2), { resetStyle: true });
+    //     return;
+    //   }
+    //   if (this.cards[0].isPet) {
+    //     await Promise.all([
+    //       this.animateHide(this.getCardElement(3), { resetStyle: true }),
+    //       this.animateMoveDown(this.getCardElement(0), { resetStyle: true }),
+    //       this.animateMoveLeft(this.getCardElement(1), { resetStyle: true }),
+    //       this.animateMoveLeft(this.getCardElement(2), { resetStyle: true })
+    //     ]);
+    //     const cards = [...this.$store.state.march.cards];
+    //     cards[3] = cards[0];
+    //     cards[0] = cards[1];
+    //     cards[1] = cards[2];
+    //     cards[2] = {
+    //       _id: new Date().getTime().toString(),
+    //       unitClass: march.UNIT_CLASS_TRAP,
+    //       hp: 4
+    //     };
+    //     this.$store.commit("march/updateState", { cards });
+    //     await this.nextTickPromise();
+    //     this.animateShow(this.getCardElement(2), { resetStyle: true });
+    //     return;
+    //   }
+    //   if (this.cards[3].isPet) {
+    //     await Promise.all([
+    //       this.animateHide(this.getCardElement(4), { resetStyle: true }),
+    //       this.animateMoveRight(this.getCardElement(3), { resetStyle: true }),
+    //       this.animateMoveUp(this.getCardElement(6), { resetStyle: true })
+    //     ]);
+    //     const cards = [...this.$store.state.march.cards];
+    //     cards[4] = cards[3];
+    //     cards[3] = cards[6];
+    //     cards[6] = {
+    //       _id: new Date().getTime().toString(),
+    //       unitClass: march.UNIT_CLASS_CHEST,
+    //       hp: 4
+    //     };
+    //     this.$store.commit("march/updateState", { cards });
+    //     await this.nextTickPromise();
+    //     this.animateShow(this.getCardElement(6), { resetStyle: true });
+    //     return;
+    //   }
+    // },
 
     resetStyle(el, resetStyle) {
       if (!resetStyle) {
