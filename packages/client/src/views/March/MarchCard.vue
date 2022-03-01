@@ -33,7 +33,7 @@
         {{ card.unitClass }} {{ card.opened ? " - opened" : "" }}
       </div> -->
       <div
-        v-if="card.hp"
+        v-if="card.hp && !isClosedTrap"
         class="march-card-hp absolute-top-left flex flex-center line-height-0 font-size-25 font-weight-700"
       >
         {{ card.hp }}
@@ -64,6 +64,13 @@ export default {
   },
   computed: {
     ...mapState("march", ["pet"]),
+    isClosedTrap() {
+      return (
+        this.card &&
+        this.card.unitClass === march.UNIT_CLASS_TRAP &&
+        !this.card.opened
+      );
+    },
     canSwipe() {
       return this.card && this.card.canSwipe;
     },

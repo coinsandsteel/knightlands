@@ -5,7 +5,7 @@
         class="text-center padding-bottom-2 font-size-20"
         :class="{ 'opacity-0': isResultVisible }"
       >
-        Select a chest???
+        Select one to open???
       </div>
       <div class="flex flex-row flex-no-wrap flex-space-around">
         <div
