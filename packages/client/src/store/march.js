@@ -220,8 +220,8 @@ export default {
     setPetIndex(state, value) {
       state.selectedPetIndex = value;
     },
-    updatePreGameBooster(state, type) {
-      state.preGameBoosters[type] = state.preGameBoosters[type] ? 0 : 1;
+    purchasePreGameBooster(state, type) {
+      state.preGameBoosters[type] = 1;
     }
   },
   actions: {
@@ -263,8 +263,9 @@ export default {
         payload
       );
     },
-    async updatePreGameBooster({ commit }, type) {
-      commit("updatePreGameBooster", type);
+    async purchasePreGameBooster({ commit }, type) {
+      await this.$app.$game._wrapOperation(Operations.MarchPurchasePreGameBooster, { type });
+      commit("purchasePreGameBooster", type)
     },
     async openChest(store, keyNumber) {
       await this.$app.$game._wrapOperation(Operations.MarchOpenChest, {
