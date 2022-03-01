@@ -3,6 +3,10 @@
     <div
       class="march-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-4 padding-bottom-4 relative"
     >
+      <MarchMaxHp
+        class="march-max-hp--with-background padding-left-2 margin-right-2"
+        :value="petCard ? petCard.maxHp : 0"
+      />
       <MarchStep
         class="march-step--with-background padding-left-2 margin-right-2"
         :value="stat ? stat.stepsToNextBoss : 0"
@@ -61,6 +65,7 @@ import explode from "@/helpers/explodeAnimation";
 import lightningAnimation from "@/helpers/lightningAnimation";
 import MarchPlayMiniGame from "@/views/March/MarchPlayMiniGame.vue";
 import MarchCard from "@/views/March/MarchCard.vue";
+import MarchMaxHp from "@/views/March/MarchMaxHp.vue";
 import MarchStep from "@/views/March/MarchStep.vue";
 import MarchBosses from "@/views/March/MarchBosses.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
@@ -77,6 +82,7 @@ const explodeColors = ["#aaa", "#ccc", "#eee"];
 export default {
   components: {
     MarchCard,
+    MarchMaxHp,
     MarchStep,
     MarchBosses,
     MarchGold
@@ -92,7 +98,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("march", ["cards"]),
+    ...mapGetters("march", ["cards", "petCard"]),
     ...mapState("march", [
       "sequence",
       "pet",

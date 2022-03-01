@@ -84,6 +84,7 @@ export default {
         level: this.selectedPet.level,
         boosters: this.preGameBoosters
       });
+      this.$store.commit("march/resetBossIndex");
       this.$emit("next");
     },
     maxHealthHintHandler() {

@@ -83,7 +83,7 @@ export default {
   padding-bottom: 50%;
 }
 .march-booster-image--max-hp {
-  background-image: url("/images/march/cards/hp.png");
+  background-image: url("/images/march/cards/max_hp.png");
 }
 .march-booster-image--extra-life {
   background-image: url("/images/march/cards/extra_life.png");

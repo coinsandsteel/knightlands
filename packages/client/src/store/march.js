@@ -107,6 +107,9 @@ export default {
 
       return result;
     },
+    petCard(state, getters) {
+      return getters.cards.find(({ isPet }) => isPet);
+    },
     pets(state) {
       const pets = [
         { petClass: 1, name: "Pet 1", level: 1, unlocked: false },
@@ -222,6 +225,9 @@ export default {
     },
     updatePreGameBooster(state, type) {
       state.preGameBoosters[type] = state.preGameBoosters[type] ? 0 : 1;
+    },
+    resetBossIndex(state) {
+      state.bossIndex = 0;
     }
   },
   actions: {
