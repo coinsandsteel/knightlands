@@ -24,7 +24,10 @@
       :class="'march-pet-element-background--' + pet.petClass"
     ></div>
     <div class="march-card-container absolute-stretch width-100 height-100">
-      <div class="march-card-unit-background absolute-stretch"></div>
+      <div
+        class="march-card-unit-background absolute-stretch"
+        :class="card.isPet ? `march-pet-${pet.petClass}-${pet.level}` : ''"
+      ></div>
       <!-- @todo: remove -->
       <!-- <div
         class="font-size-22 absolute"
@@ -179,9 +182,9 @@ export default {
   background-position: center;
   background-size: 50%;
 }
-.march-card--pet .march-card-unit-background {
-  background-image: url("/images/march/pets/pet_1_1.png");
-}
+// .march-card--pet .march-card-unit-background {
+//   background-image: url("/images/march/pets/pet_1_1.png");
+// }
 .march-card--ballLightning .march-card-unit-background {
   background-image: url("/images/march/cards/ball_lightning.png");
 }
@@ -232,9 +235,11 @@ export default {
 }
 .march-card--trap .march-card-unit-background {
   background-image: url("/images/march/cards/trap.png");
+  background-size: 30%;
 }
 .march-card--trap--opened .march-card-unit-background {
   background-image: url("/images/march/cards/trap_opened.png");
+  background-size: 50%;
 }
 .march-card--hp .march-card-unit-background {
   background-image: url("/images/march/cards/hp.png");
