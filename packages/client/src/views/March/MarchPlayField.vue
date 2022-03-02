@@ -312,10 +312,16 @@ export default {
         if (updatedCard && updatedCard._id) {
           const card = cards.find(({ _id }) => _id === updatedCard._id);
           updatedCards[i] = { ...(card || {}), ...updatedCard };
+          // animate hp, max hp after kill boss
+          if (typeof updatedCards[i].previousHp === "number") {
+            updatedCards[i].hp = updatedCards[i].previousHp;
+            delete updatedCards[i].previousHp;
+            delete updatedCards[i].maxHp;
+          }
         } else {
           updatedCards[i] = { ...cards[i] };
+          delete updatedCards[i].previousHp;
         }
-        delete updatedCards[i].nextHp;
       }
       return updatedCards;
     },
@@ -409,26 +415,34 @@ export default {
         }
       }
 
-      // apply pet max hp animation
-      const nextHpCard = stage.cards.find(card => card && card.nextHp);
-      if (nextHpCard) {
+      // apply pet hp animation after kill boss
+      const previousHpCard = stage.cards.find(
+        card => card && typeof card.previousHp === "number"
+      );
+      if (previousHpCard) {
         const updatedHpCards = cloneDeep(this.cards);
         const petCards = updatedHpCards.find(({ isPet }) => isPet);
-        petCards.hp = nextHpCard.nextHp;
+        petCards.hp = previousHpCard.hp;
+        if (typeof previousHpCard.maxHp === "number") {
+          petCards.maxHp = previousHpCard.maxHp;
+        }
+        // await this.animateMaxHp();
+        await this.animateHp();
         this.$store.commit("march/updateState", {
           cards: updatedHpCards,
           shouldIgnoreProcess: true
         });
-        await this.animateMaxHp();
       }
     },
 
-    // testNextHp() {
-    //   const cards = cloneDeep(this.cards);
-    //   const cardPet = cards.find(({ isPet }) => isPet);
-    //   cardPet.nextHp = 888;
-    //   this.animateMove([{ cards }]);
-    // },
+    testNextHp() {
+      const cards = cloneDeep(this.cards);
+      const cardPet = cards.find(({ isPet }) => isPet);
+      cardPet.previousHp = 777;
+      cardPet.hp = 999;
+      cardPet.maxHp = 222;
+      this.animateMove([{ cards }]);
+    },
 
     // async testMove() {
     //   if (this.cards[4].isPet) {
@@ -899,6 +913,38 @@ export default {
         fontSize: [60, 0],
         translateX: -x,
         translateY: -y
+      });
+
+      await animation2.finished;
+      plusOneElement.parentElement.removeChild(plusOneElement);
+    },
+
+    async animateHp() {
+      const index = this.cards.findIndex(({ isPet }) => isPet);
+      const petElement = this.getCardElement(index);
+      const petHpElement = petElement.querySelector(".march-card-hp");
+      const plusOneElement = document.createElement("div");
+      plusOneElement.className = "absolute font-size-25 text-white";
+      plusOneElement.textContent = "+1";
+      petHpElement.appendChild(plusOneElement);
+
+      const animation = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 1.5,
+        easing: "easeOutQuad",
+        targets: plusOneElement,
+        fontSize: [0, 60],
+        translateY: [0, -50]
+      });
+      await animation.finished;
+
+      const animation2 = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 1.5,
+        easing: "easeInQuad",
+        targets: plusOneElement,
+        fontSize: [60, 0],
+        translateY: 0
       });
 
       await animation2.finished;

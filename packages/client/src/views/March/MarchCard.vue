@@ -38,6 +38,7 @@
       <div
         v-if="card.hp || isClosedTrap"
         class="march-card-hp absolute-top-left flex flex-center line-height-0 font-size-25 font-weight-700 relative"
+        :class="{ 'march-card-hp--closed-trap': isClosedTrap }"
       >
         {{ isClosedTrap ? 0 : card.hp }}
       </div>
@@ -277,7 +278,7 @@ export default {
 // .march-card--barrel .march-card-hp,
 .march-card--enemy .march-card-hp,
 .march-card--enemyBoss .march-card-hp,
-.march-card--trap .march-card-hp
+.march-card--trap .march-card-hp:not(.march-card-hp--closed-trap)
 // .march-card--hp .march-card-hp,
 // .march-card--extraHp .march-card-hp,
 // .march-card--armor .march-card-hp,
