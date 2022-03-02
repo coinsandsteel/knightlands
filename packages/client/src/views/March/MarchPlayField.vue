@@ -4,7 +4,7 @@
       class="march-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-4 padding-bottom-4 relative"
     >
       <MarchMaxHp
-        class="march-max-hp--with-background padding-left-2 margin-right-2"
+        class="march-max-hp march-max-hp--with-background padding-left-2 margin-right-2"
         :value="petCard ? petCard.maxHp : 0"
       />
       <MarchStep
@@ -52,11 +52,19 @@
       >
         Finish???
       </CustomButton>
+      <CustomButton
+        type="green"
+        class="btn-start inline-block"
+        @click="testNextHp"
+      >
+        MaxHp???
+      </CustomButton>
     </div> -->
   </div>
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
+import cloneDeep from "lodash/cloneDeep";
 import { create } from "vue-modal-dialogs";
 import anime from "animejs/lib/anime.es.js";
 import { sleep } from "@/helpers/utils";
@@ -296,9 +304,9 @@ export default {
       return arr.findIndex(({ _id }) => _id === id);
     },
 
-    processStageData(stage) {
+    processStageCards(stageCards) {
       const cards = [...this.$store.state.march.cards];
-      const updatedCards = [...stage.cards];
+      const updatedCards = [...stageCards];
       for (let i = 0; i < updatedCards.length; i++) {
         const updatedCard = updatedCards[i];
         if (updatedCard && updatedCard._id) {
@@ -307,14 +315,16 @@ export default {
         } else {
           updatedCards[i] = { ...cards[i] };
         }
+        delete updatedCards[i].nextHp;
       }
-      stage.cards = updatedCards;
+      return updatedCards;
     },
 
     async animateMoveStage(stage) {
-      this.processStageData(stage);
+      // this.processStageData(stage);
+      const stageCards = cloneDeep(cloneDeep(stage.cards));
       const cards = [...this.cards];
-      const updatedCards = [...stage.cards];
+      const updatedCards = [...stageCards];
       const destroyedCards = this.findElementsNotExist(cards, updatedCards);
 
       const movedCards = this.findElementsExistButChangedPosition(
@@ -399,7 +409,27 @@ export default {
           await this.animateDragonBreathEffect(effect);
         }
       }
+
+      // apply pet max hp animation
+      const nextHpCard = stage.cards.find(card => card && card.nextHp);
+      if (nextHpCard) {
+        const updatedHpCards = cloneDeep(this.cards);
+        const petCards = updatedHpCards.find(({ isPet }) => isPet);
+        petCards.hp = nextHpCard.nextHp;
+        this.$store.commit("march/updateState", {
+          cards: updatedHpCards,
+          shouldIgnoreProcess: true
+        });
+        await this.animateMaxHp();
+      }
     },
+
+    // testNextHp() {
+    //   const cards = cloneDeep(this.cards);
+    //   const cardPet = cards.find(({ isPet }) => isPet);
+    //   cardPet.nextHp = 888;
+    //   this.animateMove([{ cards }]);
+    // },
 
     // async testMove() {
     //   if (this.cards[4].isPet) {
@@ -835,6 +865,45 @@ export default {
           return this.animateShake(this.getCardElement(target));
         })
       );
+    },
+
+    async animateMaxHp() {
+      const index = this.cards.findIndex(({ isPet }) => isPet);
+      const petElement = this.getCardElement(index);
+      const petHpElement = petElement.querySelector(".march-card-hp");
+      const maxHpElement = document.querySelector(".march-max-hp");
+      const plusOneElement = document.createElement("div");
+      plusOneElement.className = "absolute font-size-25 text-white";
+      plusOneElement.textContent = "+1";
+      petHpElement.appendChild(plusOneElement);
+      const bound = plusOneElement.getBoundingClientRect();
+      const bound1 = maxHpElement.getBoundingClientRect();
+      const x = bound.x - bound1.x - 30;
+      const y = bound.y - bound1.y - 10;
+
+      const animation = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 2,
+        easing: "easeOutQuad",
+        targets: plusOneElement,
+        fontSize: [0, 60],
+        translateX: [0, -x / 2],
+        translateY: [0, -y / 2]
+      });
+      await animation.finished;
+
+      const animation2 = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 2,
+        easing: "easeInQuad",
+        targets: plusOneElement,
+        fontSize: [60, 0],
+        translateX: -x,
+        translateY: -y
+      });
+
+      await animation2.finished;
+      plusOneElement.parentElement.removeChild(plusOneElement);
     },
 
     async stopHandler() {

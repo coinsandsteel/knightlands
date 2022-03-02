@@ -37,7 +37,7 @@
       </div> -->
       <div
         v-if="card.hp || isClosedTrap"
-        class="march-card-hp absolute-top-left flex flex-center line-height-0 font-size-25 font-weight-700"
+        class="march-card-hp absolute-top-left flex flex-center line-height-0 font-size-25 font-weight-700 relative"
       >
         {{ isClosedTrap ? 0 : card.hp }}
       </div>
