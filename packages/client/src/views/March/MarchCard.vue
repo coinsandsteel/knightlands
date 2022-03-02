@@ -36,10 +36,10 @@
         {{ card.unitClass }} {{ card.opened ? " - opened" : "" }}
       </div> -->
       <div
-        v-if="card.hp && !isClosedTrap"
+        v-if="card.hp || isClosedTrap"
         class="march-card-hp absolute-top-left flex flex-center line-height-0 font-size-25 font-weight-700"
       >
-        {{ card.hp }}
+        {{ isClosedTrap ? 0 : card.hp }}
       </div>
       <div
         v-if="secondaryHp"
