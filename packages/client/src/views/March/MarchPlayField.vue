@@ -321,8 +321,7 @@ export default {
     },
 
     async animateMoveStage(stage) {
-      // this.processStageData(stage);
-      const stageCards = cloneDeep(cloneDeep(stage.cards));
+      const stageCards = this.processStageCards(cloneDeep(stage.cards));
       const cards = [...this.cards];
       const updatedCards = [...stageCards];
       const destroyedCards = this.findElementsNotExist(cards, updatedCards);
