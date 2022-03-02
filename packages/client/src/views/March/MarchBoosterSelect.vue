@@ -106,7 +106,7 @@ export default {
       ]);
     },
     async maxHealthBuyHandler() {
-      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_HP]) || !!this.preGameBoosters[march.BOOSTER_HP]) {
+      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_HP])) {
         return;
       }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
@@ -116,7 +116,7 @@ export default {
       showDialog();
     },
     async extraLifeBuyHandler() {
-      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_LIFE]) || !!this.preGameBoosters[march.BOOSTER_LIFE]) {
+      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_LIFE])) {
         return;
       }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_LIFE);
@@ -126,7 +126,7 @@ export default {
       showDialog();
     },
     async marchBoosterKeyBuyHandler() {
-      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_KEY]) || !!this.preGameBoosters[march.BOOSTER_KEY]) {
+      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_KEY])) {
         return;
       }
       this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_KEY);
