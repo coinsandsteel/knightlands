@@ -3,7 +3,7 @@
     <div class="march-booster-button relative">
       <svg viewBox="0 0 300 300" class="width-100" />
       <div class="march-booster-button-background absolute"></div>
-      <div class="absolute-stretch flex flex-center" @click="buyHandler">
+      <div class="absolute-stretch flex flex-center" @click="selectHandler">
         <div
           class="march-booster-image"
           :class="`march-booster-image--${type}`"
@@ -16,7 +16,7 @@
         !
       </div>
       <CheckedIcon
-        v-if="hasBought"
+        v-if="isSelected"
         class="checked-icon absolute-bottom-right"
       />
     </div>
@@ -34,15 +34,15 @@ export default {
   props: {
     name: String,
     price: Number,
-    hasBought: Boolean,
+    isSelected: Boolean,
     type: String
   },
   methods: {
     hintHandler() {
       this.$emit("hint");
     },
-    buyHandler() {
-      this.$emit("buy");
+    selectHandler() {
+      this.$emit("select");
     }
   }
 };

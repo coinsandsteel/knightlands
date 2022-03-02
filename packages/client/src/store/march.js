@@ -25,11 +25,6 @@ export default {
       sessionGold: 0,
       gold: 0
     },
-    boosters: {
-      maxHealth: 0,
-      extraLife: 0,
-      key: 0
-    },
     preGameBoosters: {
       [march.BOOSTER_HP]: 0,
       [march.BOOSTER_LIFE]: 0,
@@ -223,8 +218,8 @@ export default {
     setPetIndex(state, value) {
       state.selectedPetIndex = value;
     },
-    purchasePreGameBooster(state, type) {
-      state.preGameBoosters[type] = 1;
+    updatePreGameBooster(state, type) {
+      state.preGameBoosters[type] = state.preGameBoosters[type] === 1 ? 0 : 1;
     },
     resetBossIndex(state) {
       state.bossIndex = 0;
@@ -268,10 +263,6 @@ export default {
         Operations.MarchPurchaseGold,
         payload
       );
-    },
-    async purchasePreGameBooster({ commit }, type) {
-      await this.$app.$game._wrapOperation(Operations.MarchPurchasePreGameBooster, { type });
-      commit("purchasePreGameBooster", type)
     },
     async openChest(store, keyNumber) {
       await this.$app.$game._wrapOperation(Operations.MarchOpenChest, {

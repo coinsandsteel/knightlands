@@ -8,27 +8,27 @@
         name="Max health???"
         type="max-hp"
         :price="boosters[march.BOOSTER_HP]"
-        :hasBought="!!preGameBoosters[march.BOOSTER_HP]"
+        :isSelected="!!preGameBoosters[march.BOOSTER_HP]"
         @hint="maxHealthHintHandler"
-        @buy="maxHealthBuyHandler"
+        @select="maxHealthSelectHandler"
       />
       <MarchBoosterButton
         class="btn-booster"
         name="Extra life???"
         type="extra-life"
         :price="boosters[march.BOOSTER_LIFE]"
-        :hasBought="!!preGameBoosters[march.BOOSTER_LIFE]"
+        :isSelected="!!preGameBoosters[march.BOOSTER_LIFE]"
         @hint="extraLifeHintHandler"
-        @buy="extraLifeBuyHandler"
+        @select="extraLifeSelectHandler"
       />
       <MarchBoosterButton
         class="btn-booster"
         name="Key???"
         type="key"
         :price="boosters[march.BOOSTER_KEY]"
-        :hasBought="!!preGameBoosters[march.BOOSTER_KEY]"
+        :isSelected="!!preGameBoosters[march.BOOSTER_KEY]"
         @hint="marchBoosterKeyHintHandler"
-        @buy="marchBoosterKeyBuyHandler"
+        @select="marchBoosterKeySelectHandler"
       />
     </div>
     <div class="">
@@ -79,6 +79,15 @@ export default {
       if (!this.checkTicketBalance(1)) {
         return;
       }
+      let goldCost = 0;
+      Object.keys(this.preGameBoosters).forEach(key => {
+        if (this.preGameBoosters[key]) {
+          goldCost += this.boosters[key];
+        }
+      });
+      if (!this.checkGoldBalance(goldCost)) {
+        return;
+      }
       await this.$store.dispatch("march/startNewGame", {
         petClass: this.selectedPet.petClass,
         level: this.selectedPet.level,
@@ -105,31 +114,22 @@ export default {
         }
       ]);
     },
-    async maxHealthBuyHandler() {
-      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_HP]) || !!this.preGameBoosters[march.BOOSTER_HP]) {
-        return;
-      }
-      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_HP);
+    async maxHealthSelectHandler() {
+      this.$store.commit("march/updatePreGameBooster", march.BOOSTER_HP);
     },
     extraLifeHintHandler() {
       const showDialog = create(MarchBoosterExtraLifeHint);
       showDialog();
     },
-    async extraLifeBuyHandler() {
-      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_LIFE]) || !!this.preGameBoosters[march.BOOSTER_LIFE]) {
-        return;
-      }
-      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_LIFE);
+    async extraLifeSelectHandler() {
+      this.$store.commit("march/updatePreGameBooster", march.BOOSTER_LIFE);
     },
     marchBoosterKeyHintHandler() {
       const showDialog = create(MarchBoosterKeyHint);
       showDialog();
     },
-    async marchBoosterKeyBuyHandler() {
-      if (!this.checkGoldBalance(this.boosters[march.BOOSTER_KEY]) || !!this.preGameBoosters[march.BOOSTER_KEY]) {
-        return;
-      }
-      this.$store.dispatch("march/purchasePreGameBooster", march.BOOSTER_KEY);
+    async marchBoosterKeySelectHandler() {
+      this.$store.commit("march/updatePreGameBooster", march.BOOSTER_KEY);
     }
   }
 };
