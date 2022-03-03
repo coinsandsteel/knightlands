@@ -1,5 +1,5 @@
 <template>
-  <UserDialog title="Abandon Game???" @close="close()">
+  <UserDialog title="abandon-game?" @close="close()">
     <template v-slot:footer>
       <div class="flex flex-no-wrap flex-justify-center">
         <CustomButton type="red" @click="close(true)"

@@ -1,11 +1,11 @@
 <template>
-  <UserDialog title="Mini game???" emitClose hideCloseBtn>
+  <UserDialog :title="$t('mini-game')" emitClose hideCloseBtn>
     <template v-slot:content>
       <div
         class="text-center padding-bottom-2 font-size-20"
         :class="{ 'opacity-0': isResultVisible }"
       >
-        Select one to open???
+        {{ $t("select-one-to-open") }}
       </div>
       <div class="flex flex-row flex-no-wrap flex-space-around">
         <div
@@ -20,7 +20,7 @@
               class="mini-game-result absolute"
               :class="{ 'mini-game-result--success': isSuccess }"
             >
-              {{ isSuccess ? "Success???" : "Fail???" }}
+              {{ isSuccess ? $t("success") : $t("fail") }}
             </div>
           </transition>
         </div>

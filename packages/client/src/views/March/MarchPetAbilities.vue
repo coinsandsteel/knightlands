@@ -5,7 +5,7 @@
       v-if="shouldShowNoAbility && !(abilities && abilities.length > 0)"
       class="text-center"
     >
-      This pet has no ability???
+      {{ $t("pet-has-no-ability") }}
     </div>
     <div class="march-pet-abilities">
       <!-- abilities -->
@@ -33,8 +33,8 @@
         >
           {{
             abilityIndex >= pet.level
-              ? "Level up to unlock this ability???"
-              : ability.name
+              ? $t("level-up-to-unlock-this-ability")
+              : $t(ability.name)
           }}
         </div>
       </template>

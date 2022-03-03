@@ -1,9 +1,9 @@
 <template>
-  <UserDialog title="Daily gift???" @close="collectRewards">
+  <UserDialog :title="$t('march-daily-rewards-title')" @close="collectRewards">
     <template v-slot:content>
       <!-- tips -->
       <div class="font-size-20">
-        {{ $t("Come back every day to collect your rewards???") }}
+        {{ $t("march-daily-rewards-tips") }}
       </div>
       <div
         class="march-daily-rewards margin-top-5 margin-left-3 margin-right-3"

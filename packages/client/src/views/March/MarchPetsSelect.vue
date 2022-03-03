@@ -1,7 +1,7 @@
 <template>
   <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
     <MarchBalance class="march-pets-select__balance padding-bottom-6" />
-    <Title class="">{{ $t("Choose Pet???") }}</Title>
+    <Title class="">{{ $t("choose-pet") }}</Title>
 
     <div class="flex-full flex flex-center flex-nowrap">
       <div>
@@ -29,7 +29,7 @@
             class="btn-upgrade inline-block"
             @click="unlockHandler"
           >
-            Unlock??? &nbsp;<MarchGold :value="buyPrice" />
+            {{ $t("unlock") }} &nbsp;<MarchGold :value="buyPrice" />
           </CustomButton>
           <CustomButton
             v-if="canUpgrade"
@@ -37,7 +37,7 @@
             class="btn-upgrade inline-block"
             @click="upgradeHandler"
           >
-            Evolve??? &nbsp;<MarchGold :value="upgradePrice" />
+            {{ $t("evolve") }} &nbsp;<MarchGold :value="upgradePrice" />
           </CustomButton>
           <CustomButton
             v-if="canChoose"
@@ -45,7 +45,7 @@
             class="btn-start inline-block"
             @click="selectHandler"
           >
-            Choose???
+            {{ $t("choose") }}
           </CustomButton>
         </div>
       </div>

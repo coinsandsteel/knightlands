@@ -1,13 +1,9 @@
 <template>
-  <UserDialog title="Max Health Booster???" @close="close">
+  <UserDialog :title="$t('max-health-booster')" @close="close">
     <template v-slot:content>
       <!-- tips -->
       <div class="font-size-20">
-        {{
-          $t(
-            "A booster is something that increases a positive or desirable quality???"
-          )
-        }}
+        {{ $t("march-max-health-booster-description") }}
       </div>
     </template>
     <template v-slot:footer>

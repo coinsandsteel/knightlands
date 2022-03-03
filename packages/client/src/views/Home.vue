@@ -32,7 +32,7 @@
                 :to="{ path: '/march' }"
                 :append="true"
                 id="lunar"
-                >{{ $t("March???") }}
+                >{{ $t("march-event") }}
               </MenuIcon>
             </MenuIconRow>
 

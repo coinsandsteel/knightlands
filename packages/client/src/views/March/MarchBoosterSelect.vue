@@ -1,11 +1,11 @@
 <template>
   <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
     <MarchBalance class="march-pets-select__balance padding-bottom-6" />
-    <Title class="">{{ $t("Choose Booster???") }}</Title>
+    <Title class="">{{ $t("choose-booster") }}</Title>
     <div class="march-boosters _flex-full width-100">
       <MarchBoosterButton
         class="btn-booster"
-        name="Max health???"
+        :name="$t('max-health')"
         type="max-hp"
         :price="boosters[march.BOOSTER_HP]"
         :isSelected="!!preGameBoosters[march.BOOSTER_HP]"
@@ -14,7 +14,7 @@
       />
       <MarchBoosterButton
         class="btn-booster"
-        name="Extra life???"
+        :name="$t('extra-life')"
         type="extra-life"
         :price="boosters[march.BOOSTER_LIFE]"
         :isSelected="!!preGameBoosters[march.BOOSTER_LIFE]"
@@ -23,7 +23,7 @@
       />
       <MarchBoosterButton
         class="btn-booster"
-        name="Key???"
+        :name="$t('key')"
         type="key"
         :price="boosters[march.BOOSTER_KEY]"
         :isSelected="!!preGameBoosters[march.BOOSTER_KEY]"
@@ -37,7 +37,7 @@
         class="btn-start inline-block"
         @click="startHandler"
       >
-        Start???
+        {{ $t("start") }}
       </CustomButton>
     </div>
   </div>

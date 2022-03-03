@@ -1,5 +1,5 @@
 <template>
-  <UserDialog title="Pet details???" emitClose @close="close">
+  <UserDialog :title="$t('pet-details')" emitClose @close="close">
     <template v-slot:content>
       <div>
         <div

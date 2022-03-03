@@ -1,5 +1,5 @@
 <template>
-  <UserDialog title="Congratulations!???" @close="close">
+  <UserDialog :title="$t('congratulations!')" @close="close">
     <template v-slot:content>
       <div
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
@@ -7,11 +7,11 @@
         <div class="flex-full flex flex-center font-size-22">
           <div class="text-center margin-top-1">
             <div class="flex flex-no-wrap flex-justify-center">
-              <div class="margin-right-2">Coins earned???:</div>
+              <div class="margin-right-2">{{ $t("coins-earned") }}:</div>
               <MarchGold :value="balance ? balance.sessionGold : 0" />
             </div>
             <div class="flex flex-no-wrap flex-justify-center margin-top-2">
-              <div class="margin-right-2">Bosses killed???:</div>
+              <div class="margin-right-2">{{ $t("bosses-killed") }}:</div>
               <MarchBosses :value="stat ? stat.bossesKilled : 0" />
             </div>
           </div>
@@ -20,7 +20,7 @@
     </template>
     <template v-slot:footer>
       <CustomButton type="green" class="btn-start inline-block" @click="close">
-        Ok???
+        {{ $t("btn-ok") }}
       </CustomButton>
     </template>
   </UserDialog>

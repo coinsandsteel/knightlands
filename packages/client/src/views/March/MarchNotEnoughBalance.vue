@@ -1,6 +1,6 @@
 <template>
   <UserDialog
-    :title="type === 'gold' ? 'Not enough gold???' : 'Not enough tickets???'"
+    :title="type === 'gold' ? $t('not-enough-gold') : $t('not-enough-ticket')"
     @close="close"
   >
     <template v-slot:content>
@@ -8,14 +8,14 @@
       <div class="font-size-20">
         {{
           type === "gold"
-            ? $t("You can buy gold in the shop???")
-            : $t("You can earn tickets by joining Raids???")
+            ? $t("not-enough-ticket")
+            : $t("march-not-enough-ticket-tips")
         }}
       </div>
     </template>
     <template v-slot:footer>
       <CustomButton type="yellow" @click="clickHandler"
-        >{{ type === "gold" ? $t("Go to shop") : $t("Go to Raids") }}
+        >{{ type === "gold" ? $t("go-to-shop") : $t("go-to-raids") }}
       </CustomButton>
     </template>
   </UserDialog>

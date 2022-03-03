@@ -37,17 +37,17 @@ export default {
       hasShowDailyRewards: false,
       tabs: [
         {
-          title: this.$t("Event Menu???"),
+          title: this.$t("event-menu"),
           value: PlayTab,
           to: { name: PlayTab }
         },
         {
-          title: this.$t("Pets???"),
+          title: this.$t("pets"),
           value: PetsTab,
           to: { name: PetsTab }
         },
         {
-          title: this.$t("Rating???"),
+          title: this.$t("rating"),
           value: RankingsTab,
           to: { name: RankingsTab }
         }
@@ -59,7 +59,7 @@ export default {
     ...mapState("march", ["dailyRewards"])
   },
   created() {
-    this.title = this.$t("march-event???");
+    this.title = this.$t("march-event");
     this.$store.$app.$on("march-show-daily-reward", this.tryToShowRewards);
   },
   destroyed() {

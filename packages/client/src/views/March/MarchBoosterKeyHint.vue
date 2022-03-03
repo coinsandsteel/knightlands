@@ -1,13 +1,9 @@
 <template>
-  <UserDialog title="Key???" @close="close">
+  <UserDialog :title="$t('key')" @close="close">
     <template v-slot:content>
       <!-- tips -->
       <div class="font-size-20">
-        {{
-          $t(
-            "A booster is something that increases a positive or desirable quality???"
-          )
-        }}
+        {{ $t("march-key-booster-description") }}
       </div>
     </template>
     <template v-slot:footer>

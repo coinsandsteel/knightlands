@@ -80,7 +80,6 @@
         </div>
       </div>
     </div>
-    <!-- <Title class="common-title">Top Player???</Title> -->
     <div
       class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
     >
@@ -96,7 +95,8 @@
           @update="scrollUpdated"
         >
           <Title v-if="item.isTitle" class="common-title"
-            >Top Players??? - Pet {{ item.petClass }}</Title
+            >{{ $t("top-players") }} - {{ $t("pet") }}
+            {{ item.petClass }}</Title
           >
           <MarchRankingElement
             v-else

@@ -43,21 +43,21 @@
         class="btn-start inline-block"
         @click="testShowMiniGame"
       >
-        Mini game???
+        Mini game
       </CustomButton>
       <CustomButton
         type="green"
         class="btn-start inline-block"
         @click="$emit('next')"
       >
-        Finish???
+        Finish
       </CustomButton>
       <CustomButton
         type="green"
         class="btn-start inline-block"
         @click="testNextHp"
       >
-        MaxHp???
+        MaxHp
       </CustomButton>
     </div> -->
   </div>
