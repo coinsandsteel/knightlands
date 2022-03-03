@@ -8,7 +8,7 @@
     </template>
     <template v-slot:footer>
       <CustomButton type="green" @click="close"
-        >{{ $t("close") }}
+        >{{ $t("btn-close") }}
       </CustomButton>
     </template>
   </UserDialog>
