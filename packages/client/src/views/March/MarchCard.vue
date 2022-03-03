@@ -36,7 +36,7 @@
         {{ card.unitClass }} {{ card.opened ? " - opened" : "" }}
       </div> -->
       <div
-        v-if="card.hp || isClosedTrap"
+        v-if="isHpVisible"
         class="march-card-hp absolute-top-left flex flex-center line-height-0 font-size-25 font-weight-700 relative"
         :class="{ 'march-card-hp--closed-trap': isClosedTrap }"
       >
@@ -92,6 +92,12 @@ export default {
       }
 
       return null;
+    },
+    isHpVisible() {
+      if (!this.card || this.card.unitClass === march.UNIT_CLASS_CHEST) {
+        return false;
+      }
+      return this.card.hp || this.isClosedTrap;
     }
   },
   watch: {
