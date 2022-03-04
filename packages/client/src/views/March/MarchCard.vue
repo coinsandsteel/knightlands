@@ -91,6 +91,13 @@ export default {
         return this.pet.armor;
       }
 
+      if (
+        this.card.unitClass === march.UNIT_CLASS_BOMB &&
+        this.card.counter >= 0
+      ) {
+        return this.card.counter;
+      }
+
       return null;
     },
     isHpVisible() {

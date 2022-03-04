@@ -65,7 +65,8 @@ export default {
           isAdjacent: false,
           canClick: false,
           opened: !!card.opened,
-          unitIndex: card.unitIndex || 0
+          unitIndex: card.unitIndex || 0,
+          counter: card.counter || -1
         };
         return {
           ...card,
