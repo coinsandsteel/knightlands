@@ -8,7 +8,9 @@
           <div class="text-center margin-top-1">
             <div class="flex flex-no-wrap flex-justify-center">
               <div class="margin-right-2">{{ $t("coins-earned") }}:</div>
-              <MarchGold :value="balance ? balance.sessionGold : 0" />
+              <MarchGold :value="balance ? balance.sessionGold : 0">
+                {{ hasExtraGold ? " (+20%)" : "" }}
+              </MarchGold>
             </div>
             <div class="flex flex-no-wrap flex-justify-center margin-top-2">
               <div class="margin-right-2">{{ $t("bosses-killed") }}:</div>
@@ -36,7 +38,10 @@ export default {
     MarchBosses
   },
   computed: {
-    ...mapState("march", ["balance", "stat"])
+    ...mapState("march", ["balance", "stat", "pet"]),
+    hasExtraGold() {
+      return this.pet && this.pet.petClass === 4 && this.pet.level > 1;
+    }
   },
   methods: {
     close() {

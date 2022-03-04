@@ -2,6 +2,7 @@
   <div class="march-gold font-size-20 flex flex-nowrap flex-items-center">
     <div class="march-gold-icons"></div>
     {{ gold }}
+    <slot />
   </div>
 </template>
 <script>
