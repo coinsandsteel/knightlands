@@ -9,7 +9,7 @@
             <div class="flex flex-no-wrap flex-justify-center">
               <div class="margin-right-2">{{ $t("coins-earned") }}:</div>
               <MarchGold :value="balance ? balance.sessionGold : 0">
-                {{ hasExtraGold ? " (+20%)" : "" }}
+                {{ hasExtraGold ? ` + ${extraGold}(20%)` : "" }}
               </MarchGold>
             </div>
             <div class="flex flex-no-wrap flex-justify-center margin-top-2">
@@ -41,6 +41,19 @@ export default {
     ...mapState("march", ["balance", "stat", "pet"]),
     hasExtraGold() {
       return this.pet && this.pet.petClass === 4 && this.pet.level > 1;
+    },
+    extraGold() {
+      if (!this.hasExtraGold) {
+        return 0;
+      }
+
+      return Math.floor(
+        ((this.balance && this.balance.sessionGold
+          ? this.balance.sessionGold
+          : 0) *
+          20) /
+          100
+      );
     }
   },
   methods: {
