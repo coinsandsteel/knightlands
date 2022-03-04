@@ -93,9 +93,9 @@ export default {
 
       if (
         this.card.unitClass === march.UNIT_CLASS_BOMB &&
-        this.card.counter >= 0
+        this.card.timer >= 0
       ) {
-        return this.card.counter;
+        return this.card.timer;
       }
 
       return null;
