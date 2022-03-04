@@ -64,6 +64,7 @@ import { create } from "vue-modal-dialogs";
 import * as march from "@/../../knightlands-shared/march";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
 
@@ -71,7 +72,7 @@ export default {
   components: {
     MarchGold
   },
-  mixins: [ActivityMixin, NetworkRequestErrorMixin],
+  mixins: [ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
   data() {
     return {
       options: march.SHOP,
@@ -96,6 +97,27 @@ export default {
   },
   methods: {
     async purchase(shopIndex, currency, amount) {
+      const response = await this.showPrompt(
+        this.$t("buy-i-t"),
+        this.$t("buy-i-q"),
+        [
+          {
+            type: "red",
+            title: this.$t("buy-i-n"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("buy-i-y"),
+            response: true
+          }
+        ]
+      );
+
+      if (!response) {
+        return;
+      }
+
       await this.performRequestNoCatch(
         this.$store.dispatch("march/purchaseGold", {
           shopIndex,
