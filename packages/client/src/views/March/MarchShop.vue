@@ -33,7 +33,7 @@
                 <div class="flex flex-center">
                   <IconWithValue iconClass="icon-premium">
                     <div class="inline-block margin-left-half">
-                      {{ shopItem.hardPrice }}
+                      {{ shopItem.hardPrice | shinesPrice }}
                     </div>
                   </IconWithValue>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="flex flex-center">
                   <IconWithValue iconClass="icon-dkt">
                     <div class="inline-block margin-left-half">
-                      {{ shopItem.fleshPrice }}
+                      {{ shopItem.fleshPrice | fleshPrice }}
                     </div>
                   </IconWithValue>
                 </div>
@@ -84,6 +84,14 @@ export default {
         hard: this.$game.hardCurrency,
         flesh: this.$game.dkt
       };
+    }
+  },
+  filters: {
+    shinesPrice(value) {
+      return Math.round(value);
+    },
+    fleshPrice(value) {
+      return +(Math.round(value * 100) / 100).toFixed(2);
     }
   },
   methods: {
