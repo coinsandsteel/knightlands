@@ -29,7 +29,11 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-center margin-bottom-2">
+        <div class="flex flex-center margin-bottom-2 font-size-20 ">
+          Event will be finished in:<br/>
+          {{ timer.value }}
+        </div>
+        <div class="flex flex-center margin-bottom-3">
           <CustomButton
             type="green"
             :disabled="!hasRewards"
@@ -80,6 +84,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import { EVENT_REWARDS } from "@/../../knightlands-shared/march";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
+import Timer from "@/timer.js";
 import { create } from "vue-modal-dialogs";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 const ShowItems = create(ItemsReceived, "items");
@@ -95,7 +100,8 @@ export default {
     fetchedAll: false,
     showInfoButton: false,
     places: ["1-st", "2-nd", "3-rd", "4-th", "5 - 10"],
-    hasRewards: false
+    hasRewards: false,
+    timer: new Timer(true, true)
   }),
   async activated() {
     this.records = [];
@@ -114,6 +120,7 @@ export default {
       );
 
       this.hasRewards = result.hasRewards;
+      this.timer.timeLeft = result.timeLeft;
 
       const records = [];
       for (let i = 0; i < result.rankings.length; i++) {

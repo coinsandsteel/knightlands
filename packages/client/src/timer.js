@@ -1,10 +1,11 @@
 import EventEmitter from "events";
 
 class Timer extends EventEmitter {
-  constructor(showHours) {
+  constructor(showHours, showDays) {
     super();
 
     this._showHours = showHours;
+    this._showDays = showDays;
     this._timerTimeout = undefined;
     this._timeLeft = 0;
     this.value = showHours ? "00:00:00" : "00:00";
@@ -61,10 +62,18 @@ class Timer extends EventEmitter {
     let hours = Math.floor(minutes / 60);
     minutes -= hours * 60;
     let seconds = Math.floor(timeLeft % 60);
+    let days = 0;
+
+    if (timeLeft >= 86400) {
+      this._showHours = true;
+      days = Math.floor(timeLeft/(60*60*24));
+      hours = Math.floor((timeLeft%(60*60*24))/(60*60));
+    }
 
     let hoursValue = this._showHours ? `${hours > 9 ? "" : 0}${hours}:` : "";
+    let daysValue = this._showDays ? `${days} days ` : "";
 
-    this.value = `${hoursValue}${minutes > 9 ? "" : 0}${minutes}:${
+    this.value = `${daysValue}${hoursValue}${minutes > 9 ? "" : 0}${minutes}:${
       seconds > 9 ? "" : 0
     }${seconds}`;
 
