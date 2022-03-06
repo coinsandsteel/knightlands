@@ -1,115 +1,74 @@
 <template>
-  <div class="screen-content">
-    <div class="march-rating-rewards-wrapper padding-bottom-2">
-      <div
-        class="march-rating-rewards font-size-20 _padding-bottom-2 padding-top-2 text-align-left"
-      >
-        <!-- 1st -->
+  <div class="screen-content" v-bar>
+    <div>
+      <div class="march-rating-rewards-wrapper padding-bottom-2">
         <div
-          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
+          class="flex flex-center font-size-20 padding-top-2 text-align-left"
         >
-          <div class="r icon-rank1"></div>
-          <div class="margin-left-1">1st place:</div>
-          <IconWithValue
-            iconClass="icon-dkt"
-            valueClass="margin-half"
-            class="margin-left-1"
+          <div
+            class="march-rating-reward flex-items-center width-100 margin-bottom-3"
+            v-for="(rewardEntry, rewardEntryIndex) in allRewards"
+            :key="'event-reward-rank-' + rewardEntryIndex"
           >
-            {{ 100500 }}
-          </IconWithValue>
+            <div class="flex flex-center margin-bottom-1">
+              <div :class="['r', rewardEntry.rankIcon]"></div>
+              <div class="margin-left-1">
+                {{ rewardEntry.position }} place{{
+                  rewardEntryIndex === 4 ? "s" : ""
+                }}:
+              </div>
+            </div>
+            <div class="flex flex-center">
+              <Loot
+                v-for="(lootEntry, lootEntryIndex) in rewardEntry.items"
+                :key="`loot-entry-${rewardEntryIndex}-${lootEntryIndex}`"
+                class="margin-right-half"
+                :item="lootEntry.item"
+                :quantity="lootEntry.quantity"
+              />
+            </div>
+          </div>
         </div>
-        <br />
-        <!-- 2nd -->
-        <div
-          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
-        >
-          <div class="r icon-rank2"></div>
-          <div class="margin-left-1">2nd place:</div>
-          <IconWithValue
-            iconClass="icon-dkt"
-            valueClass="margin-half"
-            class="margin-left-1"
+        <div class="flex flex-center margin-bottom-2">
+          <CustomButton
+            type="green"
+            :disabled="!hasRewards"
+            @click="claimRewards"
+            width="20rem"
+            >Claim reward</CustomButton
           >
-            {{ 10050 }}
-          </IconWithValue>
-        </div>
-        <br />
-        <!-- 3rd -->
-        <div
-          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
-        >
-          <div class="r icon-rank3"></div>
-          <div class="margin-left-1">3rd place:</div>
-          <IconWithValue
-            iconClass="icon-dkt"
-            valueClass="margin-half"
-            class="margin-left-1"
-          >
-            {{ 1005 }}
-          </IconWithValue>
-        </div>
-        <br />
-        <!-- 4-7 -->
-        <div
-          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
-        >
-          <div class="r icon-rank3 icon-rank3-4"></div>
-          <div class="margin-left-1">4-7 place:</div>
-          <IconWithValue
-            iconClass="icon-dkt"
-            valueClass="margin-half"
-            class="margin-left-1"
-          >
-            {{ 100 }}
-          </IconWithValue>
-        </div>
-        <br />
-        <!-- 8-10 -->
-        <div
-          class="march-rating-reward flex-inline flex-no-wrap flex-items-center"
-        >
-          <div class="r icon-rank3 icon-rank3-5"></div>
-          <div class="margin-left-1">8-10 place:</div>
-          <IconWithValue
-            iconClass="icon-dkt"
-            valueClass="margin-half"
-            class="margin-left-1"
-          >
-            {{ 10 }}
-          </IconWithValue>
         </div>
       </div>
-    </div>
-    <div
-      class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
-    >
-      <div class="flex-full width-100 dummy-height" v-if="records.length > 0">
-        <RecycleScroller
-          ref="scroller"
-          class="width-100 height-100"
-          :items="records"
-          :item-size="itemSize"
-          key-field="key"
-          v-slot="{ item, index }"
-          :emitUpdate="records.length > 0 && !fetchedAll"
-          @update="scrollUpdated"
-        >
-          <Title v-if="item.isTitle" class="common-title"
-            >{{ $t("top-players") }} - {{ $t("pet") }}
-            {{ item.petClass }}</Title
+
+      <div class="width-100 flex flex-column flex-no-wrap">
+        <div class="flex-full width-100" v-if="records.length > 0">
+          <RecycleScroller
+            ref="scroller"
+            class="width-100 height-100"
+            :items="records"
+            :item-size="itemSize"
+            key-field="key"
+            v-slot="{ item, index }"
+            :emitUpdate="records.length > 0 && !fetchedAll"
+            @update="scrollUpdated"
           >
-          <MarchRankingElement
-            v-else
-            :index="index"
-            :rank="item.rank"
-            :id="item.name"
-            :pId="item.id"
-            :avatar="item.avatar"
-            :score="item.score"
-            :height="itemSize"
-            :you="isYou(item.id)"
-          />
-        </RecycleScroller>
+            <Title v-if="item.isTitle" class="common-title"
+              >{{ $t("top-players") }} - {{ $t("pet") }}
+              {{ item.petClass }}</Title
+            >
+            <MarchRankingElement
+              v-else
+              :index="index"
+              :rank="item.rank"
+              :id="item.name"
+              :pId="item.id"
+              :avatar="item.avatar"
+              :score="item.score"
+              :height="itemSize"
+              :you="isYou(item.id)"
+            />
+          </RecycleScroller>
+        </div>
       </div>
     </div>
   </div>
@@ -118,20 +77,25 @@
 <script>
 import MarchRankingElement from "@/views/March/Rankings/MarchRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import meta from "@/metadata/halloween/dungeon_meta";
-import IconWithValue from "@/components/IconWithValue.vue";
+import { EVENT_REWARDS } from "@/../../knightlands-shared/march";
+import CustomButton from "@/components/Button.vue";
+import Loot from "@/components/Loot.vue";
+import { create } from "vue-modal-dialogs";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+const ShowItems = create(ItemsReceived, "items");
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  components: { MarchRankingElement, IconWithValue },
+  components: { MarchRankingElement, CustomButton, Loot },
   data: () => ({
-    currentRank: null,
     records: [],
     currentPage: 0,
     itemSize: 40,
     fetchInProcess: false,
     fetchedAll: false,
-    showInfoButton: false
+    showInfoButton: false,
+    places: ["1-st", "2-nd", "3-rd", "4-th", "5 - 10"],
+    hasRewards: false
   }),
   async activated() {
     this.records = [];
@@ -148,6 +112,9 @@ export default {
       const result = await this.performRequest(
         this.$store.dispatch("march/rankings")
       );
+
+      this.hasRewards = result.hasRewards;
+
       const records = [];
       for (let i = 0; i < result.rankings.length; i++) {
         let newRecords = [];
@@ -173,25 +140,31 @@ export default {
       }
       this.records = records;
     },
-    scrollUpdated(start, end) {}
+    scrollUpdated(start, end) {},
+    async claimRewards() {
+      let items = await this.performRequestNoCatch(
+        this.$store.dispatch("march/claimRewards")
+      );
+      if (items.length) {
+        await ShowItems(items);
+        this.hasRewards = false;
+      }
+    }
   },
   computed: {
-    reward() {
-      if (this.rank > meta.rewards.length) {
-        return 0;
-      }
-
-      return meta.rewards[this.rank - 1];
-    },
-    participates() {
-      return !!this.currentRank;
-    },
-    rank() {
-      if (this.currentRank.rank == 0) {
-        return this.$t("race-unranked");
-      }
-
-      return this.currentRank.rank;
+    allRewards() {
+      let rewards = EVENT_REWARDS.map((rankEntry, rankIndex) => {
+        if (rankIndex === 0) {
+          rankEntry.rankIcon = "icon-rank-1";
+        } else if (rankIndex >= 1 && rankIndex <= 3) {
+          rankEntry.rankIcon = "icon-rank-2";
+        } else {
+          rankEntry.rankIcon = "icon-rank-3";
+        }
+        rankEntry.position = this.places[rankIndex];
+        return rankEntry;
+      });
+      return rewards;
     }
   }
 };
@@ -202,7 +175,6 @@ export default {
   background: #2f7285;
 }
 .march-rating-rewards {
-  width: 140px;
   margin-left: auto;
   margin-right: auto;
 }

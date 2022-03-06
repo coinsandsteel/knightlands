@@ -282,6 +282,11 @@ export default {
         })
       ).response;
     },
+    async claimRewards() {
+      return (
+        await this.$app.$game._wrapOperation(Operations.MarchClaimRewards)
+      ).response;
+    },
     increasePetIndex({ state, commit, getters }) {
       const newIndex = (state.selectedPetIndex + 1) % getters.pets.length;
       commit("setPetIndex", newIndex);
