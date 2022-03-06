@@ -5,7 +5,7 @@
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
         <div class="option-name font-size-25 text-align-center padding-1">
-          Choose pack:
+          Choose a pack:
         </div>
 
         <div

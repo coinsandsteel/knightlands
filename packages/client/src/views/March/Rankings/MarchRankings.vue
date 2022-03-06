@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="flex flex-center margin-bottom-2 font-size-20 ">
-          Event will be finished in:<br/>
+          The event will be finished in:<br/>
           {{ timer.value }}
         </div>
         <div class="flex flex-center margin-bottom-3">
