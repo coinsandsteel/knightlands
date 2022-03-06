@@ -5,9 +5,7 @@
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
         <div class="option-name font-size-25 text-align-center padding-1">
-          <div class="text-align-left">
-            Choose pack
-          </div>
+          Choose pack:
         </div>
 
         <div
@@ -53,6 +51,21 @@
                 </div>
               </CustomButton>
             </div>
+          </div>
+        </div>
+
+        <div class="flex flex-center flex-column">
+          <div class="font-size-22 flex flex-center margin-bottom-1">
+            FLESH balance:
+            <IconWithValue iconClass="icon-dkt" class="margin-left-1">{{
+              balance.flesh
+            }}</IconWithValue>
+          </div>
+          <div class="font-size-22 margin-bottom-3 flex flex-center">
+            Shinies balance:
+            <IconWithValue iconClass="icon-premium" class="margin-left-1">{{
+              balance.hard
+            }}</IconWithValue>
           </div>
         </div>
       </div>
@@ -137,5 +150,8 @@ export default {
   & > div {
     overflow: auto !important;
   }
+}
+.option-name {
+  background: rgba(0, 0, 0, 0.5);
 }
 </style>
