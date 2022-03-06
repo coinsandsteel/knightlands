@@ -105,7 +105,7 @@ export default {
           continue;
         }
         const template = this.$game.itemsDB.getTemplate(item.template);
-        if (template.type === "lunarResource") {
+        if (template.type === "lunarResource" || template.type === "marchResource") {
           continue;
         }
         filteredItems[insertedItems++] = item;

@@ -62,9 +62,11 @@ export default {
         const item = items[i];
         const template = this.$game.itemsDB.getTemplate(item.template);
         if (
-          (template.type !== ItemType.Lunar && !item.rarity) ||
-          (template.type === ItemType.Lunar &&
-            template.rarity === ITEM_RARITY_NFT)
+          (template.type !== ItemType.Lunar && !item.rarity)
+          ||
+          (template.type === ItemType.Lunar && template.rarity === ITEM_RARITY_NFT)
+          ||
+          (template.type === ItemType.March && template.id !== 3461)
         ) {
           filteredItems.push(item);
         }

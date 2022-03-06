@@ -98,7 +98,7 @@ export default {
     items() {
       return this.$game.inventory.items.filter(item => {
         const template = this.$game.itemsDB.getTemplate(item.template);
-        return template.type !== "lunarResource";
+        return template.type !== "lunarResource" && template.type !== "marchResource";
       });
     },
     hintItems() {
