@@ -276,9 +276,11 @@ export default {
       });
     },
     async upgradePet(store, petClass) {
-      await this.$app.$game._wrapOperation(Operations.MarchUpgradePet, {
-        petClass
-      });
+      return (
+        await this.$app.$game._wrapOperation(Operations.MarchUpgradePet, {
+          petClass
+        })
+      ).response;
     },
     increasePetIndex({ state, commit, getters }) {
       const newIndex = (state.selectedPetIndex + 1) % getters.pets.length;

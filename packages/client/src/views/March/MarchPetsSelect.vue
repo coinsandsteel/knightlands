@@ -55,14 +55,18 @@
 <script>
 import { mapGetters } from "vuex";
 import * as march from "@/../../knightlands-shared/march";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import marchPurchaseMixin from "@/views/March/marchPurchaseMixin";
 import MarchBalance from "@/views/March/MarchBalance.vue";
 import MarchPetsSlide from "@/views/March/MarchPetsSlide.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
 import MarchPetAbilities from "@/views/March/MarchPetAbilities.vue";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+import { create } from "vue-modal-dialogs";
+const ShowItems = create(ItemsReceived, "items");
 
 export default {
-  mixins: [marchPurchaseMixin],
+  mixins: [marchPurchaseMixin, NetworkRequestErrorMixin],
   components: { MarchBalance, MarchPetsSlide, MarchGold, MarchPetAbilities },
   computed: {
     ...mapGetters("march", ["selectedPet"]),
@@ -114,7 +118,12 @@ export default {
       if (!this.checkGoldBalance(this.upgradePrice)) {
         return;
       }
-      await this.$store.dispatch("march/upgradePet", this.selectedPet.petClass);
+      let items = await this.performRequestNoCatch(
+        this.$store.dispatch("march/upgradePet", this.selectedPet.petClass)
+      );
+      if (items.length) {
+        await ShowItems(items);
+      }
     },
     selectHandler() {
       this.$emit("next");
