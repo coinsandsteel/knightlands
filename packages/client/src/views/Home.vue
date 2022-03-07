@@ -28,10 +28,10 @@
                 >{{ $t("btn-evt-lunar") }}
               </MenuIcon>
               <MenuIcon
-                icon="skewed_icon_xmas"
+                icon="skewed_icon_march"
                 :to="{ path: '/march' }"
                 :append="true"
-                id="lunar"
+                id="march"
                 >{{ $t("march-event") }}
               </MenuIcon>
             </MenuIconRow>
