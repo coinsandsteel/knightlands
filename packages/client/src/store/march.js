@@ -52,8 +52,7 @@ export default {
     miniGameResult: {
       isSuccess: false
     },
-    bossIndex: 0,
-    respawn: false
+    bossIndex: 0
   },
   getters: {
     cards: state => {
@@ -225,9 +224,6 @@ export default {
     },
     resetBossIndex(state) {
       state.bossIndex = 0;
-    },
-    updateRespawn(state, value) {
-      state.respawn = !!value;
     }
   },
   actions: {

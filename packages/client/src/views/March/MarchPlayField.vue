@@ -73,6 +73,13 @@
       >
         Respawn
       </CustomButton>
+      <CustomButton
+        type="green"
+        class="btn-start inline-block"
+        @click="testMaxHpAndRespawn"
+      >
+        MaxHp + Respawn
+      </CustomButton>
     </div> -->
   </div>
 </template>
@@ -340,6 +347,7 @@ export default {
           updatedCards[i] = { ...cards[i] };
           delete updatedCards[i].previousHp;
         }
+        delete updatedCards[i].respawn;
       }
       return updatedCards;
     },
@@ -449,16 +457,22 @@ export default {
         }
       }
 
+      // respawn animation
+      const respawnCard = stage.cards.find(card => card && !!card.respawn);
+      if (respawnCard) {
+        await this.animateRespawn();
+      }
+
       // apply pet hp animation after kill boss
       const previousHpCard = stage.cards.find(
         card => card && typeof card.previousHp === "number"
       );
       if (previousHpCard) {
         const updatedHpCards = cloneDeep(this.cards);
-        const petCards = updatedHpCards.find(({ isPet }) => isPet);
-        petCards.hp = previousHpCard.hp;
+        const petCard = updatedHpCards.find(({ isPet }) => isPet);
+        petCard.hp = previousHpCard.hp;
         if (typeof previousHpCard.maxHp === "number") {
-          petCards.maxHp = previousHpCard.maxHp;
+          petCard.maxHp = previousHpCard.maxHp;
         }
         // await this.animateMaxHp();
         await this.animateHp();
@@ -466,12 +480,6 @@ export default {
           cards: updatedHpCards,
           shouldIgnoreProcess: true
         });
-      }
-
-      // respawn animation
-      if (this.respawn) {
-        await this.animateRespawn();
-        this.$store.commit("march/updateRespawn", false);
       }
     },
 
@@ -494,8 +502,24 @@ export default {
       // const index = this.cards.findIndex(({ isPet }) => isPet);
       // const petElement = this.getCardElement(index);
       // this.animateRespawn(petElement);
-      this.$store.commit("march/updateRespawn", true);
+
+      // this.$store.commit("march/updateRespawn", true);
+      // const cards = cloneDeep(this.cards);
+      // this.animateMove([{ cards }]);
+
       const cards = cloneDeep(this.cards);
+      const cardPet = cards.find(({ isPet }) => isPet);
+      cardPet.respawn = true;
+      this.animateMove([{ cards }]);
+    },
+
+    testMaxHpAndRespawn() {
+      const cards = cloneDeep(this.cards);
+      const cardPet = cards.find(({ isPet }) => isPet);
+      cardPet.previousHp = 777;
+      cardPet.hp = 999;
+      cardPet.maxHp = 222;
+      cardPet.respawn = true;
       this.animateMove([{ cards }]);
     },
 
@@ -748,25 +772,25 @@ export default {
             // left arrow
             arrowLeftElement = document.createElement("div");
             arrowLeftElement.className =
-              "march-arrow-effect march-arrow-effect--left absolute-stretch flex flex-center";
+              "z-index-1 march-arrow-effect march-arrow-effect--left absolute-stretch flex flex-center";
             effectElement.appendChild(arrowLeftElement);
           } else if (index === effect.index + 1) {
             // right arrow
             arrowRightElement = document.createElement("div");
             arrowRightElement.className =
-              "march-arrow-effect march-arrow-effect--right absolute-stretch flex flex-center";
+              "z-index-1 march-arrow-effect march-arrow-effect--right absolute-stretch flex flex-center";
             effectElement.appendChild(arrowRightElement);
           } else if (index < effect.index) {
             // top arrow
             arrowTopElement = document.createElement("div");
             arrowTopElement.className =
-              "march-arrow-effect march-arrow-effect--top absolute-stretch flex flex-center";
+              "z-index-1 march-arrow-effect march-arrow-effect--top absolute-stretch flex flex-center";
             effectElement.appendChild(arrowTopElement);
           } else if (index > effect.index) {
             // bottom arrow
             arrowBottomElement = document.createElement("div");
             arrowBottomElement.className =
-              "march-arrow-effect march-arrow-effect--bottom absolute-stretch flex flex-center";
+              "z-index-1 march-arrow-effect march-arrow-effect--bottom absolute-stretch flex flex-center";
             effectElement.appendChild(arrowBottomElement);
           }
         }
@@ -835,25 +859,25 @@ export default {
             // left bomb
             bombLeftElement = document.createElement("div");
             bombLeftElement.className =
-              "march-bomb-effect march-bomb-effect--left absolute-stretch flex flex-center";
+              "z-index-1 march-bomb-effect march-bomb-effect--left absolute-stretch flex flex-center";
             effectElement.appendChild(bombLeftElement);
           } else if (index === effect.index + 1) {
             // right bomb
             bombRightElement = document.createElement("div");
             bombRightElement.className =
-              "march-bomb-effect march-bomb-effect--right absolute-stretch flex flex-center";
+              "z-index-1 march-bomb-effect march-bomb-effect--right absolute-stretch flex flex-center";
             effectElement.appendChild(bombRightElement);
           } else if (index < effect.index) {
             // top bomb
             bombTopElement = document.createElement("div");
             bombTopElement.className =
-              "march-bomb-effect march-bomb-effect--top absolute-stretch flex flex-center";
+              "z-index-1 march-bomb-effect march-bomb-effect--top absolute-stretch flex flex-center";
             effectElement.appendChild(bombTopElement);
           } else if (index > effect.index) {
             // bottom bomb
             bombBottomElement = document.createElement("div");
             bombBottomElement.className =
-              "march-bomb-effect march-bomb-effect--bottom absolute-stretch flex flex-center";
+              "z-index-1 march-bomb-effect march-bomb-effect--bottom absolute-stretch flex flex-center";
             effectElement.appendChild(bombBottomElement);
           }
         }
@@ -941,7 +965,7 @@ export default {
       const petHpElement = petElement.querySelector(".march-card-hp");
       const maxHpElement = document.querySelector(".march-max-hp");
       const plusOneElement = document.createElement("div");
-      plusOneElement.className = "absolute font-size-25 text-white";
+      plusOneElement.className = "z-index-1 absolute font-size-25 text-white";
       plusOneElement.textContent = "+1";
       petHpElement.appendChild(plusOneElement);
       const bound = plusOneElement.getBoundingClientRect();
@@ -979,7 +1003,7 @@ export default {
       const petElement = this.getCardElement(index);
       const petHpElement = petElement.querySelector(".march-card-hp");
       const plusOneElement = document.createElement("div");
-      plusOneElement.className = "absolute font-size-25 text-white";
+      plusOneElement.className = "z-index-1 absolute font-size-25 text-white";
       plusOneElement.textContent = "+1";
       petHpElement.appendChild(plusOneElement);
 
@@ -1012,7 +1036,7 @@ export default {
       const box = petElement.getBoundingClientRect();
       const extraLifeElement = document.createElement("div");
       extraLifeElement.className =
-        "absolute font-size-25 font-weight-700 text-white white-space-no-wrap";
+        "z-index-1 absolute font-size-25 font-weight-700 text-white white-space-no-wrap";
       extraLifeElement.style = `left: ${box.left +
         box.width / 2}px; top: ${box.top + box.height / 2}px`;
       extraLifeElement.textContent = "Respawn";
@@ -1049,7 +1073,7 @@ export default {
       const box = cardElement.getBoundingClientRect();
       const plusOneElement = document.createElement("div");
       plusOneElement.className =
-        "absolute font-size-25 font-weight-700 text-white white-space-no-wrap";
+        "z-index-1 absolute font-size-25 font-weight-700 text-white white-space-no-wrap";
       plusOneElement.style = `left: ${box.left +
         box.width / 2}px; top: ${box.top + box.height / 2}px`;
       plusOneElement.textContent = "+1 extra life";
