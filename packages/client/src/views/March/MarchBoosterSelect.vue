@@ -9,6 +9,7 @@
         type="max-hp"
         :price="boosters[march.BOOSTER_HP]"
         :isSelected="!!preGameBoosters[march.BOOSTER_HP]"
+        :isDisabled="isMaxHealthDisabled"
         @hint="maxHealthHintHandler"
         @select="maxHealthSelectHandler"
       />
@@ -28,6 +29,7 @@
         type="key"
         :price="boosters[march.BOOSTER_KEY]"
         :isSelected="!!preGameBoosters[march.BOOSTER_KEY]"
+        :isDisabled="isKeyDisabled"
         @hint="marchBoosterKeyHintHandler"
         @select="marchBoosterKeySelectHandler"
       />
@@ -70,6 +72,9 @@ export default {
   computed: {
     ...mapState("march", ["preGameBoosters"]),
     ...mapGetters("march", ["selectedPet"]),
+    isPet3() {
+      return this.selectedPet && this.selectedPet.petClass === 3;
+    },
     isPet3Level3() {
       return (
         this.selectedPet &&
@@ -77,16 +82,35 @@ export default {
         this.selectedPet.level === 3
       );
     },
+    isPet4Level3() {
+      return (
+        this.selectedPet &&
+        this.selectedPet.petClass === 4 &&
+        this.selectedPet.level === 3
+      );
+    },
+    isMaxHealthDisabled() {
+      return this.isPet3;
+    },
     isExtraLifeDisabled() {
       return this.isPet3Level3;
+    },
+    isKeyDisabled() {
+      return this.isPet4Level3;
     },
     boosters() {
       return march.BOOSTERS;
     }
   },
   mounted() {
-    if (this.isPet3Level3 && this.preGameBoosters[march.BOOSTER_LIFE]) {
+    if (this.isMaxHealthDisabled && this.preGameBoosters[march.BOOSTER_HP]) {
+      this.maxHealthSelectHandler();
+    }
+    if (this.isExtraLifeDisabled && this.preGameBoosters[march.BOOSTER_LIFE]) {
       this.extraLifeSelectHandler();
+    }
+    if (this.isKeyDisabled && this.preGameBoosters[march.BOOSTER_KEY]) {
+      this.marchBoosterKeySelectHandler();
     }
   },
   methods: {
