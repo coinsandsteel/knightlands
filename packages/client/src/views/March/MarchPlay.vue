@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-content" v-if="loaded">
+  <div class="screen-content overflow-auto" v-if="loaded">
     <MarchPetsSelect
       v-if="currentStep === PET_SELECT_STEP"
       @next="nextHandler"
