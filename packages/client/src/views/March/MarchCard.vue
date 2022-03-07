@@ -172,6 +172,7 @@ export default {
 }
 .march-card--pet {
   background-image: none;
+  z-index: 1;
 }
 .march-pet-element-background-color {
   background-color: #00a3ee;
