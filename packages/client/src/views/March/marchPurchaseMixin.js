@@ -1,6 +1,6 @@
 import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
-import * as march from "@/../../knightlands-shared/march";
+import meta from "@/march_meta.json";
 import MarchNotEnoughBalance from "@/views/March/MarchNotEnoughBalance.vue";
 
 export default {
@@ -17,7 +17,7 @@ export default {
     },
     checkTicketBalance(tickets) {
       const itemsCount =
-        this.$game.inventory.getItemsCountByTemplate(march.TICKET_ITEM_ID) || 0;
+        this.$game.inventory.getItemsCountByTemplate(meta.marchTicket) || 0;
 
       if (itemsCount >= tickets) {
         return true;
