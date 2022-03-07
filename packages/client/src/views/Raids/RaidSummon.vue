@@ -91,7 +91,7 @@
 
             <div class="flex flex-center" v-if="summonRaidTimer.timeLeft <= 0">
               <CustomButton
-                :disabled="!canSummon"
+                :disabled="!canSummon || !canSummonCurrentRaid"
                 type="yellow"
                 @click="confirmSummon"
                 id="btn-summon"
@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import RaidsMeta from "@/raids_meta";
 import AppSection from "@/AppSection.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
@@ -207,6 +208,9 @@ export default {
       handler() {
         this.fetchInfo();
       }
+    },
+    raid() {
+      this.refreshSummonTimer();
     }
   },
   activated() {
@@ -217,6 +221,7 @@ export default {
     element.scrollTop = element.scrollHeight - element.clientHeight;
   },
   computed: {
+    ...mapGetters("raids", ["canSummonCurrentRaid"]),
     isPayed() {
       return this.currentTab == PayedRaid;
     },
@@ -302,6 +307,7 @@ export default {
       const data = await this.performRequest(
         this.$game.summonRaid(this.raid, this.isFreeRaid, this.options)
       );
+      this.$store.dispatch("raids/fetchCurrentRaids");
       if (!this.isFreeRaid) {
         this.$app.logEvent("raid-summon", {
           raidMetaId: this.raid

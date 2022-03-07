@@ -21,7 +21,11 @@
 
     <div class="flex flex-column padding-top-1">
       <div class="flex flex-items-center flex-self-start margin-bottom-half">
-        <span :class="classIcon" @click="$emit('changeClass')"></span>
+        <span
+          class="pointer"
+          :class="$game.character.class"
+          @click="$emit('changeClass')"
+        ></span>
         <span class="font-size-22 font-weight-900 font-shadow">{{
           nickname
         }}</span>
