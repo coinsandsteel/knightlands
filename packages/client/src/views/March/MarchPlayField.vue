@@ -59,7 +59,14 @@
       >
         MaxHp
       </CustomButton>
-    </div> -->
+      <CustomButton
+        type="green"
+        class="btn-start inline-block"
+        @click="testExtraLife"
+      >
+        ExtraLife
+      </CustomButton> -->
+    </div>
   </div>
 </template>
 <script>
@@ -102,7 +109,8 @@ export default {
       petCurrentIndex: null,
       petMoveDirection: null,
       currentStage: 0,
-      isTargetABarrel: false
+      isTargetABarrel: false,
+      isTargetExtraLife: false
     };
   },
   computed: {
@@ -272,6 +280,8 @@ export default {
       this.petMoveDirection = direction;
       this.isTargetABarrel =
         this.cards[toIndex].unitClass === march.UNIT_CLASS_BARREL;
+      this.isTargetExtraLife =
+        this.cards[toIndex].unitClass === march.UNIT_CLASS_EXTRA_HP;
 
       await this.$store.dispatch("march/touchCard", toIndex);
     },
@@ -352,7 +362,14 @@ export default {
               this.animateExplode(cardElement);
               await this.animateShake(cardElement);
             }
-            await this.animateHide(cardElement);
+            // no await
+            if (
+              this.currentStage === 0 &&
+              this.isTargetExtraLife &&
+              card.unitClass === march.UNIT_CLASS_EXTRA_HP
+            ) {
+              this.animateExtraLife(cardElement);
+            }
           })
         ),
         // move position updated cards
@@ -442,6 +459,12 @@ export default {
       cardPet.hp = 999;
       cardPet.maxHp = 222;
       this.animateMove([{ cards }]);
+    },
+
+    testExtraLife() {
+      const index = this.cards.findIndex(({ isPet }) => isPet);
+      const petElement = this.getCardElement(index);
+      this.animateExtraLife(petElement);
     },
 
     // async testMove() {
@@ -945,6 +968,43 @@ export default {
         targets: plusOneElement,
         fontSize: [60, 0],
         translateY: 0
+      });
+
+      await animation2.finished;
+      plusOneElement.parentElement.removeChild(plusOneElement);
+    },
+
+    async animateExtraLife(cardElement) {
+      if (!cardElement) {
+        return;
+      }
+      const box = cardElement.getBoundingClientRect();
+      const plusOneElement = document.createElement("div");
+      plusOneElement.className = "absolute font-size-25 text-white";
+      plusOneElement.style = `left: ${box.left +
+        box.width / 2}px; top: ${box.top + box.height / 2}px`;
+      plusOneElement.textContent = "+1 extra life";
+      document.body.appendChild(plusOneElement);
+
+      const animation = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 2,
+        easing: "easeOutQuad",
+        targets: plusOneElement,
+        fontSize: [0, 26],
+        translateX: ["-50%", "-50%"],
+        translateY: [0, "-200%"]
+      });
+      await animation.finished;
+
+      const animation2 = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 1.5,
+        easing: "easeInQuad",
+        targets: plusOneElement,
+        translateY: ["-200%", "-1000%"],
+        scale: [1, 0],
+        opacity: [1, 0]
       });
 
       await animation2.finished;
