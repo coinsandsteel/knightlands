@@ -38,6 +38,7 @@
           "
         >
           <CustomButton
+            v-if="false"
             type="yellow"
             class="inline-block margin-right-2 margin-top-1"
             @click="testAction('resetDailyRewards')"
@@ -45,6 +46,7 @@
             Reset rewards
           </CustomButton>
           <CustomButton
+            v-if="false"
             type="yellow"
             class="inline-block margin-right-2 margin-top-1"
             @click="testAction('plus1Day')"
@@ -52,6 +54,7 @@
             +1 day
           </CustomButton>
           <CustomButton
+            v-if="false"
             type="blue"
             class="inline-block margin-right-2 margin-top-1"
             @click="testAction('addTicket')"
@@ -66,6 +69,7 @@
             Purchase gold
           </CustomButton>
           <CustomButton
+            v-if="false"
             type="blue"
             class="inline-block margin-right-2 margin-top-1"
             @click="goToRewards"

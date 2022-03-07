@@ -21,13 +21,6 @@
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
               <MenuIcon
-                icon="skewed_icon_xmas"
-                :to="{ path: '/lunar' }"
-                :append="true"
-                id="lunar"
-                >{{ $t("btn-evt-lunar") }}
-              </MenuIcon>
-              <MenuIcon
                 icon="skewed_icon_march"
                 :to="{ path: '/march' }"
                 :append="true"
