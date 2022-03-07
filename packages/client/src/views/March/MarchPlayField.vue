@@ -347,6 +347,15 @@ export default {
         updatedCards
       );
 
+      // apply effect
+      if (stage.effect) {
+        const effect = stage.effect;
+        if (effect.unitClass === march.UNIT_CLASS_BOMB) {
+          // no await
+          this.animateBombEffect(effect);
+        }
+      }
+
       await Promise.all([
         // hide destroyed cards
         Promise.all(
@@ -424,7 +433,7 @@ export default {
         if (effect.unitClass === march.UNIT_CLASS_BOW) {
           await this.animateBowEffect(effect);
         } else if (effect.unitClass === march.UNIT_CLASS_BOMB) {
-          await this.animateBombEffect(effect);
+          // await this.animateBombEffect(effect);
         } else if (effect.unitClass === march.UNIT_CLASS_BALL_LIGHTNING) {
           await this.animateBallLightningEffect(effect);
         } else if (effect.unitClass === march.UNIT_CLASS_DRAGON_BREATH) {
