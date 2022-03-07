@@ -66,6 +66,13 @@
       >
         ExtraLife
       </CustomButton>
+      <CustomButton
+        type="green"
+        class="btn-start inline-block"
+        @click="testRespawn"
+      >
+        Respawn
+      </CustomButton>
     </div> -->
   </div>
 </template>
@@ -122,7 +129,8 @@ export default {
       "stat",
       "balance",
       "miniGameReady",
-      "miniGameResult"
+      "miniGameResult",
+      "respawn"
     ]),
     petCard() {
       if (!(this.cards && this.cards.length > 0)) {
@@ -459,6 +467,12 @@ export default {
           shouldIgnoreProcess: true
         });
       }
+
+      // respawn animation
+      if (this.respawn) {
+        await this.animateRespawn();
+        this.$store.commit("march/updateRespawn", false);
+      }
     },
 
     testNextHp() {
@@ -474,6 +488,15 @@ export default {
       const index = this.cards.findIndex(({ isPet }) => isPet);
       const petElement = this.getCardElement(index);
       this.animateExtraLife(petElement);
+    },
+
+    testRespawn() {
+      // const index = this.cards.findIndex(({ isPet }) => isPet);
+      // const petElement = this.getCardElement(index);
+      // this.animateRespawn(petElement);
+      this.$store.commit("march/updateRespawn", true);
+      const cards = cloneDeep(this.cards);
+      this.animateMove([{ cards }]);
     },
 
     // async testMove() {
@@ -989,17 +1012,19 @@ export default {
       const box = petElement.getBoundingClientRect();
       const extraLifeElement = document.createElement("div");
       extraLifeElement.className =
-        "absolute font-size-25 text-white white-space-no-wrap";
-      extraLifeElement.style = `left: ${box.left + box.width / 2}px; top: 0px`;
-      extraLifeElement.textContent = "Extra life";
+        "absolute font-size-25 font-weight-700 text-white white-space-no-wrap";
+      extraLifeElement.style = `left: ${box.left +
+        box.width / 2}px; top: ${box.top + box.height / 2}px`;
+      extraLifeElement.textContent = "Respawn";
       document.body.appendChild(extraLifeElement);
 
       const animation = anime({
         // ...commonAnimationParams,
-        duration: commonAnimationParams.duration * 1.5,
+        duration: commonAnimationParams.duration * 2,
         easing: "easeOutQuad",
         targets: extraLifeElement,
-        fontSize: [0, 60],
+        fontSize: [0, 26],
+        translateX: ["-50%", "-50%"],
         translateY: [0, -50]
       });
       await animation.finished;
@@ -1009,7 +1034,7 @@ export default {
         duration: commonAnimationParams.duration * 1.5,
         easing: "easeInQuad",
         targets: extraLifeElement,
-        fontSize: [60, 0],
+        fontSize: [26, 0],
         translateY: 0
       });
 
@@ -1024,7 +1049,7 @@ export default {
       const box = cardElement.getBoundingClientRect();
       const plusOneElement = document.createElement("div");
       plusOneElement.className =
-        "absolute font-size-25 text-white white-space-no-wrap";
+        "absolute font-size-25 font-weight-700 text-white white-space-no-wrap";
       plusOneElement.style = `left: ${box.left +
         box.width / 2}px; top: ${box.top + box.height / 2}px`;
       plusOneElement.textContent = "+1 extra life";
@@ -1037,7 +1062,7 @@ export default {
         targets: plusOneElement,
         fontSize: [0, 26],
         translateX: ["-50%", "-50%"],
-        translateY: [0, "-200%"]
+        translateY: [0, -50]
       });
       await animation.finished;
 
@@ -1046,9 +1071,8 @@ export default {
         duration: commonAnimationParams.duration * 1.5,
         easing: "easeInQuad",
         targets: plusOneElement,
-        translateY: ["-200%", "-1000%"],
-        scale: [1, 0],
-        opacity: [1, 0]
+        fontSize: [26, 0],
+        translateY: 0
       });
 
       await animation2.finished;
