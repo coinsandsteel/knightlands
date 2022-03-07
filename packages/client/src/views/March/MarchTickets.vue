@@ -7,14 +7,14 @@
   </div>
 </template>
 <script>
-import * as march from "@/../../knightlands-shared/march";
+import meta from "@/march_meta.json";
 
 export default {
   props: ["value"],
   computed: {
     ticketsCount() {
       const itemsCount = this.$game.inventory.getItemsCountByTemplate(
-        march.TICKET_ITEM_ID
+        meta.marchTicket
       );
 
       return itemsCount || 0;

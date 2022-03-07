@@ -81,7 +81,7 @@
 <script>
 import MarchRankingElement from "@/views/March/Rankings/MarchRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import { EVENT_REWARDS } from "@/../../knightlands-shared/march";
+import meta from "@/march_meta.json";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import Timer from "@/timer.js";
@@ -160,7 +160,7 @@ export default {
   },
   computed: {
     allRewards() {
-      let rewards = EVENT_REWARDS.map((rankEntry, rankIndex) => {
+      let rewards = meta.eventRewards.map((rankEntry, rankIndex) => {
         if (rankIndex === 0) {
           rankEntry.rankIcon = "icon-rank-1";
         } else if (rankIndex >= 1 && rankIndex <= 3) {
