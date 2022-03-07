@@ -18,6 +18,7 @@
         type="extra-life"
         :price="boosters[march.BOOSTER_LIFE]"
         :isSelected="!!preGameBoosters[march.BOOSTER_LIFE]"
+        :isDisabled="isExtraLifeDisabled"
         @hint="extraLifeHintHandler"
         @select="extraLifeSelectHandler"
       />
@@ -69,8 +70,23 @@ export default {
   computed: {
     ...mapState("march", ["preGameBoosters"]),
     ...mapGetters("march", ["selectedPet"]),
+    isPet3Level3() {
+      return (
+        this.selectedPet &&
+        this.selectedPet.petClass === 3 &&
+        this.selectedPet.level === 3
+      );
+    },
+    isExtraLifeDisabled() {
+      return this.isPet3Level3;
+    },
     boosters() {
       return march.BOOSTERS;
+    }
+  },
+  mounted() {
+    if (this.isPet3Level3 && this.preGameBoosters[march.BOOSTER_LIFE]) {
+      this.extraLifeSelectHandler();
     }
   },
   methods: {

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="march-booster-button relative">
+    <div
+      class="march-booster-button relative"
+      :class="{ 'march-booster-button--disabled': isDisabled }"
+    >
       <svg viewBox="0 0 300 300" class="width-100" />
       <div class="march-booster-button-background absolute"></div>
       <div class="absolute-stretch flex flex-center" @click="selectHandler">
@@ -20,7 +23,7 @@
         class="checked-icon absolute-bottom-right"
       />
     </div>
-    <div class="margin-top-2 relative">
+    <div class="margin-top-2 relative" :class="{ 'opacity-50': isDisabled }">
       <MarchGold :value="price" class="absolute-center flex flex-no-wrap" />
     </div>
   </div>
@@ -35,6 +38,7 @@ export default {
     name: String,
     price: Number,
     isSelected: Boolean,
+    isDisabled: Boolean,
     type: String
   },
   methods: {
@@ -42,6 +46,9 @@ export default {
       this.$emit("hint");
     },
     selectHandler() {
+      if (this.isDisabled) {
+        return;
+      }
       this.$emit("select");
     }
   }
@@ -59,6 +66,10 @@ export default {
   border-image-slice: 30;
   border-image-outset: 0;
   border-image-repeat: round;
+}
+.march-booster-button--disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 .booster-hint {
   width: 4rem;
