@@ -65,8 +65,8 @@
         @click="testExtraLife"
       >
         ExtraLife
-      </CustomButton> -->
-    </div>
+      </CustomButton>
+    </div> -->
   </div>
 </template>
 <script>
@@ -983,13 +983,48 @@ export default {
       plusOneElement.parentElement.removeChild(plusOneElement);
     },
 
+    async animateRespawn() {
+      const index = this.cards.findIndex(({ isPet }) => isPet);
+      const petElement = this.getCardElement(index);
+      const box = petElement.getBoundingClientRect();
+      const extraLifeElement = document.createElement("div");
+      extraLifeElement.className =
+        "absolute font-size-25 text-white white-space-no-wrap";
+      extraLifeElement.style = `left: ${box.left + box.width / 2}px; top: 0px`;
+      extraLifeElement.textContent = "Extra life";
+      document.body.appendChild(extraLifeElement);
+
+      const animation = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 1.5,
+        easing: "easeOutQuad",
+        targets: extraLifeElement,
+        fontSize: [0, 60],
+        translateY: [0, -50]
+      });
+      await animation.finished;
+
+      const animation2 = anime({
+        // ...commonAnimationParams,
+        duration: commonAnimationParams.duration * 1.5,
+        easing: "easeInQuad",
+        targets: extraLifeElement,
+        fontSize: [60, 0],
+        translateY: 0
+      });
+
+      await animation2.finished;
+      extraLifeElement.parentElement.removeChild(extraLifeElement);
+    },
+
     async animateExtraLife(cardElement) {
       if (!cardElement) {
         return;
       }
       const box = cardElement.getBoundingClientRect();
       const plusOneElement = document.createElement("div");
-      plusOneElement.className = "absolute font-size-25 text-white";
+      plusOneElement.className =
+        "absolute font-size-25 text-white white-space-no-wrap";
       plusOneElement.style = `left: ${box.left +
         box.width / 2}px; top: ${box.top + box.height / 2}px`;
       plusOneElement.textContent = "+1 extra life";
