@@ -8,7 +8,7 @@
       <div class="font-size-20">
         {{
           type === "gold"
-            ? $t("not-enough-ticket")
+            ? $t("march-not-enough-gold-tips")
             : $t("march-not-enough-ticket-tips")
         }}
       </div>
