@@ -5,7 +5,7 @@
     >
       <MarchMaxHp
         class="march-max-hp march-max-hp--with-background padding-left-2 margin-right-2"
-        :value="petCard ? petCard.maxHp : 0"
+        :value="maxHp || 0"
       />
       <MarchStep
         class="march-step--with-background padding-left-2 margin-right-2"
@@ -57,14 +57,14 @@
         class="btn-start inline-block"
         @click="testNextHp"
       >
-        MaxHp
+        Hp + 1
       </CustomButton>
       <CustomButton
         type="green"
         class="btn-start inline-block"
-        @click="testExtraLife"
+        @click="testSessionMaxHpBooster"
       >
-        ExtraLife
+        MaxHp + 1
       </CustomButton>
       <CustomButton
         type="green"
@@ -124,7 +124,8 @@ export default {
       petMoveDirection: null,
       currentStage: 0,
       isTargetABarrel: false,
-      isTargetExtraLife: false
+      // isTargetExtraLife: false
+      maxHp: 0
     };
   },
   computed: {
@@ -144,6 +145,9 @@ export default {
         return;
       }
       return this.cards.find(card => card.isPet);
+    },
+    petCardMaxHp() {
+      return this.petCard ? this.petCard.maxHp : 0;
     }
   },
   watch: {
@@ -151,6 +155,18 @@ export default {
       if (value <= 0) {
         this.$emit("next");
       }
+    },
+    async petCardMaxHp(value, oldValue) {
+      if (!(value > (oldValue || 0))) {
+        return;
+      }
+      if (this.initialized) {
+        await this.animateMaxHp();
+        this.maxHp = value;
+        return;
+      }
+
+      this.maxHp = value;
     },
     async sequence(value) {
       if (value) {
@@ -194,6 +210,7 @@ export default {
         return;
       }
       await this.animateShow(this.getCardElement(), { resetStyle: true });
+      this.maxHp = this.petCardMaxHp;
       this.initialized = true;
     },
 
@@ -295,8 +312,8 @@ export default {
       this.petMoveDirection = direction;
       this.isTargetABarrel =
         this.cards[toIndex].unitClass === march.UNIT_CLASS_BARREL;
-      this.isTargetExtraLife =
-        this.cards[toIndex].unitClass === march.UNIT_CLASS_EXTRA_HP;
+      // this.isTargetExtraLife =
+      //   this.cards[toIndex].unitClass === march.UNIT_CLASS_EXTRA_HP;
 
       await this.$store.dispatch("march/touchCard", toIndex);
     },
@@ -388,13 +405,13 @@ export default {
               await this.animateShake(cardElement);
             }
             // no await
-            if (
-              this.currentStage === 0 &&
-              this.isTargetExtraLife &&
-              card.unitClass === march.UNIT_CLASS_EXTRA_HP
-            ) {
-              this.animateExtraLife(cardElement);
-            }
+            // if (
+            //   this.currentStage === 0 &&
+            //   this.isTargetExtraLife &&
+            //   card.unitClass === march.UNIT_CLASS_EXTRA_HP
+            // ) {
+            //   this.animateExtraLife(cardElement);
+            // }
           })
         ),
         // move position updated cards
@@ -520,6 +537,13 @@ export default {
       cardPet.hp = 999;
       cardPet.maxHp = 222;
       cardPet.respawn = true;
+      this.animateMove([{ cards }]);
+    },
+
+    testSessionMaxHpBooster() {
+      const cards = cloneDeep(this.cards);
+      const cardPet = cards.find(({ isPet }) => isPet);
+      cardPet.maxHp = cardPet.maxHp + 1;
       this.animateMove([{ cards }]);
     },
 
@@ -960,38 +984,37 @@ export default {
     },
 
     async animateMaxHp() {
-      const index = this.cards.findIndex(({ isPet }) => isPet);
-      const petElement = this.getCardElement(index);
-      const petHpElement = petElement.querySelector(".march-card-hp");
+      // const index = this.cards.findIndex(({ isPet }) => isPet);
+      // const petElement = this.getCardElement(index);
+      // const petHpElement = petElement.querySelector(".march-card-hp");
       const maxHpElement = document.querySelector(".march-max-hp");
+      const box = maxHpElement.getBoundingClientRect();
       const plusOneElement = document.createElement("div");
-      plusOneElement.className = "z-index-1 absolute font-size-25 text-white";
+      plusOneElement.className =
+        "z-index-1 absolute font-size-25 text-white font-weight-700";
+      plusOneElement.style = `left: ${box.left + box.width / 2}px; 
+        top: ${box.top}px; transform: translate(-50%, -100%)`;
       plusOneElement.textContent = "+1";
-      petHpElement.appendChild(plusOneElement);
-      const bound = plusOneElement.getBoundingClientRect();
-      const bound1 = maxHpElement.getBoundingClientRect();
-      const x = bound.x - bound1.x - 30;
-      const y = bound.y - bound1.y - 10;
+      document.body.appendChild(plusOneElement);
+      // const bound1 = maxHpElement.getBoundingClientRect();
+      // const x = bound.x - bound1.x - 30;
+      // const y = bound.y - bound1.y - 10;
 
       const animation = anime({
         // ...commonAnimationParams,
-        duration: commonAnimationParams.duration * 2,
+        duration: commonAnimationParams.duration * 1.5,
         easing: "easeOutQuad",
         targets: plusOneElement,
-        fontSize: [0, 60],
-        translateX: [0, -x / 2],
-        translateY: [0, -y / 2]
+        fontSize: [0, 60]
       });
       await animation.finished;
 
       const animation2 = anime({
         // ...commonAnimationParams,
-        duration: commonAnimationParams.duration * 2,
+        duration: commonAnimationParams.duration * 1.5,
         easing: "easeInQuad",
         targets: plusOneElement,
-        fontSize: [60, 0],
-        translateX: -x,
-        translateY: -y
+        fontSize: [60, 0]
       });
 
       await animation2.finished;
