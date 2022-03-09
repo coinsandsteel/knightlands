@@ -224,6 +224,9 @@ export default {
     },
     resetBossIndex(state) {
       state.bossIndex = 0;
+    },
+    clearCards(state) {
+      state.cards = [];
     }
   },
   actions: {

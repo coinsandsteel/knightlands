@@ -138,6 +138,7 @@ export default {
       if (this.currentStep === PLAY_FIELD_STEP) {
         if (skipSummary === true) {
           this.currentStep = PET_SELECT_STEP;
+          this.$store.commit("march/clearCards");
           return;
         }
         this.showSummary();
@@ -148,6 +149,7 @@ export default {
     async showSummary() {
       const showDialog = create(MarchPlaySummary);
       await showDialog("gold");
+      this.$store.commit("march/clearCards");
       this.currentStep = PET_SELECT_STEP;
     },
     goToPlayfield() {

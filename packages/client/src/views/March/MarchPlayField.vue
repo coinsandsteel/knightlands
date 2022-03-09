@@ -150,6 +150,11 @@ export default {
       return this.petCard ? this.petCard.maxHp : 0;
     }
   },
+  activated() {
+    if (this.petCard.hp <= 0) {
+      this.$emit("next");
+    }
+  },
   watch: {
     "petCard.hp": {
       immediate: true,
