@@ -56,7 +56,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("march", ["dailyRewards"])
+    ...mapState("march", ["dailyRewards", "cards"])
   },
   created() {
     this.title = this.$t("march-event");
@@ -74,8 +74,21 @@ export default {
   },
   activated() {
     this.tryToShowRewards();
+    this.redirectToPlayfield();
+  },
+  watch: {
+    cards(newValue, oldValue) {
+      if (newValue.length && !oldValue.length) {
+        this.redirectToPlayfield();
+      }
+    }
   },
   methods: {
+    redirectToPlayfield() {
+      if (this.cards.length) {
+        this.$store.$app.$emit("redirect-to-playfield");
+      }
+    },
     switchTab(newTab) {
       this.currentTab = newTab;
     },

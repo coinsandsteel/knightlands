@@ -57,6 +57,8 @@ class Timer extends EventEmitter {
       return;
     }
 
+    let showHours = this._showHours;
+    let showDays = this._showDays;
     let timeLeft = this._timeLeft;
     let minutes = Math.floor(timeLeft / 60);
     let hours = Math.floor(minutes / 60);
@@ -64,14 +66,16 @@ class Timer extends EventEmitter {
     let seconds = Math.floor(timeLeft % 60);
     let days = 0;
 
-    if (timeLeft >= 86400) {
-      this._showHours = true;
-      days = Math.floor(timeLeft/(60*60*24));
-      hours = Math.floor((timeLeft%(60*60*24))/(60*60));
+    if (showDays && timeLeft >= 86400) {
+      showHours = true;
+      days = Math.floor(timeLeft / (60 * 60 * 24));
+      hours = Math.floor((timeLeft % (60 * 60 * 24)) / (60 * 60));
+    } else {
+      showDays = false;
     }
 
-    let hoursValue = this._showHours ? `${hours > 9 ? "" : 0}${hours}:` : "";
-    let daysValue = this._showDays ? `${days} days ` : "";
+    let hoursValue = showHours ? `${hours > 9 ? "" : 0}${hours}:` : "";
+    let daysValue = showDays ? `${days} ${days > 1 ? "days" : "day"} ` : "";
 
     this.value = `${daysValue}${hoursValue}${minutes > 9 ? "" : 0}${minutes}:${
       seconds > 9 ? "" : 0

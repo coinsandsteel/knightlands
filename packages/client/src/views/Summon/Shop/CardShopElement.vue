@@ -86,7 +86,7 @@ export default {
   components: { CustomButton, PriceTag, Title },
   props: ["card", "index"],
   data: () => ({
-    timer: new Timer(true)
+    timer: new Timer(true, true)
   }),
   watch: {
     "$game.subscriptions.cards": {
