@@ -151,9 +151,13 @@ export default {
     }
   },
   watch: {
-    "petCard.hp": function(value) {
-      if (value <= 0) {
-        this.$emit("next");
+    "petCard.hp": {
+      immediate: true,
+      handler: function(value) {
+        console.log("petCard.hp watcher");
+        if (value <= 0) {
+          this.$emit("next");
+        }
       }
     },
     async petCardMaxHp(value, oldValue) {
