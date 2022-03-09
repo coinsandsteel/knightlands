@@ -24,6 +24,7 @@ import Dungeon from "@/store/dungeon";
 import Xmas from "@/store/xmas";
 import Lunar from "@/store/lunar";
 import March from "@/store/march";
+import April from "@/store/april";
 import Elements from "@/../../knightlands-shared/elements";
 import ArmyUnitTypes from "@/army_unit_types";
 
@@ -32,7 +33,8 @@ Vue.use(Vuex);
 const vuexPersist = new VuexPersist({
   key: "knightlands",
   storage: localStorage,
-  reducer: (state) => _.omit(state, ['dungeon', 'xmas', 'lunar', 'march'])
+  reducer: state =>
+    _.omit(state, ["dungeon", "xmas", "lunar", "march", "april"])
 });
 
 const DefaultRarityFilters = {};
@@ -295,27 +297,23 @@ const store = new Vuex.Store({
     dungeon: Dungeon,
     xmas: Xmas,
     lunar: Lunar,
-    march: March
+    march: March,
+    april: April
   }
 });
 
 store.subscribe((mutation, state) => {
   if (
-    !mutation.type.includes('training')
-    &&
-    !mutation.type.includes('tutorial')
+    !mutation.type.includes("training") &&
+    !mutation.type.includes("tutorial")
   ) {
-    console.log('Mutation', mutation.type, mutation.payload);
+    console.log("Mutation", mutation.type, mutation.payload);
   }
 });
 
 store.subscribeAction((action, state) => {
-  if (
-    !action.type.includes('training')
-    &&
-    !action.type.includes('tutorial')
-  ) {
-    console.log('Action', action.type, action.payload);
+  if (!action.type.includes("training") && !action.type.includes("tutorial")) {
+    console.log("Action", action.type, action.payload);
   }
 });
 
