@@ -112,6 +112,12 @@ export default {
       currentStep: PET_SELECT_STEP
     };
   },
+  created() {
+    this.$store.$app.$on("redirect-to-playfield", this.goToPlayfield);
+  },
+  destroyed() {
+    this.$store.$app.$off("redirect-to-playfield");
+  },
   computed: {
     ...mapState({
       loaded: state => state.march.loaded
@@ -143,6 +149,9 @@ export default {
       const showDialog = create(MarchPlaySummary);
       await showDialog("gold");
       this.currentStep = PET_SELECT_STEP;
+    },
+    goToPlayfield() {
+      this.currentStep = PLAY_FIELD_STEP;
     },
     goToShop() {
       this.$router.push({ name: "march-shop" });
