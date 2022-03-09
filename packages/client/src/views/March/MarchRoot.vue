@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
@@ -56,6 +56,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("march", ["petCard"]),
     ...mapState("march", ["dailyRewards", "cards"])
   },
   created() {
@@ -85,7 +86,7 @@ export default {
   },
   methods: {
     redirectToPlayfield() {
-      if (this.cards.length) {
+      if (this.cards.length && this.petCard && this.petCard.hp > 0) {
         this.$store.$app.$emit("redirect-to-playfield");
       }
     },
