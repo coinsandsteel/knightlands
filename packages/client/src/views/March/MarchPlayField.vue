@@ -150,10 +150,18 @@ export default {
       return this.petCard ? this.petCard.maxHp : 0;
     }
   },
+  activated() {
+    if (this.petCard.hp <= 0) {
+      this.$emit("next");
+    }
+  },
   watch: {
-    "petCard.hp": function(value) {
-      if (value <= 0) {
-        this.$emit("next");
+    "petCard.hp": {
+      immediate: true,
+      handler: function(value) {
+        if (value <= 0) {
+          this.$emit("next");
+        }
       }
     },
     async petCardMaxHp(value, oldValue) {
