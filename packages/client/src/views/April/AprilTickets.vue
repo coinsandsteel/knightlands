@@ -37,8 +37,7 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 4px;
-  // @todo
-  background-image: url("/images/march/march_tickets.png");
+  background-image: url("/images/april/april_tickets.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

@@ -61,7 +61,9 @@ export default {
       HERO_SELECT_STEP,
       BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
-      currentStep: HERO_SELECT_STEP
+      // @todo
+      // currentStep: HERO_SELECT_STEP
+      currentStep: BOOSTER_SELECT_STEP
     };
   },
   computed: {

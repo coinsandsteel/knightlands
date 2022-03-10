@@ -1,6 +1,6 @@
 <template>
   <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
-    <AprilBalance class="april-pets-select__balance padding-bottom-6" />
+    <AprilBalance class="april-heroes-select__balance padding-bottom-6" />
     <Title class="">{{ $t("choose-hero") }}</Title>
 
     <div class="flex-full flex flex-center flex-nowrap">
@@ -9,13 +9,12 @@
           v-if="selectedHero"
           class="font-size-22 font-weight-700 padding-bottom-1"
         >
-          <span class="pet-name">{{ selectedHero.name }}</span>
+          <span class="hero-name">{{ selectedHero.name }}</span>
         </div>
         <AprilHeroesSlide />
         <AprilHeroAbilities
-          v-if="selectedHero && selectedHero.unlocked"
-          :pet="selectedHero"
-          :shouldShowNoAbility="false"
+          v-if="true || (selectedHero && selectedHero.unlocked)"
+          :hero="selectedHero"
           class=" margin-top-2"
         />
         <div class="padding-top-2">
@@ -28,7 +27,7 @@
             {{ $t("unlock") }} &nbsp;<AprilGold :value="buyPrice" />
           </CustomButton>
           <CustomButton
-            v-if="canChoose"
+            v-if="true || canChoose"
             type="green"
             class="btn-start inline-block"
             @click="selectHandler"
@@ -99,12 +98,12 @@ export default {
   padding-left: 3rem;
   padding-right: 3rem;
 }
-.pet-level {
+.hero-level {
   display: inline-block;
   margin-left: 1rem;
   color: #fbe648;
 }
-.pet-level-max {
+.hero-level-max {
   display: inline-block;
   margin-left: 1rem;
   color: #00ec00;

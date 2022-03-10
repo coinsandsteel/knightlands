@@ -4,17 +4,17 @@
       class="hero-slider-item relative"
       :class="{ 'hero-slider-item---not-unlocked': !hero.unlocked }"
     >
-      <div
+      <!-- <div
         class="april-hero-element-background-color absolute"
         :class="`april-hero-element-background-color--${hero.heroClass}`"
-      ></div>
+      ></div> -->
       <div
         class="april-hero-element-background absolute"
-        :class="`april-hero-element-background--${hero.petClass}`"
+        :class="`april-hero-element-background--${hero.heroClass}`"
       ></div>
       <div
         class="hero-slider-item-hero-image absolute-center"
-        :class="`april-hero-${hero.heroClass}-${hero.level}`"
+        :class="`april-hero-${hero.heroClass}`"
       ></div>
     </div>
   </div>

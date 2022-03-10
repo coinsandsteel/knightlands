@@ -60,7 +60,11 @@ export default {
   },
   getters: {
     heroes() {
-      return [{ id: 1 }, { id: 2 }, { id: 3 }];
+      return [
+        { id: 1, name: "Knight", heroClass: april.HERO_CLASS_KNIGHT },
+        { id: 2, name: "Paladin", heroClass: april.HERO_CLASS_PALADIN },
+        { id: 3, name: "Rogue", heroClass: april.HERO_CLASS_ROGUE }
+      ];
     },
     selectedHero(state, getters) {
       return getters.heroes ? getters.heroes[state.selectedHeroIndex] : null;

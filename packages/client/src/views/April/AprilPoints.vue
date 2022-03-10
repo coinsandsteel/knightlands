@@ -14,8 +14,7 @@ export default {
         return this.value;
       }
 
-      // @todo
-      return this.$store.state.march.balance.gold;
+      return this.$store.state.april.balance.points;
     }
   }
 };
@@ -26,8 +25,7 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 4px;
-  // @todo
-  background-image: url("/images/march/march_gold.png");
+  background-image: url("/images/april/april_points.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

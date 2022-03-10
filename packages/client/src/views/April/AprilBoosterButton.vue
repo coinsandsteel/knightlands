@@ -1,0 +1,111 @@
+<template>
+  <div>
+    <div
+      class="april-booster-button relative"
+      :class="{ 'april-booster-button--disabled': isDisabled }"
+    >
+      <svg viewBox="0 0 300 300" class="width-100" />
+      <div class="april-booster-button-background absolute"></div>
+      <div class="absolute-stretch flex flex-center" @click="selectHandler">
+        <div
+          class="april-booster-image"
+          :class="`april-booster-image--${type}`"
+        ></div>
+      </div>
+      <div
+        class="booster-hint absolute-top-left flex flex-center font-size-30 pointer"
+        @click="hintHandler"
+      >
+        !
+      </div>
+      <CheckedIcon
+        v-if="isSelected"
+        class="checked-icon absolute-bottom-right"
+      />
+    </div>
+    <div class="margin-top-2 relative" :class="{ 'opacity-50': isDisabled }">
+      <AprilGold :value="price" class="absolute-center flex flex-no-wrap" />
+    </div>
+  </div>
+</template>
+<script>
+import CheckedIcon from "@/views/Lunar/Checked.vue";
+import AprilGold from "@/views/April/AprilGold.vue";
+
+export default {
+  components: { CheckedIcon, AprilGold },
+  props: {
+    name: String,
+    price: Number,
+    isSelected: Boolean,
+    isDisabled: Boolean,
+    type: String
+  },
+  methods: {
+    hintHandler() {
+      this.$emit("hint");
+    },
+    selectHandler() {
+      if (this.isDisabled) {
+        return;
+      }
+      this.$emit("select");
+    }
+  }
+};
+</script>
+<style scoped lang="less">
+.april-booster-button {
+  border: 1px solid transparent;
+  // @todo
+  border-image-source: url("/images/march/pet_bg.png");
+  border-image-width: 14px;
+  border-image-slice: 30;
+  border-image-outset: 0;
+  border-image-repeat: round;
+}
+.april-booster-button--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.booster-hint {
+  width: 4rem;
+  height: 4rem;
+  color: #0f2b44;
+  // @todo
+  background-image: url("/images/march/green_marker.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  transform: translate(-40%, -40%);
+}
+.checked-icon {
+  color: #80fa67;
+  width: 20px;
+  height: 20px;
+  transform: translate(-5px, -7px);
+}
+.april-booster-image {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  width: 50%;
+  height: 0;
+  padding-bottom: 50%;
+}
+.april-booster-image--thirdAction {
+  // @todo
+  background-image: url("/images/march/cards/max_hp.png");
+}
+.april-booster-image--skipATurn {
+  // @todo
+  background-image: url("/images/march/cards/extra_life.png");
+}
+.april-booster-button-background {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-color: #00a3ee;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  top: 5px;
+  left: 5px;
+}
+</style>
