@@ -47,6 +47,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 const HERO_SELECT_STEP = 1;
 const BOOSTER_SELECT_STEP = 2;
 const PLAY_FIELD_STEP = 3;
+const PLAY_ROUND_STEP = 4;
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -61,9 +62,10 @@ export default {
       HERO_SELECT_STEP,
       BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
+      PLAY_ROUND_STEP,
       // @todo
       // currentStep: HERO_SELECT_STEP
-      currentStep: BOOSTER_SELECT_STEP
+      currentStep: HERO_SELECT_STEP
     };
   },
   computed: {

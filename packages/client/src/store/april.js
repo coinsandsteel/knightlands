@@ -80,6 +80,9 @@ export default {
       state.loaded = true;
       // state.balance = data.user.balance;
     },
+    updatePreGameBooster(state, type) {
+      state.preGameBoosters[type] = state.preGameBoosters[type] === 1 ? 0 : 1;
+    },
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
     }
