@@ -11,7 +11,8 @@ export default {
     // User
     balance: {
       sessionGold: 0,
-      gold: 0
+      gold: 0,
+      points: 0
     },
     preGameBoosters: {
       [april.BOOSTER_THIRD_ACTION]: 0,
@@ -21,7 +22,7 @@ export default {
     dailyRewards: [],
     // Playground
     stat: {
-      points: 0
+      // points: 0
     },
     sequence: [
       {
@@ -59,7 +60,7 @@ export default {
   },
   getters: {
     heroes() {
-      return [];
+      return [{ id: 1 }, { id: 2 }, { id: 3 }];
     },
     selectedHero(state, getters) {
       return getters.heroes ? getters.heroes[state.selectedHeroIndex] : null;
@@ -100,16 +101,16 @@ export default {
         await this.$app.$game._wrapOperation(Operations.AprilClaimRewards)
       ).response;
     },
-    increasePetIndex({ state, commit, getters }) {
-      const newIndex = (state.selectedPetIndex + 1) % getters.pets.length;
-      commit("setPetIndex", newIndex);
+    increaseHeroIndex({ state, commit, getters }) {
+      const newIndex = (state.selectedHeroIndex + 1) % getters.heroes.length;
+      commit("setHeroIndex", newIndex);
     },
-    decreasePetIndex({ state, commit, getters }) {
+    decreaseHeroIndex({ state, commit, getters }) {
       const newIndex =
-        (state.selectedPetIndex - 1 < 0
-          ? getters.pets.length - 1
-          : state.selectedPetIndex - 1) % getters.pets.length;
-      commit("setPetIndex", newIndex);
+        (state.selectedHeroIndex - 1 < 0
+          ? getters.heroes.length - 1
+          : state.selectedHeroIndex - 1) % getters.heroes.length;
+      commit("setHeroIndex", newIndex);
     },
     async rankings() {
       return (await this.$app.$game._wrapOperation(Operations.AprilRanking))

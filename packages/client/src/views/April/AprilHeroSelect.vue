@@ -1,9 +1,117 @@
 <template>
-  <div>april hero field</div>
+  <div class="width-100 height-100 dummy-height flex flex-column flex-no-wrap">
+    <AprilBalance class="april-pets-select__balance padding-bottom-6" />
+    <Title class="">{{ $t("choose-hero") }}</Title>
+
+    <div class="flex-full flex flex-center flex-nowrap">
+      <div>
+        <div
+          v-if="selectedHero"
+          class="font-size-22 font-weight-700 padding-bottom-1"
+        >
+          <span class="pet-name">{{ selectedHero.name }}</span>
+        </div>
+        <AprilHeroesSlide />
+        <AprilHeroAbilities
+          v-if="selectedHero && selectedHero.unlocked"
+          :pet="selectedHero"
+          :shouldShowNoAbility="false"
+          class=" margin-top-2"
+        />
+        <div class="padding-top-2">
+          <CustomButton
+            v-if="canBuy"
+            type="yellow"
+            class="btn-upgrade inline-block"
+            @click="unlockHandler"
+          >
+            {{ $t("unlock") }} &nbsp;<AprilGold :value="buyPrice" />
+          </CustomButton>
+          <CustomButton
+            v-if="canChoose"
+            type="green"
+            class="btn-start inline-block"
+            @click="selectHandler"
+          >
+            {{ $t("choose") }}
+          </CustomButton>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-
 <script>
-export default {};
-</script>
+import { mapGetters } from "vuex";
+import * as april from "@/../../knightlands-shared/april";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import aprilPurchaseMixin from "@/views/April/aprilPurchaseMixin";
+import AprilBalance from "@/views/April/AprilBalance.vue";
+import AprilHeroesSlide from "@/views/April/AprilHeroesSlide.vue";
+import AprilGold from "@/views/April/AprilGold.vue";
+import AprilHeroAbilities from "@/views/April/AprilHeroAbilities.vue";
 
-<style lang="less" scoped></style>
+export default {
+  mixins: [aprilPurchaseMixin, NetworkRequestErrorMixin],
+  components: { AprilBalance, AprilHeroesSlide, AprilGold, AprilHeroAbilities },
+  computed: {
+    ...mapGetters("april", ["selectedHero"]),
+    canBuy() {
+      return this.selectedHero && !this.selectedHero.unlocked;
+    },
+    canChoose() {
+      return this.selectedHero && this.selectedHero.unlocked;
+    },
+    buyPrice() {
+      if (!this.selectedHero) {
+        return 0;
+      }
+      if (!this.selectedHero.unlocked) {
+        return april.HEROES_PRICE[this.selectedHero.heroClass - 1];
+      }
+
+      return 0;
+    }
+  },
+  methods: {
+    async unlockHandler() {
+      if (!this.checkGoldBalance(this.buyPrice)) {
+        return;
+      }
+      await this.$store.dispatch(
+        "april/unlockHero",
+        this.selectedHero.heroClass
+      );
+    },
+    selectHandler() {
+      this.$emit("next");
+    }
+  }
+};
+</script>
+<style scoped lang="less">
+.april-pets-select__balance {
+  background: #2f7285;
+}
+.common-title {
+  margin-top: -8px;
+}
+.btn-start {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+.pet-level {
+  display: inline-block;
+  margin-left: 1rem;
+  color: #fbe648;
+}
+.pet-level-max {
+  display: inline-block;
+  margin-left: 1rem;
+  color: #00ec00;
+}
+::v-deep {
+  .april-hero-abilities {
+    grid-row-gap: 1rem;
+  }
+}
+</style>
