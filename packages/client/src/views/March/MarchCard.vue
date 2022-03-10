@@ -260,7 +260,7 @@ export default {
   background-image: url("/images/march/cards/hp.png");
 }
 .march-card--extraHp .march-card-unit-background {
-  background-image: url("/images/march/cards/extra_life.png");
+  background-image: url("/images/march/cards/max_hp.png");
 }
 .march-card--armor .march-card-unit-background {
   background-image: url("/images/march/cards/armor.png");

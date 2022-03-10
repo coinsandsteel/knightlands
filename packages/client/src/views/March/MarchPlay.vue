@@ -82,7 +82,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import MarchPetsSelect from "@/views/March/MarchPetsSelect.vue";
@@ -111,6 +111,12 @@ export default {
       PLAY_FIELD_STEP,
       currentStep: PET_SELECT_STEP
     };
+  },
+  created() {
+    this.$store.$app.$on("redirect-to-playfield", this.goToPlayfield);
+  },
+  destroyed() {
+    this.$store.$app.$off("redirect-to-playfield");
   },
   computed: {
     ...mapState({
@@ -143,6 +149,9 @@ export default {
       const showDialog = create(MarchPlaySummary);
       await showDialog("gold");
       this.currentStep = PET_SELECT_STEP;
+    },
+    goToPlayfield() {
+      this.currentStep = PLAY_FIELD_STEP;
     },
     goToShop() {
       this.$router.push({ name: "march-shop" });
