@@ -117,7 +117,11 @@ const store = new Vuex.Store({
     blockchain: Blockchains.Tron,
     craftingListOptions: {},
     recipeFilters: {},
-    selectedLegion: 0
+    selectedLegion: 0,
+    appSize: {
+      width: 375,
+      height: 667
+    }
   },
   mutations: {
     setQuestZone(state, zoneId) {
@@ -184,6 +188,9 @@ const store = new Vuex.Store({
     },
     setSelectedLegion(state, legionIndex) {
       state.selectedLegion = legionIndex;
+    },
+    setAppSize(state, size) {
+      state.appSize = size;
     }
   },
   getters: {

@@ -271,6 +271,7 @@ export default {
 
     this.firebase = initializeApp(firebaseConfig);
     this.analytics = getAnalytics(this.firebase);
+    this.updateAppSize();
   },
   async created() {
     Vue.prototype.$app = this;
@@ -456,6 +457,13 @@ export default {
     async updateUserData() {
       await this.$game.updateUserData();
       this.loading = false;
+    },
+    updateAppSize() {
+      const appSize = document.querySelector("#app").getBoundingClientRect();
+      this.$store.commit("setAppSize", {
+        width: Math.floor(appSize.width),
+        height: Math.floor(appSize.height)
+      });
     }
   },
   watch: {

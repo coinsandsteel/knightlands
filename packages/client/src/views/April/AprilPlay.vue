@@ -80,7 +80,7 @@ export default {
       PLAY_ROUND_STEP,
       // @todo
       // currentStep: HERO_SELECT_STEP
-      currentStep: HERO_SELECT_STEP
+      currentStep: PLAY_FIELD_STEP
     };
   },
   computed: {

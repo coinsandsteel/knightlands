@@ -56,6 +56,14 @@ export default {
         // win a round
         win: false
       }
+    ],
+    cards: [
+      { id: 1, cardClass: april.CARD_CLASS_PAWN },
+      { id: 2, cardClass: april.CARD_CLASS_KNIGHT },
+      { id: 3, cardClass: april.CARD_CLASS_KING },
+      { id: 4, cardClass: april.CARD_CLASS_BISHOP },
+      // { id: 5, cardClass: april.CARD_CLASS_ROOK },
+      { id: 6, cardClass: april.CARD_CLASS_QUEEN }
     ]
   },
   getters: {
@@ -66,19 +74,29 @@ export default {
         { id: 3, name: "Rogue", heroClass: april.HERO_CLASS_ROGUE }
       ];
     },
+    cards(state) {
+      return state.cards;
+    },
     selectedHero(state, getters) {
       return getters.heroes ? getters.heroes[state.selectedHeroIndex] : null;
     }
   },
   mutations: {
     updateState(state, data) {
+      console.log("april updateState", data);
       // if (data.balance !== undefined) {
       //   state.balance = { ...state.balance, ...data.balance };
       // }
+      if (data.dailyRewards !== undefined) {
+        state.dailyRewards = data.dailyRewards;
+        this.$app.$emit("april-show-daily-reward");
+      }
     },
     setInitialState(state, data) {
+      console.log("april setInitialState", data);
       state.loaded = true;
       // state.balance = data.user.balance;
+      state.dailyRewards = data.user.dailyRewards;
     },
     updatePreGameBooster(state, type) {
       state.preGameBoosters[type] = state.preGameBoosters[type] === 1 ? 0 : 1;
@@ -122,6 +140,9 @@ export default {
     async rankings() {
       return (await this.$app.$game._wrapOperation(Operations.AprilRanking))
         .response;
+    },
+    async collectDailyReward() {
+      await this.$app.$game._wrapOperation(Operations.AprilCollectDailyReward);
     }
   }
 };
