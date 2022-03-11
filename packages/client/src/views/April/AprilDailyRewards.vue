@@ -49,10 +49,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.mystery-lantern-loot,
-.lantern-loot {
-  margin: 0 2px 2px;
-}
 .daily-rewards {
   background: #2f7285;
   margin-bottom: -2rem;

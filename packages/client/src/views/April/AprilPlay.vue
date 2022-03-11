@@ -30,6 +30,21 @@
           class="back-button"
           @click="backHandler"
         ></BackButton>
+        <div class="flex-full"></div>
+        <div
+          v-if="
+            currentStep === HERO_SELECT_STEP ||
+              currentStep === BOOSTER_SELECT_STEP
+          "
+        >
+          <CustomButton
+            type="green"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="goToShop"
+          >
+            Purchase gold
+          </CustomButton>
+        </div>
       </div>
     </portal>
   </div>

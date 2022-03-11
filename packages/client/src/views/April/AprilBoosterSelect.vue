@@ -13,7 +13,7 @@
         @hint="thirdActionHintHandler"
         @select="thirdActionSelectHandler"
       />
-      <AprilBoosterButton
+      <!-- <AprilBoosterButton
         class="btn-booster"
         :name="$t('skip-a-turn')"
         :type="april.BOOSTER_SKIP_A_TURN"
@@ -22,7 +22,7 @@
         :isDisabled="skipATurnDisabled"
         @hint="skipATurnHintHandler"
         @select="skipATurnSelectHandler"
-      />
+      /> -->
     </div>
     <div class="">
       <CustomButton
@@ -155,7 +155,7 @@ export default {
 }
 .april-boosters {
   display: grid;
-  grid-template-columns: repeat(2, minmax(20%, 150px));
+  grid-template-columns: repeat(1, minmax(20%, 150px));
   grid-gap: 3rem;
   justify-content: center;
   justify-items: center;

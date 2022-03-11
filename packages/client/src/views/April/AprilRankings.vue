@@ -1,12 +1,12 @@
 <template>
   <div class="screen-content" v-bar>
     <div>
-      <div class="march-rating-rewards-wrapper padding-bottom-2">
+      <div class="april-rating-rewards-wrapper padding-bottom-2">
         <div
           class="flex flex-center font-size-20 padding-top-2 text-align-left"
         >
           <div
-            class="march-rating-reward flex-items-center width-100 margin-bottom-3"
+            class="april-rating-reward flex-items-center width-100 margin-bottom-3"
             v-for="(rewardEntry, rewardEntryIndex) in allRewards"
             :key="'event-reward-rank-' + rewardEntryIndex"
           >
@@ -57,10 +57,9 @@
             @update="scrollUpdated"
           >
             <Title v-if="item.isTitle" class="common-title"
-              >{{ $t("top-players") }} - {{ $t("pet") }}
-              {{ item.petClass }}</Title
+              >{{ $t("top-players") }} - {{ $t(item.heroClass) }}</Title
             >
-            <MarchRankingElement
+            <AprilRankingElement
               v-else
               :index="index"
               :rank="item.rank"
@@ -79,8 +78,10 @@
 </template>
 
 <script>
-import MarchRankingElement from "@/views/March/Rankings/MarchRankingElement.vue";
+import AprilRankingElement from "@/views/April/AprilRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import * as april from "@/../../knightlands-shared/april";
+// @todo
 import meta from "@/march_meta.json";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
@@ -91,7 +92,7 @@ const ShowItems = create(ItemsReceived, "items");
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  components: { MarchRankingElement, CustomButton, Loot },
+  components: { AprilRankingElement, CustomButton, Loot },
   data: () => ({
     records: [],
     currentPage: 0,
@@ -115,6 +116,7 @@ export default {
       return this.currentRank.id == id;
     },
     async fetchRankings() {
+      // @todo
       const result = await this.performRequest(
         this.$store.dispatch("march/rankings")
       );
@@ -141,7 +143,8 @@ export default {
           id: "title-" + i,
           key: "title-" + i,
           isTitle: true,
-          petClass: i + 1
+          // @todo
+          heroClass: april.HERO_CLASSES[i % 3]
         };
         records.push(titleRecord, ...newRecords);
       }
@@ -150,7 +153,7 @@ export default {
     scrollUpdated(start, end) {},
     async claimRewards() {
       let items = await this.performRequestNoCatch(
-        this.$store.dispatch("march/claimRewards")
+        this.$store.dispatch("april/claimRewards")
       );
       if (items.length) {
         await ShowItems(items);
@@ -178,10 +181,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-.march-rating-rewards-wrapper {
+.april-rating-rewards-wrapper {
   background: #2f7285;
 }
-.march-rating-rewards {
+.april-rating-rewards {
   margin-left: auto;
   margin-right: auto;
 }
