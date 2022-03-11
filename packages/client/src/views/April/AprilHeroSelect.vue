@@ -88,7 +88,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.april-pets-select__balance {
+.april-heroes-select__balance {
   background: #2f7285;
 }
 .common-title {

@@ -16,6 +16,7 @@
     <div
       class="april-play-board flex-full flex flex-center width-100 overflow-auto"
     >
+      play board1111<br />play board<br />play board<br />
       play board<br />play board<br />play board<br />
       play board<br />play board<br />play board<br />
       play board<br />play board<br />play board<br />
@@ -36,14 +37,16 @@
       play board<br />play board<br />play board<br />
       play board<br />play board<br />play board<br />
       play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
+      play board<br />play board<br />play board2222<br />
     </div>
 
     <div class="april-play-decks flex flex-center width-100">
       <div class="april-play-deck-1"></div>
       <div class="april-play-deck-2">
-        <div class="april-cards-container">
+        <div
+          class="april-cards-container"
+          :style="{ 'grid-template-columns': `repeat(${cards.length}, auto)` }"
+        >
           <AprilCard
             v-for="(card, cardIndex) in cards"
             :key="cardIndex + '/' + cards.length + '_' + card.id"
@@ -117,10 +120,11 @@ export default {
 .april-play-decks {
   display: grid;
   grid-template-columns:
-    calc(var(--base-size) * 2 / 3)
+    calc(var(--base-size) / 2)
     1fr
-    calc(var(--base-size) * 2 / 3);
-  height: calc(1.5 * var(--base-size));
+    calc(var(--base-size) / 2);
+  height: calc(1.5 * var(--base-size) + 3px + 40px);
+  padding: 20px 0;
 }
 .april-play-deck-1,
 .april-play-deck-3 {
@@ -136,7 +140,7 @@ export default {
   border-left: none;
 }
 .april-play-deck-2 {
-  overflow-x: hidden;
+  // overflow-x: hidden;
 }
 .april-play-deck-3 {
   border-top-right-radius: 0px;
@@ -145,7 +149,7 @@ export default {
 }
 .april-cards-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  // grid-template-columns: repeat(5, 1fr);
   justify-content: center;
 }
 </style>

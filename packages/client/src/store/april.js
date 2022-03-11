@@ -63,7 +63,7 @@ export default {
       { id: 3, cardClass: april.CARD_CLASS_KING },
       { id: 4, cardClass: april.CARD_CLASS_BISHOP },
       // { id: 5, cardClass: april.CARD_CLASS_ROOK },
-      { id: 6, cardClass: april.CARD_CLASS_QUEEN }
+      // { id: 6, cardClass: april.CARD_CLASS_QUEEN }
     ]
   },
   getters: {
