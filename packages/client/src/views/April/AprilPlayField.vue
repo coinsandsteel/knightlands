@@ -14,30 +14,37 @@
     </div>
 
     <div
-      class="april-play-board flex-full flex flex-center width-100 overflow-auto"
+      class="april-play-board-container flex-full flex flex-center width-100 overflow-auto"
     >
-      play board1111<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board<br />
-      play board<br />play board<br />play board2222<br />
+      <div
+        class="april-play-board-wrapper flex flex-row flex-no-wrap flex-justify-center width-100"
+      >
+        <div class="step-cells-wrapper flex flex-column margin-right-1">
+          <div
+            v-for="(cell, cellIndex) in stepCells"
+            :key="cellIndex"
+            class="step-cell margin-top-1 margin-bottom-1"
+          ></div>
+        </div>
+        <div class="april-play-board-border-outer">
+          <div class="april-play-board-border">
+            <div class="april-play-board">
+              <AprilBoardCell
+                v-for="(cell, cellIndex) in boardCells"
+                :key="cellIndex"
+                :index="cellIndex"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="hp-cells-wrapper flex flex-column margin-left-1">
+          <div
+            v-for="(cell, cellIndex) in hpCells"
+            :key="cellIndex"
+            class="step-hp margin-top-1 margin-bottom-1"
+          ></div>
+        </div>
+      </div>
     </div>
 
     <div class="april-play-decks flex flex-center width-100">
@@ -68,12 +75,14 @@ import AprilGold from "@/views/April/AprilGold.vue";
 import AprilPoints from "@/views/April/AprilPoints.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
 import AprilCard from "@/views/April/AprilCard.vue";
+import AprilBoardCell from "@/views/April/AprilBoardCell.vue";
 
 export default {
   components: {
     AprilGold,
     AprilPoints,
-    AprilCard
+    AprilCard,
+    AprilBoardCell
   },
 
   data() {
@@ -89,6 +98,15 @@ export default {
       return this.appSize
         ? Math.floor(this.appSize.width / 6)
         : Math.floor(375 / 6);
+    },
+    boardCells() {
+      return new Array(5 * 5).fill(null);
+    },
+    stepCells() {
+      return new Array(2).fill(null);
+    },
+    hpCells() {
+      return new Array(2).fill(null);
     }
   },
 
@@ -128,7 +146,7 @@ export default {
 }
 .april-play-deck-1,
 .april-play-deck-3 {
-  background: red;
+  background: url("/images/april/card_back.svg") center/70% repeat #3b3f65;
   opacity: 0.5;
   border-radius: 6px;
   border: 1px solid #fff;
@@ -151,5 +169,35 @@ export default {
   display: grid;
   // grid-template-columns: repeat(5, 1fr);
   justify-content: center;
+}
+.step-cell,
+.step-hp {
+  width: calc(var(--base-size) * 0.5);
+  height: calc(var(--base-size) * 0.5);
+}
+.step-cell {
+  background: url("/images/april/move.png") center/100% no-repeat;
+}
+.step-hp {
+  background: url("/images/april/hp.png") center/100% no-repeat;
+}
+// .april-play-board-wrapper {
+//   display: grid;
+//   grid-template-columns:
+//     calc(var(--base-size) * 0.4)
+//     calc(var(--base-size) * 4)
+//     calc(var(--base-size) * 0.4);
+// }
+.april-play-board {
+  display: grid;
+  grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));
+}
+.april-play-board-border-outer {
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+.april-play-board-border {
+  border: 4px solid #ccc;
+  border-radius: 4px;
 }
 </style>
