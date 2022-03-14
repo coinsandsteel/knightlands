@@ -19,55 +19,56 @@ export default {
     },
     selectedHeroIndex: 0,
     dailyRewards: [],
+    hourRewardClaimed: null, // timestamp, sec
     // Playground
     stat: {
       // points: 0
     },
+
     sessionResult: null, // "win", "loose"
     hp: 3,
     actionPoints: 2,
-    cells: [
-      { damage: 1 },
-      { damage: 1 },
-      { damage: 1 },
-      null,
-      null,
-
-      { damage: 1 },
-      { damage: 1, unitClass: april.UNIT_CLASS_TEETH, id: "wer2s929f" },
-      { damage: 2 },
-      { damage: 2 },
-      null,
-
-      { damage: 1 },
-      { damage: 2 },
-      { damage: 2, unitClass: april.UNIT_CLASS_TEETH, id: "32vr45n7u6" },
-      { damage: 1, unitClass: april.UNIT_CLASS_JACK, id: "89mnbv31x" },
-      { damage: 1 },
-
-      null,
-      { damage: 1 },
-      { damage: 1 },
-      { damage: 2 },
-      null,
-
-      null,
-      null,
-      { damage: 0, unitClass: april.UNIT_CLASS_HERO },
-      null,
-      null
+    cardsInQueue: 5,
+    usedCards: 0,
+    units: {
+      "wer2s929f": { unitClass: april.UNIT_CLASS_TEETH, index: 6 },
+      "32vr45n7u6": { unitClass: april.UNIT_CLASS_TEETH, index: 12 },
+      "89mnbv31x": { unitClass: april.UNIT_CLASS_JACK, index: 13 },
+      "2n9v38534n": { unitClass: april.UNIT_CLASS_HERO, index: 22 }
+    },
+    damage: [
+      1,
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      0,
+      1,
+      2,
+      2,
+      1,
+      1,
+      0,
+      1,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    moveZones: [1, 5, 17],
-    deck: {
-      queue: 5,
-      current: [
-        { id: 1, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-        { id: 2, cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
-        { id: 3, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-        { id: 4, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
-      ],
-      used: 0
-    }
+    cards: [
+      { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+      { cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
+      { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+      { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
+    ]
   },
   getters: {
     heroes() {
@@ -87,14 +88,34 @@ export default {
   mutations: {
     updateState(state, data) {
       console.log("april updateState", data);
-      // if (data.balance !== undefined) {
-      //   state.balance = { ...state.balance, ...data.balance };
-      // }
-      if (data.cells !== undefined) {
-        state.cells = data.cells;
+
+      if (data.sessionResult !== undefined) {
+        state.sessionResult = data.sessionResult;
       }
-      if (data.moveZones !== undefined) {
-        state.moveZones = data.moveZones;
+      if (data.hp !== undefined) {
+        state.hp = data.hp;
+      }
+      if (data.actionPoints !== undefined) {
+        state.actionPoints = data.actionPoints;
+      }
+      if (data.cardsInQueue !== undefined) {
+        state.cardsInQueue = data.cardsInQueue;
+      }
+      if (data.usedCards !== undefined) {
+        state.usedCards = data.usedCards;
+      }
+      if (data.units !== undefined) {
+        state.units = data.units;
+      }
+      if (data.damage !== undefined) {
+        state.damage = data.damage;
+      }
+      if (data.cards !== undefined) {
+        state.cards = data.cards;
+      }
+
+      if (data.balance !== undefined) {
+        state.balance = { ...state.balance, ...data.balance };
       }
       if (data.dailyRewards !== undefined) {
         state.dailyRewards = data.dailyRewards;
