@@ -4,18 +4,24 @@
     :class="{ 'april-board-cell-container--black': index % 2 === 0 }"
   >
     <div class="april-board-cell absolute-stretch">
-      <div
-        v-if="isAvailableMove"
-        class="april-board-cell-available-move absolute-stretch"
-      />
-      <div
-        v-if="isHitZone"
-        class="april-board-cell-hit-zone absolute-stretch"
-      />
-      <div
-        v-if="isEnemy"
-        class="april-board-cell-enemy april-board-cell-enemy--teeth absolute-stretch"
-      />
+      <Transition name="fade" appear>
+        <div
+          v-if="isHitZone"
+          class="april-board-cell-hit-zone absolute-stretch"
+        />
+      </Transition>
+      <Transition name="fade" appear>
+        <div
+          v-if="isAvailableMove"
+          class="april-board-cell-available-move absolute-stretch"
+        />
+      </Transition>
+      <Transition name="fade" appear>
+        <div
+          v-if="isEnemy"
+          class="april-board-cell-enemy april-board-cell-enemy--teeth absolute-stretch"
+        />
+      </Transition>
       <div
         v-if="isHero"
         class="april-board-cell-hero april-board-cell-hero--knight absolute-stretch"
@@ -24,6 +30,9 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
+import * as april from "@/../../knightlands-shared/april";
+
 export default {
   props: {
     index: Number
@@ -33,17 +42,29 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("april", ["cells", "moveZones"]),
+    cell() {
+      if (!(this.cells && this.cells.length >= this.index)) {
+        return null;
+      }
+
+      return this.cells[this.index];
+    },
     isHero() {
-      return this.index === 22;
+      return this.cell && this.cell.unitClass === april.UNIT_CLASS_HERO;
     },
     isEnemy() {
-      return this.index === 7 || this.index === 17;
+      return (
+        this.cell &&
+        this.cell.unitClass &&
+        this.cell.unitClass !== april.UNIT_CLASS_HERO
+      );
     },
     isAvailableMove() {
-      return this.index === 12 || this.index === 13 || this.index === 17;
+      return this.moveZones && this.moveZones.includes(this.index);
     },
     isHitZone() {
-      return this.index === 17;
+      return this.cell && this.cell.damage;
     }
   }
 };
@@ -63,7 +84,8 @@ export default {
   background: url("/images/april/hit_zone.svg") center/22% repeat;
 }
 .april-board-cell-available-move {
-  background-color: rgba(#ef4444, 0.5);
+  // background-color: rgba(#ef4444, 0.5);
+  background-color: rgba(#10b981, 0.3);
 }
 .april-board-cell-enemy {
   background-size: 80%;
@@ -74,5 +96,14 @@ export default {
   background-size: 70%;
   background-position: center;
   background-repeat: no-repeat;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 </style>

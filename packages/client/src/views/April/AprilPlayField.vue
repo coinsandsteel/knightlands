@@ -6,10 +6,8 @@
     <div
       class="april-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-2 padding-bottom-2 relative"
     >
-      <AprilGold
-        class="april-gold--with-background padding-left-2 margin-right-2"
-      />
-      <AprilPoints class="april-points--with-background padding-left-2" />
+      <AprilGold class="april-gold--with-background padding-left-2" />
+      <!-- <AprilPoints class="april-points--with-background padding-left-2" /> -->
       <div class="close-btn" @click="stopHandler"></div>
     </div>
 
@@ -87,9 +85,9 @@
       <CustomButton
         type="green"
         class="inline-block margin-right-2 margin-top-1"
-        @click="testDropCards"
+        @click="testUpdateCells"
       >
-        Drop cards
+        Update cells
       </CustomButton>
     </div>
   </div>
@@ -117,6 +115,7 @@ export default {
   data() {
     return {
       // baseSize: 60
+      count: 0
     };
   },
 
@@ -176,6 +175,77 @@ export default {
         cards.splice(index, 1);
       }
       this.$store.commit("april/updateCards", cards);
+    },
+    testUpdateCells() {
+      this.count++;
+      const cells1 = [
+        { damage: 1 },
+        { damage: 1 },
+        { damage: 1 },
+        null,
+        null,
+
+        { damage: 1 },
+        { damage: 1, unitClass: april.UNIT_CLASS_TEETH, id: "wer2s929f" },
+        { damage: 2 },
+        { damage: 2 },
+        null,
+
+        { damage: 1 },
+        { damage: 2 },
+        { damage: 2, unitClass: april.UNIT_CLASS_TEETH, id: "32vr45n7u6" },
+        { damage: 1, unitClass: april.UNIT_CLASS_JACK, id: "89mnbv31x" },
+        { damage: 1 },
+
+        null,
+        { damage: 1 },
+        { damage: 1 },
+        { damage: 2 },
+        null,
+
+        null,
+        null,
+        { damage: 0, unitClass: april.UNIT_CLASS_HERO },
+        null,
+        null
+      ];
+      const cells2 = [
+        null,
+        { damage: 1 },
+        { damage: 1 },
+        null,
+        { damage: 0, unitClass: april.UNIT_CLASS_HERO },
+
+        { damage: 1 },
+        { damage: 1, unitClass: april.UNIT_CLASS_TEETH, id: "wer2s929f" },
+        null,
+        null,
+        null,
+
+        null,
+        null,
+        { damage: 2, unitClass: april.UNIT_CLASS_TEETH, id: "32vr45n7u6" },
+        null,
+        { damage: 1 },
+
+        null,
+        { damage: 1 },
+        null,
+        { damage: 2 },
+        null,
+
+        null,
+        null,
+        null,
+        { unitClass: april.UNIT_CLASS_JACK, id: "89mnbv31x" },
+        null
+      ];
+      const moveZones1 = [1, 9, 17];
+      const moveZones2 = [6, 15, 20];
+      this.$store.commit("april/updateState", {
+        cells: this.count % 2 ? cells2 : cells1,
+        moveZones: this.count % 2 ? moveZones2 : moveZones1
+      });
     }
   }
 };

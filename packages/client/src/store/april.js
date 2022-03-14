@@ -57,6 +57,7 @@ export default {
       null,
       null
     ],
+    moveZones: [1, 5, 17],
     deck: {
       queue: 5,
       current: [
@@ -89,8 +90,11 @@ export default {
       // if (data.balance !== undefined) {
       //   state.balance = { ...state.balance, ...data.balance };
       // }
-      if (data.cards !== undefined) {
-        state.cards = data.cards;
+      if (data.cells !== undefined) {
+        state.cells = data.cells;
+      }
+      if (data.moveZones !== undefined) {
+        state.moveZones = data.moveZones;
       }
       if (data.dailyRewards !== undefined) {
         state.dailyRewards = data.dailyRewards;
