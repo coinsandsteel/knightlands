@@ -1,6 +1,6 @@
 <template>
   <div
-    class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
+    class="width-100 height-100 dummy-height flex flex-column flex-no-wrap overflow-hidden"
     :style="{ '--base-size': `${baseSize}px` }"
   >
     <div
@@ -50,27 +50,56 @@
     <div class="april-play-decks flex flex-center width-100">
       <div class="april-play-deck-1"></div>
       <div class="april-play-deck-2">
-        <div
-          class="april-cards-container"
-          :style="{ 'grid-template-columns': `repeat(${cards.length}, auto)` }"
+        <TransitionGroup
+          tag="div"
+          name="card-move"
+          class="april-cards-container relative"
         >
           <AprilCard
             v-for="(card, cardIndex) in cards"
-            :key="cardIndex + '/' + cards.length + '_' + card.id"
+            :_key="cardIndex + '/' + cards.length + '_' + card.id"
+            :key="card.id"
             :card="card"
             :index="cardIndex"
             :totalCards="cards.length"
           ></AprilCard>
-        </div>
+        </TransitionGroup>
       </div>
       <div class="april-play-deck-3"></div>
+    </div>
+
+    <div class="width-100 flex flex-items-start">
+      <div class="flex-full"></div>
+      <CustomButton
+        type="green"
+        class="inline-block margin-right-2 margin-top-1"
+        @click="testDrawCards"
+      >
+        Draw cards
+      </CustomButton>
+      <CustomButton
+        type="green"
+        class="inline-block margin-right-2 margin-top-1"
+        @click="testDropCards"
+      >
+        Drop cards
+      </CustomButton>
+      <CustomButton
+        type="green"
+        class="inline-block margin-right-2 margin-top-1"
+        @click="testDropCards"
+      >
+        Drop cards
+      </CustomButton>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import random from "lodash/random";
 import { create } from "vue-modal-dialogs";
+import * as april from "@/../../knightlands-shared/april";
 import AprilGold from "@/views/April/AprilGold.vue";
 import AprilPoints from "@/views/April/AprilPoints.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
@@ -122,6 +151,31 @@ export default {
         this.$store.dispatch("april/exitGame");
         this.$emit("next", true);
       }
+    },
+    testDrawCards() {
+      const cards = [...this.cards];
+      const num = cards.length <= 0 ? 4 : random(1, 1);
+      for (let i = 0; i < num; i++) {
+        const card = {
+          id: Date.now() + i,
+          cardClass:
+            april.CARD_CLASSES[random(0, april.CARD_CLASSES.length - 1)]
+        };
+        cards.push(card);
+      }
+      this.$store.commit("april/updateState", { cards });
+    },
+    testDropCards() {
+      const num = random(1, 1);
+      const cards = [...this.cards];
+      for (let i = 0; i < num; i++) {
+        if (cards.length <= 0) {
+          break;
+        }
+        const index = random(0, cards.length - 1);
+        cards.splice(index, 1);
+      }
+      this.$store.commit("april/updateState", { cards });
     }
   }
 };
@@ -147,10 +201,12 @@ export default {
 .april-play-deck-1,
 .april-play-deck-3 {
   background: url("/images/april/card_back.svg") center/70% repeat #3b3f65;
-  opacity: 0.5;
+  // opacity: 0.5;
   border-radius: 6px;
   border: 1px solid #fff;
   height: 100%;
+  z-index: 10;
+  position: relative;
 }
 .april-play-deck-1 {
   border-top-left-radius: 0px;
@@ -166,9 +222,8 @@ export default {
   border-right: none;
 }
 .april-cards-container {
-  display: grid;
-  // grid-template-columns: repeat(5, 1fr);
-  justify-content: center;
+  height: calc(var(--base-size) * 1.5);
+  background: rgba(red, 30%);
 }
 .step-cell,
 .step-hp {
@@ -181,13 +236,6 @@ export default {
 .step-hp {
   background: url("/images/april/hp.png") center/100% no-repeat;
 }
-// .april-play-board-wrapper {
-//   display: grid;
-//   grid-template-columns:
-//     calc(var(--base-size) * 0.4)
-//     calc(var(--base-size) * 4)
-//     calc(var(--base-size) * 0.4);
-// }
 .april-play-board {
   display: grid;
   grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));
@@ -199,5 +247,17 @@ export default {
 .april-play-board-border {
   border: 4px solid #ccc;
   border-radius: 4px;
+}
+// animation
+// .card-move-enter-active,
+// .card-move-leave-active {
+//   transition: transform 10s, top 0.4s !important;
+// }
+
+.card-move-enter {
+  transform: translateX(-600%) !important;
+}
+.card-move-leave-to {
+  transform: translateX(600%) !important;
 }
 </style>

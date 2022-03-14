@@ -1,10 +1,9 @@
 <template>
   <div
-    class="april-card-container"
+    class="april-card-container absolute"
     :style="{
-      'margin-left': marginLeft,
-      'margin-right': marginRight,
-      transform: `rotate(${rotate}deg) translateY(${transformY}px)`
+      transform: `translateX(${transformX})`,
+      zIndex: index + 1
     }"
   >
     <div class="april-card-wrapper">
@@ -28,6 +27,9 @@ export default {
     return {};
   },
   computed: {
+    indexFromCenter2() {
+      return this.index + 0.5 - this.totalCards / 2;
+    },
     indexFromCenter() {
       const index = Math.ceil(this.index - this.totalCards / 2);
       if (this.totalCards % 2) {
@@ -57,16 +59,16 @@ export default {
       // return this.indexFromCenter * 3;
       return 0;
     },
-    transformY() {
-      // return -3 * (this.totalCards / 2 - this.absoluteIndexFromCenter);
-      return 0;
+    transformX() {
+      return `calc(-50% + ${this.indexFromCenter2 * 100}%)`;
     }
   }
 };
 </script>
 <style scoped lang="less">
 .april-card-container {
-  // margin-left: calc(var(--base-size) / -5);
+  left: 50%;
+  transition: transform 1s, top 0.4s;
 }
 .april-card-wrapper {
   width: var(--base-size);

@@ -60,8 +60,8 @@ export default {
     cards: [
       { id: 1, cardClass: april.CARD_CLASS_PAWN },
       { id: 2, cardClass: april.CARD_CLASS_KNIGHT },
-      { id: 3, cardClass: april.CARD_CLASS_KING },
-      { id: 4, cardClass: april.CARD_CLASS_BISHOP },
+      // { id: 3, cardClass: april.CARD_CLASS_KING },
+      // { id: 4, cardClass: april.CARD_CLASS_BISHOP }
       // { id: 5, cardClass: april.CARD_CLASS_ROOK },
       // { id: 6, cardClass: april.CARD_CLASS_QUEEN }
     ]
@@ -87,6 +87,9 @@ export default {
       // if (data.balance !== undefined) {
       //   state.balance = { ...state.balance, ...data.balance };
       // }
+      if (data.cards !== undefined) {
+        state.cards = data.cards;
+      }
       if (data.dailyRewards !== undefined) {
         state.dailyRewards = data.dailyRewards;
         this.$app.$emit("april-show-daily-reward");

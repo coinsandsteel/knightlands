@@ -78,7 +78,8 @@ export default {
         this.dailyRewards &&
         this.dailyRewards.find(({ active, collected }) => active && !collected)
       ) {
-        this.showDailyRewards();
+        // @todo: uncomment
+        // this.showDailyRewards();
       }
     },
     async showDailyRewards() {

@@ -37,7 +37,7 @@ export default {
       return this.index === 22;
     },
     isEnemy() {
-      return this.index === 7;
+      return this.index === 7 || this.index === 17;
     },
     isAvailableMove() {
       return this.index === 12 || this.index === 13 || this.index === 17;
