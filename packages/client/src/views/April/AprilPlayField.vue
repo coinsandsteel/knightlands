@@ -163,7 +163,7 @@ export default {
         };
         cards.push(card);
       }
-      this.$store.commit("april/updateState", { cards });
+      this.$store.commit("april/updateCards", cards);
     },
     testDropCards() {
       const num = random(1, 1);
@@ -175,7 +175,7 @@ export default {
         const index = random(0, cards.length - 1);
         cards.splice(index, 1);
       }
-      this.$store.commit("april/updateState", { cards });
+      this.$store.commit("april/updateCards", cards);
     }
   }
 };
@@ -259,5 +259,6 @@ export default {
 }
 .card-move-leave-to {
   transform: translateX(600%) !important;
+  z-index: 9 !important;
 }
 </style>

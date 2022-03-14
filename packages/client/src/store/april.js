@@ -32,25 +32,25 @@ export default {
       { damage: 1 },
       null,
       null,
-  
+
       { damage: 1 },
       { damage: 1, unitClass: april.UNIT_CLASS_TEETH, id: "wer2s929f" },
       { damage: 2 },
       { damage: 2 },
       null,
-  
+
       { damage: 1 },
       { damage: 2 },
       { damage: 2, unitClass: april.UNIT_CLASS_TEETH, id: "32vr45n7u6" },
       { damage: 1, unitClass: april.UNIT_CLASS_JACK, id: "89mnbv31x" },
       { damage: 1 },
-  
+
       null,
       { damage: 1 },
       { damage: 1 },
       { damage: 2 },
       null,
-  
+
       null,
       null,
       { damage: 0, unitClass: april.UNIT_CLASS_HERO },
@@ -60,10 +60,10 @@ export default {
     deck: {
       queue: 5,
       current: [
-        { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-        { cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
-        { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-        { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
+        { id: 1, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+        { id: 2, cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
+        { id: 3, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+        { id: 4, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
       ],
       used: 0
     }
@@ -77,7 +77,7 @@ export default {
       ];
     },
     cards(state) {
-      return state.cards;
+      return state.deck.current;
     },
     selectedHero(state, getters) {
       return getters.heroes ? getters.heroes[state.selectedHeroIndex] : null;
@@ -108,6 +108,9 @@ export default {
     },
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
+    },
+    updateCards(state, cards) {
+      state.deck = { ...state.deck, ...{ current: cards } };
     }
   },
   actions: {
