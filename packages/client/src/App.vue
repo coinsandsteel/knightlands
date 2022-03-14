@@ -140,6 +140,7 @@
 </template>
 
 <script>
+import debounce from "lodash/debounce";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AudioPlayer from "@/components/AudioPlayer.vue";
 import StatusBar from "./components/StatusBar.vue";
@@ -272,6 +273,13 @@ export default {
     this.firebase = initializeApp(firebaseConfig);
     this.analytics = getAnalytics(this.firebase);
     this.updateAppSize();
+    // window.addEventListener("resize", this.updateAppSize);
+    window.addEventListener(
+      "resize",
+      debounce(() => {
+        this.updateAppSize();
+      }, 500)
+    );
   },
   async created() {
     Vue.prototype.$app = this;

@@ -5,22 +5,20 @@
     <AprilTickets
       class="april-tickets--with-background padding-left-2 margin-right-2"
     />
-    <AprilGold
-      class="april-gold--with-background padding-left-2 margin-right-2"
-    />
-    <AprilPoints class="april-points--with-background padding-left-2" />
+    <AprilGold class="april-gold--with-background padding-left-2" />
+    <!-- <AprilPoints class="april-points--with-background padding-left-2" /> -->
   </div>
 </template>
 <script>
 import AprilTickets from "@/views/April/AprilTickets.vue";
 import AprilGold from "@/views/April/AprilGold.vue";
-import AprilPoints from "@/views/April/AprilPoints.vue";
+// import AprilPoints from "@/views/April/AprilPoints.vue";
 
 export default {
   components: {
     AprilTickets,
-    AprilGold,
-    AprilPoints
+    AprilGold
+    // AprilPoints
   }
 };
 </script>
