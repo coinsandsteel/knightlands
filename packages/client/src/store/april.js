@@ -34,15 +34,15 @@ export default {
       null,
   
       { damage: 1 },
-      { damage: 1, enemy: april.UNIT_CLASS_TEETH, enemyId: "wer2s929f" },
+      { damage: 1, unitClass: april.UNIT_CLASS_TEETH, id: "wer2s929f" },
       { damage: 2 },
       { damage: 2 },
       null,
   
       { damage: 1 },
       { damage: 2 },
-      { damage: 2, enemy: april.UNIT_CLASS_TEETH, enemyId: "32vr45n7u6" },
-      { damage: 1, enemy: april.UNIT_CLASS_JACK, enemyId: "89mnbv31x" },
+      { damage: 2, unitClass: april.UNIT_CLASS_TEETH, id: "32vr45n7u6" },
+      { damage: 1, unitClass: april.UNIT_CLASS_JACK, id: "89mnbv31x" },
       { damage: 1 },
   
       null,
@@ -53,7 +53,7 @@ export default {
   
       null,
       null,
-      { damage: 0, hero: true },
+      { damage: 0, unitClass: april.UNIT_CLASS_HERO },
       null,
       null
     ],
