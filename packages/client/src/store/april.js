@@ -11,8 +11,7 @@ export default {
     // User
     balance: {
       sessionGold: 0,
-      gold: 0,
-      points: 0
+      gold: 0
     },
     preGameBoosters: {
       [april.BOOSTER_THIRD_ACTION]: 0,
@@ -24,47 +23,50 @@ export default {
     stat: {
       // points: 0
     },
-    sequence: [
-      {
-        // items on the board: hero, enemies
-        items: [
-          {
-            id: "...",
-            unitClass: "...",
-            index: "...",
-            hitZones: ["index1", "index2", "index3", "index4", "..."]
-          }
-        ],
-        // cards in hand
-        cards: [
-          {
-            id: "...",
-            cardClass: "...",
-            availableMoves: ["index1", "index2", "index3", "index4", "..."]
-          }
-        ],
-        // number of cards in deck1
-        deck1: 4,
-        // number of cards in deck3
-        deck3: 0,
-        // cards move from deck 3 to deck 1
-        cardsReset: false,
-        // user's hp
-        hp: 2,
-        // number of turns left
-        turns: 2,
-        // win a round
-        win: false
-      }
+    sessionResult: null, // "win", "loose"
+    hp: 3,
+    actionPoints: 2,
+    cells: [
+      { damage: 1 },
+      { damage: 1 },
+      { damage: 1 },
+      null,
+      null,
+  
+      { damage: 1 },
+      { damage: 1, enemy: april.UNIT_CLASS_TEETH, enemyId: "wer2s929f" },
+      { damage: 2 },
+      { damage: 2 },
+      null,
+  
+      { damage: 1 },
+      { damage: 2 },
+      { damage: 2, enemy: april.UNIT_CLASS_TEETH, enemyId: "32vr45n7u6" },
+      { damage: 1, enemy: april.UNIT_CLASS_JACK, enemyId: "89mnbv31x" },
+      { damage: 1 },
+  
+      null,
+      { damage: 1 },
+      { damage: 1 },
+      { damage: 2 },
+      null,
+  
+      null,
+      null,
+      { damage: 0, hero: true },
+      null,
+      null
     ],
-    cards: [
-      { id: 1, cardClass: april.CARD_CLASS_PAWN },
-      { id: 2, cardClass: april.CARD_CLASS_KNIGHT },
-      { id: 3, cardClass: april.CARD_CLASS_KING },
-      { id: 4, cardClass: april.CARD_CLASS_BISHOP },
-      // { id: 5, cardClass: april.CARD_CLASS_ROOK },
-      // { id: 6, cardClass: april.CARD_CLASS_QUEEN }
-    ]
+    deck: {
+      queue: 5,
+      current: [
+        { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+        { cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
+        { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+        { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
+      ],
+      used: 0
+    }
   },
   getters: {
     heroes() {
