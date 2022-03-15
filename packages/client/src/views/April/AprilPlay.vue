@@ -15,6 +15,11 @@
       @next="nextHandler"
       @back="backHandler"
     />
+    <AprilPlayRound
+      v-if="currentStep === PLAY_ROUND_STEP"
+      @next="nextHandler"
+      @back="backHandler"
+    />
     <portal
       v-if="
         isActive &&
@@ -56,6 +61,7 @@ import AppSection from "@/AppSection.vue";
 import AprilHeroSelect from "@/views/April/AprilHeroSelect.vue";
 import AprilBoosterSelect from "@/views/April/AprilBoosterSelect.vue";
 import AprilPlayField from "@/views/April/AprilPlayField.vue";
+import AprilPlayRound from "@/views/April/AprilPlayRound.vue";
 import BackButton from "@/views/Common/BackButton.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
@@ -70,7 +76,8 @@ export default {
     AprilHeroSelect,
     AprilBoosterSelect,
     BackButton,
-    AprilPlayField
+    AprilPlayField,
+    AprilPlayRound
   },
   data() {
     return {

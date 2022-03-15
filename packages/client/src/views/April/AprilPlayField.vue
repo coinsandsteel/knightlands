@@ -16,6 +16,7 @@
       <div
         class="april-play-board-wrapper flex flex-row flex-no-wrap flex-justify-center width-100"
       >
+        <!-- action points -->
         <TransitionGroup
           appear
           tag="div"
@@ -28,6 +29,7 @@
             class="step-cell margin-top-1 margin-bottom-1"
           ></div>
         </TransitionGroup>
+        <!-- chess board -->
         <div class="april-play-board-border-outer">
           <div class="april-play-board-border">
             <div class="april-play-board">
@@ -39,6 +41,7 @@
             </div>
           </div>
         </div>
+        <!-- hp -->
         <TransitionGroup
           appear
           tag="div"
@@ -55,6 +58,7 @@
     </div>
 
     <div class="april-play-decks flex flex-center width-100">
+      <!-- deck1 -->
       <div class="april-play-deck-1 relative">
         <div
           class="april-play-deck-counter font-size-22 font-weight-700 absolute"
@@ -62,6 +66,7 @@
           {{ cardsInQueue }}
         </div>
       </div>
+      <!-- deck 2 -->
       <div class="april-play-deck-2">
         <TransitionGroup
           tag="div"
@@ -78,6 +83,7 @@
           ></AprilCard>
         </TransitionGroup>
       </div>
+      <!-- deck 3 -->
       <div class="april-play-deck-3 relative">
         <div
           class="april-play-deck-counter  font-size-22 font-weight-700 absolute"
@@ -168,7 +174,6 @@ export default {
 
   watch: {
     cards(value) {
-      console.log("cards handler");
       this.currentCards = [...value];
     }
   },

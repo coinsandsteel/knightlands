@@ -7,24 +7,29 @@
     }"
   >
     <div class="april-board-cell absolute-stretch">
+      <!-- hit zone -->
       <Transition name="fade" appear>
         <div
           v-if="isHitZone"
           class="april-board-cell-hit-zone absolute-stretch"
         />
       </Transition>
+      <!-- available move -->
       <Transition name="fade" appear>
         <div
           v-if="isAvailableMove"
           class="april-board-cell-available-move absolute-stretch"
         />
       </Transition>
+      <!-- enemy -->
       <Transition name="fade" appear>
         <div
           v-if="isEnemy"
           class="april-board-cell-enemy april-board-cell-enemy--teeth absolute-stretch"
+          :class="`april-board-cell-enemy--${unit.unitClass}`"
         />
       </Transition>
+      <!-- hero -->
       <Transition @enter="heroEnterHandler" @leave="heroLeaveHandler">
         <div
           v-if="isHero"
@@ -34,10 +39,13 @@
           }"
         >
           <div
-            class="april-board-cell-hero april-board-cell-hero--knight absolute-stretch"
-            :class="{
-              'hero-battle-active': isBattleActive
-            }"
+            class="april-board-cell-hero absolute-stretch"
+            :class="[
+              `april-board-cell-hero--${heroClass}`,
+              {
+                'hero-battle-active': isBattleActive
+              }
+            ]"
           ></div>
         </div>
       </Transition>
@@ -45,7 +53,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { sleep } from "@/helpers/utils";
 import * as april from "@/../../knightlands-shared/april";
 
@@ -63,6 +71,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("april", ["heroClass"]),
     ...mapGetters("april", ["cards", "damage", "units", "moveZones"]),
     unit() {
       if (this.units) {

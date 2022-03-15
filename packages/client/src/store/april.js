@@ -28,7 +28,7 @@ export default {
     cardsInQueue: 5,
     usedCards: 0,
     units: [
-      { id: "wer2s929f", unitClass: april.UNIT_CLASS_TEETH, index: 6 },
+      { id: "wer2s929f", unitClass: april.UNIT_CLASS_HARLEQUIN, index: 6 },
       { id: "32vr45n7u6", unitClass: april.UNIT_CLASS_TEETH, index: 12 },
       { id: "89mnbv31x", unitClass: april.UNIT_CLASS_JACK, index: 13 },
       { id: "2n9v38534n", unitClass: april.UNIT_CLASS_HERO, index: 22 }
@@ -66,7 +66,9 @@ export default {
       { id: "2s23d99vvvg", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
       { id: "mk0k0676k5n", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
     ],
-    selectedCardId: null
+    selectedCardId: null,
+    sessionRewardCardClass: april.CARD_CLASS_QUEEN,
+    resurrectionCost: 0
   },
   getters: {
     heroes() {
