@@ -183,18 +183,16 @@ export default {
     },
     testUpdateCells() {
       this.count++;
-      const units2 = {
-        wer2s929f: { unitClass: april.UNIT_CLASS_TEETH, index: 6 },
-        "32vr45n7u6": { unitClass: april.UNIT_CLASS_TEETH, index: 12 },
-        "89mnbv31x": { unitClass: april.UNIT_CLASS_JACK, index: 13 },
-        "2n9v38534n": { unitClass: april.UNIT_CLASS_HERO, index: 22 }
-      };
-      const units1 = {
-        wer2s929f: { unitClass: april.UNIT_CLASS_TEETH, index: 9 },
-        "32vr45n7u6": { unitClass: april.UNIT_CLASS_TEETH, index: 10 },
-        "89mnbv31x": { unitClass: april.UNIT_CLASS_JACK, index: 3 },
-        "2n9v38534n": { unitClass: april.UNIT_CLASS_HERO, index: 17 }
-      };
+      const units1 = [
+        { id: "wer2s929f", unitClass: april.UNIT_CLASS_TEETH, index: 6 },
+        { id: "32vr45n7u6", unitClass: april.UNIT_CLASS_TEETH, index: 12 },
+        { id: "89mnbv31x", unitClass: april.UNIT_CLASS_JACK, index: 13 },
+        { id: "2n9v38534n", unitClass: april.UNIT_CLASS_HERO, index: 22 }
+      ];
+      const units2 = [
+        { id: "89mnbv31x", unitClass: april.UNIT_CLASS_JACK, index: 13 },
+        { id: "2n9v38534n", unitClass: april.UNIT_CLASS_HERO, index: 4 }
+      ];
       const damage1 = [
         1,
         1,

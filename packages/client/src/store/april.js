@@ -85,14 +85,7 @@ export default {
       return state.damage;
     },
     units(state) {
-      let keys = state.units ? Object.keys(state.units) : [];
-      const units = [];
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        units.push({ ...state.units[key], id: key });
-      }
-
-      return units;
+      return state.units;
     },
     selectedHero(state, getters) {
       return getters.heroes ? getters.heroes[state.selectedHeroIndex] : null;

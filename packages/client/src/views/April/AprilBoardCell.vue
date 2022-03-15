@@ -1,7 +1,10 @@
 <template>
   <div
     class="april-board-cell-container relative"
-    :class="{ 'april-board-cell-container--black': index % 2 === 0 }"
+    :class="{
+      'april-board-cell-container--black': index % 2 === 0,
+      'z-index-1': isHero
+    }"
   >
     <div class="april-board-cell absolute-stretch">
       <Transition name="fade" appear>
@@ -22,15 +25,25 @@
           class="april-board-cell-enemy april-board-cell-enemy--teeth absolute-stretch"
         />
       </Transition>
-      <div
-        v-if="isHero"
-        class="april-board-cell-hero april-board-cell-hero--knight absolute-stretch"
-      />
+      <Transition
+        :_mame="
+          heroIndex === index && oldHeroIndex !== index ? 'hero-move' : 'none'
+        "
+        @enter="heroEnterHandler"
+        @leave="heroLeaveHandler"
+      >
+        <div
+          v-if="isHero"
+          class="april-board-cell-hero april-board-cell-hero--knight absolute-stretch"
+          :class="{ 'hero-move-active': isHeroMoveActive }"
+        />
+      </Transition>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
+import { sleep } from "@/helpers/utils";
 import * as april from "@/../../knightlands-shared/april";
 
 export default {
@@ -39,7 +52,11 @@ export default {
     // card: Object
   },
   data() {
-    return {};
+    return {
+      isHero: false,
+      oldHeroIndex: 22,
+      isHeroMoveActive: false
+    };
   },
   computed: {
     // ...mapState("april", ["cells", "moveZones"]),
@@ -51,9 +68,9 @@ export default {
 
       return null;
     },
-    isHero() {
-      return this.unit && this.unit.unitClass === april.UNIT_CLASS_HERO;
-    },
+    // isHero() {
+    //   return this.unit && this.unit.unitClass === april.UNIT_CLASS_HERO;
+    // },
     isEnemy() {
       return (
         this.unit &&
@@ -70,6 +87,62 @@ export default {
     },
     isHitZone() {
       return this.damagePoint > 0;
+    },
+    heroIndex() {
+      if (!this.units) {
+        return null;
+      }
+
+      const hero = this.units.find(
+        ({ unitClass }) => unitClass === april.UNIT_CLASS_HERO
+      );
+
+      if (!hero) {
+        return null;
+      }
+
+      return hero.index;
+    }
+  },
+
+  watch: {
+    heroIndex(value, oldValue) {
+      if (typeof value === "number" && value === this.index) {
+        if (typeof oldValue === "number") {
+          this.oldHeroIndex = oldValue;
+        }
+        this.isHero = true;
+        return;
+      }
+      this.isHero = false;
+    }
+  },
+
+  mounted() {
+    this.isHero = this.heroIndex === this.index;
+  },
+
+  methods: {
+    async heroEnterHandler(el, done) {
+      if (
+        !(this.heroIndex === this.index && this.oldHeroIndex !== this.index)
+      ) {
+        return;
+      }
+      const xDiff = (this.oldHeroIndex % 5) - (this.index % 5);
+      const yDiff =
+        Math.floor(this.oldHeroIndex / 5) - Math.floor(this.index / 5);
+      el.style = `transform: translate(calc(${xDiff *
+        0.8} * var(--base-size)), calc(${yDiff * 0.8} * var(--base-size)));`;
+      this.isHeroMoveActive = true;
+      await sleep(10);
+      el.removeAttribute("style");
+      await sleep(800);
+      this.isHeroMoveActive = false;
+      done();
+    },
+    heroLeaveHandler(el, done) {
+      done();
     }
   }
 };
@@ -102,6 +175,7 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
 }
+// animate
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.5s;
@@ -110,5 +184,8 @@ export default {
 .fade-leave-to {
   opacity: 0;
   transform: scale(0);
+}
+.april-board-cell-hero.hero-move-active {
+  transition: transform 0.8s;
 }
 </style>
