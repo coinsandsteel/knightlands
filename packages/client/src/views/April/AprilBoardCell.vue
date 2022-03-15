@@ -25,18 +25,21 @@
           class="april-board-cell-enemy april-board-cell-enemy--teeth absolute-stretch"
         />
       </Transition>
-      <Transition
-        :_mame="
-          heroIndex === index && oldHeroIndex !== index ? 'hero-move' : 'none'
-        "
-        @enter="heroEnterHandler"
-        @leave="heroLeaveHandler"
-      >
+      <Transition @enter="heroEnterHandler" @leave="heroLeaveHandler">
         <div
           v-if="isHero"
-          class="april-board-cell-hero april-board-cell-hero--knight absolute-stretch"
-          :class="{ 'hero-move-active': isHeroMoveActive }"
-        />
+          class="april-board-cell-hero-wrapper absolute-stretch"
+          :class="{
+            'hero-move-active': isHeroMoveActive
+          }"
+        >
+          <div
+            class="april-board-cell-hero april-board-cell-hero--knight absolute-stretch"
+            :class="{
+              'hero-battle-active': isBattleActive
+            }"
+          ></div>
+        </div>
       </Transition>
     </div>
   </div>
@@ -55,7 +58,8 @@ export default {
     return {
       isHero: false,
       oldHeroIndex: 22,
-      isHeroMoveActive: false
+      isHeroMoveActive: false,
+      isBattleActive: false
     };
   },
   computed: {
@@ -139,10 +143,24 @@ export default {
       el.removeAttribute("style");
       await sleep(800);
       this.isHeroMoveActive = false;
+
+      // @todo: check in hit zone
+      if (true) {
+        setTimeout(this.animateHeroBattle, 100);
+      }
       done();
     },
     heroLeaveHandler(el, done) {
       done();
+    },
+    async animateHeroBattle() {
+      this.isBattleActive = true;
+      await sleep(100);
+      this.isBattleActive = false;
+      await sleep(100);
+      this.isBattleActive = true;
+      await sleep(100);
+      this.isBattleActive = false;
     }
   }
 };
@@ -174,6 +192,7 @@ export default {
   background-size: 70%;
   background-position: center;
   background-repeat: no-repeat;
+  transition: all 0.1;
 }
 // animate
 .fade-enter-active,
@@ -185,7 +204,10 @@ export default {
   opacity: 0;
   transform: scale(0);
 }
-.april-board-cell-hero.hero-move-active {
+.april-board-cell-hero-wrapper.hero-move-active {
   transition: transform 0.8s;
+}
+.hero-battle-active {
+  filter: brightness(240%);
 }
 </style>
