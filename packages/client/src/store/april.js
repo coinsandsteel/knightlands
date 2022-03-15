@@ -30,12 +30,12 @@ export default {
     actionPoints: 2,
     cardsInQueue: 5,
     usedCards: 0,
-    units: {
-      wer2s929f: { unitClass: april.UNIT_CLASS_TEETH, index: 6 },
-      "32vr45n7u6": { unitClass: april.UNIT_CLASS_TEETH, index: 12 },
-      "89mnbv31x": { unitClass: april.UNIT_CLASS_JACK, index: 13 },
-      "2n9v38534n": { unitClass: april.UNIT_CLASS_HERO, index: 22 }
-    },
+    units: [
+      { id: "wer2s929f", unitClass: april.UNIT_CLASS_TEETH, index: 6 },
+      { id: "32vr45n7u6", unitClass: april.UNIT_CLASS_TEETH, index: 12 },
+      { id: "89mnbv31x", unitClass: april.UNIT_CLASS_JACK, index: 13 },
+      { id: "2n9v38534n", unitClass: april.UNIT_CLASS_HERO, index: 22 }
+    ],
     damage: [
       1,
       1,
@@ -64,10 +64,10 @@ export default {
       0
     ],
     cards: [
-      { id: 1, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-      { id: 2, cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
-      { id: 3, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-      { id: 4, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
+      { id: "23c9834vn32", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+      { id: "5gj56j6705k", cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
+      { id: "2s23d99vvvg", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+      { id: "mk0k0676k5n", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
     ]
   },
   getters: {
