@@ -17,6 +17,7 @@ export default {
       [april.BOOSTER_THIRD_ACTION]: 0,
       [april.BOOSTER_SKIP_A_TURN]: 0
     },
+    heroClass: april.HERO_CLASS_KNIGHT,
     selectedHeroIndex: 0,
     dailyRewards: [],
     hourRewardClaimed: null, // timestamp, sec
