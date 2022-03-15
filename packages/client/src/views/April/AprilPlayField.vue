@@ -7,7 +7,6 @@
       class="april-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-2 padding-bottom-2 relative"
     >
       <AprilGold class="april-gold--with-background padding-left-2" />
-      <!-- <AprilPoints class="april-points--with-background padding-left-2" /> -->
       <div class="close-btn" @click="stopHandler"></div>
     </div>
 
@@ -54,12 +53,11 @@
           class="april-cards-container relative"
         >
           <AprilCard
-            v-for="(card, cardIndex) in cards"
-            :_key="cardIndex + '/' + cards.length + '_' + card.id"
+            v-for="(card, cardIndex) in currentCards"
             :key="card.id"
             :card="card"
             :index="cardIndex"
-            :totalCards="cards.length"
+            :totalCards="currentCards.length"
           ></AprilCard>
         </TransitionGroup>
       </div>
@@ -99,7 +97,6 @@ import random from "lodash/random";
 import { create } from "vue-modal-dialogs";
 import * as april from "@/../../knightlands-shared/april";
 import AprilGold from "@/views/April/AprilGold.vue";
-import AprilPoints from "@/views/April/AprilPoints.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
 import AprilCard from "@/views/April/AprilCard.vue";
 import AprilBoardCell from "@/views/April/AprilBoardCell.vue";
@@ -107,7 +104,6 @@ import AprilBoardCell from "@/views/April/AprilBoardCell.vue";
 export default {
   components: {
     AprilGold,
-    AprilPoints,
     AprilCard,
     AprilBoardCell
   },
@@ -115,13 +111,14 @@ export default {
   data() {
     return {
       // baseSize: 60
-      count: 0
+      count: 0,
+      currentCards: []
     };
   },
 
   computed: {
     ...mapState(["appSize"]),
-    ...mapGetters("april", ["cards"]),
+    ...mapGetters("april", ["cards", "damage", "units"]),
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 6)
@@ -138,8 +135,16 @@ export default {
     }
   },
 
+  watch: {
+    cards(value) {
+      console.log("cards handler");
+      this.currentCards = [...value];
+    }
+  },
+
   mounted() {
     // this.calculateBaseSize();
+    this.currentCards = [...this.cards];
   },
 
   methods: {
@@ -152,8 +157,8 @@ export default {
       }
     },
     testDrawCards() {
-      const cards = [...this.cards];
-      const num = cards.length <= 0 ? 4 : random(1, 1);
+      const cards = [...this.currentCards];
+      const num = cards.length <= 0 ? 4 : random(1, 2);
       for (let i = 0; i < num; i++) {
         const card = {
           id: Date.now() + i,
@@ -162,11 +167,11 @@ export default {
         };
         cards.push(card);
       }
-      this.$store.commit("april/updateCards", cards);
+      this.$store.commit("april/updateState", { cards });
     },
     testDropCards() {
-      const num = random(1, 1);
-      const cards = [...this.cards];
+      const num = random(1, 2);
+      const cards = [...this.currentCards];
       for (let i = 0; i < num; i++) {
         if (cards.length <= 0) {
           break;
@@ -174,77 +179,79 @@ export default {
         const index = random(0, cards.length - 1);
         cards.splice(index, 1);
       }
-      this.$store.commit("april/updateCards", cards);
+      this.$store.commit("april/updateState", { cards });
     },
     testUpdateCells() {
       this.count++;
-      const cells1 = [
-        { damage: 1 },
-        { damage: 1 },
-        { damage: 1 },
-        null,
-        null,
-
-        { damage: 1 },
-        { damage: 1, unitClass: april.UNIT_CLASS_TEETH, id: "wer2s929f" },
-        { damage: 2 },
-        { damage: 2 },
-        null,
-
-        { damage: 1 },
-        { damage: 2 },
-        { damage: 2, unitClass: april.UNIT_CLASS_TEETH, id: "32vr45n7u6" },
-        { damage: 1, unitClass: april.UNIT_CLASS_JACK, id: "89mnbv31x" },
-        { damage: 1 },
-
-        null,
-        { damage: 1 },
-        { damage: 1 },
-        { damage: 2 },
-        null,
-
-        null,
-        null,
-        { damage: 0, unitClass: april.UNIT_CLASS_HERO },
-        null,
-        null
+      const units2 = {
+        wer2s929f: { unitClass: april.UNIT_CLASS_TEETH, index: 6 },
+        "32vr45n7u6": { unitClass: april.UNIT_CLASS_TEETH, index: 12 },
+        "89mnbv31x": { unitClass: april.UNIT_CLASS_JACK, index: 13 },
+        "2n9v38534n": { unitClass: april.UNIT_CLASS_HERO, index: 22 }
+      };
+      const units1 = {
+        wer2s929f: { unitClass: april.UNIT_CLASS_TEETH, index: 9 },
+        "32vr45n7u6": { unitClass: april.UNIT_CLASS_TEETH, index: 10 },
+        "89mnbv31x": { unitClass: april.UNIT_CLASS_JACK, index: 3 },
+        "2n9v38534n": { unitClass: april.UNIT_CLASS_HERO, index: 17 }
+      };
+      const damage1 = [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        0,
+        1,
+        2,
+        2,
+        1,
+        1,
+        0,
+        1,
+        1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ];
-      const cells2 = [
-        null,
-        { damage: 1 },
-        { damage: 1 },
-        null,
-        { damage: 0, unitClass: april.UNIT_CLASS_HERO },
-
-        { damage: 1 },
-        { damage: 1, unitClass: april.UNIT_CLASS_TEETH, id: "wer2s929f" },
-        null,
-        null,
-        null,
-
-        null,
-        null,
-        { damage: 2, unitClass: april.UNIT_CLASS_TEETH, id: "32vr45n7u6" },
-        null,
-        { damage: 1 },
-
-        null,
-        { damage: 1 },
-        null,
-        { damage: 2 },
-        null,
-
-        null,
-        null,
-        null,
-        { unitClass: april.UNIT_CLASS_JACK, id: "89mnbv31x" },
-        null
+      const damage2 = [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        2,
+        0,
+        0,
+        2,
+        0,
+        2,
+        3
       ];
-      const moveZones1 = [1, 9, 17];
-      const moveZones2 = [6, 15, 20];
       this.$store.commit("april/updateState", {
-        cells: this.count % 2 ? cells2 : cells1,
-        moveZones: this.count % 2 ? moveZones2 : moveZones1
+        units: this.count % 2 ? units2 : units1,
+        damage: this.count % 2 ? damage2 : damage1
       });
     }
   }

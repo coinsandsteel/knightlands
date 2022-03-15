@@ -31,7 +31,7 @@ export default {
     cardsInQueue: 5,
     usedCards: 0,
     units: {
-      "wer2s929f": { unitClass: april.UNIT_CLASS_TEETH, index: 6 },
+      wer2s929f: { unitClass: april.UNIT_CLASS_TEETH, index: 6 },
       "32vr45n7u6": { unitClass: april.UNIT_CLASS_TEETH, index: 12 },
       "89mnbv31x": { unitClass: april.UNIT_CLASS_JACK, index: 13 },
       "2n9v38534n": { unitClass: april.UNIT_CLASS_HERO, index: 22 }
@@ -64,10 +64,10 @@ export default {
       0
     ],
     cards: [
-      { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-      { cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
-      { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-      { cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
+      { id: 1, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+      { id: 2, cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
+      { id: 3, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+      { id: 4, cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
     ]
   },
   getters: {
@@ -79,7 +79,20 @@ export default {
       ];
     },
     cards(state) {
-      return state.deck.current;
+      return state.cards;
+    },
+    damage(state) {
+      return state.damage;
+    },
+    units(state) {
+      let keys = state.units ? Object.keys(state.units) : [];
+      const units = [];
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        units.push({ ...state.units[key], id: key });
+      }
+
+      return units;
     },
     selectedHero(state, getters) {
       return getters.heroes ? getters.heroes[state.selectedHeroIndex] : null;
@@ -133,9 +146,6 @@ export default {
     },
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
-    },
-    updateCards(state, cards) {
-      state.deck = { ...state.deck, ...{ current: cards } };
     }
   },
   actions: {

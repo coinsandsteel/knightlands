@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import * as april from "@/../../knightlands-shared/april";
 
 export default {
@@ -42,29 +42,34 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("april", ["cells", "moveZones"]),
-    cell() {
-      if (!(this.cells && this.cells.length >= this.index)) {
-        return null;
+    // ...mapState("april", ["cells", "moveZones"]),
+    ...mapGetters("april", ["cards", "damage", "units"]),
+    unit() {
+      if (this.units) {
+        return this.units.find(({ index }) => index === this.index);
       }
 
-      return this.cells[this.index];
+      return null;
     },
     isHero() {
-      return this.cell && this.cell.unitClass === april.UNIT_CLASS_HERO;
+      return this.unit && this.unit.unitClass === april.UNIT_CLASS_HERO;
     },
     isEnemy() {
       return (
-        this.cell &&
-        this.cell.unitClass &&
-        this.cell.unitClass !== april.UNIT_CLASS_HERO
+        this.unit &&
+        this.unit.unitClass &&
+        this.unit.unitClass !== april.UNIT_CLASS_HERO
       );
     },
     isAvailableMove() {
-      return this.moveZones && this.moveZones.includes(this.index);
+      // return this.moveZones && this.moveZones.includes(this.index);
+      return [2, 9, 15].includes(this.index);
+    },
+    damagePoint() {
+      return (this.damage && this.damage[this.index]) || 0;
     },
     isHitZone() {
-      return this.cell && this.cell.damage;
+      return this.damagePoint > 0;
     }
   }
 };
