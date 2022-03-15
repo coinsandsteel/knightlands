@@ -7,8 +7,7 @@ export default {
   namespaced: true,
   state: {
     loaded: true,
-    round: 0, // 0 -> 8
-    // User
+    // ###### User ######
     balance: {
       sessionGold: 0,
       gold: 0
@@ -17,15 +16,12 @@ export default {
       [april.BOOSTER_THIRD_ACTION]: 0,
       [april.BOOSTER_SKIP_A_TURN]: 0
     },
-    heroClass: april.HERO_CLASS_KNIGHT,
     selectedHeroIndex: 0,
     dailyRewards: [],
     hourRewardClaimed: null, // timestamp, sec
-    // Playground
-    stat: {
-      // points: 0
-    },
-
+    // ###### Playground ######
+    heroClass: april.HERO_CLASS_KNIGHT,
+    level: 1,
     sessionResult: null, // "win", "loose"
     hp: 3,
     actionPoints: 2,
