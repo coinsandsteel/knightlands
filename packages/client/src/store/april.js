@@ -65,7 +65,8 @@ export default {
       { id: "5gj56j6705k", cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
       { id: "2s23d99vvvg", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
       { id: "mk0k0676k5n", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
-    ]
+    ],
+    selectedCardId: null
   },
   getters: {
     heroes() {
@@ -77,6 +78,14 @@ export default {
     },
     cards(state) {
       return state.cards;
+    },
+    selectedCard(state, getters) {
+      return getters.cards
+        ? getters.cards.find(({ id }) => id === state.selectedCardId)
+        : null;
+    },
+    moveZones(state, getters) {
+      return getters.selectedCard ? getters.selectedCard.nextCells || [] : [];
     },
     damage(state) {
       return state.damage;
@@ -116,7 +125,9 @@ export default {
       if (data.cards !== undefined) {
         state.cards = data.cards;
       }
-
+      if (data.selectedCardId !== undefined) {
+        state.selectedCardId = data.selectedCardId;
+      }
       if (data.balance !== undefined) {
         state.balance = { ...state.balance, ...data.balance };
       }

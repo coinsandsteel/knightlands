@@ -16,13 +16,18 @@
       <div
         class="april-play-board-wrapper flex flex-row flex-no-wrap flex-justify-center width-100"
       >
-        <div class="step-cells-wrapper flex flex-column margin-right-1">
+        <TransitionGroup
+          appear
+          tag="div"
+          name="fade"
+          class="step-cells-wrapper flex flex-column margin-right-1"
+        >
           <div
             v-for="(cell, cellIndex) in stepCells"
             :key="cellIndex"
             class="step-cell margin-top-1 margin-bottom-1"
           ></div>
-        </div>
+        </TransitionGroup>
         <div class="april-play-board-border-outer">
           <div class="april-play-board-border">
             <div class="april-play-board">
@@ -34,18 +39,29 @@
             </div>
           </div>
         </div>
-        <div class="hp-cells-wrapper flex flex-column margin-left-1">
+        <TransitionGroup
+          appear
+          tag="div"
+          name="fade"
+          class="hp-cells-wrapper flex flex-column margin-left-1"
+        >
           <div
             v-for="(cell, cellIndex) in hpCells"
             :key="cellIndex"
             class="step-hp margin-top-1 margin-bottom-1"
           ></div>
-        </div>
+        </TransitionGroup>
       </div>
     </div>
 
     <div class="april-play-decks flex flex-center width-100">
-      <div class="april-play-deck-1"></div>
+      <div class="april-play-deck-1 relative">
+        <div
+          class="april-play-deck-counter font-size-22 font-weight-700 absolute"
+        >
+          {{ cardsInQueue }}
+        </div>
+      </div>
       <div class="april-play-deck-2">
         <TransitionGroup
           tag="div"
@@ -58,10 +74,17 @@
             :card="card"
             :index="cardIndex"
             :totalCards="currentCards.length"
+            @click="selectCard(card)"
           ></AprilCard>
         </TransitionGroup>
       </div>
-      <div class="april-play-deck-3"></div>
+      <div class="april-play-deck-3 relative">
+        <div
+          class="april-play-deck-counter  font-size-22 font-weight-700 absolute"
+        >
+          {{ usedCards }}
+        </div>
+      </div>
     </div>
 
     <div class="width-100 flex flex-items-start">
@@ -95,6 +118,7 @@
 import { mapState, mapGetters } from "vuex";
 import random from "lodash/random";
 import { create } from "vue-modal-dialogs";
+import { sleep } from "@/helpers/utils";
 import * as april from "@/../../knightlands-shared/april";
 import AprilGold from "@/views/April/AprilGold.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
@@ -118,6 +142,13 @@ export default {
 
   computed: {
     ...mapState(["appSize"]),
+    ...mapState("april", [
+      "actionPoints",
+      "hp",
+      "cardsInQueue",
+      "usedCards",
+      "selectedCardId"
+    ]),
     ...mapGetters("april", ["cards", "damage", "units"]),
     baseSize() {
       return this.appSize
@@ -128,10 +159,10 @@ export default {
       return new Array(5 * 5).fill(null);
     },
     stepCells() {
-      return new Array(2).fill(null);
+      return new Array(this.actionPoints).fill(null);
     },
     hpCells() {
-      return new Array(2).fill(null);
+      return new Array(this.hp).fill(null);
     }
   },
 
@@ -181,7 +212,14 @@ export default {
       }
       this.$store.commit("april/updateState", { cards });
     },
-    testUpdateCells() {
+    async testUpdateCells() {
+      const hp = this.hp;
+      const actionPoints = this.actionPoints;
+      this.$store.commit("april/updateState", {
+        actionPoints: actionPoints - 1,
+        hp: hp - 2
+      });
+      await sleep(100);
       this.count++;
       const units1 = [
         { id: "wer2s929f", unitClass: april.UNIT_CLASS_TEETH, index: 6 },
@@ -249,7 +287,19 @@ export default {
       ];
       this.$store.commit("april/updateState", {
         units: this.count % 2 ? units2 : units1,
-        damage: this.count % 2 ? damage2 : damage1
+        damage: this.count % 2 ? damage2 : damage1,
+        actionPoints,
+        hp
+      });
+    },
+
+    selectCard(card) {
+      if (!(this.hp > 0 && this.actionPoints > 0)) {
+        this.$store.commit("april/updateState", { selectedCardId: null });
+        return;
+      }
+      this.$store.commit("april/updateState", {
+        selectedCardId: card && this.selectedCardId === card.id ? null : card.id
       });
     }
   }
@@ -323,17 +373,32 @@ export default {
   border: 4px solid #ccc;
   border-radius: 4px;
 }
+.april-play-deck-counter {
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+}
 // animation
 // .card-move-enter-active,
 // .card-move-leave-active {
 //   transition: transform 10s, top 0.4s !important;
 // }
 
+// animate
 .card-move-enter {
   transform: translateX(-600%) !important;
 }
 .card-move-leave-to {
   transform: translateX(600%) !important;
   z-index: 9 !important;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 </style>

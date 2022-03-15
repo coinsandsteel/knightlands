@@ -2,11 +2,16 @@
   <div
     class="april-card-container absolute"
     :style="{
-      transform: `translateX(${transformX})`,
+      top: isSelected ? 'calc(-0.4 * var(--base-size))' : 0,
+      transform: `translateX(${translateX})`,
       zIndex: index + 1
     }"
+    @click="$emit('click', card)"
   >
-    <div class="april-card-wrapper">
+    <div
+      class="april-card-wrapper"
+      :class="{ 'april-card-wrapper--selected': isSelected }"
+    >
       <div class="april-card relative" :class="`april-card--${card.cardClass}`">
         <div
           class="april-card-background absolute-stretch"
@@ -17,6 +22,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     card: Object,
@@ -27,6 +33,10 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("april", ["selectedCardId"]),
+    isSelected() {
+      return this.card && this.card.id === this.selectedCardId;
+    },
     indexFromCenter2() {
       return this.index + 0.5 - this.totalCards / 2;
     },
@@ -59,20 +69,30 @@ export default {
       // return this.indexFromCenter * 3;
       return 0;
     },
-    transformX() {
+    translateX() {
       return `calc(-50% + ${this.indexFromCenter2 * 100}%)`;
     }
+    // translateY() {
+    //   return this.isSelected ? "-20%" : "0%";
+    // },
+    // transform() {
+    //   return `translate(${this.translateX}, ${this.translateY})`;
+    // }
   }
 };
 </script>
 <style scoped lang="less">
 .april-card-container {
   left: 50%;
-  transition: transform 1s, top 0.4s;
+  transition: transform 1s, top 0.2s;
 }
 .april-card-wrapper {
   width: var(--base-size);
+  // transition: transform 0.2s;
 }
+// .april-card-wrapper--selected {
+//   transform: translateY(-30%);
+// }
 .april-card {
   width: 100%;
   padding-bottom: 150%;

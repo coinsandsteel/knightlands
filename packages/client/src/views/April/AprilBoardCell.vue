@@ -63,8 +63,7 @@ export default {
     };
   },
   computed: {
-    // ...mapState("april", ["cells", "moveZones"]),
-    ...mapGetters("april", ["cards", "damage", "units"]),
+    ...mapGetters("april", ["cards", "damage", "units", "moveZones"]),
     unit() {
       if (this.units) {
         return this.units.find(({ index }) => index === this.index);
@@ -83,8 +82,7 @@ export default {
       );
     },
     isAvailableMove() {
-      // return this.moveZones && this.moveZones.includes(this.index);
-      return [2, 9, 15].includes(this.index);
+      return this.moveZones.includes(this.index);
     },
     damagePoint() {
       return (this.damage && this.damage[this.index]) || 0;
@@ -181,7 +179,8 @@ export default {
 }
 .april-board-cell-available-move {
   // background-color: rgba(#ef4444, 0.5);
-  background-color: rgba(#10b981, 0.3);
+  background-color: #10b981;
+  opacity: 0.3;
 }
 .april-board-cell-enemy {
   background-size: 80%;
@@ -194,20 +193,23 @@ export default {
   background-repeat: no-repeat;
   transition: all 0.1;
 }
-// animate
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-  transform: scale(0);
-}
 .april-board-cell-hero-wrapper.hero-move-active {
   transition: transform 0.8s;
 }
 .hero-battle-active {
   filter: brightness(240%);
+}
+// animate
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-enter-active {
+  opacity: 0.5;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 </style>
