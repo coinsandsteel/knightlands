@@ -13,19 +13,25 @@ export default {
       sessionGold: 0,
       gold: 0
     },
-    selectedHeroIndex: 0,
     dailyRewards: [],
     hourRewardClaimed: null, // timestamp, sec
 
-    thirdActionPrice: 0,
-    resurrectionPrice: 0, // old: resurrectionCost
+    // Need to map after load() action
+    // Because initially only heroClass will be provided by server.
+    selectedHeroIndex: 0,
     
-    // ###### Playground stat ######
+    // ###### Prices ######
+    prices: {
+      thirdAction: 0,
+      resurrection: 0 // old: resurrectionCost
+    },
+    
+    // ###### Map ######
     heroClass: april.HERO_CLASS_KNIGHT,
     level: 1,
-    sessionResult: null, // "win", "loose"
     hp: 3,
     actionPoints: 2,
+    sessionResult: null, // SESSION_RESULT_SUCCESS | SESSION_RESULT_FAIL
     
     // Store it inside the .vue file as data property.
     // And pass it to the action as parameter.
@@ -34,62 +40,22 @@ export default {
     // Don't store it. Pass it to the action as parameter.
     // sessionRewardCardClass: april.CARD_CLASS_QUEEN,
     
-    // ###### Croupier state ######
+    // ###### Croupier ######
     croupier: {
       cardsInQueue: 5,
       usedCards: 0,
-      cards: [
-        { id: "23c9834vn32", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-        { id: "5gj56j6705k", cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
-        { id: "2s23d99vvvg", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-        { id: "mk0k0676k5n", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
-      ]
+      cards: []
     },
 
-    // ###### Playground state ######
+    // ###### Playground ######
     playground: {
-      units: [
-        { id: "wer2s929f", unitClass: april.UNIT_CLASS_TEETH, index: 6 },
-        { id: "32vr45n7u6", unitClass: april.UNIT_CLASS_TEETH, index: 12 },
-        { id: "89mnbv31x", unitClass: april.UNIT_CLASS_JACK, index: 13 },
-        { id: "2n9v38534n", unitClass: april.UNIT_CLASS_HERO, index: 22 }
-      ],
-      damage: [
-        1,
-        1,
-        1,
-        0,
-        0,
-        1,
-        1,
-        2,
-        2,
-        0,
-        1,
-        2,
-        2,
-        1,
-        1,
-        0,
-        1,
-        1,
-        2,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ]
+      units: [],
+      damage: []
     }
   },
   getters: {
     heroes() {
-      return [
-        { id: 1, name: "Knight", heroClass: april.HERO_CLASS_KNIGHT },
-        { id: 2, name: "Paladin", heroClass: april.HERO_CLASS_PALADIN },
-        { id: 3, name: "Rogue", heroClass: april.HERO_CLASS_ROGUE }
-      ];
+      return april.HEROES;
     },
     cards(state) {
       return state.cards;
@@ -108,14 +74,34 @@ export default {
     units(state) {
       return state.units;
     },
-    selectedHero(state, getters) {
-      return getters.heroes ? getters.heroes[state.selectedHeroIndex] : null;
+    selectedHero(state) {
+      return april.HEROES[state.selectedHeroIndex];
     }
   },
   mutations: {
     updateState(state, data) {
-      console.log("april updateState", data);
-
+      // User data
+      if (data.balance !== undefined) {
+        state.balance = { ...state.balance, ...data.balance };
+      }
+      if (data.dailyRewards !== undefined) {
+        state.dailyRewards = data.dailyRewards;
+        this.$app.$emit("april-show-daily-reward");
+      }
+      if (data.hourRewardClaimed !== undefined) {
+        state.hourRewardClaimed = data.hourRewardClaimed;
+      }
+      if (data.heroes !== undefined) {
+        state.heroes = data.heroes;
+      }
+      
+      // Map data
+      if (data.heroClass !== undefined) {
+        state.heroClass = data.heroClass;
+      }
+      if (data.level !== undefined) {
+        state.level = data.level;
+      }
       if (data.sessionResult !== undefined) {
         state.sessionResult = data.sessionResult;
       }
@@ -125,53 +111,68 @@ export default {
       if (data.actionPoints !== undefined) {
         state.actionPoints = data.actionPoints;
       }
-      if (data.thirdActionPrice !== undefined) {
-        state.thirdActionPrice = data.thirdActionPrice;
-      }
-      if (data.resurrectionPrice !== undefined) {
-        state.resurrectionPrice = data.resurrectionPrice;
+
+      // Prices
+      if (data.prices !== undefined) {
+        state.prices = { ...state.prices, ...data.prices };
       }
 
-      if (data.cardsInQueue !== undefined) {
-        state.croupier.cardsInQueue = data.cardsInQueue;
-      }
-      if (data.usedCards !== undefined) {
-        state.croupier.usedCards = data.usedCards;
-      }
-      if (data.cards !== undefined) {
-        state.croupier.cards = data.cards;
-      }
-
+      // Playground
       if (data.units !== undefined) {
         state.playground.units = data.units;
       }
       if (data.damage !== undefined) {
         state.playground.damage = data.damage;
       }
-      if (data.balance !== undefined) {
-        state.balance = { ...state.balance, ...data.balance };
+      
+      // Croupier
+      if (data.cardsInQueue !== undefined) {
+        state.croupier.cardsInQueue = data.cardsInQueue;
       }
-      if (data.dailyRewards !== undefined) {
-        state.dailyRewards = data.dailyRewards;
-        this.$app.$emit("april-show-daily-reward");
+      if (data.cards !== undefined) {
+        state.croupier.cards = data.cards;
+      }
+      if (data.usedCards !== undefined) {
+        state.croupier.usedCards = data.usedCards;
       }
     },
     setInitialState(state, data) {
-      console.log("april setInitialState", data);
       state.loaded = true;
-      // state.balance = data.user.balance;
-      state.dailyRewards = data.user.dailyRewards;
+
+      // User data
+      const userData = data.user;
+      state.balance = userData.balance;
+      state.dailyRewards = userData.dailyRewards;
+      state.hourRewardClaimed = userData.hourRewardClaimed;
+      state.heroes = userData.heroes;
       
+      // Map data
+      const mapData = data.map;
+      state.heroClass = mapData.heroClass;
+      state.level = mapData.level;
+      state.sessionResult = mapData.sessionResult;
+      state.hp = mapData.hp;
+      state.actionPoints = mapData.actionPoints;
+      
+      // Prices
+      state.prices = mapData.prices;
+      
+      // Playground
+      const playgroundData = data.map.playground;
+      state.playground.units = playgroundData.units;
+      state.playground.damage = playgroundData.damage;
+      
+      // Croupier
+      const croupierData = data.map.croupier;
+      state.croupier.cardsInQueue = croupierData.cardsInQueue;
+      state.croupier.cards = croupierData.cards;
+      state.croupier.usedCards = croupierData.usedCards;
     },
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
     }
   },
   actions: {
-    async load(store) {
-      let result = await this.$app.$game._wrapOperation(Operations.AprilLoad);
-      store.commit("setInitialState", result.response);
-    },
     update(store, data) {
       store.commit("updateState", data);
     },
@@ -182,11 +183,6 @@ export default {
     },
     unsubscribe() {
       this.$app.$game.offNetwork(Events.AprilUpdate);
-    },
-    async claimRewards() {
-      return (
-        await this.$app.$game._wrapOperation(Operations.AprilClaimRewards)
-      ).response;
     },
     increaseHeroIndex({ state, commit, getters }) {
       const newIndex = (state.selectedHeroIndex + 1) % getters.heroes.length;
@@ -199,41 +195,54 @@ export default {
           : state.selectedHeroIndex - 1) % getters.heroes.length;
       commit("setHeroIndex", newIndex);
     },
+
+    // ###### OPERATIONS ######
+    async load(store) {
+      let result = await this.$app.$game._wrapOperation(Operations.AprilLoad);
+      store.commit("setInitialState", result.response);
+    },
+    // type: REWARD_TYPE_HOUR | REWARD_TYPE_DAILY | REWARD_TYPE_EVENT
+    async claimReward(store, { type }) {
+      return (
+        await this.$app.$game._wrapOperation(Operations.AprilClaimReward, type)
+      ).response;
+    },
     async rankings() {
-      return (await this.$app.$game._wrapOperation(Operations.AprilRanking))
+      return (await this.$app.$game._wrapOperation(Operations.AprilRankings))
         .response;
     },
-    async collectDailyReward() {
-      await this.$app.$game._wrapOperation(Operations.AprilCollectDailyReward);
-    },
-
-    // Playground flow actions
-    
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
     async purchaseHero(store, { heroClass }) {
       await this.$app.$game._wrapOperation(Operations.AprilPurchaseHero, heroClass);
     },
+    // Start from level #1
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
     async restart(store, { heroClass }) {
       await this.$app.$game._wrapOperation(Operations.AprilRestart, heroClass);
     },
+    // Move hero
     // index: number;
-    async move(store, { index }) {
-      await this.$app.$game._wrapOperation(Operations.AprilMove, index);
+    async move(store, { cardId, index }) {
+      await this.$app.$game._wrapOperation(Operations.AprilMove, { cardId, index });
     },
+    // Skip a turn
     async skip() {
       await this.$app.$game._wrapOperation(Operations.AprilSkip);
     },
-    async purchaseThirdAction() {
-      await this.$app.$game._wrapOperation(Operations.AprilPurchaseThirdAction);
+    // Purchase third action
+    async purchaseAction() {
+      await this.$app.$game._wrapOperation(Operations.AprilPurchaseAction);
     },
+    // Start from level > 1
     // booster: BOOSTER_CARD | BOOSTER_HP
-    async nextLevel(store, { booster }) {
-      await this.$app.$game._wrapOperation(Operations.AprilNextLevel, booster);
+    async enterLevel(store, { booster }) {
+      await this.$app.$game._wrapOperation(Operations.AprilEnterLevel, booster);
     },
+    // Buy new life, rewind one step back
     async resurrect() {
       await this.$app.$game._wrapOperation(Operations.AprilResurrect);
     },
+    // Exit playground
     async exit() {
       await this.$app.$game._wrapOperation(Operations.AprilExit);
     }

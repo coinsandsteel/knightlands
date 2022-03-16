@@ -77,7 +77,7 @@ export default {
         return 0;
       }
       if (!this.selectedHero.unlocked) {
-        return april.HERO_PRICES[this.selectedHero.heroClass];
+        return april.HEROES[this.selectedHero.heroClass];
       }
 
       return 0;

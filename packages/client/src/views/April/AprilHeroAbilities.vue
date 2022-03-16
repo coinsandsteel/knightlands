@@ -28,7 +28,6 @@
   </div>
 </template>
 <script>
-import * as april from "@/../../knightlands-shared/april";
 export default {
   props: {
     hero: Object,
@@ -43,7 +42,7 @@ export default {
         return;
       }
 
-      return [april.HERO_ABILITIES[this.hero.heroClass]];
+      return [this.hero.ability];
     }
   }
 };

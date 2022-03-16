@@ -41,10 +41,7 @@ export default {
     return { april };
   },
   computed: {
-    ...mapGetters("april", ["selectedHero"]),
-    ability() {
-      return april.HERO_ABILITIES[this.hero.heroClass];
-    }
+    ...mapGetters("april", ["selectedHero"])
   },
   methods: {
     async close() {
