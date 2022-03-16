@@ -560,6 +560,11 @@ const router = new Router({
           component: () => import("./views/April/AprilRankings.vue")
         },
         {
+          path: "achievements",
+          name: "april-achievements",
+          component: () => import("./views/April/AprilAchievements.vue")
+        },
+        {
           path: "shop",
           name: "april-shop",
           component: () => import("./views/March/MarchShop.vue")

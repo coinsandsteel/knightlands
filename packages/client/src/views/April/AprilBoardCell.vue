@@ -12,7 +12,14 @@
         <div
           v-if="isHitZone"
           class="april-board-cell-hit-zone absolute-stretch"
-        />
+        >
+          <div
+            v-if="damagePoint > 1"
+            class="april-damage-point absolute font-size-15"
+          >
+            {{ damagePoint }}
+          </div>
+        </div>
       </Transition>
       <!-- available move -->
       <Transition name="fade" appear>
@@ -208,6 +215,12 @@ export default {
 }
 .hero-battle-active {
   filter: brightness(240%);
+}
+.april-damage-point {
+  left: 0;
+  top: 0;
+  color: #fff;
+  line-height: 1;
 }
 // animate
 .fade-enter-active,

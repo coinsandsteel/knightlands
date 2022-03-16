@@ -25,6 +25,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import AprilDailyRewards from "@/views/April/AprilDailyRewards.vue";
 const PlayTab = "april-play";
 const RankingsTab = "april-rankings";
+const AchievementsTab = "april-achievements";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
@@ -44,6 +45,11 @@ export default {
           title: this.$t("rating"),
           value: RankingsTab,
           to: { name: RankingsTab }
+        },
+        {
+          title: this.$t("achievements"),
+          value: AchievementsTab,
+          to: { name: AchievementsTab }
         }
       ],
       currentTab: PlayTab

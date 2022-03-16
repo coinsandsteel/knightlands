@@ -137,6 +137,7 @@ import AprilGold from "@/views/April/AprilGold.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
 import AprilCard from "@/views/April/AprilCard.vue";
 import AprilBoardCell from "@/views/April/AprilBoardCell.vue";
+import AprilPurchaseThirdActionPoint from "@/views/April/AprilPurchaseThirdActionPoint.vue";
 
 export default {
   components: {
@@ -319,7 +320,10 @@ export default {
       });
     },
 
-    addActionPointHandler() {}
+    addActionPointHandler() {
+      const showDialog = create(AprilPurchaseThirdActionPoint);
+      showDialog();
+    }
   }
 };
 </script>
