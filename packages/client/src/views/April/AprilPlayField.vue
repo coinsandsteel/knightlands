@@ -207,11 +207,18 @@ export default {
     testDrawCards() {
       const cards = [...this.currentCards];
       const num = cards.length <= 0 ? 4 : random(1, 2);
+      const cardClasses = [
+        april.CARD_CLASS_PAWN,
+        april.CARD_CLASS_KNIGHT,
+        april.CARD_CLASS_KING,
+        april.CARD_CLASS_BISHOP,
+        april.CARD_CLASS_ROOK,
+        april.CARD_CLASS_QUEEN
+      ];
       for (let i = 0; i < num; i++) {
         const card = {
           id: Date.now() + i,
-          cardClass:
-            april.CARD_CLASSES[random(0, april.CARD_CLASSES.length - 1)]
+          cardClass: cardClasses[random(0, cardClasses.length - 1)]
         };
         cards.push(card);
       }

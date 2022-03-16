@@ -7,68 +7,81 @@ export default {
   namespaced: true,
   state: {
     loaded: true,
+
     // ###### User ######
     balance: {
       sessionGold: 0,
       gold: 0
     },
-    preGameBoosters: {
-      [april.BOOSTER_THIRD_ACTION]: 0,
-      [april.BOOSTER_SKIP_A_TURN]: 0
-    },
     selectedHeroIndex: 0,
     dailyRewards: [],
     hourRewardClaimed: null, // timestamp, sec
-    // ###### Playground ######
+
+    thirdActionPrice: 0,
+    resurrectionPrice: 0, // old: resurrectionCost
+    
+    // ###### Playground stat ######
     heroClass: april.HERO_CLASS_KNIGHT,
     level: 1,
     sessionResult: null, // "win", "loose"
     hp: 3,
     actionPoints: 2,
-    cardsInQueue: 5,
-    usedCards: 0,
-    units: [
-      { id: "wer2s929f", unitClass: april.UNIT_CLASS_HARLEQUIN, index: 6 },
-      { id: "32vr45n7u6", unitClass: april.UNIT_CLASS_TEETH, index: 12 },
-      { id: "89mnbv31x", unitClass: april.UNIT_CLASS_JACK, index: 13 },
-      { id: "2n9v38534n", unitClass: april.UNIT_CLASS_HERO, index: 22 }
-    ],
-    damage: [
-      1,
-      1,
-      1,
-      0,
-      0,
-      1,
-      1,
-      2,
-      2,
-      0,
-      1,
-      2,
-      2,
-      1,
-      1,
-      0,
-      1,
-      1,
-      2,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    cards: [
-      { id: "23c9834vn32", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-      { id: "5gj56j6705k", cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
-      { id: "2s23d99vvvg", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
-      { id: "mk0k0676k5n", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
-    ],
-    selectedCardId: null,
-    sessionRewardCardClass: april.CARD_CLASS_QUEEN,
-    resurrectionCost: 0
+    
+    // Store it inside the .vue file as data property.
+    // And pass it to the action as parameter.
+    // selectedCardId: null
+
+    // Don't store it. Pass it to the action as parameter.
+    // sessionRewardCardClass: april.CARD_CLASS_QUEEN,
+    
+    // ###### Croupier state ######
+    croupier: {
+      cardsInQueue: 5,
+      usedCards: 0,
+      cards: [
+        { id: "23c9834vn32", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+        { id: "5gj56j6705k", cardClass: april.CARD_CLASS_ROOK, nextCells: [12] },
+        { id: "2s23d99vvvg", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] },
+        { id: "mk0k0676k5n", cardClass: april.CARD_CLASS_PAWN, nextCells: [17] }
+      ]
+    },
+
+    // ###### Playground state ######
+    playground: {
+      units: [
+        { id: "wer2s929f", unitClass: april.UNIT_CLASS_TEETH, index: 6 },
+        { id: "32vr45n7u6", unitClass: april.UNIT_CLASS_TEETH, index: 12 },
+        { id: "89mnbv31x", unitClass: april.UNIT_CLASS_JACK, index: 13 },
+        { id: "2n9v38534n", unitClass: april.UNIT_CLASS_HERO, index: 22 }
+      ],
+      damage: [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        0,
+        1,
+        2,
+        2,
+        1,
+        1,
+        0,
+        1,
+        1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
   },
   getters: {
     heroes() {
@@ -112,23 +125,28 @@ export default {
       if (data.actionPoints !== undefined) {
         state.actionPoints = data.actionPoints;
       }
+      if (data.thirdActionPrice !== undefined) {
+        state.thirdActionPrice = data.thirdActionPrice;
+      }
+      if (data.resurrectionPrice !== undefined) {
+        state.resurrectionPrice = data.resurrectionPrice;
+      }
+
       if (data.cardsInQueue !== undefined) {
-        state.cardsInQueue = data.cardsInQueue;
+        state.croupier.cardsInQueue = data.cardsInQueue;
       }
       if (data.usedCards !== undefined) {
-        state.usedCards = data.usedCards;
-      }
-      if (data.units !== undefined) {
-        state.units = data.units;
-      }
-      if (data.damage !== undefined) {
-        state.damage = data.damage;
+        state.croupier.usedCards = data.usedCards;
       }
       if (data.cards !== undefined) {
-        state.cards = data.cards;
+        state.croupier.cards = data.cards;
       }
-      if (data.selectedCardId !== undefined) {
-        state.selectedCardId = data.selectedCardId;
+
+      if (data.units !== undefined) {
+        state.playground.units = data.units;
+      }
+      if (data.damage !== undefined) {
+        state.playground.damage = data.damage;
       }
       if (data.balance !== undefined) {
         state.balance = { ...state.balance, ...data.balance };
@@ -143,9 +161,7 @@ export default {
       state.loaded = true;
       // state.balance = data.user.balance;
       state.dailyRewards = data.user.dailyRewards;
-    },
-    updatePreGameBooster(state, type) {
-      state.preGameBoosters[type] = state.preGameBoosters[type] === 1 ? 0 : 1;
+      
     },
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
@@ -190,13 +206,36 @@ export default {
     async collectDailyReward() {
       await this.$app.$game._wrapOperation(Operations.AprilCollectDailyReward);
     },
-    async purchaseHero(store, hero) {
-      await this.$app.$game._wrapOperation(Operations.AprilPurchaseHero, {
-        hero
-      });
+
+    // Playground flow actions
+    
+    // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
+    async purchaseHero(store, { heroClass }) {
+      await this.$app.$game._wrapOperation(Operations.AprilPurchaseHero, heroClass);
+    },
+    // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
+    async restart(store, { heroClass }) {
+      await this.$app.$game._wrapOperation(Operations.AprilRestart, heroClass);
+    },
+    // index: number;
+    async move(store, { index }) {
+      await this.$app.$game._wrapOperation(Operations.AprilMove, index);
+    },
+    async skip() {
+      await this.$app.$game._wrapOperation(Operations.AprilSkip);
     },
     async purchaseThirdAction() {
       await this.$app.$game._wrapOperation(Operations.AprilPurchaseThirdAction);
+    },
+    // booster: BOOSTER_CARD | BOOSTER_HP
+    async nextLevel(store, { booster }) {
+      await this.$app.$game._wrapOperation(Operations.AprilNextLevel, booster);
+    },
+    async resurrect() {
+      await this.$app.$game._wrapOperation(Operations.AprilResurrect);
+    },
+    async exit() {
+      await this.$app.$game._wrapOperation(Operations.AprilExit);
     }
   }
 };

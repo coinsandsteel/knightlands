@@ -144,7 +144,11 @@ export default {
           key: "title-" + i,
           isTitle: true,
           // @todo
-          heroClass: april.HERO_CLASSES[i % 3]
+          heroClass: [
+            april.HERO_CLASS_KNIGHT,
+            april.HERO_CLASS_PALADIN,
+            april.HERO_CLASS_ROGUE
+          ][i % 3]
         };
         records.push(titleRecord, ...newRecords);
       }

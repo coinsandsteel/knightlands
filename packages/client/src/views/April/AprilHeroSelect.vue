@@ -88,10 +88,9 @@ export default {
       if (!this.checkGoldBalance(this.buyPrice)) {
         return;
       }
-      await this.$store.dispatch(
-        "april/purchaseHero",
-        this.selectedHero.heroClass
-      );
+      await this.$store.dispatch("april/purchaseHero", {
+        heroClass: this.selectedHero.heroClass
+      });
     },
     viewAbilityHandler() {
       const showDialog = create(AprilHeroAbilitiesHint);
