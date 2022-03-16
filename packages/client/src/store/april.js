@@ -189,6 +189,14 @@ export default {
     },
     async collectDailyReward() {
       await this.$app.$game._wrapOperation(Operations.AprilCollectDailyReward);
+    },
+    async purchaseHero(store, hero) {
+      await this.$app.$game._wrapOperation(Operations.AprilPurchaseHero, {
+        hero
+      });
+    },
+    async purchaseThirdAction() {
+      await this.$app.$game._wrapOperation(Operations.AprilPurchaseThirdAction);
     }
   }
 };

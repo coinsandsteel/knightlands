@@ -89,7 +89,7 @@ export default {
         return;
       }
       await this.$store.dispatch(
-        "april/unlockHero",
+        "april/purchaseHero",
         this.selectedHero.heroClass
       );
     },

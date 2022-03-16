@@ -42,11 +42,11 @@ export default {
     async close() {
       this.$close();
     },
-    buyHandler() {
+    async buyHandler() {
       if (!this.checkGoldBalance(this.buyPrice)) {
         return;
       }
-      // @todo: buy
+      await this.$store.dispatch("april/purchaseThirdAction");
       this.close();
     }
   }
