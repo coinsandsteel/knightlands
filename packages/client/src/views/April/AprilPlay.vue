@@ -5,11 +5,11 @@
       @next="nextHandler"
       @back="backHandler"
     />
-    <AprilBoosterSelect
+    <!-- <AprilBoosterSelect
       v-if="currentStep === BOOSTER_SELECT_STEP"
       @next="nextHandler"
       @back="backHandler"
-    />
+    /> -->
     <AprilPlayField
       v-if="currentStep === PLAY_FIELD_STEP"
       @next="nextHandler"
@@ -21,27 +21,18 @@
       @back="backHandler"
     />
     <portal
-      v-if="
-        isActive &&
-          (currentStep === BOOSTER_SELECT_STEP ||
-            currentStep === HERO_SELECT_STEP)
-      "
+      v-if="isActive && currentStep === HERO_SELECT_STEP"
       to="footer"
       :slim="true"
     >
       <div class="width-100 flex flex-items-start">
-        <BackButton
+        <!-- <BackButton
           v-if="currentStep === BOOSTER_SELECT_STEP"
           class="back-button"
           @click="backHandler"
-        ></BackButton>
+        ></BackButton> -->
         <div class="flex-full"></div>
-        <div
-          v-if="
-            currentStep === HERO_SELECT_STEP ||
-              currentStep === BOOSTER_SELECT_STEP
-          "
-        >
+        <div v-if="currentStep === HERO_SELECT_STEP">
           <CustomButton
             type="green"
             class="inline-block margin-right-2 margin-top-1"
@@ -59,35 +50,35 @@ import { mapState } from "vuex";
 // import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import AprilHeroSelect from "@/views/April/AprilHeroSelect.vue";
-import AprilBoosterSelect from "@/views/April/AprilBoosterSelect.vue";
+// import AprilBoosterSelect from "@/views/April/AprilBoosterSelect.vue";
 import AprilPlayField from "@/views/April/AprilPlayField.vue";
 import AprilPlayRound from "@/views/April/AprilPlayRound.vue";
-import BackButton from "@/views/Common/BackButton.vue";
+// import BackButton from "@/views/Common/BackButton.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const HERO_SELECT_STEP = 1;
-const BOOSTER_SELECT_STEP = 2;
-const PLAY_FIELD_STEP = 3;
-const PLAY_ROUND_STEP = 4;
+// const BOOSTER_SELECT_STEP = 2;
+const PLAY_FIELD_STEP = 2;
+const PLAY_ROUND_STEP = 3;
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
     AprilHeroSelect,
-    AprilBoosterSelect,
-    BackButton,
+    // AprilBoosterSelect,
+    // BackButton,
     AprilPlayField,
     AprilPlayRound
   },
   data() {
     return {
       HERO_SELECT_STEP,
-      BOOSTER_SELECT_STEP,
+      // BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
       PLAY_ROUND_STEP,
       // @todo
       // currentStep: HERO_SELECT_STEP
-      currentStep: PLAY_FIELD_STEP
+      currentStep: HERO_SELECT_STEP
     };
   },
   computed: {
@@ -102,9 +93,9 @@ export default {
       );
     },
     backHandler() {
-      if (this.currentStep === BOOSTER_SELECT_STEP) {
-        --this.currentStep;
-      }
+      // if (this.currentStep === BOOSTER_SELECT_STEP) {
+      //   --this.currentStep;
+      // }
     },
     nextHandler(skipSummary) {
       if (this.currentStep === PLAY_FIELD_STEP) {

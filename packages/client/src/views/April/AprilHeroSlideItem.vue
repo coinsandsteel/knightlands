@@ -10,7 +10,7 @@
       ></div> -->
       <div
         class="april-hero-element-background absolute"
-        :class="`april-hero-element-background--${hero.heroClass}`"
+        :class="`april-hero-element-background--${hero.heroClass}-big`"
       ></div>
       <div
         class="hero-slider-item-hero-image absolute-center"
@@ -31,13 +31,20 @@ export default {
   width: 180px;
   max-width: 80vw;
   height: 0;
-  padding-bottom: 100%;
+  padding-bottom: 99%;
   // background-image: url("/images/march/pet_container.png");
   // background-size: 100% 100%;
   // background-repeat: no-repeat;
+
+  border: 1px solid transparent;
+  border-image-source: url("/images/april/hero_bg.png");
+  border-image-width: 14px;
+  border-image-slice: 30;
+  border-image-outset: 0;
+  border-image-repeat: round;
 }
 .hero-slider-item---not-unlocked {
-  opacity: 0.3;
+  opacity: 0.6;
 }
 .hero-slider-item-level {
   background: #fff;
@@ -69,11 +76,13 @@ export default {
   left: 3px;
 }
 .april-hero-element-background {
-  background-size: 100%;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
+  // background-image: url("/images/march/pet_container.png");
+  // background-size: 100%;
+  // background-repeat: no-repeat;
+  background-color: #00a3ee;
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  left: 5%;
 }
 </style>

@@ -26,7 +26,8 @@ export default {
   height: 20px;
   margin-right: 4px;
   background-image: url("/images/april/april_gold.png");
-  background-size: 100% 100%;
+  background-size: 80%;
+  background-position: center;
   background-repeat: no-repeat;
 }
 .april-gold--with-background {

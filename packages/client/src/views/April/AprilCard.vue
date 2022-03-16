@@ -3,7 +3,7 @@
     class="april-card-container absolute"
     :style="{
       top: isSelected ? 'calc(-0.4 * var(--base-size))' : 0,
-      transform: `translateX(${translateX})`,
+      transform: `translate(${translateX}, 0)`,
       zIndex: index + 1
     }"
     @click="$emit('click', card)"
@@ -95,14 +95,15 @@ export default {
 // }
 .april-card {
   width: 100%;
-  padding-bottom: 150%;
-  border-radius: 6px;
-  background: #fff;
-  border: 1px solid #eee;
+  padding-bottom: 120%;
+  // border-radius: 6px;
+  // background: #fff;
+  // border: 1px solid #eee;
+  background: url("/images/april/chess_card.png") center/100% no-repeat;
 }
 .april-card-background {
   border-radius: 6px;
-  background-size: 100%;
+  background-size: 50%;
   background-position: center;
   background-repeat: no-repeat;
 }

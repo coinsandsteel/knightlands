@@ -38,7 +38,8 @@ export default {
   height: 20px;
   margin-right: 4px;
   background-image: url("/images/april/april_tickets.png");
-  background-size: 100% 100%;
+  background-size: 100%;
+  background-position: center;
   background-repeat: no-repeat;
 }
 .april-tickets--with-background {

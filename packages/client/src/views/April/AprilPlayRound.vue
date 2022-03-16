@@ -13,17 +13,26 @@
     <div
       class="april-play-session-rewards-container flex-full flex flex-center width-100 overflow-auto"
     >
-      <div
-        class="april-play-session-reward april-play-session-reward--card relative"
-      >
-        <div
-          class="april-play-session-reward-card-background absolute-stretch"
-          :class="`april-card-background--${sessionRewardCardClass}`"
-        ></div>
+      <div>
+        <div class="text-align-center font-size-22">
+          {{ $t("pick-you-reward") }}
+        </div>
+        <div class="flex flex-row">
+          <!-- reward chess -->
+          <div
+            class="april-play-session-reward april-play-session-reward--card relative"
+          >
+            <div
+              class="april-play-session-reward-card-background absolute-stretch"
+              :class="`april-card-background--${sessionRewardCardClass}`"
+            ></div>
+          </div>
+          <!-- reward hp -->
+          <div
+            class="april-play-session-reward april-play-session-reward--hp"
+          ></div>
+        </div>
       </div>
-      <div
-        class="april-play-session-reward april-play-session-reward--hp"
-      ></div>
     </div>
     <div
       class="april-play-rounds-container flex flex-center width-100 overflow-auto padding-top-2 padding-bottom-2"
@@ -33,7 +42,7 @@
         :key="roundIndex"
         class="april-round-wrapper relative"
       >
-        <!-- boss -->
+        <!-- hero -->
         <div
           v-if="level === roundIndex + 1"
           class="april-round-current absolute-stretch"
@@ -94,19 +103,20 @@ export default {
   margin: 0 calc(0.5 * var(--base-size));
 }
 .april-play-session-reward--card {
-  border-radius: 6px;
-  background-color: #fff;
-  border: 1px solid #eee;
+  // border-radius: 6px;
+  // background-color: #fff;
+  // border: 1px solid #eee;
+  background: url("/images/april/chess_card.png") center/100% no-repeat;
 }
 .april-play-session-reward--hp {
-  background-image: url("/images/april/hp.png");
+  background-image: url("/images/april/hp_big.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
 .april-play-session-reward-card-background {
-  border-radius: 6px;
-  background-size: 100%;
+  // border-radius: 6px;
+  background-size: 50%;
   background-position: center;
   background-repeat: no-repeat;
 }

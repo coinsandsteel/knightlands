@@ -176,20 +176,21 @@ export default {
 .april-board-cell-container {
   width: calc(var(--base-size) * 0.8);
   height: calc(var(--base-size) * 0.8);
-  background: #fff;
+  background: #245178;
 }
 .april-board-cell-container--black {
-  background: #222;
+  background: #12283d;
 }
 .april-board-cell {
 }
 .april-board-cell-hit-zone {
-  background: url("/images/april/hit_zone.svg") center/22% repeat;
+  background: url("/images/april/hit_zone.png") center/80% no-repeat;
 }
 .april-board-cell-available-move {
+  background: url("/images/april/move_direction.png") center/100% no-repeat;
   // background-color: rgba(#ef4444, 0.5);
-  background-color: #10b981;
-  opacity: 0.3;
+  // background-color: #10b981;
+  // opacity: 0.3;
 }
 .april-board-cell-enemy {
   background-size: 80%;
@@ -213,9 +214,9 @@ export default {
 .fade-leave-active {
   transition: all 0.5s;
 }
-.fade-enter-active {
-  opacity: 0.5;
-}
+// .fade-enter-active {
+//   opacity: 0.5;
+// }
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
