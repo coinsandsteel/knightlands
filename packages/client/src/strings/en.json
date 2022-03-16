@@ -2627,5 +2627,22 @@
   "your-score": "Score:",
   "zalaras": "zalaras",
   "zombie_lord": "zombielord",
-  "active-raids": "Active raids: "
+  "active-raids": "Active raids: ",
+
+  
+  
+  
+  "view-abilities": "View Abilities",
+  "april-hero-ability-title-knight": "Queen perk",
+  "april-hero-ability-title-paladin": "Idle healing",
+  "april-hero-ability-title-rogue": "Card respawn",
+  "april-hero-ability-knight": "Hero reaches top border via Pawn then add Queen into the card list",
+  "april-hero-ability-knight-2": "+1 action point (current session only)",
+  "april-hero-ability-paladin": "Recovers 1 health if it didn't take or deal any damage last turn",
+  "april-hero-ability-rogue": "Spawn the strongest used card since the 2nd turn",
+  "receive": "Recieve",
+  "buy": "Buy",
+  "april-achievements-tips": "You get 1 point for each killed enemy",
+  "buy-third-action-point": "Buy third action point",
+  "pick-you-reward": "Pick your reward"
 }

@@ -1,9 +1,21 @@
 <template>
-  <UserDialog :title="selectedHero ? selectedHero.name : ''" @close="close">
+  <UserDialog
+    :title="
+      selectedHero
+        ? $t(`april-hero-ability-title-${selectedHero.heroClass}`)
+        : ''
+    "
+    @close="close"
+  >
     <template v-slot:content>
       <!-- tips -->
       <div class="font-size-20">
-        {{ $t("march-max-health-booster-description") }}
+        <div>
+          {{ $t(`april-hero-ability-${selectedHero.heroClass}`) }}
+        </div>
+        <div v-if="[april.HERO_CLASS_KNIGHT].includes(selectedHero.heroClass)">
+          {{ $t(`april-hero-ability-${selectedHero.heroClass}-2`) }}
+        </div>
       </div>
     </template>
     <template v-slot:footer>
@@ -25,6 +37,9 @@ export default {
     UserDialog
   },
   mixins: [NetworkRequestErrorMixin],
+  data() {
+    return { april };
+  },
   computed: {
     ...mapGetters("april", ["selectedHero"]),
     ability() {
