@@ -267,8 +267,9 @@ export default {
       await this.$app.$game._wrapOperation(Operations.AprilEnterLevel, booster);
     },
     // Buy new life, rewind one step back
-    async resurrect() {
+    async resurrect({ dispatch }) {
       await this.$app.$game._wrapOperation(Operations.AprilResurrect);
+      dispatch("load");
     },
     // Exit playground
     async exit() {
