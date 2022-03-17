@@ -75,7 +75,8 @@ export default {
       isHero: false,
       oldHeroIndex: 22,
       isHeroMoveActive: false,
-      isBattleActive: false
+      isBattleActive: false,
+      canAnimate: false
     };
   },
   computed: {
@@ -127,6 +128,8 @@ export default {
   watch: {
     heroIndex(value, oldValue) {
       if (typeof value === "number" && value === this.index) {
+        console.log("value", value);
+        console.log("oldValue", oldValue);
         if (typeof oldValue === "number") {
           this.oldHeroIndex = oldValue;
         }
@@ -139,10 +142,17 @@ export default {
 
   mounted() {
     this.isHero = this.heroIndex === this.index;
+    setTimeout(() => {
+      this.canAnimate = true;
+    }, 1000);
   },
 
   methods: {
     async heroEnterHandler(el, done) {
+      if (!this.canAnimate) {
+        done();
+        return;
+      }
       if (
         !(this.heroIndex === this.index && this.oldHeroIndex !== this.index)
       ) {
@@ -220,7 +230,7 @@ export default {
   transition: all 0.1;
 }
 .april-board-cell-hero-wrapper.hero-move-active {
-  transition: transform 0.8s;
+  transition: transform 0.5s;
 }
 .hero-battle-active {
   filter: brightness(240%);

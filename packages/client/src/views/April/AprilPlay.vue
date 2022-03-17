@@ -47,12 +47,13 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
-// import { create } from "vue-modal-dialogs";
+import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import AprilHeroSelect from "@/views/April/AprilHeroSelect.vue";
 // import AprilBoosterSelect from "@/views/April/AprilBoosterSelect.vue";
 import AprilPlayField from "@/views/April/AprilPlayField.vue";
 import AprilPlayRound from "@/views/April/AprilPlayRound.vue";
+import AprilPlaySummary from "@/views/April/AprilPlaySummary.vue";
 // import BackButton from "@/views/Common/BackButton.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
@@ -82,8 +83,15 @@ export default {
     };
   },
   computed: {
-    ...mapState("april", ["loaded"]),
+    ...mapState("april", ["loaded", "sessionResult"]),
     ...mapGetters("april", ["selectedHero"])
+  },
+  watch: {
+    sessionResult(value) {
+      if (value) {
+        this.showSummary();
+      }
+    }
   },
   methods: {
     async testAction(action) {
@@ -98,11 +106,11 @@ export default {
     },
     nextHandler(skipSummary) {
       if (this.currentStep === PLAY_FIELD_STEP) {
-        if (skipSummary === true) {
-          this.currentStep = HERO_SELECT_STEP;
-          return;
-        }
-        this.showSummary();
+        // if (skipSummary === true) {
+        //   this.currentStep = HERO_SELECT_STEP;
+        //   return;
+        // }
+        // this.showSummary();
         return;
       }
       ++this.currentStep;
@@ -114,9 +122,10 @@ export default {
       }
     },
     async showSummary() {
-      // const showDialog = create(MarchPlaySummary);
-      // await showDialog("gold");
+      const showDialog = create(AprilPlaySummary);
+      const result = await showDialog();
       // this.currentStep = PET_SELECT_STEP;
+      console.log("result", result);
     },
     goToShop() {
       this.$router.push({ name: "april-shop" });

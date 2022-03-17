@@ -60,7 +60,9 @@ export default {
       return april.HEROES.map(hero => {
         return {
           ...hero,
-          unlocked: state.heroes.includes(hero.heroClass)
+          unlocked:
+            state.heroes.includes(hero.heroClass) ||
+            hero.heroClass === april.HERO_CLASS_KNIGHT
         };
       });
     },

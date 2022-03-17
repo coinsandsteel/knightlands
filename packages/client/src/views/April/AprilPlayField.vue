@@ -139,6 +139,20 @@
       >
         Update cells
       </CustomButton>
+      <CustomButton
+        type="green"
+        class="inline-block margin-right-2 margin-top-1"
+        @click="testWin"
+      >
+        Win
+      </CustomButton>
+      <CustomButton
+        type="green"
+        class="inline-block margin-right-2 margin-top-1"
+        @click="testLose"
+      >
+        Lose
+      </CustomButton>
     </div>
   </div>
 </template>
@@ -178,7 +192,8 @@ export default {
       "hp",
       "croupier",
       "selectedCardId",
-      "level"
+      "level",
+      "sessionResult"
     ]),
     ...mapGetters("april", [
       "cards",
@@ -234,6 +249,13 @@ export default {
     actionPoints(value, oldValue) {
       if (value >= 2 && typeof oldValue === "number" && value - oldValue >= 2) {
         this.$store.commit("setCanPurchaseActionPoint", true);
+      }
+    },
+    sessionResult(value) {
+      if (value === april.SESSION_RESULT_SUCCESS) {
+        //
+      } else if (value === april.SESSION_RESULT_SUCCESS) {
+        //
       }
     }
   },
@@ -361,6 +383,18 @@ export default {
         damage: this.count % 2 ? damage2 : damage1,
         actionPoints,
         hp
+      });
+    },
+
+    testWin() {
+      this.$store.commit("april/updateState", {
+        sessionResult: april.SESSION_RESULT_SUCCESS
+      });
+    },
+
+    testLose() {
+      this.$store.commit("april/updateState", {
+        sessionResult: april.SESSION_RESULT_FAIL
       });
     },
 

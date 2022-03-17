@@ -25,7 +25,7 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 4px;
-  background-image: url("/images/april/april_points.png");
+  background-image: url("/images/april/event_point.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
