@@ -6,7 +6,10 @@
     <div
       class="april-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-2 padding-bottom-2 relative"
     >
-      <AprilGold class="april-gold--with-background padding-left-2" />
+      <AprilGold
+        class="april-gold--with-background padding-left-2"
+        :value="balance ? balance.sessionGold : 0"
+      />
       <div class="close-btn" @click="stopHandler"></div>
     </div>
 
@@ -21,6 +24,7 @@
           <!-- reward chess -->
           <div
             class="april-play-session-reward april-play-session-reward--card relative"
+            @click="nextHandler(true)"
           >
             <div
               class="april-play-session-reward-card-background absolute-stretch"
@@ -30,6 +34,7 @@
           <!-- reward hp -->
           <div
             class="april-play-session-reward april-play-session-reward--hp"
+            @click="nextHandler(false)"
           ></div>
         </div>
       </div>
@@ -60,6 +65,7 @@
 <script>
 import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
+import * as april from "@/../../knightlands-shared/april";
 import AprilGold from "@/views/April/AprilGold.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
 export default {
@@ -71,7 +77,12 @@ export default {
   },
   computed: {
     ...mapState(["appSize"]),
-    ...mapState("april", ["level", "sessionRewardCardClass", "heroClass"]),
+    ...mapState("april", [
+      "balance",
+      "level",
+      "sessionRewardCardClass",
+      "heroClass"
+    ]),
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 10)
@@ -86,9 +97,16 @@ export default {
       const showDialog = create(AprilStopGame);
       const result = await showDialog();
       if (result) {
-        this.$store.dispatch("april/exitGame");
-        this.$emit("next", true);
+        this.$store.dispatch("april/exit");
+        this.$emit("exit", true);
       }
+    },
+    async nextHandler(isCardSelected = true) {
+      // @todo: animate, await
+      this.$store.dispatch("april/enterLevel", {
+        booster: isCardSelected ? april.BOOSTER_CARD : april.BOOSTER_HP
+      });
+      this.$emit("next", true);
     }
   }
 };

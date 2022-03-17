@@ -2,8 +2,7 @@
   <div class="screen-content overflow-auto" v-if="loaded">
     <AprilHeroSelect
       v-if="currentStep === HERO_SELECT_STEP"
-      @next="nextHandler"
-      @back="backHandler"
+      @next="showPlayFieldStep"
     />
     <!-- <AprilBoosterSelect
       v-if="currentStep === BOOSTER_SELECT_STEP"
@@ -12,13 +11,12 @@
     /> -->
     <AprilPlayField
       v-if="currentStep === PLAY_FIELD_STEP"
-      @next="nextHandler"
-      @back="backHandler"
+      @exit="showHeroSelectStep"
     />
     <AprilPlayRound
       v-if="currentStep === PLAY_ROUND_STEP"
-      @next="nextHandler"
-      @back="backHandler"
+      @next="showPlayFieldStep"
+      @exit="showHeroSelectStep"
     />
     <portal
       v-if="isActive && currentStep === HERO_SELECT_STEP"
@@ -46,6 +44,7 @@
   </div>
 </template>
 <script>
+import * as april from "@/../../knightlands-shared/april";
 import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
@@ -83,14 +82,21 @@ export default {
     };
   },
   computed: {
-    ...mapState("april", ["loaded", "sessionResult"]),
+    ...mapState("april", ["loaded", "sessionResult", "level"]),
     ...mapGetters("april", ["selectedHero"])
   },
   watch: {
     sessionResult(value) {
-      if (value) {
-        this.showSummary();
+      if (!value) {
+        return;
       }
+
+      if (value === april.SESSION_RESULT_FAIL || this.level > 8) {
+        this.showSummary();
+        return;
+      }
+
+      this.showStartNewLevelStep();
     }
   },
   methods: {
@@ -104,28 +110,40 @@ export default {
       //   --this.currentStep;
       // }
     },
-    nextHandler(skipSummary) {
-      if (this.currentStep === PLAY_FIELD_STEP) {
-        // if (skipSummary === true) {
-        //   this.currentStep = HERO_SELECT_STEP;
-        //   return;
-        // }
-        // this.showSummary();
-        return;
-      }
-      ++this.currentStep;
+    // nextHandler(skipSummary) {
+    //   if (this.currentStep === PLAY_FIELD_STEP) {
+    //     // if (skipSummary === true) {
+    //     //   this.currentStep = HERO_SELECT_STEP;
+    //     //   return;
+    //     // }
+    //     // this.showSummary();
+    //     return;
+    //   }
+    //   ++this.currentStep;
 
-      if (this.currentStep === PLAY_FIELD_STEP) {
-        this.$store.dispatch("april/restart", {
-          heroClass: this.selectedHero.heroClass
-        });
-      }
-    },
+    //   if (this.currentStep === PLAY_FIELD_STEP) {
+    //     this.$store.dispatch("april/restart", {
+    //       heroClass: this.selectedHero.heroClass
+    //     });
+    //   }
+    // },
     async showSummary() {
       const showDialog = create(AprilPlaySummary);
       const result = await showDialog();
       // this.currentStep = PET_SELECT_STEP;
       console.log("result", result);
+      if (!(result && result.resurrection)) {
+        this.showHeroSelectStep();
+      }
+    },
+    showHeroSelectStep() {
+      this.currentStep = HERO_SELECT_STEP;
+    },
+    showPlayFieldStep() {
+      this.currentStep = PLAY_FIELD_STEP;
+    },
+    showStartNewLevelStep() {
+      this.currentStep = PLAY_ROUND_STEP;
     },
     goToShop() {
       this.$router.push({ name: "april-shop" });
