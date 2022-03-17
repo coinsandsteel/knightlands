@@ -5,6 +5,7 @@
       'april-board-cell-container--black': index % 2 === 0,
       'z-index-1': isHero
     }"
+    @click="clickHandler"
   >
     <div class="april-board-cell absolute-stretch">
       <!-- hit zone -->
@@ -175,6 +176,14 @@ export default {
       this.isBattleActive = true;
       await sleep(100);
       this.isBattleActive = false;
+    },
+    clickHandler() {
+      // @todo: uncomment
+      // if (!this.isAvailableMove) {
+      //   return;
+      // }
+
+      this.$emit("click");
     }
   }
 };

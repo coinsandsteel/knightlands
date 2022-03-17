@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import * as april from "@/../../knightlands-shared/april";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import UserDialog from "@/components/UserDialog.vue";
@@ -34,8 +35,9 @@ export default {
     AprilGold
   },
   computed: {
+    ...mapState("april", ["prices"]),
     buyPrice() {
-      return april.BOOSTERS[april.BOOSTER_THIRD_ACTION];
+      return this.prices ? this.prices.thirdAction : 0;
     }
   },
   methods: {
@@ -46,7 +48,7 @@ export default {
       if (!this.checkGoldBalance(this.buyPrice)) {
         return;
       }
-      await this.$store.dispatch("april/purchaseThirdAction");
+      await this.$store.dispatch("april/purchaseAction");
       this.close();
     }
   }

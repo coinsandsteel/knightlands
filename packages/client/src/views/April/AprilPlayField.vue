@@ -13,6 +13,14 @@
         class="april-gold--with-background padding-left-2"
         :value="balance ? balance.sessionGold : 0"
       />
+      <CustomButton
+        v-if="canSkipTurn"
+        type="red"
+        class="btn-skip-turn"
+        @click="skipTurnHandler"
+      >
+        {{ $t("skip-turn") }}
+      </CustomButton>
       <div class="close-btn" @click="stopHandler"></div>
     </div>
 
@@ -36,8 +44,9 @@
               class="step-cell margin-top-1 margin-bottom-1"
             ></div>
           </TransitionGroup>
+          <!-- purchase action point -->
           <div
-            v-if="canAddActionPoint"
+            v-if="canPurchaseActionPoint"
             class="step-cell step-cell-add margin-top-1 margin-bottom-1"
             @click="addActionPointHandler"
           ></div>
@@ -50,6 +59,7 @@
                 v-for="(cell, cellIndex) in boardCells"
                 :key="cellIndex"
                 :index="cellIndex"
+                @click="cellClickHandler(cell, cellIndex)"
               />
             </div>
           </div>
@@ -76,7 +86,7 @@
         <div
           class="april-play-deck-counter font-size-22 font-weight-700 absolute"
         >
-          {{ croupier ? croupier.cardsInQueue : 0 }}
+          {{ cardsInQueue }}
         </div>
       </div>
       <!-- deck 2 -->
@@ -101,7 +111,7 @@
         <div
           class="april-play-deck-counter  font-size-22 font-weight-700 absolute"
         >
-          {{ croupier && croupier.usedCards ? croupier.usedCards.length : 0 }}
+          {{ usedCards }}
         </div>
       </div>
     </div>
@@ -170,11 +180,19 @@ export default {
       "selectedCardId",
       "level"
     ]),
-    ...mapGetters("april", ["cards", "damage", "units"]),
+    ...mapGetters("april", [
+      "cards",
+      "damage",
+      "units",
+      "canPurchaseActionPoint"
+    ]),
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 6)
         : Math.floor(375 / 6);
+    },
+    canSkipTurn() {
+      return true;
     },
     boardCells() {
       return new Array(5 * 5).fill(null);
@@ -185,14 +203,38 @@ export default {
     hpCells() {
       return new Array(this.hp).fill(null);
     },
-    canAddActionPoint() {
-      return true;
+    cardsInQueue() {
+      if (!this.croupier) {
+        return 0;
+      }
+
+      if (Array.isArray(this.croupier.cardsInQueue)) {
+        return this.croupier.cardsInQueue.length;
+      }
+
+      return this.croupier.cardsInQueue || 0;
+    },
+    usedCards() {
+      if (!this.croupier) {
+        return 0;
+      }
+
+      if (Array.isArray(this.croupier.usedCards)) {
+        return this.croupier.usedCards.length;
+      }
+
+      return this.croupier.usedCards || 0;
     }
   },
 
   watch: {
     cards(value) {
       this.currentCards = [...value];
+    },
+    actionPoints(value, oldValue) {
+      if (value >= 2 && typeof oldValue === "number" && value - oldValue >= 2) {
+        this.$store.commit("setCanPurchaseActionPoint", true);
+      }
     }
   },
 
@@ -324,17 +366,32 @@ export default {
 
     selectCard(card) {
       if (!(this.hp > 0 && this.actionPoints > 0)) {
-        this.$store.commit("april/updateState", { selectedCardId: null });
+        this.$store.commit("april/setSelectedCardId", null);
         return;
       }
-      this.$store.commit("april/updateState", {
-        selectedCardId: card && this.selectedCardId === card.id ? null : card.id
-      });
+      this.$store.commit(
+        "april/setSelectedCardId",
+        card && this.selectedCardId === card.id ? null : card.id
+      );
     },
 
     addActionPointHandler() {
       const showDialog = create(AprilPurchaseThirdActionPoint);
       showDialog();
+    },
+
+    skipTurnHandler() {
+      this.$store.dispatch("april/skip");
+    },
+
+    cellClickHandler(cell, cellIndex) {
+      if (!this.selectedCardId) {
+        return;
+      }
+      this.$store.dispatch("april/move", {
+        cardId: this.selectedCardId,
+        index: cellIndex
+      });
     }
   }
 };
@@ -347,6 +404,13 @@ export default {
 .close-btn {
   top: 50%;
   transform: translateY(-50%) scale(0.9);
+}
+.btn-skip-turn {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) scale(0.9);
+  margin: 0;
 }
 .april-play-decks {
   display: grid;

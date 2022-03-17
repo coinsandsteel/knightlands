@@ -16,7 +16,7 @@
         <Title class="">{{ achievement.name }}</Title>
         <div class="april-achievement-wrapper">
           <!-- hero -->
-          <div class="flex flex-center">
+          <div class="flex flex-center padding-top-1 padding-bottom-1">
             <AprilHeroSlideItem :hero="achievement" />
           </div>
           <!-- points -->

@@ -16,6 +16,7 @@ export default {
     dailyRewards: [],
     hourRewardClaimed: null, // timestamp, sec
     heroes: [],
+    canPurchaseActionPoint: false,
 
     // Need to map after load() action
     // Because initially only heroClass will be provided by server.
@@ -36,16 +37,16 @@ export default {
 
     // Store it inside the .vue file as data property.
     // And pass it to the action as parameter.
-    // selectedCardId: null
+    selectedCardId: null,
 
     // Don't store it. Pass it to the action as parameter.
-    // sessionRewardCardClass: april.CARD_CLASS_QUEEN,
+    sessionRewardCardClass: april.CARD_CLASS_QUEEN,
 
     // ###### Croupier ######
     croupier: {
       cardsInQueue: 5,
       usedCards: [],
-      cards: []
+      cards: 0
     },
 
     // ###### Playground ######
@@ -75,13 +76,16 @@ export default {
       return getters.selectedCard ? getters.selectedCard.nextCells || [] : [];
     },
     damage(state) {
-      return state.damage;
+      return state.playground ? state.playground.damage : [];
     },
     units(state) {
-      return state.units;
+      return state.playground ? state.playground.units : [];
     },
     selectedHero(state, getters) {
       return getters.heroes[state.selectedHeroIndex];
+    },
+    canPurchaseActionPoint(state) {
+      return state.canPurchaseActionPoint && state.actionPoints <= 2;
     }
   },
   mutations: {
@@ -192,6 +196,12 @@ export default {
     },
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
+    },
+    setCanPurchaseActionPoint(state, value) {
+      state.canPurchaseActionPoint = !!value;
+    },
+    setSelectedCardId(state, value) {
+      state.selectedCardId = value;
     }
   },
   actions: {
@@ -244,6 +254,7 @@ export default {
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
     async restart(store, { heroClass }) {
       await this.$app.$game._wrapOperation(Operations.AprilRestart, heroClass);
+      store.commit("setCanPurchaseActionPoint", true);
     },
     // Move hero
     // index: number;
@@ -258,13 +269,15 @@ export default {
       await this.$app.$game._wrapOperation(Operations.AprilSkip);
     },
     // Purchase third action
-    async purchaseAction() {
+    async purchaseAction({ commit }) {
       await this.$app.$game._wrapOperation(Operations.AprilPurchaseAction);
+      commit("setCanPurchaseActionPoint", false);
     },
     // Start from level > 1
     // booster: BOOSTER_CARD | BOOSTER_HP
     async enterLevel(store, { booster }) {
       await this.$app.$game._wrapOperation(Operations.AprilEnterLevel, booster);
+      store.commit("setCanPurchaseActionPoint", true);
     },
     // Buy new life, rewind one step back
     async resurrect({ dispatch }) {

@@ -157,7 +157,9 @@ export default {
     scrollUpdated(start, end) {},
     async claimRewards() {
       let items = await this.performRequestNoCatch(
-        this.$store.dispatch("april/claimRewards")
+        this.$store.dispatch("april/claimReward", {
+          type: april.REWARD_TYPE_EVENT
+        })
       );
       if (items.length) {
         await ShowItems(items);
