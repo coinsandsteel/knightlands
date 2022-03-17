@@ -15,6 +15,7 @@ export default {
     },
     dailyRewards: [],
     hourRewardClaimed: null, // timestamp, sec
+    heroes: [],
 
     // Need to map after load() action
     // Because initially only heroClass will be provided by server.
@@ -239,8 +240,9 @@ export default {
       await this.$app.$game._wrapOperation(Operations.AprilEnterLevel, booster);
     },
     // Buy new life, rewind one step back
-    async resurrect() {
+    async resurrect({ dispatch }) {
       await this.$app.$game._wrapOperation(Operations.AprilResurrect);
+      dispatch("load");
     },
     // Exit playground
     async exit() {
