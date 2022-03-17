@@ -6,7 +6,13 @@
     <div
       class="april-play-stat flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-2 padding-bottom-2 relative"
     >
-      <AprilGold class="april-gold--with-background padding-left-2" />
+      <div class="margin-right-2 font-weight-700">
+        {{ $t("round") }} {{ level }}
+      </div>
+      <AprilGold
+        class="april-gold--with-background padding-left-2"
+        :value="balance ? balance.sessionGold : 0"
+      />
       <div class="close-btn" @click="stopHandler"></div>
     </div>
 
@@ -70,7 +76,7 @@
         <div
           class="april-play-deck-counter font-size-22 font-weight-700 absolute"
         >
-          {{ cardsInQueue }}
+          {{ croupier ? croupier.cardsInQueue : 0 }}
         </div>
       </div>
       <!-- deck 2 -->
@@ -95,7 +101,7 @@
         <div
           class="april-play-deck-counter  font-size-22 font-weight-700 absolute"
         >
-          {{ usedCards }}
+          {{ croupier && croupier.usedCards ? croupier.usedCards.length : 0 }}
         </div>
       </div>
     </div>
@@ -157,11 +163,12 @@ export default {
   computed: {
     ...mapState(["appSize"]),
     ...mapState("april", [
+      "balance",
       "actionPoints",
       "hp",
-      "cardsInQueue",
-      "usedCards",
-      "selectedCardId"
+      "croupier",
+      "selectedCardId",
+      "level"
     ]),
     ...mapGetters("april", ["cards", "damage", "units"]),
     baseSize() {
@@ -179,7 +186,6 @@ export default {
       return new Array(this.hp).fill(null);
     },
     canAddActionPoint() {
-      // @todo
       return true;
     }
   },
@@ -191,7 +197,6 @@ export default {
   },
 
   mounted() {
-    // this.calculateBaseSize();
     this.currentCards = [...this.cards];
   },
 

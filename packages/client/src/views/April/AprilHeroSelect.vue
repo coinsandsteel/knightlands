@@ -7,18 +7,7 @@
 
     <div class="flex-full flex flex-center flex-nowrap">
       <div>
-        <!-- <div
-          v-if="selectedHero"
-          class="font-size-22 font-weight-700 padding-bottom-1"
-        >
-          <span class="hero-name">{{ selectedHero.name }}</span>
-        </div> -->
         <AprilHeroesSlide />
-        <!-- <AprilHeroAbilities
-          v-if="true || (selectedHero && selectedHero.unlocked)"
-          :hero="selectedHero"
-          class=" margin-top-2"
-        /> -->
         <div class="padding-top-4">
           <CustomButton
             type="yellow"
@@ -35,9 +24,8 @@
           >
             {{ $t("unlock") }} &nbsp;<AprilGold :value="buyPrice" />
           </CustomButton>
-          <!-- @todo -->
           <CustomButton
-            v-if="true || canChoose"
+            v-if="canChoose"
             type="green"
             class="btn-start inline-block"
             @click="selectHandler"
@@ -52,13 +40,11 @@
 <script>
 import { mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
-import * as april from "@/../../knightlands-shared/april";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import aprilPurchaseMixin from "@/views/April/aprilPurchaseMixin";
 import AprilBalance from "@/views/April/AprilBalance.vue";
 import AprilHeroesSlide from "@/views/April/AprilHeroesSlide.vue";
 import AprilGold from "@/views/April/AprilGold.vue";
-// import AprilHeroAbilities from "@/views/April/AprilHeroAbilities.vue";
 import AprilHeroAbilitiesHint from "@/views/April/AprilHeroAbilitiesHint.vue";
 
 export default {
@@ -76,11 +62,7 @@ export default {
       if (!this.selectedHero) {
         return 0;
       }
-      if (!this.selectedHero.unlocked) {
-        return april.HEROES[this.selectedHero.heroClass];
-      }
-
-      return 0;
+      return this.selectedHero.price;
     }
   },
   methods: {

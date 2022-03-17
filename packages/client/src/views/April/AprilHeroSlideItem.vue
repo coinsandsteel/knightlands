@@ -44,7 +44,7 @@ export default {
   border-image-repeat: round;
 }
 .hero-slider-item---not-unlocked {
-  opacity: 0.6;
+  opacity: 0.3;
 }
 .hero-slider-item-level {
   background: #fff;

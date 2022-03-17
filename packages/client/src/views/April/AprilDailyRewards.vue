@@ -27,8 +27,9 @@
 </template>
 
 <script>
-import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import { mapState } from "vuex";
+import * as april from "@/../../knightlands-shared/april";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import AprilDailyReward from "@/views/April/AprilDailyReward.vue";
 
 export default {
@@ -40,7 +41,9 @@ export default {
   methods: {
     async collectRewards() {
       await this.performRequestNoCatch(
-        this.$store.dispatch("april/collectDailyReward")
+        this.$store.dispatch("april/claimReward", {
+          type: april.REWARD_TYPE_DAILY
+        })
       );
       this.$close();
     }

@@ -6,7 +6,7 @@ import Operations from "@/../../knightlands-shared/operations";
 export default {
   namespaced: true,
   state: {
-    loaded: true,
+    loaded: false,
 
     // ###### User ######
     balance: {
@@ -15,35 +15,36 @@ export default {
     },
     dailyRewards: [],
     hourRewardClaimed: null, // timestamp, sec
+    heroes: [],
 
     // Need to map after load() action
     // Because initially only heroClass will be provided by server.
     selectedHeroIndex: 0,
-    
+
     // ###### Prices ######
     prices: {
       thirdAction: 0,
       resurrection: 0 // old: resurrectionCost
     },
-    
+
     // ###### Map ######
     heroClass: april.HERO_CLASS_KNIGHT,
     level: 1,
     hp: 3,
     actionPoints: 2,
     sessionResult: null, // SESSION_RESULT_SUCCESS | SESSION_RESULT_FAIL
-    
+
     // Store it inside the .vue file as data property.
     // And pass it to the action as parameter.
     // selectedCardId: null
 
     // Don't store it. Pass it to the action as parameter.
     // sessionRewardCardClass: april.CARD_CLASS_QUEEN,
-    
+
     // ###### Croupier ######
     croupier: {
       cardsInQueue: 5,
-      usedCards: 0,
+      usedCards: [],
       cards: []
     },
 
@@ -54,11 +55,16 @@ export default {
     }
   },
   getters: {
-    heroes() {
-      return april.HEROES;
+    heroes(state) {
+      return april.HEROES.map(hero => {
+        return {
+          ...hero,
+          unlocked: state.heroes.includes(hero.heroClass)
+        };
+      });
     },
     cards(state) {
-      return state.cards;
+      return state.croupier ? state.croupier.cards || [] : [];
     },
     selectedCard(state, getters) {
       return getters.cards
@@ -74,12 +80,13 @@ export default {
     units(state) {
       return state.units;
     },
-    selectedHero(state) {
-      return april.HEROES[state.selectedHeroIndex];
+    selectedHero(state, getters) {
+      return getters.heroes[state.selectedHeroIndex];
     }
   },
   mutations: {
     updateState(state, data) {
+      console.log("updateState", data);
       // User data
       if (data.balance !== undefined) {
         state.balance = { ...state.balance, ...data.balance };
@@ -94,7 +101,7 @@ export default {
       if (data.heroes !== undefined) {
         state.heroes = data.heroes;
       }
-      
+
       // Map data
       if (data.heroClass !== undefined) {
         state.heroClass = data.heroClass;
@@ -124,7 +131,7 @@ export default {
       if (data.damage !== undefined) {
         state.playground.damage = data.damage;
       }
-      
+
       // Croupier
       if (data.cardsInQueue !== undefined) {
         state.croupier.cardsInQueue = data.cardsInQueue;
@@ -135,8 +142,16 @@ export default {
       if (data.usedCards !== undefined) {
         state.croupier.usedCards = data.usedCards;
       }
+
+      // set selected hero index
+      if (data.heroClass) {
+        state.selectedHeroIndex = april.HEROES.findIndex(
+          ({ heroClass }) => heroClass === data.heroClass
+        );
+      }
     },
     setInitialState(state, data) {
+      console.log("setInitialState", data);
       state.loaded = true;
 
       // User data
@@ -145,7 +160,7 @@ export default {
       state.dailyRewards = userData.dailyRewards;
       state.hourRewardClaimed = userData.hourRewardClaimed;
       state.heroes = userData.heroes;
-      
+
       // Map data
       const mapData = data.map;
       state.heroClass = mapData.heroClass;
@@ -153,20 +168,27 @@ export default {
       state.sessionResult = mapData.sessionResult;
       state.hp = mapData.hp;
       state.actionPoints = mapData.actionPoints;
-      
+
       // Prices
       state.prices = mapData.prices;
-      
+
       // Playground
       const playgroundData = data.map.playground;
       state.playground.units = playgroundData.units;
       state.playground.damage = playgroundData.damage;
-      
+
       // Croupier
       const croupierData = data.map.croupier;
       state.croupier.cardsInQueue = croupierData.cardsInQueue;
       state.croupier.cards = croupierData.cards;
       state.croupier.usedCards = croupierData.usedCards;
+
+      // set selected hero index
+      if (mapData.heroClass) {
+        state.selectedHeroIndex = april.HEROES.findIndex(
+          ({ heroClass }) => heroClass === mapData.heroClass
+        );
+      }
     },
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
@@ -213,7 +235,10 @@ export default {
     },
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
     async purchaseHero(store, { heroClass }) {
-      await this.$app.$game._wrapOperation(Operations.AprilPurchaseHero, heroClass);
+      await this.$app.$game._wrapOperation(
+        Operations.AprilPurchaseHero,
+        heroClass
+      );
     },
     // Start from level #1
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
@@ -223,7 +248,10 @@ export default {
     // Move hero
     // index: number;
     async move(store, { cardId, index }) {
-      await this.$app.$game._wrapOperation(Operations.AprilMove, { cardId, index });
+      await this.$app.$game._wrapOperation(Operations.AprilMove, {
+        cardId,
+        index
+      });
     },
     // Skip a turn
     async skip() {
