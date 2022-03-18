@@ -70,8 +70,8 @@ export default {
       return state.croupier ? state.croupier.cards || [] : [];
     },
     selectedCard(state, getters) {
-      return getters.cards
-        ? getters.cards.find(({ id }) => id === state.selectedCardId)
+      return state.croupier
+        ? state.croupier.cards.find(({ id }) => id === state.selectedCardId)
         : null;
     },
     moveZones(state, getters) {

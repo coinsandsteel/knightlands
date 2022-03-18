@@ -423,7 +423,7 @@ export default {
         return;
       }
       this.$store.dispatch("april/move", {
-        cardId: this.selectedCardId,
+        cardId: this.selectedCardId.toString(),
         index: cellIndex
       });
     }
