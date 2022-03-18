@@ -50,7 +50,7 @@
         <!-- hero -->
         <Transition @enter="heroEnterHandler" @leave="heroLeaveHandler">
           <div
-            v-if="level + offset - 2 === roundIndex"
+            v-if="level + offset - 1 === roundIndex"
             class="april-round-current absolute-stretch"
             :class="[
               `april-hero--${heroClass}`,
