@@ -194,7 +194,8 @@ export default {
       "croupier",
       "selectedCardId",
       "level",
-      "sessionResult"
+      "sessionResult",
+      "isDisabled"
     ]),
     ...mapGetters("april", [
       "cards",
@@ -415,10 +416,15 @@ export default {
     },
 
     selectCard(card) {
+      if (this.isDisabled) {
+        return;
+      }
+
       if (!(this.hp > 0 && this.actionPoints > 0)) {
         this.$store.commit("april/setSelectedCardId", null);
         return;
       }
+
       this.$store.commit(
         "april/setSelectedCardId",
         card && this.selectedCardId === card.id ? null : card.id
@@ -438,9 +444,10 @@ export default {
     },
 
     cellClickHandler(cell, cellIndex) {
-      /* if (!this.selectedCard) {
-        return;
-      } */
+      // @todo: uncomment
+      // if (!this.selectedCard) {
+      //   return;
+      // }
       this.$store.dispatch("april/move", {
         cardId: this.selectedCardId.toString(),
         index: cellIndex

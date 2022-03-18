@@ -11,8 +11,10 @@
       <!-- hit zone -->
       <Transition name="fade" appear>
         <div
-          v-if="isHitZone"
+          v-if="isHitZoneLocal"
+          ref="hitZone"
           class="april-board-cell-hit-zone absolute-stretch"
+          :class="{ 'hit-zone-animating': isHitZoneAnimating }"
         >
           <div
             v-if="damagePoint > 1"
@@ -76,11 +78,14 @@ export default {
       oldHeroIndex: 22,
       isHeroMoveActive: false,
       isBattleActive: false,
-      canAnimate: false
+      canAnimate: false,
+      wasHit: false,
+      isHitZoneLocal: false,
+      isHitZoneAnimating: false
     };
   },
   computed: {
-    ...mapState("april", ["heroClass"]),
+    ...mapState("april", ["heroClass", "hp", "isDisabled"]),
     ...mapGetters("april", ["cards", "damage", "units", "moveZones"]),
     unit() {
       if (this.units) {
@@ -135,14 +140,29 @@ export default {
         return;
       }
       this.isHero = false;
+    },
+    async hp(value, oldValue) {
+      if (value < oldValue && this.isHero) {
+        this.wasHit = true;
+        await sleep(800);
+        await this.animateHeroBattle();
+        this.wasHit = false;
+      }
+    },
+    async isHitZone(value) {
+      if (this.wasHit && this.isHitZoneLocal) {
+        await sleep(1000);
+      }
+      this.isHitZoneLocal = value;
     }
   },
 
   mounted() {
     this.isHero = this.heroIndex === this.index;
+    this.isHitZoneLocal = this.isHitZone;
     setTimeout(() => {
       this.canAnimate = true;
-    }, 1000);
+    }, 800);
   },
 
   methods: {
@@ -167,10 +187,6 @@ export default {
       await sleep(800);
       this.isHeroMoveActive = false;
 
-      // @todo: check in hit zone
-      if (true) {
-        setTimeout(this.animateHeroBattle, 100);
-      }
       done();
     },
     heroLeaveHandler(el, done) {
@@ -178,14 +194,26 @@ export default {
     },
     async animateHeroBattle() {
       this.isBattleActive = true;
+      if (this.isHitZoneLocal) {
+        this.isHitZoneAnimating = true;
+      }
       await sleep(100);
       this.isBattleActive = false;
       await sleep(100);
       this.isBattleActive = true;
       await sleep(100);
       this.isBattleActive = false;
+      await sleep(100);
+      this.isBattleActive = true;
+      await sleep(100);
+      this.isBattleActive = false;
+      await sleep(100);
+      this.isHitZoneAnimating = false;
     },
     clickHandler() {
+      if (this.isDisabled) {
+        return;
+      }
       // @todo: uncomment
       // if (!this.isAvailableMove) {
       //   return;
@@ -228,10 +256,10 @@ export default {
   transition: all 0.1;
 }
 .april-board-cell-hero-wrapper.hero-move-active {
-  transition: transform 0.5s;
+  transition: transform 0.5s, filter 0.1s;
 }
 .hero-battle-active {
-  filter: brightness(240%);
+  filter: brightness(0%);
 }
 .april-damage-point {
   left: 0;
@@ -239,7 +267,56 @@ export default {
   color: #fff;
   line-height: 1;
 }
+.hit-zone-animating {
+  animation: shake 0.4s;
+}
 // animate
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg) scale(1);
+    filter: brightness(100%);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg) scale(1.2);
+    filter: brightness(200%);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg) scale(1.4);
+    filter: brightness(100%);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg) scale(1.6);
+    filter: brightness(200%);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg) scale(1.8);
+    filter: brightness(100%);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg) scale(2);
+    filter: brightness(200%);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg) scale(1.8);
+    filter: brightness(100%);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg) scale(1.6);
+    filter: brightness(200%);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg) scale(1.4);
+    filter: brightness(100%);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg) scale(1.2);
+    filter: brightness(200%);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg) scale(1);
+    filter: brightness(100%);
+  }
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.5s;

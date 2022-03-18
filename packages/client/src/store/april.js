@@ -36,6 +36,7 @@ export default {
     sessionResult: null, // SESSION_RESULT_SUCCESS | SESSION_RESULT_FAIL
     selectedCardId: null,
     sessionRewardCardClass: april.CARD_CLASS_QUEEN,
+    isDisabled: false, // disable interaction, wait for animation
 
     // ###### Croupier ######
     croupier: {
@@ -199,6 +200,9 @@ export default {
     },
     setSelectedCardId(state, value) {
       state.selectedCardId = value;
+    },
+    setIsDisabled(state, value) {
+      state.isDisabled = value;
     }
   },
   actions: {
@@ -256,11 +260,15 @@ export default {
     // Move hero
     // index: number;
     async move(store, { cardId, index }) {
+      store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.AprilMove, {
         cardId,
         index
       });
       store.commit("setSelectedCardId", null);
+      setTimeout(() => {
+        store.commit("setIsDisabled", false);
+      }, 1000);
     },
     // Skip a turn
     async skip() {

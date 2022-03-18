@@ -87,7 +87,7 @@ export default {
   },
   watch: {
     sessionResult(value) {
-      if (!value) {
+      if (!value || !this.currentStep === PLAY_FIELD_STEP) {
         return;
       }
 
