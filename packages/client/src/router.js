@@ -567,7 +567,7 @@ const router = new Router({
         {
           path: "shop",
           name: "april-shop",
-          component: () => import("./views/March/MarchShop.vue")
+          component: () => import("./views/April/AprilShop.vue")
         }
       ],
       meta: {

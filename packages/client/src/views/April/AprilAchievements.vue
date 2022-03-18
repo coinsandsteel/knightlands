@@ -1,7 +1,6 @@
 <template>
   <div
     class="width-100 height-100 dummy-height flex flex-column flex-no-wrap overflow-hidden"
-    :style="{ '--base-size': `${baseSize}px` }"
   >
     <div
       class="april-achievements-tips flex flex-row flex-no-wrap flex-justify-center font-size-22 padding-top-4 padding-bottom-4 relative"
@@ -66,10 +65,10 @@ export default {
       }
 
       return achievements;
-    },
-    methods: {
-      receiveHandler() {}
     }
+  },
+  methods: {
+    receiveHandler() {}
   }
 };
 </script>
