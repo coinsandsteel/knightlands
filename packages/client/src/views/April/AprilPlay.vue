@@ -2,7 +2,7 @@
   <div class="screen-content overflow-auto" v-if="loaded">
     <AprilHeroSelect
       v-if="currentStep === HERO_SELECT_STEP"
-      @next="showPlayFieldStep"
+      @next="showPlayFieldStep(true)"
     />
     <!-- <AprilBoosterSelect
       v-if="currentStep === BOOSTER_SELECT_STEP"
@@ -15,7 +15,7 @@
     />
     <AprilPlayRound
       v-if="currentStep === PLAY_ROUND_STEP"
-      @next="showPlayFieldStep"
+      @next="showPlayFieldStep(false)"
       @exit="showHeroSelectStep"
     />
     <portal
@@ -139,8 +139,13 @@ export default {
     showHeroSelectStep() {
       this.currentStep = HERO_SELECT_STEP;
     },
-    showPlayFieldStep() {
+    showPlayFieldStep(shouldRestart = true) {
       this.currentStep = PLAY_FIELD_STEP;
+      if (shouldRestart) {
+        this.$store.dispatch("april/restart", {
+          heroClass: this.selectedHero.heroClass
+        });
+      }
     },
     showStartNewLevelStep() {
       this.currentStep = PLAY_ROUND_STEP;

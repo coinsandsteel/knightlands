@@ -40,11 +40,9 @@ export default {
   },
   methods: {
     async collectRewards() {
-      await this.performRequestNoCatch(
-        this.$store.dispatch("april/claimReward", {
-          type: april.REWARD_TYPE_DAILY
-        })
-      );
+      this.$store.dispatch("april/claimReward", {
+        type: april.REWARD_TYPE_DAILY
+      });
       this.$close();
     }
   }
