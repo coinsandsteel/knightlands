@@ -34,12 +34,7 @@ export default {
     hp: 3,
     actionPoints: 2,
     sessionResult: null, // SESSION_RESULT_SUCCESS | SESSION_RESULT_FAIL
-
-    // Store it inside the .vue file as data property.
-    // And pass it to the action as parameter.
     selectedCardId: null,
-
-    // Don't store it. Pass it to the action as parameter.
     sessionRewardCardClass: april.CARD_CLASS_QUEEN,
 
     // ###### Croupier ######
@@ -265,6 +260,7 @@ export default {
         cardId,
         index
       });
+      store.commit("setSelectedCardId", null);
     },
     // Skip a turn
     async skip() {

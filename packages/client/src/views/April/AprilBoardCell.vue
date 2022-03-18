@@ -128,8 +128,6 @@ export default {
   watch: {
     heroIndex(value, oldValue) {
       if (typeof value === "number" && value === this.index) {
-        console.log("value", value);
-        console.log("oldValue", oldValue);
         if (typeof oldValue === "number") {
           this.oldHeroIndex = oldValue;
         }

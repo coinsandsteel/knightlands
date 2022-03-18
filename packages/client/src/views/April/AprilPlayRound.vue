@@ -48,11 +48,16 @@
         class="april-round-wrapper relative"
       >
         <!-- hero -->
-        <div
-          v-if="level === roundIndex + 1"
-          class="april-round-current absolute-stretch"
-          :class="`april-board-cell-hero--${heroClass}`"
-        ></div>
+        <Transition @enter="heroEnterHandler" @leave="heroLeaveHandler">
+          <div
+            v-if="level + offset - 1 === roundIndex"
+            class="april-round-current absolute-stretch"
+            :class="[
+              `april-hero--${heroClass}`,
+              { 'hero-move-active': isHeroMoveActive }
+            ]"
+          ></div>
+        </Transition>
         <!-- boss -->
         <div
           v-if="roundIndex === rounds.length - 1"
@@ -65,6 +70,7 @@
 <script>
 import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
+import { sleep } from "@/helpers/utils";
 import * as april from "@/../../knightlands-shared/april";
 import AprilGold from "@/views/April/AprilGold.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
@@ -73,7 +79,11 @@ export default {
     AprilGold
   },
   data() {
-    return {};
+    return {
+      offset: 0,
+      hasClicked: false,
+      isHeroMoveActive: false
+    };
   },
   computed: {
     ...mapState(["appSize"]),
@@ -94,6 +104,9 @@ export default {
   },
   methods: {
     async stopHandler() {
+      if (this.hasClicked) {
+        return;
+      }
       const showDialog = create(AprilStopGame);
       const result = await showDialog();
       if (result) {
@@ -102,11 +115,28 @@ export default {
       }
     },
     async nextHandler(isCardSelected = true) {
-      // @todo: animate, await
+      if (this.hasClicked) {
+        return;
+      }
+      this.hasClicked = true;
+      this.offset = 1;
+      await sleep(1000);
       this.$store.dispatch("april/enterLevel", {
         booster: isCardSelected ? april.BOOSTER_CARD : april.BOOSTER_HP
       });
       this.$emit("next", true);
+    },
+    async heroEnterHandler(el, done) {
+      el.style = `transform: translateX(-100%);`;
+      this.isHeroMoveActive = true;
+      await sleep(10);
+      el.removeAttribute("style");
+      await sleep(800);
+      this.isHeroMoveActive = false;
+      done();
+    },
+    heroLeaveHandler(el, done) {
+      done();
     }
   }
 };
@@ -154,5 +184,8 @@ export default {
 .april-round-boss {
   border-radius: 50%;
   border: 2px solid #ffe712;
+}
+.hero-move-active {
+  transition: transform 0.5s;
 }
 </style>

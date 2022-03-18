@@ -1,12 +1,12 @@
 <template>
-  <UserDialog :title="$t('buy-third-action-point')" @close="close">
+  <UserDialog :title="$t('buy-third-action-point')" @close="close()">
     <!-- <template v-slot:content>
       <div class="font-size-20">
         {{ $t("march-max-health-booster-description") }}
       </div>
     </template> -->
     <template v-slot:footer>
-      <CustomButton type="red" @click="close"
+      <CustomButton type="red" @click="close()"
         >{{ $t("btn-close") }}
       </CustomButton>
       <CustomButton
@@ -41,15 +41,15 @@ export default {
     }
   },
   methods: {
-    async close() {
-      this.$close();
+    async close(hasBought = false) {
+      this.$close({ hasBought });
     },
     async buyHandler() {
       if (!this.checkGoldBalance(this.buyPrice)) {
         return;
       }
       await this.$store.dispatch("april/purchaseAction");
-      this.close();
+      this.close(true);
     }
   }
 };

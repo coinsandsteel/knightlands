@@ -130,8 +130,6 @@ export default {
     async showSummary() {
       const showDialog = create(AprilPlaySummary);
       const result = await showDialog();
-      // this.currentStep = PET_SELECT_STEP;
-      console.log("result", result);
       if (!(result && result.resurrection)) {
         this.showHeroSelectStep();
       }

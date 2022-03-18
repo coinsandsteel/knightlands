@@ -46,7 +46,7 @@
           </TransitionGroup>
           <!-- purchase action point -->
           <div
-            v-if="canPurchaseActionPoint"
+            v-if="canPurchaseActionPoint && !hasBoughtActionPoints"
             class="step-cell step-cell-add margin-top-1 margin-bottom-1"
             @click="addActionPointHandler"
           ></div>
@@ -180,7 +180,8 @@ export default {
     return {
       // baseSize: 60
       count: 0,
-      currentCards: []
+      currentCards: [],
+      hasBoughtActionPoints: false
     };
   },
 
@@ -197,6 +198,7 @@ export default {
     ]),
     ...mapGetters("april", [
       "cards",
+      "selectedCard",
       "damage",
       "units",
       "canPurchaseActionPoint"
@@ -247,8 +249,22 @@ export default {
       this.currentCards = [...value];
     },
     actionPoints(value, oldValue) {
-      if (value >= 2 && typeof oldValue === "number" && value - oldValue >= 2) {
-        this.$store.commit("setCanPurchaseActionPoint", true);
+      // console.log("actionPoints", value, oldValue, this.hasBoughtActionPoints);
+      // if (this.hasBoughtActionPoints) {
+      //   this.hasBoughtActionPoints = false;
+      //   console.log("set actionPoints false");
+      //   this.$store.commit("april/setCanPurchaseActionPoint", false);
+      //   return;
+      // }
+      if (
+        typeof oldValue === "number" &&
+        value < oldValue &&
+        this.hasBoughtActionPoints
+      ) {
+        this.hasBoughtActionPoints = false;
+      }
+      if (value >= 2 && typeof oldValue === "number" && value > oldValue) {
+        this.$store.commit("april/setCanPurchaseActionPoint", true);
       }
     },
     sessionResult(value) {
@@ -409,9 +425,12 @@ export default {
       );
     },
 
-    addActionPointHandler() {
+    async addActionPointHandler() {
       const showDialog = create(AprilPurchaseThirdActionPoint);
-      showDialog();
+      const result = await showDialog();
+      if (result && result.hasBought) {
+        this.hasBoughtActionPoints = true;
+      }
     },
 
     skipTurnHandler() {
@@ -419,7 +438,7 @@ export default {
     },
 
     cellClickHandler(cell, cellIndex) {
-      if (!this.selectedCardId) {
+      if (!this.selectedCard) {
         return;
       }
       this.$store.dispatch("april/move", {

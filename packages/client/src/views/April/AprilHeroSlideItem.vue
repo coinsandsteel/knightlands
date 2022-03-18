@@ -14,7 +14,7 @@
       ></div>
       <div
         class="hero-slider-item-hero-image absolute-center"
-        :class="`april-hero-${hero.heroClass}`"
+        :class="`april-hero--${hero.heroClass}`"
       ></div>
     </div>
   </div>
