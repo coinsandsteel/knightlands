@@ -270,7 +270,7 @@ export default {
       const result = await showDialog();
       if (result) {
         this.$store.dispatch("april/exit");
-        this.$emit("exit", true);
+        this.$emit("next", true);
       }
     },
     testDrawCards() {
@@ -419,9 +419,9 @@ export default {
     },
 
     cellClickHandler(cell, cellIndex) {
-      if (!this.selectedCardId) {
+      /*if (!this.selectedCardId) {
         return;
-      }
+      }*/
       this.$store.dispatch("april/move", {
         cardId: this.selectedCardId.toString(),
         index: cellIndex
