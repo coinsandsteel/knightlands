@@ -438,9 +438,9 @@ export default {
     },
 
     cellClickHandler(cell, cellIndex) {
-      if (!this.selectedCard) {
+      /* if (!this.selectedCard) {
         return;
-      }
+      } */
       this.$store.dispatch("april/move", {
         cardId: this.selectedCardId.toString(),
         index: cellIndex
