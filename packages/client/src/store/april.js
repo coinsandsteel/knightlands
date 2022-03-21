@@ -256,10 +256,11 @@ export default {
       let result = await this.$app.$game._wrapOperation(Operations.AprilLoad);
       store.commit("setInitialState", result.response);
     },
-    // type: REWARD_TYPE_HOUR | REWARD_TYPE_DAILY | REWARD_TYPE_EVENT
-    async claimReward(store, { type }) {
+    // type: REWARD_TYPE_HOUR | REWARD_TYPE_DAILY | REWARD_TYPE_RANKING | REWARD_TYPE_HERO
+    // heroClass is need only if type == REWARD_TYPE_HERO
+    async claimReward(store, { type, heroClass }) {
       return (
-        await this.$app.$game._wrapOperation(Operations.AprilClaimReward, type)
+        await this.$app.$game._wrapOperation(Operations.AprilClaimReward, { type, heroClass })
       ).response;
     },
     async rankings() {
