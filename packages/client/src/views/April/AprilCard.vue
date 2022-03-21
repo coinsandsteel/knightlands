@@ -109,6 +109,9 @@ export default {
 .april-card--selected {
   background-image: url("/images/april/chess_card_selected.png");
 }
+.april-card-background--rook {
+  background-size: 40%;
+}
 .april-card-background {
   border-radius: 6px;
   background-size: 50%;
