@@ -158,7 +158,7 @@ export default {
     async claimRewards() {
       let items = await this.performRequestNoCatch(
         this.$store.dispatch("april/claimReward", {
-          type: april.REWARD_TYPE_EVENT
+          type: april.REWARD_TYPE_RANKING
         })
       );
       if (items.length) {

@@ -66,18 +66,21 @@
           </div>
         </div>
         <!-- hp -->
-        <TransitionGroup
-          appear
-          tag="div"
-          name="fade"
-          class="hp-cells-wrapper flex flex-column margin-left-1"
-        >
-          <div
-            v-for="(cell, cellIndex) in hpCells"
-            :key="cellIndex"
-            class="hp-cell margin-top-1 margin-bottom-1"
-          ></div>
-        </TransitionGroup>
+        <div class="flex flex-column margin-top-1 margin-left-1">
+          <AprilHp v-if="true" :value="hpCells.length" />
+          <TransitionGroup
+            appear
+            tag="div"
+            name="fade"
+            class="hp-cells-wrapper flex flex-column"
+          >
+            <div
+              v-for="(cell, cellIndex) in hpCells"
+              :key="cellIndex"
+              class="hp-cell margin-bottom-1"
+            ></div>
+          </TransitionGroup>
+        </div>
       </div>
     </div>
 
@@ -167,6 +170,7 @@ import * as april from "@/../../knightlands-shared/april";
 import AprilGold from "@/views/April/AprilGold.vue";
 import AprilStopGame from "@/views/April/AprilStopGame.vue";
 import AprilCard from "@/views/April/AprilCard.vue";
+import AprilHp from "@/views/April/AprilHp.vue";
 import AprilBoardCell from "@/views/April/AprilBoardCell.vue";
 import AprilPurchaseThirdActionPoint from "@/views/April/AprilPurchaseThirdActionPoint.vue";
 
@@ -174,7 +178,8 @@ export default {
   components: {
     AprilGold,
     AprilCard,
-    AprilBoardCell
+    AprilBoardCell,
+    AprilHp
   },
 
   data() {
@@ -503,7 +508,8 @@ export default {
   // border-top-left-radius: 0px;
   // border-bottom-left-radius: 0px;
   // border-left: none;
-  background: url("/images/april/chess_card.png") right/200% 100% no-repeat;
+  background: url(/images/april/chess_card_selected.png) center / 0,
+    url("/images/april/chess_card.png") right / 200% 100% no-repeat;
 }
 .april-play-deck-2 {
   // overflow-x: hidden;
@@ -512,7 +518,7 @@ export default {
   // border-top-right-radius: 0px;
   // border-bottom-right-radius: 0px;
   // border-right: none;
-  background: url("/images/april/chess_card.png") left/200% 100% no-repeat;
+  background: url("/images/april/chess_card.png") left / 200% 100% no-repeat;
 }
 .april-cards-container {
   height: calc(var(--base-size) * 1.2);
@@ -528,6 +534,13 @@ export default {
 }
 .hp-cell {
   background: url("/images/april/hp.png") center / 100% no-repeat;
+}
+.april-hp {
+  height: calc(var(--base-size) * 0.3);
+  margin-top: -2px;
+  ::v-deep .april-hp-icons {
+    background-size: 95%;
+  }
 }
 .step-cell-add {
   background: url("/images/april/action_point_add.png") center / 100% no-repeat;

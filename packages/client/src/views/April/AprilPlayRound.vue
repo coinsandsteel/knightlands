@@ -88,11 +88,7 @@ export default {
   computed: {
     ...mapGetters("april", ["sessionRewardCardClass"]),
     ...mapState(["appSize"]),
-    ...mapState("april", [
-      "balance",
-      "level",
-      "heroClass"
-    ]),
+    ...mapState("april", ["balance", "level", "heroClass"]),
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 10)
