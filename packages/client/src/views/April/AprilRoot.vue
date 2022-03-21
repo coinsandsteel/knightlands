@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
@@ -56,7 +56,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("april", ["dailyRewards"])
+    ...mapGetters("april", ["dailyRewards"])
   },
   created() {
     this.title = this.$t("april-event");

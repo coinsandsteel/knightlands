@@ -2651,5 +2651,7 @@
   "skip-turn": "Skip Turn",
   "your-result": "Your result",
   "buy-for": "Buy for",
-  "exit": "Exit"
+  "exit": "Exit",
+  "close": "Close",
+  "april-heroes-unlocked-successively": "Heroes must be unlocked successively"
 }

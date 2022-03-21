@@ -30,13 +30,15 @@
       <div
         class="april-play-board-wrapper flex flex-row flex-no-wrap flex-justify-center width-100"
       >
-        <div class="flex flex-column">
+        <div
+          class="flex flex-column side-column side-column--left margin-right-1"
+        >
           <!-- action points -->
           <TransitionGroup
             appear
             tag="div"
             name="fade"
-            class="step-cells-wrapper flex flex-column margin-right-1"
+            class="step-cells-wrapper flex flex-column"
           >
             <div
               v-for="(cell, cellIndex) in stepCells"
@@ -66,9 +68,12 @@
           </div>
         </div>
         <!-- hp -->
-        <div class="flex flex-column margin-top-1 margin-left-1">
-          <AprilHp v-if="true" :value="hpCells.length" />
+        <div
+          class="flex flex-column margin-top-1 margin-left-1 side-column side-column--right"
+        >
+          <AprilHp v-if="hpCells.length > 6" :value="hpCells.length" />
           <TransitionGroup
+            v-else
             appear
             tag="div"
             name="fade"
@@ -335,8 +340,7 @@ export default {
       const hp = this.hp;
       const actionPoints = this.actionPoints;
       this.$store.commit("april/updateState", {
-        actionPoints: actionPoints - 1,
-        hp: hp - 2
+        actionPoints: actionPoints - 1
       });
       await sleep(100);
       this.count++;
@@ -408,7 +412,7 @@ export default {
         units: this.count % 2 ? units2 : units1,
         damage: this.count % 2 ? damage2 : damage1,
         actionPoints,
-        hp
+        hp: hp > 6 ? 3 : 10
       });
     },
 
@@ -544,6 +548,12 @@ export default {
 }
 .step-cell-add {
   background: url("/images/april/action_point_add.png") center / 100% no-repeat;
+}
+.side-column {
+  min-width: 40px;
+}
+.side-column--left {
+  align-items: end;
 }
 .april-play-board {
   display: grid;

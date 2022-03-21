@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import * as april from "@/../../knightlands-shared/april";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import AprilDailyReward from "@/views/April/AprilDailyReward.vue";
@@ -36,7 +36,7 @@ export default {
   mixins: [NetworkRequestErrorMixin],
   components: { AprilDailyReward },
   computed: {
-    ...mapState("april", ["dailyRewards"])
+    ...mapGetters("april", ["dailyRewards"])
   },
   methods: {
     async collectRewards() {

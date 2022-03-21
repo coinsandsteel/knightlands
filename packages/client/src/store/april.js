@@ -85,6 +85,30 @@ export default {
         ? state.croupier.cards.find(({ id }) => id === state.selectedCardId)
         : null;
     },
+    dailyRewards(state) {
+      return state.rewards ? state.rewards.dailyRewards || [] : [];
+    },
+    heroRewards(state) {
+      if (!(state.rewards && state.rewards.heroRewards)) {
+        null;
+      }
+
+      const keys = Object.keys(state.rewards.heroRewards);
+      const heroRewards = {};
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const reward = { ...state.rewards.heroRewards[key] };
+        reward.goal = april.HERO_REWARDS_GOALS[key];
+        heroRewards[key] = reward;
+      }
+      return heroRewards;
+    },
+    hourReward(state) {
+      if (!state.rewards) {
+        return;
+      }
+      return state.rewards.hourReward;
+    },
     moveZones(state, getters) {
       return getters.selectedCard ? getters.selectedCard.nextCells || [] : [];
     },
@@ -260,7 +284,10 @@ export default {
     // heroClass is need only if type == REWARD_TYPE_HERO
     async claimReward(store, { type, heroClass }) {
       return (
-        await this.$app.$game._wrapOperation(Operations.AprilClaimReward, { type, heroClass })
+        await this.$app.$game._wrapOperation(Operations.AprilClaimReward, {
+          type,
+          heroClass
+        })
       ).response;
     },
     async rankings() {

@@ -50,16 +50,16 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("april", ["heroes"]),
+    ...mapGetters("april", ["heroes", "heroRewards"]),
     achievements() {
       const achievements = [];
       achievements;
       for (let i = 0; i < this.heroes.length; i++) {
         const achievement = { ...this.heroes[i] };
-        // @todo
-        achievement.points = 5;
-        achievement.maxPoints = 100;
-        achievement.canReceive = true;
+        const heroReward = this.heroRewards[achievement.heroClass];
+        achievement.points = heroReward.score;
+        achievement.maxPoints = heroReward.goal;
+        achievement.canReceive = !heroReward.claimed;
 
         achievements.push(achievement);
       }

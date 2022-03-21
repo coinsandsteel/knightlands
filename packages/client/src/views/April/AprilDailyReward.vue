@@ -58,8 +58,9 @@ export default {
 }
 .ticket-background {
   background-repeat: no-repeat;
-  background-image: url("/images/march/march_tickets.png");
+  background-image: url("/images/april/april_tickets.png");
   background-size: 100%;
+  background-position: center;
   transform: scale(0.5, 0.5);
 }
 
