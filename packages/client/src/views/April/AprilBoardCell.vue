@@ -8,6 +8,13 @@
     @click="clickHandler"
   >
     <div class="april-board-cell absolute-stretch">
+      <!-- available move -->
+      <Transition name="fade" appear>
+        <div
+          v-if="isAvailableMove"
+          class="april-board-cell-available-move absolute-stretch"
+        />
+      </Transition>
       <!-- hit zone -->
       <Transition name="fade" appear>
         <div
@@ -23,13 +30,6 @@
             {{ damagePoint }}
           </div>
         </div>
-      </Transition>
-      <!-- available move -->
-      <Transition name="fade" appear>
-        <div
-          v-if="isAvailableMove"
-          class="april-board-cell-available-move absolute-stretch"
-        />
       </Transition>
       <!-- enemy -->
       <Transition name="fade" appear>
@@ -228,10 +228,10 @@ export default {
 .april-board-cell-container {
   width: calc(var(--base-size) * 0.8);
   height: calc(var(--base-size) * 0.8);
-  background: #245178;
+  // background: #245178;
 }
 .april-board-cell-container--black {
-  background: #12283d;
+  // background: #12283d;
 }
 .april-board-cell {
 }

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="width-100 height-100 dummy-height flex flex-column flex-no-wrap overflow-hidden"
+    class="april-play-field width-100 height-100 dummy-height flex flex-column flex-no-wrap overflow-hidden"
     :style="{ '--base-size': `${baseSize}px` }"
   >
     <div
@@ -53,7 +53,8 @@
         </div>
         <!-- chess board -->
         <div class="april-play-board-border-outer">
-          <div class="april-play-board-border">
+          <div class="april-play-board-border relative">
+            <div class="april-play-board-background absolute-stretch"></div>
             <div class="april-play-board">
               <AprilBoardCell
                 v-for="(cell, cellIndex) in boardCells"
@@ -304,7 +305,10 @@ export default {
       for (let i = 0; i < num; i++) {
         const card = {
           id: Date.now() + i,
-          cardClass: cardClasses[random(0, cardClasses.length - 1)]
+          cardClass: cardClasses[random(0, cardClasses.length - 1)],
+          nextCells: [...new Array(random(1, 3)).fill(null)].map(() =>
+            random(0, 24)
+          )
         };
         cards.push(card);
       }
@@ -457,6 +461,10 @@ export default {
 </script>
 
 <style scoped lang="less">
+.april-play-field {
+  background: url("/images/april/background.jpg") center bottom / cover
+    no-repeat;
+}
 .april-play-stat {
   background: #2f7285;
 }
@@ -516,30 +524,37 @@ export default {
   height: calc(var(--base-size) * 0.3);
 }
 .step-cell {
-  background: url("/images/april/action_point.png") center/100% no-repeat;
+  background: url("/images/april/action_point.png") center / 100% no-repeat;
 }
 .hp-cell {
-  background: url("/images/april/hp.png") center/100% no-repeat;
+  background: url("/images/april/hp.png") center / 100% no-repeat;
 }
 .step-cell-add {
-  background: url("/images/april/action_point_add.png") center/100% no-repeat;
+  background: url("/images/april/action_point_add.png") center / 100% no-repeat;
 }
 .april-play-board {
   display: grid;
   grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));
 }
 .april-play-board-border-outer {
-  border: 1px solid #748da1;
-  border-radius: 4px;
+  // border: 1px solid #748da1;
+  // border-radius: 4px;
 }
 .april-play-board-border {
-  border: 4px solid #748da1;
-  border-radius: 4px;
+  // border: 4px solid #748da1;
+  // border-radius: 4px;
+  padding: 4px;
+}
+.april-play-board-background {
+  background: url("/images/april/board.png") center / 100% no-repeat;
 }
 .april-play-deck-counter {
-  left: 50%;
+  left: 60%;
   top: 0;
   transform: translate(-50%, -120%);
+}
+.april-play-deck-1 .april-play-deck-counter {
+  left: 40%;
 }
 // animation
 // .card-move-enter-active,

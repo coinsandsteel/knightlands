@@ -8,11 +8,14 @@
     }"
     @click="$emit('click', card)"
   >
-    <div
-      class="april-card-wrapper"
-      :class="{ 'april-card-wrapper--selected': isSelected }"
-    >
-      <div class="april-card relative" :class="`april-card--${card.cardClass}`">
+    <div class="april-card-wrapper">
+      <div
+        class="april-card relative"
+        :class="[
+          `april-card--${card.cardClass}`,
+          { 'april-card--selected': isSelected }
+        ]"
+      >
         <div
           class="april-card-background absolute-stretch"
           :class="`april-card-background--${card.cardClass}`"
@@ -22,7 +25,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   props: {
     card: Object,
@@ -33,9 +36,11 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("april", ["selectedCardId"]),
+    ...mapGetters("april", ["selectedCard"]),
     isSelected() {
-      return this.card && this.card.id === this.selectedCardId;
+      return (
+        this.card && this.selectedCard && this.card.id === this.selectedCard.id
+      );
     },
     indexFromCenter2() {
       return this.index + 0.5 - this.totalCards / 2;
@@ -99,7 +104,10 @@ export default {
   // border-radius: 6px;
   // background: #fff;
   // border: 1px solid #eee;
-  background: url("/images/april/chess_card.png") center/100% no-repeat;
+  background: url("/images/april/chess_card.png") center / 100% no-repeat;
+}
+.april-card--selected {
+  background-image: url("/images/april/chess_card_selected.png");
 }
 .april-card-background {
   border-radius: 6px;
