@@ -13,8 +13,16 @@ export default {
       sessionGold: 0,
       gold: 0
     },
-    dailyRewards: [],
-    hourRewardClaimed: null, // timestamp, sec
+    rewards: {
+      dailyRewards: [],
+      hourReward: {
+        // First hour starts after daily reward was received
+        // nextRewardAvailable resets after user claimed an hour reward
+        nextRewardAvailable: null, // timestamp, sec
+        left: 3
+      }
+    },
+
     heroes: [],
     canPurchaseActionPoint: false,
 
@@ -96,11 +104,11 @@ export default {
         state.balance = { ...state.balance, ...data.balance };
       }
       if (data.dailyRewards !== undefined) {
-        state.dailyRewards = data.dailyRewards;
+        state.rewards.dailyRewards = data.dailyRewards;
         this.$app.$emit("april-show-daily-reward");
       }
-      if (data.hourRewardClaimed !== undefined) {
-        state.hourRewardClaimed = data.hourRewardClaimed;
+      if (data.hourReward !== undefined) {
+        state.rewards.hourReward = data.hourReward;
       }
       if (data.heroes !== undefined) {
         state.heroes = data.heroes;
@@ -248,6 +256,10 @@ export default {
     },
     async rankings() {
       return (await this.$app.$game._wrapOperation(Operations.AprilRankings))
+        .response;
+    },
+    async heroStat() {
+      return (await this.$app.$game._wrapOperation(Operations.AprilHeroStat))
         .response;
     },
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
