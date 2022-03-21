@@ -88,7 +88,7 @@ export default {
     dailyRewards(state) {
       return state.rewards ? state.rewards.dailyRewards || [] : [];
     },
-    heroRewards(state) {
+    heroRewards(state, getters) {
       if (!(state.rewards && state.rewards.heroRewards)) {
         null;
       }
@@ -97,8 +97,9 @@ export default {
       const heroRewards = {};
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
+        const hero = getters.heroes.find(({ heroClass }) => heroClass === key);
         const reward = { ...state.rewards.heroRewards[key] };
-        reward.goal = april.HERO_REWARDS_GOALS[key];
+        reward.goal = hero.rewardGoal;
         heroRewards[key] = reward;
       }
       return heroRewards;

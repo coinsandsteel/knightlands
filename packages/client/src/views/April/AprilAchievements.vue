@@ -59,7 +59,8 @@ export default {
         const heroReward = this.heroRewards[achievement.heroClass];
         achievement.points = heroReward.score;
         achievement.maxPoints = heroReward.goal;
-        achievement.canReceive = !heroReward.claimed;
+        achievement.canReceive =
+          heroReward.score > heroReward.goal && !heroReward.claimed;
 
         achievements.push(achievement);
       }
