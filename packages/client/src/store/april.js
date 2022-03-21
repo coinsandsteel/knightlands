@@ -15,6 +15,11 @@ export default {
     },
     rewards: {
       dailyRewards: [],
+      heroRewards: {
+        [april.HERO_CLASS_KNIGHT]: { score: 0, claimed: false },
+        [april.HERO_CLASS_PALADIN]: { score: 0, claimed: false },
+        [april.HERO_CLASS_ROGUE]: { score: 0, claimed: false }
+      },
       hourReward: {
         // First hour starts after daily reward was received
         // nextRewardAvailable resets after user claimed an hour reward
@@ -106,6 +111,9 @@ export default {
       if (data.dailyRewards !== undefined) {
         state.rewards.dailyRewards = data.dailyRewards;
         this.$app.$emit("april-show-daily-reward");
+      }
+      if (data.heroRewards !== undefined) {
+        state.rewards.heroRewards = data.heroRewards;
       }
       if (data.hourReward !== undefined) {
         state.rewards.hourReward = data.hourReward;
