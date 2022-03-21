@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import { sleep } from "@/helpers/utils";
 import * as april from "@/../../knightlands-shared/april";
@@ -86,11 +86,11 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("april", ["sessionRewardCardClass"]),
     ...mapState(["appSize"]),
     ...mapState("april", [
       "balance",
       "level",
-      "sessionRewardCardClass",
       "heroClass"
     ]),
     baseSize() {

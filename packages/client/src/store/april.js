@@ -35,7 +35,6 @@ export default {
     actionPoints: 2,
     sessionResult: null, // SESSION_RESULT_SUCCESS | SESSION_RESULT_FAIL
     selectedCardId: null,
-    sessionRewardCardClass: april.CARD_CLASS_QUEEN,
     isDisabled: false, // disable interaction, wait for animation
 
     // ###### Croupier ######
@@ -52,6 +51,9 @@ export default {
     }
   },
   getters: {
+    sessionRewardCardClass(state){
+      return state.croupier.newCard;
+    },
     heroes(state) {
       return april.HEROES.map(hero => {
         return {
@@ -135,6 +137,9 @@ export default {
       }
 
       // Croupier
+      if (data.newCard !== undefined) {
+        state.croupier.newCard = data.newCard;
+      }
       if (data.cardsInQueue !== undefined) {
         state.croupier.cardsInQueue = data.cardsInQueue;
       }
@@ -181,6 +186,7 @@ export default {
 
       // Croupier
       const croupierData = data.map.croupier;
+      state.croupier.newCard = croupierData.newCard;
       state.croupier.cardsInQueue = croupierData.cardsInQueue;
       state.croupier.cards = croupierData.cards;
       state.croupier.usedCards = croupierData.usedCards;

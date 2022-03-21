@@ -444,10 +444,9 @@ export default {
     },
 
     cellClickHandler(cell, cellIndex) {
-      // @todo: uncomment
-      // if (!this.selectedCard) {
-      //   return;
-      // }
+      if (!this.selectedCardId) {
+        return;
+      }
       this.$store.dispatch("april/move", {
         cardId: this.selectedCardId.toString(),
         index: cellIndex
