@@ -40,10 +40,14 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import { create } from "vue-modal-dialogs";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as april from "@/../../knightlands-shared/april";
 import AprilHeroSlideItem from "@/views/April/AprilHeroSlideItem.vue";
+import ItemsReceived from "@/components/ItemsReceived.vue";
 
 export default {
+  mixins: [NetworkRequestErrorMixin],
   components: {
     AprilHeroSlideItem
   },
@@ -69,12 +73,38 @@ export default {
       return achievements;
     }
   },
+
+  activated() {
+    this.fetchHeroStat();
+  },
+
   methods: {
-    claimHandler(achievement) {
-      this.$store.dispatch("april/claimReward", {
-        type: april.REWARD_TYPE_HERO,
-        heroClass: achievement.heroClass
-      });
+    async fetchHeroStat() {
+      let items = await this.performRequestNoCatch(
+        this.$store.dispatch("april/heroStat")
+      );
+
+      if (!(items && items[april.HERO_CLASS_KNIGHT])) {
+        return;
+      }
+
+      this.$store.commit("april/updateState", { heroRewards: items });
+    },
+    async claimHandler(achievement) {
+      const items = await this.performRequestNoCatch(
+        this.$store.dispatch("april/claimReward", {
+          type: april.REWARD_TYPE_HERO,
+          heroClass: achievement.heroClass
+        })
+      );
+
+      this.fetchHeroStat();
+
+      if (items.length) {
+        const ShowItems = create(ItemsReceived, "items");
+        await ShowItems(items);
+        this.hasRewards = false;
+      }
     }
   }
 };
