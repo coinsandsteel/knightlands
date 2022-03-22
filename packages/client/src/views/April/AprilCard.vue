@@ -13,7 +13,10 @@
         class="april-card relative"
         :class="[
           `april-card--${card.cardClass}`,
-          { 'april-card--selected': isSelected }
+          {
+            'april-card--selected': isSelected,
+            'april-card--flipped': isFlipped
+          }
         ]"
       >
         <div
@@ -26,6 +29,8 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import { sleep } from "@/helpers/utils";
+
 export default {
   props: {
     card: Object,
@@ -33,10 +38,15 @@ export default {
     totalCards: Number
   },
   data() {
-    return {};
+    return {
+      isFlipped: false
+    };
   },
   computed: {
     ...mapGetters("april", ["selectedCard"]),
+    cardClass() {
+      return this.card ? this.card.cardClass : null;
+    },
     isSelected() {
       return (
         this.card && this.selectedCard && this.card.id === this.selectedCard.id
@@ -83,6 +93,21 @@ export default {
     // transform() {
     //   return `translate(${this.translateX}, ${this.translateY})`;
     // }
+  },
+  watch: {
+    cardClass(value) {
+      if (!value) {
+        return;
+      }
+      this.animateCardClassChanged();
+    }
+  },
+  methods: {
+    async animateCardClassChanged() {
+      this.isFlipped = true;
+      await sleep(800);
+      this.isFlipped = false;
+    }
   }
 };
 </script>
@@ -125,5 +150,19 @@ export default {
 .april-card-background--knight,
 .april-card-background--king {
   background-size: 60%;
+}
+// animation
+.april-card--flipped {
+  transform-style: preserve-3d;
+  animation: flip 0.8s;
+}
+// animate
+@keyframes flip {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
 }
 </style>

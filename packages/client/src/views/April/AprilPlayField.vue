@@ -151,6 +151,13 @@
       <CustomButton
         type="green"
         class="inline-block margin-right-2 margin-top-1"
+        @click="testPawnToQueen"
+      >
+        Pawn to Queen
+      </CustomButton>
+      <CustomButton
+        type="green"
+        class="inline-block margin-right-2 margin-top-1"
         @click="testWin"
       >
         Win
@@ -169,6 +176,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import random from "lodash/random";
+import cloneDeep from "lodash/cloneDeep";
 import { create } from "vue-modal-dialogs";
 import { sleep } from "@/helpers/utils";
 import * as april from "@/../../knightlands-shared/april";
@@ -414,6 +422,19 @@ export default {
         actionPoints,
         hp: hp > 6 ? 3 : 10
       });
+    },
+
+    testPawnToQueen() {
+      const cards = cloneDeep(this.currentCards);
+      const card = cards.find(
+        ({ cardClass }) => cardClass === april.CARD_CLASS_PAWN
+      );
+      if (!card) {
+        return;
+      }
+
+      card.cardClass = april.CARD_CLASS_QUEEN;
+      this.$store.commit("april/updateState", { cards });
     },
 
     testWin() {
