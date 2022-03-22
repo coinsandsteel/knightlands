@@ -7,16 +7,14 @@
   </div>
 </template>
 <script>
-// @todo
-import meta from "@/march_meta.json";
+import meta from "@/april_meta.json";
 
 export default {
   props: ["value"],
   computed: {
     ticketsCount() {
       const itemsCount = this.$game.inventory.getItemsCountByTemplate(
-        // @todo
-        meta.marchTicket
+        meta.aprilTicket
       );
 
       return itemsCount || 0;

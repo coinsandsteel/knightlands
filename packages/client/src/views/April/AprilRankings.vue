@@ -81,8 +81,7 @@
 import AprilRankingElement from "@/views/April/AprilRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as april from "@/../../knightlands-shared/april";
-// @todo
-import meta from "@/march_meta.json";
+import meta from "@/april_meta.json";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import Timer from "@/timer.js";
@@ -116,9 +115,8 @@ export default {
       return this.currentRank.id == id;
     },
     async fetchRankings() {
-      // @todo
       const result = await this.performRequest(
-        this.$store.dispatch("march/rankings")
+        this.$store.dispatch("april/rankings")
       );
 
       this.hasRewards = result.hasRewards;

@@ -1,10 +1,5 @@
 <template>
   <UserDialog :title="$t('buy-third-action-point')" @close="close()">
-    <!-- <template v-slot:content>
-      <div class="font-size-20">
-        {{ $t("march-max-health-booster-description") }}
-      </div>
-    </template> -->
     <template v-slot:footer>
       <CustomButton type="red" @click="close()"
         >{{ $t("btn-close") }}
