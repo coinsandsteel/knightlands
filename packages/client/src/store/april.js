@@ -94,6 +94,7 @@ export default {
       }
 
       const keys = Object.keys(state.rewards.heroRewards);
+      console.log("🚀 ~ file: april.js ~ line 97 ~ heroRewards ~ state.rewards.heroRewards", state.rewards.heroRewards)
       const heroRewards = {};
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
@@ -205,9 +206,9 @@ export default {
       // User data
       const userData = data.user;
       state.balance = userData.balance;
-      state.dailyRewards = userData.dailyRewards;
       state.hourRewardClaimed = userData.hourRewardClaimed;
       state.heroes = userData.heroes;
+      state.rewards = userData.rewards;
 
       // Map data
       const mapData = data.map;
