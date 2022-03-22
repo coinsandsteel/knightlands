@@ -94,7 +94,6 @@ export default {
       }
 
       const keys = Object.keys(state.rewards.heroRewards);
-      console.log("🚀 ~ file: april.js ~ line 97 ~ heroRewards ~ state.rewards.heroRewards", state.rewards.heroRewards)
       const heroRewards = {};
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
@@ -327,8 +326,12 @@ export default {
       }, 1000);
     },
     // Skip a turn
-    async skip() {
+    async skip(store) {
       await this.$app.$game._wrapOperation(Operations.AprilSkip);
+      store.commit("setSelectedCardId", null);
+      setTimeout(() => {
+        store.commit("setIsDisabled", false);
+      }, 1000);
     },
     // Purchase third action
     async purchaseAction({ commit }) {

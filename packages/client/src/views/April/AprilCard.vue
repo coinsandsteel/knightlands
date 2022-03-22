@@ -109,13 +109,21 @@ export default {
 .april-card--selected {
   background-image: url("/images/april/chess_card_selected.png");
 }
-.april-card-background--rook {
-  background-size: 40%;
-}
 .april-card-background {
   border-radius: 6px;
   background-size: 50%;
   background-position: center;
   background-repeat: no-repeat;
+}
+.april-card-background--rook,
+.april-card-background--pawn {
+  background-size: 45%;
+}
+.april-card-background--queen {
+  background-size: 70%;
+}
+.april-card-background--knight,
+.april-card-background--king {
+  background-size: 60%;
 }
 </style>

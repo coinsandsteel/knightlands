@@ -214,10 +214,9 @@ export default {
       if (this.isDisabled) {
         return;
       }
-      // @todo: uncomment
-      // if (!this.isAvailableMove) {
-      //   return;
-      // }
+      if (!this.isAvailableMove) {
+        return;
+      }
 
       this.$emit("click");
     }
