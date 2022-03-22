@@ -54,7 +54,8 @@ export default {
     croupier: {
       cardsInQueue: 5,
       usedCards: [],
-      cards: 0
+      cards: 0,
+      newCard: null
     },
 
     // ###### Playground ######
