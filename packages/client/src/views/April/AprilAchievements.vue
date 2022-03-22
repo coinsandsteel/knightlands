@@ -40,6 +40,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import * as april from "@/../../knightlands-shared/april";
 import AprilHeroSlideItem from "@/views/April/AprilHeroSlideItem.vue";
 
 export default {
@@ -69,7 +70,12 @@ export default {
     }
   },
   methods: {
-    receiveHandler() {}
+    receiveHandler(achievement) {
+      this.$store.dispatch("april/claimReward", {
+        type: april.REWARD_TYPE_HERO,
+        heroClass: achievement.heroClass
+      });
+    }
   }
 };
 </script>

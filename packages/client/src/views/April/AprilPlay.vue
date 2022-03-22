@@ -31,12 +31,25 @@
         ></BackButton> -->
         <div class="flex-full"></div>
         <div v-if="currentStep === HERO_SELECT_STEP">
+          <template v-if="isHourRewardVisible">
+            <CustomButton
+              v-if="canCollectHourReward"
+              type="green"
+              class="inline-block margin-right-2 margin-top-1"
+              @click="collect1TicketHandler"
+            >
+              {{ $t("collect-free-ticket") }}
+            </CustomButton>
+            <div class="inline-block font-size-22" v-else>
+              {{ freeTicketTimeLeft }}
+            </div>
+          </template>
           <CustomButton
-            type="green"
+            type="yellow"
             class="inline-block margin-right-2 margin-top-1"
             @click="goToShop"
           >
-            Purchase gold
+            {{ $t("purchase-gold") }}
           </CustomButton>
         </div>
       </div>
@@ -47,6 +60,7 @@
 import * as april from "@/../../knightlands-shared/april";
 import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
+import Timer from "@/timer.js";
 import AppSection from "@/AppSection.vue";
 import AprilHeroSelect from "@/views/April/AprilHeroSelect.vue";
 // import AprilBoosterSelect from "@/views/April/AprilBoosterSelect.vue";
@@ -72,6 +86,7 @@ export default {
   },
   data() {
     return {
+      hourRewardTimer: new Timer(true),
       HERO_SELECT_STEP,
       // BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
@@ -81,7 +96,23 @@ export default {
   },
   computed: {
     ...mapState("april", ["loaded", "sessionResult", "level"]),
-    ...mapGetters("april", ["selectedHero"])
+    ...mapGetters("april", ["selectedHero", "hourReward"]),
+    hourRewardLeft() {
+      return this.hourReward ? this.hourReward.left || 0 : 0;
+    },
+    isHourRewardVisible() {
+      return this.hourRewardLeft > 0;
+    },
+    canCollectHourReward() {
+      return this.isHourRewardVisible && this.hourRewardTimer.timeLeft <= 0;
+    },
+    freeTicketTimeLeft() {
+      if (!this.hourRewardTimer) {
+        return "";
+      }
+      // return this.$t("free-ticket-in", { time: "1:00:00" });
+      return this.$t("free-ticket-in", { time: this.hourRewardTimer.value });
+    }
   },
   watch: {
     sessionResult(value) {
@@ -95,7 +126,14 @@ export default {
       }
 
       this.showStartNewLevelStep();
+    },
+    hourRewardLeft() {
+      this.updateHourRewardTimerValue();
     }
+  },
+
+  mounted() {
+    this.updateHourRewardTimerValue();
   },
   methods: {
     async testAction(action) {
@@ -148,6 +186,19 @@ export default {
     },
     goToShop() {
       this.$router.push({ name: "april-shop" });
+    },
+    collect1TicketHandler() {
+      this.$store.dispatch("april/claimReward", {
+        type: april.REWARD_TYPE_HOUR
+      });
+    },
+    updateHourRewardTimerValue() {
+      if (!this.hourReward) {
+        return;
+      }
+      this.hourRewardTimer.timeLeft =
+        this.hourRewardLeft <= 0 ? 0 : this.hourReward.nextRewardAvailable || 0;
+      this.hourRewardTimer.update();
     }
   }
 };
