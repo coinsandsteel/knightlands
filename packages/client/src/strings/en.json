@@ -2653,5 +2653,8 @@
   "buy-for": "Buy for",
   "exit": "Exit",
   "close": "Close",
-  "april-heroes-unlocked-successively": "Heroes must be unlocked successively"
+  "april-heroes-unlocked-successively": "Heroes must be unlocked successively",
+  "collect-free-ticket": "Collect free ticket",
+  "free-ticket-in": "Collect free ticket in {time}",
+  "purchase-gold": "Purchase gold"
 }
