@@ -196,8 +196,11 @@ export default {
       if (!this.hourReward) {
         return;
       }
-      this.hourRewardTimer.timeLeft =
-        this.hourRewardLeft <= 0 ? 0 : this.hourReward.nextRewardAvailable || 0;
+
+      this.hourRewardTimer.timeLeft = Math.max(
+        0,
+        (this.hourReward.nextRewardAvailable || 0) - this.$game.nowSec
+      );
       this.hourRewardTimer.update();
     }
   }
