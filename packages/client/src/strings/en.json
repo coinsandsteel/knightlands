@@ -2656,5 +2656,6 @@
   "april-heroes-unlocked-successively": "Heroes must be unlocked successively",
   "collect-free-ticket": "Collect free ticket",
   "free-ticket-in": "Collect free ticket in {time}",
-  "purchase-gold": "Purchase gold"
+  "purchase-gold": "Purchase gold",
+  "april-event": "April Event"
 }

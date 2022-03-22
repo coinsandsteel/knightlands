@@ -30,7 +30,7 @@
               :disabled="!achievement.canReceive"
               @click="claimHandler(achievement)"
             >
-              {{ $t("Claim") }}
+              {{ $t("btn-claim") }}
             </CustomButton>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default {
         const heroReward = this.heroRewards[achievement.heroClass];
         achievement.points = heroReward.score;
         achievement.maxPoints = heroReward.goal;
-        achievement.canReceive = 
+        achievement.canReceive =
           heroReward.score >= heroReward.goal && !heroReward.claimed;
 
         achievements.push(achievement);
