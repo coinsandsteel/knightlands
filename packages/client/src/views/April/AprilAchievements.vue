@@ -28,9 +28,9 @@
               type="green"
               class="btn-receive inline-block"
               :disabled="!achievement.canReceive"
-              @click="receiveHandler(achievement)"
+              @click="claimHandler(achievement)"
             >
-              {{ $t("receive") }}
+              {{ $t("Claim") }}
             </CustomButton>
           </div>
         </div>
@@ -60,8 +60,8 @@ export default {
         const heroReward = this.heroRewards[achievement.heroClass];
         achievement.points = heroReward.score;
         achievement.maxPoints = heroReward.goal;
-        achievement.canReceive =
-          heroReward.score > heroReward.goal && !heroReward.claimed;
+        achievement.canReceive = 
+          heroReward.score >= heroReward.goal && !heroReward.claimed;
 
         achievements.push(achievement);
       }
@@ -70,7 +70,7 @@ export default {
     }
   },
   methods: {
-    receiveHandler(achievement) {
+    claimHandler(achievement) {
       this.$store.dispatch("april/claimReward", {
         type: april.REWARD_TYPE_HERO,
         heroClass: achievement.heroClass
