@@ -349,6 +349,13 @@ export default {
     // Exit playground
     async exit() {
       await this.$app.$game._wrapOperation(Operations.AprilExit);
+    },
+    // Purchase gold
+    async purchaseGold(store, payload) {
+      await this.$app.$game._wrapOperation(
+        Operations.AprilPurchaseGold,
+        payload
+      );
     }
   }
 };
