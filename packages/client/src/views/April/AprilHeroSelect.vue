@@ -20,6 +20,7 @@
             v-if="canBuy"
             type="yellow"
             class="btn-upgrade inline-block"
+            :disabled="isBuyButtonDisabled"
             @click="unlockHandler"
           >
             {{ $t("unlock") }} &nbsp;<AprilGold :value="buyPrice" />
@@ -38,7 +39,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
 import * as april from "@/../../knightlands-shared/april";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
@@ -53,6 +54,7 @@ export default {
   mixins: [aprilPurchaseMixin, NetworkRequestErrorMixin],
   components: { AprilBalance, AprilHeroesSlide, AprilGold },
   computed: {
+    ...mapState("april", ["balance"]),
     ...mapGetters("april", ["selectedHero", "heroes"]),
     canBuy() {
       return this.selectedHero && !this.selectedHero.unlocked;
@@ -83,6 +85,11 @@ export default {
         return 0;
       }
       return this.selectedHero.price;
+    },
+    isBuyButtonDisabled() {
+      return !(
+        this.balance.gold >= this.buyPrice && this.isPreviousHeroUnlocked
+      );
     }
   },
   methods: {
