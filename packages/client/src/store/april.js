@@ -23,8 +23,8 @@ export default {
       hourReward: {
         // First hour starts after daily reward was received
         // nextRewardAvailable resets after user claimed an hour reward
-        nextRewardAvailable: null, // timestamp, sec
-        left: 3
+        nextRewardAvailable: 0, // timestamp, sec
+        left: 0
       }
     },
 
