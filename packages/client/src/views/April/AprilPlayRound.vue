@@ -176,6 +176,7 @@ export default {
   background-size: 70%;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0);
 }
 .april-round-boss {
   border-radius: 50%;

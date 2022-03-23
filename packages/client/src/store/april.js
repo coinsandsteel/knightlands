@@ -129,7 +129,6 @@ export default {
   },
   mutations: {
     updateState(state, data) {
-      console.log("updateState", data);
       // User data
       if (data.balance !== undefined) {
         state.balance = { ...state.balance, ...data.balance };
@@ -200,7 +199,6 @@ export default {
       }
     },
     setInitialState(state, data) {
-      console.log("setInitialState", data);
       state.loaded = true;
 
       // User data
@@ -312,6 +310,7 @@ export default {
     async restart(store, { heroClass }) {
       await this.$app.$game._wrapOperation(Operations.AprilRestart, heroClass);
       store.commit("setCanPurchaseActionPoint", true);
+      store.commit("setIsDisabled", false);
     },
     // Move hero
     // index: number;
@@ -330,6 +329,7 @@ export default {
     async skip(store) {
       await this.$app.$game._wrapOperation(Operations.AprilSkip);
       store.commit("setSelectedCardId", null);
+      store.commit("setCanPurchaseActionPoint", true);
       setTimeout(() => {
         store.commit("setIsDisabled", false);
       }, 1000);
@@ -344,11 +344,14 @@ export default {
     async enterLevel(store, { booster }) {
       await this.$app.$game._wrapOperation(Operations.AprilEnterLevel, booster);
       store.commit("setCanPurchaseActionPoint", true);
+      store.commit("setIsDisabled", false);
     },
     // Buy new life, rewind one step back
-    async resurrect({ dispatch }) {
+    async resurrect({ dispatch, commit }) {
       await this.$app.$game._wrapOperation(Operations.AprilResurrect);
       dispatch("load");
+      commit("setCanPurchaseActionPoint", true);
+      commit("setIsDisabled", false);
     },
     // Exit playground
     async exit() {

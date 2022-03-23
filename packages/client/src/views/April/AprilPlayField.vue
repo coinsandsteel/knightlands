@@ -475,6 +475,7 @@ export default {
 
     skipTurnHandler() {
       this.$store.dispatch("april/skip");
+      this.hasBoughtActionPoints = false;
     },
 
     cellClickHandler(cell, cellIndex) {

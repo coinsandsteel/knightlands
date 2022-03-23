@@ -1,5 +1,14 @@
 <template>
   <UserDialog :title="$t('buy-third-action-point')" @close="close()">
+    <template v-slot:content>
+      <!-- balance -->
+      <div class="font-size-20 flex flex-justify-center">
+        {{ $t("current-balance") }}
+        <AprilGold
+          class="april-gold--with-background padding-left-2 margin-left-1"
+        />
+      </div>
+    </template>
     <template v-slot:footer>
       <CustomButton type="red" @click="close()"
         >{{ $t("btn-close") }}
@@ -17,7 +26,6 @@
 
 <script>
 import { mapState } from "vuex";
-import * as april from "@/../../knightlands-shared/april";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import UserDialog from "@/components/UserDialog.vue";
 import aprilPurchaseMixin from "@/views/April/aprilPurchaseMixin";

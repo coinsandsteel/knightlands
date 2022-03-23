@@ -25,7 +25,7 @@
         >
           <div
             v-if="damagePoint > 1"
-            class="april-damage-point absolute font-size-15"
+            class="april-damage-point absolute font-size-18 font-weight-700"
           >
             {{ damagePoint }}
           </div>
