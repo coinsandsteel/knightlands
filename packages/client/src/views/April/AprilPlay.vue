@@ -193,7 +193,7 @@ export default {
       });
     },
     updateHourRewardTimerValue() {
-      if (!this.hourReward) {
+      if (!(this.hourReward && this.hourRewardLeft > 0)) {
         return;
       }
 
