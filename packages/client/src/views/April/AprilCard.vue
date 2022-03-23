@@ -1,11 +1,7 @@
 <template>
   <div
     class="april-card-container absolute"
-    :style="{
-      top: isSelected ? 'calc(-0.4 * var(--base-size))' : 0,
-      transform: `translate(${translateX}, 0)`,
-      zIndex: index + 1
-    }"
+    :style="style"
     @click="$emit('click', card)"
   >
     <div class="april-card-wrapper">
@@ -52,47 +48,22 @@ export default {
         this.card && this.selectedCard && this.card.id === this.selectedCard.id
       );
     },
-    indexFromCenter2() {
+    indexFromCenter() {
       return this.index + 0.5 - this.totalCards / 2;
     },
-    indexFromCenter() {
-      const index = Math.ceil(this.index - this.totalCards / 2);
-      if (this.totalCards % 2) {
-        return index;
-      } else {
-        return index >= 0 ? index + 1 : index;
-      }
-    },
-    absoluteIndexFromCenter() {
-      return Math.abs(this.indexFromCenter);
-    },
-    marginLeft() {
-      return this.indexFromCenter > 0
-        ? this.totalCards % 2
-          ? `calc(-1/4 * var(--base-size))`
-          : `calc(-1/8 * var(--base-size))`
-        : undefined;
-    },
-    marginRight() {
-      return this.indexFromCenter < 0
-        ? this.totalCards % 2
-          ? `calc(-1/4 * var(--base-size))`
-          : `calc(-1/8 * var(--base-size))`
-        : undefined;
-    },
-    rotate() {
-      // return this.indexFromCenter * 3;
-      return 0;
-    },
     translateX() {
-      return `calc(-50% + ${this.indexFromCenter2 * 100}%)`;
+      return `${(this.indexFromCenter || 0) * 100 - 50}%`;
+    },
+    transform() {
+      return `translateX(${this.translateX})`;
+    },
+    style() {
+      return {
+        top: this.isSelected ? "calc(-0.4 * var(--base-size))" : 0,
+        transform: `translateX(${this.translateX})`,
+        zIndex: this.index + 1
+      };
     }
-    // translateY() {
-    //   return this.isSelected ? "-20%" : "0%";
-    // },
-    // transform() {
-    //   return `translate(${this.translateX}, ${this.translateY})`;
-    // }
   },
   watch: {
     cardClass(value) {
