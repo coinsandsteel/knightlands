@@ -101,7 +101,10 @@ export default {
       return this.hourReward ? this.hourReward.left || 0 : 0;
     },
     isHourRewardVisible() {
-      return this.hourRewardLeft > 0;
+      return (
+        this.hourRewardLeft > 0 &&
+        typeof this.hourReward.nextRewardAvailable === "number"
+      );
     },
     canCollectHourReward() {
       return this.isHourRewardVisible && this.hourRewardTimer.timeLeft <= 0;

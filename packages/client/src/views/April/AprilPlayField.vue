@@ -125,7 +125,7 @@
       </div>
     </div>
 
-    <div class="width-100 flex flex-items-start">
+    <div v-if="false" class="width-100 flex flex-items-start">
       <div class="flex-full"></div>
       <CustomButton
         type="green"
