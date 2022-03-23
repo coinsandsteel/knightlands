@@ -40,7 +40,7 @@
             {{ $t("evolve") }} &nbsp;<MarchGold :value="upgradePrice" />
           </CustomButton>
           <CustomButton
-            v-if="canChoose"
+            v-if="false && canChoose"
             type="green"
             class="btn-start inline-block"
             @click="selectHandler"
