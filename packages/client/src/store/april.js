@@ -79,12 +79,12 @@ export default {
       });
     },
     cards(state) {
-      return state.croupier ? state.croupier.cards || [] : [];
+      return (state.croupier ? state.croupier.cards || [] : []).map(card => {
+        return { ...card, hash: card.hash || card.id };
+      });
     },
     selectedCard(state, getters) {
-      return state.croupier
-        ? state.croupier.cards.find(({ id }) => id === state.selectedCardId)
-        : null;
+      return getters.cards.find(({ id }) => id === state.selectedCardId);
     },
     dailyRewards(state) {
       return state.rewards ? state.rewards.dailyRewards || [] : [];

@@ -107,7 +107,7 @@
         >
           <AprilCard
             v-for="(card, cardIndex) in currentCards"
-            :key="card.id"
+            :key="card.hash"
             :card="card"
             :index="cardIndex"
             :totalCards="currentCards.length"
