@@ -144,7 +144,7 @@ export default {
     async hp(value, oldValue) {
       if (value < oldValue && this.isHero) {
         this.wasHit = true;
-        await sleep(800);
+        await sleep(400);
         await this.animateHeroBattle();
         this.wasHit = false;
       }

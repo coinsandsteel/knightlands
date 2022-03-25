@@ -71,7 +71,8 @@ export default {
       } else {
         await this.$store.dispatch("april/exit");
       }
-      this.$close({ isResurrection });
+      // this.$close({ isResurrection });
+      this.$emit("closed", { isResurrection });
     }
   }
 };

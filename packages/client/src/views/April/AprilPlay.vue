@@ -18,6 +18,10 @@
       @next="showPlayFieldStep(false)"
       @exit="showHeroSelectStep"
     />
+    <AprilPlaySummary
+      v-if="isSummaryModalVisible"
+      @closed="summaryClosedHandler"
+    />
     <portal
       v-if="isActive && currentStep === HERO_SELECT_STEP"
       to="footer"
@@ -83,7 +87,8 @@ export default {
     // AprilBoosterSelect,
     // BackButton,
     AprilPlayField,
-    AprilPlayRound
+    AprilPlayRound,
+    AprilPlaySummary
   },
   data() {
     return {
@@ -92,7 +97,8 @@ export default {
       // BOOSTER_SELECT_STEP,
       PLAY_FIELD_STEP,
       PLAY_ROUND_STEP,
-      currentStep: HERO_SELECT_STEP
+      currentStep: HERO_SELECT_STEP,
+      isSummaryModalVisible: false
     };
   },
   computed: {
@@ -172,8 +178,15 @@ export default {
     //   }
     // },
     async showSummary() {
-      const showDialog = create(AprilPlaySummary);
-      const result = await showDialog();
+      // const showDialog = create(AprilPlaySummary);
+      // const result = await showDialog();
+      // if (!(result && result.resurrection)) {
+      //   this.showHeroSelectStep();
+      // }
+      this.isSummaryModalVisible = true;
+    },
+    summaryClosedHandler(result) {
+      this.isSummaryModalVisible = false;
       if (!(result && result.resurrection)) {
         this.showHeroSelectStep();
       }
