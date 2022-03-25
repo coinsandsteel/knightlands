@@ -111,6 +111,9 @@ export default {
       showDialog();
     },
     selectHandler() {
+      if (!this.checkTicketBalance(1)) {
+        return;
+      }
       this.$emit("next");
     }
   }

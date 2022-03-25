@@ -7,8 +7,10 @@
       </div>
     </template>
     <template v-slot:footer>
-      <CustomButton type="yellow" @click="clickHandler"
-        >{{ type === "gold" ? $t("go-to-shop") : $t("go-to-raids") }}
+      <CustomButton
+        :type="type === 'gold' ? 'yellow' : 'red'"
+        @click="clickHandler"
+        >{{ type === "gold" ? $t("go-to-shop") : $t("close") }}
       </CustomButton>
     </template>
   </UserDialog>
@@ -29,7 +31,7 @@ export default {
       return this.type === "gold"
         ? this.$t("march-not-enough-gold-tips")
         : this.type === "ticket"
-        ? this.$t("march-not-enough-ticket-tips")
+        ? this.$t("april-not-enough-ticket-tips")
         : this.$t("march-not-enough-point-tips");
     }
   },
@@ -42,7 +44,8 @@ export default {
         this.goToShop();
         return;
       }
-      this.goToRaids();
+      // this.goToRaids();
+      this.close();
     },
     async goToRaids() {
       this.$close();

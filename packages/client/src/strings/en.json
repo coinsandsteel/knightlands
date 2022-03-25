@@ -2658,5 +2658,6 @@
   "free-ticket-in": "Collect free ticket in {time}",
   "purchase-gold": "Purchase gold",
   "april-event": "April Event",
-  "current-balance": "Current balance"
+  "current-balance": "Current balance",
+  "april-not-enough-ticket-tips": "Visit this page frequently to collect free tickets"
 }
