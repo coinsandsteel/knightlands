@@ -69,6 +69,7 @@ import AprilPlayRound from "@/views/April/AprilPlayRound.vue";
 import AprilPlaySummary from "@/views/April/AprilPlaySummary.vue";
 // import BackButton from "@/views/Common/BackButton.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import { sleep } from "@/helpers/utils";
 
 const HERO_SELECT_STEP = 1;
 // const BOOSTER_SELECT_STEP = 2;
@@ -118,16 +119,20 @@ export default {
     }
   },
   watch: {
-    sessionResult(value) {
-      if (!value || !this.currentStep === PLAY_FIELD_STEP) {
+    async sessionResult(value) {
+      if (!value || !(this.currentStep === PLAY_FIELD_STEP)) {
         return;
       }
 
       if (value === april.SESSION_RESULT_FAIL || this.level > 8) {
+        this.$store.commit("april/setIsDisabled", true);
+        await sleep(1000);
         this.showSummary();
         return;
       }
 
+      this.$store.commit("april/setIsDisabled", true);
+      await sleep(600);
       this.showStartNewLevelStep();
     },
     hourRewardLeft() {

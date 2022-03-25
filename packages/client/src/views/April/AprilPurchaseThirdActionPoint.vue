@@ -49,6 +49,7 @@ export default {
     },
     async buyHandler() {
       if (!this.checkGoldBalance(this.buyPrice)) {
+        this.close(false);
         return;
       }
       await this.$store.dispatch("april/purchaseAction");
