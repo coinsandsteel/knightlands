@@ -39,6 +39,7 @@
         >
 
         <MarchGold v-if="marchGold" :value="marchGold" />
+        <AprilGold v-if="aprilGold" :value="aprilGold" />
 
         <div
           class="flex flex-center flex-column margin-top-3"
@@ -71,6 +72,7 @@ import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
+import AprilGold from "@/views/April/AprilGold.vue";
 
 export default {
   mixins: [HintHandler],
@@ -79,9 +81,10 @@ export default {
     IconWithValue,
     CustomButton,
     Loot,
-    MarchGold
+    MarchGold,
+    AprilGold
   },
-  props: ["items", "soft", "hard", "exp", "dkt", "drown", "marchGold"]
+  props: ["items", "soft", "hard", "exp", "dkt", "drown", "marchGold", "aprilGold"]
 };
 </script>
 
