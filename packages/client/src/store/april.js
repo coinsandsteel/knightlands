@@ -372,6 +372,11 @@ export default {
         Operations.AprilPurchaseGold,
         payload
       );
-    }
+    },
+    async testAction(store, action) {
+      await this.$app.$game._wrapOperation(Operations.AprilTestAction, {
+        action
+      });
+    },
   }
 };
