@@ -49,6 +49,13 @@
             </div>
           </template>
           <CustomButton
+            type="green"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAction('addTicket')"
+          >
+            Add ticket
+          </CustomButton>
+          <CustomButton
             type="yellow"
             class="inline-block margin-right-2 margin-top-1"
             @click="goToShop"

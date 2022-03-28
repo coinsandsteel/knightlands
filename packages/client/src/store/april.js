@@ -280,6 +280,11 @@ export default {
     },
 
     // ###### OPERATIONS ######
+    async testAction(store, action) {
+      await this.$app.$game._wrapOperation(Operations.AprilTestAction, {
+        action
+      });
+    },
     async load(store) {
       let result = await this.$app.$game._wrapOperation(Operations.AprilLoad);
       store.commit("setInitialState", result.response);
