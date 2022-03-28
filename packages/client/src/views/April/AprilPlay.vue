@@ -37,35 +37,35 @@
         <div v-if="currentStep === HERO_SELECT_STEP">
           <template v-if=true>
             <CustomButton
-              type="yellow"
+              type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('addTicket')"
             >
               addTicket
             </CustomButton>
             <CustomButton
-              type="yellow"
+              type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('resetDailyRewards')"
             >
               resetDailyRewards
             </CustomButton>
             <CustomButton
-              type="yellow"
+              type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('plus1Day')"
             >
               plus1Day
             </CustomButton>
             <CustomButton
-              type="yellow"
+              type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('addGold')"
             >
               addGold
             </CustomButton>
             <CustomButton
-              type="yellow"
+              type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('resetCharacters')"
             >
@@ -85,13 +85,6 @@
               {{ freeTicketTimeLeft }}
             </div>
           </template>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAction('addTicket')"
-          >
-            Add ticket
-          </CustomButton>
           <CustomButton
             type="yellow"
             class="inline-block margin-right-2 margin-top-1"
