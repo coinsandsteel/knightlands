@@ -375,10 +375,14 @@ export default {
         payload
       );
     },
+    // Purchase ticket
+    async purchaseTicket() {
+      await this.$app.$game._wrapOperation(Operations.AprilPurchaseTicket);
+    },
     async testAction(store, action) {
       await this.$app.$game._wrapOperation(Operations.AprilTestAction, {
         action
       });
-    },
+    }
   }
 };

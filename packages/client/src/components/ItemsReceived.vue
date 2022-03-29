@@ -40,6 +40,7 @@
 
         <MarchGold v-if="marchGold" :value="marchGold" />
         <AprilGold v-if="aprilGold" :value="aprilGold" />
+        <AprilTickets v-if="aprilTicket" :value="aprilTicket" />
 
         <div
           class="flex flex-center flex-column margin-top-3"
@@ -73,6 +74,7 @@ import Loot from "@/components/Loot.vue";
 import HintHandler from "@/components/HintHandler.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
 import AprilGold from "@/views/April/AprilGold.vue";
+import AprilTickets from "@/views/April/AprilTickets.vue";
 
 export default {
   mixins: [HintHandler],
@@ -82,9 +84,20 @@ export default {
     CustomButton,
     Loot,
     MarchGold,
-    AprilGold
+    AprilGold,
+    AprilTickets
   },
-  props: ["items", "soft", "hard", "exp", "dkt", "drown", "marchGold", "aprilGold"]
+  props: [
+    "items",
+    "soft",
+    "hard",
+    "exp",
+    "dkt",
+    "drown",
+    "marchGold",
+    "aprilGold",
+    "aprilTicket"
+  ]
 };
 </script>
 

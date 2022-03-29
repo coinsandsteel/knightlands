@@ -54,18 +54,36 @@
           </div>
         </div>
 
-        <div class="flex flex-center flex-column">
+        <!-- purchase ticket -->
+        <div>
+          <CustomButton
+            :disabled="goldBalance < ticketPrice"
+            type="grey"
+            @click="purchaseTicket"
+            class="btn-purchase-ticket inline-block"
+          >
+            Purchase ticket for <AprilGold :value="ticketPrice" />
+          </CustomButton>
+        </div>
+
+        <div
+          class="april-shop-balance flex flex-center flex-column margin-top-3"
+        >
           <div class="font-size-22 flex flex-center margin-bottom-1">
             FLESH balance:
             <IconWithValue iconClass="icon-dkt" class="margin-left-1">{{
               balance.flesh
             }}</IconWithValue>
           </div>
-          <div class="font-size-22 margin-bottom-3 flex flex-center">
+          <div class="font-size-22 margin-bottom-1 flex flex-center">
             Shinies balance:
             <IconWithValue iconClass="icon-premium" class="margin-left-1">{{
               balance.hard
             }}</IconWithValue>
+          </div>
+          <div class="font-size-22 margin-bottom-3 flex flex-center">
+            Gold balance:
+            <AprilGold />
           </div>
         </div>
       </div>
@@ -98,6 +116,12 @@ export default {
         hard: this.$game.hardCurrency,
         flesh: this.$game.dkt
       };
+    },
+    goldBalance() {
+      return this.$store.state.april.balance.gold || 0;
+    },
+    ticketPrice() {
+      return april.TICKET_SHOP[0].price;
     }
   },
   filters: {
@@ -141,6 +165,35 @@ export default {
 
       const ShowDialog = create(ItemsReceived, "items", "aprilGold");
       ShowDialog([], this.options[shopIndex].quantity);
+    },
+    async purchaseTicket() {
+      const response = await this.showPrompt(
+        this.$t("buy-i-t"),
+        this.$t("buy-i-q"),
+        [
+          {
+            type: "red",
+            title: this.$t("buy-i-n"),
+            response: false
+          },
+          {
+            type: "green",
+            title: this.$t("buy-i-y"),
+            response: true
+          }
+        ]
+      );
+
+      if (!response) {
+        return;
+      }
+
+      await this.performRequestNoCatch(
+        this.$store.dispatch("april/purchaseTicket")
+      );
+
+      const ShowDialog = create(ItemsReceived, "items", "aprilTicket");
+      ShowDialog([], april.TICKET_SHOP[0].quantity);
     }
   }
 };
@@ -153,5 +206,21 @@ export default {
 }
 .option-name {
   background: rgba(0, 0, 0, 0.5);
+}
+.btn-purchase-ticket::v-deep {
+  .april-gold-icons {
+    margin-right: 0;
+    margin-left: 2px;
+  }
+}
+.april-shop-balance::v-deep {
+  .icon-dkt,
+  .icon-premium {
+    margin-right: 3px;
+  }
+  .april-gold-icons {
+    margin-right: 0;
+    margin-left: 4px;
+  }
 }
 </style>
