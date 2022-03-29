@@ -220,9 +220,6 @@ export default {
       state.hp = mapData.hp;
       state.actionPoints = mapData.actionPoints;
 
-      // Prices
-      state.prices = mapData.prices;
-
       // Playground
       const playgroundData = data.map.playground;
       state.playground.units = playgroundData.units;
