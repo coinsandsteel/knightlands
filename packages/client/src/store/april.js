@@ -61,6 +61,7 @@ export default {
 
     // ###### Playground ######
     playground: {
+      enemiesKilled: 0,
       units: [],
       damage: []
     }
@@ -174,6 +175,9 @@ export default {
       }
 
       // Playground
+      if (data.enemiesKilled !== undefined) {
+        state.playground.enemiesKilled = data.enemiesKilled;
+      }
       if (data.units !== undefined) {
         state.playground.units = data.units;
       }
@@ -222,6 +226,7 @@ export default {
 
       // Playground
       const playgroundData = data.map.playground;
+      state.playground.enemiesKilled = playgroundData.enemiesKilled;
       state.playground.units = playgroundData.units;
       state.playground.damage = playgroundData.damage;
 
