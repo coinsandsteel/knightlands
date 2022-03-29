@@ -85,6 +85,11 @@
               class="hp-cell margin-bottom-1"
             ></div>
           </TransitionGroup>
+          <div
+            v-if="healing"
+            class="hp-cell hp-cell--healing margin-bottom-1"
+            :class="'hp-cell--healing-' + healing"
+          />
         </div>
       </div>
     </div>
@@ -169,6 +174,13 @@
       >
         Lose
       </CustomButton>
+      <CustomButton
+        type="green"
+        class="inline-block margin-right-2 margin-top-1"
+        @click="testHealing"
+      >
+        Healing
+      </CustomButton>
     </div>
   </div>
 </template>
@@ -213,6 +225,7 @@ export default {
       "croupier",
       "selectedCardId",
       "level",
+      "healing",
       "sessionResult",
       "isDisabled"
     ]),
@@ -449,6 +462,12 @@ export default {
       });
     },
 
+    testHealing() {
+      this.$store.commit("april/updateState", {
+        healing: this.healing === 3 ? 0 : this.healing + 1
+      });
+    },
+
     selectCard(card) {
       if (this.isDisabled) {
         return;
@@ -560,6 +579,15 @@ export default {
 }
 .hp-cell {
   background: url("/images/april/hp.png") center / 100% no-repeat;
+}
+.hp-cell--healing-1 {
+  background: url("/images/april/hp1.png") center / 100% no-repeat;
+}
+.hp-cell--healing-2 {
+  background: url("/images/april/hp2.png") center / 100% no-repeat;
+}
+.hp-cell--healing-3 {
+  background: url("/images/april/hp3.png") center / 100% no-repeat;
 }
 .april-hp {
   height: calc(var(--base-size) * 0.3);

@@ -88,7 +88,7 @@ export default {
 .resurrection-icon {
   width: 50px;
   height: 50px;
-  background: url("/images/april/hp_big.png") center / 100% no-repeat;
+  background: url("/images/april/hp_resurrection.png") center / 100% no-repeat;
 }
 .btn-exit {
   min-width: 110px;
