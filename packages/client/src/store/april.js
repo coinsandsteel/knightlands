@@ -45,7 +45,9 @@ export default {
     heroClass: april.HERO_CLASS_KNIGHT,
     level: 1,
     hp: 3,
+    maxHp: 3,
     healing: 0,
+
     actionPoints: 2,
     sessionResult: null, // SESSION_RESULT_SUCCESS | SESSION_RESULT_FAIL
     selectedCardId: null,
@@ -162,6 +164,9 @@ export default {
       if (data.hp !== undefined) {
         state.hp = data.hp;
       }
+      if (data.maxHp !== undefined) {
+        state.maxHp = data.maxHp;
+      }
       if (data.healing !== undefined) {
         state.healing = data.healing;
       }
@@ -222,6 +227,8 @@ export default {
       state.level = mapData.level;
       state.sessionResult = mapData.sessionResult;
       state.hp = mapData.hp;
+      state.maxHp = mapData.maxHp;
+      state.healing = mapData.healing;
       state.actionPoints = mapData.actionPoints;
 
       // Playground
