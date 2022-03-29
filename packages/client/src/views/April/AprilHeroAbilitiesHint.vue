@@ -13,7 +13,13 @@
         <div>
           {{ $t(`april-hero-ability-${selectedHero.heroClass}`) }}
         </div>
-        <div v-if="[april.HERO_CLASS_KNIGHT].includes(selectedHero.heroClass)">
+        <div
+          v-if="
+            [april.HERO_CLASS_KNIGHT, april.HERO_CLASS_PALADIN].includes(
+              selectedHero.heroClass
+            )
+          "
+        >
           {{ $t(`april-hero-ability-${selectedHero.heroClass}-2`) }}
         </div>
       </div>

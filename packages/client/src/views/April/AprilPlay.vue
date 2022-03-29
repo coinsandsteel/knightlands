@@ -35,7 +35,7 @@
         ></BackButton> -->
         <div class="flex-full"></div>
         <div v-if="currentStep === HERO_SELECT_STEP">
-          <template v-if=true>
+          <template v-if="true">
             <CustomButton
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
@@ -90,7 +90,7 @@
             class="inline-block margin-right-2 margin-top-1"
             @click="goToShop"
           >
-            {{ $t("purchase-gold") }}
+            {{ $t("shop") }}
           </CustomButton>
         </div>
       </div>
@@ -224,7 +224,7 @@ export default {
     },
     summaryClosedHandler(result) {
       this.isSummaryModalVisible = false;
-      if (!(result && result.resurrection)) {
+      if (!(result && result.isResurrection)) {
         this.showHeroSelectStep();
       }
     },

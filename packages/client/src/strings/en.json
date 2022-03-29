@@ -2638,7 +2638,8 @@
   "april-hero-ability-title-rogue": "Card respawn",
   "april-hero-ability-knight": "Hero reaches top border via Pawn then add Queen into the card list",
   "april-hero-ability-knight-2": "+1 action point (current session only)",
-  "april-hero-ability-paladin": "Recovers 1 health if it didn't take or deal any damage last turn",
+  "april-hero-ability-paladin": "Recovers 1 health if no damage has been taken or dealt in the last 3 turns",
+  "april-hero-ability-paladin-2": "Can only restore 1 HP per level",
   "april-hero-ability-rogue": "Spawn the strongest used card since the 2nd turn",
   "receive": "Recieve",
   "buy": "Buy",
@@ -2659,5 +2660,9 @@
   "purchase-gold": "Purchase gold",
   "april-event": "April Event",
   "current-balance": "Current balance",
-  "april-not-enough-ticket-tips": "Visit this page frequently to collect free tickets"
+  "april-not-enough-ticket-tips": "Visit this page frequently to collect free tickets",
+  "shop": "Shop",
+  "gold-earned": "Gold earned",
+  "enemies-killed": "Enermies killed",
+  "resurrection-text": "Resurrect and step 1 action back"
 }

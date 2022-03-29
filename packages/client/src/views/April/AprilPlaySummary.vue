@@ -7,18 +7,21 @@
         <div class="flex-full flex flex-center font-size-22 width-100">
           <div class="text-center margin-top-1 width-100">
             <div class="flex flex-no-wrap flex-justify-center">
-              <!-- <div class="margin-right-2">{{ $t("coins-earned") }}:</div> -->
-              <AprilGold :value="balance ? balance.sessionGold : 0" />
+              <div class="margin-right-2">{{ $t("gold-earned") }}:</div>
+              <AprilGold :value="balance ? balance.sessionGold || 0 : 0" />
             </div>
             <div class="flex flex-no-wrap flex-justify-center margin-top-2">
-              <!-- <div class="margin-right-2">{{ $t("bosses-killed") }}:</div> -->
-              <AprilPoints :value="balance ? balance.sessionGold : 0" />
+              <div class="margin-right-2">{{ $t("enemies-killed") }}:</div>
+              <AprilPoints
+                :value="playground ? playground.enemiesKilled || 0 : 0"
+              />
             </div>
             <div
               v-if="hasFailed"
               class="resurrection-container margin-top-3 padding-top-2 padding-bottom-2 flex flex-column flex-center width-100"
             >
-              <div class="resurrection-icon"></div>
+              <div class="text-align-center">{{ $t("resurrection-text") }}</div>
+              <div class="resurrection-icon margin-top-2"></div>
               <div class="margin-top-2">
                 <CustomButton
                   type="yellow"
@@ -56,7 +59,7 @@ export default {
     AprilPoints
   },
   computed: {
-    ...mapState("april", ["balance", "prices", "sessionResult"]),
+    ...mapState("april", ["balance", "prices", "sessionResult", "playground"]),
     hasFailed() {
       return this.sessionResult === april.SESSION_RESULT_FAIL;
     }
