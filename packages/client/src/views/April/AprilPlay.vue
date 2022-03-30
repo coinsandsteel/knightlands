@@ -15,7 +15,7 @@
     />
     <AprilPlayRound
       v-if="currentStep === PLAY_ROUND_STEP"
-      @next="showPlayFieldStep(false)"
+      @next="aprilPlayRoundNextHandler"
       @exit="showHeroSelectStep"
     />
     <AprilPlaySummary
@@ -139,7 +139,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("april", ["loaded", "sessionResult", "level"]),
+    ...mapState("april", ["loaded", "sessionResult", "level", "playground"]),
     ...mapGetters("april", ["selectedHero", "hourReward"]),
     hourRewardLeft() {
       return this.hourReward ? this.hourReward.left || 0 : 0;
@@ -163,6 +163,30 @@ export default {
   },
   watch: {
     async sessionResult(value) {
+      this.sessionResultHandler(value);
+    },
+    hourRewardLeft() {
+      this.updateHourRewardTimerValue();
+    },
+    loaded(value) {
+      if (!value) {
+        return;
+      }
+      this.loadedHandler();
+    }
+  },
+
+  mounted() {
+    this.updateHourRewardTimerValue();
+    this.loadedHandler();
+  },
+  methods: {
+    async testAction(action) {
+      await this.performRequestNoCatch(
+        this.$store.dispatch("april/testAction", action)
+      );
+    },
+    async sessionResultHandler(value) {
       if (!value || !(this.currentStep === PLAY_FIELD_STEP)) {
         return;
       }
@@ -178,19 +202,18 @@ export default {
       await sleep(600);
       this.showStartNewLevelStep();
     },
-    hourRewardLeft() {
-      this.updateHourRewardTimerValue();
-    }
-  },
-
-  mounted() {
-    this.updateHourRewardTimerValue();
-  },
-  methods: {
-    async testAction(action) {
-      await this.performRequestNoCatch(
-        this.$store.dispatch("april/testAction", action)
-      );
+    loadedHandler() {
+      if (!this.loaded) {
+        return;
+      }
+      if (
+        this.playground &&
+        this.playground.units &&
+        this.playground.units.length > 0
+      ) {
+        this.showPlayFieldStep(false);
+        this.sessionResultHandler(this.sessionResult);
+      }
     },
     backHandler() {
       // if (this.currentStep === BOOSTER_SELECT_STEP) {
@@ -235,13 +258,20 @@ export default {
       this.currentStep = HERO_SELECT_STEP;
     },
     showPlayFieldStep(shouldRestart = true) {
-      this.resetCards();
+      if (shouldRestart) {
+        this.resetCards();
+      }
       this.currentStep = PLAY_FIELD_STEP;
+      this.$store.commit("april/setIsDisabled", false);
       if (shouldRestart) {
         this.$store.dispatch("april/restart", {
           heroClass: this.selectedHero.heroClass
         });
       }
+    },
+    aprilPlayRoundNextHandler() {
+      this.resetCards();
+      this.showPlayFieldStep(false);
     },
     showStartNewLevelStep() {
       this.currentStep = PLAY_ROUND_STEP;
