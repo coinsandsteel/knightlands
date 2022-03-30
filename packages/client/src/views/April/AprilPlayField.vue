@@ -48,7 +48,7 @@
           </TransitionGroup>
           <!-- purchase action point -->
           <div
-            v-if="canPurchaseActionPoint && !hasBoughtActionPoints"
+            v-if="canPurchaseActionPoint"
             class="step-cell step-cell-add margin-top-1 margin-bottom-1"
             @click="addActionPointHandler"
           ></div>
@@ -211,8 +211,7 @@ export default {
     return {
       // baseSize: 60
       count: 0,
-      currentCards: [],
-      hasBoughtActionPoints: false
+      currentCards: []
     };
   },
 
@@ -280,25 +279,6 @@ export default {
   watch: {
     cards(value) {
       this.currentCards = [...value];
-    },
-    actionPoints(value, oldValue) {
-      // console.log("actionPoints", value, oldValue, this.hasBoughtActionPoints);
-      // if (this.hasBoughtActionPoints) {
-      //   this.hasBoughtActionPoints = false;
-      //   console.log("set actionPoints false");
-      //   this.$store.commit("april/setCanPurchaseActionPoint", false);
-      //   return;
-      // }
-      if (
-        typeof oldValue === "number" &&
-        value < oldValue &&
-        this.hasBoughtActionPoints
-      ) {
-        this.hasBoughtActionPoints = false;
-      }
-      if (value >= 2 && typeof oldValue === "number" && value > oldValue) {
-        this.$store.commit("april/setCanPurchaseActionPoint", true);
-      }
     },
     sessionResult(value) {
       if (value === april.SESSION_RESULT_SUCCESS) {
@@ -484,17 +464,13 @@ export default {
       );
     },
 
-    async addActionPointHandler() {
+    addActionPointHandler() {
       const showDialog = create(AprilPurchaseThirdActionPoint);
-      const result = await showDialog();
-      if (result && result.hasBought) {
-        this.hasBoughtActionPoints = true;
-      }
+      showDialog();
     },
 
     skipTurnHandler() {
       this.$store.dispatch("april/skip");
-      this.hasBoughtActionPoints = false;
     },
 
     cellClickHandler(cell, cellIndex) {

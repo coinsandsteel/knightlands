@@ -254,9 +254,6 @@ export default {
     setHeroIndex(state, value) {
       state.selectedHeroIndex = value;
     },
-    setCanPurchaseActionPoint(state, value) {
-      state.canPurchaseActionPoint = !!value;
-    },
     setSelectedCardId(state, value) {
       state.selectedCardId = value;
     },
@@ -327,7 +324,6 @@ export default {
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
     async restart(store, { heroClass }) {
       await this.$app.$game._wrapOperation(Operations.AprilRestart, heroClass);
-      store.commit("setCanPurchaseActionPoint", true);
       store.commit("setIsDisabled", false);
     },
     // Move hero
@@ -347,7 +343,6 @@ export default {
     async skip(store) {
       await this.$app.$game._wrapOperation(Operations.AprilSkip);
       store.commit("setSelectedCardId", null);
-      store.commit("setCanPurchaseActionPoint", true);
       setTimeout(() => {
         store.commit("setIsDisabled", false);
       }, 1000);
@@ -355,20 +350,17 @@ export default {
     // Purchase third action
     async purchaseAction({ commit }) {
       await this.$app.$game._wrapOperation(Operations.AprilPurchaseAction);
-      commit("setCanPurchaseActionPoint", false);
     },
     // Start from level > 1
     // booster: BOOSTER_CARD | BOOSTER_HP
     async enterLevel(store, { booster }) {
       await this.$app.$game._wrapOperation(Operations.AprilEnterLevel, booster);
-      store.commit("setCanPurchaseActionPoint", true);
       store.commit("setIsDisabled", false);
     },
     // Buy new life, rewind one step back
     async resurrect({ dispatch, commit }) {
       await this.$app.$game._wrapOperation(Operations.AprilResurrect);
       dispatch("load");
-      commit("setCanPurchaseActionPoint", true);
       commit("setIsDisabled", false);
     },
     // Exit playground
