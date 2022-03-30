@@ -174,6 +174,10 @@ export default {
         state.actionPoints = data.actionPoints;
       }
 
+      if (data.canPurchaseActionPoint !== undefined) {
+        state.canPurchaseActionPoint = data.canPurchaseActionPoint;
+      }
+
       // Prices
       if (data.prices !== undefined) {
         state.prices = { ...state.prices, ...data.prices };
@@ -230,6 +234,7 @@ export default {
       state.maxHp = mapData.maxHp;
       state.healing = mapData.healing;
       state.actionPoints = mapData.actionPoints;
+      state.canPurchaseActionPoint = mapData.canPurchaseActionPoint;
       state.prices = mapData.prices;
 
       // Playground
