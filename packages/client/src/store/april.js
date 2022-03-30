@@ -230,6 +230,7 @@ export default {
       state.maxHp = mapData.maxHp;
       state.healing = mapData.healing;
       state.actionPoints = mapData.actionPoints;
+      state.prices = mapData.prices;
 
       // Playground
       const playgroundData = data.map.playground;
