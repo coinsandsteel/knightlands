@@ -228,10 +228,14 @@ export default {
         this.showHeroSelectStep();
       }
     },
+    resetCards() {
+      this.$store.commit("april/updateState", { cards: [] });
+    },
     showHeroSelectStep() {
       this.currentStep = HERO_SELECT_STEP;
     },
     showPlayFieldStep(shouldRestart = true) {
+      this.resetCards();
       this.currentStep = PLAY_FIELD_STEP;
       if (shouldRestart) {
         this.$store.dispatch("april/restart", {
