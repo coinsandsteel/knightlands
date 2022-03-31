@@ -39,6 +39,13 @@
             <CustomButton
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
+              @click="testAction('addRating')"
+            >
+              addRating
+            </CustomButton>
+            <CustomButton
+              type="blue"
+              class="inline-block margin-right-2 margin-top-1"
               @click="testAction('addTicket')"
             >
               addTicket
