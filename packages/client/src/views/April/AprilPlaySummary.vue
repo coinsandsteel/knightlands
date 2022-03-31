@@ -16,9 +16,6 @@
                 :value="playground ? playground.enemiesKilled || 0 : 0"
               />
             </div>
-            <div class="margin-top-2">
-              {{ $t("april-boss-killed-text") }}
-            </div>
             <div
               v-if="hasFailed"
               class="resurrection-container margin-top-3 padding-top-2 padding-bottom-2 flex flex-column flex-center width-100"
