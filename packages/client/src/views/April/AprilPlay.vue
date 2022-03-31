@@ -76,12 +76,12 @@
             <CustomButton
               v-if="canCollectHourReward"
               type="green"
-              class="inline-block margin-right-2 margin-top-1"
+              class="inline-block margin-top-1"
               @click="collect1TicketHandler"
             >
               {{ $t("collect-free-ticket") }}
             </CustomButton>
-            <div class="inline-block font-size-22" v-else>
+            <div class="inline-block font-size-22 margin-right-1" v-else>
               {{ freeTicketTimeLeft }}
             </div>
           </template>
@@ -301,3 +301,9 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="less">
+.btn {
+  min-width: 90px;
+}
+</style>
