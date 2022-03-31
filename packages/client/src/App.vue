@@ -486,6 +486,7 @@ export default {
 <style lang="less">
 @import "./style/common.less";
 @import "./style/sprites.less";
+@import "./style/sprites2.less";
 @import "./style/ui.less";
 @import "./views/Army/army.less";
 </style>
