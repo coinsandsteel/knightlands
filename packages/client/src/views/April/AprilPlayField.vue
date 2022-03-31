@@ -22,6 +22,12 @@
       >
         {{ $t("skip-turn") }}
       </CustomButton>
+      <CustomButton
+        type="blue"
+        @click="testAction('addHp')"
+      >
+        addHp
+      </CustomButton>
       <div class="close-btn" @click="stopHandler"></div>
     </div>
 
@@ -295,6 +301,11 @@ export default {
   },
 
   methods: {
+    async testAction(action) {
+      await this.performRequestNoCatch(
+        this.$store.dispatch("april/testAction", action)
+      );
+    },
     async stopHandler() {
       if (this.isDisabled) {
         return;
