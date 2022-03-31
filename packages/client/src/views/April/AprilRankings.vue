@@ -119,6 +119,7 @@ export default {
       const result = await this.performRequest(
         this.$store.dispatch("april/rankings")
       );
+      console.log("🚀 ~ file: AprilRankings.vue ~ line 122 ~ fetchRankings ~ result", result)
 
       this.hasRewards = result.hasRewards;
       this.timer.timeLeft = result.timeLeft;
@@ -132,7 +133,7 @@ export default {
         }
 
         newRecords = newRecords.map((record, index) => {
-          if (record.score !== null) {
+          if (record.score !== "0") {
             const r = { ...record };
             r.key = r.id + "-" + i + "-" + index;
             r.rank = index + 1;
@@ -157,6 +158,7 @@ export default {
         }
       }
       this.records = records;
+      console.log("🚀 ~ file: AprilRankings.vue ~ line 161 ~ fetchRankings ~ records", records)
     },
     scrollUpdated(start, end) {},
     async claimRewards() {
