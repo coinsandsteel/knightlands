@@ -131,15 +131,17 @@ export default {
           newRecords.push(result.rankings[i][j]);
         }
 
-        newRecords = newRecords.map((record, index) => {
-          if (record.score !== "0") {
-            const r = { ...record };
-            r.key = r.id + "-" + i + "-" + index;
-            r.rank = index + 1;
-            r.isTitle = false;
-            return r;
-          }
-        }).filter(record => record);
+        newRecords = newRecords
+          .map((record, index) => {
+            if (record.score !== "0") {
+              const r = { ...record };
+              r.key = r.id + "-" + i + "-" + index;
+              r.rank = index + 1;
+              r.isTitle = false;
+              return r;
+            }
+          })
+          .filter(record => record);
         const titleRecord = {
           id: "title-" + i,
           key: "title-" + i,
@@ -157,7 +159,10 @@ export default {
         }
       }
       this.records = records;
-      console.log("🚀 ~ file: AprilRankings.vue ~ line 161 ~ fetchRankings ~ records", records)
+      console.log(
+        "🚀 ~ file: AprilRankings.vue ~ line 161 ~ fetchRankings ~ records",
+        records
+      );
     },
     scrollUpdated(start, end) {},
     async claimRewards() {
@@ -174,7 +179,7 @@ export default {
   },
   computed: {
     allRewards() {
-      let rewards = meta.eventRewards.map((rankEntry, rankIndex) => {
+      let rewards = meta.rankingRewards.map((rankEntry, rankIndex) => {
         if (rankIndex === 0) {
           rankEntry.rankIcon = "icon-rank-1";
         } else if (rankIndex >= 1 && rankIndex <= 3) {
