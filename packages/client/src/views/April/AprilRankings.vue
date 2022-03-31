@@ -119,7 +119,6 @@ export default {
       const result = await this.performRequest(
         this.$store.dispatch("april/rankings")
       );
-      console.log("🚀 ~ file: AprilRankings.vue ~ line 122 ~ fetchRankings ~ result", result)
 
       this.hasRewards = result.hasRewards;
       this.timer.timeLeft = result.timeLeft;
