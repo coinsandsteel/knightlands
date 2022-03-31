@@ -31,7 +31,11 @@
         </div>
         <div class="flex flex-center margin-bottom-2 font-size-20 ">
           The event will be finished in:<br />
-          {{ timer.value }}
+          {{ eventTimer.value }}
+        </div>
+        <div class="flex flex-center margin-bottom-2 font-size-20 ">
+          Rating Reset'n'Reward will be in:<br />
+          {{ dailyTimer.value }}
         </div>
         <div class="flex flex-center margin-bottom-3">
           <CustomButton
@@ -102,7 +106,8 @@ export default {
     showInfoButton: false,
     places: ["1-st", "2-nd", "3-rd", "4-th", "5 - 10"],
     hasRewards: false,
-    timer: new Timer(true, true)
+    eventTimer: new Timer(true, true),
+    dailyTimer: new Timer(true, true)
   }),
   async activated() {
     this.records = [];
@@ -121,7 +126,8 @@ export default {
       );
 
       this.hasRewards = result.hasRewards;
-      this.timer.timeLeft = result.timeLeft;
+      this.eventTimer.timeLeft = result.timeLeft;
+      this.dailyTimer.timeLeft = result.resetTimeLeft;
 
       const records = [];
       for (let i = 0; i < result.rankings.length; i++) {

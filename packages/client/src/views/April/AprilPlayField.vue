@@ -22,8 +22,8 @@
       >
         {{ $t("skip-turn") }}
       </CustomButton>
-      <CustomButton v-if="true" type="blue" @click="testAction('addHp')">
-        addHp
+      <CustomButton v-if="true" type="blue" @click="testAction('win')">
+        kill
       </CustomButton>
       <div class="close-btn" @click="stopHandler"></div>
     </div>
@@ -202,6 +202,7 @@ import AprilCard from "@/views/April/AprilCard.vue";
 import AprilHp from "@/views/April/AprilHp.vue";
 import AprilBoardCell from "@/views/April/AprilBoardCell.vue";
 import AprilPurchaseThirdActionPoint from "@/views/April/AprilPurchaseThirdActionPoint.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
   components: {
@@ -210,6 +211,8 @@ export default {
     AprilBoardCell,
     AprilHp
   },
+
+  mixins: [NetworkRequestErrorMixin],
 
   data() {
     return {
