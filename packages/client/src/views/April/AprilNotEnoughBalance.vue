@@ -2,15 +2,13 @@
   <UserDialog :title="title" @close="close">
     <template v-slot:content>
       <!-- tips -->
-      <div class="font-size-20">
+      <div class="font-size-20 padding-left-2 padding-right-2">
         {{ tips }}
       </div>
     </template>
     <template v-slot:footer>
-      <CustomButton
-        :type="type === 'gold' ? 'yellow' : 'red'"
-        @click="clickHandler"
-        >{{ type === "gold" ? $t("go-to-shop") : $t("close") }}
+      <CustomButton type="yellow" @click="goToShop"
+        >{{ $t("go-to-shop") }}
       </CustomButton>
     </template>
   </UserDialog>
@@ -38,14 +36,6 @@ export default {
   methods: {
     async close() {
       this.$close();
-    },
-    clickHandler() {
-      if (this.type === "gold") {
-        this.goToShop();
-        return;
-      }
-      // this.goToRaids();
-      this.close();
     },
     async goToRaids() {
       this.$close();

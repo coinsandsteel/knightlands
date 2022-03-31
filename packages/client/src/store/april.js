@@ -370,7 +370,11 @@ export default {
       store.commit("setIsDisabled", false);
     },
     // Buy new life, rewind one step back
-    async resurrect({ dispatch, commit }) {
+    async resurrect({ dispatch, commit, state }) {
+      Vue.prototype.$app.logEvent("april-resurrect", {
+        level: state ? state.level : 1,
+        price: state && state.prices ? state.prices.resurrection : 0
+      });
       await this.$app.$game._wrapOperation(Operations.AprilResurrect);
       dispatch("load");
       commit("setIsDisabled", false);
