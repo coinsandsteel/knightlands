@@ -304,6 +304,9 @@ export default {
     // type: REWARD_TYPE_HOUR | REWARD_TYPE_DAILY | REWARD_TYPE_RANKING | REWARD_TYPE_HERO
     // heroClass is need only if type == REWARD_TYPE_HERO
     async claimReward(store, { type, heroClass }) {
+      Vue.prototype.$app.logEvent("april-claim-reward", {
+        type
+      });
       return (
         await this.$app.$game._wrapOperation(Operations.AprilClaimReward, {
           type,
@@ -321,6 +324,9 @@ export default {
     },
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
     async purchaseHero(store, { heroClass }) {
+      Vue.prototype.$app.logEvent("april-buy-hero", {
+        hero: heroClass
+      });
       await this.$app.$game._wrapOperation(
         Operations.AprilPurchaseHero,
         heroClass
@@ -348,6 +354,9 @@ export default {
     },
     // Skip a turn
     async skip(store) {
+      Vue.prototype.$app.logEvent("april-skip-turn", {
+        level: store.state ? store.state.level : 1
+      });
       store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.AprilSkip);
       store.commit("setSelectedCardId", null);
@@ -356,7 +365,11 @@ export default {
       }, 1000);
     },
     // Purchase third action
-    async purchaseAction({ commit }) {
+    async purchaseAction({ state }) {
+      Vue.prototype.$app.logEvent("april-buy-action", {
+        level: state ? state.level : 1,
+        price: state && state.prices ? state.prices.thirdAction : 0
+      });
       await this.$app.$game._wrapOperation(Operations.AprilPurchaseAction);
     },
     // Start from level > 1
@@ -385,6 +398,19 @@ export default {
     },
     // Purchase gold
     async purchaseGold(store, payload) {
+      if (payload && payload.amount && payload.shopIndex !== undefined) {
+        Vue.prototype.$app.logEvent("april-buy-gold", {
+          goldAmount: payload.amount
+        });
+        const shop = april.SHOP[payload.shopIndex];
+        const logParams = {};
+        if (payload.currency === "hard") {
+          logParams.shine = shop.hardPrice;
+        } else {
+          logParams.flesh = shop.fleshPrice;
+        }
+        Vue.prototype.$app.logEvent("april-donation", logParams);
+      }
       await this.$app.$game._wrapOperation(
         Operations.AprilPurchaseGold,
         payload
@@ -392,6 +418,7 @@ export default {
     },
     // Purchase ticket
     async purchaseTicket() {
+      Vue.prototype.$app.logEvent("april-buy-ticket");
       await this.$app.$game._wrapOperation(Operations.AprilPurchaseTicket);
     },
     async testAction(store, action) {

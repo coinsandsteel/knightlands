@@ -66,9 +66,9 @@ export default {
     this.$store.$app.$off("april-show-daily-reward");
   },
   async mounted() {
+    this.$app.logEvent("april-enter");
     this.$store.dispatch("april/subscribe");
     await this.$store.dispatch("april/load");
-    this.$app.logEvent("april-enter");
   },
   beforeDestroy() {
     this.$store.dispatch("april/unsubscribe");

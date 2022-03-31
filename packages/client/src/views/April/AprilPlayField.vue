@@ -22,10 +22,7 @@
       >
         {{ $t("skip-turn") }}
       </CustomButton>
-      <CustomButton
-        type="blue"
-        @click="testAction('addHp')"
-      >
+      <CustomButton v-if="true" type="blue" @click="testAction('addHp')">
         addHp
       </CustomButton>
       <div class="close-btn" @click="stopHandler"></div>
@@ -56,7 +53,7 @@
           <!-- purchase action point -->
           <div
             v-if="canPurchaseActionPoint"
-            class="step-cell step-cell-add margin-top-1 margin-bottom-1"
+            class="step-cell step-cell-add margin-top-1 margin-bottom-1 pointer"
             @click="addActionPointHandler"
           ></div>
         </div>
