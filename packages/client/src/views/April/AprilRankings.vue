@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import AprilRankingElement from "@/views/April/AprilRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as april from "@/../../knightlands-shared/april";
@@ -131,12 +132,14 @@ export default {
         }
 
         newRecords = newRecords.map((record, index) => {
-          const r = { ...record };
-          r.key = r.id + "-" + i + "-" + index;
-          r.rank = index + 1;
-          r.isTitle = false;
-          return r;
-        });
+          if (record.score !== null) {
+            const r = { ...record };
+            r.key = r.id + "-" + i + "-" + index;
+            r.rank = index + 1;
+            r.isTitle = false;
+            return r;
+          }
+        }).filter(record => record);
         const titleRecord = {
           id: "title-" + i,
           key: "title-" + i,
@@ -148,7 +151,10 @@ export default {
             april.HERO_CLASS_ROGUE
           ][i % 3]
         };
-        records.push(titleRecord, ...newRecords);
+        records.push(titleRecord);
+        if (!_.isEmpty(newRecords)) {
+          records.push(...newRecords);
+        }
       }
       this.records = records;
     },
