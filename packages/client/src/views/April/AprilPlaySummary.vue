@@ -90,7 +90,7 @@ export default {
   height: 50px;
   background: url("/images/april/hp_resurrection.png") center / 100% no-repeat;
 }
-.btn-exit {
-  min-width: 100px;
+.btn {
+  min-width: 120px;
 }
 </style>
