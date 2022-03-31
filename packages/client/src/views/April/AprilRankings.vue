@@ -34,7 +34,7 @@
           {{ eventTimer.value }}
         </div>
         <div class="flex flex-center margin-bottom-2 font-size-20 ">
-          Rating Reset'n'Reward will be in:<br />
+          Reset'n'Reward will be in:<br />
           {{ dailyTimer.value }}
         </div>
         <div class="flex flex-center margin-bottom-3">

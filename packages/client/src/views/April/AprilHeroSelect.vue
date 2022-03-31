@@ -36,6 +36,9 @@
             >
               {{ $t("START") }}
             </CustomButton>
+            <p class="text-align-center font-size-22">
+            {{ $t("april-boss-killed-text") }}.
+            </p>
           </div>
         </div>
       </div>
