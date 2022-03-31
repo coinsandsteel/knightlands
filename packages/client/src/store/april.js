@@ -29,7 +29,6 @@ export default {
     },
 
     heroes: [],
-    canPurchaseActionPoint: false,
 
     // Need to map after load() action
     // Because initially only heroClass will be provided by server.
@@ -128,7 +127,7 @@ export default {
       return getters.heroes[state.selectedHeroIndex];
     },
     canPurchaseActionPoint(state) {
-      return state.canPurchaseActionPoint && state.actionPoints <= 2;
+      return state.actionPoints <= 2;
     }
   },
   mutations: {
@@ -172,10 +171,6 @@ export default {
       }
       if (data.actionPoints !== undefined) {
         state.actionPoints = data.actionPoints;
-      }
-
-      if (data.canPurchaseActionPoint !== undefined) {
-        state.canPurchaseActionPoint = data.canPurchaseActionPoint;
       }
 
       // Prices
@@ -234,7 +229,6 @@ export default {
       state.maxHp = mapData.maxHp;
       state.healing = mapData.healing;
       state.actionPoints = mapData.actionPoints;
-      state.canPurchaseActionPoint = mapData.canPurchaseActionPoint;
       state.prices = mapData.prices;
 
       // Playground
