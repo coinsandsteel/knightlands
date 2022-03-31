@@ -1,3 +1,4 @@
+import Vue from "vue";
 import * as april from "@/../../knightlands-shared/april";
 
 import Events from "@/../../knightlands-shared/events";
@@ -328,6 +329,7 @@ export default {
     // Start from level #1
     // heroClass: HERO_CLASS_KNIGHT | HERO_CLASS_PALADIN | HERO_CLASS_ROGUE
     async restart(store, { heroClass }) {
+      Vue.prototype.$app.logEvent("april-start", { hero: heroClass });
       await this.$app.$game._wrapOperation(Operations.AprilRestart, heroClass);
       store.commit("setIsDisabled", false);
     },
@@ -360,6 +362,10 @@ export default {
     // Start from level > 1
     // booster: BOOSTER_CARD | BOOSTER_HP
     async enterLevel(store, { booster }) {
+      Vue.prototype.$app.logEvent("april-next-lvl", {
+        level: store.state.level + 1,
+        booster
+      });
       await this.$app.$game._wrapOperation(Operations.AprilEnterLevel, booster);
       store.commit("setIsDisabled", false);
     },

@@ -139,7 +139,13 @@ export default {
     };
   },
   computed: {
-    ...mapState("april", ["loaded", "sessionResult", "level", "playground"]),
+    ...mapState("april", [
+      "loaded",
+      "sessionResult",
+      "level",
+      "playground",
+      "balance"
+    ]),
     ...mapGetters("april", ["selectedHero", "hourReward"]),
     hourRewardLeft() {
       return this.hourReward ? this.hourReward.left || 0 : 0;
@@ -189,6 +195,12 @@ export default {
     async sessionResultHandler(value) {
       if (!value || !(this.currentStep === PLAY_FIELD_STEP)) {
         return;
+      }
+
+      if (value === april.SESSION_RESULT_SUCCESS && this.level > 8) {
+        this.$app.logEvent("april-killed-boss", {
+          sessionGold: this.balance ? this.balance.sessionGold || 0 : 0
+        });
       }
 
       if (value === april.SESSION_RESULT_FAIL || this.level > 8) {
