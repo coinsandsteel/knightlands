@@ -39,8 +39,8 @@
       </div>
     </template>
     <template v-slot:footer>
-      <CustomButton type="green" class="btn-exit inline-block" @click="close()">
-        {{ $t("exit") }}
+      <CustomButton type="red" class="btn-exit inline-block" @click="close()">
+        {{ $t("EXIT") }}
       </CustomButton>
     </template>
   </UserDialog>
@@ -91,6 +91,6 @@ export default {
   background: url("/images/april/hp_resurrection.png") center / 100% no-repeat;
 }
 .btn-exit {
-  min-width: 110px;
+  min-width: 100px;
 }
 </style>

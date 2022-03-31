@@ -9,30 +9,34 @@
       <div>
         <AprilHeroesSlide />
         <div class="padding-top-4">
-          <CustomButton
-            type="yellow"
-            class="btn-view-abilities inline-block"
-            @click="viewAbilityHandler"
-          >
-            {{ $t("view-abilities") }}
-          </CustomButton>
-          <CustomButton
-            v-if="canBuy"
-            type="yellow"
-            class="btn-upgrade inline-block"
-            :disabled="isBuyButtonDisabled"
-            @click="unlockHandler"
-          >
-            {{ $t("unlock") }} &nbsp;<AprilGold :value="buyPrice" />
-          </CustomButton>
-          <CustomButton
-            v-if="canChoose"
-            type="green"
-            class="btn-start inline-block"
-            @click="selectHandler"
-          >
-            {{ $t("start") }}
-          </CustomButton>
+          <div class="text-align-center">
+            <CustomButton
+              type="yellow"
+              class="btn-view-abilities inline-block"
+              @click="viewAbilityHandler"
+            >
+              {{ $t("view-abilities") }}
+            </CustomButton>
+          </div>
+          <div class="text-align-center margin-top-3">
+            <CustomButton
+              v-if="canBuy"
+              type="yellow"
+              class="btn-upgrade inline-block"
+              :disabled="isBuyButtonDisabled"
+              @click="unlockHandler"
+            >
+              {{ $t("BUY") }} &nbsp;<AprilGold :value="buyPrice" />
+            </CustomButton>
+            <CustomButton
+              v-if="canChoose"
+              type="green"
+              class="btn-start inline-block"
+              @click="selectHandler"
+            >
+              {{ $t("START") }}
+            </CustomButton>
+          </div>
         </div>
       </div>
     </div>
@@ -144,5 +148,8 @@ export default {
   .april-hero-abilities {
     grid-row-gap: 1rem;
   }
+}
+.btn {
+  min-width: 100px;
 }
 </style>
