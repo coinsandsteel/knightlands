@@ -298,7 +298,6 @@ export default {
       const showDialog = create(AprilStopGame);
       const result = await showDialog();
       if (result) {
-        this.$store.dispatch("april/exit");
         this.$emit("exit", true);
       }
     },

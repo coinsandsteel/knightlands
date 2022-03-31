@@ -11,7 +11,7 @@
     /> -->
     <AprilPlayField
       v-if="currentStep === PLAY_FIELD_STEP"
-      @exit="showHeroSelectStep"
+      @exit="playFieldExitHandler"
     />
     <AprilPlayRound
       v-if="currentStep === PLAY_ROUND_STEP"
@@ -100,7 +100,7 @@
 <script>
 import * as april from "@/../../knightlands-shared/april";
 import { mapState, mapGetters } from "vuex";
-import { create } from "vue-modal-dialogs";
+// import { create } from "vue-modal-dialogs";
 import Timer from "@/timer.js";
 import AppSection from "@/AppSection.vue";
 import AprilHeroSelect from "@/views/April/AprilHeroSelect.vue";
@@ -135,7 +135,8 @@ export default {
       PLAY_FIELD_STEP,
       PLAY_ROUND_STEP,
       currentStep: HERO_SELECT_STEP,
-      isSummaryModalVisible: false
+      isSummaryModalVisible: false,
+      shouldExitGame: false
     };
   },
   computed: {
@@ -229,7 +230,7 @@ export default {
     //     // this.showSummary();
     //     return;
     //   }
-    //   ++this.currentStep;
+    //   ++this.currentStep;F
 
     //   if (this.currentStep === PLAY_FIELD_STEP) {
     //     this.$store.dispatch("april/restart", {
@@ -248,6 +249,10 @@ export default {
     summaryClosedHandler(result) {
       this.isSummaryModalVisible = false;
       if (!(result && result.isResurrection)) {
+        if (this.shouldExitGame) {
+          this.$store.dispatch("april/exit");
+        }
+        this.shouldExitGame = false;
         this.showHeroSelectStep();
       }
     },
@@ -294,6 +299,10 @@ export default {
         (this.hourReward.nextRewardAvailable || 0) - this.$game.nowSec
       );
       this.hourRewardTimer.update();
+    },
+    playFieldExitHandler() {
+      this.shouldExitGame = true;
+      this.showSummary();
     }
   }
 };
