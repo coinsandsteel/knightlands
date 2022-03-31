@@ -88,22 +88,32 @@
         </div>
       </div>
     </div>
+
+    <portal v-if="isActive" to="footer" :slim="true">
+      <div class="width-100 flex flex-items-start">
+        <BackButton class="back-button" @click="backHandler"></BackButton>
+        <div class="flex-full"></div>
+      </div>
+    </portal>
   </div>
 </template>
 <script>
 import { create } from "vue-modal-dialogs";
 import * as april from "@/../../knightlands-shared/april";
+import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
+import BackButton from "@/views/Common/BackButton.vue";
 import AprilGold from "@/views/April/AprilGold.vue";
 
 export default {
   components: {
-    AprilGold
+    AprilGold,
+    BackButton
   },
-  mixins: [ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
+  mixins: [AppSection, ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
   data() {
     return {
       options: april.SHOP,
@@ -194,6 +204,9 @@ export default {
 
       const ShowDialog = create(ItemsReceived, "items", "aprilTicket");
       ShowDialog([], april.TICKET_SHOP[0].quantity);
+    },
+    backHandler() {
+      this.$router.push({ name: "april-play" });
     }
   }
 };
