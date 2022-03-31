@@ -37,6 +37,7 @@
         <div v-if="currentStep === HERO_SELECT_STEP">
           <template v-if="true">
             <CustomButton
+              v-if="false"
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('addRating')"
@@ -44,6 +45,7 @@
               addRating
             </CustomButton>
             <CustomButton
+              v-if="false"
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('addTicket')"
@@ -51,6 +53,7 @@
               addTicket
             </CustomButton>
             <CustomButton
+              v-if="false"
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('resetDailyRewards')"
@@ -58,6 +61,7 @@
               resetDailyRewards
             </CustomButton>
             <CustomButton
+              v-if="false"
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('plus1Day')"
@@ -65,6 +69,7 @@
               plus1Day
             </CustomButton>
             <CustomButton
+              v-if="false"
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('addGold')"
@@ -72,6 +77,7 @@
               addGold
             </CustomButton>
             <CustomButton
+              v-if="false"
               type="blue"
               class="inline-block margin-right-2 margin-top-1"
               @click="testAction('resetCharacters')"

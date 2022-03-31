@@ -67,6 +67,8 @@ export default {
           (template.type === ItemType.Lunar && template.rarity === ITEM_RARITY_NFT)
           ||
           (template.type === ItemType.March && template.id !== 3461)
+          ||
+          (template.type === ItemType.April && template.id !== 3475)
         ) {
           filteredItems.push(item);
         }
