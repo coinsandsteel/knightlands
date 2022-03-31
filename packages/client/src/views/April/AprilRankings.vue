@@ -159,10 +159,6 @@ export default {
         }
       }
       this.records = records;
-      console.log(
-        "🚀 ~ file: AprilRankings.vue ~ line 161 ~ fetchRankings ~ records",
-        records
-      );
     },
     scrollUpdated(start, end) {},
     async claimRewards() {
