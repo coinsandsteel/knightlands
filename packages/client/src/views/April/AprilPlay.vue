@@ -135,8 +135,7 @@ export default {
       PLAY_FIELD_STEP,
       PLAY_ROUND_STEP,
       currentStep: HERO_SELECT_STEP,
-      isSummaryModalVisible: false,
-      shouldExitGame: false
+      isSummaryModalVisible: false
     };
   },
   computed: {
@@ -249,10 +248,6 @@ export default {
     summaryClosedHandler(result) {
       this.isSummaryModalVisible = false;
       if (!(result && result.isResurrection)) {
-        if (this.shouldExitGame) {
-          this.$store.dispatch("april/exit");
-        }
-        this.shouldExitGame = false;
         this.showHeroSelectStep();
       }
     },
@@ -301,7 +296,6 @@ export default {
       this.hourRewardTimer.update();
     },
     playFieldExitHandler() {
-      this.shouldExitGame = true;
       this.showSummary();
     }
   }

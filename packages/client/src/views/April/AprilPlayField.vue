@@ -15,6 +15,7 @@
       />
       <CustomButton
         v-if="canSkipTurn"
+        :disabled="isDisabled"
         type="red"
         class="btn-skip-turn"
         @click="skipTurnHandler"
@@ -295,6 +296,9 @@ export default {
 
   methods: {
     async stopHandler() {
+      if (this.isDisabled) {
+        return;
+      }
       const showDialog = create(AprilStopGame);
       const result = await showDialog();
       if (result) {
@@ -464,11 +468,17 @@ export default {
     },
 
     addActionPointHandler() {
+      if (this.isDisabled) {
+        return;
+      }
       const showDialog = create(AprilPurchaseThirdActionPoint);
       showDialog();
     },
 
     skipTurnHandler() {
+      if (this.isDisabled) {
+        return;
+      }
       this.$store.dispatch("april/skip");
     },
 

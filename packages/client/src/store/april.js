@@ -347,6 +347,7 @@ export default {
     },
     // Skip a turn
     async skip(store) {
+      store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.AprilSkip);
       store.commit("setSelectedCardId", null);
       setTimeout(() => {
