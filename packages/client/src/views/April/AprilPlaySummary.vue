@@ -16,6 +16,9 @@
                 :value="playground ? playground.enemiesKilled || 0 : 0"
               />
             </div>
+            <div class="margin-top-2">
+              {{ $t("april-boss-killed-text") }}
+            </div>
             <div
               v-if="hasFailed"
               class="resurrection-container margin-top-3 padding-top-2 padding-bottom-2 flex flex-column flex-center width-100"
@@ -59,7 +62,13 @@ export default {
     AprilPoints
   },
   computed: {
-    ...mapState("april", ["balance", "prices", "sessionResult", "playground"]),
+    ...mapState("april", [
+      "balance",
+      "level",
+      "prices",
+      "sessionResult",
+      "playground"
+    ]),
     hasFailed() {
       return this.sessionResult === april.SESSION_RESULT_FAIL;
     }
@@ -72,6 +81,10 @@ export default {
         }
         await this.$store.dispatch("april/resurrect");
       } else {
+        this.$app.logEvent("april-exit", {
+          sessionGold: this.balance ? this.balance.sessionGold || 0 : 0,
+          level: this.level
+        });
         await this.$store.dispatch("april/exit");
       }
       // this.$close({ isResurrection });

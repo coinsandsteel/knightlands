@@ -2664,5 +2664,6 @@
   "shop": "Shop",
   "gold-earned": "Gold earned",
   "enemies-killed": "Enemies killed",
-  "resurrection-text": "Resurrect and step 1 action back"
+  "resurrection-text": "Resurrect and step 1 action back",
+  "april-boss-killed-text": "Rating will be updated after killing the boss"
 }
