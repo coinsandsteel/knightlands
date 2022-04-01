@@ -140,6 +140,7 @@
 </template>
 
 <script>
+import debounce from "lodash/debounce";
 import SoundEffect from "@/components/SoundEffect.vue";
 import AudioPlayer from "@/components/AudioPlayer.vue";
 import StatusBar from "./components/StatusBar.vue";
@@ -271,6 +272,14 @@ export default {
 
     this.firebase = initializeApp(firebaseConfig);
     this.analytics = getAnalytics(this.firebase);
+    this.updateAppSize();
+    // window.addEventListener("resize", this.updateAppSize);
+    window.addEventListener(
+      "resize",
+      debounce(() => {
+        this.updateAppSize();
+      }, 500)
+    );
   },
   async created() {
     Vue.prototype.$app = this;
@@ -456,6 +465,13 @@ export default {
     async updateUserData() {
       await this.$game.updateUserData();
       this.loading = false;
+    },
+    updateAppSize() {
+      const appSize = document.querySelector("#app").getBoundingClientRect();
+      this.$store.commit("setAppSize", {
+        width: Math.floor(appSize.width),
+        height: Math.floor(appSize.height)
+      });
     }
   },
   watch: {
@@ -470,6 +486,7 @@ export default {
 <style lang="less">
 @import "./style/common.less";
 @import "./style/sprites.less";
+@import "./style/sprites2.less";
 @import "./style/ui.less";
 @import "./views/Army/army.less";
 </style>

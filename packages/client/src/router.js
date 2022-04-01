@@ -74,6 +74,7 @@ const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
 
 const LunarRoot = () => import("./views/Lunar/LunarRoot.vue");
 const MarchRoot = () => import("./views/March/MarchRoot.vue");
+const AprilRoot = () => import("./views/April/AprilRoot.vue");
 
 const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
 const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
@@ -533,6 +534,40 @@ const router = new Router({
           path: "rewards",
           name: "march-rewards",
           component: () => import("./views/March/MarchRewards.vue")
+        }
+      ],
+      meta: {
+        requiresAuth: true,
+        noBackButton: true
+      }
+    },
+    {
+      path: "/april",
+      component: AprilRoot,
+      children: [
+        {
+          path: "",
+          redirect: { name: "april-play" }
+        },
+        {
+          path: "play",
+          name: "april-play",
+          component: () => import("./views/April/AprilPlay.vue")
+        },
+        {
+          path: "rankings",
+          name: "april-rankings",
+          component: () => import("./views/April/AprilRankings.vue")
+        },
+        {
+          path: "achievements",
+          name: "april-achievements",
+          component: () => import("./views/April/AprilAchievements.vue")
+        },
+        {
+          path: "shop",
+          name: "april-shop",
+          component: () => import("./views/April/AprilShop.vue")
         }
       ],
       meta: {
