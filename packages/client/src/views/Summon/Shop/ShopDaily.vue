@@ -35,7 +35,7 @@
 import PurchaseButton from "@/components/PurchaseButton.vue";
 import DailyShopElement from "./DailyShopElement.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
-import DailyShopMeta from "@/daily_shop";
+import DailyShopMeta from "@/metadata/daily_shop";
 import Timer from "@/timer";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 

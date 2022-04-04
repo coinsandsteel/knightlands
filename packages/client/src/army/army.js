@@ -1,13 +1,13 @@
 /*jshint esversion: 9 */
 
-import ArmyMeta from "@/army_meta";
+import ArmyMeta from "@/metadata/army_meta";
 import Vue from "vue";
 import throttle from "lodash.throttle";
-import ArmyAbilities from "@/army_abilities";
+import ArmyAbilities from "@/metadata/army_abilities";
 import ArmyResolver from "@/../../knightlands-shared/army_resolver";
-import armyUnits from "@/army_units";
-import TroopsMeta from "@/troops_meta";
-import GeneralsMeta from "@/generals_meta";
+import armyUnits from "@/metadata/army_units";
+import TroopsMeta from "@/metadata/troops_meta";
+import GeneralsMeta from "@/metadata/generals_meta";
 
 const dummyUnit = {
   id: -1,

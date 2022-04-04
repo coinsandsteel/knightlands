@@ -64,8 +64,8 @@ import Loot from "@/components/Loot.vue";
 import MaterialConverterElement from "./MaterialConverterElement.vue";
 import Title from "@/components/Title.vue";
 
-import DisenchantingMeta from "@/disenchanting_meta";
-import ShardsMeta from "@/acc_shards_meta";
+import DisenchantingMeta from "@/metadata/disenchanting_meta";
+import ShardsMeta from "@/metadata/acc_shards_meta";
 
 export default {
   mixins: [AppSection, ShowItemsMixin, HintHandler, PromptMixin],

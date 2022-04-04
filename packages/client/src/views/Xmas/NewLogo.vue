@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AvatarsMeta from "@/avatars";
+import AvatarsMeta from "@/metadata/avatars";
 
 export default {
   props: ["preview", "avatar", "mini"],

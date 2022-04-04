@@ -61,7 +61,7 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import Loot from "@/components/Loot.vue";
 import Title from "@/components/Title.vue";
 import LootHint from "@/components/LootHint.vue";

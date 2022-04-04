@@ -298,7 +298,7 @@ import Vue from "vue";
 import SpriteAnimator from "@/components/SpriteAnimator.vue";
 import Timer from "@/timer.js";
 import Title from "@/components/Title.vue";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import SoundEffect from "@/components/SoundEffect.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";

@@ -31,7 +31,7 @@
 
 <script>
 import Title from "@/components/Title.vue";
-import Meta from "@/prize_pool_meta";
+import Meta from "@/metadata/prize_pool_meta";
 
 export default {
   props: ["currentRank"],

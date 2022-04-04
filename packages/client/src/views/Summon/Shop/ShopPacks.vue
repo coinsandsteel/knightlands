@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Meta from "@/premium_shop";
+import Meta from "@/metadata/premium_shop";
 import PremiumPackElement from "./PremiumPackElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";

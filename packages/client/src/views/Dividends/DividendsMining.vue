@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import DividendsMeta from "@/dividends";
+import DividendsMeta from "@/metadata/dividends";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import AshTag from "@/components/AshTag.vue";

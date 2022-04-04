@@ -27,7 +27,7 @@
 
 <script>
 import PromisedButton from "@/components/PromisedButton.vue";
-import DailyRewards from "@/daily_rewards";
+import DailyRewards from "@/metadata/daily_rewards";
 import DailyRefill from "./DailyRefill.vue";
 import Timer from "@/timer";
 

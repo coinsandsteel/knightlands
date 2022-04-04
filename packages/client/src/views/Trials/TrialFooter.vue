@@ -20,9 +20,9 @@
 <script>
 import CustomButton from "@/components/Button.vue";
 import TrialType from "@/../../knightlands-shared/trial_type";
-import TrialsOfHonorMeta from "@/trials_of_honor";
-import TrialsOfDecayMeta from "@/trials_of_decay";
-import ConjuredTrialsMeta from "@/conjured_trials";
+import TrialsOfHonorMeta from "@/metadata/trials_of_honor";
+import TrialsOfDecayMeta from "@/metadata/trials_of_decay";
+import ConjuredTrialsMeta from "@/metadata/conjured_trials";
 import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 
 export default {

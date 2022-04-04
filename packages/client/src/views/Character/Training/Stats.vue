@@ -69,7 +69,7 @@ import TrainingCamp from "@/../../knightlands-shared/training_camp";
 import { StatConversions } from "@/../../knightlands-shared/character_stat.js";
 import NumericValue from "@/components/NumericValue.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
-import TrainingCampMeta from "@/training_camp";
+import TrainingCampMeta from "@/metadata/training_camp";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 

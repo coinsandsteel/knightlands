@@ -17,7 +17,7 @@
 <script>
 import UserDialog from "@/components/UserDialog.vue";
 import RewardsPreview from "./RewardsPreview.vue";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import CustomButton from "@/components/Button.vue";
 
 export default {

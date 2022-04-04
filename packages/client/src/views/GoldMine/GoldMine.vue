@@ -33,7 +33,7 @@ import AppSection from "@/AppSection.vue";
 import GoldMineElement from "./GoldMineElement.vue";
 import GoldMineExpandElement from "./GoldMineExpandElement.vue";
 import GoldStorageElement from "./GoldStorageElement.vue";
-import MinesMeta from "@/mines_meta";
+import MinesMeta from "@/metadata/mines_meta";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {

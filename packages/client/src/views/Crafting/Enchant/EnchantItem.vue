@@ -192,7 +192,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import IconWithValue from "@/components/IconWithValue.vue";
 import AshTag from "@/components/AshTag.vue";
 
-const EnchantingMeta = require("@/enchanting_meta.json");
+const EnchantingMeta = require("@/metadata/enchanting_meta.json");
 const RollBackLevel = 5;
 
 export default {

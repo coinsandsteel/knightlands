@@ -49,7 +49,7 @@
 
 <script>
 import UiConstants from "@/ui_constants";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Timer from "@/timer.js";
 import Campaign from "@/campaign_database";

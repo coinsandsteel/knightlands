@@ -15,7 +15,7 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import LeaderboardsMeta from "@/leaderboards_meta";
+import LeaderboardsMeta from "@/metadata/leaderboards_meta";
 import Tabs from "@/components/Tabs.vue";
 
 export default {

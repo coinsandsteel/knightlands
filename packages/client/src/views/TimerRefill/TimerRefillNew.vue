@@ -134,7 +134,7 @@ import ButtonBar from "@/components/ButtonBar.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Timer from "@/timer";
-import RefillMeta from "@/refill";
+import RefillMeta from "@/metadata/refill";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ProgressBar from "@/components/ProgressBar.vue";

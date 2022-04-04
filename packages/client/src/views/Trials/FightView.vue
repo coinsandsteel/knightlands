@@ -123,7 +123,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import TrialCardsEffect from "@/../../knightlands-shared/trial_cards_effect";
 import Errors from "@/../../knightlands-shared/errors";
-import TrialsMeta from "@/trials_meta";
+import TrialsMeta from "@/metadata/trials_meta";
 import HintButton from "@/components/HintButton.vue";
 
 import PurchaseAttempts from "./PurchaseAttempts.vue";

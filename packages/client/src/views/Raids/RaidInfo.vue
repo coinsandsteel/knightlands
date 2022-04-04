@@ -57,7 +57,7 @@
 
 <script>
 import UserDialog from "@/components/UserDialog.vue";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import Timer from "@/timer";
 import IconWithValue from "@/components/IconWithValue.vue";
 

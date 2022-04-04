@@ -1,5 +1,5 @@
 <script>
-import DailyQuestsMeta from "@/daily_quests";
+import DailyQuestsMeta from "@/metadata/daily_quests";
 
 export default {
   computed: {

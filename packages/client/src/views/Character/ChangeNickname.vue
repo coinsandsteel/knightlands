@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Meta from "@/meta";
+import Meta from "@/metadata/meta";
 
 import UserDialog from "@/components/UserDialog.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";

@@ -35,7 +35,7 @@ import AppSection from "@/AppSection.vue";
 import AccessoryTemplateInfo from "./AccessoryTemplateInfo.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
-import CraftAccessories from "@/craft_accessories";
+import CraftAccessories from "@/metadata/craft_accessories";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import AshTag from "@/components/AshTag.vue";
 import IconWithValue from "@/components/IconWithValue.vue";

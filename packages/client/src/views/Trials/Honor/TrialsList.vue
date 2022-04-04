@@ -16,7 +16,7 @@
 <script>
 import TrialsList from "../TrialsList.vue";
 import TrialListElement from "./../TrialListElement.vue";
-import TrialsOfHonorMeta from "@/trials_of_honor";
+import TrialsOfHonorMeta from "@/metadata/trials_of_honor";
 
 export default {
   components: { TrialsList, TrialListElement },

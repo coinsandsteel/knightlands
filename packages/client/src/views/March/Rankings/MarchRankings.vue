@@ -81,7 +81,7 @@
 <script>
 import MarchRankingElement from "@/views/March/Rankings/MarchRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import meta from "@/march_meta.json";
+import meta from "@/metadata/march_meta.json";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import Timer from "@/timer.js";

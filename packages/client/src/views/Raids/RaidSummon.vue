@@ -129,7 +129,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import AppSection from "@/AppSection.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
@@ -139,7 +139,7 @@ import RaidInfo from "./RaidInfo.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import RaidGetterMixin from "./RaidGetterMixin.vue";
-import SectionsProgress from "@/sections_progress";
+import SectionsProgress from "@/metadata/sections_progress";
 import Timer from "@/timer";
 
 import { create as CreateDialog } from "vue-modal-dialogs";

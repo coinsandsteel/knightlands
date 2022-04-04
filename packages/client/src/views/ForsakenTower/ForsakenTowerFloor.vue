@@ -90,7 +90,7 @@
 <script>
 import EnemyView from "@/components/EnemyView.vue";
 import FloatingTextContainer from "@/components/FloatingTextContainer.vue";
-import TowerMeta from "@/tower_meta";
+import TowerMeta from "@/metadata/tower_meta";
 import PromisedButton from "@/components/PromisedButton.vue";
 import AttackButton from "@/components/AttackButton.vue";
 import ProgressBar from "@/components/ProgressBar.vue";

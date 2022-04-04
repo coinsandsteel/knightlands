@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import ArmyMeta from "@/army_meta.json";
+import ArmyMeta from "@/metadata/army_meta.json";
 import UserDialog from "@/components/UserDialog.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";

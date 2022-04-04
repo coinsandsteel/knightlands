@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import AvatarsMeta from "@/avatars";
+import AvatarsMeta from "@/metadata/avatars";
 
 import { create } from "vue-modal-dialogs";
 import ChangeAvatar from "./ChangeAvatar.vue";

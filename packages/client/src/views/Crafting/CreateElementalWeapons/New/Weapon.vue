@@ -99,7 +99,7 @@ import ItemStats from "@/components/Item/ItemStats.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-import CraftingBook from "@/crafting_book";
+import CraftingBook from "@/metadata/crafting_book";
 import Elements from "@/../../knightlands-shared/elements";
 import CurrencyType from "@/../../knightlands-shared/currency_type";
 import Rarity from "@/../../knightlands-shared/rarity";

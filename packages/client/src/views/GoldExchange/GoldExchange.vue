@@ -90,7 +90,7 @@ import PromisedButton from "@/components/PromisedButton.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import AppSection from "@/AppSection.vue";
-import GoldExchangeMeta from "@/goldExchange";
+import GoldExchangeMeta from "@/metadata/goldExchange";
 import PriceTag from "@/components/PriceTag.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 const Events = require("@/../../knightlands-shared/events");
