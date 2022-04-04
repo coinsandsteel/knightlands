@@ -4,9 +4,9 @@
     @click="handleHint"
     :class="[{ interactible: interactible }, { bottom: gacha }, size]"
   >
-    <div class="inner-border item_slot_dark" :class="rarity">
+    <div class="inner-border item_slot_dark" :class="[rarity, itemSlotClasses]">
       <div
-        :class="[{ locked: locked }, icon]"
+        :class="[{ locked: locked }, icon, iconClasses]"
         class="icon pixelated"
         slot="reference"
       />
@@ -131,7 +131,9 @@ export default {
     onlyIcon: {
       type: Boolean,
       default: false
-    }
+    },
+    itemSlotClasses: [String, Array, Object],
+    iconClasses: [String, Array, Object]
   },
   data() {
     return {
@@ -158,13 +160,17 @@ export default {
       return !this.itemData ? "" : `${this.itemData.template}`;
     },
     rarity() {
-      if (!this.itemData) {
+      if (!this.itemData || this.itemData.isCustomElement) {
         return "";
       }
 
       return `slot_${this.$game.itemsDB.getRarity(this.itemData)}`;
     },
     element() {
+      if (this.itemData.isCustomElement) {
+        return null;
+      }
+
       return this.$game.itemsDB.getElement(this.item);
     },
     count() {
@@ -206,7 +212,7 @@ export default {
       if ((!this.itemData || !this.itemData.id) && this.equipment) {
         return SlotPlaceholders[this.equipmentSlot];
       }
-      if (this.itemData) {
+      if (this.itemData && !this.itemData.isCustomElement) {
         return this.$game.itemsDB.getIcon(
           this.itemData.template,
           this.$game.itemsDB.getRarity(this.itemData)

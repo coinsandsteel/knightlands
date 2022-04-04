@@ -1,5 +1,6 @@
 <template>
   <user-dialog
+    class="loot-hint"
     @close="handleClose"
     :titleClass="`rarity-${template.rarity}`"
     :compact="true"
@@ -229,6 +230,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.loot-hint {
+  z-index: 200;
+}
 .stats {
   align-items: flex-start;
   margin-top: 1rem;

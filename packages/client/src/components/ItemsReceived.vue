@@ -1,5 +1,9 @@
 <template>
-  <UserDialog :title="$t('box-opened-title')" @close="$close" class="over-top">
+  <UserDialog
+    :title="$t('box-opened-title')"
+    @close="$close"
+    :class="{ 'over-top': !drown }"
+  >
     <template v-slot:content>
       <div class="flex flex-column flex-items-center width-100">
         <IconWithValue
@@ -34,6 +38,10 @@
           >{{ exp }}</IconWithValue
         >
 
+        <MarchGold v-if="marchGold" :value="marchGold" />
+        <AprilGold v-if="aprilGold" :value="aprilGold" />
+        <AprilTickets v-if="aprilTicket" :value="aprilTicket" />
+
         <div
           class="flex flex-center flex-column margin-top-3"
           v-if="items.length > 0"
@@ -64,6 +72,9 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import HintHandler from "@/components/HintHandler.vue";
+import MarchGold from "@/views/March/MarchGold.vue";
+import AprilGold from "@/views/April/AprilGold.vue";
+import AprilTickets from "@/views/April/AprilTickets.vue";
 
 export default {
   mixins: [HintHandler],
@@ -71,9 +82,22 @@ export default {
     UserDialog,
     IconWithValue,
     CustomButton,
-    Loot
+    Loot,
+    MarchGold,
+    AprilGold,
+    AprilTickets
   },
-  props: ["items", "soft", "hard", "exp", "dkt"]
+  props: [
+    "items",
+    "soft",
+    "hard",
+    "exp",
+    "dkt",
+    "drown",
+    "marchGold",
+    "aprilGold",
+    "aprilTicket"
+  ]
 };
 </script>
 

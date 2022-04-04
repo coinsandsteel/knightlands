@@ -20,6 +20,10 @@ import EasySlider from "vue-easy-slider";
 import AsyncComputed from "vue-async-computed";
 import VueLazyload from "vue-lazyload";
 import VueResizeText from "vue-resize-text";
+import CustomButton from "@/components/Button.vue";
+import UserDialog from "@/components/UserDialog.vue";
+import Title from "@/components/Title.vue";
+import IconWithValue from "@/components/IconWithValue.vue";
 
 Vue.use(VueResizeText);
 Vue.use(VueLazyload);
@@ -38,6 +42,10 @@ Vue.use(VueCollapse);
 Vue.use(ModalDialogs);
 Vue.use(VueAgile);
 Vue.use(LoadScript);
+Vue.component("CustomButton", CustomButton);
+Vue.component("UserDialog", UserDialog);
+Vue.component("Title", Title);
+Vue.component("IconWithValue", IconWithValue);
 
 Vue.config.debug = true;
 Vue.config.productionTip = false;

@@ -20,13 +20,13 @@
 
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
-              <!-- <MenuIcon
-                icon="skewed_icon_xmas"
-                :to="{ name: 'xmas-home' }"
+              <MenuIcon
+                icon="skewed_icon_april"
+                :to="{ path: '/april' }"
                 :append="true"
-                id="xmas"
-                >{{ $t("btn-evt-xmas") }}
-              </MenuIcon> -->
+                id="march"
+                >{{ $t("april-event") }}
+              </MenuIcon>
             </MenuIconRow>
 
             <MenuIconRow>
@@ -199,7 +199,7 @@ export default {
 
 <style lang="less" scoped>
 .home-art {
-  background-image: url("../assets/backgrounds/xmas_bg.jpg");
+  background-image: url("../assets/backgrounds/castle_bg.jpg");
   background-size: cover;
   background-position: bottom;
 }

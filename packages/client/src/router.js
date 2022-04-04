@@ -72,6 +72,10 @@ const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
 const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
 
+const LunarRoot = () => import("./views/Lunar/LunarRoot.vue");
+const MarchRoot = () => import("./views/March/MarchRoot.vue");
+const AprilRoot = () => import("./views/April/AprilRoot.vue");
+
 const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
 const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
 const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
@@ -459,6 +463,118 @@ const router = new Router({
     //     requiresAuth: true
     //   }
     // },
+    {
+      path: "/lunar",
+      component: LunarRoot,
+      children: [
+        {
+          path: "",
+          redirect: { name: "lunar-craft" }
+        },
+        {
+          path: "craft",
+          name: "lunar-craft",
+          component: () => import("./views/Lunar/LunarCraft.vue")
+        },
+        {
+          path: "recipes",
+          name: "lunar-recipes",
+          component: () => import("./views/Lunar/LunarRecipes.vue")
+        },
+        {
+          path: "exchange",
+          name: "lunar-exchange",
+          component: () => import("./views/Lunar/LunarExchange.vue")
+        },
+        {
+          path: "nft",
+          name: "lunar-nft",
+          component: () => import("./views/Lunar/LunarNft.vue")
+        },
+        {
+          path: "shop",
+          name: "lunar-shop",
+          component: () => import("./views/Lunar/LunarShop.vue")
+        }
+      ],
+      meta: {
+        requiresAuth: true,
+        noBackButton: true
+      }
+    },
+    {
+      path: "/march",
+      component: MarchRoot,
+      children: [
+        {
+          path: "",
+          redirect: { name: "march-play" }
+        },
+        {
+          path: "play",
+          name: "march-play",
+          component: () => import("./views/March/MarchPlay.vue")
+        },
+        {
+          path: "pets",
+          name: "march-pets",
+          component: () => import("./views/March/MarchPets.vue")
+        },
+        {
+          path: "rankings",
+          name: "march-rankings",
+          component: () => import("./views/March/Rankings/MarchRankings.vue")
+        },
+        {
+          path: "shop",
+          name: "march-shop",
+          component: () => import("./views/March/MarchShop.vue")
+        },
+        {
+          path: "rewards",
+          name: "march-rewards",
+          component: () => import("./views/March/MarchRewards.vue")
+        }
+      ],
+      meta: {
+        requiresAuth: true,
+        noBackButton: true
+      }
+    },
+    {
+      path: "/april",
+      component: AprilRoot,
+      children: [
+        {
+          path: "",
+          redirect: { name: "april-play" }
+        },
+        {
+          path: "play",
+          name: "april-play",
+          component: () => import("./views/April/AprilPlay.vue")
+        },
+        {
+          path: "rankings",
+          name: "april-rankings",
+          component: () => import("./views/April/AprilRankings.vue")
+        },
+        {
+          path: "achievements",
+          name: "april-achievements",
+          component: () => import("./views/April/AprilAchievements.vue")
+        },
+        {
+          path: "shop",
+          name: "april-shop",
+          component: () => import("./views/April/AprilShop.vue")
+        }
+      ],
+      meta: {
+        requiresAuth: true,
+        noBackButton: true
+      }
+    },
     {
       path: "/home/adventures",
       component: AdventuresRoot,

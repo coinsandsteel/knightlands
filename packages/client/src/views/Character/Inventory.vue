@@ -73,7 +73,7 @@ export default {
   }),
   computed: {
     computedItems() {
-      const items = this.items || this.$game.inventory.items;
+      let items = this.items || this.$game.inventory.items;
       if (!this.noEquipped) {
         return items.filter(x => !x.equipped);
       }
