@@ -210,6 +210,7 @@ export default {
       }
     },
     raid() {
+      this.fetchInfo();
       this.refreshSummonTimer();
     }
   },
