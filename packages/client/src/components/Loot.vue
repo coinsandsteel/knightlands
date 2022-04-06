@@ -436,7 +436,7 @@ export default {
 
 .element {
   position: absolute;
-  top: 0.4rem;
+  bottom: 0.4rem;
   left: 0rem;
 }
 
