@@ -16,8 +16,18 @@
       <img :src="enemyImage" v-if="!hasViewSlot" />
     </div>
 
-    <div v-if="navigation" class="nav-arrow left" @click="emitPrevious"></div>
-    <div v-if="navigation" class="nav-arrow" @click="emitNext"></div>
+    <div
+      v-if="navigation"
+      class="nav-arrow left"
+      :class="raidTemplateId <= 1 ? 'opacity-50 pointer-events-none' : ''"
+      @click="emitPrevious"
+    ></div>
+    <div
+      v-if="navigation"
+      class="nav-arrow"
+      :class="raidTemplateId >= 50 ? 'opacity-50 pointer-events-none' : ''"
+      @click="emitNext"
+    ></div>
 
     <!-- <div
       v-if="timer"
@@ -78,15 +88,21 @@ export default {
       }
     },
     emitNext() {
+      if (this.raidTemplateId >= 50) {
+        return;
+      }
       this.$emit("next");
     },
     emitPrevious() {
+      if (this.raidTemplateId <= 1) {
+        return;
+      }
       this.$emit("previous");
     },
     swipeHandler(direction) {
-      if (direction == "left") {
+      if (direction == "left" && this.raidTemplateId < 50) {
         this.emitNext();
-      } else if (direction == "right") {
+      } else if (direction == "right" && this.raidTemplateId > 1) {
         this.emitPrevious();
       }
     }
