@@ -16,6 +16,7 @@
       <div class="flex flex-center flex-column">
         <div class="flex">
           <PurchaseButton
+            :skipConfirm="true"
             :promise="request"
             :disabled="!selectedClass || !canConfirm"
             :price="price"
@@ -75,31 +76,31 @@ export default {
   },
   methods: {
     async confirm() {
-      // let response = await this.showPrompt(
-      //   this.$t("confirm-cls-title"),
-      //   this.$t("confirm-cls-selection", {
-      //     class: this.$t(this.selectedClass)
-      //   }),
-      //   [
-      //     {
-      //       type: "red",
-      //       response: false,
-      //       title: this.$t("btn-cancel")
-      //     },
-      //     {
-      //       type: "green",
-      //       response: true,
-      //       title: this.$t("btn-ok")
-      //     }
-      //   ]
-      // );
+      let response = await this.showPrompt(
+        this.$t("confirm-cls-title"),
+        this.$t("confirm-cls-selection", {
+          class: this.$t(this.selectedClass)
+        }),
+        [
+          {
+            type: "red",
+            response: false,
+            title: this.$t("btn-cancel")
+          },
+          {
+            type: "green",
+            response: true,
+            title: this.$t("btn-ok")
+          }
+        ]
+      );
 
-      // if (response === true) {
-      this.request = this.$game.selectClass(this.selectedClass);
-      await this.request;
-      this.$app.logEvent("change-class", { class: this.selectedClass });
-      this.$close();
-      // }
+      if (response === true) {
+        this.request = this.$game.selectClass(this.selectedClass);
+        await this.request;
+        this.$app.logEvent("change-class", { class: this.selectedClass });
+        this.$close();
+      }
     }
   }
 };
