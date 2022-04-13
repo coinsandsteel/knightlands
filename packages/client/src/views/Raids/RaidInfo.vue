@@ -16,7 +16,7 @@
             >
             <IconWithValue
               class="margin-top-1"
-              :iconClass="`unit_weapon_${nextWeakness.weapon}`"
+              :iconClass="`unit_weapon_${currentWeakness.weapon}`"
               >{{ $t(currentWeakness.weapon) }}</IconWithValue
             >
           </div>
