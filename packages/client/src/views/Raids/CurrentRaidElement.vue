@@ -13,9 +13,15 @@
           <IconWithValue :iconClass="`icon-${weakness.element}`">{{
             $t(`el-${weakness.element}`)
           }}</IconWithValue>
-          <IconWithValue class="margin-top-1" iconClass="icon-attack">{{
+          <!-- <IconWithValue class="margin-top-1" iconClass="icon-attack">{{
             $t(weakness.weapon)
-          }}</IconWithValue>
+          }}</IconWithValue> -->
+          <IconWithValue
+            class="margin-top-1 current-raid-weapon"
+            :iconClass="`unit_weapon_${weakness.weapon}`"
+          >
+            <span class="margin-left-half">{{ $t(weakness.weapon) }}</span>
+          </IconWithValue>
         </div>
 
         <progress-bar
@@ -160,6 +166,10 @@ export default {
   position: absolute;
   top: 0;
   left: 1rem;
+}
+.current-raid-weapon::v-deep .value-icon {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 // .raid-progress {
