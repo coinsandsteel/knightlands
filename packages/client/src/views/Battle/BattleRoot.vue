@@ -17,17 +17,20 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { create } from "vue-modal-dialogs";
+// import { mapGetters } from "vuex";
+// import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
-import AppSection from "@/AppSection.vue";
+// import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const PlayTab = "battle-play";
 const RankingsTab = "battle-rankings";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [
+    // AppSection,
+    NetworkRequestErrorMixin
+  ],
   components: {
     Tabs
   },

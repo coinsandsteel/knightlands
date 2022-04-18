@@ -1,10 +1,19 @@
 <template>
-  <div>May play</div>
+  <div class="screen-content overflow-auto" v-if="true || loaded">
+    <BattlePlayField />
+  </div>
 </template>
 <script>
+import BattlePlayField from "@/views/Battle/BattlePlayField.vue";
+
 export default {
+  components: {
+    BattlePlayField
+  },
   data() {
-    return {};
+    return {
+      loaded: true
+    };
   }
 };
 </script>
