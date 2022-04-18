@@ -27,6 +27,13 @@
                 id="march"
                 >{{ $t("april-event") }}
               </MenuIcon>
+              <MenuIcon
+                icon="skewed_icon_april"
+                :to="{ path: '/battle' }"
+                :append="true"
+                id="battle"
+                >{{ $t("battle-event") }}
+              </MenuIcon>
             </MenuIconRow>
 
             <MenuIconRow>

@@ -75,6 +75,7 @@ const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
 const LunarRoot = () => import("./views/Lunar/LunarRoot.vue");
 const MarchRoot = () => import("./views/March/MarchRoot.vue");
 const AprilRoot = () => import("./views/April/AprilRoot.vue");
+const BattleRoot = () => import("./views/Battle/BattleRoot.vue");
 
 const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
 const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
@@ -574,6 +575,26 @@ const router = new Router({
         requiresAuth: true,
         noBackButton: true
       }
+    },
+    {
+      path: "/battle",
+      component: BattleRoot,
+      children: [
+        {
+          path: "",
+          redirect: { name: "battle-play" }
+        },
+        {
+          path: "play",
+          name: "battle-play",
+          component: () => import("./views/Battle/BattlePlay.vue")
+        },
+        {
+          path: "rankings",
+          name: "may-rankings",
+          component: () => import("./views/Battle/BattleRankings.vue")
+        }
+      ]
     },
     {
       path: "/home/adventures",
