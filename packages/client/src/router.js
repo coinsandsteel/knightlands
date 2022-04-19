@@ -593,8 +593,17 @@ const router = new Router({
           path: "rankings",
           name: "may-rankings",
           component: () => import("./views/Battle/BattleRankings.vue")
+        },
+        {
+          path: "shop",
+          name: "battle-shop",
+          component: () => import("./views/Battle/BattleShop.vue")
         }
-      ]
+      ],
+      meta: {
+        requiresAuth: true,
+        noBackButton: true
+      }
     },
     {
       path: "/home/adventures",
