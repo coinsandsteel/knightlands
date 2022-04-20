@@ -591,7 +591,7 @@ const router = new Router({
         },
         {
           path: "rankings",
-          name: "may-rankings",
+          name: "battle-rankings",
           component: () => import("./views/Battle/BattleRankings.vue")
         },
         {
