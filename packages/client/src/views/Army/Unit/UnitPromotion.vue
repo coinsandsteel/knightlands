@@ -56,7 +56,7 @@
               <CustomButton
                 type="yellow"
                 @click="promote"
-                :disabled="!canPromote()"
+                :disabled="!(canPromote && readyToPromote)"
               >
                 <div class="flex flex-center">
                   <span class="margin-right-1">{{ $t("btn-promote") }}</span>
@@ -185,9 +185,7 @@ export default {
     },
     soulsIngridient() {
       return { itemId: this.soulsItem, quantity: this.soulsRequired };
-    }
-  },
-  methods: {
+    },
     canPromote() {
       for (const ingr of this.ingridients) {
         const units = this.unitsPerIngridient[ingr.id];
@@ -197,7 +195,9 @@ export default {
       }
 
       return this.$game.inventory.hasEnoughIngridient(this.soulsIngridient);
-    },
+    }
+  },
+  methods: {
     clearSelectedUnits(ingridient) {
       const units = this.unitsPerIngridient[ingridient.id];
       if (!units) {
