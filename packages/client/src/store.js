@@ -25,6 +25,7 @@ import Xmas from "@/store/xmas";
 import Lunar from "@/store/lunar";
 import March from "@/store/march";
 import April from "@/store/april";
+import Battle from "@/store/battle";
 import Elements from "@/../../knightlands-shared/elements";
 import ArmyUnitTypes from "@/army_unit_types";
 
@@ -34,7 +35,7 @@ const vuexPersist = new VuexPersist({
   key: "knightlands",
   storage: localStorage,
   reducer: state =>
-    _.omit(state, ["dungeon", "xmas", "lunar", "march", "april"])
+    _.omit(state, ["dungeon", "xmas", "lunar", "march", "april", "battle"])
 });
 
 const DefaultRarityFilters = {};
@@ -305,7 +306,8 @@ const store = new Vuex.Store({
     xmas: Xmas,
     lunar: Lunar,
     march: March,
-    april: April
+    april: April,
+    battle: Battle
   }
 });
 

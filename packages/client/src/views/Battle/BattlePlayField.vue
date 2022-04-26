@@ -12,26 +12,36 @@
             v-for="(cell, cellIndex) in boardCells"
             :key="cellIndex"
             :index="cellIndex"
-            @click="cellClickHandler(cell, cellIndex)"
+            @click="cellClickHandler(cell, cellIndex, $event)"
           />
         </div>
       </div>
     </div>
+    <BattleAbilitySelect
+      v-if="abilitySelectResolve"
+      @close="abilitySelectCloseHandler"
+    />
   </div>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
+import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
 
 export default {
   components: {
-    BattleBoardCell
+    BattleBoardCell,
+    BattleAbilitySelect
   },
   data() {
-    return {};
+    return {
+      abilitySelectResolve: null
+    };
   },
   computed: {
     ...mapState(["appSize"]),
+    ...mapState("battle", ["units"]),
+    ...mapGetters("battle", ["selectedUnitId"]),
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 6)
@@ -42,7 +52,58 @@ export default {
     }
   },
   methods: {
-    cellClickHandler() {}
+    async showAbilitySelect() {
+      return new Promise(resolve => {
+        this.abilitySelectResolve = resolve;
+      });
+    },
+    abilitySelectCloseHandler(event) {
+      if (!this.abilitySelectResolve) {
+        return;
+      }
+
+      this.abilitySelectResolve(event);
+      this.abilitySelectResolve = null;
+    },
+    async cellClickHandler(cell, index, event) {
+      console.log("cell", cell);
+      console.log("index", index);
+      console.log("event", event);
+      console.log("selectedUnitId", this.selectedUnitId);
+
+      if (event.unit && !event.unit.isEnemy) {
+        if (this.selectedUnitId === event.unit.id) {
+          this.$store.commit("battle/updateState", {
+            selectedUnitId: null,
+            availableMoves: []
+          });
+          return;
+        }
+        this.$store.commit("battle/updateState", {
+          selectedUnitId: event.unit.id,
+          availableMoves: [index - 5, index - 4, index - 6, index - 10]
+        });
+      }
+      if (event.isAvailableMove) {
+        if (event.unit && event.unit.isEnemy) {
+          const result = await this.showAbilitySelect();
+          console.log("result", result);
+          this.$store.commit("battle/updateState", {
+            selectedUnitId: null,
+            availableMoves: []
+          });
+          return;
+        }
+        const units = [...this.units];
+        const unit = this.units.find(({ id }) => id === this.selectedUnitId);
+        unit.index = index;
+        this.$store.commit("battle/updateState", {
+          selectedUnitId: null,
+          availableMoves: [],
+          units
+        });
+      }
+    }
   }
 };
 </script>
