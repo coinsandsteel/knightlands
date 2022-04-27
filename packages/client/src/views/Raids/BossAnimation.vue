@@ -15,7 +15,7 @@
 
 <script>
 import SpinePlayer from "@/components/SpinePlayer.vue";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 
 export default {
   components: { SpinePlayer },

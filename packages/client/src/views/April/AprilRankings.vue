@@ -86,7 +86,7 @@ import _ from "lodash";
 import AprilRankingElement from "@/views/April/AprilRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as april from "@/../../knightlands-shared/april";
-import meta from "@/april_meta.json";
+import meta from "@/metadata/april_meta.json";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import Timer from "@/timer.js";

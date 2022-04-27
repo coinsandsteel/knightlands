@@ -55,8 +55,10 @@ const ItemType = require("@/../../knightlands-shared/item_type");
 import LootHint from "@/components/LootHint.vue";
 import DoubleBuffer from "@/helpers/DoubleBuffer";
 import CompareItems from "./CompareItems.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
+  mixins: [ActivityMixin],
   props: {
     target: Object,
     items: Array,
@@ -74,6 +76,7 @@ export default {
   },
   data: () => ({
     currentSlideIndex: 0,
+    latestSlideIndex: 0,
     hintItems: [],
     showHintItems: false
   }),
@@ -85,6 +88,13 @@ export default {
   },
   created() {
     this._buffer = new DoubleBuffer();
+  },
+  activated() {
+    if (!this.showHintItems) {
+      return;
+    }
+
+    this.updateHintItems(this.latestSlideIndex);
   },
   methods: {
     itemFromMatchingSlot(item) {
@@ -119,6 +129,7 @@ export default {
       this.$emit("action", item, action, ...args);
     },
     updateHintItems(index) {
+      // console.log("index 1", index);
       let currentSlide = this.currentSlideIndex;
       let maxSlideIndex = (this.items.length < 3 ? this.items.length : 3) - 1;
 
@@ -164,6 +175,8 @@ export default {
           slide: offsetSlideIndex
         });
       }
+
+      this.latestSlideIndex = index;
     }
   }
 };

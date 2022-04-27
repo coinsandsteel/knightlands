@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import SectionsProgress from "@/sections_progress";
+import SectionsProgress from "@/metadata/sections_progress";
 
 export default {
   props: ["section"],

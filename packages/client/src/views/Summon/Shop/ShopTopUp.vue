@@ -26,7 +26,7 @@
 <script>
 import TopUpShinies from "./TopUpShinies.vue";
 import TopUpRaidTickets from "./TopUpRaidTickets.vue";
-import Meta from "@/top_up_shop";
+import Meta from "@/metadata/top_up_shop";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 

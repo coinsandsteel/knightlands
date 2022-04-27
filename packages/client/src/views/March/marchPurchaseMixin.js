@@ -1,6 +1,6 @@
 import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
-import meta from "@/march_meta.json";
+import meta from "@/metadata/march_meta.json";
 import MarchNotEnoughBalance from "@/views/March/MarchNotEnoughBalance.vue";
 
 export default {

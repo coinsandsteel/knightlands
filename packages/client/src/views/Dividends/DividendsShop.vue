@@ -55,7 +55,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import DividendsShopElement from "./DividendsShopElement.vue";
 import DividendsMining from "./DividendsMining.vue";
 import DividendsDropRate from "./DividendsDropRate.vue";
-import DividendsMeta from "@/dividends";
+import DividendsMeta from "@/metadata/dividends";
 import IconWithValue from "@/components/IconWithValue.vue";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";

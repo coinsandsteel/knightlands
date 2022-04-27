@@ -11,7 +11,7 @@
 
 <script>
 import BaseTrial from "../BaseTrial.vue";
-import TrialsMeta from "@/trials_of_decay";
+import TrialsMeta from "@/metadata/trials_of_decay";
 import TrialType from "@/../../knightlands-shared/trial_type";
 
 export default {

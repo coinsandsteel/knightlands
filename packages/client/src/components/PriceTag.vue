@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const IAPs = require("@/iaps.json");
+const IAPs = require("@/metadata/iaps.json");
 
 export default {
   props: {

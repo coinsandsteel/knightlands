@@ -1,7 +1,7 @@
 import Timer from "../timer";
 import Vue from "vue";
 import ArmySummonType from "@/../../knightlands-shared/army_summon_type";
-import ArmySummonMeta from "@/army_summon_meta";
+import ArmySummonMeta from "@/metadata/army_summon_meta";
 
 export default {
   namespaced: true,

@@ -4,7 +4,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import Errors from "@/../../knightlands-shared/errors";
 import PurchaseArmySlots from "./PurchaseArmySlots.vue";
 import { create } from "vue-modal-dialogs";
-import ArmyMeta from "@/army_meta.json";
+import ArmyMeta from "@/metadata/army_meta.json";
 
 const ShowPurchaseArmySlots = create(PurchaseArmySlots);
 

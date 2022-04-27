@@ -1,7 +1,7 @@
 <script>
 import UiConstants from "@/ui_constants";
-import ArmyUnitTypes from "@/army_unit_types";
-import RaidsMeta from "@/raids_meta";
+import ArmyUnitTypes from "@/metadata/army_unit_types";
+import RaidsMeta from "@/metadata/raids_meta";
 import UnitAbilityType from "@/../../knightlands-shared/unit_ability_type";
 
 export default {

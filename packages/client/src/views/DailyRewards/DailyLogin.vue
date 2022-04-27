@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import DailyRewards from "@/daily_rewards";
+import DailyRewards from "@/metadata/daily_rewards";
 import DailyReward from "./DailyReward.vue";
 import PromisedButton from "@/components/PromisedButton.vue";
 import HintHandler from "@/components/HintHandler.vue";

@@ -1263,7 +1263,7 @@
   "increasedDamageWhenEnoughElements": "increasedDamageWhenEnoughElements",
   "increasedDamageWhenEnoughUnitTypes": "increasedDamageWhenEnoughUnitTypes",
   "increasedDamageWhenGeneralsUsed": "+<span class='rarity-mythical'>{value}%</span> урона, когда хотя бы {unitCount} <span class='unit_type_{unitType} iconf'></span> полководец(ца) в легионе.",
-  "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% урона, когда хотя бы <span class='rarity-epic'>{unitCount} {unitType}</span> солдат(а) в легионе",
+  "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% урона, когда хотя бы {unitCount} <span class='unit_type_{unitType} iconf'></span> солдат(а) в легионе",
   "increasedDamageWhenTroopUsed": "+<span class='rarity-mythical'>{value}</span>% урона, когда <span class='rarity-epic capitalize'>{name}</span> есть в легионе",
   "increasedDamageWhenTypeMatch": "+<span class='rarity-mythical'>{value}%</span> урона <span class='unit_type_{unitType} iconf'></span> солдатам",
   "increasedDamageWhenWeaponMatch": "+<span class='rarity-mythical'>{value}%</span> урона <span class='icon-unit-{weapon} big'></span> солдатам",

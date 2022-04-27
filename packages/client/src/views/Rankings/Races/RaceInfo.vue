@@ -41,7 +41,7 @@
 <script>
 import UserDialog from "@/components/UserDialog.vue";
 import RankingType from "@/../../knightlands-shared/ranking_type";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 
 export default {
   components: { UserDialog },

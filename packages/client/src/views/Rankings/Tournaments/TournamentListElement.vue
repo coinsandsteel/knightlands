@@ -61,7 +61,7 @@
 <script>
 import CustomButton from "@/components/Button.vue";
 import RankingType from "@/../../knightlands-shared/ranking_type";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import Timer from "@/timer";
 import Title from "@/components/Title.vue";
 import IconWithValue from "@/components/IconWithValue.vue";

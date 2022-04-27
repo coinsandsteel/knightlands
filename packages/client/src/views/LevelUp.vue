@@ -68,7 +68,7 @@
 import SoundEffect from "@/components/SoundEffect.vue";
 import SpinePlayer from "@/components/SpinePlayer.vue";
 import CustomButton from "@/components/Button.vue";
-import LevelUpMeta from "@/levelup_meta";
+import LevelUpMeta from "@/metadata/levelup_meta";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 

@@ -29,7 +29,7 @@ const ShowGoldDialog = create(NoGold);
 
 export default {
   mixins: [PromptMixin],
-  props: ["price", "soft"],
+  props: ["price", "soft", "skipConfirm"],
   components: { CustomButton, IconWithValue },
   methods: {
     async handleClick() {
@@ -38,7 +38,7 @@ export default {
       } else if (!this.soft && this.price > this.$game.hardCurrency) {
         ShowShiniesDialog();
       } else {
-        if (!this.soft) {
+        if (!this.soft && !this.skipConfirm) {
           const response = await this.showPrompt(
             this.$t("buy-i-t"),
             this.$t("buy-i-q"),

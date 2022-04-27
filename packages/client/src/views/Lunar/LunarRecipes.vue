@@ -47,7 +47,7 @@
 <script>
 import { mapState } from "vuex";
 import { capitalize, getLanternIcon } from "@/helpers/utils";
-import recipes from "@/crafting_recipes.json";
+import recipes from "@/metadata/crafting_recipes.json";
 import {
   ITEM_RARITY_ADVANCED,
   ITEM_RARITY_EXPERT

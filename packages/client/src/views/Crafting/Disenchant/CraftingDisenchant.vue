@@ -60,7 +60,7 @@ import AppSection from "@/AppSection.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import CustomButton from "@/components/Button.vue";
 import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
-import DisenchantingMeta from "@/disenchanting_meta";
+import DisenchantingMeta from "@/metadata/disenchanting_meta";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";
 import Loot from "@/components/Loot.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";

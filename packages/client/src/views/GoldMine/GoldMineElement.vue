@@ -35,7 +35,7 @@
 <script>
 import PurchaseButton from "@/components/PurchaseButton.vue";
 import CustomButton from "@/components/Button.vue";
-import MinesMeta from "@/mines_meta";
+import MinesMeta from "@/metadata/mines_meta";
 import ItemProperties from "@/../../knightlands-shared/item_properties";
 
 export default {

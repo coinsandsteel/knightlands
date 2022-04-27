@@ -26,7 +26,7 @@ import Lunar from "@/store/lunar";
 import March from "@/store/march";
 import April from "@/store/april";
 import Elements from "@/../../knightlands-shared/elements";
-import ArmyUnitTypes from "@/army_unit_types";
+import ArmyUnitTypes from "@/metadata/army_unit_types";
 
 Vue.use(Vuex);
 

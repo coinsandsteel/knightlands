@@ -61,7 +61,10 @@ export default {
         return false;
       }
 
-      if (this.slot != EquipmentSlots.MainHand) {
+      if (
+        this.slot != EquipmentSlots.MainHand &&
+        this.slot !== EquipmentSlots.OffHand
+      ) {
         return false;
       }
 

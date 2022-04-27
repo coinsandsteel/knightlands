@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import TrialsMeta from "@/trials_meta";
+import TrialsMeta from "@/metadata/trials_meta";
 import CardModifier from "./CardModifier.vue";
 import PromisedView from "@/components/PromisedView.vue";
 import CustomButton from "@/components/Button.vue";

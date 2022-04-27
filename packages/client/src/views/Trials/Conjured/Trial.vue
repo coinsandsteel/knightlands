@@ -11,7 +11,7 @@
 
 <script>
 import BaseTrial from "../BaseTrial.vue";
-import ConjuredTrialsMeta from "@/conjured_trials";
+import ConjuredTrialsMeta from "@/metadata/conjured_trials";
 import TrialType from "@/../../knightlands-shared/trial_type";
 
 export default {

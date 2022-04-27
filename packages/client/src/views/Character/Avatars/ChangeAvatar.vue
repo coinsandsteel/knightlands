@@ -54,7 +54,7 @@ import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import AvatarEntry from "./AvatarEntry.vue";
-import AvatarsMeta from "@/avatars";
+import AvatarsMeta from "@/metadata/avatars";
 
 export default {
   mixins: [NetworkRequestErrorMixin],

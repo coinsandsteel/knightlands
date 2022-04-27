@@ -106,7 +106,7 @@ import CustomButton from "@/components/Button.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import Loot from "@/components/Loot.vue";
 import Title from "@/components/Title.vue";
-import DustRecipes from "@/dust_recipes";
+import DustRecipes from "@/metadata/dust_recipes";
 import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 

@@ -64,7 +64,7 @@
 import CustomButton from "@/components/Button.vue";
 import AdventureSlot from "./AdventureSlot.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
-import AdventuresMeta from "@/adventures_meta";
+import AdventuresMeta from "@/metadata/adventures_meta";
 import StartAdventure from "./StartAdventure.vue";
 import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";

@@ -49,9 +49,9 @@
 </template>
 
 <script>
-import ArmyMeta from "@/army_meta";
-import TroopsMeta from "@/troops_meta";
-import GeneralsMeta from "@/generals_meta";
+import ArmyMeta from "@/metadata/army_meta";
+import TroopsMeta from "@/metadata/troops_meta";
+import GeneralsMeta from "@/metadata/generals_meta";
 
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";

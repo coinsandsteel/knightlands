@@ -2,7 +2,7 @@
 const EquipmentType = require("@/../../knightlands-shared/equipment_type");
 import CraftingList from "./CraftingList.vue";
 
-const CraftingRecipes = require("@/crafting_recipes_by_category");
+const CraftingRecipes = require("@/metadata/crafting_recipes_by_category");
 
 const TabNames = {
   mainHand: "main_hand",
