@@ -17,3 +17,30 @@ export function sleep(millisecond = 1000) {
     }, millisecond);
   });
 }
+
+export function hasClass(el, className) {
+  if (el.classList) {
+    return el.classList.contains(className);
+  } else {
+    return el.className.split(" ").includes(className);
+  }
+}
+
+export function addClass(el, className) {
+  if (el.classList) {
+    el.classList.add(className);
+  } else {
+    el.className += " " + className;
+  }
+}
+
+export function removeClass(el, className) {
+  if (el.classList) {
+    el.classList.remove(className);
+  } else {
+    el.className = el.className.replace(
+      new RegExp("(^|\\b)" + className.split(" ").join("|") + "(\\b|$)", "gi"),
+      " "
+    );
+  }
+}

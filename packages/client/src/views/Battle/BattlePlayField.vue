@@ -17,14 +17,18 @@
         </div>
       </div>
     </div>
-    <BattleAbilitySelect
-      v-if="abilitySelectResolve"
-      @close="abilitySelectCloseHandler"
-    />
+    <Transition name="fade" appear>
+      <BattleAbilitySelect
+        v-if="abilitySelectResolve"
+        :enemy="clickedEnemy"
+        @close="abilitySelectCloseHandler"
+      />
+    </Transition>
   </div>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import cloneDeep from "lodash/cloneDeep";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
 import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
 
@@ -35,13 +39,14 @@ export default {
   },
   data() {
     return {
-      abilitySelectResolve: null
+      abilitySelectResolve: null,
+      clickedEnemy: null
     };
   },
   computed: {
     ...mapState(["appSize"]),
     ...mapState("battle", ["units"]),
-    ...mapGetters("battle", ["selectedUnitId"]),
+    ...mapGetters("battle", ["isMyTurn", "selectedUnitId", "selectedEnemyId"]),
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 6)
@@ -71,7 +76,7 @@ export default {
       console.log("event", event);
       console.log("selectedUnitId", this.selectedUnitId);
 
-      if (event.unit && !event.unit.isEnemy) {
+      if (event.isUnit) {
         if (this.selectedUnitId === event.unit.id) {
           this.$store.commit("battle/updateState", {
             selectedUnitId: null,
@@ -81,27 +86,45 @@ export default {
         }
         this.$store.commit("battle/updateState", {
           selectedUnitId: event.unit.id,
-          availableMoves: [index - 5, index - 4, index - 6, index - 10]
+          availableMoves: [
+            index - 5,
+            index - 4,
+            index - 6,
+            index - 10,
+            index - 15,
+            index - 20,
+            index - 25,
+            index - 30,
+            index - 35
+          ]
         });
       }
-      if (event.isAvailableMove) {
-        if (event.unit && event.unit.isEnemy) {
-          const result = await this.showAbilitySelect();
-          console.log("result", result);
-          this.$store.commit("battle/updateState", {
-            selectedUnitId: null,
-            availableMoves: []
-          });
-          return;
-        }
-        const units = [...this.units];
-        const unit = this.units.find(({ id }) => id === this.selectedUnitId);
+
+      if (event.isAvailableMove && !event.isEnemy) {
+        const units = cloneDeep(this.units) || [];
+        const unit = units.find(({ id }) => id === this.selectedUnitId);
         unit.index = index;
         this.$store.commit("battle/updateState", {
           selectedUnitId: null,
           availableMoves: [],
           units
         });
+      }
+
+      if (event.isAvailableMove && event.isEnemy) {
+        this.clickedEnemy = cloneDeep(event.enemy);
+        this.$store.commit("battle/updateState", {
+          availableMoves: []
+        });
+        const result = await this.showAbilitySelect();
+
+        console.log("result", result);
+
+        this.clickedEnemy = null;
+        this.$store.commit("battle/updateState", {
+          selectedUnitId: null
+        });
+        return;
       }
     }
   }

@@ -7,38 +7,64 @@ export default {
   namespaced: true,
   state: {
     loaded: false,
+
+    isMyTurn: true,
+
     selectedUnitId: null,
-    phase: 1, // 1: select unit,
     units: [
-      { id: 1, index: 0, isEnemy: true },
-      { id: 2, index: 1, isEnemy: true },
-      { id: 3, index: 2, isEnemy: true },
-      { id: 4, index: 3, isEnemy: true },
-      { id: 5, index: 27, isEnemy: true },
-      { id: 6, index: 35, isEnemy: false },
-      { id: 7, index: 36, isEnemy: false },
-      { id: 8, index: 37, isEnemy: false },
-      { id: 9, index: 38, isEnemy: false },
-      { id: 10, index: 39, isEnemy: false }
+      { id: 6, index: 35 },
+      { id: 7, index: 36 },
+      { id: 8, index: 37 },
+      { id: 9, index: 38 },
+      { id: 10, index: 39 }
     ],
-    availableMoves: []
+    availableMoves: [],
+
+    selectedEnemyId: null,
+    enemies: [
+      { id: 1, index: 0 },
+      { id: 2, index: 1 },
+      { id: 3, index: 2 },
+      { id: 4, index: 3 },
+      { id: 5, index: 27 }
+    ],
+    enemyAvailableMoves: []
   },
   getters: {
-    selectedUnitId(state) {
-      return state.selectedUnitId;
-    },
-    selectedUnit(state) {
-      if (!state.selectedUnitId) {
-        return null;
-      }
-
-      return { id: state.selectedUnitId };
+    isMyTurn(state) {
+      return state.isMyTurn;
     },
     units(state) {
       return state.units;
     },
+    selectedUnitId(state) {
+      return state.selectedUnitId;
+    },
+    selectedUnit(state, getters) {
+      if (!state.selectedUnitId) {
+        return null;
+      }
+
+      return getters.units.find(({ id }) => id === getters.selectedUnitId);
+    },
     availableMoves(state) {
       return state.availableMoves;
+    },
+    enemies(state) {
+      return state.enemies;
+    },
+    selectedEnemyId(state) {
+      return state.selectedEnemyId;
+    },
+    selectedEnemy(state, getters) {
+      if (!state.selectedEnemyId) {
+        return null;
+      }
+
+      return getters.enemies.find(({ id }) => id === getters.selectedEnemyId);
+    },
+    enemyAvailableMoves(state) {
+      return state.enemyAvailableMoves;
     }
   },
   mutations: {
