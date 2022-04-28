@@ -28,7 +28,7 @@
           v-if="isUnit"
           class="battle-board-cell-unit-wrapper absolute-stretch"
           :class="[
-            `unit-move-length-${moveLength}`,
+            `move-length-${unitMoveLength}`,
             {
               'unit-move-active': isUnitMoveActive
             }
@@ -38,12 +38,20 @@
         </div>
       </Transition>
       <!-- enemy -->
-      <div
-        v-if="isEnemy"
-        class="battle-board-cell-enemy-wrapper absolute-stretch"
-      >
-        <div class="battle-board-cell-enemy absolute-stretch"></div>
-      </div>
+      <Transition @enter="enemyEnterHandler" @leave="enemyLeaveHandler">
+        <div
+          v-if="isEnemy"
+          class="battle-board-cell-enemy-wrapper absolute-stretch"
+          :class="[
+            `move-length-${enemyMoveLength}`,
+            {
+              'enemy-move-active': isEnemyMoveActive
+            }
+          ]"
+        >
+          <div class="battle-board-cell-enemy absolute-stretch"></div>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -59,7 +67,10 @@ export default {
     return {
       previousUnitIndex: -1,
       isUnitMoveActive: false,
-      moveLength: 0
+      unitMoveLength: 0,
+      previousEnemyIndex: -1,
+      isEnemyMoveActive: false,
+      enemyMoveLength: 0
     };
   },
   computed: {
@@ -90,6 +101,9 @@ export default {
     isEnemy() {
       return this.enemies.map(({ index }) => index).includes(this.index);
     },
+    enemyIndex() {
+      return this.selectedEnemy ? this.selectedEnemy.index : -1;
+    },
     enemy() {
       if (!this.isEnemy) {
         return null;
@@ -116,6 +130,13 @@ export default {
       }
 
       this.previousUnitIndex = value;
+    },
+    enemyIndex(value) {
+      if (!(value > -1)) {
+        return;
+      }
+
+      this.previousEnemyIndex = value;
     }
   },
   methods: {
@@ -141,7 +162,7 @@ export default {
       const yDiff =
         Math.floor(this.index / 5) - Math.floor(this.previousUnitIndex / 5);
       const diff = Math.max(Math.abs(xDiff), Math.abs(yDiff));
-      this.moveLength = diff;
+      this.unitMoveLength = diff;
       el.style = `transform: translate(calc(${-xDiff *
         0.8} * var(--base-size)), calc(${-yDiff * 0.8} * var(--base-size)));`;
       this.isUnitMoveActive = true;
@@ -155,6 +176,33 @@ export default {
     },
     unitLeaveHandler(el, done) {
       console.log("unit leave", this.index);
+      done();
+    },
+    async enemyEnterHandler(el, done) {
+      if (!(this.previousEnemyIndex !== this.index)) {
+        done();
+        return;
+      }
+
+      console.log(`move from ${this.previousEnemyIndex} to ${this.index}`);
+      const xDiff = (this.index % 5) - (this.previousEnemyIndex % 5);
+      const yDiff =
+        Math.floor(this.index / 5) - Math.floor(this.previousEnemyIndex / 5);
+      const diff = Math.max(Math.abs(xDiff), Math.abs(yDiff));
+      this.enemyMoveLength = diff;
+      el.style = `transform: translate(calc(${-xDiff *
+        0.8} * var(--base-size)), calc(${-yDiff * 0.8} * var(--base-size)));`;
+      this.isEnemyMoveActive = true;
+      await sleep(10);
+      el.removeAttribute("style");
+      const animationLength = [0, 200, 300, 380, 440, 480, 500, 510];
+      await sleep(animationLength[diff]);
+      this.isEnemyMoveActive = false;
+
+      done();
+    },
+    enemyLeaveHandler(el, done) {
+      console.log("enemy leave", this.index);
       done();
     }
   }
@@ -181,27 +229,39 @@ export default {
 .battle-board-cell-enemy {
   background: url("/images/battle/enemy.png") center/100% no-repeat;
 }
-.unit-move-active {
-  &.unit-move-length-1 {
+.unit-move-active,
+.enemy-move-active {
+  &.move-length-1 {
     transition: transform 0.2s;
   }
-  &.unit-move-length-2 {
+  &.move-length-2 {
     transition: transform 0.3s;
   }
-  &.unit-move-length-3 {
+  &.move-length-3 {
     transition: transform 0.38s;
   }
-  &.unit-move-length-4 {
+  &.move-length-4 {
     transition: transform 0.44s;
   }
-  &.unit-move-length-5 {
+  &.move-length-5 {
     transition: transform 0.48s;
   }
-  &.unit-move-length-6 {
+  &.move-length-6 {
     transition: transform 0.5s;
   }
-  &.unit-move-length-7 {
+  &.move-length-7 {
     transition: transform 0.51s;
   }
+}
+
+// animation
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 </style>

@@ -12,11 +12,11 @@ export default {
 
     selectedUnitId: null,
     units: [
-      { id: 6, index: 35 },
-      { id: 7, index: 36 },
-      { id: 8, index: 37 },
-      { id: 9, index: 38 },
-      { id: 10, index: 39 }
+      { id: 6, index: 30 },
+      { id: 7, index: 31 },
+      { id: 8, index: 32 },
+      { id: 9, index: 33 },
+      { id: 10, index: 34 }
     ],
     availableMoves: [],
 
@@ -26,7 +26,7 @@ export default {
       { id: 2, index: 1 },
       { id: 3, index: 2 },
       { id: 4, index: 3 },
-      { id: 5, index: 27 }
+      { id: 5, index: 22 }
     ],
     enemyAvailableMoves: []
   },
@@ -69,6 +69,9 @@ export default {
   },
   mutations: {
     updateState(state, data) {
+      if (data.isMyTurn !== undefined) {
+        state.isMyTurn = data.isMyTurn;
+      }
       if (data.selectedUnitId !== undefined) {
         state.selectedUnitId = data.selectedUnitId;
       }
@@ -77,6 +80,15 @@ export default {
       }
       if (data.availableMoves !== undefined) {
         state.availableMoves = data.availableMoves;
+      }
+      if (data.selectedEnemyId !== undefined) {
+        state.selectedEnemyId = data.selectedEnemyId;
+      }
+      if (data.enemies !== undefined) {
+        state.enemies = data.enemies;
+      }
+      if (data.enemyAvailableMoves !== undefined) {
+        state.enemyAvailableMoves = data.enemyAvailableMoves;
       }
     },
     setInitialState(state, data) {

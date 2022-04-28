@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     ...mapState(["appSize"]),
-    ...mapState("battle", ["units"]),
+    ...mapState("battle", ["units", "enemies"]),
     ...mapGetters("battle", ["isMyTurn", "selectedUnitId", "selectedEnemyId"]),
     baseSize() {
       return this.appSize
@@ -53,7 +53,7 @@ export default {
         : Math.floor(375 / 6);
     },
     boardCells() {
-      return new Array(5 * 8).fill(null);
+      return new Array(5 * 7).fill(null);
     }
   },
   methods: {
@@ -75,6 +75,44 @@ export default {
       console.log("index", index);
       console.log("event", event);
       console.log("selectedUnitId", this.selectedUnitId);
+
+      if (!this.isMyTurn) {
+        if (event.isEnemy) {
+          this.$store.commit("battle/updateState", {
+            selectedEnemyId: event.enemy.id,
+            enemyAvailableMoves: [
+              index + 5,
+              index + 4,
+              index + 6,
+              index + 10,
+              index + 15,
+              index + 20,
+              index + 25,
+              index + 30,
+              index + 35
+            ]
+          });
+
+          return;
+        }
+
+        if (event.isEnemyAvailableMove) {
+          const enemies = cloneDeep(this.enemies) || [];
+          const enemy = enemies.find(({ id }) => id === this.selectedEnemyId);
+          enemy.index = index;
+          this.$store.commit("battle/updateState", {
+            selectedEnemyId: null,
+            enemyAvailableMoves: [],
+            enemies
+          });
+
+          this.$store.commit("battle/updateState", {
+            isMyTurn: true
+          });
+        }
+
+        return;
+      }
 
       if (event.isUnit) {
         if (this.selectedUnitId === event.unit.id) {
@@ -109,6 +147,10 @@ export default {
           availableMoves: [],
           units
         });
+
+        this.$store.commit("battle/updateState", {
+          isMyTurn: false
+        });
       }
 
       if (event.isAvailableMove && event.isEnemy) {
@@ -123,6 +165,10 @@ export default {
         this.clickedEnemy = null;
         this.$store.commit("battle/updateState", {
           selectedUnitId: null
+        });
+
+        this.$store.commit("battle/updateState", {
+          isMyTurn: false
         });
         return;
       }
