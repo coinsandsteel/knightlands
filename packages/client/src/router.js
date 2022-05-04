@@ -582,7 +582,32 @@ const router = new Router({
       children: [
         {
           path: "",
-          redirect: { name: "battle-play" }
+          redirect: { name: "battle-menu" }
+        },
+        {
+          path: "menu",
+          name: "battle-menu",
+          component: () => import("./views/Battle/BattleMenu.vue")
+        },
+        {
+          path: "adventure",
+          name: "battle-adventure",
+          component: () => import("./views/Battle/BattleAdventure.vue")
+        },
+        {
+          path: "duels",
+          name: "battle-duels",
+          component: () => import("./views/Battle/BattleDuels.vue")
+        },
+        {
+          path: "squad",
+          name: "battle-squad",
+          component: () => import("./views/Battle/BattleSquad.vue")
+        },
+        {
+          path: "merger",
+          name: "battle-merger",
+          component: () => import("./views/Battle/BattleMerger.vue")
         },
         {
           path: "play",

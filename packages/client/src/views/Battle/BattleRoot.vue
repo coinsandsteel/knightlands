@@ -23,7 +23,7 @@ import Tabs from "@/components/Tabs.vue";
 // import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
-const PlayTab = "battle-play";
+const MenuTab = "battle-menu";
 const RankingsTab = "battle-rankings";
 
 export default {
@@ -40,8 +40,8 @@ export default {
       tabs: [
         {
           title: this.$t("event-menu"),
-          value: PlayTab,
-          to: { name: PlayTab }
+          value: MenuTab,
+          to: { name: MenuTab }
         },
         {
           title: this.$t("rating"),
@@ -49,7 +49,7 @@ export default {
           to: { name: RankingsTab }
         }
       ],
-      currentTab: PlayTab
+      currentTab: MenuTab
     };
   },
   async mounted() {

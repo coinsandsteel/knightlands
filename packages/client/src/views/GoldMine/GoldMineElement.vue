@@ -52,7 +52,10 @@ export default {
       return this.idx % 2 ? "color-panel-1" : "color-panel-5";
     },
     rateLvl() {
-      return this.mine.level + 1;
+      return Math.min(this.mine.level + 1, MinesMeta.mines.length);
+    },
+    level() {
+      return Math.min(this.mine.level, MinesMeta.mines.length - 1);
     },
     ratePrice() {
       const item = this.$game.inventory.getItemByTemplate(MinesMeta.priceCharm);
@@ -67,13 +70,11 @@ export default {
 
         discount -= item.count * this.$game.itemsDB.getProperty(prop).value;
       }
-      return Math.floor(
-        (MinesMeta.mines[this.mine.level].price * discount) / 100
-      );
+      return Math.floor((MinesMeta.mines[this.level].price * discount) / 100);
     },
     rate() {
       // per second
-      return Math.floor(MinesMeta.mines[this.mine.level].rate * 3600);
+      return Math.floor(MinesMeta.mines[this.level].rate * 3600);
     },
     nextRate() {
       // per second
