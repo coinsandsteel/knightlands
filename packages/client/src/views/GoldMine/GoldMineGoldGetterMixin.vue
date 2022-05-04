@@ -27,8 +27,9 @@ export default {
       let goldMinedTotal = 0;
 
       for (const mine of this.$game.goldMines.mines) {
+        const level = Math.min(mine.level, MinesMeta.mines.length - 1);
         const timePassed = this.$game.nowSec - mine.lastUpdate;
-        let goldMined = timePassed * MinesMeta.mines[mine.level].rate;
+        let goldMined = timePassed * MinesMeta.mines[level].rate;
         goldMinedTotal += goldMined;
       }
 
