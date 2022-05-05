@@ -209,7 +209,7 @@
 
             <div class="flex flex-center">
               <CustomButton
-                width="20rem"
+                width="28rem"
                 type="yellow"
                 @click="join"
                 :disabled="!(canJoin && canSummonCurrentRaid)"
