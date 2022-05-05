@@ -4,6 +4,7 @@
 
     <MultiSelectItemContainer
       ref="lootContainer"
+      :shouldResetAll="true"
       :items="items"
       :filtersStore="$store.getters.getDisenchantFilters"
       commitCmd="setDisenchantingFilters"
@@ -105,7 +106,11 @@ export default {
           continue;
         }
         const template = this.$game.itemsDB.getTemplate(item.template);
-        if (template.type === "lunarResource" || template.type === "marchResource" || template.type === "aprilResource") {
+        if (
+          template.type === "lunarResource" ||
+          template.type === "marchResource" ||
+          template.type === "aprilResource"
+        ) {
           continue;
         }
         filteredItems[insertedItems++] = item;
@@ -120,7 +125,9 @@ export default {
       const selectedItems = this.$refs.lootContainer.selectedItems;
       const payload = {};
       for (const itemId in selectedItems) {
-        payload[itemId] = selectedItems[itemId];
+        if (selectedItems[itemId] > 0) {
+          payload[itemId] = selectedItems[itemId];
+        }
       }
 
       const items = await this.performRequest(

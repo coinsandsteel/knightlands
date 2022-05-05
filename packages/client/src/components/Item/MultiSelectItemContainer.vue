@@ -59,6 +59,9 @@ import Loot from "@/components/Loot.vue";
 export default {
   mixins: [ActivityMixin, FilteredLootMixin],
   components: { NumericValue, Loot, CustomButton },
+  props: {
+    shouldResetAll: Boolean
+  },
   data: () => ({
     itemsCount: {},
     selectedItem: null,
@@ -83,6 +86,10 @@ export default {
       this.incItemCount(this.item.count - this.currentItemCount);
     },
     reset() {
+      if (this.shouldResetAll) {
+        this.resetSelectedItems();
+        return;
+      }
       this.decItemCount(this.currentItemCount);
     },
     resetSelectedItems() {
