@@ -257,6 +257,10 @@ export default {
       }
 
       return !this.loading && this.$game.ready && this.$game.authenticated;
+    },
+
+    aaa() {
+      return this.$route.matched;
     }
   },
   mounted() {

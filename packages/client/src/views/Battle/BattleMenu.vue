@@ -64,7 +64,7 @@ export default {
       this.$router.push({ name: "battle-duels" });
     },
     goToSquad() {
-      this.$router.push({ name: "battle-squad" });
+      this.$router.push({ name: "battle-squad-home" });
     },
     goToMerger() {
       this.$router.push({ name: "battle-merger" });

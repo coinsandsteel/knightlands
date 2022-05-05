@@ -599,10 +599,39 @@ const router = new Router({
           name: "battle-duels",
           component: () => import("./views/Battle/BattleDuels.vue")
         },
+        // {
+        //   path: "squad",
+        //   name: "battle-squad",
+        //   component: () => import("./views/Battle/BattleSquad.vue")
+        // },
         {
           path: "squad",
-          name: "battle-squad",
-          component: () => import("./views/Battle/BattleSquad.vue")
+          component: () => import("./views/Battle/BattleSquadRoot.vue"),
+          children: [
+            {
+              path: "",
+              redirect: { name: "battle-squad-home" }
+            },
+            {
+              path: "home",
+              name: "battle-squad-home",
+              component: () => import("./views/Battle/BattleSquad.vue")
+            },
+            {
+              path: "warehouse",
+              name: "battle-squad-warehouse",
+              component: () => import("./views/Battle/BattleSquadWarehouse.vue")
+            },
+            {
+              path: "bonus",
+              name: "battle-squad-bonus",
+              component: () => import("./views/Battle/BattleSquadBonus.vue")
+            }
+          ],
+          meta: {
+            requiresAuth: true,
+            noBackButton: false
+          }
         },
         {
           path: "merger",
@@ -627,7 +656,7 @@ const router = new Router({
       ],
       meta: {
         requiresAuth: true,
-        noBackButton: true
+        noBackButton: false
       }
     },
     {

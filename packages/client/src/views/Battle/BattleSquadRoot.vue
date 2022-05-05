@@ -20,14 +20,18 @@
 // import { mapGetters } from "vuex";
 // import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
-import AppSection from "@/AppSection.vue";
+// import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
-const MenuTab = "battle-menu";
-const RankingsTab = "battle-rankings";
+const SquadTab = "battle-squad-home";
+const WarehouseTab = "battle-squad-warehouse";
+const BonusTab = "battle-squad-bonus";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [
+    // AppSection,
+    NetworkRequestErrorMixin
+  ],
   components: {
     Tabs
   },
@@ -36,32 +40,31 @@ export default {
       hasShowDailyRewards: false,
       tabs: [
         {
-          title: this.$t("event-menu"),
-          value: MenuTab,
-          to: { name: MenuTab }
+          title: this.$t("squad???"),
+          value: SquadTab,
+          to: { name: SquadTab }
         },
         {
-          title: this.$t("rating"),
-          value: RankingsTab,
-          to: { name: RankingsTab }
+          title: this.$t("warehouse???"),
+          value: WarehouseTab,
+          to: { name: WarehouseTab }
+        },
+        {
+          title: this.$t("bonus???"),
+          value: BonusTab,
+          to: { name: BonusTab }
         }
       ],
-      currentTab: MenuTab
+      currentTab: SquadTab
     };
   },
   async mounted() {
-    this.$store.dispatch("battle/subscribe");
-    await this.$store.dispatch("battle/load");
+    // this.$store.dispatch("battle/subscribe");
+    // await this.$store.dispatch("battle/load");
   },
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
-    },
-    handleBackButton() {
-      console.log("handleBackButton");
-      this.$router.back();
-
-      return true;
     }
   }
 };
