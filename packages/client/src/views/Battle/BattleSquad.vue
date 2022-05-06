@@ -32,7 +32,6 @@ export default {
       console.log("unitClickHandler");
       const showDailyRewardsDialog = create(BattleUnitSelect);
       await showDailyRewardsDialog();
-      this.hasShowDailyRewards = false;
     }
   }
 };
