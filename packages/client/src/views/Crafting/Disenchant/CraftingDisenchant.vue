@@ -9,6 +9,7 @@
       :filtersStore="$store.getters.getDisenchantFilters"
       commitCmd="setDisenchantingFilters"
       @select="selectItem"
+      @reset="resetItems"
     >
       <template v-slot:content>
         <div class="color-panel-2 margin-top-1">
@@ -156,11 +157,16 @@ export default {
         }
         this.predictedMaterials[rarity].count += quantity;
       } else {
-        this.predictedMaterials[rarity].count -= quantity;
-        if (this.predictedMaterials[rarity].count <= 0) {
-          this.$delete(this.predictedMaterials, rarity);
+        if (this.predictedMaterials[rarity]) {
+          this.predictedMaterials[rarity].count -= quantity;
+          if (this.predictedMaterials[rarity].count <= 0) {
+            this.$delete(this.predictedMaterials, rarity);
+          }
         }
       }
+    },
+    resetItems() {
+      this.predictedMaterials = {};
     },
     goToUpgrade() {
       this.$router.push({
