@@ -33,6 +33,7 @@
         <CustomButton
           type="green"
           class="inline-block margin-right-2 margin-top-1"
+          @click="detailsClickHandler"
         >
           {{ $t("details") }}???
         </CustomButton>
@@ -50,6 +51,7 @@
 <script>
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
+import BattleMergerDetailsInfo from "@/views/Battle/BattleMergerDetailsInfo.vue";
 import { create } from "vue-modal-dialogs";
 
 export default {
@@ -62,8 +64,12 @@ export default {
   methods: {
     async unitClickHandler() {
       console.log("unitClickHandler");
-      const showDailyRewardsDialog = create(BattleUnitSelect);
-      await showDailyRewardsDialog();
+      const show = create(BattleUnitSelect);
+      await show();
+    },
+    async detailsClickHandler() {
+      const show = create(BattleMergerDetailsInfo);
+      await show();
     }
   }
 };
