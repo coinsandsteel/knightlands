@@ -13,14 +13,14 @@
         class="p-switch  margin-bottom-1 p-fill"
         color="success"
         v-model="music"
-        >{{ "Music" }}</p-check
+        >{{ $t("music") }}</p-check
       >
 
       <p-check
         class="p-switch margin-bottom-1 p-fill"
         color="success"
         v-model="sounds"
-        >{{ "Sound" }}</p-check
+        >{{ $t("sound") }}</p-check
       >
     </div>
 

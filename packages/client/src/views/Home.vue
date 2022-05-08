@@ -20,13 +20,13 @@
 
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
-              <MenuIcon
+              <!-- <MenuIcon
                 icon="skewed_icon_april"
                 :to="{ path: '/april' }"
                 :append="true"
                 id="march"
                 >{{ $t("april-event") }}
-              </MenuIcon>
+              </MenuIcon> -->
             </MenuIconRow>
 
             <MenuIconRow>

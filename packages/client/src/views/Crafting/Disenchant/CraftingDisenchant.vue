@@ -4,10 +4,12 @@
 
     <MultiSelectItemContainer
       ref="lootContainer"
+      :shouldResetAll="true"
       :items="items"
       :filtersStore="$store.getters.getDisenchantFilters"
       commitCmd="setDisenchantingFilters"
       @select="selectItem"
+      @reset="resetItems"
     >
       <template v-slot:content>
         <div class="color-panel-2 margin-top-1">
@@ -105,7 +107,11 @@ export default {
           continue;
         }
         const template = this.$game.itemsDB.getTemplate(item.template);
-        if (template.type === "lunarResource" || template.type === "marchResource" || template.type === "aprilResource") {
+        if (
+          template.type === "lunarResource" ||
+          template.type === "marchResource" ||
+          template.type === "aprilResource"
+        ) {
           continue;
         }
         filteredItems[insertedItems++] = item;
@@ -120,7 +126,9 @@ export default {
       const selectedItems = this.$refs.lootContainer.selectedItems;
       const payload = {};
       for (const itemId in selectedItems) {
-        payload[itemId] = selectedItems[itemId];
+        if (selectedItems[itemId] > 0) {
+          payload[itemId] = selectedItems[itemId];
+        }
       }
 
       const items = await this.performRequest(
@@ -149,11 +157,16 @@ export default {
         }
         this.predictedMaterials[rarity].count += quantity;
       } else {
-        this.predictedMaterials[rarity].count -= quantity;
-        if (this.predictedMaterials[rarity].count <= 0) {
-          this.$delete(this.predictedMaterials, rarity);
+        if (this.predictedMaterials[rarity]) {
+          this.predictedMaterials[rarity].count -= quantity;
+          if (this.predictedMaterials[rarity].count <= 0) {
+            this.$delete(this.predictedMaterials, rarity);
+          }
         }
       }
+    },
+    resetItems() {
+      this.predictedMaterials = {};
     },
     goToUpgrade() {
       this.$router.push({
