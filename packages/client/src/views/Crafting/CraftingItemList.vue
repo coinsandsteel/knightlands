@@ -21,17 +21,17 @@
       >
         <slot></slot>
       </LootContainer>
-    </div>
 
-    <keep-alive>
-      <EquippedItemList
-        v-if="onlyEquippedItems"
-        :filter="equippedItemsFilter"
-        :hintHandler="handleHint"
-        :commitCmd="commitCmd"
-        :filtersStore="filtersStore"
-      />
-    </keep-alive>
+      <keep-alive>
+        <EquippedItemList
+          v-if="onlyEquippedItems"
+          :filter="equippedItemsFilter"
+          :hintHandler="handleHint"
+          :commitCmd="commitCmd"
+          :filtersStore="filtersStore"
+        />
+      </keep-alive>
+    </div>
 
     <slot name="footer"></slot>
   </div>
