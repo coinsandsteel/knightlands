@@ -582,10 +582,6 @@ const router = new Router({
       children: [
         {
           path: "",
-          redirect: { name: "battle-menu" }
-        },
-        {
-          path: "menu",
           name: "battle-menu",
           component: () => import("./views/Battle/BattleMenu.vue")
         },
@@ -610,10 +606,6 @@ const router = new Router({
           children: [
             {
               path: "",
-              redirect: { name: "battle-squad-home" }
-            },
-            {
-              path: "home",
               name: "battle-squad-home",
               component: () => import("./views/Battle/BattleSquad.vue")
             },

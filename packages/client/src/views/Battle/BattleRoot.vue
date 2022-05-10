@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-column">
     <div class="screen-background"></div>
-    <div class="flex dummy-height flex-no-wrap full-flex flex-column">
+    <div
+      class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
+    >
       <tabs
         :tabs="tabs"
         :router="true"
