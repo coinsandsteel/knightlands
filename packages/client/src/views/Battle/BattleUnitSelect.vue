@@ -1,5 +1,5 @@
 <template>
-  <UserDialog @close="$close" title="promo-units">
+  <UserDialog @close="handleClose" emitClose title="select unit">
     <template v-slot:content>
       <BattleUnitList :units="units" />
     </template>

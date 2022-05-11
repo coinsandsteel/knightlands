@@ -37,9 +37,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.battle-unit {
-  width: 60px;
-}
 .battle-unit-list {
   display: grid;
   grid-template-columns: repeat(5, minmax(10rem, 1fr));

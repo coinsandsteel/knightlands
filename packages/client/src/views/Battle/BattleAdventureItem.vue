@@ -17,13 +17,17 @@
   </div>
 </template>
 <script>
+import { create } from "vue-modal-dialogs";
+import BattleAdventureDifficultySelect from "@/views/Battle/BattleAdventureDifficultySelect.vue";
 export default {
-  components: {},
   data() {
     return {};
   },
   methods: {
-    clickHandler() {}
+    async clickHandler() {
+      const show = create(BattleAdventureDifficultySelect);
+      await show();
+    }
   }
 };
 </script>
