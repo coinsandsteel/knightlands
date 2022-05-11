@@ -8,27 +8,92 @@ export default {
   state: {
     loaded: false,
 
-    isMyTurn: true,
+    // User
+    balance: {
+      energy: 0,
+      coins: 0, // Source: PvE, Purpose: upgrade units level
+      crystals: 0 // Source: PvP, Purpose: upgrade abilities level
+    },
+    timers: {
+      energy: 0
+    },
+    rewards: {
+      dailyRewards: [
+        {
+          collected: true,
+          quantity: 1,
+          active: true,
+          date: "123"
+        },
+        {
+          collected: false,
+          quantity: 1,
+          active: false
+        }
+      ],
+      rankingRewards: [
+        // Will be later
+      ]
+    },
 
-    selectedUnitId: null,
+    // Game
+    room: 1, // 8
+    difficulty: 0, // 0, 1
+    level: 1, // 5 + 1 boss
+    isMyTurn: false,
+    squad: {
+      power: 0,
+      bonus: [
+        { alias: "squad-increase-hp", delta: 2 }
+      ]
+    },
+
+    // Map
+    // Player and enemy units
     units: [
-      { id: 6, index: 30 },
-      { id: 7, index: 31 },
-      { id: 8, index: 32 },
-      { id: 9, index: 33 },
-      { id: 10, index: 34 }
+      {
+        id: "2c8vny4t9",
+        unitClass: "damager", // 5
+        // exp > max limit > pay coins > lvl up > attributes auto-upgrade
+        level: 1, // 15
+        tier: 1, // 3, modify via merger (3 => 1)
+        power: 5,
+        index: 0, // 0-34
+        exp: 100,
+        attributes: {
+          hp: 10,
+          damage: 3,
+          defence: 7,
+          initiative: 1,
+          speed: 4
+        }
+      }
     ],
-    availableMoves: [],
+    terrain: [
+      { terrainClass: "forest-2", index: 4 }
+    ],
 
+    // Combat
+    selectedUnitId: null,
     selectedEnemyId: null,
-    enemies: [
-      { id: 1, index: 0 },
-      { id: 2, index: 1 },
-      { id: 3, index: 2 },
-      { id: 4, index: 3 },
-      { id: 5, index: 22 }
+    moveCells: [0, 1, 2], // Choosed "move" action
+    attackCells: [0, 1, 2], // Choosed ability
+    abilities: [
+      {
+        unitId: "2c8vny4t9",
+        abilityClass: "ability-1",
+        // unit lvl opens ability lvl > pay crystal > lvl up
+        level: 1, // 3-5
+        power: {
+          initial: 2,
+          current: 3
+        },
+        cooldown: 0
+      }
     ],
-    enemyAvailableMoves: []
+    buffs: [
+      { unitId: "2c8vny4t9", abilityClass: "ability-1", buffClass: "increase-hp", delta: 2 }
+    ]
   },
   getters: {
     isMyTurn(state) {
