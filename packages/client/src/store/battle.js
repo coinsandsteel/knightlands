@@ -227,7 +227,7 @@ export default {
 
     // BattlePurchase
     // - commodity: COMMODITY_ENERGY | COMMODITY_COINS | COMMODITY_CRYSTALS | COMMODITY_CHEST
-    // - currency: flesh | shinees
+    // - currency: flesh | shinees | COMMODITY_COINS
     // - shopIndex: number
     async purchase(store, { commodity, currency, shopIndex }) {
       /*Vue.prototype.$app.logEvent("april-buy-hero", {
