@@ -1,7 +1,7 @@
 // import Vue from "vue";
 // import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
-// import Operations from "@/../../knightlands-shared/operations";
+import Operations from "@/../../knightlands-shared/operations";
 
 export default {
   namespaced: true,
@@ -203,6 +203,118 @@ export default {
     },
     unsubscribe() {
       this.$app.$game.offNetwork(Events.BattleUpdate);
+    },
+
+    // ###### OPERATIONS ######
+    // BattleLoad
+    async load(store) {
+      let result = await this.$app.$game._wrapOperation(Operations.BattleLoad);
+      store.commit("setInitialState", result.response);
+    },
+
+    // BattleClaimReward
+    // - type: REWARD_TYPE_DAILY | REWARD_TYPE_RANKING
+    async claimReward(store, { type }) {
+      /*Vue.prototype.$app.logEvent("april-claim-reward", {
+        type
+      });*/
+      return (
+        await this.$app.$game._wrapOperation(Operations.BattleClaimReward, {
+          type
+        })
+      ).response;
+    },
+
+    // BattlePurchase
+    // - commodity: COMMODITY_ENERGY | COMMODITY_COINS | COMMODITY_CRYSTALS | COMMODITY_CHEST
+    // - currency: flesh | shinees
+    // - shopIndex: number
+    async purchase(store, { commodity, currency, shopIndex }) {
+      /*Vue.prototype.$app.logEvent("april-buy-hero", {
+        hero: heroClass
+      });*/
+      await this.$app.$game._wrapOperation(
+        Operations.BattlePurchase,
+        { commodity, currency, shopIndex }
+      );
+    },
+
+    // TODO:
+    // BattleOpenChest
+    // BattleFillSquadSlot
+    // BattleClearSquadSlot
+    // BattleMergeUnits
+    // BattleUpgradeUnitLevel
+    // BattleUpgradeUnitAbility
+    // BattleUpgradeUnitAbility
+
+    // BattleApply - Move to / Atack a cell
+    // - unitId: string
+    // - index: number
+    // - ability?: string - Need in case of enemy at the cell
+    async apply(store, { unitId, index, ability }) {
+      //store.commit("setIsDisabled", true);
+      await this.$app.$game._wrapOperation(Operations.BattleApply, {
+        unitId,
+        index,
+        ability
+      });
+      /*store.commit("setSelectedCardId", null);
+      setTimeout(() => {
+        store.commit("setIsDisabled", false);
+      }, 1000);*/
+    },
+
+    // BattleSkip - Skip a turn
+    async skip() {
+      /*Vue.prototype.$app.logEvent("april-skip-turn", {
+        level: store.state ? store.state.level : 1
+      });
+      store.commit("setIsDisabled", true);*/
+      await this.$app.$game._wrapOperation(Operations.BattleSkip);
+      /*store.commit("setSelectedCardId", null);
+      setTimeout(() => {
+        store.commit("setIsDisabled", false);
+      }, 1000);*/
+    },
+
+    // BattleEnterLevel - Start from level > 1
+    // - room: number
+    // - level: number
+    async enterLevel(store, { room, level }) {
+      /*Vue.prototype.$app.logEvent("april-next-lvl", {
+        level: store.state.level + 1,
+        booster
+      });*/
+      await this.$app.$game._wrapOperation(Operations.BattleEnterLevel, {
+        room, level
+      });
+      //store.commit("setIsDisabled", false);
+    },
+
+    // BattleRankings
+    async rankings() {
+      return (await this.$app.$game._wrapOperation(Operations.BattleRankings))
+        .response;
+    },
+
+    // BattleRestart - Restart current fight
+    async restart() {
+      //Vue.prototype.$app.logEvent("april-start", { hero: heroClass });
+      await this.$app.$game._wrapOperation(Operations.BattleRestart);
+      //store.commit("setIsDisabled", false);
+    },
+
+    // BattleExit - Exit playground
+    async exit() {
+      await this.$app.$game._wrapOperation(Operations.BattleExit);
+    },
+
+    // BattleTestAction
+    async testAction(store, action) {
+      await this.$app.$game._wrapOperation(Operations.BattleTestAction, {
+        action
+      });
     }
   }
 };
