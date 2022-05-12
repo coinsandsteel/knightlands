@@ -69,6 +69,8 @@ export default {
         }
       }
     ],
+    enemyUnits: [],
+
     terrain: [
       { terrainClass: "forest-2", index: 4 }
     ],
