@@ -147,7 +147,7 @@ export default {
     availableMoves(state) {
       return state.availableMoves;
     },
-    enemies(state) {
+    enemyUnits(state) {
       return state.enemyUnits;
     },
     selectedEnemyId(state) {
@@ -158,7 +158,7 @@ export default {
         return null;
       }
 
-      return getters.enemies.find(({ id }) => id === getters.selectedEnemyId);
+      return getters.enemyUnits.find(({ id }) => id === getters.selectedEnemyId);
     },
     enemyAvailableMoves(state) {
       return state.enemyAvailableMoves;
