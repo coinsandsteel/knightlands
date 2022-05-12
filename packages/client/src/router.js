@@ -608,9 +608,25 @@ const router = new Router({
         },
         {
           path: "duels",
-          name: "battle-duels",
-          component: () => import("./views/Battle/BattleDuels.vue")
+          component: () => import("./views/Battle/BattleDuelsRoot.vue"),
+          children: [
+            {
+              path: "",
+              name: "battle-duels",
+              component: () => import("./views/Battle/BattleDuels.vue")
+            },
+            {
+              path: ":id/play",
+              name: "battle-duels-play",
+              component: () => import("./views/Battle/BattleDuelsPlay.vue")
+            }
+          ]
         },
+        // {
+        //   path: "duels",
+        //   name: "battle-duels",
+        //   component: () => import("./views/Battle/BattleDuels.vue")
+        // },
         // {
         //   path: "squad",
         //   name: "battle-squad",

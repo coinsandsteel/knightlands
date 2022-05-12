@@ -43,9 +43,7 @@ export default {
     isMyTurn: false,
     squad: {
       power: 0,
-      bonus: [
-        { alias: "squad-increase-hp", delta: 2 }
-      ]
+      bonus: [{ alias: "squad-increase-hp", delta: 2 }]
     },
 
     // Map
@@ -58,7 +56,7 @@ export default {
         level: 1, // 15
         tier: 1, // 3, modify via merger (3 => 1)
         power: 5,
-        index: 0, // 0-34
+        index: 32, // 0-34
         exp: 100,
         attributes: {
           hp: 10,
@@ -69,8 +67,31 @@ export default {
         }
       }
     ],
+
+    enemyUnits: [
+      {
+        id: "2c8vny4t1",
+        unitClass: "damager", // 5
+        // exp > max limit > pay coins > lvl up > attributes auto-upgrade
+        level: 1, // 15
+        tier: 1, // 3, modify via merger (3 => 1)
+        power: 5,
+        index: 2, // 0-34
+        exp: 100,
+        attributes: {
+          hp: 10,
+          damage: 3,
+          defence: 7,
+          initiative: 1,
+          speed: 4
+        }
+      }
+    ],
+
     terrain: [
-      { terrainClass: "forest-2", index: 4 }
+      { terrainClass: "forest-1", index: 4 },
+      { terrainClass: "forest-2", index: 5 },
+      { terrainClass: "forest-3", index: 6 }
     ],
 
     // Combat
@@ -92,7 +113,18 @@ export default {
       }
     ],
     buffs: [
-      { unitId: "2c8vny4t9", abilityClass: "ability-1", buffClass: "increase-hp", delta: 2 }
+      {
+        unitId: "2c8vny4t9",
+        abilityClass: "ability-1",
+        buffClass: "increase-hp",
+        delta: 2
+      },
+      {
+        unitId: "2c8vny4t1",
+        abilityClass: "ability-2",
+        buffClass: "increase-hp",
+        delta: 2
+      }
     ]
   },
   getters: {
@@ -116,7 +148,7 @@ export default {
       return state.availableMoves;
     },
     enemies(state) {
-      return state.enemies;
+      return state.enemyUnits;
     },
     selectedEnemyId(state) {
       return state.selectedEnemyId;
