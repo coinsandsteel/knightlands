@@ -75,6 +75,7 @@ export default {
       console.log("index", index);
       console.log("event", event);
       console.log("selectedUnitId", this.selectedUnitId);
+      console.log("isMyTurn", this.isMyTurn);
 
       if (!this.isMyTurn) {
         if (event.isEnemy) {
@@ -118,13 +119,13 @@ export default {
         if (this.selectedUnitId === event.unit.id) {
           this.$store.commit("battle/updateState", {
             selectedUnitId: null,
-            availableMoves: []
+            moveCells: []
           });
           return;
         }
         this.$store.commit("battle/updateState", {
           selectedUnitId: event.unit.id,
-          availableMoves: [
+          moveCells: [
             index - 5,
             index - 4,
             index - 6,
@@ -144,7 +145,7 @@ export default {
         unit.index = index;
         this.$store.commit("battle/updateState", {
           selectedUnitId: null,
-          availableMoves: [],
+          moveCells: [],
           units
         });
 
@@ -156,7 +157,7 @@ export default {
       if (event.isAvailableMove && event.isEnemy) {
         this.clickedEnemy = cloneDeep(event.enemy);
         this.$store.commit("battle/updateState", {
-          availableMoves: []
+          moveCells: []
         });
         const result = await this.showAbilitySelect();
 

@@ -77,8 +77,8 @@ export default {
     ...mapGetters("battle", [
       "units",
       "selectedUnit",
-      "availableMoves",
-      "enemies",
+      "moveCells",
+      "enemyUnits",
       "selectedEnemy",
       "enemyAvailableMoves"
     ]),
@@ -96,10 +96,10 @@ export default {
       return this.selectedUnit ? this.selectedUnit.index : -1;
     },
     isAvailableMove() {
-      return this.availableMoves.includes(this.index);
+      return this.moveCells.includes(this.index);
     },
     isEnemy() {
-      return this.enemies.map(({ index }) => index).includes(this.index);
+      return this.enemyUnits.map(({ index }) => index).includes(this.index);
     },
     enemyIndex() {
       return this.selectedEnemy ? this.selectedEnemy.index : -1;
@@ -109,7 +109,7 @@ export default {
         return null;
       }
 
-      return this.enemies.find(({ index }) => index === this.index);
+      return this.enemyUnits.find(({ index }) => index === this.index);
     },
     isEnemyAvailableMove() {
       return this.enemyAvailableMoves.includes(this.index);

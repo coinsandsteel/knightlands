@@ -6,7 +6,8 @@ import Operations from "@/../../knightlands-shared/operations";
 export default {
   namespaced: true,
   state: {
-    loaded: false,
+    // @todo: set to false
+    loaded: true,
 
     // User
     balance: {
@@ -40,7 +41,8 @@ export default {
     room: 1, // 8
     difficulty: 0, // 0, 1
     level: 1, // 5 + 1 boss
-    isMyTurn: false,
+    // @todo: set to false
+    isMyTurn: true,
     squad: {
       power: 0,
       bonus: [{ alias: "squad-increase-hp", delta: 2 }]
@@ -144,8 +146,8 @@ export default {
 
       return getters.units.find(({ id }) => id === getters.selectedUnitId);
     },
-    availableMoves(state) {
-      return state.availableMoves;
+    moveCells(state) {
+      return state.moveCells;
     },
     enemyUnits(state) {
       return state.enemyUnits;
@@ -158,10 +160,12 @@ export default {
         return null;
       }
 
-      return getters.enemyUnits.find(({ id }) => id === getters.selectedEnemyId);
+      return getters.enemyUnits.find(
+        ({ id }) => id === getters.selectedEnemyId
+      );
     },
     enemyAvailableMoves(state) {
-      return state.enemyAvailableMoves;
+      return state.moveCells; // @todo
     }
   },
   mutations: {
@@ -175,18 +179,18 @@ export default {
       if (data.units !== undefined) {
         state.units = data.units;
       }
-      if (data.availableMoves !== undefined) {
-        state.availableMoves = data.availableMoves;
+      if (data.moveCells !== undefined) {
+        state.moveCells = data.moveCells;
       }
       if (data.selectedEnemyId !== undefined) {
         state.selectedEnemyId = data.selectedEnemyId;
       }
-      if (data.enemies !== undefined) {
-        state.enemies = data.enemies;
+      if (data.enemyUnits !== undefined) {
+        state.enemyUnits = data.enemyUnits;
       }
-      if (data.enemyAvailableMoves !== undefined) {
-        state.enemyAvailableMoves = data.enemyAvailableMoves;
-      }
+      // if (data.enemyAvailableMoves !== undefined) {
+      //   state.enemyAvailableMoves = data.enemyAvailableMoves;
+      // }
     },
     setInitialState(state, data) {
       state.loaded = true;
@@ -233,10 +237,11 @@ export default {
       /*Vue.prototype.$app.logEvent("april-buy-hero", {
         hero: heroClass
       });*/
-      await this.$app.$game._wrapOperation(
-        Operations.BattlePurchase,
-        { commodity, currency, shopIndex }
-      );
+      await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
+        commodity,
+        currency,
+        shopIndex
+      });
     },
 
     // TODO:
@@ -287,7 +292,8 @@ export default {
         booster
       });*/
       await this.$app.$game._wrapOperation(Operations.BattleEnterLevel, {
-        room, level
+        room,
+        level
       });
       //store.commit("setIsDisabled", false);
     },
