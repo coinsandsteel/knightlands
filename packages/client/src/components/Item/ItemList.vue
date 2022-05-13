@@ -11,6 +11,8 @@
           :item="item"
           :key="index"
           :inventory="inventory"
+          :showElement="showElement"
+          :showIsWeapon="showIsWeapon"
           :selected="
             (selectSlots && selected[item.id]) || selectedItem == item.id
           "
@@ -40,6 +42,8 @@
           :item="item"
           :key="index"
           :inventory="inventory"
+          :showElement="showElement"
+          :showIsWeapon="showIsWeapon"
           :selected="
             (selectSlots && selected[item.id]) || selectedItem == item.id
           "
@@ -70,7 +74,9 @@ export default {
     "multiSelect",
     "selectSlots",
     "selectedItem",
-    "noScroll"
+    "noScroll",
+    "showElement",
+    "showIsWeapon"
   ],
   components: { Loot },
   data: () => ({

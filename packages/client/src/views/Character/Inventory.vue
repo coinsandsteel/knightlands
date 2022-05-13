@@ -11,6 +11,8 @@
       :commitCmd="commitCmd"
       :items="computedItems"
       :hideFilters="hideFilters"
+      :showElement="true"
+      :showIsWeapon="true"
       v-model="resultItems"
       @hint="_showHint"
     ></LootContainer>
