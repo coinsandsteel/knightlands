@@ -650,6 +650,11 @@ const router = new Router({
               path: "bonus",
               name: "battle-squad-bonus",
               component: () => import("./views/Battle/BattleSquadBonus.vue")
+            },
+            {
+              path: "unit/:id",
+              name: "battle-squad-unit",
+              component: () => import("./views/Battle/BattleSquadUnit.vue")
             }
           ],
           meta: {

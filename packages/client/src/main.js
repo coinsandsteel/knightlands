@@ -24,6 +24,7 @@ import CustomButton from "@/components/Button.vue";
 import UserDialog from "@/components/UserDialog.vue";
 import Title from "@/components/Title.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 
 Vue.use(VueResizeText);
 Vue.use(VueLazyload);
@@ -46,6 +47,7 @@ Vue.component("CustomButton", CustomButton);
 Vue.component("UserDialog", UserDialog);
 Vue.component("Title", Title);
 Vue.component("IconWithValue", IconWithValue);
+Vue.component("ProgressBar", ProgressBar);
 
 Vue.config.debug = true;
 Vue.config.productionTip = false;

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column">
+  <div class="flex flex-column flex-full overflow-auto">
     <div class="screen-background"></div>
     <div class="flex dummy-height flex-no-wrap full-flex flex-column">
       <tabs

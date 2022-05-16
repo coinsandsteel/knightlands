@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="flex-full overflow-auto">
     Battle squad warehouse
-    <BattleUnitList :units="units" />
+    <BattleUnitList :units="units" @click="clickHandler" />
   </div>
 </template>
 <script>
@@ -23,6 +23,11 @@ export default {
       }
 
       return result;
+    }
+  },
+  methods: {
+    clickHandler() {
+      this.$router.push({ name: "battle-squad-unit", params: { id: 123 } });
     }
   }
 };
