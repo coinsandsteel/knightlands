@@ -12,8 +12,6 @@
         :class="slot"
         :item="itemsInSlots[slot]"
         :equipment="true"
-        :showElement="false"
-        :showIsWeapon="false"
         :equipmentSlot="slot"
         :showLevel="true"
         :id="slot"

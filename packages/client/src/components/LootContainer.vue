@@ -6,8 +6,6 @@
       :multiSelect="multiSelect"
       :selectSlots="selectSlots"
       :selectedItem="selectedItem"
-      :showElement="showElement"
-      :showIsWeapon="showIsWeapon"
       :lootProps="lootProps"
       :inventory="inventory"
       :items="filteredItems"
@@ -54,9 +52,7 @@ export default {
     lootClasses: String,
     selectedItem: Number,
     hideFilters: Boolean,
-    noScroll: Boolean,
-    showElement: Boolean,
-    showIsWeapon: { type: Boolean, default: false }
+    noScroll: Boolean
   },
   computed: {
     hasHiddenItems() {

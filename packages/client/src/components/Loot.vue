@@ -19,20 +19,15 @@
         v-if="showUnique && !showUnbindLevels && itemData && itemData.unique"
         class="unique"
       ></span>
+
       <span
         v-if="itemData && showEquipped && itemData.equipped"
         class="equipped"
         :class="{ 'on-unit': isEquippedOnUnit }"
       ></span>
       <span
-        v-if="itemData && (showElement || showIsWeapon)"
-        :class="[
-          'element',
-          {
-            [`icon-${element}`]: showElement,
-            'icon-weapon': isWeapon && !showElement
-          }
-        ]"
+        v-if="itemData && !equipment && !hideQuantity && (element || isWeapon)"
+        :class="[`icon-${element} element`, { 'icon-weapon': isWeapon }]"
       ></span>
 
       <div class="icon-locked" v-if="showLocked && itemData && itemData.locked">
@@ -128,12 +123,7 @@ export default {
       type: Boolean,
       default: true
     },
-    showEquipped: {
-      type: Boolean,
-      default: true
-    },
-    showElement: Boolean,
-    showIsWeapon: {
+    showElement: {
       type: Boolean,
       default: true
     },

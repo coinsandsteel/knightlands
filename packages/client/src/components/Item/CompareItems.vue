@@ -13,7 +13,6 @@
           <ItemHeader
             :item="leftItem"
             :matchItem="matchedItem"
-            :itemProps="{ showIsWeapon: true }"
             :showLocked="true"
           />
           <ItemStats :item="leftItem" :matchItem="matchedItem" />
@@ -28,7 +27,6 @@
           <ItemHeader
             :item="rightItem"
             :matchItem="matchedItem"
-            :itemProps="{ showIsWeapon: true }"
             :showLocked="true"
           />
           <ItemStats :item="rightItem" :matchItem="matchedItem" />
