@@ -673,6 +673,11 @@ const router = new Router({
           component: () => import("./views/Battle/BattlePlay.vue")
         },
         {
+          path: "achievement",
+          name: "battle-achievement",
+          component: () => import("./views/Battle/BattleAchievement.vue")
+        },
+        {
           path: "rankings",
           name: "battle-rankings",
           component: () => import("./views/Battle/BattleRankings.vue")

@@ -28,6 +28,7 @@ import BattleDailyRewards from "@/views/Battle/BattleDailyRewards.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const MenuTab = "battle-menu";
+const AchievementTab = "battle-achievement";
 const RankingsTab = "battle-rankings";
 
 export default {
@@ -46,6 +47,11 @@ export default {
           title: this.$t("event-menu"),
           value: MenuTab,
           to: { name: MenuTab }
+        },
+        {
+          title: this.$t("achievement"),
+          value: AchievementTab,
+          to: { name: AchievementTab }
         },
         {
           title: this.$t("rating"),
