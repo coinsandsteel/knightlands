@@ -9,125 +9,137 @@ export default {
     // @todo: set to false
     loaded: true,
 
-    // User
-    balance: {
-      energy: 0,
-      coins: 0, // Source: PvE, Purpose: upgrade units level
-      crystals: 0 // Source: PvP, Purpose: upgrade abilities level
+    // User data
+    user: {
+      balance: {
+        energy: 0,
+        coins: 0, // Source: PvE, Purpose: upgrade units level
+        crystals: 0 // Source: PvP, Purpose: upgrade abilities level
+      },
+      timers: {
+        energy: 0
+      },
+      rewards: {
+        dailyRewards: [
+          {
+            collected: true,
+            quantity: 1,
+            active: true,
+            date: "123"
+          },
+          {
+            collected: false,
+            quantity: 1,
+            active: false
+          }
+        ],
+        rankingRewards: [
+          // Will be later
+        ]
+      }
     },
-    timers: {
-      energy: 0
-    },
-    rewards: {
-      dailyRewards: [
-        {
-          collected: true,
-          quantity: 1,
-          active: true,
-          date: "123"
+
+    // Unit list data
+    inventory: [
+      {
+        unitId: "2c8vny4t9",
+        unitTribe: "ork", // 15 tribes
+        unitClass: "damager", // 5 classes
+        tier: 1, // 3 tiers; modify via merger (3 => 1)
+        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+        power: 5,
+        expirience: {
+          current: 100, // gained value (relative)
+          max: 10000 // full value (relative)
         },
-        {
-          collected: false,
-          quantity: 1,
-          active: false
-        }
-      ],
-      rankingRewards: [
-        // Will be later
-      ]
-    },
+        characteristics: {
+          hp: 10,
+          damage: 3,
+          defence: 7,
+          initiative: 1,
+          speed: 4
+        },
+        abilities: [
+          // Here will be all the abilities
+          // flow: unit lvl opens ability lvl > pay crystal > lvl up
+          {
+            abilityClass: "ability-1",
+            canLearn: true,
+            level: 1 // 1-4
+          },
+          {
+            abilityClass: "ability-2",
+            canLearn: false,
+            level: 0 // It's locked, yet
+          }
+        ],
+        quantity: 3
+      }
+    ],
 
     // Game
-    room: 1, // 8
-    difficulty: 0, // 0, 1
-    level: 1, // 5 + 1 boss
-    // @todo: set to false
-    isMyTurn: true,
-    squad: {
-      power: 0,
-      bonus: [{ alias: "squad-increase-hp", delta: 2 }]
-    },
-
-    // Map
-    // Player and enemy units
-    units: [
-      {
-        id: "2c8vny4t9",
-        unitClass: "damager", // 5
-        // exp > max limit > pay coins > lvl up > attributes auto-upgrade
-        level: 1, // 15
-        tier: 1, // 3, modify via merger (3 => 1)
-        power: 5,
-        index: 32, // 0-34
-        exp: 100,
-        attributes: {
-          hp: 10,
-          damage: 3,
-          defence: 7,
-          initiative: 1,
-          speed: 4
-        }
-      }
-    ],
-
-    enemyUnits: [
-      {
-        id: "2c8vny4t1",
-        unitClass: "damager", // 5
-        // exp > max limit > pay coins > lvl up > attributes auto-upgrade
-        level: 1, // 15
-        tier: 1, // 3, modify via merger (3 => 1)
-        power: 5,
-        index: 2, // 0-34
-        exp: 100,
-        attributes: {
-          hp: 10,
-          damage: 3,
-          defence: 7,
-          initiative: 1,
-          speed: 4
-        }
-      }
-    ],
-
-    terrain: [
-      { terrainClass: "forest-1", index: 4 },
-      { terrainClass: "forest-2", index: 5 },
-      { terrainClass: "forest-3", index: 6 }
-    ],
-
-    // Combat
-    selectedUnitId: null,
-    selectedEnemyId: null,
-    moveCells: [0, 1, 2], // Choosed "move" action
-    attackCells: [0, 1, 2], // Choosed ability
-    abilities: [
-      {
-        unitId: "2c8vny4t9",
-        abilityClass: "ability-1",
-        // unit lvl opens ability lvl > pay crystal > lvl up
-        level: 1, // 3-5
-        power: {
-          initial: 2,
-          current: 3
-        },
-        cooldown: 0
-      }
-    ],
-    buffs: [
-      {
-        unitId: "2c8vny4t9",
-        abilityClass: "ability-1",
-        buffClass: "increase-hp",
-        delta: 2
+    game: {
+      mode: null, // string|null: "duel" | "adventure"
+      room: null, // number|null: 0-7
+      level: null, // number|null: 0-5
+      difficulty: null, // string: "low" | "medium" | "hard"
+      
+      // User squad
+      userSquad: {
+        power: 0,
+        bonuses: [{ alias: "squad-increase-hp", delta: 2 }],
+        units: [
+          {
+            unitId: "2c8vny4t9",
+            unitTribe: "ork", // 15 tribes
+            unitClass: "damager", // 5 classes
+            tier: 1, // 3 tiers; modify via merger (3 => 1)
+            index: 32, // cell index 0-34
+            hp: 10,
+            abilities: [
+              {
+                abilityClass: "ability-1",
+                cooldown: {
+                  enabled: false,
+                  stepsLeft: 0,
+                  stepsMax: 3
+                }
+              }
+            ],
+            activeBuffs: [] // Will be defined later
+          }
+        ]
       },
-      {
-        unitId: "2c8vny4t1",
-        abilityClass: "ability-2",
-        buffClass: "increase-hp",
-        delta: 2
+
+      // Enemy squad
+      enemySquad: {
+        power: 0,
+        bonuses: [], // Probably, will be always empty
+        units: []
+      },
+
+      // Terrain
+      terrain: [
+        { terrainClass: "forest-1", index: 4 },
+        { terrainClass: "forest-2", index: 5 },
+        { terrainClass: "forest-3", index: 6 }
+      ],
+
+      // Active combat's data
+      combat: {
+        started: false,
+        result: null, // string|null: "win" | "loose"
+        // @todo: set to false
+        isMyTurn: null, // boolean|null
+        runtime: {
+          unitId: null,
+          slectedIndex: null,
+          selectedAbility: null,
+          moveCells: [],
+          attackCells: []
+        }
       }
-    ]
+    }
   },
   getters: {
     isMyTurn(state) {
@@ -246,8 +258,22 @@ export default {
 
     // TODO:
     // BattleOpenChest
+
     // BattleFillSquadSlot
+    async fillSquadSlot(store, { unitId, index }) {
+      await this.$app.$game._wrapOperation(Operations.BattleFillSquadSlot, {
+        unitId,
+        index
+      });
+    },
+
     // BattleClearSquadSlot
+    async clearSquadSlot(store, { index }) {
+      await this.$app.$game._wrapOperation(Operations.BattleClearSquadSlot, {
+        index
+      });
+    },
+
     // BattleMergeUnits
     // BattleUpgradeUnitLevel
     // BattleUpgradeUnitAbility
