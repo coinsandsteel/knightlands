@@ -1,15 +1,20 @@
 <template>
   <div class="battle-unit-list">
-    <BattleUnit v-for="unit in units" :key="unit.id" @click="clickHandler" />
+    <BattleUnitListItem
+      v-for="unit in units"
+      :key="unit.id"
+      :unit="unit"
+      @click="clickHandler"
+    />
     <slot />
   </div>
 </template>
 <script>
-import BattleUnit from "@/views/Battle/BattleUnit.vue";
+import BattleUnitListItem from "@/views/Battle/BattleUnitListItem.vue";
 
 export default {
   components: {
-    BattleUnit
+    BattleUnitListItem
   },
   props: {
     units: Array,
@@ -27,15 +32,15 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
-.battle-unit-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-  justify-items: center;
-  row-gap: 0.5rem;
-  column-gap: 0.5rem;
-}
-.battle-unit {
-  width: 100%;
-}
+<style scoped lang="less">
+// .battle-unit-list {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+//   justify-items: center;
+//   row-gap: 0.5rem;
+//   column-gap: 0.5rem;
+// }
+// .battle-unit {
+//   width: 100%;
+// }
 </style>

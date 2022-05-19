@@ -577,6 +577,16 @@ const router = new Router({
       }
     },
     {
+      path: "/battle-units/:slot?/:index?",
+      name: "battle-units",
+      component: () => import("./views/Battle/BattleUnits.vue")
+    },
+    {
+      path: "/battle-unit/:id",
+      name: "battle-unit-details",
+      component: () => import("./views/Battle/BattleUnitDetails.vue")
+    },
+    {
       path: "/battle",
       component: BattleRoot,
       children: [

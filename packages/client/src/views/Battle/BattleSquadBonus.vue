@@ -59,7 +59,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 .battle-unit-list {
   display: grid;
   grid-template-columns: repeat(5, minmax(10rem, 1fr));

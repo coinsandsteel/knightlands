@@ -87,7 +87,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 .battle-unit {
   width: 100px;
   margin: 0 auto;

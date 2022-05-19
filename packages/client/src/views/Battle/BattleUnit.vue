@@ -28,7 +28,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 .battle-unit-wrapper {
   background: url("/images/battle/unit_bg.png") center/100% no-repeat;
   padding-bottom: 100%;

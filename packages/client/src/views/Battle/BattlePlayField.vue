@@ -177,7 +177,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 .battle-play-board {
   display: grid;
   grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));
