@@ -88,7 +88,8 @@ export default {
     },
     handleBackButton() {
       console.log("handleBackButton");
-      this.$router.back();
+      // this.$router.back();
+      this.$router.replace({ name: "battle-menu" });
 
       return true;
     },

@@ -257,11 +257,11 @@ export default {
       }
 
       return !this.loading && this.$game.ready && this.$game.authenticated;
-    },
-
-    aaa() {
-      return this.$route.matched;
     }
+
+    // matchedRoutes() {
+    //   return this.$route.matched;
+    // },
   },
   mounted() {
     const firebaseConfig = {
@@ -439,6 +439,12 @@ export default {
     },
     showBackButton() {
       let params = this.$route.path.match(/[^//]+/g);
+
+      if (["battle-units"].includes(this.$route.name)) {
+        this.showBackMenu = true;
+        return;
+      }
+
       this.showBackMenu = params ? params.length >= 2 : false;
 
       if (this.$route.matched.some(record => record.meta.noBackButton)) {

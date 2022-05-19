@@ -573,18 +573,26 @@ const router = new Router({
       ],
       meta: {
         requiresAuth: true,
-        noBackButton: true
+        noBackButton: false
       }
     },
     {
       path: "/battle-units/:slot?/:index?",
       name: "battle-units",
-      component: () => import("./views/Battle/BattleUnits.vue")
+      component: () => import("./views/Battle/BattleUnits.vue"),
+      meta: {
+        requiresAuth: true,
+        noBackButton: false
+      }
     },
     {
       path: "/battle-unit/:id",
       name: "battle-unit-details",
-      component: () => import("./views/Battle/BattleUnitDetails.vue")
+      component: () => import("./views/Battle/BattleUnitDetails.vue"),
+      meta: {
+        requiresAuth: true,
+        noBackButton: false
+      }
     },
     {
       path: "/battle",

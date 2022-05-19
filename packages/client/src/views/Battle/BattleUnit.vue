@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="battle-unit"
-    :class="{ 'battle-unit--selected': isSelected1 }"
-    @click="clickHandler"
-  >
+  <div class="battle-unit" @click="clickHandler">
     <div class="battle-unit-wrapper relative">
       <div class="absolute-stretch"></div>
     </div>
@@ -17,12 +13,12 @@ export default {
   },
   data() {
     return {
-      isSelected1: false
+      // isSelected1: false
     };
   },
   methods: {
     clickHandler() {
-      this.isSelected1 = !this.isSelected1;
+      // this.isSelected1 = !this.isSelected1;
       this.$emit("click", this.unit);
     }
   }

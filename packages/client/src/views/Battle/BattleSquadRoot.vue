@@ -24,7 +24,7 @@ import Tabs from "@/components/Tabs.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const SquadTab = "battle-squad-home";
-const WarehouseTab = "battle-squad-warehouse";
+const WarehouseTab = "battle-units";
 const BonusTab = "battle-squad-bonus";
 
 export default {

@@ -63,11 +63,13 @@ export default {
     clickHandler(unit) {
       console.log("click handler");
       if (this.shouldFillSlot) {
-        // @todo
+        // @todo: call operation
+        this.$router.replace({
+          name: "battle-squad-home"
+        });
         return;
       }
 
-      // @todo
       this.$router.push({
         name: "battle-unit-details",
         params: { id: unit.id }
@@ -75,6 +77,10 @@ export default {
     },
     showUnitsFilter() {
       console.log("showUnitsFilter");
+    },
+    handleBackButton() {
+      this.$router.replace({ name: "battle-squad-home" });
+      return true;
     }
   }
 };

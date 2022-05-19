@@ -92,7 +92,9 @@ export default {
   },
   methods: {
     handleClick(e) {
-      this.$refs.fx.play();
+      if (this.$refs.fx) {
+        this.$refs.fx.play();
+      }
       this.$emit("click", e);
       if (this.cb) {
         this.cb();

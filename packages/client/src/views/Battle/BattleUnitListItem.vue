@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-item-center pointer" @click="clickHandler">
+  <div class="flex flex-item-center pointer font-size-22" @click="clickHandler">
     <BattleUnit :unit="unit" />
     <div class="padding-left-1">Exp: 1234</div>
     <div class="padding-left-4">Ability 1, Ability 2, Ability 3</div>

@@ -18,11 +18,6 @@
             <div class="vertical-line" />
             <BattleUnit @click="unitClickHandler" />
           </div>
-          <div class="material-cell">
-            <div class="horizontal-line" />
-            <div class="vertical-line" />
-            <BattleUnit @click="unitClickHandler" />
-          </div>
         </div>
         <div class="material-cell--right relative">
           <div class="horizontal-line horizontal-line--right" />
