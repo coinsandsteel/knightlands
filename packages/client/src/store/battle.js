@@ -110,7 +110,9 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityClass: "support_and_heal",
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           }
@@ -139,14 +141,18 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityClass: "buff",
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           },
           {
-            abilityClass: "debuff",
-            canLearn: false,
-            level: 0 // It's locked, yet
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            alias: "axe_blow",
+            canLearn: true,
+            level: 1 // 1-4
           }
         ],
         quantity: 3
@@ -173,14 +179,18 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityClass: "combat",
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           },
           {
-            abilityClass: "buff",
-            canLearn: false,
-            level: 0 // It's locked, yet
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            alias: "axe_blow",
+            canLearn: true,
+            level: 1 // 1-4
           }
         ],
         quantity: 3
@@ -207,7 +217,9 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityClass: "support_and_heal",
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           },
