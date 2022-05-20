@@ -1,5 +1,5 @@
 // import Vue from "vue";
-// import * as battle from "@/../../knightlands-shared/battle";
+import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 
@@ -59,8 +59,8 @@ export default {
     inventory: [
       {
         unitId: "2c8vny4t9",
-        unitTribe: "ork", // 15 tribes
-        unitClass: "melee", // 5 classes
+        unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
+        unitClass: battle.UNIT_CLASS_MELEE, // 5 classes
         tier: 1, // 3 tiers; modify via merger (3 => 1)
         level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
         power: 5,
@@ -79,19 +79,11 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityClass: "combat",
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
-          },
-          {
-            abilityClass: "buff",
-            canLearn: false,
-            level: 0 // It's locked, yet
-          },
-          {
-            abilityClass: "debuff",
-            canLearn: false,
-            level: 0 // It's locked, yet
           }
         ],
         quantity: 3
@@ -220,7 +212,9 @@ export default {
             level: 1 // 1-4
           },
           {
-            abilityClass: "debuff",
+            abilityId: "2c8vny4t9",
+            abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
+            alias: "stun_shot",
             canLearn: false,
             level: 0 // It's locked, yet
           }
@@ -231,26 +225,28 @@ export default {
 
     // Game
     game: {
-      mode: null, // string|null: "duel" | "adventure"
+      mode: null, // string|null: GAME_MODE_DUEL | GAME_MODE_ADVENTURE
       room: null, // number|null: 0-7
       level: null, // number|null: 0-5
-      difficulty: null, // string: "low" | "medium" | "hard"
+      difficulty: null, // string: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
 
       // User squad
       userSquad: {
         power: 0,
-        bonuses: [{ alias: "squad-increase-hp", delta: 2 }],
+        bonuses: [{ bonusClass: "squad-increase-hp", delta: 2 }],
         units: [
           {
             unitId: "2c8vny4t9",
-            unitTribe: "ork", // 15 tribes
-            unitClass: "tank", // 5 classes
+            unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
+            unitClass: battle.UNIT_CLASS_TANK, // 5 classes
             tier: 1, // 3 tiers; modify via merger (3 => 1)
             index: 32, // cell index 0-34
             hp: 10,
             abilities: [
               {
-                abilityClass: "combat",
+                abilityId: "2c8vny4t9",
+                abilityGroup: battle.ABILITY_GROUP_BUFF,
+                alias: "axe_blow",
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,
@@ -262,14 +258,16 @@ export default {
           },
           {
             unitId: "2c8vny4t1",
-            unitTribe: "ork", // 15 tribes
-            unitClass: "support", // 5 classes
+            unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
+            unitClass: battle.UNIT_CLASS_SUPPORT, // 5 classes
             tier: 1, // 3 tiers; modify via merger (3 => 1)
             index: 30, // cell index 0-34
             hp: 10,
             abilities: [
               {
-                abilityClass: "support_and_heal",
+                abilityId: "2c8vny4t9",
+                abilityGroup: battle.ABILITY_GROUP_BUFF,
+                alias: "axe_blow",
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,
@@ -299,13 +297,13 @@ export default {
       // Active combat's data
       combat: {
         started: false,
-        result: null, // string|null: "win" | "loose"
+        result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
         isMyTurn: null, // boolean|null
         runtime: {
           unitId: null, // string|null
           slectedIndex: null, // number|null
-          selectedAbilityClass: null, // string|null
+          selectedAbilityId: null, // string|null
           moveCells: [], // number[]
           attackCells: [] // number[]
         }
