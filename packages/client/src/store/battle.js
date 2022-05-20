@@ -110,7 +110,7 @@ export default {
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
             abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            abilityGroup: battle.ABILITY_GROUP_BUFF,
             canLearn: true,
             level: 1 // 1-4
           }
@@ -140,13 +140,13 @@ export default {
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
             abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
             canLearn: true,
             level: 1 // 1-4
           },
           {
             abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            abilityGroup: battle.ABILITY_GROUP_SELF_BUFF,
             canLearn: true,
             level: 1 // 1-4
           }
@@ -182,7 +182,7 @@ export default {
           },
           {
             abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            abilityGroup: battle.ABILITY_GROUP_JUMP,
             canLearn: true,
             level: 1 // 1-4
           }
@@ -249,7 +249,7 @@ export default {
             abilities: [
               {
                 abilityClass: "axe_blow",
-                abilityGroup: battle.ABILITY_GROUP_BUFF,
+                abilityGroup: battle.ABILITY_GROUP_ATTACK,
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,

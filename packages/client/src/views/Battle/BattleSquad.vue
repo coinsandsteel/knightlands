@@ -57,7 +57,9 @@ export default {
       return bonusItems
         .map(item => {
           return (
-            this.$t(item.alias) + (item.delta > 0 ? " +" : " ") + item.delta
+            this.$t(item.bonusClass) +
+            (item.delta > 0 ? " +" : " ") +
+            item.delta
           );
         })
         .join(", ");

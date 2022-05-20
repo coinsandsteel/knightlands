@@ -10,6 +10,7 @@
             <div>
               <BattleUnit :unit="unit" />
             </div>
+            <div>Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.level }}</div>
             <div class="flex">
               <div>Exp:</div>
@@ -34,10 +35,10 @@
             <div>
               <div
                 v-for="ability in abilities"
-                :key="ability.abilityClass"
+                :key="ability.abilityGroup + ability.abilityClass"
                 class="flex"
               >
-                <div class="padding-right-2">
+                <div class="padding-right-1">
                   <BattleUnitAbility :ability="ability" />
                 </div>
                 <ProgressBar

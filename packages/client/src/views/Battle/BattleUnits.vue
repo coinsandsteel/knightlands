@@ -36,7 +36,11 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("battle", ["inventory"]),
+    ...mapState("battle", [
+      "inventory",
+      "selectedTiersFilter",
+      "selectedClassesFilter"
+    ]),
     shouldShowFilter() {
       return true;
     },
@@ -49,7 +53,19 @@ export default {
       );
     },
     units() {
-      const result = this.inventory;
+      let result = this.inventory.slice();
+
+      if (this.selectedTiersFilter && this.selectedTiersFilter.length > 0) {
+        result = result.filter(item =>
+          this.selectedTiersFilter.includes(item.tier)
+        );
+      }
+
+      if (this.selectedClassesFilter && this.selectedClassesFilter.length > 0) {
+        result = result.filter(item =>
+          this.selectedClassesFilter.includes(item.unitClass)
+        );
+      }
       // for (let i = 0; i < 42; i++) {
       //   result.push({
       //     id: i + 1
