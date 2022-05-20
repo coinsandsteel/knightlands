@@ -132,11 +132,11 @@ export default {
         // @todo: set to false
         isMyTurn: null, // boolean|null
         runtime: {
-          unitId: null,
-          selectedIndex: null,
-          selectedAbility: null,
-          moveCells: [],
-          attackCells: []
+          unitId: null, // string|null
+          slectedIndex: null, // number|null
+          selectedAbilityClass: null, // string|null
+          moveCells: [], // number[]
+          attackCells: [] // number[]
         }
       }
     }
