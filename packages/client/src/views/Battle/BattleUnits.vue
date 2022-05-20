@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-// import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
@@ -34,6 +34,7 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("battle", ["inventory"]),
     shouldShowFilter() {
       return true;
     },
@@ -46,12 +47,12 @@ export default {
       );
     },
     units() {
-      const result = [];
-      for (let i = 0; i < 42; i++) {
-        result.push({
-          id: i + 1
-        });
-      }
+      const result = this.inventory;
+      // for (let i = 0; i < 42; i++) {
+      //   result.push({
+      //     id: i + 1
+      //   });
+      // }
 
       return result;
     }

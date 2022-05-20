@@ -595,6 +595,36 @@ const router = new Router({
       }
     },
     {
+      path: "/battle-squad",
+      component: () => import("./views/Battle/BattleSquadRoot.vue"),
+      children: [
+        {
+          path: "",
+          name: "battle-squad-home",
+          component: () => import("./views/Battle/BattleSquad.vue")
+        },
+        {
+          path: "warehouse",
+          name: "battle-squad-warehouse",
+          component: () => import("./views/Battle/BattleSquadWarehouse.vue")
+        },
+        {
+          path: "bonus",
+          name: "battle-squad-bonus",
+          component: () => import("./views/Battle/BattleSquadBonus.vue")
+        },
+        {
+          path: "unit/:id",
+          name: "battle-squad-unit",
+          component: () => import("./views/Battle/BattleSquadUnit.vue")
+        }
+      ],
+      meta: {
+        requiresAuth: true,
+        noBackButton: false
+      }
+    },
+    {
       path: "/battle",
       component: BattleRoot,
       children: [
@@ -650,36 +680,6 @@ const router = new Router({
         //   name: "battle-squad",
         //   component: () => import("./views/Battle/BattleSquad.vue")
         // },
-        {
-          path: "squad",
-          component: () => import("./views/Battle/BattleSquadRoot.vue"),
-          children: [
-            {
-              path: "",
-              name: "battle-squad-home",
-              component: () => import("./views/Battle/BattleSquad.vue")
-            },
-            {
-              path: "warehouse",
-              name: "battle-squad-warehouse",
-              component: () => import("./views/Battle/BattleSquadWarehouse.vue")
-            },
-            {
-              path: "bonus",
-              name: "battle-squad-bonus",
-              component: () => import("./views/Battle/BattleSquadBonus.vue")
-            },
-            {
-              path: "unit/:id",
-              name: "battle-squad-unit",
-              component: () => import("./views/Battle/BattleSquadUnit.vue")
-            }
-          ],
-          meta: {
-            requiresAuth: true,
-            noBackButton: false
-          }
-        },
         {
           path: "merger",
           name: "battle-merger",

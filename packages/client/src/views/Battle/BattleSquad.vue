@@ -21,11 +21,15 @@
 </template>
 <script>
 import { create } from "vue-modal-dialogs";
+import { mapState } from "vuex";
 // import BattleUnit from "@/views/Battle/BattleUnit.vue";
 // import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
+import AppSection from "@/AppSection.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
     // BattleUnit,
     BattleUnitList
@@ -34,8 +38,12 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("battle", ["game"]),
     units() {
-      return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      // return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+      return this.game && this.game.userSquad && this.game.userSquad.units
+        ? this.game.userSquad.units
+        : [];
     },
     bonus() {
       return "Attack + 1, defense + 1";

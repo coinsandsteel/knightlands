@@ -1,5 +1,10 @@
 <template>
-  <div class="battle-unit" @click="clickHandler">
+  <div
+    v-if="unit"
+    class="battle-unit"
+    :class="'battle-unit' + '--' + unit.unitClass"
+    @click="clickHandler"
+  >
     <div class="battle-unit-wrapper relative">
       <div class="absolute-stretch"></div>
     </div>
@@ -26,10 +31,25 @@ export default {
 </script>
 <style scoped lang="less">
 .battle-unit-wrapper {
-  background: url("/images/battle/unit_bg.png") center/100% no-repeat;
+  background: url("/images/battle/units/unit.png") center/100% no-repeat;
   padding-bottom: 100%;
 }
-.battle-unit--selected .battle-unit-wrapper {
-  background-image: url("/images/battle/unit_bg_selected.png");
+.battle-unit--melee .battle-unit-wrapper {
+  background-image: url("/images/battle/units/unit-melee.png");
 }
+.battle-unit--range .battle-unit-wrapper {
+  background-image: url("/images/battle/units/unit-range.png");
+}
+.battle-unit--mage .battle-unit-wrapper {
+  background-image: url("/images/battle/units/unit-mage.png");
+}
+.battle-unit--tank .battle-unit-wrapper {
+  background-image: url("/images/battle/units/unit-tank.png");
+}
+.battle-unit--support .battle-unit-wrapper {
+  background-image: url("/images/battle/units/unit-support.png");
+}
+// .battle-unit--selected .battle-unit-wrapper {
+//   background-image: url("/images/battle/unit_bg_selected.png");
+// }
 </style>

@@ -44,7 +44,7 @@ export default {
       {
         unitId: "2c8vny4t9",
         unitTribe: "ork", // 15 tribes
-        unitClass: "damager", // 5 classes
+        unitClass: "melee", // 5 classes
         tier: 1, // 3 tiers; modify via merger (3 => 1)
         level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
         power: 5,
@@ -63,12 +63,148 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityClass: "ability-1",
+            abilityClass: "combat",
             canLearn: true,
             level: 1 // 1-4
           },
           {
-            abilityClass: "ability-2",
+            abilityClass: "buff",
+            canLearn: false,
+            level: 0 // It's locked, yet
+          },
+          {
+            abilityClass: "debuff",
+            canLearn: false,
+            level: 0 // It's locked, yet
+          }
+        ],
+        quantity: 3
+      },
+      {
+        unitId: "2c8vny4t1",
+        unitTribe: "ork", // 15 tribes
+        unitClass: "range", // 5 classes
+        tier: 1, // 3 tiers; modify via merger (3 => 1)
+        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+        power: 5,
+        experience: {
+          current: 100, // gained value (relative)
+          max: 10000 // full value (relative)
+        },
+        characteristics: {
+          hp: 10,
+          damage: 3,
+          defence: 7,
+          initiative: 1,
+          speed: 4
+        },
+        abilities: [
+          // Here will be all the abilities
+          // flow: unit lvl opens ability lvl > pay crystal > lvl up
+          {
+            abilityClass: "support_and_heal",
+            canLearn: true,
+            level: 1 // 1-4
+          }
+        ],
+        quantity: 3
+      },
+      {
+        unitId: "2c8vny4t2",
+        unitTribe: "ork", // 15 tribes
+        unitClass: "mage", // 5 classes
+        tier: 1, // 3 tiers; modify via merger (3 => 1)
+        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+        power: 5,
+        experience: {
+          current: 100, // gained value (relative)
+          max: 10000 // full value (relative)
+        },
+        characteristics: {
+          hp: 10,
+          damage: 3,
+          defence: 7,
+          initiative: 1,
+          speed: 4
+        },
+        abilities: [
+          // Here will be all the abilities
+          // flow: unit lvl opens ability lvl > pay crystal > lvl up
+          {
+            abilityClass: "buff",
+            canLearn: true,
+            level: 1 // 1-4
+          },
+          {
+            abilityClass: "debuff",
+            canLearn: false,
+            level: 0 // It's locked, yet
+          }
+        ],
+        quantity: 3
+      },
+      {
+        unitId: "2c8vny4t3",
+        unitTribe: "ork", // 15 tribes
+        unitClass: "tank", // 5 classes
+        tier: 1, // 3 tiers; modify via merger (3 => 1)
+        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+        power: 5,
+        experience: {
+          current: 100, // gained value (relative)
+          max: 10000 // full value (relative)
+        },
+        characteristics: {
+          hp: 10,
+          damage: 3,
+          defence: 7,
+          initiative: 1,
+          speed: 4
+        },
+        abilities: [
+          // Here will be all the abilities
+          // flow: unit lvl opens ability lvl > pay crystal > lvl up
+          {
+            abilityClass: "combat",
+            canLearn: true,
+            level: 1 // 1-4
+          },
+          {
+            abilityClass: "buff",
+            canLearn: false,
+            level: 0 // It's locked, yet
+          }
+        ],
+        quantity: 3
+      },
+      {
+        unitId: "2c8vny4t4",
+        unitTribe: "ork", // 15 tribes
+        unitClass: "support", // 5 classes
+        tier: 1, // 3 tiers; modify via merger (3 => 1)
+        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+        power: 5,
+        experience: {
+          current: 100, // gained value (relative)
+          max: 10000 // full value (relative)
+        },
+        characteristics: {
+          hp: 10,
+          damage: 3,
+          defence: 7,
+          initiative: 1,
+          speed: 4
+        },
+        abilities: [
+          // Here will be all the abilities
+          // flow: unit lvl opens ability lvl > pay crystal > lvl up
+          {
+            abilityClass: "support_and_heal",
+            canLearn: true,
+            level: 1 // 1-4
+          },
+          {
+            abilityClass: "debuff",
             canLearn: false,
             level: 0 // It's locked, yet
           }
@@ -98,7 +234,26 @@ export default {
             hp: 10,
             abilities: [
               {
-                abilityClass: "ability-1",
+                abilityClass: "combat",
+                cooldown: {
+                  enabled: false,
+                  stepsLeft: 0,
+                  stepsMax: 3
+                }
+              }
+            ],
+            activeBuffs: [] // Will be defined later
+          },
+          {
+            unitId: "2c8vny4t1",
+            unitTribe: "ork", // 15 tribes
+            unitClass: "damager", // 5 classes
+            tier: 1, // 3 tiers; modify via merger (3 => 1)
+            index: 30, // cell index 0-34
+            hp: 10,
+            abilities: [
+              {
+                abilityClass: "combat",
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,

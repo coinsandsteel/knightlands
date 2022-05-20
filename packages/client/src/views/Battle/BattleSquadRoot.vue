@@ -62,6 +62,9 @@ export default {
     // this.$store.dispatch("battle/subscribe");
     // await this.$store.dispatch("battle/load");
   },
+  created() {
+    this.title = this.$t("battle-event");
+  },
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
