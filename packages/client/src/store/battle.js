@@ -48,7 +48,7 @@ export default {
         tier: 1, // 3 tiers; modify via merger (3 => 1)
         level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
         power: 5,
-        expirience: {
+        experience: {
           current: 100, // gained value (relative)
           max: 10000 // full value (relative)
         },
@@ -83,7 +83,7 @@ export default {
       room: null, // number|null: 0-7
       level: null, // number|null: 0-5
       difficulty: null, // string: "low" | "medium" | "hard"
-      
+
       // User squad
       userSquad: {
         power: 0,
@@ -133,7 +133,7 @@ export default {
         isMyTurn: null, // boolean|null
         runtime: {
           unitId: null,
-          slectedIndex: null,
+          selectedIndex: null,
           selectedAbility: null,
           moveCells: [],
           attackCells: []
