@@ -305,7 +305,7 @@ export default {
         runtime: {
           unitId: null, // string|null
           slectedIndex: null, // number|null
-          selectedAbilityId: null, // string|null
+          selectedAbilityClass: null, // string|null
           moveCells: [], // number[]
           attackCells: [] // number[]
         }
