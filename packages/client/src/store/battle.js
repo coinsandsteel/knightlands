@@ -79,9 +79,8 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           }
@@ -110,9 +109,8 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           }
@@ -141,16 +139,14 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           },
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           }
@@ -179,16 +175,14 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           },
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           }
@@ -217,16 +211,14 @@ export default {
           // Here will be all the abilities
           // flow: unit lvl opens ability lvl > pay crystal > lvl up
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            alias: "axe_blow",
             canLearn: true,
             level: 1 // 1-4
           },
           {
-            abilityId: "2c8vny4t9",
+            abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
-            alias: "stun_shot",
             canLearn: false,
             level: 0 // It's locked, yet
           }
@@ -256,9 +248,8 @@ export default {
             hp: 10,
             abilities: [
               {
-                abilityId: "2c8vny4t9",
+                abilityClass: "axe_blow",
                 abilityGroup: battle.ABILITY_GROUP_BUFF,
-                alias: "axe_blow",
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,
@@ -277,9 +268,8 @@ export default {
             hp: 10,
             abilities: [
               {
-                abilityId: "2c8vny4t9",
+                abilityClass: "axe_blow",
                 abilityGroup: battle.ABILITY_GROUP_BUFF,
-                alias: "axe_blow",
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,
