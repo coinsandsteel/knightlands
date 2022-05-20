@@ -63,7 +63,7 @@ export default {
     };
   },
   created() {
-    this.title = this.$t("april-event");
+    this.title = this.$t("battle-event");
     this.$store.$app.$on("april-show-daily-reward", this.tryToShowRewards);
   },
   destroyed() {

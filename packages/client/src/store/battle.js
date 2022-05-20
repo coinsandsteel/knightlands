@@ -228,7 +228,7 @@ export default {
           {
             unitId: "2c8vny4t9",
             unitTribe: "ork", // 15 tribes
-            unitClass: "damager", // 5 classes
+            unitClass: "tank", // 5 classes
             tier: 1, // 3 tiers; modify via merger (3 => 1)
             index: 32, // cell index 0-34
             hp: 10,
@@ -247,13 +247,13 @@ export default {
           {
             unitId: "2c8vny4t1",
             unitTribe: "ork", // 15 tribes
-            unitClass: "damager", // 5 classes
+            unitClass: "support", // 5 classes
             tier: 1, // 3 tiers; modify via merger (3 => 1)
             index: 30, // cell index 0-34
             hp: 10,
             abilities: [
               {
-                abilityClass: "combat",
+                abilityClass: "support_and_heal",
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,
@@ -287,11 +287,11 @@ export default {
         // @todo: set to false
         isMyTurn: null, // boolean|null
         runtime: {
-          unitId: null,
-          selectedIndex: null,
-          selectedAbility: null,
-          moveCells: [],
-          attackCells: []
+          unitId: null, // string|null
+          slectedIndex: null, // number|null
+          selectedAbilityClass: null, // string|null
+          moveCells: [], // number[]
+          attackCells: [] // number[]
         }
       }
     }

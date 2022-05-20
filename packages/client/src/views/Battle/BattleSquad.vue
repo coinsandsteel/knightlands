@@ -25,11 +25,11 @@ import { mapState } from "vuex";
 // import BattleUnit from "@/views/Battle/BattleUnit.vue";
 // import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
-import AppSection from "@/AppSection.vue";
-import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+// import AppSection from "@/AppSection.vue";
+// import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  // mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
     // BattleUnit,
     BattleUnitList
@@ -46,7 +46,21 @@ export default {
         : [];
     },
     bonus() {
-      return "Attack + 1, defense + 1";
+      const bonusItems =
+        this.game && this.game.userSquad
+          ? this.game.userSquad.bonuses || []
+          : [];
+
+      if (!bonusItems.length > 0) {
+        return null;
+      }
+      return bonusItems
+        .map(item => {
+          return (
+            this.$t(item.alias) + (item.delta > 0 ? " +" : " ") + item.delta
+          );
+        })
+        .join(", ");
     }
   },
   methods: {

@@ -20,7 +20,7 @@
 // import { mapGetters } from "vuex";
 // import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
-// import AppSection from "@/AppSection.vue";
+import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const SquadTab = "battle-squad-home";
@@ -28,10 +28,7 @@ const WarehouseTab = "battle-units";
 const BonusTab = "battle-squad-bonus";
 
 export default {
-  mixins: [
-    // AppSection,
-    NetworkRequestErrorMixin
-  ],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
     Tabs
   },
@@ -68,6 +65,10 @@ export default {
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
+    },
+    handleBackButton() {
+      this.$router.replace({ name: "battle-menu" });
+      return true;
     }
   }
 };

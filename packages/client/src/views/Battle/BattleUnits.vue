@@ -61,10 +61,17 @@ export default {
     this.title = this.$t("battle-units");
   },
   methods: {
-    clickHandler(unit) {
-      console.log("click handler");
+    async clickHandler(unit) {
       if (this.shouldFillSlot) {
-        // @todo: call operation
+        console.log("fillSquadSlot", {
+          unitId: unit.unitId,
+          index: this.$route.params.index
+        });
+        this.$store.dispatch("battle/fillSquadSlot", {
+          unitId: unit.unitId,
+          index: this.$route.params.index
+        });
+
         this.$router.replace({
           name: "battle-squad-home"
         });
@@ -73,7 +80,7 @@ export default {
 
       this.$router.push({
         name: "battle-unit-details",
-        params: { id: unit.id }
+        params: { id: unit.unitId }
       });
     },
     showUnitsFilter() {

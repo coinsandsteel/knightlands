@@ -440,7 +440,14 @@ export default {
     showBackButton() {
       let params = this.$route.path.match(/[^//]+/g);
 
-      if (["battle-units"].includes(this.$route.name)) {
+      if (
+        [
+          "battle-units",
+          "battle-squad-home",
+          "battle-squad-warehouse",
+          "battle-squad-bonus"
+        ].includes(this.$route.name)
+      ) {
         this.showBackMenu = true;
         return;
       }
