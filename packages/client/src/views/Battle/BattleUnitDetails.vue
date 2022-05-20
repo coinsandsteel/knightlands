@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column">
+  <div v-if="unit" class="flex flex-column">
     <div class="screen-background"></div>
     <div
       class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
@@ -8,69 +8,45 @@
         <div class="font-size-22 height-100">
           <div>
             <div>
-              <BattleUnit />
+              <BattleUnit :unit="unit" />
             </div>
-            <div>Level: 123456</div>
+            <div>Level: {{ unit.level }}</div>
             <div class="flex">
               <div>Exp:</div>
               <ProgressBar
-                v-model="expValue"
+                :value="expValue"
                 :expand="false"
                 height="2rem"
                 class="full-flex"
                 barType="green"
-                :maxValue="10"
+                :maxValue="expMaxValue"
                 :plusButton="'green'"
                 @refill="refillHandler"
               ></ProgressBar>
             </div>
             <div>
-              <div>Hp - 14</div>
-              <div>Defense - 3</div>
-              <div>Damage - 6</div>
+              <div>Hp - {{ unit.characteristics.hp }}</div>
+              <div>Defense - {{ unit.characteristics.damage }}</div>
+              <div>Damage - {{ unit.characteristics.defence }}</div>
+              <div>Speed - {{ unit.characteristics.initiative }}</div>
+              <div>Initiative - {{ unit.characteristics.speed }}</div>
             </div>
             <div>
-              <div class="flex">
-                <div>
-                  Ability 1
+              <div
+                v-for="ability in abilities"
+                :key="ability.abilityClass"
+                class="flex"
+              >
+                <div class="padding-right-2">
+                  <BattleUnitAbility :ability="ability" />
                 </div>
                 <ProgressBar
-                  v-model="expValue"
+                  :value="ability.level || 0"
                   :expand="false"
                   height="2rem"
                   class="full-flex"
                   barType="green"
-                  :maxValue="10"
-                  :plusButton="'green'"
-                  @refill="refillHandler"
-                ></ProgressBar>
-              </div>
-              <div class="flex">
-                <div>
-                  Ability 2
-                </div>
-                <ProgressBar
-                  v-model="expValue"
-                  :expand="false"
-                  height="2rem"
-                  class="full-flex"
-                  barType="green"
-                  :maxValue="10"
-                  :plusButton="'green'"
-                  @refill="refillHandler"
-                ></ProgressBar>
-              </div>
-              <div class="flex">
-                <div>
-                  Ability 3
-                </div>
-                <ProgressBar
-                  v-model="expValue"
-                  :expand="false"
-                  height="2rem"
-                  class="full-flex"
-                  barType="green"
-                  :maxValue="10"
+                  :maxValue="4"
                   :plusButton="'green'"
                   @refill="refillHandler"
                 ></ProgressBar>
@@ -146,8 +122,7 @@
   </div>
 </template>
 <script>
-// import { mapGetters } from "vuex";
-
+import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleLevelUpConfirm from "@/views/Battle/BattleLevelUpConfirm.vue";
@@ -155,21 +130,43 @@ import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 // import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
+import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin],
   components: {
-    BattleUnit
+    BattleUnit,
+    BattleUnitAbility
   },
   data() {
     return {
-      expValue: 0,
-      unit: { id: 123 }
+      // expValue: 0,
+      unit: null
     };
   },
-  computed: {},
+  computed: {
+    ...mapState("battle", ["inventory"]),
+    expValue() {
+      return this.unit && this.unit.experience
+        ? this.unit.experience.current || 0
+        : 0;
+    },
+    expMaxValue() {
+      return this.unit && this.unit.experience
+        ? this.unit.experience.max || 0
+        : 0;
+    },
+    abilities() {
+      return this.unit && this.unit.abilities ? this.unit.abilities : [];
+    }
+  },
   created() {
     this.title = this.$t("battle-unit");
+    if (this.inventory) {
+      this.unit = this.inventory.find(item => {
+        return item.unitId === this.$route.params.id;
+      });
+    }
   },
   methods: {
     handleBackButton() {

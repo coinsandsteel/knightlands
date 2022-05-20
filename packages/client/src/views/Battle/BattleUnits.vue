@@ -22,10 +22,12 @@
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
+import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
+import BattleUnitsFilter from "@/views/Battle/BattleUnitsFilter.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin],
@@ -83,8 +85,10 @@ export default {
         params: { id: unit.unitId }
       });
     },
-    showUnitsFilter() {
+    async showUnitsFilter() {
       console.log("showUnitsFilter");
+      const show = create(BattleUnitsFilter);
+      await show();
     },
     handleBackButton() {
       this.$router.replace({ name: "battle-squad-home" });

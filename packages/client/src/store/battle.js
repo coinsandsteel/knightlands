@@ -3,11 +3,27 @@
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 
+const BATTLE_TIERS_FILTER = "BATTLE_TIERS_FILTER";
+const BATTLE_CLASSES_FILTER = "BATTLE_CLASSES_FILTER";
+
+let selectedTiersFilter = [];
+if (localStorage.getItem(BATTLE_TIERS_FILTER)) {
+  selectedTiersFilter = JSON.parse(localStorage.getItem(BATTLE_TIERS_FILTER));
+}
+let selectedClassesFilter = [];
+if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
+  selectedClassesFilter = JSON.parse(
+    localStorage.getItem(BATTLE_CLASSES_FILTER)
+  );
+}
+
 export default {
   namespaced: true,
   state: {
     // @todo: set to false
     loaded: true,
+    selectedTiersFilter,
+    selectedClassesFilter,
 
     // User data
     user: {
@@ -84,7 +100,7 @@ export default {
         unitId: "2c8vny4t1",
         unitTribe: "ork", // 15 tribes
         unitClass: "range", // 5 classes
-        tier: 1, // 3 tiers; modify via merger (3 => 1)
+        tier: 2, // 3 tiers; modify via merger (3 => 1)
         level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
         power: 5,
         experience: {
@@ -113,7 +129,7 @@ export default {
         unitId: "2c8vny4t2",
         unitTribe: "ork", // 15 tribes
         unitClass: "mage", // 5 classes
-        tier: 1, // 3 tiers; modify via merger (3 => 1)
+        tier: 3, // 3 tiers; modify via merger (3 => 1)
         level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
         power: 5,
         experience: {
@@ -374,6 +390,14 @@ export default {
     },
     unsubscribe() {
       this.$app.$game.offNetwork(Events.BattleUpdate);
+    },
+    setTiersFilter(store, data) {
+      store.state.selectedTiersFilter = data;
+      localStorage.setItem(BATTLE_TIERS_FILTER, JSON.stringify(data));
+    },
+    setClassesFilter(store, data) {
+      store.state.selectedClassesFilter = data;
+      localStorage.setItem(BATTLE_CLASSES_FILTER, JSON.stringify(data));
     },
 
     // ###### OPERATIONS ######

@@ -4,6 +4,7 @@
     @click="clickHandler"
   >
     <BattleUnit :unit="unit" />
+    <div class="padding-left-2">Tier: {{ tier }}</div>
     <div class="padding-left-2">Level: {{ level }}</div>
     <div class="padding-left-2">Exp: {{ experience }}</div>
     <div class="padding-left-2">
@@ -31,6 +32,9 @@ export default {
     return {};
   },
   computed: {
+    tier() {
+      return this.unit ? this.unit.tier || 0 : 0;
+    },
     level() {
       return this.unit ? this.unit.level || 0 : 0;
     },
