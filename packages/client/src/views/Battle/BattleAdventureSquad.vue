@@ -44,10 +44,22 @@ export default {
   },
   computed: {
     units() {
-      return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+      return [
+        { unitId: 1 },
+        { unitId: 2 },
+        { unitId: 3 },
+        { unitId: 4 },
+        { unitId: 5 }
+      ];
     },
     enemyUnits() {
-      return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+      return [
+        { unitId: 1 },
+        { unitId: 2 },
+        { unitId: 3 },
+        { unitId: 4 },
+        { unitId: 5 }
+      ];
     }
   },
   methods: {
@@ -59,7 +71,7 @@ export default {
     handleStart() {
       this.$router.push({
         name: "battle-adventure-play",
-        params: { id: 123 }
+        params: { unitId: this.$route.params.id }
       });
     }
   }

@@ -20,6 +20,7 @@
           <div class="zone-picture">
             <div
               class="height-100 battle-zone-selection-image"
+              :class="'battle-location-image--' + zone.id"
               :style="getZoneImage(zone.id)"
             />
             <div
@@ -38,19 +39,21 @@
 
     <div class="zone-breacrumbs font-size-20 flex flex-center flex-nowrap">
       <div class="zone-id small">
-        {{ prevZone }}
+        {{ prevZone + 1 }}
       </div>
       <div class="zone-id flex flex-center">
         <span>{{ currentZone + 1 }}</span>
       </div>
       <div class="zone-id small">
-        {{ nextZone }}
+        {{ nextZone + 1 }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import * as battle from "@/../../knightlands-shared/battle";
+
 export default {
   props: ["value"],
   data() {
@@ -60,6 +63,7 @@ export default {
   },
   mounted() {
     this.goTo(this.value);
+    this.$nextTick(this.handleZoneChanged);
   },
   activated() {
     this.$refs.slider.af = null;
@@ -72,15 +76,7 @@ export default {
   },
   computed: {
     zones() {
-      return [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-        { id: 6 },
-        { id: 7 }
-      ];
+      return battle.LOCATIONS;
     },
     currentZone() {
       return this.sliderIndex;
@@ -115,7 +111,7 @@ export default {
     },
     getZoneName(zoneId) {
       // return Zones.getZoneName(zoneId);
-      return "Name " + zoneId;
+      return this.$t("battle-location- " + zoneId);
     },
     goToNext() {
       console.log("goToNext");
@@ -130,6 +126,7 @@ export default {
       console.log("handleZoneChanged", event);
       // this.$emit("input", this.zones[event]._id);
       // this.$emit("zoneChanged", this.zones[event]._id);
+      this.$emit("change", { adventure: this.zones[this.currentZone] });
     }
   }
 };
@@ -227,5 +224,15 @@ export default {
 
 .battle-zone-selection-image {
   background: green;
+}
+
+.battle-location-image--1 {
+  background: url("/images/battle/locations/location-1.jpg") 100% 100% no-repeat;
+}
+.battle-location-image--2 {
+  background: url("/images/battle/locations/location-2.jpg") 100% 100% no-repeat;
+}
+.battle-location-image--3 {
+  background: url("/images/battle/locations/location-3.jpg") 100% 100% no-repeat;
 }
 </style>
