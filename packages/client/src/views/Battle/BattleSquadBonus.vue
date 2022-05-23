@@ -6,7 +6,7 @@
           Name
         </div>
         <div class="battle-unit-list">
-          <BattleUnit v-for="unit in item.units" :key="unit.id" />
+          <BattleUnit v-for="unit in item.units" :key="unit.unitId" />
         </div>
         <div>
           <CustomButton
@@ -37,15 +37,33 @@ export default {
       const result = [];
       result.push({
         user: { id: 1 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
+        units: [
+          { unitId: 1 },
+          { unitId: 2 },
+          { unitId: 3 },
+          { unitId: 4 },
+          { unitId: 5 }
+        ]
       });
       result.push({
         user: { id: 2 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
+        units: [
+          { unitId: 1 },
+          { unitId: 2 },
+          { unitId: 3 },
+          { unitId: 4 },
+          { unitId: 5 }
+        ]
       });
       result.push({
         user: { id: 3 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
+        units: [
+          { unitId: 1 },
+          { unitId: 2 },
+          { unitId: 3 },
+          { unitId: 4 },
+          { unitId: 5 }
+        ]
       });
       return result;
     }

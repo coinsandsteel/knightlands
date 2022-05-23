@@ -1,11 +1,6 @@
 <template>
   <div>
     <div class="battle-unit-list">
-      <!-- <BattleUnit
-        v-for="unit in units"
-        :key="unit.id"
-        @click="unitClickHandler"
-      /> -->
       <div class="font-size-22">{{ bonus }}</div>
       <BattleUnitList :units="units" @click="clickHandler" />
       <CustomButton
@@ -41,9 +36,18 @@ export default {
     ...mapState("battle", ["game"]),
     units() {
       // return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
-      return this.game && this.game.userSquad && this.game.userSquad.units
-        ? this.game.userSquad.units
-        : [];
+      const result =
+        this.game && this.game.userSquad && this.game.userSquad.units
+          ? this.game.userSquad.units
+          : [];
+
+      const length = result.length;
+
+      for (let i = 0; i < 5 - length; i++) {
+        result.push(null);
+      }
+
+      return result;
     },
     bonus() {
       const bonusItems =
@@ -66,14 +70,20 @@ export default {
     }
   },
   methods: {
-    async clickHandler(unit) {
+    async clickHandler({ unit, index }) {
+      if (!unit) {
+        this.updateUnitHandler(index);
+        return;
+      }
       console.log("clickHandler");
-      const index = this.units.findIndex(({ id }) => unit.id === id);
-      if (!(index > -1)) {
+      const unitIndex = this.units.findIndex(
+        ({ unitId }) => unit.unitId === unitId
+      );
+      if (!(unitIndex > -1)) {
         return;
       }
 
-      this.updateUnitHandler(index);
+      this.updateUnitHandler(unitIndex);
     },
     async updateUnitHandler(index) {
       console.log("addUnitHandler");

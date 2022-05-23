@@ -47,7 +47,7 @@ export default {
       if (isSelected) {
         this.selectedUnits.push(unit);
       } else {
-        const idx = this.selectedUnits.findIndex(x => x.id === unit.id);
+        const idx = this.selectedUnits.findIndex(x => x.unitId === unit.unitId);
         this.selectedUnits.splice(idx, 1);
       }
     }

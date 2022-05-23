@@ -313,6 +313,16 @@ export default {
     }
   },
   getters: {
+    dailyRewards(state) {
+      return state.user && state.user.rewards
+        ? state.user.rewards.dailyRewards || []
+        : [];
+    },
+    rankingRewards(state) {
+      return state.user && state.user.rewards
+        ? state.user.rewards.rankingRewards || []
+        : [];
+    },
     isMyTurn(state) {
       return state.isMyTurn;
     },

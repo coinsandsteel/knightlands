@@ -9,7 +9,7 @@
           Name squad
         </div>
         <div class="battle-unit-list">
-          <BattleUnit v-for="unit in item.units" :key="unit.id" />
+          <BattleUnit v-for="unit in item.units" :key="unit.unitId" />
         </div>
         <div>
           <CustomButton

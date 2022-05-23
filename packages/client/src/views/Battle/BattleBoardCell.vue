@@ -7,7 +7,7 @@
     }"
     @click="clickHandler"
   >
-    <div class="april-board-cell absolute-stretch">
+    <div class="battle-board-cell absolute-stretch">
       <!-- available move -->
       <Transition name="fade" appear>
         <div

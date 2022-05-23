@@ -1,21 +1,21 @@
 <template>
-  <UserDialog :title="$t('april-daily-rewards-title')" @close="collectRewards">
+  <UserDialog :title="$t('battle-daily-rewards-title')" @close="collectRewards">
     <template v-slot:content>
       <!-- tips -->
       <div class="font-size-20">
-        {{ $t("april-daily-rewards-tips") }}
+        {{ $t("battle-daily-rewards-tips") }}
       </div>
       <div
-        class="april-daily-rewards margin-top-5 margin-left-3 margin-right-3"
+        class="battle-daily-rewards margin-top-5 margin-left-3 margin-right-3"
       >
-        <AprilDailyReward
+        <BattleDailyReward
           v-for="(reward, index) in dailyRewards"
           :key="index"
           :index="index"
           :current="reward.active"
           :collected="reward.collected"
           :reward="reward"
-        ></AprilDailyReward>
+        ></BattleDailyReward>
       </div>
     </template>
     <template v-slot:footer>
@@ -28,20 +28,20 @@
 
 <script>
 import { mapGetters } from "vuex";
-import * as april from "@/../../knightlands-shared/april";
+import * as battle from "@/../../knightlands-shared/battle";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import AprilDailyReward from "@/views/April/AprilDailyReward.vue";
+import BattleDailyReward from "@/views/Battle/BattleDailyReward.vue";
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  components: { AprilDailyReward },
+  components: { BattleDailyReward },
   computed: {
-    ...mapGetters("april", ["dailyRewards"])
+    ...mapGetters("battle", ["dailyRewards"])
   },
   methods: {
     async collectRewards() {
-      this.$store.dispatch("april/claimReward", {
-        type: april.REWARD_TYPE_DAILY
+      this.$store.dispatch("battle/claimReward", {
+        type: battle.REWARD_TYPE_DAILY
       });
       this.$close();
     }
@@ -61,7 +61,7 @@ export default {
   width: 15px;
   height: 15px;
 }
-.april-daily-rewards {
+.battle-daily-rewards {
   display: grid;
   grid-template-columns: repeat(5, minmax(8rem, 1fr));
   justify-items: center;

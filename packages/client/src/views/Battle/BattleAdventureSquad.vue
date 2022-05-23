@@ -7,7 +7,7 @@
       <div class="battle-unit-list">
         <BattleUnit
           v-for="unit in units"
-          :key="unit.id"
+          :key="unit.unitId"
           @click="unitClickHandler"
         />
       </div>
@@ -17,7 +17,7 @@
         Enemies
       </div>
       <div class="battle-enemy-unit-list">
-        <BattleUnit v-for="unit in enemyUnits" :key="unit.id" />
+        <BattleUnit v-for="unit in enemyUnits" :key="unit.unitId" />
       </div>
     </div>
     <div class="text-align-center">

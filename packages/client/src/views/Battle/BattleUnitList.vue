@@ -1,10 +1,10 @@
 <template>
   <div class="battle-unit-list">
     <BattleUnitListItem
-      v-for="unit in units"
-      :key="unit.id"
+      v-for="(unit, index) in units"
+      :key="index + '_' + (unit ? unit.unitId : '')"
       :unit="unit"
-      @click="clickHandler"
+      @click="clickHandler(unit, index)"
     />
     <slot />
   </div>
@@ -26,8 +26,8 @@ export default {
     return {};
   },
   methods: {
-    clickHandler(event) {
-      this.$emit("click", event);
+    clickHandler(unit, index) {
+      this.$emit("click", { unit, index });
     }
   }
 };

@@ -4,7 +4,7 @@
       <div class="battle-unit-list">
         <BattleUnit
           v-for="unit in item.units"
-          :key="unit.id"
+          :key="unit.unitId"
           @click="unitClickHandler"
         />
       </div>

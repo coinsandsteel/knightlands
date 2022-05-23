@@ -79,7 +79,8 @@ export default {
     this.title = this.$t("battle-units");
   },
   methods: {
-    async clickHandler(unit) {
+    async clickHandler({ unit }) {
+      console.log("unit", unit);
       if (this.shouldFillSlot) {
         console.log("fillSquadSlot", {
           unitId: unit.unitId,

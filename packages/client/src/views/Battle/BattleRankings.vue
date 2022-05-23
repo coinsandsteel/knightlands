@@ -1,7 +1,7 @@
 <template>
   <div class="screen-content" v-bar>
     <div>
-      <div class="april-rating-rewards-wrapper padding-bottom-2">
+      <div class="battle-rating-rewards-wrapper padding-bottom-2">
         <div
           class="flex flex-center font-size-20 padding-top-2 text-align-left"
         >
@@ -63,7 +63,7 @@
             <Title v-if="item.isTitle" class="common-title"
               >{{ $t("top-players") }} - {{ $t(item.heroClass) }}</Title
             >
-            <AprilRankingElement
+            <BattleRankingElement
               v-else
               :index="index"
               :rank="item.rank"
@@ -83,10 +83,10 @@
 
 <script>
 import _ from "lodash";
-import AprilRankingElement from "@/views/April/AprilRankingElement.vue";
+import BattleRankingElement from "@/views/Battle/BattleRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import * as april from "@/../../knightlands-shared/april";
-import meta from "@/april_meta.json";
+import * as battle from "@/../../knightlands-shared/battle";
+import meta from "@/battle_meta.json";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import Timer from "@/timer.js";
@@ -96,7 +96,7 @@ const ShowItems = create(ItemsReceived, "items");
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  components: { AprilRankingElement, CustomButton, Loot },
+  components: { BattleRankingElement, CustomButton, Loot },
   data: () => ({
     records: [],
     currentPage: 0,
@@ -122,7 +122,7 @@ export default {
     },
     async fetchRankings() {
       const result = await this.performRequest(
-        this.$store.dispatch("april/rankings")
+        this.$store.dispatch("battle/rankings")
       );
 
       this.hasRewards = result.hasRewards;
@@ -154,9 +154,9 @@ export default {
           isTitle: true,
           // @todo
           heroClass: [
-            april.HERO_CLASS_KNIGHT,
-            april.HERO_CLASS_PALADIN,
-            april.HERO_CLASS_ROGUE
+            battle.HERO_CLASS_KNIGHT,
+            battle.HERO_CLASS_PALADIN,
+            battle.HERO_CLASS_ROGUE
           ][i % 3]
         };
         records.push(titleRecord);
@@ -169,8 +169,8 @@ export default {
     scrollUpdated(start, end) {},
     async claimRewards() {
       let items = await this.performRequestNoCatch(
-        this.$store.dispatch("april/claimReward", {
-          type: april.REWARD_TYPE_RANKING
+        this.$store.dispatch("battle/claimReward", {
+          type: battle.REWARD_TYPE_RANKING
         })
       );
       if (items.length) {
@@ -199,10 +199,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-.april-rating-rewards-wrapper {
+.battle-rating-rewards-wrapper {
   background: #2f7285;
 }
-.april-rating-rewards {
+.battle-rating-rewards {
   margin-left: auto;
   margin-right: auto;
 }

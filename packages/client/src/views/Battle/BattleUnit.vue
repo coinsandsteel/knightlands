@@ -1,8 +1,7 @@
 <template>
   <div
-    v-if="unit"
     class="battle-unit"
-    :class="'battle-unit' + '--' + unit.unitClass"
+    :class="unit ? 'battle-unit' + '--' + unit.unitClass : 'battle-unit--empty'"
     @click="clickHandler"
   >
     <div class="battle-unit-wrapper relative">
@@ -33,6 +32,9 @@ export default {
 .battle-unit-wrapper {
   background: url("/images/battle/units/unit.png") center/100% no-repeat;
   padding-bottom: 100%;
+}
+.battle-unit--empty .battle-unit-wrapper {
+  background-image: url("/images/battle/units/unit-empty.png");
 }
 .battle-unit--melee .battle-unit-wrapper {
   background-image: url("/images/battle/units/unit-melee.png");

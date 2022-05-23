@@ -37,7 +37,7 @@ export default {
     Tabs
   },
   computed: {
-    ...mapGetters("april", ["dailyRewards"])
+    ...mapGetters("battle", ["dailyRewards"])
   },
   data() {
     return {
@@ -64,19 +64,16 @@ export default {
   },
   created() {
     this.title = this.$t("battle-event");
-    this.$store.$app.$on("april-show-daily-reward", this.tryToShowRewards);
+    this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
   },
   destroyed() {
-    this.$store.$app.$off("april-show-daily-reward");
+    this.$store.$app.$off("battle-show-daily-reward");
   },
   async mounted() {
-    this.$store.dispatch("april/subscribe"); // @todo remove april
-    await this.$store.dispatch("april/load");
     this.$store.dispatch("battle/subscribe");
     await this.$store.dispatch("battle/load");
   },
   beforeDestroy() {
-    this.$store.dispatch("april/unsubscribe");
     this.$store.dispatch("battle/unsubscribe");
   },
   activated() {

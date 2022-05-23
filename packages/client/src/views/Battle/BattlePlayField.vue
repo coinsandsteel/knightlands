@@ -116,7 +116,7 @@ export default {
       }
 
       if (event.isUnit) {
-        if (this.selectedUnitId === event.unit.id) {
+        if (this.selectedUnitId === event.unit.unitId) {
           this.$store.commit("battle/updateState", {
             selectedUnitId: null,
             moveCells: []
@@ -124,7 +124,7 @@ export default {
           return;
         }
         this.$store.commit("battle/updateState", {
-          selectedUnitId: event.unit.id,
+          selectedUnitId: event.unit.unitId,
           moveCells: [
             index - 5,
             index - 4,

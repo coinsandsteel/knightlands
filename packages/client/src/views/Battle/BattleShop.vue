@@ -89,12 +89,12 @@
       </div>
     </div>
 
-    <portal v-if="isActive" to="footer" :slim="true">
+    <!-- <portal v-if="isActive" to="footer" :slim="true">
       <div class="width-100 flex flex-items-start">
         <BackButton class="back-button" @click="backHandler"></BackButton>
         <div class="flex-full"></div>
       </div>
-    </portal>
+    </portal> -->
   </div>
 </template>
 <script>

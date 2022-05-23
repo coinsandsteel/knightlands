@@ -4,17 +4,19 @@
     @click="clickHandler"
   >
     <BattleUnit :unit="unit" />
-    <div class="padding-left-2">Tier: {{ tier }}</div>
-    <div class="padding-left-2">Level: {{ level }}</div>
-    <div class="padding-left-2">Exp: {{ experience }}</div>
-    <div class="padding-left-2">
-      <BattleUnitAbility
-        v-for="(ability, index) in abilities"
-        :key="ability.abilityGroup + ability.abilityClass"
-        :ability="ability"
-        :class="{ 'margin-left-1': index > 0 }"
-      />
-    </div>
+    <template v-if="unit">
+      <div class="padding-left-2">Tier: {{ tier }}</div>
+      <div class="padding-left-2">Level: {{ level }}</div>
+      <div class="padding-left-2">Exp: {{ experience }}</div>
+      <div class="padding-left-2">
+        <BattleUnitAbility
+          v-for="(ability, index) in abilities"
+          :key="ability.abilityGroup + ability.abilityClass"
+          :ability="ability"
+          :class="{ 'margin-left-1': index > 0 }"
+        />
+      </div>
+    </template>
   </div>
 </template>
 <script>
