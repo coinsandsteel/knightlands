@@ -1,23 +1,25 @@
 <template>
   <div>
     <div>
-      <div>
+      <div class="font-size-22">
         Your army
       </div>
       <div class="battle-unit-list">
-        <BattleUnit
+        <!-- <BattleUnit
           v-for="unit in units"
           :key="unit.unitId"
           @click="unitClickHandler"
-        />
+        /> -->
+        <BattleUnitList :units="units" />
       </div>
     </div>
     <div>
-      <div>
-        Enemies
+      <div class="font-size-22">
+        Enemy 's army
       </div>
       <div class="battle-enemy-unit-list">
-        <BattleUnit v-for="unit in enemyUnits" :key="unit.unitId" />
+        <!-- <BattleUnit v-for="unit in enemyUnits" :key="unit.unitId" /> -->
+        <BattleUnitList :units="enemyUnits" />
       </div>
     </div>
     <div class="text-align-center">
@@ -32,34 +34,47 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
-import BattleUnit from "@/views/Battle/BattleUnit.vue";
+// import BattleUnit from "@/views/Battle/BattleUnit.vue";
+import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
 export default {
   components: {
-    BattleUnit
+    BattleUnitList
   },
   data() {
     return {};
   },
   computed: {
+    ...mapState("battle", ["game"]),
     units() {
-      return [
-        { unitId: 1 },
-        { unitId: 2 },
-        { unitId: 3 },
-        { unitId: 4 },
-        { unitId: 5 }
-      ];
+      const result =
+        this.game && this.game.userSquad && this.game.userSquad.units
+          ? this.game.userSquad.units
+          : [];
+
+      const length = result.length;
+
+      for (let i = 0; i < 5 - length; i++) {
+        result.push(null);
+      }
+
+      return result;
     },
     enemyUnits() {
-      return [
-        { unitId: 1 },
-        { unitId: 2 },
-        { unitId: 3 },
-        { unitId: 4 },
-        { unitId: 5 }
-      ];
+      const result =
+        this.game && this.game.userSquad && this.game.userSquad.units
+          ? this.game.userSquad.units
+          : [];
+
+      const length = result.length;
+
+      for (let i = 0; i < 5 - length; i++) {
+        result.push(null);
+      }
+
+      return result;
     }
   },
   methods: {
@@ -78,21 +93,21 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.battle-unit-list {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(10rem, 1fr));
-  justify-items: center;
-  row-gap: 0.5rem;
-  column-gap: 0.5rem;
-}
-.battle-enemy-unit-list {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(10rem, 1fr));
-  justify-items: center;
-  row-gap: 0.5rem;
-  column-gap: 0.5rem;
-}
-.battle-unit {
-  width: 100%;
-}
+// .battle-unit-list {
+//   display: grid;
+//   grid-template-columns: repeat(5, minmax(10rem, 1fr));
+//   justify-items: center;
+//   row-gap: 0.5rem;
+//   column-gap: 0.5rem;
+// }
+// .battle-enemy-unit-list {
+//   display: grid;
+//   grid-template-columns: repeat(5, minmax(10rem, 1fr));
+//   justify-items: center;
+//   row-gap: 0.5rem;
+//   column-gap: 0.5rem;
+// }
+// .battle-unit {
+//   width: 100%;
+// }
 </style>

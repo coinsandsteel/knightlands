@@ -1,17 +1,15 @@
 <template>
   <div>
-    <div class="battle-unit-list">
-      <div class="font-size-22">{{ bonus }}</div>
-      <BattleUnitList :units="units" @click="clickHandler" />
-      <CustomButton
-        v-if="units.length < 5"
-        type="green"
-        class="inline-block"
-        width="8rem"
-        @click="updateUnitHandler(units.length)"
-        >{{ $t("add") }}</CustomButton
-      >
-    </div>
+    <div class="font-size-22">{{ bonus }}</div>
+    <BattleUnitList :units="units" @click="clickHandler" />
+    <CustomButton
+      v-if="units.length < 5"
+      type="green"
+      class="inline-block"
+      width="8rem"
+      @click="updateUnitHandler(units.length)"
+      >{{ $t("add") }}</CustomButton
+    >
   </div>
 </template>
 <script>

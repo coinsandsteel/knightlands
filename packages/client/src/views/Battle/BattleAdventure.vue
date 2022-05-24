@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-column flex-full overflow-auto">
     <BattleZoneSelection @change="changeHandler" />
-    <div v-if="adventure" class="flex-full overflow-auto margin-top-4">
+    <div
+      v-if="adventure"
+      class="flex-full overflow-auto margin-top-4 padding-bottom-2"
+    >
       <BattleAdventureItem
         v-for="item in adventure.levels"
         :key="item.id"
