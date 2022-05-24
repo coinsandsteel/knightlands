@@ -301,10 +301,10 @@ export default {
         started: false,
         result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
-        isMyTurn: null, // boolean|null
+        isMyTurn: true, // boolean|null
         runtime: {
           unitId: null, // string|null
-          slectedIndex: null, // number|null
+          selectedIndex: null, // number|null
           selectedAbilityClass: null, // string|null
           moveCells: [], // number[]
           attackCells: [] // number[]
@@ -323,42 +323,91 @@ export default {
         ? state.user.rewards.rankingRewards || []
         : [];
     },
+    selectedIndex(state) {
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.selectedIndex
+        : null;
+    },
     isMyTurn(state) {
-      return state.isMyTurn;
+      return state.game && state.game.combat
+        ? !!state.game.combat.isMyTurn
+        : false;
     },
     units(state) {
-      return state.units;
+      return state.game && state.game.userSquad
+        ? state.game.userSquad.units || []
+        : [];
     },
-    selectedUnitId(state) {
-      return state.selectedUnitId;
+    selectedUnitId(state, getters) {
+      if (!getters.isMyTurn) {
+        return null;
+      }
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.unitId
+        : null;
     },
     selectedUnit(state, getters) {
-      if (!state.selectedUnitId) {
+      if (!getters.selectedUnitId) {
         return null;
       }
 
-      return getters.units.find(({ id }) => id === getters.selectedUnitId);
+      return getters.units.find(
+        ({ unitId }) => unitId === getters.selectedUnitId
+      );
     },
-    moveCells(state) {
-      return state.moveCells;
+    moveCells(state, getters) {
+      if (!getters.isMyTurn) {
+        return [];
+      }
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.moveCells || []
+        : [];
+    },
+    attackCells(state, getters) {
+      if (!getters.isMyTurn) {
+        return [];
+      }
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.attackCells || []
+        : [];
     },
     enemyUnits(state) {
-      return state.enemyUnits;
+      return state.game && state.game.enemySquad
+        ? state.game.enemySquad.units || []
+        : [];
     },
-    selectedEnemyId(state) {
-      return state.selectedEnemyId;
+    enemySelectedUnitId(state, getters) {
+      if (getters.isMyTurn) {
+        return null;
+      }
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.unitId
+        : null;
     },
-    selectedEnemy(state, getters) {
-      if (!state.selectedEnemyId) {
+    enemySelectedUnit(state, getters) {
+      if (!getters.enemySelectedUnitId) {
         return null;
       }
 
       return getters.enemyUnits.find(
-        ({ id }) => id === getters.selectedEnemyId
+        ({ unitId }) => unitId === getters.enemySelectedUnitId
       );
     },
-    enemyAvailableMoves(state) {
-      return state.moveCells; // @todo
+    enemyMoveCells(state, getters) {
+      if (getters.isMyTurn) {
+        return [];
+      }
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.moveCells || []
+        : [];
+    },
+    enemyAttackCells(state, getters) {
+      if (getters.isMyTurn) {
+        return [];
+      }
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.attackCells || []
+        : [];
     }
   },
   mutations: {
@@ -367,23 +416,29 @@ export default {
         state.isMyTurn = data.isMyTurn;
       }
       if (data.selectedUnitId !== undefined) {
-        state.selectedUnitId = data.selectedUnitId;
+        // state.selectedUnitId = data.selectedUnitId;
+        state.game.combat.runtime.unitId = data.selectedUnitId;
       }
       if (data.units !== undefined) {
-        state.units = data.units;
+        // state.units = data.units;
+        state.game.userSquad.units = data.units || [];
       }
       if (data.moveCells !== undefined) {
-        state.moveCells = data.moveCells;
+        // state.moveCells = data.moveCells;
+        state.game.combat.runtime.moveCells = data.moveCells || [];
       }
-      if (data.selectedEnemyId !== undefined) {
-        state.selectedEnemyId = data.selectedEnemyId;
+      if (data.enemySelectedUnitId !== undefined) {
+        // state.enemySelectedUnitId = data.enemySelectedUnitId;
+        state.game.combat.runtime.unitId = data.selectedUnitId;
       }
       if (data.enemyUnits !== undefined) {
-        state.enemyUnits = data.enemyUnits;
+        // state.enemyUnits = data.enemyUnits;
+        state.game.enemySquad.units = data.enemyUnits || [];
       }
-      // if (data.enemyAvailableMoves !== undefined) {
-      //   state.enemyAvailableMoves = data.enemyAvailableMoves;
-      // }
+      if (data.enemyMoveCells !== undefined) {
+        // state.enemyAvailableMoves = data.enemyAvailableMoves;
+        state.game.combat.runtime.moveCells = data.moveCells || [];
+      }
     },
     setInitialState(state, data) {
       state.loaded = true;
