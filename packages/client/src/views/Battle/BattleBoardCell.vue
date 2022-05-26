@@ -79,8 +79,8 @@ export default {
       "selectedUnit",
       "moveCells",
       "enemyUnits",
-      "selectedEnemy",
-      "enemyAvailableMoves"
+      "enemySelectedUnit",
+      "enemyMoveCells"
     ]),
     isUnit() {
       return this.units.map(({ index }) => index).includes(this.index);
@@ -102,7 +102,7 @@ export default {
       return this.enemyUnits.map(({ index }) => index).includes(this.index);
     },
     enemyIndex() {
-      return this.selectedEnemy ? this.selectedEnemy.index : -1;
+      return this.enemySelectedUnit ? this.enemySelectedUnit.index : -1;
     },
     enemy() {
       if (!this.isEnemy) {
@@ -112,7 +112,7 @@ export default {
       return this.enemyUnits.find(({ index }) => index === this.index);
     },
     isEnemyAvailableMove() {
-      return this.enemyAvailableMoves.includes(this.index);
+      return this.enemyMoveCells.includes(this.index);
     },
     isClickable() {
       return (
@@ -124,7 +124,8 @@ export default {
     }
   },
   watch: {
-    unitIndex(value) {
+    unitIndex(value, oldValue) {
+      console.log("unitIndex", value, oldValue);
       if (!(value > -1)) {
         return;
       }

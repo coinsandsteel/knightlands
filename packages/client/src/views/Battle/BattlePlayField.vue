@@ -45,8 +45,14 @@ export default {
   },
   computed: {
     ...mapState(["appSize"]),
-    ...mapState("battle", ["units", "enemies"]),
-    ...mapGetters("battle", ["isMyTurn", "selectedUnitId", "selectedEnemyId"]),
+    // ...mapState("battle", ["units", "enemies"]),
+    ...mapGetters("battle", [
+      "units",
+      "enemyUnits",
+      "isMyTurn",
+      "selectedUnitId",
+      "enemySelectedUnitId"
+    ]),
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 6)
@@ -80,8 +86,8 @@ export default {
       if (!this.isMyTurn) {
         if (event.isEnemy) {
           this.$store.commit("battle/updateState", {
-            selectedEnemyId: event.enemy.id,
-            enemyAvailableMoves: [
+            enemySelectedUnitId: event.enemy.unitId,
+            enemyMoveCells: [
               index + 5,
               index + 4,
               index + 6,
@@ -98,13 +104,15 @@ export default {
         }
 
         if (event.isEnemyAvailableMove) {
-          const enemies = cloneDeep(this.enemies) || [];
-          const enemy = enemies.find(({ id }) => id === this.selectedEnemyId);
+          const enemyUnits = cloneDeep(this.enemyUnits) || [];
+          const enemy = enemyUnits.find(
+            ({ unitId }) => unitId === this.enemySelectedUnitId
+          );
           enemy.index = index;
           this.$store.commit("battle/updateState", {
-            selectedEnemyId: null,
+            enemySelectedUnitId: null,
             enemyAvailableMoves: [],
-            enemies
+            enemyUnits
           });
 
           this.$store.commit("battle/updateState", {
@@ -141,7 +149,7 @@ export default {
 
       if (event.isAvailableMove && !event.isEnemy) {
         const units = cloneDeep(this.units) || [];
-        const unit = units.find(({ id }) => id === this.selectedUnitId);
+        const unit = units.find(({ unitId }) => unitId === this.selectedUnitId);
         unit.index = index;
         this.$store.commit("battle/updateState", {
           selectedUnitId: null,
