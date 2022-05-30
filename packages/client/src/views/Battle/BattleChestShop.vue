@@ -10,9 +10,8 @@
             :chest="chest"
             :index="index"
             :pending="pendingOpening"
-            @purchase="purchase"
-            @open="handleOpen"
-            @openBatch="openBatchChest"
+            @purchase="purchaseHandler"
+            @open="openHandler"
           />
           <div class="margin-top-4">
             <CustomButton
@@ -84,23 +83,14 @@ export default {
     }
   },
   methods: {
-    purchase(chest, iap) {
-      this.openChest(chest, iap);
+    purchaseHandler(chest) {
+      // this.openChest(chest, iap);
     },
-    handleOpen(chest) {
-      this.openChest(chest, -1, 1);
-    },
-    openBatchChest(chest, count) {
-      this.openChest(chest, -1, count);
-    },
-    async openChest(chest, iap, count = 1) {
-      const items = await this.performRequest(
-        this.$game.openChest(chest, iap, count)
-      );
-
+    openHandler(chest) {
+      // this.openChest(chest, -1, 1);
       this.$router.push({
-        name: "open-chest",
-        params: { chest, items }
+        name: "battle-chest-shop-units",
+        params: { name: chest.name }
       });
     },
     async showDetailsHandler() {

@@ -709,6 +709,11 @@ const router = new Router({
           path: "chest-shop",
           name: "battle-chest-shop",
           component: () => import("./views/Battle/BattleChestShop.vue")
+        },
+        {
+          path: "chest-shop/:name",
+          name: "battle-chest-shop-units",
+          component: () => import("./views/Battle/BattleChestShopUnits.vue")
         }
       ],
       meta: {

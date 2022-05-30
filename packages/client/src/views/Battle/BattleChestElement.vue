@@ -22,7 +22,7 @@
         <div class="chest-title text-align-center">{{ chest.title }}</div>
       </div>
       <div class="flex flex-column flex-items-center">
-        <CustomButton type="blue" width="18rem">
+        <CustomButton type="blue" width="18rem" @click="$emit('open', chest)">
           Characters list
         </CustomButton>
       </div>
@@ -62,7 +62,11 @@
         >{{ $t("free-chest-timer", { timer: timer.value }) }}</span
       > -->
       <div class="text-align-center">
-        <CustomButton type="yellow" width="18rem">
+        <CustomButton
+          type="yellow"
+          width="18rem"
+          @click="$emit('purchase', chest)"
+        >
           Buy
         </CustomButton>
       </div>
