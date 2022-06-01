@@ -1,4 +1,4 @@
-// import Vue from "vue";
+import _ from "lodash";
 import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
@@ -16,6 +16,58 @@ if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
     localStorage.getItem(BATTLE_CLASSES_FILTER)
   );
 }
+
+const inventoryUnit = {
+  unitId: "2c8vny4t9",
+  unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
+  unitClass: battle.UNIT_CLASS_MELEE, // 5 classes
+  tier: 1, // 3 tiers; modify via merger (3 => 1)
+  level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+  power: 5,
+  experience: {
+    current: 100, // gained value (relative)
+    max: 10000 // full value (relative)
+  },
+  characteristics: {
+    hp: 10,
+    damage: 3,
+    defence: 7,
+    initiative: 1,
+    speed: 4
+  },
+  abilities: [
+    // Here will be all the abilities
+    // flow: unit lvl opens ability lvl > pay crystal > lvl up
+    {
+      abilityClass: "axe_blow",
+      abilityGroup: battle.ABILITY_GROUP_ATTACK,
+      canLearn: true,
+      level: 1, // 0-4, 0: locked
+      damage: -30,
+      defence: null,
+      speed: 2
+    },
+    {
+      abilityClass: "axe_blow2",
+      abilityGroup: battle.ABILITY_GROUP_BUFF,
+      canLearn: false,
+      level: 0, // 0-4, 0: locked
+      damage: -30,
+      defence: null,
+      speed: 2
+    },
+    {
+      abilityClass: "axe_blow3",
+      abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
+      canLearn: false,
+      level: 0, // 0-4, 0: locked
+      damage: -30,
+      defence: null,
+      speed: 2
+    }
+  ],
+  quantity: 3
+};
 
 export default {
   namespaced: true,
@@ -57,195 +109,12 @@ export default {
 
     // Unit list data
     inventory: [
-      {
-        unitId: "2c8vny4t9",
-        unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
-        unitClass: battle.UNIT_CLASS_MELEE, // 5 classes
-        tier: 1, // 3 tiers; modify via merger (3 => 1)
-        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
-        power: 5,
-        experience: {
-          current: 100, // gained value (relative)
-          max: 10000 // full value (relative)
-        },
-        characteristics: {
-          hp: 10,
-          damage: 3,
-          defence: 7,
-          initiative: 1,
-          speed: 4
-        },
-        abilities: [
-          // Here will be all the abilities
-          // flow: unit lvl opens ability lvl > pay crystal > lvl up
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            canLearn: true,
-            level: 1, // 0-4, 0: locked
-            damage: -30,
-            defence: null,
-            speed: 2
-          },
-          {
-            abilityClass: "axe_blow2",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            canLearn: false,
-            level: 0, // 0-4, 0: locked
-            damage: -30,
-            defence: null,
-            speed: 2
-          },
-          {
-            abilityClass: "axe_blow3",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            canLearn: false,
-            level: 0, // 0-4, 0: locked
-            damage: -30,
-            defence: null,
-            speed: 2
-          }
-        ],
-        quantity: 3
-      },
-      {
-        unitId: "2c8vny4t1",
-        unitTribe: "ork", // 15 tribes
-        unitClass: "range", // 5 classes
-        tier: 2, // 3 tiers; modify via merger (3 => 1)
-        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
-        power: 5,
-        experience: {
-          current: 100, // gained value (relative)
-          max: 10000 // full value (relative)
-        },
-        characteristics: {
-          hp: 10,
-          damage: 3,
-          defence: 7,
-          initiative: 1,
-          speed: 4
-        },
-        abilities: [
-          // Here will be all the abilities
-          // flow: unit lvl opens ability lvl > pay crystal > lvl up
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_BUFF,
-            canLearn: true,
-            level: 1 // 1-4
-          }
-        ],
-        quantity: 3
-      },
-      {
-        unitId: "2c8vny4t2",
-        unitTribe: "ork", // 15 tribes
-        unitClass: "mage", // 5 classes
-        tier: 3, // 3 tiers; modify via merger (3 => 1)
-        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
-        power: 5,
-        experience: {
-          current: 100, // gained value (relative)
-          max: 10000 // full value (relative)
-        },
-        characteristics: {
-          hp: 10,
-          damage: 3,
-          defence: 7,
-          initiative: 1,
-          speed: 4
-        },
-        abilities: [
-          // Here will be all the abilities
-          // flow: unit lvl opens ability lvl > pay crystal > lvl up
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
-            canLearn: true,
-            level: 1 // 1-4
-          },
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_SELF_BUFF,
-            canLearn: true,
-            level: 1 // 1-4
-          }
-        ],
-        quantity: 3
-      },
-      {
-        unitId: "2c8vny4t3",
-        unitTribe: "ork", // 15 tribes
-        unitClass: "tank", // 5 classes
-        tier: 1, // 3 tiers; modify via merger (3 => 1)
-        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
-        power: 5,
-        experience: {
-          current: 100, // gained value (relative)
-          max: 10000 // full value (relative)
-        },
-        characteristics: {
-          hp: 10,
-          damage: 3,
-          defence: 7,
-          initiative: 1,
-          speed: 4
-        },
-        abilities: [
-          // Here will be all the abilities
-          // flow: unit lvl opens ability lvl > pay crystal > lvl up
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            canLearn: true,
-            level: 1 // 1-4
-          },
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_JUMP,
-            canLearn: true,
-            level: 1 // 1-4
-          }
-        ],
-        quantity: 3
-      },
-      {
-        unitId: "2c8vny4t4",
-        unitTribe: "ork", // 15 tribes
-        unitClass: "support", // 5 classes
-        tier: 1, // 3 tiers; modify via merger (3 => 1)
-        level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
-        power: 5,
-        experience: {
-          current: 100, // gained value (relative)
-          max: 10000 // full value (relative)
-        },
-        characteristics: {
-          hp: 10,
-          damage: 3,
-          defence: 7,
-          initiative: 1,
-          speed: 4
-        },
-        abilities: [
-          // Here will be all the abilities
-          // flow: unit lvl opens ability lvl > pay crystal > lvl up
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_ATTACK,
-            canLearn: true,
-            level: 1 // 1-4
-          },
-          {
-            abilityClass: "axe_blow",
-            abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
-            canLearn: false,
-            level: 0 // It's locked, yet
-          }
-        ],
-        quantity: 3
-      }
+      _.cloneDeep(inventoryUnit),
+      _.cloneDeep(inventoryUnit),
+      _.cloneDeep(inventoryUnit),
+      _.cloneDeep(inventoryUnit),
+      _.cloneDeep(inventoryUnit),
+      _.cloneDeep(inventoryUnit)
     ],
 
     // Game
