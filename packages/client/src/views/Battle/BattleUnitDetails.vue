@@ -7,12 +7,12 @@
       <div class="screen-content ">
         <div class="font-size-22 height-100">
           <div>
-            <div>
+            <div class="margin-top-2">
               <BattleUnit :unit="unit" />
             </div>
-            <div>Tier: {{ unit.tier }}</div>
+            <div class="margin-top-1">Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.level }}</div>
-            <div class="flex">
+            <div class="flex margin-top-2">
               <div>Exp:</div>
               <ProgressBar
                 :value="expValue"
@@ -41,7 +41,7 @@
                 {{ $t("decrease exp") }}
               </CustomButton>
             </div>
-            <div>
+            <div class="margin-top-2">
               <div>Hp - {{ unit.characteristics.hp }}</div>
               <div>Defense - {{ unit.characteristics.damage }}</div>
               <div>Damage - {{ unit.characteristics.defence }}</div>
@@ -54,6 +54,7 @@
                 :key="ability.abilityGroup + ability.abilityClass"
                 :unit="unit"
                 :ability="ability"
+                class="margin-top-2"
               >
                 <!-- <div class="padding-right-1">
                   <BattleUnitAbility :ability="ability" />

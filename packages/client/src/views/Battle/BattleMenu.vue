@@ -33,6 +33,15 @@
           <CustomButton
             type="green"
             class="inline-block margin-right-2 margin-top-1"
+            @click="goToUnitsList"
+          >
+            {{ $t("units list") }}???
+          </CustomButton>
+        </div>
+        <div>
+          <CustomButton
+            type="green"
+            class="inline-block margin-right-2 margin-top-1"
             @click="goToMerger"
           >
             {{ $t("merger") }}???
@@ -74,6 +83,9 @@ export default {
     },
     goToSquad() {
       this.$router.push({ name: "battle-squad-home" });
+    },
+    goToUnitsList() {
+      this.$router.push({ name: "battle-units" });
     },
     goToMerger() {
       this.$router.push({ name: "battle-merger" });
