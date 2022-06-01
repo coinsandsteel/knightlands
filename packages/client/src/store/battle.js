@@ -82,7 +82,28 @@ export default {
             abilityClass: "axe_blow",
             abilityGroup: battle.ABILITY_GROUP_ATTACK,
             canLearn: true,
-            level: 1 // 1-4
+            level: 1, // 0-4, 0: locked
+            damage: -30,
+            defence: null,
+            speed: 2
+          },
+          {
+            abilityClass: "axe_blow2",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            canLearn: false,
+            level: 0, // 0-4, 0: locked
+            damage: -30,
+            defence: null,
+            speed: 2
+          },
+          {
+            abilityClass: "axe_blow3",
+            abilityGroup: battle.ABILITY_GROUP_ATTACK,
+            canLearn: false,
+            level: 0, // 0-4, 0: locked
+            damage: -30,
+            defence: null,
+            speed: 2
           }
         ],
         quantity: 3
@@ -587,10 +608,8 @@ export default {
     },
 
     // BattleTestAction
-    async testAction(store, action) {
-      await this.$app.$game._wrapOperation(Operations.BattleTestAction, {
-        action
-      });
+    async testAction(store, data) {
+      await this.$app.$game._wrapOperation(Operations.BattleTestAction, data); // { action: ... }
     }
   }
 };

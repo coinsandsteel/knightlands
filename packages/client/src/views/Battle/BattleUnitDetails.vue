@@ -22,8 +22,24 @@
                 barType="green"
                 :maxValue="expMaxValue"
                 :plusButton="'green'"
-                @refill="refillHandler"
+                @refill="upgradeLevelHandler"
               ></ProgressBar>
+            </div>
+            <div>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-1"
+                @click="increaseHandler"
+              >
+                {{ $t("increase exp") }}
+              </CustomButton>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-1"
+                @click="decreaseHandler"
+              >
+                {{ $t("decrease exp") }}
+              </CustomButton>
             </div>
             <div>
               <div>Hp - {{ unit.characteristics.hp }}</div>
@@ -33,12 +49,13 @@
               <div>Initiative - {{ unit.characteristics.speed }}</div>
             </div>
             <div>
-              <div
+              <BattleUnitAbilityDetails
                 v-for="ability in abilities"
                 :key="ability.abilityGroup + ability.abilityClass"
-                class="flex"
+                :unit="unit"
+                :ability="ability"
               >
-                <div class="padding-right-1">
+                <!-- <div class="padding-right-1">
                   <BattleUnitAbility :ability="ability" />
                 </div>
                 <ProgressBar
@@ -50,8 +67,8 @@
                   :maxValue="4"
                   :plusButton="'green'"
                   @refill="refillHandler"
-                ></ProgressBar>
-              </div>
+                ></ProgressBar> -->
+              </BattleUnitAbilityDetails>
             </div>
             <!-- <div class="battle-squad-unit-info font-size-22 text-align-left">
               <div>
@@ -131,13 +148,15 @@ import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 // import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
-import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
+// import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
+import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin],
   components: {
     BattleUnit,
-    BattleUnitAbility
+    // BattleUnitAbility,
+    BattleUnitAbilityDetails
   },
   data() {
     return {
@@ -175,9 +194,21 @@ export default {
       this.$router.replace({ name: "battle-units" });
       return true;
     },
-    async refillHandler() {
+    async upgradeLevelHandler() {
       const show = create(BattleLevelUpConfirm);
       await show();
+    },
+    increaseHandler() {
+      this.$store.dispatch("battle/testAction", {
+        action: "increaseUnitExp",
+        unitId: this.$route.params.id
+      });
+    },
+    decreaseHandler() {
+      this.$store.dispatch("battle/testAction", {
+        action: "decreaseUnitExp",
+        unitId: this.$route.params.id
+      });
     }
   }
 };
