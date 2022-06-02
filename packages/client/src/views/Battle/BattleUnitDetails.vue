@@ -5,15 +5,33 @@
       class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
     >
       <div class="screen-content ">
-        <div class="font-size-22 height-100">
+        <div class="font-size-22 height-100 padding-left-2 padding-right-2">
           <div>
             <div class="margin-top-2">
               <BattleUnit :unit="unit" />
             </div>
             <div class="margin-top-1">Tier: {{ unit.tier }}</div>
-            <div>Level: {{ unit.level }}</div>
+            <div>
+              Level: {{ level }}
+              <CustomButton
+                v-if="canUpgrade"
+                type="green"
+                class="inline-block margin-right-2 margin-top-1"
+                @click="upgradeHandler"
+              >
+                {{ $t("Upgrade lvl " + nextLevel) }}
+                <IconWithValue
+                  :flip="false"
+                  :iconMargin="true"
+                  iconClass="icon-gold"
+                  class="pointer"
+                >
+                  {{ upgradePrice }}
+                </IconWithValue>
+              </CustomButton>
+            </div>
             <div class="flex margin-top-2">
-              <div>Exp:</div>
+              <div class="padding-right-1">Exp:</div>
               <ProgressBar
                 :value="expValue"
                 :expand="false"
@@ -21,7 +39,6 @@
                 class="full-flex"
                 barType="green"
                 :maxValue="expMaxValue"
-                :plusButton="'green'"
                 @refill="upgradeLevelHandler"
               ></ProgressBar>
             </div>
@@ -48,13 +65,14 @@
               <div>Speed - {{ unit.characteristics.initiative }}</div>
               <div>Initiative - {{ unit.characteristics.speed }}</div>
             </div>
-            <div>
+            <div class="margin-top-3">
+              <div>Abilities</div>
               <BattleUnitAbilityDetails
-                v-for="ability in abilities"
+                v-for="(ability, index) in abilities"
                 :key="ability.abilityGroup + ability.abilityClass"
                 :unit="unit"
                 :ability="ability"
-                class="margin-top-2"
+                :class="{ 'margin-top-2': index > 0 }"
               >
                 <!-- <div class="padding-right-1">
                   <BattleUnitAbility :ability="ability" />
@@ -167,6 +185,15 @@ export default {
   },
   computed: {
     ...mapState("battle", ["inventory"]),
+    nextLevel() {
+      return this.unit && this.unit.level ? this.unit.level.next : null;
+    },
+    canUpgrade() {
+      return this.nextLevel;
+    },
+    upgradePrice() {
+      return this.unit && this.unit.level ? this.unit.level.price : null;
+    },
     expValue() {
       return this.unit && this.unit.experience
         ? this.unit.experience.current || 0
@@ -179,6 +206,9 @@ export default {
     },
     abilities() {
       return this.unit && this.unit.abilities ? this.unit.abilities : [];
+    },
+    level() {
+      return this.unit && this.unit.level ? this.unit.level.current : "";
     }
   },
   created() {
@@ -196,8 +226,11 @@ export default {
       return true;
     },
     async upgradeLevelHandler() {
-      const show = create(BattleLevelUpConfirm);
-      await show();
+      // const show = create(BattleLevelUpConfirm);
+      // await show();
+      this.$store.dispatch("battle/upgradeUnitLevel", {
+        unitId: this.unit.unitId
+      });
     },
     increaseHandler() {
       this.$store.dispatch("battle/testAction", {

@@ -6,22 +6,30 @@
         {{ description }}
       </div>
       <div class="margin-left-1">
-        <CustomButton
+        <!-- <CustomButton
           v-if="ability && ability.level > 0 && ability.level < 4"
           type="green"
           class="inline-block margin-right-2 margin-top-1"
           @click="upgradeHandler"
         >
           {{ $t("upgrade") }}
-        </CustomButton>
+        </CustomButton> -->
 
         <CustomButton
-          v-if="ability && ability.canLearn"
+          v-if="ability && nextLevel && !isLocked && upgradePrice"
           type="green"
           class="inline-block margin-right-2 margin-top-1"
-          @click="learnHandler"
+          @click="upgradeHandler"
         >
-          {{ $t("Learn x lvl") }} + price
+          {{ $t("Upgrade lvl " + nextLevel) }}
+          <IconWithValue
+            :flip="false"
+            :iconMargin="true"
+            iconClass="icon-gold"
+            class="pointer"
+          >
+            {{ upgradePrice }}
+          </IconWithValue>
         </CustomButton>
       </div>
     </div>
@@ -62,8 +70,23 @@ export default {
     return {};
   },
   computed: {
+    currentLevel() {
+      return this.ability && this.ability.level
+        ? this.ability.level.current
+        : null;
+    },
+    nextLevel() {
+      return this.ability && this.ability.level
+        ? this.ability.level.next
+        : null;
+    },
+    upgradePrice() {
+      return this.ability && this.ability.level
+        ? this.ability.level.price
+        : null;
+    },
     isLocked() {
-      return this.ability && this.ability.level === 0 && !this.ability.canLearn;
+      return this.ability && !this.currentLevel;
     },
     name() {
       const value = this.ability ? this.ability.abilityClass : null;
@@ -75,7 +98,8 @@ export default {
       return value;
     },
     level() {
-      const value = this.ability ? this.ability.level : null;
+      const value =
+        this.ability && this.ability.level ? this.ability.level.current : null;
 
       if (!value) {
         return null;
@@ -133,13 +157,17 @@ export default {
     }
   },
   methods: {
+    // async upgradeHandler() {
+    //   const show = create(BattleAbilityLevelUpConfirm);
+    //   await show();
+    // },
     async upgradeHandler() {
-      const show = create(BattleAbilityLevelUpConfirm);
-      await show();
-    },
-    async learnHandler() {
-      const show = create(BattleAbilityLearnConfirm);
-      await show();
+      // const show = create(BattleAbilityLearnConfirm);
+      // await show();
+      this.$store.dispatch("battle/upgradeUnitAbility", {
+        unitId: this.unit.unitId,
+        abilityClass: this.ability.abilityClass
+      });
     },
     increaseHandler() {
       this.$store.dispatch("battle/testAction", {
