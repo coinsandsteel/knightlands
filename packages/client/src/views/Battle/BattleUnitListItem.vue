@@ -19,6 +19,7 @@
           }"
         />
       </div>
+      <slot />
     </template>
   </div>
 </template>
@@ -41,7 +42,7 @@ export default {
       return this.unit ? this.unit.tier || 0 : 0;
     },
     level() {
-      return this.unit ? this.unit.level || 0 : 0;
+      return this.unit && this.unit.level ? this.unit.level.current || 0 : 0;
     },
     experience() {
       return this.unit && this.unit.experience

@@ -53,10 +53,10 @@
   </div>
 </template>
 <script>
-import { create } from "vue-modal-dialogs";
+// import { create } from "vue-modal-dialogs";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
-import BattleAbilityLevelUpConfirm from "@/views/Battle/BattleAbilityLevelUpConfirm.vue";
-import BattleAbilityLearnConfirm from "@/views/Battle/BattleAbilityLearnConfirm.vue";
+// import BattleAbilityLevelUpConfirm from "@/views/Battle/BattleAbilityLevelUpConfirm.vue";
+// import BattleAbilityLearnConfirm from "@/views/Battle/BattleAbilityLearnConfirm.vue";
 
 export default {
   props: {

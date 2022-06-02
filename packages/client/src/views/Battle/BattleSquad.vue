@@ -1,7 +1,15 @@
 <template>
-  <div>
-    <div class="font-size-22">{{ bonus }}</div>
-    <BattleUnitList :units="units" @click="clickHandler" />
+  <div class="padding-2">
+    <div class="font-size-22">
+      <template>Power: {{ power }}</template>
+      <template v-if="bonus">, Bonus: {{ bonus }}</template>
+    </div>
+    <BattleUnitList
+      :units="units"
+      :isClearButtonVisible="true"
+      @click="clickHandler"
+      @clear="clearHandler"
+    />
     <CustomButton
       v-if="units.length < 5"
       type="green"
@@ -47,6 +55,9 @@ export default {
 
       return result;
     },
+    power() {
+      return this.game && this.game.userSquad ? this.game.userSquad.power : 0;
+    },
     bonus() {
       const bonusItems =
         this.game && this.game.userSquad
@@ -82,6 +93,12 @@ export default {
       }
 
       this.updateUnitHandler(unitIndex);
+    },
+    async clearHandler({ unit, index }) {
+      this.$store.dispatch("battle/clearSquadSlot", {
+        unitId: unit.unitId,
+        index
+      });
     },
     async updateUnitHandler(index) {
       console.log("addUnitHandler");

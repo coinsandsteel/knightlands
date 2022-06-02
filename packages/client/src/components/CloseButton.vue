@@ -10,9 +10,9 @@ import SoundEffect from "./SoundEffect.vue";
 export default {
   components: { SoundEffect },
   methods: {
-    handleClose() {
+    handleClose(event) {
       this.$refs.fx.play();
-      this.$emit("click");
+      this.$emit("click", event);
     }
   }
 };

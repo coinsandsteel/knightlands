@@ -5,22 +5,32 @@
       :key="index + '_' + (unit ? unit.unitId : '')"
       :unit="unit"
       @click="clickHandler(unit, index)"
-    />
+    >
+      <div
+        v-if="isClearButtonVisible"
+        class="flex-full flex flex-justify-end flex-items-center"
+      >
+        <CloseButton @click="clearHandler($event, unit, index)"></CloseButton>
+      </div>
+    </BattleUnitListItem>
     <slot />
   </div>
 </template>
 <script>
 import BattleUnitListItem from "@/views/Battle/BattleUnitListItem.vue";
+import CloseButton from "@/components/CloseButton.vue";
 
 export default {
   components: {
-    BattleUnitListItem
+    BattleUnitListItem,
+    CloseButton
   },
   props: {
     units: Array,
     selectedUnits: Array,
     isSelectable: Boolean,
-    isMultipleSelect: Boolean
+    isMultipleSelect: Boolean,
+    isClearButtonVisible: Boolean
   },
   data() {
     return {};
@@ -28,6 +38,10 @@ export default {
   methods: {
     clickHandler(unit, index) {
       this.$emit("click", { unit, index });
+    },
+    clearHandler(event, unit, index) {
+      event.stopPropagation();
+      this.$emit("clear", { unit, index });
     }
   }
 };
@@ -43,4 +57,9 @@ export default {
 // .battle-unit {
 //   width: 100%;
 // }
+.close-btn {
+  position: relative;
+  top: unset;
+  right: unset;
+}
 </style>
