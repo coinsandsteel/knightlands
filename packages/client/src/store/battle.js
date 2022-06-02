@@ -22,7 +22,11 @@ const inventoryUnit = {
   unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
   unitClass: battle.UNIT_CLASS_MELEE, // 5 classes
   tier: 1, // 3 tiers; modify via merger (3 => 1)
-  level: 1, // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+  level: { // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+    current: 1, // Current level
+    next: null, // If not null - upgrade is available
+    price: null // Upgrade price, ancient coins
+  },
   power: 5,
   experience: {
     current: 100, // gained value (relative)
@@ -42,7 +46,11 @@ const inventoryUnit = {
       abilityClass: "axe_blow",
       abilityGroup: battle.ABILITY_GROUP_ATTACK,
       canLearn: true,
-      level: 1, // 0-4, 0: locked
+      level: { // unit lvl opens ability lvl > pay crystal > lvl up
+        current: 1, // 0 means "not learned"
+        next: null, // not null means "can learn"
+        price: null // Learn price, crystals
+      },
       damage: -30,
       defence: null,
       speed: 2
@@ -51,7 +59,11 @@ const inventoryUnit = {
       abilityClass: "axe_blow2",
       abilityGroup: battle.ABILITY_GROUP_BUFF,
       canLearn: false,
-      level: 0, // 0-4, 0: locked
+      level: { // unit lvl opens ability lvl > pay crystal > lvl up
+        current: 0, // 0 means "not learned"
+        next: 1, // not null means "can learn"
+        price: 100 // Learn price, crystals
+      },
       damage: -30,
       defence: null,
       speed: 2
@@ -60,7 +72,11 @@ const inventoryUnit = {
       abilityClass: "axe_blow3",
       abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
       canLearn: false,
-      level: 0, // 0-4, 0: locked
+      level: { // unit lvl opens ability lvl > pay crystal > lvl up
+        current: 0, // 0 means "not learned"
+        next: null, // not null means "can learn"
+        price: null // Learn price, crystals
+      },
       damage: -30,
       defence: null,
       speed: 2
