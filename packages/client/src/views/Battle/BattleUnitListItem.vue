@@ -13,7 +13,10 @@
           v-for="(ability, index) in abilities"
           :key="ability.abilityGroup + ability.abilityClass"
           :ability="ability"
-          :class="{ 'margin-left-1': index > 0 }"
+          :class="{
+            'margin-left-1': index > 0,
+            'opacity-50': ability.level === 0 && !ability.canLearn
+          }"
         />
       </div>
     </template>
