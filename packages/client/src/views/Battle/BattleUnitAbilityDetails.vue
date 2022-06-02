@@ -21,25 +21,25 @@
           class="inline-block margin-right-2 margin-top-1"
           @click="learnHandler"
         >
-          {{ $t("learn") }}
+          {{ $t("Learn x lvl") }} + price
         </CustomButton>
       </div>
     </div>
     <div class="text-align-left">
       <CustomButton
-        type="green"
+        type="blue"
         class="inline-block margin-right-2 margin-top-1"
         @click="increaseHandler"
       >
-        {{ $t("increase ability level") }}
+        {{ $t("lvl+") }}
       </CustomButton>
 
       <CustomButton
-        type="green"
+        type="blue"
         class="inline-block margin-right-2 margin-top-1"
         @click="decreaseHandler"
       >
-        {{ $t("decrease ability level") }}
+        {{ $t("lvl-") }}
       </CustomButton>
     </div>
   </div>

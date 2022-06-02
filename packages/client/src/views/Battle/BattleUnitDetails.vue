@@ -27,18 +27,18 @@
             </div>
             <div>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-1"
                 @click="increaseHandler"
               >
-                {{ $t("increase exp") }}
+                {{ $t("exp+") }}
               </CustomButton>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-1"
                 @click="decreaseHandler"
               >
-                {{ $t("decrease exp") }}
+                {{ $t("exp-") }}
               </CustomButton>
             </div>
             <div class="margin-top-2">
