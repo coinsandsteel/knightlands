@@ -1,31 +1,22 @@
 <template>
   <UserDialog @close="handleClose" emitClose title="Select difficulty">
     <template v-slot:content>
-      <div class="text-align-center">
+      <div class="text-align-center margin-top-2">
         <CustomButton
           type="green"
           width="20rem"
           class="inline-block"
-          @click="handleClose(DIFFICULTIES.LOW)"
-          >{{ $t(DIFFICULTIES.LOW) }}</CustomButton
+          @click="handleClose(GAME_DIFFICULTY_NORMAL)"
+          >{{ $t(GAME_DIFFICULTY_NORMAL) }}</CustomButton
         >
       </div>
       <div class="text-align-center margin-top-4">
         <CustomButton
-          type="yellow"
+          type="blue"
           width="20rem"
           class="inline-block"
-          @click="handleClose(DIFFICULTIES.MEDIUM)"
-          >{{ $t(DIFFICULTIES.MEDIUM) }}</CustomButton
-        >
-      </div>
-      <div class="text-align-center margin-top-4">
-        <CustomButton
-          type="red"
-          width="20rem"
-          class="inline-block"
-          @click="handleClose(DIFFICULTIES.HIGH)"
-          >{{ $t(DIFFICULTIES.HIGH) }}</CustomButton
+          @click="handleClose(GAME_DIFFICULTY_HARD)"
+          >{{ $t(GAME_DIFFICULTY_HARD) }}</CustomButton
         >
       </div>
     </template>
@@ -42,11 +33,8 @@ import * as battle from "@/../../knightlands-shared/battle";
 export default {
   data() {
     return {
-      DIFFICULTIES: {
-        LOW: battle.GAME_DIFFICULTY_LOW,
-        MEDIUM: battle.GAME_DIFFICULTY_MEDIUM,
-        HIGH: battle.GAME_DIFFICULTY_HIGH
-      }
+      GAME_DIFFICULTY_NORMAL: battle.GAME_DIFFICULTY_NORMAL,
+      GAME_DIFFICULTY_HARD: battle.GAME_DIFFICULTY_HARD
     };
   },
   methods: {

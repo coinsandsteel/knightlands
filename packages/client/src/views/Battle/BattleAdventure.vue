@@ -57,7 +57,7 @@ export default {
     difficulty() {
       return this.game && this.game.difficulty
         ? this.game.difficulty
-        : battle.GAME_DIFFICULTY_LOW;
+        : battle.GAME_DIFFICULTY_NORMAL;
     },
     battleItems() {
       return battle.LOCATIONS;
@@ -70,7 +70,10 @@ export default {
     },
     async switchDifficultyHandler() {
       const show = create(BattleAdventureDifficultySelect);
-      await show();
+      const result = await show();
+      if (result) {
+        // @todo call action
+      }
     }
   }
 };

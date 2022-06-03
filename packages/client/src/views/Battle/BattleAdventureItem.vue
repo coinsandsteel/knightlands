@@ -8,8 +8,12 @@
           'battle-adventure-level-image--' + adventure.id + '-' + level.id
         "
       ></div>
-      <div class="battle-adventure-info flex flex-center">
+      <div class="battle-adventure-info flex flex-center font-size-22">
         <!-- info -->
+        <div>
+          <div>Exp: {{ exp }}</div>
+          <div>Reward: {{ reward }}</div>
+        </div>
       </div>
       <div class="flex-full flex flex-center">
         <CustomButton
@@ -26,6 +30,9 @@
 <script>
 // import { create } from "vue-modal-dialogs";
 // import BattleAdventureDifficultySelect from "@/views/Battle/BattleAdventureDifficultySelect.vue";
+import { mapState } from "vuex";
+import * as battle from "@/../../knightlands-shared/battle";
+
 export default {
   props: {
     adventure: Object,
@@ -33,6 +40,18 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    ...mapState("battle", ["game"]),
+    difficultyIndex() {
+      return this.game.difficulty === battle.GAME_DIFFICULTY_HARD ? 1 : 0;
+    },
+    exp() {
+      return this.level.exp[this.difficultyIndex];
+    },
+    reward() {
+      return this.level.reward[this.difficultyIndex];
+    }
   },
   methods: {
     async clickHandler() {
@@ -69,9 +88,6 @@ export default {
 .battle-adventure-level-image--1-5 {
   background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;
 }
-.battle-adventure-level-image--1-6 {
-  background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;
-}
 .battle-adventure-level-image--2-1 {
   background: url("/images/enemies/Forest Grasshopper.png") center/contain
     no-repeat;
@@ -92,10 +108,6 @@ export default {
   background: url("/images/enemies/Forest Grasshopper.png") center/contain
     no-repeat;
 }
-.battle-adventure-level-image--2-6 {
-  background: url("/images/enemies/Forest Grasshopper.png") center/contain
-    no-repeat;
-}
 .battle-adventure-level-image--3-1 {
   background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
 }
@@ -111,7 +123,49 @@ export default {
 .battle-adventure-level-image--3-5 {
   background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
 }
-.battle-adventure-level-image--3-6 {
+.battle-adventure-level-image--4-1 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--4-2 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--4-3 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--4-4 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--4-5 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--5-1 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--5-2 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--5-3 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--5-4 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--5-5 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--6-1 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--6-2 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--6-3 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--6-4 {
+  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+}
+.battle-adventure-level-image--6-5 {
   background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
 }
 </style>

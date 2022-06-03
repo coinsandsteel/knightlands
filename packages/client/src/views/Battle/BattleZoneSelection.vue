@@ -111,7 +111,10 @@ export default {
     },
     getZoneName(zoneId) {
       // return Zones.getZoneName(zoneId);
-      return this.$t("battle-location- " + zoneId);
+      // return this.$t("battle-location- " + zoneId);
+      return this.zones[this.currentZone]
+        ? this.zones[this.currentZone].name
+        : "";
     },
     goToNext() {
       console.log("goToNext");
@@ -171,7 +174,7 @@ export default {
 }
 
 .zone-breacrumbs {
-  margin: 0.2rem 0 0.4rem 0;
+  margin: 1rem 0 0.4rem 0;
   padding: 0 0.2rem 0 0.2rem;
 
   z-index: 40;
@@ -234,5 +237,14 @@ export default {
 }
 .battle-location-image--3 {
   background: url("/images/battle/locations/location-3.jpg") 100% 100% no-repeat;
+}
+.battle-location-image--4 {
+  background: url("/images/battle/locations/location-4.jpg") 100% 100% no-repeat;
+}
+.battle-location-image--5 {
+  background: url("/images/battle/locations/location-5.jpg") 100% 100% no-repeat;
+}
+.battle-location-image--6 {
+  background: url("/images/battle/locations/location-6.jpg") 100% 100% no-repeat;
 }
 </style>
