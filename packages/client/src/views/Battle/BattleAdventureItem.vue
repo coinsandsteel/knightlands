@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <Title>Level {{ level.id }}</Title>
     <div class="flex">
       <div
@@ -24,6 +24,20 @@
           {{ $t("start") }}???
         </CustomButton>
       </div>
+    </div>
+
+    <!-- blocker -->
+    <div
+      v-if="
+        adventure &&
+          game.adventureRoomAvailable &&
+          adventure.id > game.adventureRoomAvailable
+      "
+      class="blocker center padding-top-2 font-size-30 font-weight-900"
+    >
+      <p v-if="level && level.id === 1" class="yellow-title">
+        {{ $t("prev-q-f") }}
+      </p>
     </div>
   </div>
 </template>
@@ -72,6 +86,15 @@ export default {
 .battle-adventure-level-image {
   width: 100%;
   height: 80px;
+}
+.blocker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 2rem);
+  background-color: #353440cc;
+  z-index: 5;
 }
 .battle-adventure-level-image--1-1 {
   background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;

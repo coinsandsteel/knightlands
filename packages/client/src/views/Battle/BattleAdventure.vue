@@ -3,7 +3,7 @@
     <BattleZoneSelection @change="changeHandler" />
     <div
       v-if="adventure"
-      class="flex-full overflow-auto margin-top-4 padding-bottom-2"
+      class="flex-full overflow-auto margin-top-4 padding-bottom-2 relative"
     >
       <BattleAdventureItem
         v-for="item in adventure.levels"
@@ -78,4 +78,5 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+</style>
