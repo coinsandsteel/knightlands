@@ -19,8 +19,8 @@ if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
 
 const inventoryUnit = {
   unitId: "2c8vny4t9",
-  unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
-  unitClass: battle.UNIT_CLASS_MELEE, // 5 classes
+  unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes #meta
+  unitClass: battle.UNIT_CLASS_MELEE, // 5 classes #meta
   tier: 1, // 3 tiers; modify via merger (3 => 1)
   level: {
     // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
@@ -40,7 +40,7 @@ const inventoryUnit = {
     initiative: 1,
     speed: 4
   },
-  abilities: [
+  abilities: [ // #meta
     // Here will be all the abilities
     // flow: unit lvl opens ability lvl > pay crystal > lvl up
     {
