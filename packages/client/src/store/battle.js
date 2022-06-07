@@ -53,9 +53,7 @@ const inventoryUnit = {
         next: 2, // not null means "can learn"
         price: 99 // Learn price, crystals
       },
-      damage: -30,
-      defence: null,
-      speed: 2
+      value: -30
     },
     {
       abilityClass: "axe_blow2",
@@ -67,9 +65,7 @@ const inventoryUnit = {
         next: 1, // not null means "can learn"
         price: 100 // Learn price, crystals
       },
-      damage: -30,
-      defence: null,
-      speed: 2
+      value: -30
     },
     {
       abilityClass: "axe_blow3",
@@ -81,9 +77,7 @@ const inventoryUnit = {
         next: null, // not null means "can learn"
         price: null // Learn price, crystals
       },
-      damage: -30,
-      defence: null,
-      speed: 2
+      value: -30
     }
   ],
   quantity: 3
