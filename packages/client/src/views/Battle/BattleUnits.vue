@@ -14,6 +14,12 @@
     </div>
 
     <portal to="footer" :slim="true" v-if="shouldShowFilter && isActive">
+      <CustomButton type="green" @click="addUnitHandler">
+        Add Unit
+      </CustomButton>
+      <CustomButton type="red" @click="clearUnitsHandler">
+        Clear Units
+      </CustomButton>
       <CustomButton type="grey" @click="showUnitsFilter">{{
         $t("btn-filter")
       }}</CustomButton>
@@ -106,6 +112,16 @@ export default {
       console.log("showUnitsFilter");
       const show = create(BattleUnitsFilter);
       await show();
+    },
+    addUnitHandler() {
+      this.$store.dispatch("battle/testAction", {
+        action: "addUnit"
+      });
+    },
+    clearUnitsHandler() {
+      this.$store.dispatch("battle/testAction", {
+        action: "clearUnits"
+      });
     },
     handleBackButton() {
       this.$router.replace({ name: "battle-squad-home" });
