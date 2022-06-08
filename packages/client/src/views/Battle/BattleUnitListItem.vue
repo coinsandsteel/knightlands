@@ -15,7 +15,7 @@
           :ability="ability"
           :class="{
             'margin-left-1': index > 0,
-            'opacity-50': ability.level === 0 && !ability.canLearn
+            'opacity-50': !(ability.level && ability.level.current)
           }"
         />
       </div>

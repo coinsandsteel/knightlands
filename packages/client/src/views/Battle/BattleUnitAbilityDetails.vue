@@ -107,33 +107,42 @@ export default {
 
       return "level: " + value;
     },
-    damage() {
-      const value = this.ability ? this.ability.damage : null;
+    value() {
+      const value = this.ability ? this.ability.value : null;
 
       if (!value) {
         return null;
       }
 
-      return "damage: " + (value > 0 ? "+" : "") + value;
+      return "value: " + (value > 0 ? "+" : "") + value;
     },
-    defence() {
-      const value = this.ability ? this.ability.defence : null;
+    // damage() {
+    //   const value = this.ability ? this.ability.damage : null;
 
-      if (!value) {
-        return null;
-      }
+    //   if (!value) {
+    //     return null;
+    //   }
 
-      return "defence: " + (value > 0 ? "+" : "-") + value;
-    },
-    speed() {
-      const value = this.ability ? this.ability.speed : null;
+    //   return "damage: " + (value > 0 ? "+" : "") + value;
+    // },
+    // defence() {
+    //   const value = this.ability ? this.ability.defence : null;
 
-      if (!value) {
-        return null;
-      }
+    //   if (!value) {
+    //     return null;
+    //   }
 
-      return "speed: " + (value > 0 ? "+" : "-") + value;
-    },
+    //   return "defence: " + (value > 0 ? "+" : "-") + value;
+    // },
+    // speed() {
+    //   const value = this.ability ? this.ability.speed : null;
+
+    //   if (!value) {
+    //     return null;
+    //   }
+
+    //   return "speed: " + (value > 0 ? "+" : "-") + value;
+    // },
     description() {
       const items = [];
 
@@ -143,15 +152,18 @@ export default {
       if (this.level) {
         items.push(this.level);
       }
-      if (this.damage) {
-        items.push(this.damage);
+      if (this.value) {
+        items.push(this.value);
       }
-      if (this.defence) {
-        items.push(this.defence);
-      }
-      if (this.speed) {
-        items.push(this.speed);
-      }
+      // if (this.damage) {
+      //   items.push(this.damage);
+      // }
+      // if (this.defence) {
+      //   items.push(this.defence);
+      // }
+      // if (this.speed) {
+      //   items.push(this.speed);
+      // }
 
       return items.join(", ");
     }

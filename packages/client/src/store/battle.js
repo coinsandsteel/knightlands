@@ -40,7 +40,8 @@ const inventoryUnit = {
     initiative: 1,
     speed: 4
   },
-  abilities: [ // #meta
+  abilities: [
+    // #meta
     // Here will be all the abilities
     // flow: unit lvl opens ability lvl > pay crystal > lvl up
     {
