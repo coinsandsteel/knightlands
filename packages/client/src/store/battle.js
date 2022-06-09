@@ -2,6 +2,7 @@ import _ from "lodash";
 import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
+import {GAME_DIFFICULTY_HIGH, GAME_DIFFICULTY_MEDIUM} from "../../../../../knightlands-shared/battle";
 
 const BATTLE_TIERS_FILTER = "BATTLE_TIERS_FILTER";
 const BATTLE_CLASSES_FILTER = "BATTLE_CLASSES_FILTER";
@@ -121,13 +122,12 @@ export default {
         ]
       },
       // 6 rooms
-      adventures: [
-        // 5 levels of enemy squads
-        {
-          exp: 125, // Each squad unit will get
-          coins: 100 // User will get
+      adventures: {
+        1: {
+          1: { [GAME_DIFFICULTY_MEDIUM]: true, [GAME_DIFFICULTY_HIGH]: false },
+          //2: { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false },
         }
-      ]
+      }
     },
 
     // Unit list data
