@@ -15,12 +15,12 @@
           type="blue"
           width="20rem"
           class="inline-block"
-          :disabled="!game.isAdventureHardDifficultyAvailable"
+          :disabled="!isAdventureHardDifficultyAvailable"
           @click="handleClose(GAME_DIFFICULTY_HIGH)"
           >{{ $t(GAME_DIFFICULTY_HIGH) }}</CustomButton
         >
         <div
-          v-if="!game.isAdventureHardDifficultyAvailable"
+          v-if="!isAdventureHardDifficultyAvailable"
           class="font-size-18 font-shadow rarity-mythical"
         >
           Finish medium difficulty to unlock.
@@ -46,12 +46,37 @@ export default {
     };
   },
   computed: {
-    ...mapState("battle", ["game"])
+    ...mapState("battle", ["game", "user"]),
+    isAdventureHardDifficultyAvailable() {
+      if (
+        !(
+          this.user &&
+          this.user.adventures &&
+          this.user.adventures.length === battle.LOCATIONS.length
+        )
+      ) {
+        return false;
+      }
+
+      const ids = Object.keys(this.user.adventures);
+      return ids.filter(id => {
+        const adventure = this.user.adventures[id];
+        const levelIds = Object.keys(adventure);
+        return (
+          levelIds.filter(levelId => {
+            return !!adventure[levelId][battle.GAME_DIFFICULTY_MEDIUM];
+          }).length === 5
+        );
+      });
+    }
   },
   methods: {
     handleClose(result) {
       this.$close(result);
       // @todo call operation
+      this.$store.dispatch("battle/update", {
+        adventureDifficulty: result
+      });
     }
   }
 };

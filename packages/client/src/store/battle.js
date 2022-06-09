@@ -2,7 +2,10 @@ import _ from "lodash";
 import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
-import {GAME_DIFFICULTY_HIGH, GAME_DIFFICULTY_MEDIUM} from "../../../../../knightlands-shared/battle";
+import {
+  GAME_DIFFICULTY_HIGH,
+  GAME_DIFFICULTY_MEDIUM
+} from "@/../../knightlands-shared/battle";
 
 const BATTLE_TIERS_FILTER = "BATTLE_TIERS_FILTER";
 const BATTLE_CLASSES_FILTER = "BATTLE_CLASSES_FILTER";
@@ -124,7 +127,7 @@ export default {
       // 6 rooms
       adventures: {
         1: {
-          1: { [GAME_DIFFICULTY_MEDIUM]: true, [GAME_DIFFICULTY_HIGH]: false },
+          1: { [GAME_DIFFICULTY_MEDIUM]: true, [GAME_DIFFICULTY_HIGH]: false }
           //2: { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false },
         }
       }
@@ -146,9 +149,9 @@ export default {
       room: null, // number|null: 0-7
       level: null, // number|null: 0-5
       difficulty: null, // string: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
-      adventureDifficulty: null, // string GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
-      isAdventureHardDifficultyAvailable: false,
-      adventureRoomAvailable: 1,
+      adventureDifficulty: GAME_DIFFICULTY_MEDIUM, // string GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
+      // isAdventureHardDifficultyAvailable: false,
+      // adventureRoomAvailable: 1,
 
       // User squad
       userSquad: {
@@ -330,7 +333,9 @@ export default {
     updateState(state, data) {
       // New unit / update unit
       if (data.updateUnit !== undefined) {
-        const index = state.inventory.findIndex(unit => unit.unitId === data.updateUnit.unitId);
+        const index = state.inventory.findIndex(
+          unit => unit.unitId === data.updateUnit.unitId
+        );
         if (index === -1) {
           state.inventory.push(data.updateUnit);
         } else {
@@ -370,13 +375,13 @@ export default {
         state.game.difficulty = data.difficulty;
       }
 
-      if (data.difficulty !== undefined) {
-        state.game.difficulty = data.difficulty;
+      if (data.adventureDifficulty !== undefined) {
+        state.game.adventureDifficulty = data.adventureDifficulty;
       }
 
-      if (data.userSquad !== undefined) {
-        state.game.difficulty = data.difficulty;
-      }
+      // if (data.userSquad !== undefined) {
+      //   state.game.difficulty = data.difficulty;
+      // }
 
       if (data.userSquad !== undefined) {
         if (data.userSquad.power !== undefined) {

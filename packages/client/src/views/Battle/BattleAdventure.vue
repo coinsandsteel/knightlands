@@ -55,8 +55,8 @@ export default {
   computed: {
     ...mapState("battle", ["game"]),
     difficulty() {
-      return this.game && this.game.difficulty
-        ? this.game.difficulty
+      return this.game && this.game.adventureDifficulty
+        ? this.game.adventureDifficulty
         : battle.GAME_DIFFICULTY_MEDIUM;
     },
     battleItems() {
@@ -70,13 +70,9 @@ export default {
     },
     async switchDifficultyHandler() {
       const show = create(BattleAdventureDifficultySelect);
-      const result = await show();
-      if (result) {
-        // @todo call action
-      }
+      await show();
     }
   }
 };
 </script>
-<style scoped lang="less">
-</style>
+<style scoped lang="less"></style>

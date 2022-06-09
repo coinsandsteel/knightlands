@@ -17,6 +17,7 @@
       </div>
       <div class="flex-full flex flex-center">
         <CustomButton
+          v-if="isLevelAvailable"
           type="red"
           class="inline-block margin-right-2 margin-top-1"
           @click="clickHandler"
@@ -28,11 +29,7 @@
 
     <!-- blocker -->
     <div
-      v-if="
-        adventure &&
-          game.adventureRoomAvailable &&
-          adventure.id > game.adventureRoomAvailable
-      "
+      v-if="!isAdventureAvailable"
       class="blocker center padding-top-2 font-size-30 font-weight-900"
     >
       <p v-if="level && level.id === 1" class="yellow-title">
@@ -56,16 +53,66 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("battle", ["game"]),
+    ...mapState("battle", ["game", "user"]),
     difficultyIndex() {
-      return this.game.difficulty === battle.GAME_DIFFICULTY_HIGH ? 1 : 0;
+      return this.game.adventureDifficulty === battle.GAME_DIFFICULTY_HIGH
+        ? 1
+        : 0;
     },
     exp() {
       return this.level.exp[this.difficultyIndex];
     },
     reward() {
       return this.level.reward[this.difficultyIndex];
+    },
+    // passedLevels() {
+    //   if (
+    //     !(this.adventure && this.level && this.user && this.user.adventures)
+    //   ) {
+    //     return [];
+    //   }
+
+    //   const ids = Object.keys(this.user.adventures);
+    //   const id = this.adventure.id + "";
+
+    //   if (!(ids && ids.includes(id))) {
+    //     return [];
+    //   }
+
+    //   return Object.keys(this.user.adventures[id]).filter(levelId => {
+    //     return !!this.user.adventures[id][levelId][
+    //       this.game.adventureDifficulty
+    //     ];
+    //   });
+    // },
+    isAdventureAvailable() {
+      if (
+        !(this.adventure && this.level && this.user && this.user.adventures)
+      ) {
+        return false;
+      }
+
+      const ids = Object.keys(this.user.adventures);
+      const id = this.adventure.id + "";
+
+      if (!(ids && ids.includes(id))) {
+        return false;
+      }
+
+      return true;
+    },
+    isLevelAvailable() {
+      const id = this.adventure.id + "";
+      const levelId = this.level.id + "";
+      return (
+        this.isAdventureAvailable &&
+        // !this.passedLevels.includes(this.level.id + "")
+        this.user.adventures[id][levelId]
+      );
     }
+    // isLevelAvailable() {
+    //   return this.isAdventureAvailable;
+    // }
   },
   methods: {
     async clickHandler() {
