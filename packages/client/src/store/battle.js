@@ -119,7 +119,15 @@ export default {
         rankingRewards: [
           // Will be later
         ]
-      }
+      },
+      // 6 rooms
+      adventures: [
+        // 5 levels of enemy squads
+        {
+          exp: 125, // Each squad unit will get
+          coins: 100 // User will get
+        }
+      ]
     },
 
     // Unit list data
@@ -320,32 +328,100 @@ export default {
   },
   mutations: {
     updateState(state, data) {
-      if (data.isMyTurn !== undefined) {
-        state.isMyTurn = data.isMyTurn;
+      // New unit / update unit
+      if (data.updateUnit !== undefined) {
+        const index = state.inventory.findIndex(unit => unit.unitId === data.updateUnit.unitId);
+        if (index === -1) {
+          state.inventory.push(data.updateUnit);
+        } else {
+          state.inventory[index] = data.updateUnit;
+        }
       }
-      if (data.selectedUnitId !== undefined) {
-        // state.selectedUnitId = data.selectedUnitId;
-        state.game.combat.runtime.unitId = data.selectedUnitId;
+
+      if (data.balance !== undefined) {
+        state.balance = { ...state.balance, ...data.balance };
       }
-      if (data.units !== undefined) {
-        // state.units = data.units;
-        state.game.userSquad.units = data.units || [];
+
+      if (data.timers !== undefined) {
+        state.timers = { ...state.timers, ...data.timers };
       }
-      if (data.moveCells !== undefined) {
-        // state.moveCells = data.moveCells;
-        state.game.combat.runtime.moveCells = data.moveCells || [];
+
+      if (data.dailyRewards !== undefined) {
+        state.rewards.dailyRewards = data.dailyRewards;
       }
-      if (data.enemySelectedUnitId !== undefined) {
-        // state.enemySelectedUnitId = data.enemySelectedUnitId;
-        state.game.combat.runtime.unitId = data.selectedUnitId;
+
+      if (data.rankingRewards !== undefined) {
+        state.rewards.rankingRewards = data.rankingRewards;
       }
-      if (data.enemyUnits !== undefined) {
-        // state.enemyUnits = data.enemyUnits;
-        state.game.enemySquad.units = data.enemyUnits || [];
+
+      if (data.mode !== undefined) {
+        state.game.mode = data.mode;
       }
-      if (data.enemyMoveCells !== undefined) {
-        // state.enemyAvailableMoves = data.enemyAvailableMoves;
-        state.game.combat.runtime.moveCells = data.moveCells || [];
+
+      if (data.room !== undefined) {
+        state.game.room = data.room;
+      }
+
+      if (data.level !== undefined) {
+        state.game.level = data.level;
+      }
+
+      if (data.difficulty !== undefined) {
+        state.game.difficulty = data.difficulty;
+      }
+
+      if (data.difficulty !== undefined) {
+        state.game.difficulty = data.difficulty;
+      }
+
+      if (data.userSquad !== undefined) {
+        state.game.difficulty = data.difficulty;
+      }
+
+      if (data.userSquad !== undefined) {
+        if (data.userSquad.power !== undefined) {
+          state.game.userSquad.power = data.userSquad.power;
+        }
+        if (data.userSquad.bonuses !== undefined) {
+          state.game.userSquad.bonuses = data.userSquad.bonuses;
+        }
+        if (data.userSquad.units !== undefined) {
+          state.game.userSquad.units = data.userSquad.units;
+        }
+      }
+
+      if (data.enemySquad !== undefined) {
+        if (data.enemySquad.power !== undefined) {
+          state.game.enemySquad.power = data.enemySquad.power;
+        }
+        if (data.enemySquad.bonuses !== undefined) {
+          state.game.enemySquad.bonuses = data.enemySquad.bonuses;
+        }
+        if (data.enemySquad.units !== undefined) {
+          state.game.enemySquad.units = data.enemySquad.units;
+        }
+      }
+
+      if (data.terrain !== undefined) {
+        state.game.terrain = data.terrain;
+      }
+
+      if (data.combat !== undefined) {
+        if (data.combat.started !== undefined) {
+          state.game.combat.started = data.combat.started;
+        }
+        if (data.combat.result !== undefined) {
+          state.game.combat.result = data.combat.result;
+        }
+        if (data.combat.isMyTurn !== undefined) {
+          state.game.combat.isMyTurn = data.combat.isMyTurn;
+        }
+        if (data.combat.moveCells !== undefined) {
+          state.game.combat.runtime.moveCells = data.combat.moveCells;
+        }
+        if (data.combat.attackCells !== undefined) {
+          state.game.combat.runtime.attackCells = data.combat.attackCells;
+        }
       }
     },
     setInitialState(state, data) {

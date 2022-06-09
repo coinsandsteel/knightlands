@@ -316,13 +316,13 @@ store.subscribe((mutation, state) => {
     !mutation.type.includes("training") &&
     !mutation.type.includes("tutorial")
   ) {
-    // console.log("Mutation", mutation.type, mutation.payload);
+    console.log("Mutation", mutation.type, mutation.payload);
   }
 });
 
 store.subscribeAction((action, state) => {
   if (!action.type.includes("training") && !action.type.includes("tutorial")) {
-    // console.log("Action", action.type, action.payload);
+    console.log("Action", action.type, action.payload);
   }
 });
 
