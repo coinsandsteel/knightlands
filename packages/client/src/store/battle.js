@@ -138,7 +138,7 @@ export default {
       room: null, // number|null: 0-7
       level: null, // number|null: 0-5
       difficulty: null, // string: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
-      adventureDifficulty: null, // string GAME_DIFFICULTY_NORMAL | GAME_DIFFICULTY_HARD
+      adventureDifficulty: null, // string GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
       isAdventureHardDifficultyAvailable: false,
       adventureRoomAvailable: 1,
 

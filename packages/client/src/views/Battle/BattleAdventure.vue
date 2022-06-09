@@ -57,7 +57,7 @@ export default {
     difficulty() {
       return this.game && this.game.difficulty
         ? this.game.difficulty
-        : battle.GAME_DIFFICULTY_NORMAL;
+        : battle.GAME_DIFFICULTY_MEDIUM;
     },
     battleItems() {
       return battle.LOCATIONS;

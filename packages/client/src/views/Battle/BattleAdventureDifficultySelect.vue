@@ -6,8 +6,8 @@
           type="green"
           width="20rem"
           class="inline-block"
-          @click="handleClose(GAME_DIFFICULTY_NORMAL)"
-          >{{ $t(GAME_DIFFICULTY_NORMAL) }}</CustomButton
+          @click="handleClose(GAME_DIFFICULTY_MEDIUM)"
+          >{{ $t(GAME_DIFFICULTY_MEDIUM) }}</CustomButton
         >
       </div>
       <div class="text-align-center margin-top-4">
@@ -16,14 +16,14 @@
           width="20rem"
           class="inline-block"
           :disabled="!game.isAdventureHardDifficultyAvailable"
-          @click="handleClose(GAME_DIFFICULTY_HARD)"
-          >{{ $t(GAME_DIFFICULTY_HARD) }}</CustomButton
+          @click="handleClose(GAME_DIFFICULTY_HIGH)"
+          >{{ $t(GAME_DIFFICULTY_HIGH) }}</CustomButton
         >
         <div
           v-if="!game.isAdventureHardDifficultyAvailable"
           class="font-size-18 font-shadow rarity-mythical"
         >
-          Finish normal difficulty to unlock.
+          Finish medium difficulty to unlock.
         </div>
       </div>
     </template>
@@ -41,8 +41,8 @@ import * as battle from "@/../../knightlands-shared/battle";
 export default {
   data() {
     return {
-      GAME_DIFFICULTY_NORMAL: battle.GAME_DIFFICULTY_NORMAL,
-      GAME_DIFFICULTY_HARD: battle.GAME_DIFFICULTY_HARD
+      GAME_DIFFICULTY_MEDIUM: battle.GAME_DIFFICULTY_MEDIUM,
+      GAME_DIFFICULTY_HIGH: battle.GAME_DIFFICULTY_HIGH
     };
   },
   computed: {

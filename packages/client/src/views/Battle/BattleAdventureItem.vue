@@ -58,7 +58,7 @@ export default {
   computed: {
     ...mapState("battle", ["game"]),
     difficultyIndex() {
-      return this.game.difficulty === battle.GAME_DIFFICULTY_HARD ? 1 : 0;
+      return this.game.difficulty === battle.GAME_DIFFICULTY_HIGH ? 1 : 0;
     },
     exp() {
       return this.level.exp[this.difficultyIndex];
