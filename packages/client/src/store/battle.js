@@ -523,10 +523,22 @@ export default {
       });
     },
 
-    // BattleMergeUnits
     // BattleUpgradeUnitLevel
+    async upgradeUnitLevel(store, { unitId }) {
+      await this.$app.$game._wrapOperation(Operations.BattleUpgradeUnitLevel, {
+        unitId
+      });
+    },
+
     // BattleUpgradeUnitAbility
-    // BattleUpgradeUnitAbility
+    async upgradeUnitAbility(store, { unitId, ability }) {
+      await this.$app.$game._wrapOperation(Operations.BattleUpgradeUnitAbility, {
+        unitId,
+        ability
+      });
+    },
+
+    // BattleMergeUnits
 
     // BattleApply - Move to / Atack a cell
     // - unitId: string
