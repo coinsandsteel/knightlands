@@ -178,7 +178,7 @@ export default {
       // await show();
       this.$store.dispatch("battle/upgradeUnitAbility", {
         unitId: this.unit.unitId,
-        abilityClass: this.ability.abilityClass
+        ability: this.ability.abilityClass
       });
     },
     increaseHandler() {

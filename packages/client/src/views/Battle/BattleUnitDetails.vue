@@ -15,6 +15,7 @@
               Level: {{ level }}
               <CustomButton
                 v-if="canUpgrade"
+                :disabled="!isEnoughCoinsToUpgradeLevel"
                 type="green"
                 class="inline-block margin-right-2 margin-top-1"
                 @click="upgradeLevelHandler"
@@ -185,7 +186,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("battle", ["inventory"]),
+    ...mapState("battle", ["inventory", "user"]),
     unit() {
       if (this.inventory) {
         return this.inventory.find(item => {
@@ -200,6 +201,14 @@ export default {
     },
     canUpgrade() {
       return this.nextLevel;
+    },
+    isEnoughCoinsToUpgradeLevel() {
+      return (
+        this.upgradePrice &&
+        this.user &&
+        this.user.balance &&
+        this.user.balance.coins >= this.upgradePrice
+      );
     },
     upgradePrice() {
       return this.unit && this.unit.level ? this.unit.level.price : null;

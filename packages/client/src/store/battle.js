@@ -532,10 +532,13 @@ export default {
 
     // BattleUpgradeUnitAbility
     async upgradeUnitAbility(store, { unitId, ability }) {
-      await this.$app.$game._wrapOperation(Operations.BattleUpgradeUnitAbility, {
-        unitId,
-        ability
-      });
+      await this.$app.$game._wrapOperation(
+        Operations.BattleUpgradeUnitAbility,
+        {
+          unitId,
+          ability
+        }
+      );
     },
 
     // BattleMergeUnits
