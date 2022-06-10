@@ -19,29 +19,30 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { create } from "vue-modal-dialogs";
+// import { mapGetters } from "vuex";
+// import { create } from "vue-modal-dialogs";
 // import { create } from "vue-modal-dialogs";
 import Tabs from "@/components/Tabs.vue";
-import AppSection from "@/AppSection.vue";
-import BattleDailyRewards from "@/views/Battle/BattleDailyRewards.vue";
-import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+// import AppSection from "@/AppSection.vue";
+// import BattleDailyRewards from "@/views/Battle/BattleDailyRewards.vue";
+import BattleMixin from "@/views/Battle/BattleMixin.vue";
+// import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const MenuTab = "battle-menu";
 const AchievementTab = "battle-achievement";
 const RankingsTab = "battle-rankings";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  // mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [BattleMixin],
   components: {
     Tabs
   },
-  computed: {
-    ...mapGetters("battle", ["dailyRewards"])
-  },
+  // computed: {
+  //   ...mapGetters("battle", ["dailyRewards"])
+  // },
   data() {
     return {
-      hasShowDailyRewards: false,
       tabs: [
         {
           title: this.$t("event-menu"),
@@ -64,21 +65,21 @@ export default {
   },
   created() {
     this.title = this.$t("battle-event");
-    this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
+    // this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
   },
-  destroyed() {
-    this.$store.$app.$off("battle-show-daily-reward");
-  },
-  async mounted() {
-    this.$store.dispatch("battle/subscribe");
-    await this.$store.dispatch("battle/load");
-  },
-  beforeDestroy() {
-    this.$store.dispatch("battle/unsubscribe");
-  },
-  activated() {
-    this.tryToShowRewards();
-  },
+  // destroyed() {
+  //   this.$store.$app.$off("battle-show-daily-reward");
+  // },
+  // async mounted() {
+  //   this.$store.dispatch("battle/subscribe");
+  //   await this.$store.dispatch("battle/load");
+  // },
+  // beforeDestroy() {
+  //   this.$store.dispatch("battle/unsubscribe");
+  // },
+  // activated() {
+  //   this.tryToShowRewards();
+  // },
   methods: {
     switchTab(newTab) {
       this.currentTab = newTab;
@@ -89,25 +90,6 @@ export default {
       this.$router.replace({ name: "battle-menu" });
 
       return true;
-    },
-    tryToShowRewards() {
-      console.log("tryToShowRewards", this.dailyRewards);
-      if (
-        this.dailyRewards &&
-        this.dailyRewards.find(({ active, collected }) => active && !collected)
-      ) {
-        this.showDailyRewards();
-      }
-    },
-    async showDailyRewards() {
-      console.log("showDailyRewards", this.hasShowDailyRewards);
-      if (this.hasShowDailyRewards) {
-        return;
-      }
-      this.hasShowDailyRewards = true;
-      const showDailyRewardsDialog = create(BattleDailyRewards);
-      await showDailyRewardsDialog();
-      this.hasShowDailyRewards = false;
     }
   }
 };

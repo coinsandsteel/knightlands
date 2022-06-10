@@ -17,7 +17,7 @@
                 v-if="canUpgrade"
                 type="green"
                 class="inline-block margin-right-2 margin-top-1"
-                @click="upgradeHandler"
+                @click="upgradeLevelHandler"
               >
                 {{ $t("Upgrade lvl " + nextLevel) }}
                 <IconWithValue
@@ -169,9 +169,10 @@ import ActivityMixin from "@/components/ActivityMixin.vue";
 // import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 // import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
+import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin],
+  mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin, BattleMixin],
   components: {
     BattleUnit,
     // BattleUnitAbility,

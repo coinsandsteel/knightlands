@@ -34,9 +34,10 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitsFilter from "@/views/Battle/BattleUnitsFilter.vue";
+import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin],
+  mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin, BattleMixin],
   components: { BattleUnitList },
   data() {
     return {};

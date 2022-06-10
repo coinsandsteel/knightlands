@@ -92,9 +92,11 @@ export default {
   namespaced: true,
   state: {
     // @todo: set to false
-    loaded: true,
+    loaded: false,
     selectedTiersFilter,
     selectedClassesFilter,
+    hasSubscribed: false,
+    hasShownDailyRewards: false,
 
     // User data
     user: {
@@ -331,6 +333,10 @@ export default {
   },
   mutations: {
     updateState(state, data) {
+      if (data.hasShownDailyRewards !== undefined) {
+        state.hasShownDailyRewards = !!data.hasShownDailyRewards;
+      }
+
       // New unit / update unit
       if (data.updateUnit !== undefined) {
         const index = state.inventory.findIndex(
@@ -438,11 +444,13 @@ export default {
       store.commit("updateState", data);
     },
     subscribe(store) {
+      store.state.hasSubscribed = true;
       this.$app.$game.onNetwork(Events.BattleUpdate, data => {
         store.dispatch("update", data);
       });
     },
-    unsubscribe() {
+    unsubscribe(store) {
+      store.state.hasSubscribed = false;
       this.$app.$game.offNetwork(Events.BattleUpdate);
     },
     setTiersFilter(store, data) {
