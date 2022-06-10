@@ -34,8 +34,9 @@ const inventoryUnit = {
   },
   power: 5,
   experience: {
-    current: 100, // gained value (relative)
-    max: 10000 // full value (relative)
+    percentage: 17,
+    currentLevelExp: 170,
+    nextLevelExp: 1000
   },
   characteristics: {
     hp: 10,
@@ -110,7 +111,7 @@ export default {
       },
       rewards: {
         dailyRewards: [
-          {
+          /*{
             collected: true,
             quantity: 1,
             active: true,
@@ -120,7 +121,7 @@ export default {
             collected: false,
             quantity: 1,
             active: false
-          }
+          }*/
         ],
         rankingRewards: [
           // Will be later
@@ -137,12 +138,12 @@ export default {
 
     // Unit list data
     inventory: [
+      /*_.cloneDeep(inventoryUnit),
       _.cloneDeep(inventoryUnit),
       _.cloneDeep(inventoryUnit),
       _.cloneDeep(inventoryUnit),
       _.cloneDeep(inventoryUnit),
-      _.cloneDeep(inventoryUnit),
-      _.cloneDeep(inventoryUnit)
+      _.cloneDeep(inventoryUnit)*/
     ],
 
     // Game
@@ -347,6 +348,11 @@ export default {
         } else {
           state.inventory[index] = data.updateUnit;
         }
+      }
+
+      // Unit list
+      if (data.units !== undefined) {
+        state.inventory = data.units;
       }
 
       if (data.balance !== undefined) {
