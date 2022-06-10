@@ -45,8 +45,8 @@ export default {
       return this.unit && this.unit.level ? this.unit.level.current || 0 : 0;
     },
     experience() {
-      return this.unit && this.unit.experience
-        ? this.unit.experience.current || 0
+      return this.unit && this.unit.expirience
+        ? this.unit.expirience.value || 0
         : 0;
     },
     abilities() {

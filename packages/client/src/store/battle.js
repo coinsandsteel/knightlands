@@ -340,14 +340,16 @@ export default {
 
       // New unit / update unit
       if (data.updateUnit !== undefined) {
-        const index = state.inventory.findIndex(
+        const units = state.inventory.slice();
+        const index = units.findIndex(
           unit => unit.unitId === data.updateUnit.unitId
         );
         if (index === -1) {
-          state.inventory.push(data.updateUnit);
+          units.push(data.updateUnit);
         } else {
-          state.inventory[index] = data.updateUnit;
+          units[index] = data.updateUnit;
         }
+        state.inventory = units;
       }
 
       // Unit list

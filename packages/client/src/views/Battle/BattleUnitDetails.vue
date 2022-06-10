@@ -181,11 +181,20 @@ export default {
   data() {
     return {
       // expValue: 0,
-      unit: null
+      // unit: null
     };
   },
   computed: {
     ...mapState("battle", ["inventory"]),
+    unit() {
+      if (this.inventory) {
+        return this.inventory.find(item => {
+          return item.unitId === this.$route.params.id;
+        });
+      }
+
+      return null;
+    },
     nextLevel() {
       return this.unit && this.unit.level ? this.unit.level.next : null;
     },
@@ -196,14 +205,16 @@ export default {
       return this.unit && this.unit.level ? this.unit.level.price : null;
     },
     expValue() {
-      return this.unit && this.unit.experience
-        ? this.unit.experience.current || 0
+      return this.unit && this.unit.expirience
+        ? this.unit.expirience.currentLevelExp || 0
         : 0;
     },
     expMaxValue() {
-      return this.unit && this.unit.experience
-        ? this.unit.experience.max || 0
-        : 0;
+      const next =
+        this.unit && this.unit.expirience
+          ? this.unit.expirience.nextLevelExp || 0
+          : 0;
+      return next;
     },
     abilities() {
       return this.unit && this.unit.abilities ? this.unit.abilities : [];
@@ -214,11 +225,6 @@ export default {
   },
   created() {
     this.title = this.$t("battle-unit");
-    if (this.inventory) {
-      this.unit = this.inventory.find(item => {
-        return item.unitId === this.$route.params.id;
-      });
-    }
   },
   methods: {
     handleBackButton() {
