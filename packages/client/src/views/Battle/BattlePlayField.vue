@@ -17,6 +17,15 @@
         </div>
       </div>
     </div>
+    <div class="text-align-center margin-top-2">
+      <CustomButton
+        type="green"
+        width="20rem"
+        class="inline-block"
+        @click="moveHandler"
+        >move</CustomButton
+      >
+    </div>
     <Transition name="fade" appear>
       <BattleAbilitySelect
         v-if="abilitySelectResolve"
@@ -28,6 +37,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
 import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
@@ -180,6 +190,18 @@ export default {
           isMyTurn: false
         });
         return;
+      }
+    },
+    moveHandler() {
+      const units = _.cloneDeep(this.units);
+      console.log("units", units, units[0].index);
+      if (units && units.length > 0) {
+        if (units[0].index === 32) {
+          units[0].index = 17;
+        } else {
+          units[0].index = 32;
+        }
+        this.$store.dispatch("battle/update", { units });
       }
     }
   }

@@ -84,6 +84,10 @@ export default {
       await showDailyRewardsDialog();
     },
     handleStart() {
+      this.$store.dispatch("battle/enterLevel", {
+        room: this.$route.params.id,
+        level: null
+      });
       this.$router.push({
         name: "battle-adventure-play",
         params: { unitId: this.$route.params.id }

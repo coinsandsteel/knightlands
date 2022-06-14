@@ -56,7 +56,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { sleep } from "@/helpers/utils";
 export default {
   props: {
@@ -74,6 +74,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("battle", ["unitIndexes"]),
     ...mapGetters("battle", [
       "units",
       "selectedUnit",
@@ -93,7 +94,8 @@ export default {
       return this.units.find(({ index }) => index === this.index);
     },
     unitIndex() {
-      return this.selectedUnit ? this.selectedUnit.index : -1;
+      // return this.selectedUnit ? this.selectedUnit.index : -1;
+      return this.unit ? this.unit.index : -1;
     },
     isAvailableMove() {
       return this.moveCells.includes(this.index);
@@ -125,12 +127,32 @@ export default {
   },
   watch: {
     unitIndex(value, oldValue) {
-      console.log("unitIndex", value, oldValue);
       if (!(value > -1)) {
         return;
       }
 
-      this.previousUnitIndex = value;
+      if (
+        this.unit &&
+        this.unit.unitId &&
+        this.unitIndexes &&
+        this.unitIndexes[this.unit.unitId]
+      ) {
+        let previousUnitIndex = -1;
+        for (
+          let i = this.unitIndexes[this.unit.unitId].length - 1;
+          i > 0;
+          i--
+        ) {
+          if (value === this.unitIndexes[this.unit.unitId][i]) {
+            previousUnitIndex = this.unitIndexes[this.unit.unitId][i - 1];
+            break;
+          }
+        }
+
+        this.previousUnitIndex = previousUnitIndex;
+      }
+
+      // this.previousUnitIndex = value;
     },
     enemyIndex(value) {
       if (!(value > -1)) {
@@ -153,7 +175,9 @@ export default {
       });
     },
     async unitEnterHandler(el, done) {
-      if (!(this.previousUnitIndex !== this.index)) {
+      if (
+        !(this.previousUnitIndex > -1 && this.previousUnitIndex !== this.index)
+      ) {
         done();
         return;
       }

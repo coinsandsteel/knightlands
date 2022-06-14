@@ -50,6 +50,10 @@ export default {
   methods: {
     unitClickHandler() {},
     handleStart() {
+      this.$store.dispatch("battle/enterLevel", {
+        room: this.$route.params.id,
+        level: null
+      });
       this.$router.push({
         name: "battle-duels-play",
         params: { id: 123 }

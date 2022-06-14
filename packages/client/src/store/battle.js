@@ -98,6 +98,7 @@ export default {
     selectedClassesFilter,
     hasSubscribed: false,
     hasShownDailyRewards: false,
+    unitIndexes: {}, // unit history indexes
 
     // User data
     user: {
@@ -256,9 +257,10 @@ export default {
         : false;
     },
     units(state) {
-      return state.game && state.game.userSquad
+      return (state.game && state.game.userSquad
         ? state.game.userSquad.units || []
-        : [];
+        : []
+      ).filter(Boolean);
     },
     selectedUnitId(state, getters) {
       if (!getters.isMyTurn) {
@@ -294,9 +296,10 @@ export default {
         : [];
     },
     enemyUnits(state) {
-      return state.game && state.game.enemySquad
+      return (state.game && state.game.enemySquad
         ? state.game.enemySquad.units || []
-        : [];
+        : []
+      ).filter(Boolean);
     },
     enemySelectedUnitId(state, getters) {
       if (getters.isMyTurn) {
@@ -333,6 +336,21 @@ export default {
     }
   },
   mutations: {
+    // saveHistoryIndexes(state, data) {
+    //   const unitIndexes = _.cloneDeep(state.unitIndexes) || {};
+
+    //   for (let i = 0; i < data.length; i++) {
+    //     const unit = data[i];
+    //     if (unitIndexes[unit.id] && unitIndexes[unit.id].length > 0) {
+    //       if (unitIndexes[unit.id][unitIndexes.length - 1] !== unit.index) {
+    //         unitIndexes[unit.id].push(unit.index);
+    //       }
+    //     } else {
+    //       unitIndexes[unit.id] = [unit.index];
+    //     }
+    //   }
+    //   state.unitIndexes = unitIndexes;
+    // },
     updateState(state, data) {
       if (data.hasShownDailyRewards !== undefined) {
         state.hasShownDailyRewards = !!data.hasShownDailyRewards;
@@ -354,7 +372,26 @@ export default {
 
       // Unit list
       if (data.units !== undefined) {
-        state.inventory = data.units;
+        // state.inventory = data.units;
+        // save indexes history
+        const unitIndexes = _.cloneDeep(state.unitIndexes) || {};
+
+        for (let i = 0; i < data.units.length; i++) {
+          const unit = data.units[i];
+          if (unitIndexes[unit.unitId] && unitIndexes[unit.unitId].length > 0) {
+            if (
+              unitIndexes[unit.unitId][unitIndexes[unit.unitId].length - 1] !==
+              unit.index
+            ) {
+              unitIndexes[unit.unitId].push(unit.index);
+            }
+          } else {
+            unitIndexes[unit.unitId] = [unit.index];
+          }
+        }
+        state.unitIndexes = unitIndexes;
+        // update units
+        state.game.userSquad.units = data.units;
       }
 
       if (data.balance !== undefined) {
