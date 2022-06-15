@@ -214,9 +214,9 @@ export default {
 
       // Terrain
       terrain: [
-        { terrainClass: "forest-1", index: 4 },
-        { terrainClass: "forest-2", index: 5 },
-        { terrainClass: "forest-3", index: 6 }
+        { terrainId: "45c43rv", terrainClass: "forest-1", index: 4 },
+        { terrainId: "v34vt34", terrainClass: "forest-2", index: 5 },
+        { terrainId: "c4c435t", terrainClass: "forest-3", index: 6 }
       ],
 
       // Active combat's data
@@ -225,12 +225,100 @@ export default {
         result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
         isMyTurn: true, // boolean|null
+        activeUnitId: null,
         runtime: {
           unitId: null, // string|null
           selectedIndex: null, // number|null
           selectedAbilityClass: null, // string|null
           moveCells: [], // number[]
-          attackCells: [] // number[]
+          attackCells: [], // number[],
+          effects: [
+            // Unit moved
+            {
+              action: "move",
+              unitId: "v4nv9",
+              newIndex: 8
+            },
+            // Unit attack
+            {
+              action: battle.ABILITY_GROUP_ATTACK,
+              source: {
+                unitId: "v4nv9",
+                index: 3
+              },
+              target: {
+                unitId: "v4nv9",
+                index: 8,
+                newHp: 5
+              },
+              ability: {
+                abilityClass: battle.ABILITY_DEATH_SHOT,
+                damage: 5,
+                criticalHit: false
+              }
+            },
+            // Unit buff
+            {
+              action: battle.ABILITY_GROUP_BUFF,
+              source: {
+                unitId: "v4nasv9",
+                index: 3
+              },
+              target: {
+                unitId: "45v83tn",
+                index: 20
+              },
+              ability: {
+                abilityClass: battle.ABILITY_WIND_WALK,
+                damage: 1
+              }
+            },
+            // Unit debuff
+            {
+              action: battle.ABILITY_GROUP_DE_BUFF,
+              source: {
+                unitId: "v4nv9",
+                index: 3
+              },
+              target: {
+                unitId: "b5n48",
+                index: 8
+              },
+              ability: {
+                abilityClass: battle.ABILITY_CURSE,
+                damage: 1
+              }
+            },
+            // Unit self buff
+            {
+              action: battle.ABILITY_GROUP_SELF_BUFF,
+              source: {
+                unitId: "v4nv9",
+                index: 3
+              },
+              ability: {
+                abilityClass: battle.ABILITY_RAGE,
+                damage: 0
+              }
+            },
+            // Lava damage (or other effects)
+            {
+              action: "effect",
+              source: {
+                terrainId: "v4nv9",
+                index: 3
+              },
+              target: {
+                unitId: "v4nv9",
+                index: 8,
+                newHp: 5
+              },
+              effect: {
+                effectClass: "heat",
+                damage: 1
+              }
+            }
+          ]
         }
       }
     }
