@@ -232,7 +232,7 @@ export default {
           selectedAbilityClass: null, // string|null
           moveCells: [], // number[]
           attackCells: [], // number[],
-          effects: [
+          queue: [
             // Unit moved
             {
               action: "move",
