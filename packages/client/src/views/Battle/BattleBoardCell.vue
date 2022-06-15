@@ -8,6 +8,12 @@
     @click="clickHandler"
   >
     <div class="battle-board-cell absolute-stretch">
+      <!-- terrain -->
+      <div
+        v-if="terrain"
+        class="battle-board-cell-terrain absolute-stretch"
+        :class="'battle-board-cell-terrain--' + terrain.terrainClass"
+      />
       <!-- available move -->
       <Transition name="fade" appear>
         <div
@@ -74,7 +80,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("battle", ["unitIndexes"]),
+    ...mapState("battle", ["unitIndexes", "game"]),
     ...mapGetters("battle", [
       "units",
       "selectedUnit",
@@ -85,6 +91,9 @@ export default {
     ]),
     isUnit() {
       return this.units.map(({ index }) => index).includes(this.index);
+    },
+    terrain() {
+      return this.game.terrain.find(({ index }) => index === this.index);
     },
     unit() {
       if (!this.isUnit) {
@@ -239,6 +248,28 @@ export default {
   height: calc(var(--base-size) * 0.8);
   background: #ccc;
   border: 1px solid #666;
+}
+.battle-board-cell-terrain {
+  background: green;
+  opacity: 0.5;
+}
+.battle-board-cell-terrain--grass {
+}
+.battle-board-cell-terrain--sand {
+}
+.battle-board-cell-terrain--snow {
+}
+.battle-board-cell-terrain--forest {
+}
+.battle-board-cell-terrain--hill {
+}
+.battle-board-cell-terrain--swam {
+}
+.battle-board-cell-terrain--lava {
+}
+.battle-board-cell-terrain--ice {
+}
+.battle-board-cell-terrain--bushes {
 }
 .battle-board-cell-available-move {
   background: blue;
