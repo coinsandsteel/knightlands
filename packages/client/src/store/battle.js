@@ -525,18 +525,19 @@ export default {
         state.unitIndexes = data.unitIndexes;
       }
 
-      // New unit / update unit
+      // Add unit
+      if (data.addUnit !== undefined) {
+        state.inventory.push(data.addUnit);
+      }
+
+      // Update unit
       if (data.updateUnit !== undefined) {
-        const units = state.inventory.slice();
-        const index = units.findIndex(
+        const index = state.inventory.findIndex(
           unit => unit.unitId === data.updateUnit.unitId
         );
-        if (index === -1) {
-          units.push(data.updateUnit);
-        } else {
-          units[index] = data.updateUnit;
+        if (index !== -1) {
+          state.inventory[index] = data.updateUnit;
         }
-        state.inventory = units;
       }
 
       // Unit list
