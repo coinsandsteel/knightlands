@@ -504,12 +504,12 @@ export default {
         state.hasShownDailyRewards = !!data.hasShownDailyRewards;
       }
 
-      // Add unit
+      // Add an inventory unit
       if (data.addUnit !== undefined) {
         state.inventory.push(data.addUnit);
       }
 
-      // Update unit
+      // Update an inventory unit
       if (data.updateUnit !== undefined) {
         const index = state.inventory.findIndex(
           unit => unit.unitId === data.updateUnit.unitId
@@ -519,12 +519,12 @@ export default {
         }
       }
 
-      // Unit list
+      // Reset an inventory
       if (data.inventory !== undefined) {
         state.inventory = data.inventory;
       }
 
-      // User
+      // User data
       if (data.balance !== undefined) {
         state.balance = { ...state.balance, ...data.balance };
       }
@@ -538,7 +538,7 @@ export default {
         state.rewards.rankingRewards = data.rankingRewards;
       }
 
-      // Game
+      // Game data
       if (data.mode !== undefined) {
         state.game.mode = data.mode;
       }
@@ -555,21 +555,29 @@ export default {
         state.game.adventureDifficulty = data.adventureDifficulty;
       }
 
-      // Set a whole squad. Do not use during a combat.
+      // Set a whole user/enemy squad.
+      // Will be called only while in a lobby.
+      // Not for a combat.
       if (data.userSquad !== undefined) {
         state.game.userSquad.power = data.userSquad.power;
         state.game.userSquad.bonuses = data.userSquad.bonuses;
         state.game.userSquad.units = data.userSquad.units;
       }
-
-      // Set a whole squad. Do not use during a combat.
       if (data.enemySquad !== undefined) {
         state.game.enemySquad.power = data.enemySquad.power;
         state.game.enemySquad.bonuses = data.enemySquad.bonuses;
         state.game.enemySquad.units = data.enemySquad.units;
       }
 
-      // Array of updates
+      // #############################################
+      // Combat
+      // #############################################
+      
+      if (data.terrain !== undefined) {
+        state.game.terrain = data.terrain;
+      }
+
+      // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.userSquadUnit !== undefined) {
         data.userSquadUnit.forEach(updateEntry => {
@@ -593,7 +601,7 @@ export default {
         });
       }
 
-      // Array of updates
+      // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.enemySquadUnit !== undefined) {
         data.enemySquadUnit.forEach(updateEntry => {
@@ -617,28 +625,18 @@ export default {
         });
       }
 
-      if (data.terrain !== undefined) {
-        state.game.terrain = data.terrain;
-      }
-
+      // Runtime
       if (data.combatStarted !== undefined) {
         state.game.combat.started = data.combatStarted;
       }
-
       if (data.combatResult !== undefined) {
         state.game.combat.result = data.combatResult;
       }
-
       if (data.combatMoveCells !== undefined) {
         state.game.combat.runtime.moveCells = data.combat.moveCells;
       }
-
       if (data.combatAttackCells !== undefined) {
         state.game.combat.runtime.attackCells = data.combat.attackCells;
-      }
-
-      if (data.effect !== undefined) {
-        state.game.combat.runtime.queue.push(data.effect);
       }
     },
     setInitialState(state, data) {
