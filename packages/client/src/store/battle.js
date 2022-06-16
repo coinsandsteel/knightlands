@@ -98,7 +98,6 @@ export default {
     selectedClassesFilter,
     hasSubscribed: false,
     hasShownDailyRewards: false,
-    unitIndexes: {}, // unit history indexes
 
     // User data
     user: {
@@ -500,29 +499,9 @@ export default {
     }
   },
   mutations: {
-    // saveHistoryIndexes(state, data) {
-    //   const unitIndexes = _.cloneDeep(state.unitIndexes) || {};
-
-    //   for (let i = 0; i < data.length; i++) {
-    //     const unit = data[i];
-    //     if (unitIndexes[unit.id] && unitIndexes[unit.id].length > 0) {
-    //       if (unitIndexes[unit.id][unitIndexes.length - 1] !== unit.index) {
-    //         unitIndexes[unit.id].push(unit.index);
-    //       }
-    //     } else {
-    //       unitIndexes[unit.id] = [unit.index];
-    //     }
-    //   }
-    //   state.unitIndexes = unitIndexes;
-    // },
     updateState(state, data) {
       if (data.hasShownDailyRewards !== undefined) {
         state.hasShownDailyRewards = !!data.hasShownDailyRewards;
-      }
-
-      // Unit indexes history
-      if (data.unitIndexes !== undefined) {
-        state.unitIndexes = data.unitIndexes;
       }
 
       // Add unit
@@ -576,43 +555,14 @@ export default {
         state.game.adventureDifficulty = data.adventureDifficulty;
       }
 
+      // Set a whole squad. Do not use during a combat.
       if (data.userSquad !== undefined) {
-        /*if (data.userSquad.power !== undefined) {
-          state.game.userSquad.power = data.userSquad.power;
-        }
-        if (data.userSquad.bonuses !== undefined) {
-          state.game.userSquad.bonuses = data.userSquad.bonuses;
-        }
-        if (data.userSquad.units !== undefined) {
-          // save indexes history
-          const unitIndexes = _.cloneDeep(state.unitIndexes) || {};
-
-          for (let i = 0; i < data.userSquad.units.length; i++) {
-            const unit = data.userSquad.units[i];
-            if (
-              unitIndexes[unit.unitId] &&
-              unitIndexes[unit.unitId].length > 0
-            ) {
-              if (
-                unitIndexes[unit.unitId][
-                  unitIndexes[unit.unitId].length - 1
-                ] !== unit.index
-              ) {
-                unitIndexes[unit.unitId].push(unit.index);
-              }
-            } else {
-              unitIndexes[unit.unitId] = [unit.index];
-            }
-          }
-          state.unitIndexes = unitIndexes;
-          // update units
-          state.game.userSquad.units = data.userSquad.units;
-        }*/
         state.game.userSquad.power = data.userSquad.power;
         state.game.userSquad.bonuses = data.userSquad.bonuses;
         state.game.userSquad.units = data.userSquad.units;
       }
 
+      // Set a whole squad. Do not use during a combat.
       if (data.enemySquad !== undefined) {
         state.game.enemySquad.power = data.enemySquad.power;
         state.game.enemySquad.bonuses = data.enemySquad.bonuses;
