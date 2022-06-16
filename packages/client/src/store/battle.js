@@ -180,7 +180,7 @@ export default {
                 }
               }
             ],
-            activeBuffs: [] // Will be defined later
+            buffs: [] // Will be defined later
           },
           {
             unitId: "2c8vny4t1",
@@ -200,7 +200,7 @@ export default {
                 }
               }
             ],
-            activeBuffs: [] // Will be defined later
+            buffs: [] // Will be defined later
           }
         ]
       },
@@ -540,52 +540,43 @@ export default {
       }
 
       // Unit list
-      if (data.units !== undefined) {
-        state.inventory = data.units;
+      if (data.inventory !== undefined) {
+        state.inventory = data.inventory;
       }
 
+      // User
       if (data.balance !== undefined) {
         state.balance = { ...state.balance, ...data.balance };
       }
-
       if (data.timers !== undefined) {
         state.timers = { ...state.timers, ...data.timers };
       }
-
       if (data.dailyRewards !== undefined) {
         state.rewards.dailyRewards = data.dailyRewards;
       }
-
       if (data.rankingRewards !== undefined) {
         state.rewards.rankingRewards = data.rankingRewards;
       }
 
+      // Game
       if (data.mode !== undefined) {
         state.game.mode = data.mode;
       }
-
       if (data.room !== undefined) {
         state.game.room = data.room;
       }
-
       if (data.level !== undefined) {
         state.game.level = data.level;
       }
-
       if (data.difficulty !== undefined) {
         state.game.difficulty = data.difficulty;
       }
-
       if (data.adventureDifficulty !== undefined) {
         state.game.adventureDifficulty = data.adventureDifficulty;
       }
 
-      // if (data.userSquad !== undefined) {
-      //   state.game.difficulty = data.difficulty;
-      // }
-
       if (data.userSquad !== undefined) {
-        if (data.userSquad.power !== undefined) {
+        /*if (data.userSquad.power !== undefined) {
           state.game.userSquad.power = data.userSquad.power;
         }
         if (data.userSquad.bonuses !== undefined) {
@@ -615,45 +606,116 @@ export default {
           state.unitIndexes = unitIndexes;
           // update units
           state.game.userSquad.units = data.userSquad.units;
-        }
+        }*/
+        state.game.userSquad.power = data.userSquad.power;
+        state.game.userSquad.bonuses = data.userSquad.bonuses;
+        state.game.userSquad.units = data.userSquad.units;
       }
 
       if (data.enemySquad !== undefined) {
-        if (data.enemySquad.power !== undefined) {
-          state.game.enemySquad.power = data.enemySquad.power;
-        }
-        if (data.enemySquad.bonuses !== undefined) {
-          state.game.enemySquad.bonuses = data.enemySquad.bonuses;
-        }
-        if (data.enemySquad.units !== undefined) {
-          state.game.enemySquad.units = data.enemySquad.units;
-        }
+        state.game.enemySquad.power = data.enemySquad.power;
+        state.game.enemySquad.bonuses = data.enemySquad.bonuses;
+        state.game.enemySquad.units = data.enemySquad.units;
+      }
+
+      // Array of updates
+      // Could be updated: index, hp, abilities, buffs
+      if (data.userSquadUnit !== undefined) {
+        data.userSquadUnit.forEach(updateEntry => {
+          const index = state.userSquad.findIndex(
+            unit => unit.unitId === updateEntry.unitId
+          );
+          if (index !== -1) {
+            if (updateEntry.index !== undefined) {
+              state.userSquad[index].index = updateEntry.index;
+            }
+            if (updateEntry.hp !== undefined) {
+              state.userSquad[index].hp = updateEntry.hp;
+            }
+            if (updateEntry.abilities !== undefined) {
+              state.userSquad[index].abilities = updateEntry.abilities;
+            }
+            if (updateEntry.buffs !== undefined) {
+              state.userSquad[index].buffs = updateEntry.buffs;
+            }
+          }
+        });
+      }
+
+      // Array of updates
+      // Could be updated: index, hp, abilities, buffs
+      if (data.enemySquadUnit !== undefined) {
+        data.enemySquadUnit.forEach(updateEntry => {
+          const index = state.enemySquad.findIndex(
+            unit => unit.unitId === updateEntry.unitId
+          );
+          if (index !== -1) {
+            if (updateEntry.index !== undefined) {
+              state.enemySquad[index].index = updateEntry.index;
+            }
+            if (updateEntry.hp !== undefined) {
+              state.enemySquad[index].hp = updateEntry.hp;
+            }
+            if (updateEntry.abilities !== undefined) {
+              state.enemySquad[index].abilities = updateEntry.abilities;
+            }
+            if (updateEntry.buffs !== undefined) {
+              state.enemySquad[index].buffs = updateEntry.buffs;
+            }
+          }
+        });
       }
 
       if (data.terrain !== undefined) {
         state.game.terrain = data.terrain;
       }
 
-      if (data.combat !== undefined) {
-        if (data.combat.started !== undefined) {
-          state.game.combat.started = data.combat.started;
-        }
-        if (data.combat.result !== undefined) {
-          state.game.combat.result = data.combat.result;
-        }
-        if (data.combat.isMyTurn !== undefined) {
-          state.game.combat.isMyTurn = data.combat.isMyTurn;
-        }
-        if (data.combat.moveCells !== undefined) {
-          state.game.combat.runtime.moveCells = data.combat.moveCells;
-        }
-        if (data.combat.attackCells !== undefined) {
-          state.game.combat.runtime.attackCells = data.combat.attackCells;
-        }
+      if (data.combatStarted !== undefined) {
+        state.game.combat.started = data.combatStarted;
+      }
+
+      if (data.combatResult !== undefined) {
+        state.game.combat.result = data.combatResult;
+      }
+
+      if (data.combatMoveCells !== undefined) {
+        state.game.combat.runtime.moveCells = data.combat.moveCells;
+      }
+
+      if (data.combatAttackCells !== undefined) {
+        state.game.combat.runtime.attackCells = data.combat.attackCells;
+      }
+
+      if (data.effect !== undefined) {
+        state.game.combat.runtime.queue.push(data.effect);
       }
     },
     setInitialState(state, data) {
       state.loaded = true;
+
+      const userData = data.user;
+      state.user.balance = userData.balance;
+      state.user.timers = userData.timers;
+      state.user.rewards = userData.rewards;
+      state.user.adventures = userData.adventures;
+
+      state.inventory = data.inventory;
+
+      const gameData = data.game;
+      state.game.mode = gameData.mode;
+      state.game.room = gameData.room;
+      state.game.level = gameData.level;
+      state.game.difficulty = gameData.difficulty;
+      state.game.adventureDifficulty = gameData.adventureDifficulty;
+      state.game.userSquad = gameData.userSquad;
+      state.game.enemySquad = gameData.enemySquad;
+      state.game.terrain = gameData.terrain;
+
+      const combatData = gameData.combat;
+      state.game.combat.started = combatData.started;
+      state.game.combat.result = combatData.result;
+      state.game.combat.isMyTurn = combatData.isMyTurn;
+      state.game.combat.isMyTurn = combatData.isMyTurn;
     }
   },
   actions: {
