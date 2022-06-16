@@ -40,7 +40,21 @@
             }
           ]"
         >
-          <div class="battle-board-cell-unit absolute-stretch"></div>
+          <!-- <div class="battle-board-cell-unit absolute-stretch"></div>
+          <div
+            class="battle-board-cell-unit-border absolute-stretch"
+            :class="'battle-board-cell-unit-border--' + unit.tier"
+          ></div> -->
+          <BattleUnit
+            class="battle-board-cell-unit absolute"
+            :class="[
+              `move-length-${unitMoveLength}`,
+              {
+                'unit-move-active': isUnitMoveActive
+              }
+            ]"
+            :unit="unit"
+          />
         </div>
       </Transition>
       <!-- enemy -->
@@ -64,7 +78,11 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import { sleep } from "@/helpers/utils";
+import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {
+  components: {
+    BattleUnit
+  },
   props: {
     index: Number
     // card: Object
@@ -246,30 +264,116 @@ export default {
 .battle-board-cell-container {
   width: calc(var(--base-size) * 0.8);
   height: calc(var(--base-size) * 0.8);
-  background: #ccc;
-  border: 1px solid #666;
+  // background: #ccc;
+  // border: 1px solid transparent;
+  // background-size: 100% 100%;
 }
 .battle-board-cell-terrain {
-  background: green;
-  opacity: 0.5;
+  // background: green;
+  // opacity: 0.5;
+  background-size: 100% 100%;
 }
 .battle-board-cell-terrain--grass {
+  background-image: url("/images/battle/tiles/grass.png");
+}
+.battle-board-cell-terrain--grass_hill {
+  background-image: url("/images/battle/tiles/grass_hill.png");
+}
+.battle-board-cell-terrain--grass_swamp {
+  background-image: url("/images/battle/tiles/grass_swamp.png");
+}
+.battle-board-cell-terrain--grass_swamp_a {
+  background-image: url("/images/battle/tiles/grass_swamp_a.png");
+}
+.battle-board-cell-terrain--grass_swamp_b {
+  background-image: url("/images/battle/tiles/grass_swamp_b.png");
+}
+.battle-board-cell-terrain--grass_swamp_c {
+  background-image: url("/images/battle/tiles/grass_swamp_c.png");
+}
+.battle-board-cell-terrain--grass_swamp_d {
+  background-image: url("/images/battle/tiles/grass_swamp_d.png");
+}
+.battle-board-cell-terrain--grass_swamp_x {
+  background-image: url("/images/battle/tiles/grass_swamp_x.png");
+}
+.battle-board-cell-terrain--grass_swamp_y {
+  background-image: url("/images/battle/tiles/grass_swamp_y.png");
+}
+.battle-board-cell-terrain--grass_swamp_z {
+  background-image: url("/images/battle/tiles/grass_swamp_z.png");
+}
+.battle-board-cell-terrain--grass_swamp1 {
+  background-image: url("/images/battle/tiles/grass_swamp1.png");
+}
+.battle-board-cell-terrain--grass_swamp2 {
+  background-image: url("/images/battle/tiles/grass_swamp2.png");
+}
+.battle-board-cell-terrain--grass_woods {
+  background-image: url("/images/battle/tiles/grass_woods.png");
 }
 .battle-board-cell-terrain--sand {
+  background-image: url("/images/battle/tiles/sand.png");
+}
+.battle-board-cell-terrain--sand_hill {
+  background-image: url("/images/battle/tiles/sand_hill.png");
+}
+.battle-board-cell-terrain--sand_lava {
+  background-image: url("/images/battle/tiles/sand_lava.png");
+}
+.battle-board-cell-terrain--sand_lava_a {
+  background-image: url("/images/battle/tiles/sand_lava_a.png");
+}
+.battle-board-cell-terrain--sand_lava_b {
+  background-image: url("/images/battle/tiles/sand_lava_b.png");
+}
+.battle-board-cell-terrain--sand_lava_c {
+  background-image: url("/images/battle/tiles/sand_lava_c.png");
+}
+.battle-board-cell-terrain--sand_lava_d {
+  background-image: url("/images/battle/tiles/sand_lava_d.png");
+}
+.battle-board-cell-terrain--sand_lava1 {
+  background-image: url("/images/battle/tiles/sand_lava1.png");
+}
+.battle-board-cell-terrain--sand_lava2 {
+  background-image: url("/images/battle/tiles/sand_lava2.png");
+}
+.battle-board-cell-terrain--sand_quicksand {
+  background-image: url("/images/battle/tiles/sand_quicksand.png");
+}
+.battle-board-cell-terrain--sand_thorns {
+  background-image: url("/images/battle/tiles/sand_thorns.png");
 }
 .battle-board-cell-terrain--snow {
+  background-image: url("/images/battle/tiles/snow.png");
 }
-.battle-board-cell-terrain--forest {
+.battle-board-cell-terrain--snow_hill {
+  background-image: url("/images/battle/tiles/snow_hill.png");
 }
-.battle-board-cell-terrain--hill {
+.battle-board-cell-terrain--snow_ice {
+  background-image: url("/images/battle/tiles/snow_ice.png");
 }
-.battle-board-cell-terrain--swam {
+.battle-board-cell-terrain--snow_ice_1 {
+  background-image: url("/images/battle/tiles/snow_ice_1.png");
 }
-.battle-board-cell-terrain--lava {
+.battle-board-cell-terrain--snow_ice_1-1 {
+  background-image: url("/images/battle/tiles/snow_ice_1-1.png");
 }
-.battle-board-cell-terrain--ice {
+.battle-board-cell-terrain--snow_ice_a {
+  background-image: url("/images/battle/tiles/snow_ice_a.png");
 }
-.battle-board-cell-terrain--bushes {
+.battle-board-cell-terrain--snow_ice_b {
+  background-image: url("/images/battle/tiles/snow_ice_b.png");
+}
+.battle-board-cell-terrain--snow_ice_c {
+  background-image: url("/images/battle/tiles/snow_ice_c.png");
+}
+.battle-board-cell-terrain--snow_ice_d {
+  background-image: url("/images/battle/tiles/snow_ice_d.png");
+}
+.battle-board-cell-terrain--snow_woods {
+  background-image: url("/images/battle/tiles/snow_woods.png");
 }
 .battle-board-cell-available-move {
   background: blue;
@@ -280,8 +384,16 @@ export default {
   opacity: 0.5;
 }
 .battle-board-cell-unit {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
+  width: 100%;
+  top: 1px;
+  left: 0;
+  height: 100%;
 }
+// .battle-board-cell-unit {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-board-cell-unit-border--1 {
+// }
 .battle-board-cell-enemy {
   background: url("/images/battle/enemy.png") center/100% no-repeat;
 }

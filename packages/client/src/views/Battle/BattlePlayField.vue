@@ -72,6 +72,9 @@ export default {
       return new Array(5 * 7).fill(null);
     }
   },
+  created() {
+    console.log("createddd");
+  },
   methods: {
     async showAbilitySelect() {
       return new Promise(resolve => {
@@ -201,7 +204,7 @@ export default {
         } else {
           units[0].index = 32;
         }
-        this.$store.dispatch("battle/update", { units });
+        this.$store.dispatch("battle/update", { userSquad: { units } });
       }
     }
   }
