@@ -573,7 +573,7 @@ export default {
       // #############################################
       // Combat
       // #############################################
-      
+
       if (data.terrain !== undefined) {
         state.game.terrain = data.terrain;
       }
@@ -582,15 +582,20 @@ export default {
       // Could be updated: index, hp, abilities, buffs
       if (data.userSquadUnit !== undefined) {
         data.userSquadUnit.forEach(updateEntry => {
-          const index = state.game.userSquad.findIndex(
+          const index = state.game.userSquad.units.findIndex(
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
-            Vue.set(
-              state.game.userSquad, 
-              index, 
-              { ...state.game.userSquad[index], ...updateEntry}
-            );
+            Vue.set(state.game.userSquad.units, index, {
+              ...state.game.userSquad.units[index],
+              ...updateEntry,
+              ...(updateEntry.index > -1 &&
+              updateEntry.index !== state.game.userSquad.units[index].index
+                ? {
+                    oldIndex: state.game.userSquad.units[index].index
+                  }
+                : {})
+            });
           }
         });
       }
@@ -599,15 +604,20 @@ export default {
       // Could be updated: index, hp, abilities, buffs
       if (data.enemySquadUnit !== undefined) {
         data.enemySquadUnit.forEach(updateEntry => {
-          const index = state.game.enemySquad.findIndex(
+          const index = state.game.enemySquad.units.findIndex(
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
-            Vue.set(
-              state.game.enemySquad, 
-              index, 
-              { ...state.game.userSquad[index], ...updateEntry}
-            );
+            Vue.set(state.game.enemySquad.units, index, {
+              ...state.game.enemySquad.units[index],
+              ...updateEntry,
+              ...(updateEntry.index > -1 &&
+              updateEntry.index !== state.game.enemySquad.units[index].index
+                ? {
+                    oldIndex: state.game.enemySquad.units[index].index
+                  }
+                : {})
+            });
           }
         });
       }
@@ -629,29 +639,29 @@ export default {
     setInitialState(state, data) {
       state.loaded = true;
 
-      const userData = data.user;
-      state.user.balance = userData.balance;
-      state.user.timers = userData.timers;
-      state.user.rewards = userData.rewards;
-      state.user.adventures = userData.adventures;
+      // const userData = data.user;
+      // state.user.balance = userData.balance;
+      // state.user.timers = userData.timers;
+      // state.user.rewards = userData.rewards;
+      // state.user.adventures = userData.adventures;
 
-      state.inventory = data.inventory;
+      // state.inventory = data.inventory;
 
-      const gameData = data.game;
-      state.game.mode = gameData.mode;
-      state.game.room = gameData.room;
-      state.game.level = gameData.level;
-      state.game.difficulty = gameData.difficulty;
-      state.game.adventureDifficulty = gameData.adventureDifficulty;
-      state.game.userSquad = gameData.userSquad;
-      state.game.enemySquad = gameData.enemySquad;
-      state.game.terrain = gameData.terrain;
+      // const gameData = data.game;
+      // state.game.mode = gameData.mode;
+      // state.game.room = gameData.room;
+      // state.game.level = gameData.level;
+      // state.game.difficulty = gameData.difficulty;
+      // state.game.adventureDifficulty = gameData.adventureDifficulty;
+      // state.game.userSquad = gameData.userSquad;
+      // state.game.enemySquad = gameData.enemySquad;
+      // state.game.terrain = gameData.terrain;
 
-      const combatData = gameData.combat;
-      state.game.combat.started = combatData.started;
-      state.game.combat.result = combatData.result;
-      state.game.combat.isMyTurn = combatData.isMyTurn;
-      state.game.combat.isMyTurn = combatData.isMyTurn;
+      // const combatData = gameData.combat;
+      // state.game.combat.started = combatData.started;
+      // state.game.combat.result = combatData.result;
+      // state.game.combat.isMyTurn = combatData.isMyTurn;
+      // state.game.combat.isMyTurn = combatData.isMyTurn;
     }
   },
   actions: {
@@ -811,6 +821,12 @@ export default {
     // BattleExit - Exit playground
     async exit() {
       await this.$app.$game._wrapOperation(Operations.BattleExit);
+    },
+
+    // update unit index
+    move(store, { unitId, index }) {
+      // @todo: check unit belongs to user or enemy
+      store.commit("updateState", { userSquadUnit: [{ unitId, index }] });
     },
 
     // BattleTestAction
