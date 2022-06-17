@@ -1,4 +1,5 @@
 import _ from "lodash";
+import Vue from "vue";
 import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
@@ -515,7 +516,7 @@ export default {
           unit => unit.unitId === data.updateUnit.unitId
         );
         if (index !== -1) {
-          state.inventory[index] = data.updateUnit;
+          Vue.set(state.inventory, index, data.updateUnit);
         }
       }
 
@@ -581,22 +582,15 @@ export default {
       // Could be updated: index, hp, abilities, buffs
       if (data.userSquadUnit !== undefined) {
         data.userSquadUnit.forEach(updateEntry => {
-          const index = state.userSquad.findIndex(
+          const index = state.game.userSquad.findIndex(
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
-            if (updateEntry.index !== undefined) {
-              state.userSquad[index].index = updateEntry.index;
-            }
-            if (updateEntry.hp !== undefined) {
-              state.userSquad[index].hp = updateEntry.hp;
-            }
-            if (updateEntry.abilities !== undefined) {
-              state.userSquad[index].abilities = updateEntry.abilities;
-            }
-            if (updateEntry.buffs !== undefined) {
-              state.userSquad[index].buffs = updateEntry.buffs;
-            }
+            Vue.set(
+              state.game.userSquad, 
+              index, 
+              { ...state.game.userSquad[index], ...updateEntry}
+            );
           }
         });
       }
@@ -605,22 +599,15 @@ export default {
       // Could be updated: index, hp, abilities, buffs
       if (data.enemySquadUnit !== undefined) {
         data.enemySquadUnit.forEach(updateEntry => {
-          const index = state.enemySquad.findIndex(
+          const index = state.game.enemySquad.findIndex(
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
-            if (updateEntry.index !== undefined) {
-              state.enemySquad[index].index = updateEntry.index;
-            }
-            if (updateEntry.hp !== undefined) {
-              state.enemySquad[index].hp = updateEntry.hp;
-            }
-            if (updateEntry.abilities !== undefined) {
-              state.enemySquad[index].abilities = updateEntry.abilities;
-            }
-            if (updateEntry.buffs !== undefined) {
-              state.enemySquad[index].buffs = updateEntry.buffs;
-            }
+            Vue.set(
+              state.game.enemySquad, 
+              index, 
+              { ...state.game.userSquad[index], ...updateEntry}
+            );
           }
         });
       }
