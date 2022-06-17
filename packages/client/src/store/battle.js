@@ -592,7 +592,7 @@ export default {
       // Could be updated: index, hp, abilities, buffs
       if (data.userSquadUnit !== undefined) {
         gameUpdated = true;
-        const userSquad = game.userSquad;
+        const userSquad = _.cloneDeep(game.userSquad);
         data.userSquadUnit.forEach(updateEntry => {
           const index = userSquad.units.findIndex(
             unit => unit.unitId === updateEntry.unitId
@@ -613,13 +613,14 @@ export default {
             }
           }
         });
+        game.userSquad = userSquad;
       }
 
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.enemySquadUnit !== undefined) {
         gameUpdated = true;
-        const enemySquad = game.enemySquad;
+        const enemySquad = _.cloneDeep(game.enemySquad);
         data.enemySquadUnit.forEach(updateEntry => {
           const index = enemySquad.units.findIndex(
             unit => unit.unitId === updateEntry.unitId
@@ -639,6 +640,7 @@ export default {
               enemySquad.units[index].buffs = updateEntry.buffs;
             }
           }
+          game.enemySquad = enemySquad;
         });
       }
 
