@@ -539,104 +539,131 @@ export default {
       }
 
       // Game data
+      let gameUpdated = false;
+      const game = _.cloneDeep(state.game);
+
       if (data.mode !== undefined) {
-        state.game.mode = data.mode;
+        gameUpdated = true;
+        game.mode = data.mode;
       }
       if (data.room !== undefined) {
-        state.game.room = data.room;
+        gameUpdated = true;
+        game.room = data.room;
       }
       if (data.level !== undefined) {
-        state.game.level = data.level;
+        gameUpdated = true;
+        game.level = data.level;
       }
       if (data.difficulty !== undefined) {
-        state.game.difficulty = data.difficulty;
+        gameUpdated = true;
+        game.difficulty = data.difficulty;
       }
       if (data.adventureDifficulty !== undefined) {
-        state.game.adventureDifficulty = data.adventureDifficulty;
+        gameUpdated = true;
+        game.adventureDifficulty = data.adventureDifficulty;
       }
 
       // Set a whole user/enemy squad.
       // Will be called only while in a lobby.
       // Not for a combat.
       if (data.userSquad !== undefined) {
-        state.game.userSquad.power = data.userSquad.power;
-        state.game.userSquad.bonuses = data.userSquad.bonuses;
-        state.game.userSquad.units = data.userSquad.units;
+        gameUpdated = true;
+        game.userSquad.power = data.userSquad.power;
+        game.userSquad.bonuses = data.userSquad.bonuses;
+        game.userSquad.units = data.userSquad.units;
       }
       if (data.enemySquad !== undefined) {
-        state.game.enemySquad.power = data.enemySquad.power;
-        state.game.enemySquad.bonuses = data.enemySquad.bonuses;
-        state.game.enemySquad.units = data.enemySquad.units;
+        gameUpdated = true;
+        game.enemySquad.power = data.enemySquad.power;
+        game.enemySquad.bonuses = data.enemySquad.bonuses;
+        game.enemySquad.units = data.enemySquad.units;
       }
 
       // #############################################
       // Combat
       // #############################################
-      
+
       if (data.terrain !== undefined) {
-        state.game.terrain = data.terrain;
+        gameUpdated = true;
+        game.terrain = data.terrain;
       }
 
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.userSquadUnit !== undefined) {
+        gameUpdated = true;
+        const userSquad = _.cloneDeep(game.userSquad);
         data.userSquadUnit.forEach(updateEntry => {
-          const index = state.userSquad.findIndex(
+          const index = userSquad.units.findIndex(
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
             if (updateEntry.index !== undefined) {
-              state.userSquad[index].index = updateEntry.index;
+              userSquad.units[index].oldIndex = userSquad.units[index].index;
+              userSquad.units[index].index = updateEntry.index;
             }
             if (updateEntry.hp !== undefined) {
-              state.userSquad[index].hp = updateEntry.hp;
+              userSquad.units[index].hp = updateEntry.hp;
             }
             if (updateEntry.abilities !== undefined) {
-              state.userSquad[index].abilities = updateEntry.abilities;
+              userSquad.units[index].abilities = updateEntry.abilities;
             }
             if (updateEntry.buffs !== undefined) {
-              state.userSquad[index].buffs = updateEntry.buffs;
+              userSquad.units[index].buffs = updateEntry.buffs;
             }
           }
         });
+        game.userSquad = userSquad;
       }
 
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.enemySquadUnit !== undefined) {
+        gameUpdated = true;
+        const enemySquad = _.cloneDeep(game.enemySquad);
         data.enemySquadUnit.forEach(updateEntry => {
-          const index = state.enemySquad.findIndex(
+          const index = enemySquad.units.findIndex(
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
             if (updateEntry.index !== undefined) {
-              state.enemySquad[index].index = updateEntry.index;
+              enemySquad.units[index].oldIndex = enemySquad.units[index].index;
+              enemySquad.units[index].index = updateEntry.index;
             }
             if (updateEntry.hp !== undefined) {
-              state.enemySquad[index].hp = updateEntry.hp;
+              enemySquad.units[index].hp = updateEntry.hp;
             }
             if (updateEntry.abilities !== undefined) {
-              state.enemySquad[index].abilities = updateEntry.abilities;
+              enemySquad.units[index].abilities = updateEntry.abilities;
             }
             if (updateEntry.buffs !== undefined) {
-              state.enemySquad[index].buffs = updateEntry.buffs;
+              enemySquad.units[index].buffs = updateEntry.buffs;
             }
           }
+          game.enemySquad = enemySquad;
         });
       }
 
       // Runtime
       if (data.combatStarted !== undefined) {
-        state.game.combat.started = data.combatStarted;
+        gameUpdated = true;
+        game.combat.started = data.combatStarted;
       }
       if (data.combatResult !== undefined) {
-        state.game.combat.result = data.combatResult;
+        gameUpdated = true;
+        game.combat.result = data.combatResult;
       }
       if (data.combatMoveCells !== undefined) {
-        state.game.combat.runtime.moveCells = data.combat.moveCells;
+        gameUpdated = true;
+        game.combat.runtime.moveCells = data.combat.moveCells;
       }
       if (data.combatAttackCells !== undefined) {
-        state.game.combat.runtime.attackCells = data.combat.attackCells;
+        gameUpdated = true;
+        game.combat.runtime.attackCells = data.combat.attackCells;
+      }
+
+      if (gameUpdated) {
+        state.game = game;
       }
     },
     setInitialState(state, data) {
@@ -824,6 +851,12 @@ export default {
     // BattleExit - Exit playground
     async exit() {
       await this.$app.$game._wrapOperation(Operations.BattleExit);
+    },
+
+    // update unit index
+    move(store, { unitId, index }) {
+      // @todo: check unit belongs to user or enemy
+      store.commit("updateState", { userSquadUnit: [{ unitId, index }] });
     },
 
     // BattleTestAction
