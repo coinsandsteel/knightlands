@@ -72,6 +72,7 @@
           <div class="battle-board-cell-enemy absolute-stretch"></div>
         </div>
       </Transition>
+      <div class="effect-wrapper absolute-stretch"></div>
     </div>
   </div>
 </template>
@@ -98,7 +99,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("battle", ["unitIndexes", "game"]),
+    ...mapState("battle", ["game"]),
     ...mapGetters("battle", [
       "units",
       "selectedUnit",
@@ -153,31 +154,38 @@ export default {
     }
   },
   watch: {
-    unitIndex(value, oldValue) {
+    unitIndex(value) {
       if (!(value > -1)) {
         return;
       }
 
-      if (
-        this.unit &&
-        this.unit.unitId &&
-        this.unitIndexes &&
-        this.unitIndexes[this.unit.unitId]
-      ) {
-        let previousUnitIndex = -1;
-        for (
-          let i = this.unitIndexes[this.unit.unitId].length - 1;
-          i > 0;
-          i--
-        ) {
-          if (value === this.unitIndexes[this.unit.unitId][i]) {
-            previousUnitIndex = this.unitIndexes[this.unit.unitId][i - 1];
-            break;
-          }
-        }
-
-        this.previousUnitIndex = previousUnitIndex;
+      if (!(this.unit && this.unit.unitId && this.unit.oldIndex > -1)) {
+        this.previousUnitIndex = null;
+        return;
       }
+
+      this.previousUnitIndex = this.unit.oldIndex;
+
+      // if (
+      //   this.unit &&
+      //   this.unit.unitId &&
+      //   this.unitIndexes &&
+      //   this.unitIndexes[this.unit.unitId]
+      // ) {
+      //   let previousUnitIndex = -1;
+      //   for (
+      //     let i = this.unitIndexes[this.unit.unitId].length - 1;
+      //     i > 0;
+      //     i--
+      //   ) {
+      //     if (value === this.unitIndexes[this.unit.unitId][i]) {
+      //       previousUnitIndex = this.unitIndexes[this.unit.unitId][i - 1];
+      //       break;
+      //     }
+      //   }
+
+      //   this.previousUnitIndex = previousUnitIndex;
+      // }
 
       // this.previousUnitIndex = value;
     },

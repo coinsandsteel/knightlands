@@ -22,8 +22,15 @@
         type="green"
         width="20rem"
         class="inline-block"
-        @click="moveHandler"
+        @click="move1Handler"
         >move</CustomButton
+      >
+      <CustomButton
+        type="green"
+        width="20rem"
+        class="inline-block"
+        @click="groupAttack1Handler"
+        >group attack</CustomButton
       >
     </div>
     <Transition name="fade" appear>
@@ -39,8 +46,16 @@
 import { mapState, mapGetters } from "vuex";
 import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
+import anime from "animejs/lib/anime.es.js";
+import * as battle from "@/../../knightlands-shared/battle";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
 import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
+
+const commonAnimationParams = {
+  duration: 200,
+  easing: "linear",
+  delay: anime.stagger(30)
+};
 
 export default {
   components: {
@@ -195,16 +210,142 @@ export default {
         return;
       }
     },
-    moveHandler() {
+    async processQueue(queue) {
+      if (!(queue && queue.length > 0)) {
+        return;
+      }
+
+      for (let i = 0; i < queue.length; i++) {
+        const step = queue[i];
+        await this.processQueueStep(step);
+      }
+    },
+    async processQueueStep(step) {
+      if (!step) {
+        return;
+      }
+
+      if (step.action === "move") {
+        await this.moveHandler(step);
+      } else if (step.action === battle.ABILITY_GROUP_ATTACK) {
+        await this.groupAttackHandler(step);
+      } else if (step.action === battle.ABILITY_GROUP_BUFF) {
+        await this.groupBuffHandler(step);
+      } else if (step.action === battle.ABILITY_GROUP_DE_BUFF) {
+        await this.moveHandler(step);
+      }
+    },
+    moveHandler(step) {
+      this.$store.dispatch("battle/move", {
+        unitId: step.unitId,
+        index: step.newIndex
+      });
+    },
+    async effectHandler(step) {
+      const el = document.createElement("div");
+      el.className =
+        "absolute-stretch battle-effect--other-effect font-size-22 flex flex-center text-center";
+      el.style = "opacity: 0;";
+      el.innerText = "effect";
+      await this.animateSlideAndFade({ index: 34, el });
+      el.parentElement.removeChild(el);
+    },
+    async groupAttackHandler(step) {
+      const el = document.createElement("div");
+      el.className = "absolute-stretch battle-effect--group-attack";
+      el.style = "opacity: 0;";
+      await this.animateSlideAndFade({ index: 30, el });
+      el.parentElement.removeChild(el);
+    },
+    async groupBuffHandler(step) {
+      const el = document.createElement("div");
+      el.className = "absolute-stretch battle-effect--group-buff";
+      el.style = "opacity: 0;";
+      await this.animateSlideAndFade({ index: 31, el });
+      el.parentElement.removeChild(el);
+    },
+    async groupDeBuffHandler(step) {
+      const el = document.createElement("div");
+      el.className = "absolute-stretch battle-effect--group-de-buff";
+      el.style = "opacity: 0;";
+      await this.animateSlideAndFade({ index: 32, el });
+      el.parentElement.removeChild(el);
+    },
+    async groupSelfBuffHandler(step) {
+      const el = document.createElement("div");
+      el.className = "absolute-stretch battle-effect--self-buff";
+      el.style = "opacity: 0;";
+      await this.animateSlideAndFade({ index: 33, el });
+      el.parentElement.removeChild(el);
+    },
+    async animateSlideAndFade({ index, el }) {
+      const cells = document.querySelectorAll(".battle-board-cell-container");
+      const effectContainer = cells[index].querySelector(".effect-wrapper");
+      effectContainer.appendChild(el);
+
+      const gapSize = 10;
+      const animation = anime({
+        ...commonAnimationParams,
+        duration: 600,
+        targets: el,
+        translateY: [
+          0,
+          `calc(-5% - ${gapSize}px)`,
+          `calc(-80% - ${gapSize}px)`,
+          `calc(-100% - ${gapSize}px)`
+        ],
+        opacity: [0, 0.8, 1, 0]
+      });
+      await animation.finished;
+    },
+    resetStyle(el, resetStyle) {
+      if (!resetStyle) {
+        return;
+      }
+
+      if (el && typeof el.length === "number") {
+        el.forEach(item => item.removeAttribute("style"));
+      } else {
+        el.removeAttribute("style");
+      }
+    },
+    groupAttack1Handler() {
+      // this.groupAttackHandler({
+      //   action: battle.ABILITY_GROUP_ATTACK,
+      //   source: {
+      //     unitId: "v4nv9",
+      //     index: 3
+      //   },
+      //   target: {
+      //     unitId: "v4nv9",
+      //     index: 8,
+      //     newHp: 5
+      //   },
+      //   ability: {
+      //     abilityClass: battle.ABILITY_DEATH_SHOT,
+      //     damage: 5,
+      //     criticalHit: false
+      //   }
+      // });
+      this.groupAttackHandler({});
+      this.groupBuffHandler({});
+      this.groupDeBuffHandler({});
+      this.groupSelfBuffHandler({});
+      this.effectHandler({});
+    },
+    move1Handler() {
       const units = _.cloneDeep(this.units);
-      console.log("units", units, units[0].index);
       if (units && units.length > 0) {
-        if (units[0].index === 32) {
-          units[0].index = 17;
-        } else {
-          units[0].index = 32;
-        }
-        this.$store.dispatch("battle/update", { userSquad: { units } });
+        // if (units[0].index === 32) {
+        //   units[0].index = 17;
+        // } else {
+        //   units[0].index = 32;
+        // }
+        // this.$store.dispatch("battle/update", { userSquad: { units } });
+        this.$store.dispatch("battle/move", {
+          unitId: units[0].unitId,
+          index: units[0].index === 17 ? 32 : 17
+        });
       }
     }
   }
@@ -214,5 +355,19 @@ export default {
 .battle-play-board {
   display: grid;
   grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));
+}
+::v-deep {
+  .battle-effect--group-attack {
+    background: url("/images/battle/effect/attack.png") center/70% no-repeat;
+  }
+  .battle-effect--group-buff {
+    background: url("/images/battle/effect/buff.png") center/70% no-repeat;
+  }
+  .battle-effect--group-de-buff {
+    background: url("/images/battle/effect/de_buff.png") center/70% no-repeat;
+  }
+  .battle-effect--self-buff {
+    background: url("/images/battle/effect/self_buff.png") center/70% no-repeat;
+  }
 }
 </style>
