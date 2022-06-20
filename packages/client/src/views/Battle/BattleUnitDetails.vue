@@ -51,13 +51,13 @@
               >
                 {{ $t("exp+") }}
               </CustomButton>
-              <CustomButton
+              <!--CustomButton
                 type="blue"
                 class="inline-block margin-right-2 margin-top-1"
                 @click="decreaseHandler"
               >
                 {{ $t("exp-") }}
-              </CustomButton>
+              </CustomButton-->
             </div>
             <div class="margin-top-2">
               <div>Hp - {{ unit.characteristics.hp }}</div>

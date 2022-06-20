@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-item-center" :class="{ 'opacity-50': isLocked }">
+    <div class="flex flex-item-center" :class="{ 'opacity-50': !nextLevel }">
       <BattleUnitAbility :ability="ability" />
       <div class="margin-left-1">
         {{ description }}
@@ -16,7 +16,7 @@
         </CustomButton> -->
 
         <CustomButton
-          v-if="ability && nextLevel && !isLocked && upgradePrice"
+          v-if="ability && nextLevel && upgradePrice"
           type="green"
           class="inline-block margin-right-2 margin-top-1"
           @click="upgradeHandler"

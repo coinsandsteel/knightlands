@@ -53,6 +53,7 @@ const inventoryUnit = {
     {
       abilityClass: "axe_blow",
       abilityGroup: battle.ABILITY_GROUP_ATTACK,
+      tier: 1,
       // canLearn: true,
       level: {
         // unit lvl opens ability lvl > pay crystal > lvl up
@@ -65,6 +66,7 @@ const inventoryUnit = {
     {
       abilityClass: "axe_blow2",
       abilityGroup: battle.ABILITY_GROUP_BUFF,
+      tier: 2,
       // canLearn: false,
       level: {
         // unit lvl opens ability lvl > pay crystal > lvl up
@@ -77,6 +79,7 @@ const inventoryUnit = {
     {
       abilityClass: "axe_blow3",
       abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
+      tier: 3,
       // canLearn: false,
       level: {
         // unit lvl opens ability lvl > pay crystal > lvl up
@@ -173,6 +176,7 @@ export default {
               {
                 abilityClass: "axe_blow",
                 abilityGroup: battle.ABILITY_GROUP_ATTACK,
+                tier: 1,
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,
@@ -193,6 +197,7 @@ export default {
               {
                 abilityClass: "axe_blow",
                 abilityGroup: battle.ABILITY_GROUP_BUFF,
+                tier: 1,
                 cooldown: {
                   enabled: false,
                   stepsLeft: 0,
@@ -630,29 +635,29 @@ export default {
     setInitialState(state, data) {
       state.loaded = true;
 
-      // const userData = data.user;
-      // state.user.balance = userData.balance;
-      // state.user.timers = userData.timers;
-      // state.user.rewards = userData.rewards;
-      // state.user.adventures = userData.adventures;
+      const userData = data.user;
+      state.user.balance = userData.balance;
+      state.user.timers = userData.timers;
+      state.user.rewards = userData.rewards;
+      state.user.adventures = userData.adventures;
 
-      // state.inventory = data.inventory;
+      state.inventory = data.inventory;
 
-      // const gameData = data.game;
-      // state.game.mode = gameData.mode;
-      // state.game.room = gameData.room;
-      // state.game.level = gameData.level;
-      // state.game.difficulty = gameData.difficulty;
-      // state.game.adventureDifficulty = gameData.adventureDifficulty;
-      // state.game.userSquad = gameData.userSquad;
-      // state.game.enemySquad = gameData.enemySquad;
-      // state.game.terrain = gameData.terrain;
+      const gameData = data.game;
+      state.game.mode = gameData.mode;
+      state.game.room = gameData.room;
+      state.game.level = gameData.level;
+      state.game.difficulty = gameData.difficulty;
+      state.game.adventureDifficulty = gameData.adventureDifficulty;
+      state.game.userSquad = gameData.userSquad;
+      state.game.enemySquad = gameData.enemySquad;
+      state.game.terrain = gameData.terrain;
 
-      // const combatData = gameData.combat;
-      // state.game.combat.started = combatData.started;
-      // state.game.combat.result = combatData.result;
-      // state.game.combat.isMyTurn = combatData.isMyTurn;
-      // state.game.combat.isMyTurn = combatData.isMyTurn;
+      const combatData = gameData.combat;
+      state.game.combat.started = combatData.started;
+      state.game.combat.result = combatData.result;
+      state.game.combat.isMyTurn = combatData.isMyTurn;
+      state.game.combat.isMyTurn = combatData.isMyTurn;
     }
   },
   actions: {
