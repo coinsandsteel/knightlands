@@ -585,17 +585,13 @@ export default {
           const index = state.game.userSquad.units.findIndex(
             unit => unit.unitId === updateEntry.unitId
           );
+
           if (index !== -1) {
-            Vue.set(state.game.userSquad.units, index, {
-              ...state.game.userSquad.units[index],
-              ...updateEntry,
-              ...(updateEntry.index > -1 &&
-              updateEntry.index !== state.game.userSquad.units[index].index
-                ? {
-                    oldIndex: state.game.userSquad.units[index].index
-                  }
-                : {})
-            });
+            Vue.set(
+              state.game.userSquad.units,
+              index,
+              { ...state.game.userSquad.units[index], ...updateEntry}
+            );
           }
         });
       }
@@ -608,16 +604,11 @@ export default {
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
-            Vue.set(state.game.enemySquad.units, index, {
-              ...state.game.enemySquad.units[index],
-              ...updateEntry,
-              ...(updateEntry.index > -1 &&
-              updateEntry.index !== state.game.enemySquad.units[index].index
-                ? {
-                    oldIndex: state.game.enemySquad.units[index].index
-                  }
-                : {})
-            });
+            Vue.set(
+              state.game.enemySquad.units,
+              index,
+              { ...state.game.enemySquad.units[index], ...updateEntry}
+            );
           }
         });
       }
