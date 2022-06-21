@@ -1,16 +1,21 @@
 <template>
   <div>
-    <BattlePlayField />
+    <BattlePlayResult v-if="isResultVisible" />
+    <BattlePlayField v-else />
   </div>
 </template>
 <script>
 import BattlePlayField from "@/views/Battle/BattlePlayField.vue";
+import BattlePlayResult from "@/views/Battle/BattlePlayResult.vue";
 export default {
   components: {
-    BattlePlayField
+    BattlePlayField,
+    BattlePlayResult
   },
   data() {
-    return {};
+    return {
+      isResultVisible: true
+    };
   }
 };
 </script>

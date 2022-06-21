@@ -1,6 +1,7 @@
 <template>
   <div class="screen-content overflow-auto" v-if="true || loaded">
-    <BattlePlayField />
+    <BattlePlayResult v-if="isResultVisible" />
+    <BattlePlayField v-else />
 
     <portal v-if="isActive" to="footer" :slim="true">
       <div class="width-100 flex flex-items-start">
@@ -22,15 +23,18 @@
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import AppSection from "@/AppSection.vue";
 import BattlePlayField from "@/views/Battle/BattlePlayField.vue";
+import BattlePlayResult from "@/views/Battle/BattlePlayResult.vue";
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
-    BattlePlayField
+    BattlePlayField,
+    BattlePlayResult
   },
   data() {
     return {
-      loaded: true
+      loaded: true,
+      isResultVisible: true
     };
   },
   methods: {

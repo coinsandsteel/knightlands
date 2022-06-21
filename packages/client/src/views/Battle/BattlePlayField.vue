@@ -44,12 +44,14 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import { create } from "vue-modal-dialogs";
 import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import anime from "animejs/lib/anime.es.js";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
 import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
+import BattleObstacleInformation from "@/views/Battle/BattleObstacleInformation.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -90,7 +92,15 @@ export default {
   created() {
     console.log("createddd");
   },
+  mounted() {
+    console.log("createddd");
+    this.showObstacleInformation();
+  },
   methods: {
+    async showObstacleInformation() {
+      const show = create(BattleObstacleInformation);
+      await show();
+    },
     async showAbilitySelect() {
       return new Promise(resolve => {
         this.abilitySelectResolve = resolve;
