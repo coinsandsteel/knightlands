@@ -44,6 +44,7 @@ export default {
   },
   computed: {
     ...mapState("battle", [
+      "game",
       "inventory",
       "selectedTiersFilter",
       "selectedClassesFilter"
@@ -73,11 +74,17 @@ export default {
           this.selectedClassesFilter.includes(item.unitClass)
         );
       }
-      // for (let i = 0; i < 42; i++) {
-      //   result.push({
-      //     id: i + 1
-      //   });
-      // }
+
+      if (this.shouldFillSlot) {
+        const squadIds = (this.game &&
+        this.game.userSquad &&
+        this.game.userSquad.units
+          ? this.game.userSquad.units
+          : []
+        ).map(unit => unit && unit.unitId);
+
+        result = result.filter(({ unitId }) => !squadIds.includes(unitId));
+      }
 
       return result;
     }
@@ -87,12 +94,7 @@ export default {
   },
   methods: {
     async clickHandler({ unit }) {
-      console.log("unit", unit);
       if (this.shouldFillSlot) {
-        console.log("fillSquadSlot", {
-          unitId: unit.unitId,
-          index: this.$route.params.index
-        });
         this.$store.dispatch("battle/fillSquadSlot", {
           unitId: unit.unitId,
           index: this.$route.params.index
@@ -110,7 +112,6 @@ export default {
       });
     },
     async showUnitsFilter() {
-      console.log("showUnitsFilter");
       const show = create(BattleUnitsFilter);
       await show();
     },
@@ -125,7 +126,12 @@ export default {
       });
     },
     handleBackButton() {
-      this.$router.replace({ name: "battle-squad-home" });
+      // back button
+      if (this.shouldFillSlot) {
+        this.$router.replace({ name: "battle-squad-home" });
+      } else {
+        this.$router.replace({ name: "battle-menu" });
+      }
       return true;
     }
   }
