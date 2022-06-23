@@ -1,8 +1,8 @@
 <template>
   <div class="padding-2">
     <div class="font-size-22">
-      <template>Power: {{ power }}</template>
-      <template v-if="bonus">, Bonus: {{ bonus }}</template>
+      <p>Pwr: {{ power }}</p>
+      <p v-if="bonuses">Bonuses: <br/>{{ bonuses }}</p>
     </div>
     <BattleUnitList
       :units="units"
@@ -18,6 +18,9 @@
       @click="updateUnitHandler(units.length)"
       >{{ $t("add") }}</CustomButton
     >
+    <portal to="footer" :slim="true" v-if="isActive">
+      <CustomButton type="blue" @click="buildSquad">Build squad</CustomButton>
+    </portal>
   </div>
 </template>
 <script>
@@ -28,9 +31,10 @@ import { mapState } from "vuex";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 // import AppSection from "@/AppSection.vue";
 // import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
-  // mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [ActivityMixin],
   components: {
     // BattleUnit,
     BattleUnitList
@@ -58,7 +62,7 @@ export default {
     power() {
       return this.game && this.game.userSquad ? this.game.userSquad.power : 0;
     },
-    bonus() {
+    bonuses() {
       const bonusItems =
         this.game && this.game.userSquad
           ? this.game.userSquad.bonuses || []
@@ -67,18 +71,15 @@ export default {
       if (!bonusItems.length > 0) {
         return null;
       }
-      return bonusItems
-        .map(item => {
-          return (
-            this.$t(item.bonusClass) +
-            (item.delta > 0 ? " +" : " ") +
-            item.delta
-          );
-        })
-        .join(", ");
+      return bonusItems;
     }
   },
   methods: {
+    buildSquad() {
+      this.$store.dispatch("battle/testAction", {
+        action: "buildSquad"
+      });
+    },
     async clickHandler({ unit, index }) {
       if (!unit) {
         this.updateUnitHandler(index);

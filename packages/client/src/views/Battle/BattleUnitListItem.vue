@@ -5,9 +5,8 @@
   >
     <BattleUnit :unit="unit" />
     <template v-if="unit">
-      <div class="padding-left-2">Tier: {{ tier }}</div>
-      <div class="padding-left-2">Level: {{ level }}</div>
-      <div class="padding-left-2">Exp: {{ experience }}</div>
+      <div class="padding-left-2">{{ title }}</div>
+      <div class="padding-left-2">tier {{ tier }}, pwr: {{ power }}</div>
       <div class="padding-left-2">
         <BattleUnitAbility
           v-for="(ability, index) in abilities"
@@ -42,7 +41,13 @@ export default {
       return this.unit ? this.unit.tier || 0 : 0;
     },
     level() {
-      return this.unit && this.unit.level ? this.unit.level.current || 0 : 0;
+      return this.unit ? this.unit.level || 0 : 0;
+    },
+    power() {
+      return this.unit ? this.unit.power || 0 : 0;
+    },
+    title() {
+      return this.unit ? `${this.unit.unitTribe} ${this.unit.unitClass}` : "";
     },
     experience() {
       return this.unit && this.unit.expirience
