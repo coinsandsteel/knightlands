@@ -33,23 +33,6 @@
         </CustomButton>
       </div>
     </div>
-    <div class="text-align-left">
-      <CustomButton
-        type="blue"
-        class="inline-block margin-right-2 margin-top-1"
-        @click="increaseHandler"
-      >
-        {{ $t("lvl+") }}
-      </CustomButton>
-
-      <CustomButton
-        type="blue"
-        class="inline-block margin-right-2 margin-top-1"
-        @click="decreaseHandler"
-      >
-        {{ $t("lvl-") }}
-      </CustomButton>
-    </div>
   </div>
 </template>
 <script>
