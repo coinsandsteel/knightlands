@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       loaded: true,
-      isResultVisible: true
+      isResultVisible: false
     };
   },
   methods: {
