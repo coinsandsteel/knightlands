@@ -13,7 +13,7 @@
           type="yellow"
           width="20rem"
           class="inline-block"
-          @click="handleStart"
+          @click="handleStart(index)"
           >{{ $t("fight???") }}</CustomButton
         >
       </div>
@@ -37,10 +37,14 @@ export default {
   },
   methods: {
     unitClickHandler() {},
-    handleStart() {
-      this.$store.dispatch("battle/enterLevel", {
-        room: this.$route.params.id,
-        level: battle.GAME_DIFFICULTY_MEDIUM
+    handleStart(index) {
+      const options = [
+        battle.GAME_DIFFICULTY_LOW,
+        battle.GAME_DIFFICULTY_MEDIUM,
+        battle.GAME_DIFFICULTY_HIGH
+      ];
+      this.$store.dispatch("battle/enterDuel", {
+        difficulty: options[index]
       });
       this.$router.push({
         name: "battle-duels-play",
