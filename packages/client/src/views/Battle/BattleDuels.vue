@@ -21,6 +21,7 @@
   </div>
 </template>
 <script>
+import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {
   components: {
@@ -52,7 +53,7 @@ export default {
     handleStart() {
       this.$store.dispatch("battle/enterLevel", {
         room: this.$route.params.id,
-        level: null
+        level: battle.GAME_DIFFICULTY_MEDIUM
       });
       this.$router.push({
         name: "battle-duels-play",

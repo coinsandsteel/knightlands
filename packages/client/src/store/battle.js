@@ -332,7 +332,7 @@ export default {
                 index: 8,
                 newHp: 5
               },
-              ability: {
+              ability: { // may be null
                 abilityClass: battle.ABILITY_DEATH_SHOT,
                 damage: 5,
                 criticalHit: false
@@ -797,6 +797,27 @@ export default {
       await this.$app.$game._wrapOperation(Operations.BattleEnterLevel, {
         room,
         level
+      });
+      //store.commit("setIsDisabled", false);
+    },
+
+    // BattleFetchDuelOptions
+    async fetchDuelOptions() {
+      return (
+        await this.$app.$game._wrapOperation(Operations.BattleFetchDuelOptions)
+      )
+      .response;
+    },
+
+    // BattleEnterDuel
+    // - difficulty: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
+    async enterDuel(store, { difficulty }) {
+      /*Vue.prototype.$app.logEvent("april-next-lvl", {
+        level: store.state.level + 1,
+        booster
+      });*/
+      await this.$app.$game._wrapOperation(Operations.BattleEnterDuel, {
+        difficulty
       });
       //store.commit("setIsDisabled", false);
     },
