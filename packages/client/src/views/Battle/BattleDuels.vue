@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div v-for="item in items" :key="item.user.id">
+    <div v-for="(units, index) in items" :key="'option_' + index">
       <div class="battle-unit-list">
         <BattleUnit
-          v-for="unit in item.units"
+          v-for="unit in units"
           :key="unit.unitId"
           @click="unitClickHandler"
         />
