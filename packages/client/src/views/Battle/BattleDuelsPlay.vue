@@ -14,7 +14,7 @@ export default {
   },
   data() {
     return {
-      isResultVisible: true
+      isResultVisible: false
     };
   }
 };

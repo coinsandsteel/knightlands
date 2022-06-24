@@ -10,7 +10,8 @@
             <div class="margin-top-2">
               <BattleUnit :unit="unit" />
             </div>
-            <div class="margin-top-1">Tier: {{ unit.tier }}</div>
+            <div class="margin-top-1 font-size-30"># {{ unit.unitTribe }} {{ unit.unitClass }} #</div>
+            <div class="margin-top-2">Tier: {{ unit.tier }}</div>
             <div>
               Level: {{ level }}
               <CustomButton
