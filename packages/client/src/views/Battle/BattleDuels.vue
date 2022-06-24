@@ -28,25 +28,12 @@ export default {
     BattleUnit
   },
   data() {
-    return {};
+    return {
+      items: []
+    };
   },
-  computed: {
-    items() {
-      const result = [];
-      result.push({
-        user: { id: 1 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
-      });
-      result.push({
-        user: { id: 2 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
-      });
-      result.push({
-        user: { id: 3 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
-      });
-      return result;
-    }
+  async activated() {
+    this.items = await this.$store.dispatch("battle/fetchDuelOptions");
   },
   methods: {
     unitClickHandler() {},
