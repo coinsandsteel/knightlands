@@ -54,6 +54,7 @@
               }
             ]"
             :unit="unit"
+            :shouldShowExtraInfo="true"
           />
         </div>
       </Transition>

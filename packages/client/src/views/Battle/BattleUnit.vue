@@ -19,6 +19,12 @@
       <div v-if="unit" class="battle-unit-image absolute"></div>
       <div class="battle-unit-background absolute-stretch"></div>
       <div class="absolute-stretch"></div>
+      <div
+        v-if="shouldShowExtraInfo"
+        class="absolute battle-unit-hp font-size-18"
+      >
+        {{ hp }}
+      </div>
     </div>
   </div>
 </template>
@@ -26,12 +32,18 @@
 export default {
   props: {
     unit: Object,
-    isSelected: Boolean
+    isSelected: Boolean,
+    shouldShowExtraInfo: Boolean
   },
   data() {
     return {
       // isSelected1: false
     };
+  },
+  computed: {
+    hp() {
+      return this.unit ? this.unit.hp || 0 : null;
+    }
   },
   methods: {
     clickHandler() {
@@ -42,6 +54,15 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.battle-unit-hp {
+  right: 0;
+  top: 0;
+  background: #fff;
+  border: solid 1px #777;
+  color: #333;
+  border-radius: 12px;
+  padding: 0 4px;
+}
 .battle-unit-wrapper {
   // background: url("/images/battle/units/unit.png") center/100% no-repeat;
   padding-bottom: 100%;

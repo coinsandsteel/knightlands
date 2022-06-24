@@ -5,6 +5,7 @@
         <BattleUnit
           v-for="unit in units"
           :key="unit.unitId"
+          :unit="unit"
           @click="unitClickHandler"
         />
       </div>

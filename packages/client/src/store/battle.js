@@ -332,7 +332,8 @@ export default {
                 index: 8,
                 newHp: 5
               },
-              ability: { // may be null
+              ability: {
+                // may be null
                 abilityClass: battle.ABILITY_DEATH_SHOT,
                 damage: 5,
                 criticalHit: false
@@ -592,11 +593,10 @@ export default {
           );
 
           if (index !== -1) {
-            Vue.set(
-              state.game.userSquad.units,
-              index,
-              { ...state.game.userSquad.units[index], ...updateEntry}
-            );
+            Vue.set(state.game.userSquad.units, index, {
+              ...state.game.userSquad.units[index],
+              ...updateEntry
+            });
           }
         });
       }
@@ -609,11 +609,10 @@ export default {
             unit => unit.unitId === updateEntry.unitId
           );
           if (index !== -1) {
-            Vue.set(
-              state.game.enemySquad.units,
-              index,
-              { ...state.game.enemySquad.units[index], ...updateEntry}
-            );
+            Vue.set(state.game.enemySquad.units, index, {
+              ...state.game.enemySquad.units[index],
+              ...updateEntry
+            });
           }
         });
       }
@@ -651,7 +650,9 @@ export default {
       state.game.adventureDifficulty = gameData.adventureDifficulty;
       state.game.userSquad = gameData.userSquad;
       state.game.enemySquad = gameData.enemySquad;
-      state.game.terrain = gameData.terrain;
+      if (gameData.terrain && gameData.terrain.length > 0) {
+        state.game.terrain = gameData.terrain;
+      }
 
       const combatData = gameData.combat;
       state.game.combat.started = combatData.started;
@@ -805,8 +806,7 @@ export default {
     async fetchDuelOptions() {
       return (
         await this.$app.$game._wrapOperation(Operations.BattleFetchDuelOptions)
-      )
-      .response;
+      ).response;
     },
 
     // BattleEnterDuel
