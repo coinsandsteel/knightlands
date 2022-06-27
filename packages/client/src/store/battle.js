@@ -631,6 +631,9 @@ export default {
       if (data.combatAttackCells !== undefined) {
         state.game.combat.runtime.attackCells = data.combat.attackCells;
       }
+      if (data.effects !== undefined) {
+        state.game.combat.runtime.queue.push(...data.effects);
+      }
     },
     setInitialState(state, data) {
       state.loaded = true;
