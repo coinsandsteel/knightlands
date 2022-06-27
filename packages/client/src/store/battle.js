@@ -157,8 +157,6 @@ export default {
       level: null, // number|null: 0-5
       difficulty: null, // string: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
       adventureDifficulty: GAME_DIFFICULTY_MEDIUM, // string GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
-      // isAdventureHardDifficultyAvailable: false,
-      // adventureRoomAvailable: 1,
 
       // User squad
       userSquad: {
@@ -219,7 +217,7 @@ export default {
 
       // Terrain
       terrain: [
-        { terrainId: "45c43rv", terrainClass: battle.TERRAIN_GRASS, index: 0 },
+        /*{ terrainId: "45c43rv", terrainClass: battle.TERRAIN_GRASS, index: 0 },
         {
           terrainId: "v34vt34",
           terrainClass: battle.TERRAIN_GRASS_SWAMP,
@@ -297,7 +295,7 @@ export default {
         { terrainId: "28", terrainClass: battle.TERRAIN_GRASS, index: 31 },
         { terrainId: "29", terrainClass: battle.TERRAIN_GRASS, index: 32 },
         { terrainId: "30", terrainClass: battle.TERRAIN_GRASS, index: 33 },
-        { terrainId: "31", terrainClass: battle.TERRAIN_GRASS, index: 34 }
+        { terrainId: "31", terrainClass: battle.TERRAIN_GRASS, index: 34 }*/
       ],
 
       // Active combat's data
@@ -315,7 +313,7 @@ export default {
           attackCells: [], // number[],
           queue: [
             // Unit moved
-            {
+            /*{
               action: "move",
               unitId: "v4nv9",
               newIndex: 8
@@ -399,7 +397,7 @@ export default {
                 effectClass: "heat",
                 damage: 1
               }
-            }
+            }*/
           ]
         }
       }
@@ -617,9 +615,12 @@ export default {
         });
       }
 
-      // Runtime
+      // Combat runtime
       if (data.combatStarted !== undefined) {
         state.game.combat.started = data.combatStarted;
+      }
+      if (data.activeUnitId !== undefined) {
+        state.game.combat.activeUnitId = data.activeUnitId;
       }
       if (data.combatResult !== undefined) {
         state.game.combat.result = data.combatResult;
@@ -658,7 +659,7 @@ export default {
       state.game.combat.started = combatData.started;
       state.game.combat.result = combatData.result;
       state.game.combat.isMyTurn = combatData.isMyTurn;
-      state.game.combat.isMyTurn = combatData.isMyTurn;
+      state.game.combat.activeUnitId = combatData.activeUnitId;
     }
   },
   actions: {
