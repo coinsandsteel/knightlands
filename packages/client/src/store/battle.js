@@ -511,7 +511,7 @@ export default {
 
       // Add an inventory unit
       if (data.addUnit !== undefined) {
-        state.inventory.push(data.addUnit);
+        state.inventory.push(...data.addUnit);
       }
 
       // Update an inventory unit
@@ -757,6 +757,19 @@ export default {
     },
 
     // BattleMergeUnits
+
+    // BattleUnitChoose - Choose unit
+    // - unitId: string
+    async unitChoose(store, { unitId }) {
+      //store.commit("setIsDisabled", true);
+      await this.$app.$game._wrapOperation(Operations.BattleUnitChoose, {
+        unitId
+      });
+      /*store.commit("setSelectedCardId", null);
+      setTimeout(() => {
+        store.commit("setIsDisabled", false);
+      }, 1000);*/
+    },
 
     // BattleApply - Move to / Atack a cell
     // - unitId: string
