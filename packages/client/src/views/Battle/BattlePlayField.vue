@@ -29,8 +29,8 @@
         type="green"
         width="20rem"
         class="inline-block"
-        @click="groupAttack1Handler"
-        >group attack</CustomButton
+        @click="animateHandler"
+        >animate</CustomButton
       >
     </div>
     <Transition name="fade" appear>
@@ -120,104 +120,116 @@ export default {
       console.log("event", event);
       console.log("selectedUnitId", this.selectedUnitId);
       console.log("isMyTurn", this.isMyTurn);
+      console.log("isUnit", this.isUnit);
 
-      if (!this.isMyTurn) {
-        if (event.isEnemy) {
-          this.$store.commit("battle/updateState", {
-            enemySelectedUnitId: event.enemy.unitId,
-            enemyMoveCells: [
-              index + 5,
-              index + 4,
-              index + 6,
-              index + 10,
-              index + 15,
-              index + 20,
-              index + 25,
-              index + 30,
-              index + 35
-            ]
-          });
+      // if (!this.isMyTurn) {
+      //   if (event.isEnemy) {
+      //     this.$store.commit("battle/updateState", {
+      //       enemySelectedUnitId: event.enemy.unitId,
+      //       enemyMoveCells: [
+      //         index + 5,
+      //         index + 4,
+      //         index + 6,
+      //         index + 10,
+      //         index + 15,
+      //         index + 20,
+      //         index + 25,
+      //         index + 30,
+      //         index + 35
+      //       ]
+      //     });
 
-          return;
-        }
+      //     return;
+      //   }
 
-        if (event.isEnemyAvailableMove) {
-          const enemyUnits = cloneDeep(this.enemyUnits) || [];
-          const enemy = enemyUnits.find(
-            ({ unitId }) => unitId === this.enemySelectedUnitId
-          );
-          enemy.index = index;
-          this.$store.commit("battle/updateState", {
-            enemySelectedUnitId: null,
-            enemyAvailableMoves: [],
-            enemyUnits
-          });
+      //   if (event.isEnemyAvailableMove) {
+      //     const enemyUnits = cloneDeep(this.enemyUnits) || [];
+      //     const enemy = enemyUnits.find(
+      //       ({ unitId }) => unitId === this.enemySelectedUnitId
+      //     );
+      //     enemy.index = index;
+      //     this.$store.commit("battle/updateState", {
+      //       enemySelectedUnitId: null,
+      //       enemyAvailableMoves: [],
+      //       enemyUnits
+      //     });
 
-          this.$store.commit("battle/updateState", {
-            isMyTurn: true
-          });
-        }
+      //     this.$store.commit("battle/updateState", {
+      //       isMyTurn: true
+      //     });
+      //   }
 
-        return;
-      }
+      //   return;
+      // }
 
       if (event.isUnit) {
-        if (this.selectedUnitId === event.unit.unitId) {
-          this.$store.commit("battle/updateState", {
-            selectedUnitId: null,
-            moveCells: []
-          });
-          return;
-        }
-        this.$store.commit("battle/updateState", {
-          selectedUnitId: event.unit.unitId,
-          moveCells: [
-            index - 5,
-            index - 4,
-            index - 6,
-            index - 10,
-            index - 15,
-            index - 20,
-            index - 25,
-            index - 30,
-            index - 35
-          ]
+        // if (this.selectedUnitId === event.unit.unitId) {
+        //   this.$store.commit("battle/updateState", {
+        //     selectedUnitId: null,
+        //     moveCells: []
+        //   });
+        //   return;
+        // }
+        // this.$store.commit("battle/updateState", {
+        //   selectedUnitId: event.unit.unitId,
+        //   moveCells: [
+        //     index - 5,
+        //     index - 4,
+        //     index - 6,
+        //     index - 10,
+        //     index - 15,
+        //     index - 20,
+        //     index - 25,
+        //     index - 30,
+        //     index - 35
+        //   ]
+        // });
+        this.$store.dispatch("battle/apply", {
+          unitId: event.unit.unitId,
+          index
         });
       }
 
       if (event.isAvailableMove && !event.isEnemy) {
-        const units = cloneDeep(this.units) || [];
-        const unit = units.find(({ unitId }) => unitId === this.selectedUnitId);
-        unit.index = index;
-        this.$store.commit("battle/updateState", {
-          selectedUnitId: null,
-          moveCells: [],
-          units
-        });
+        // const units = cloneDeep(this.units) || [];
+        // const unit = units.find(({ unitId }) => unitId === this.selectedUnitId);
+        // unit.index = index;
+        // this.$store.commit("battle/updateState", {
+        //   selectedUnitId: null,
+        //   moveCells: [],
+        //   units
+        // });
 
-        this.$store.commit("battle/updateState", {
-          isMyTurn: false
+        // this.$store.commit("battle/updateState", {
+        //   isMyTurn: false
+        // });
+        this.$store.dispatch("battle/apply", {
+          index
         });
       }
 
       if (event.isAvailableMove && event.isEnemy) {
-        this.clickedEnemy = cloneDeep(event.enemy);
-        this.$store.commit("battle/updateState", {
-          moveCells: []
-        });
+        // this.clickedEnemy = cloneDeep(event.enemy);
+        // this.$store.commit("battle/updateState", {
+        //   moveCells: []
+        // });
+        // const result = await this.showAbilitySelect();
+        // console.log("result", result);
+        // this.clickedEnemy = null;
+        // this.$store.commit("battle/updateState", {
+        //   selectedUnitId: null
+        // });
+        // this.$store.commit("battle/updateState", {
+        //   isMyTurn: false
+        // });
+        // return;
+
         const result = await this.showAbilitySelect();
-
         console.log("result", result);
-
-        this.clickedEnemy = null;
-        this.$store.commit("battle/updateState", {
-          selectedUnitId: null
+        this.$store.dispatch("battle/apply", {
+          index,
+          ability: result
         });
-
-        this.$store.commit("battle/updateState", {
-          isMyTurn: false
-        });
-        return;
       }
     },
     async processQueue(queue) {
@@ -288,6 +300,15 @@ export default {
       await this.animateSlideAndFade({ index: 33, el });
       el.parentElement.removeChild(el);
     },
+    async damageHandler(step) {
+      const el = document.createElement("div");
+      el.className =
+        "absolute-stretch battle-effect--damage font-size-22 flex flex-center text-center";
+      el.style = "opacity: 0;";
+      el.innerText = "-999";
+      await this.animateSlideAndFade({ index: 17, el });
+      el.parentElement.removeChild(el);
+    },
     async animateSlideAndFade({ index, el }) {
       const cells = document.querySelectorAll(".battle-board-cell-container");
       const effectContainer = cells[index].querySelector(".effect-wrapper");
@@ -296,7 +317,7 @@ export default {
       const gapSize = 10;
       const animation = anime({
         ...commonAnimationParams,
-        duration: 600,
+        duration: 800,
         targets: el,
         translateY: [
           0,
@@ -319,7 +340,7 @@ export default {
         el.removeAttribute("style");
       }
     },
-    groupAttack1Handler() {
+    animateHandler() {
       // this.groupAttackHandler({
       //   action: battle.ABILITY_GROUP_ATTACK,
       //   source: {
@@ -342,6 +363,7 @@ export default {
       this.groupDeBuffHandler({});
       this.groupSelfBuffHandler({});
       this.effectHandler({});
+      this.damageHandler({});
     },
     move1Handler() {
       const units = _.cloneDeep(this.units);
@@ -378,6 +400,9 @@ export default {
   }
   .battle-effect--self-buff {
     background: url("/images/battle/effect/self_buff.png") center/70% no-repeat;
+  }
+  .battle-effect--damage {
+    color: red;
   }
 }
 </style>

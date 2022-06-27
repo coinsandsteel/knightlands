@@ -59,7 +59,9 @@ export default {
   top: 0;
   background: #fff;
   border: solid 1px #777;
-  color: #333;
+  // color: #333;
+  color: #10b981;
+  font-weight: 600;
   border-radius: 12px;
   padding: 0 4px;
 }

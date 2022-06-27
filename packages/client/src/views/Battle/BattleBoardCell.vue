@@ -157,11 +157,12 @@ export default {
   watch: {
     unitIndex(value) {
       if (!(value > -1)) {
+        this.previousUnitIndex = undefined;
         return;
       }
 
       if (!(this.unit && this.unit.unitId && this.unit.oldIndex > -1)) {
-        this.previousUnitIndex = null;
+        this.previousUnitIndex = undefined;
         return;
       }
 
@@ -192,10 +193,11 @@ export default {
     },
     enemyIndex(value) {
       if (!(value > -1)) {
+        this.previousEnemyIndex = undefined;
         return;
       }
 
-      this.previousEnemyIndex = value;
+      this.previousEnemyIndex = undefined;
     }
   },
   methods: {
