@@ -184,13 +184,14 @@ export default {
         //     index - 35
         //   ]
         // });
-        this.$store.dispatch("battle/apply", {
-          unitId: event.unit.unitId,
-          index
+        this.$store.dispatch("battle/unitChoose", {
+          unitId: event.unit.unitId
+          // index
         });
       }
 
-      if (event.isAvailableMove && !event.isEnemy) {
+      if (event.isMoveCell) {
+        // if (event.isMoveCell && !event.isEnemy) {
         // const units = cloneDeep(this.units) || [];
         // const unit = units.find(({ unitId }) => unitId === this.selectedUnitId);
         // unit.index = index;
@@ -208,7 +209,8 @@ export default {
         });
       }
 
-      if (event.isAvailableMove && event.isEnemy) {
+      if (event.isAttackCell) {
+        // if (event.isAttackCell && event.isEnemy) {
         // this.clickedEnemy = cloneDeep(event.enemy);
         // this.$store.commit("battle/updateState", {
         //   moveCells: []

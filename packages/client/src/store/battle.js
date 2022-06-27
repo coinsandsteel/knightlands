@@ -448,17 +448,17 @@ export default {
       );
     },
     moveCells(state, getters) {
-      if (!getters.isMyTurn) {
-        return [];
-      }
+      // if (!getters.isMyTurn) {
+      //   return [];
+      // }
       return state.game && state.game.combat && state.game.combat.runtime
         ? state.game.combat.runtime.moveCells || []
         : [];
     },
     attackCells(state, getters) {
-      if (!getters.isMyTurn) {
-        return [];
-      }
+      // if (!getters.isMyTurn) {
+      //   return [];
+      // }
       return state.game && state.game.combat && state.game.combat.runtime
         ? state.game.combat.runtime.attackCells || []
         : [];
@@ -626,10 +626,10 @@ export default {
         state.game.combat.result = data.combatResult;
       }
       if (data.combatMoveCells !== undefined) {
-        state.game.combat.runtime.moveCells = data.combat.moveCells;
+        state.game.combat.runtime.moveCells = data.combatMoveCells;
       }
       if (data.combatAttackCells !== undefined) {
-        state.game.combat.runtime.attackCells = data.combat.attackCells;
+        state.game.combat.runtime.attackCells = data.combatAttackCells;
       }
     },
     setInitialState(state, data) {

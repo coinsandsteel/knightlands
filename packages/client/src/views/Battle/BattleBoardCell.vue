@@ -17,8 +17,14 @@
       <!-- available move -->
       <Transition name="fade" appear>
         <div
-          v-if="isAvailableMove"
-          class="battle-board-cell-available-move absolute-stretch"
+          v-if="isMoveCell"
+          class="battle-board-cell__move-cell absolute-stretch"
+        />
+      </Transition>
+      <Transition name="fade" appear>
+        <div
+          v-if="isAttackCell"
+          class="battle-board-cell__attack-cell absolute-stretch"
         />
       </Transition>
       <!-- enemy available move -->
@@ -105,9 +111,10 @@ export default {
       "units",
       "selectedUnit",
       "moveCells",
+      "attackCells",
       "enemyUnits",
-      "enemySelectedUnit",
-      "enemyMoveCells"
+      "enemySelectedUnit"
+      // "enemyMoveCells"
     ]),
     isUnit() {
       return this.units.map(({ index }) => index).includes(this.index);
@@ -126,8 +133,11 @@ export default {
       // return this.selectedUnit ? this.selectedUnit.index : -1;
       return this.unit ? this.unit.index : -1;
     },
-    isAvailableMove() {
+    isMoveCell() {
       return this.moveCells.includes(this.index);
+    },
+    isAttackCell() {
+      return !this.isMoveCell && this.attackCells.includes(this.index);
     },
     isEnemy() {
       return this.enemyUnits.map(({ index }) => index).includes(this.index);
@@ -143,13 +153,15 @@ export default {
       return this.enemyUnits.find(({ index }) => index === this.index);
     },
     isEnemyAvailableMove() {
-      return this.enemyMoveCells.includes(this.index);
+      // return this.enemyMoveCells.includes(this.index);
+      return false;
     },
     isClickable() {
       return (
         this.isUnit ||
         this.isEnemy ||
-        this.isAvailableMove ||
+        this.isMoveCell ||
+        this.isAttackCell ||
         this.isEnemyAvailableMove
       );
     }
@@ -206,10 +218,11 @@ export default {
         index: this.index,
         isUnit: this.isUnit,
         unit: this.unit,
-        isAvailableMove: this.isAvailableMove,
+        isMoveCell: this.isMoveCell,
+        isAttackCell: this.isAttackCell,
         isEnemy: this.isEnemy,
-        enemy: this.enemy,
-        isEnemyAvailableMove: this.isEnemyAvailableMove
+        enemy: this.enemy
+        // isEnemyAvailableMove: this.isEnemyAvailableMove
       });
     },
     async unitEnterHandler(el, done) {
@@ -386,11 +399,11 @@ export default {
 .battle-board-cell-terrain--snow_woods {
   background-image: url("/images/battle/tiles/snow_woods.png");
 }
-.battle-board-cell-available-move {
+.battle-board-cell__move-cell {
   background: blue;
   opacity: 0.5;
 }
-.battle-board-cell-enemy-available-move {
+.battle-board-cell__attack-cell {
   background: red;
   opacity: 0.5;
 }
