@@ -95,4 +95,5 @@ window.onload = async () => {
   });
   store.$app = app;
   app.$mount("#app");
+  window.app = app;
 };
