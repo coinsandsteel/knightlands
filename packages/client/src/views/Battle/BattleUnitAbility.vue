@@ -124,8 +124,8 @@ export default {
 .battle-unit-ability--heal {
   background-image: url("/images/battle/abilities/heal.png");
 }
-.battle-unit-ability--heal_initiative {
-  background-image: url("/images/battle/abilities/heal_initiative.png");
+.battle-unit-ability--initiative {
+  background-image: url("/images/battle/abilities/initiative.png");
 }
 .battle-unit-ability--heavy_arrow {
   background-image: url("/images/battle/abilities/heavy_arrow.png");
