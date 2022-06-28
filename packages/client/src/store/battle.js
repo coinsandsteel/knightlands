@@ -164,6 +164,7 @@ export default {
         bonuses: [{ bonusClass: "squad-increase-hp", delta: 2 }],
         units: [
           {
+            fighterId: "2c8vny4t9",
             unitId: "2c8vny4t9",
             unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
             unitClass: battle.UNIT_CLASS_TANK, // 5 classes
@@ -304,9 +305,9 @@ export default {
         result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
         isMyTurn: true, // boolean|null
-        activeUnitId: null,
+        activeFighterId: null,
         runtime: {
-          unitId: null, // string|null
+          fighterId: null, // string|null
           selectedIndex: null, // number|null
           selectedAbilityClass: null, // string|null
           moveCells: [], // number[]
@@ -430,14 +431,16 @@ export default {
         : []
       ).filter(Boolean);
     },
+    // TODO unit > fighter
     selectedUnitId(state, getters) {
       if (!getters.isMyTurn) {
         return null;
       }
       return state.game && state.game.combat && state.game.combat.runtime
-        ? state.game.combat.runtime.unitId
-        : null;
+      ? state.game.combat.runtime.unitId
+      : null;
     },
+    // TODO unit > fighter
     selectedUnit(state, getters) {
       if (!getters.selectedUnitId) {
         return null;
@@ -469,6 +472,7 @@ export default {
         : []
       ).filter(Boolean);
     },
+    // TODO unit > fighter
     enemySelectedUnitId(state, getters) {
       if (getters.isMyTurn) {
         return null;
@@ -477,6 +481,7 @@ export default {
         ? state.game.combat.runtime.unitId
         : null;
     },
+    // TODO unit > fighter
     enemySelectedUnit(state, getters) {
       if (!getters.enemySelectedUnitId) {
         return null;
@@ -584,10 +589,10 @@ export default {
 
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
-      if (data.userSquadUnit !== undefined) {
-        data.userSquadUnit.forEach(updateEntry => {
+      if (data.userFighter !== undefined) {
+        data.userFighter.forEach(updateEntry => {
           const index = state.game.userSquad.units.findIndex(
-            unit => unit.unitId === updateEntry.unitId
+            unit => unit.fighterId === updateEntry.fighterId
           );
 
           if (index !== -1) {
@@ -601,10 +606,10 @@ export default {
 
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
-      if (data.enemySquadUnit !== undefined) {
-        data.enemySquadUnit.forEach(updateEntry => {
+      if (data.enemyFighter !== undefined) {
+        data.enemyFighter.forEach(updateEntry => {
           const index = state.game.enemySquad.units.findIndex(
-            unit => unit.unitId === updateEntry.unitId
+            unit => unit.fighterId === updateEntry.fighterId
           );
           if (index !== -1) {
             Vue.set(state.game.enemySquad.units, index, {
@@ -619,8 +624,8 @@ export default {
       if (data.combatStarted !== undefined) {
         state.game.combat.started = data.combatStarted;
       }
-      if (data.activeUnitId !== undefined) {
-        state.game.combat.activeUnitId = data.activeUnitId;
+      if (data.activeFighterId !== undefined) {
+        state.game.combat.activeFighterId = data.activeFighterId;
       }
       if (data.combatResult !== undefined) {
         state.game.combat.result = data.combatResult;
@@ -662,7 +667,7 @@ export default {
       state.game.combat.started = combatData.started;
       state.game.combat.result = combatData.result;
       state.game.combat.isMyTurn = combatData.isMyTurn;
-      state.game.combat.activeUnitId = combatData.activeUnitId;
+      state.game.combat.activeFighterId = combatData.activeFighterId;
     }
   },
   actions: {
@@ -761,12 +766,12 @@ export default {
 
     // BattleMergeUnits
 
-    // BattleUnitChoose - Choose unit
+    // BattleChooseFighter - Choose unit
     // - unitId: string
-    async unitChoose(store, { unitId }) {
+    async chooseFighter(store, { fighterId }) {
       //store.commit("setIsDisabled", true);
-      await this.$app.$game._wrapOperation(Operations.BattleUnitChoose, {
-        unitId
+      await this.$app.$game._wrapOperation(Operations.BattleChooseFighter, {
+        fighterId
       });
       /*store.commit("setSelectedCardId", null);
       setTimeout(() => {
@@ -775,13 +780,13 @@ export default {
     },
 
     // BattleApply - Move to / Atack a cell
-    // - unitId: string
+    // - fighterId: string
     // - index: number
     // - ability?: string - Need in case of enemy at the cell
-    async apply(store, { unitId, index, ability }) {
+    async apply(store, { fighterId, index, ability }) {
       //store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.BattleApply, {
-        unitId,
+        fighterId,
         index,
         ability
       });
