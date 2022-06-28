@@ -14,7 +14,7 @@
           :ability="ability"
           :class="{
             'margin-left-1': index > 0,
-            'opacity-50': !(ability.level && ability.level.current)
+            'opacity-50': !ability.enabled
           }"
         />
       </div>

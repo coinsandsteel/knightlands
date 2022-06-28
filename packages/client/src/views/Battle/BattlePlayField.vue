@@ -77,8 +77,7 @@ export default {
       "units",
       "enemyUnits",
       "isMyTurn",
-      "selectedUnitId",
-      "enemySelectedUnitId"
+      "activeFighterId"
     ]),
     baseSize() {
       return this.appSize
@@ -118,7 +117,7 @@ export default {
       console.log("cell", cell);
       console.log("index", index);
       console.log("event", event);
-      console.log("selectedUnitId", this.selectedUnitId);
+      // console.log("selectedUnitId", this.selectedUnitId);
       console.log("isMyTurn", this.isMyTurn);
       console.log("isUnit", this.isUnit);
 
@@ -184,8 +183,8 @@ export default {
         //     index - 35
         //   ]
         // });
-        this.$store.dispatch("battle/unitChoose", {
-          unitId: event.unit.unitId
+        this.$store.dispatch("battle/chooseFighter", {
+          fighterId: event.unit.fighterId
           // index
         });
       }
@@ -205,6 +204,7 @@ export default {
         //   isMyTurn: false
         // });
         this.$store.dispatch("battle/apply", {
+          fighterId: this.activeFighterId,
           index
         });
       }
@@ -229,6 +229,7 @@ export default {
         const result = await this.showAbilitySelect();
         console.log("result", result);
         this.$store.dispatch("battle/apply", {
+          fighterId: this.activeFighterId,
           index,
           ability: result
         });
@@ -261,7 +262,7 @@ export default {
     },
     moveHandler(step) {
       this.$store.dispatch("battle/move", {
-        unitId: step.unitId,
+        fighterId: step.fighterId,
         index: step.newIndex
       });
     },
@@ -371,7 +372,7 @@ export default {
       const units = _.cloneDeep(this.units);
       if (units && units.length > 0) {
         this.$store.dispatch("battle/move", {
-          unitId: units[0].unitId,
+          fighterId: units[0].fighterId,
           index: units[0].index === 17 ? 30 : 17,
           oldIndex: units[0].index === 17 ? 17 : 30
         });
@@ -379,7 +380,7 @@ export default {
       const enemyUnits = _.cloneDeep(this.enemyUnits);
       if (enemyUnits && enemyUnits.length > 0) {
         this.$store.dispatch("battle/move", {
-          unitId: enemyUnits[0].unitId,
+          fighterId: enemyUnits[0].fighterId,
           index: enemyUnits[0].index === 0 ? 12 : 0,
           oldIndex: enemyUnits[0].index === 0 ? 0 : 12
         });

@@ -202,7 +202,7 @@ export default {
       if (
         !(
           this.unit &&
-          this.unit.unitId &&
+          this.unit.fighterId &&
           this.unit.oldIndex !== undefined &&
           this.unit.oldIndex > -1
         )
@@ -245,7 +245,7 @@ export default {
       if (
         !(
           this.enemy &&
-          this.enemy.unitId &&
+          this.enemy.fighterId &&
           this.enemy.oldIndex !== undefined &&
           this.enemy.oldIndex > -1
         )
@@ -282,7 +282,7 @@ export default {
         return;
       }
 
-      console.log(`enemy move from ${this.previousUnitIndex} to ${this.index}`);
+      console.log(`unit move from ${this.previousUnitIndex} to ${this.index}`);
       const xDiff = (this.index % 5) - (this.previousUnitIndex % 5);
       const yDiff =
         Math.floor(this.index / 5) - Math.floor(this.previousUnitIndex / 5);

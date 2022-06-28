@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="flex flex-item-center" :class="{ 'opacity-50': !nextLevel }">
+    <div
+      class="flex flex-item-center"
+      :class="{ 'opacity-50': !(ability && ability.enabled) }"
+    >
       <BattleUnitAbility :ability="ability" />
       <div class="margin-left-1">
         {{ description }}

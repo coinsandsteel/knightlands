@@ -432,23 +432,26 @@ export default {
       ).filter(Boolean);
     },
     // TODO unit > fighter
-    selectedUnitId(state, getters) {
-      if (!getters.isMyTurn) {
-        return null;
-      }
-      return state.game && state.game.combat && state.game.combat.runtime
-      ? state.game.combat.runtime.unitId
-      : null;
-    },
+    // selectedUnitId(state, getters) {
+    //   if (!getters.isMyTurn) {
+    //     return null;
+    //   }
+    //   return state.game && state.game.combat && state.game.combat.runtime
+    //   ? state.game.combat.runtime.unitId
+    //   : null;
+    // },
     // TODO unit > fighter
-    selectedUnit(state, getters) {
-      if (!getters.selectedUnitId) {
-        return null;
-      }
+    // selectedUnit(state, getters) {
+    //   if (!getters.selectedUnitId) {
+    //     return null;
+    //   }
 
-      return getters.units.find(
-        ({ unitId }) => unitId === getters.selectedUnitId
-      );
+    //   return getters.units.find(
+    //     ({ unitId }) => unitId === getters.selectedUnitId
+    //   );
+    // },
+    activeFighterId(state) {
+      return state.game.combat.activeFighterId;
     },
     moveCells(state, getters) {
       // if (!getters.isMyTurn) {
@@ -862,13 +865,17 @@ export default {
       await this.$app.$game._wrapOperation(Operations.BattleExit);
     },
 
-    // update unit index { unitId, index, oldIndex }
+    // move fighter { fighterId, index, oldIndex }
     move(store, data) {
       console.log("store", store);
-      if (store.getters.units.find(({ unitId }) => unitId === data.unitId)) {
-        store.commit("updateState", { userSquadUnit: [data] });
+      if (
+        store.getters.units.find(
+          ({ fighterId }) => fighterId === data.fighterId
+        )
+      ) {
+        store.commit("updateState", { userFighter: [data] });
       } else {
-        store.commit("updateState", { enemySquadUnit: [data] });
+        store.commit("updateState", { enemyFighter: [data] });
       }
     },
 
