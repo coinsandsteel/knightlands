@@ -781,8 +781,8 @@ export default {
 
     // BattleApply - Move to / Atack a cell
     // - fighterId: string
-    // - index: number
-    // - ability?: string - Need in case of enemy at the cell
+    // - index: number|null
+    // - ability: string|null - Need in case of enemy at the cell
     async apply(store, { fighterId, index, ability }) {
       //store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.BattleApply, {
