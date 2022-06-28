@@ -10,7 +10,8 @@
           unit.unitTribe +
           '_' +
           unit.unitClass
-        : 'battle-unit--empty'
+        : 'battle-unit--empty',
+      isEnemy ? 'battle-unit--enemy' : ''
     ]"
     @click="clickHandler"
   >
@@ -32,6 +33,7 @@
 export default {
   props: {
     unit: Object,
+    isEnemy: Boolean,
     isSelected: Boolean,
     shouldShowExtraInfo: Boolean
   },
@@ -100,6 +102,17 @@ export default {
   left: 0;
   top: 1%;
   border-radius: 14%;
+}
+.battle-unit-image {
+  background: url("/images/battle/unit.png") center/60% no-repeat;
+  width: 100%;
+  height: calc(12400% / 130);
+  left: 0;
+  top: 1%;
+  border-radius: 14%;
+}
+.battle-unit--enemy .battle-unit-image {
+  background: url("/images/battle/enemy.png") center/80% no-repeat !important;
 }
 // kobold
 .battle-unit--kobold_range .battle-unit-image {

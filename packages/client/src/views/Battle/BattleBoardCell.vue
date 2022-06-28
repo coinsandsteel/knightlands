@@ -3,7 +3,7 @@
     class="battle-board-cell-container relative"
     :class="{
       pointer: isClickable,
-      'z-index-1': isUnitMoveActive
+      'z-index-1': isUnitMoveActive || isEnemyMoveActive
     }"
     @click="clickHandler"
   >
@@ -28,12 +28,12 @@
         />
       </Transition>
       <!-- enemy available move -->
-      <Transition name="fade" appear>
+      <!-- <Transition name="fade" appear>
         <div
           v-if="isEnemyAvailableMove"
           class="battle-board-cell-enemy-available-move absolute-stretch"
         />
-      </Transition>
+      </Transition> -->
       <!-- unit -->
       <Transition @enter="unitEnterHandler" @leave="unitLeaveHandler">
         <div
@@ -76,9 +76,34 @@
             }
           ]"
         >
-          <div class="battle-board-cell-enemy absolute-stretch"></div>
+          <BattleUnit
+            class="battle-board-cell-enemy absolute"
+            :class="[
+              `move-length-${enemyMoveLength}`,
+              {
+                'enemy-move-active': isEnemyMoveActive
+              }
+            ]"
+            :is-enemy="true"
+            :unit="enemy"
+            :shouldShowExtraInfo="true"
+          />
         </div>
       </Transition>
+      <!-- <Transition @enter="enemyEnterHandler" @leave="enemyLeaveHandler">
+        <div
+          v-if="isEnemy"
+          class="battle-board-cell-enemy-wrapper absolute-stretch"
+          :class="[
+            `move-length-${enemyMoveLength}`,
+            {
+              'enemy-move-active': isEnemyMoveActive
+            }
+          ]"
+        >
+          <div class="battle-board-cell-enemy absolute-stretch"></div>
+        </div>
+      </Transition> -->
       <div class="effect-wrapper absolute-stretch"></div>
     </div>
   </div>
@@ -142,15 +167,16 @@ export default {
     isEnemy() {
       return this.enemyUnits.map(({ index }) => index).includes(this.index);
     },
-    enemyIndex() {
-      return this.enemySelectedUnit ? this.enemySelectedUnit.index : -1;
-    },
     enemy() {
       if (!this.isEnemy) {
         return null;
       }
 
       return this.enemyUnits.find(({ index }) => index === this.index);
+    },
+    enemyIndex() {
+      // return this.enemySelectedUnit ? this.enemySelectedUnit.index : -1;
+      return this.enemy ? this.enemy.index : -1;
     },
     isEnemyAvailableMove() {
       // return this.enemyMoveCells.includes(this.index);
@@ -173,7 +199,14 @@ export default {
         return;
       }
 
-      if (!(this.unit && this.unit.unitId && this.unit.oldIndex > -1)) {
+      if (
+        !(
+          this.unit &&
+          this.unit.unitId &&
+          this.unit.oldIndex !== undefined &&
+          this.unit.oldIndex > -1
+        )
+      ) {
         this.previousUnitIndex = undefined;
         return;
       }
@@ -209,7 +242,19 @@ export default {
         return;
       }
 
-      this.previousEnemyIndex = undefined;
+      if (
+        !(
+          this.enemy &&
+          this.enemy.unitId &&
+          this.enemy.oldIndex !== undefined &&
+          this.enemy.oldIndex > -1
+        )
+      ) {
+        this.previousEnemyIndex = undefined;
+        return;
+      }
+
+      this.previousEnemyIndex = this.enemy.oldIndex;
     }
   },
   methods: {
@@ -227,13 +272,17 @@ export default {
     },
     async unitEnterHandler(el, done) {
       if (
-        !(this.previousUnitIndex > -1 && this.previousUnitIndex !== this.index)
+        !(
+          this.previousUnitIndex !== undefined &&
+          this.previousUnitIndex > -1 &&
+          this.previousUnitIndex !== this.index
+        )
       ) {
         done();
         return;
       }
 
-      console.log(`move from ${this.previousUnitIndex} to ${this.index}`);
+      console.log(`enemy move from ${this.previousUnitIndex} to ${this.index}`);
       const xDiff = (this.index % 5) - (this.previousUnitIndex % 5);
       const yDiff =
         Math.floor(this.index / 5) - Math.floor(this.previousUnitIndex / 5);
@@ -255,7 +304,13 @@ export default {
       done();
     },
     async enemyEnterHandler(el, done) {
-      if (!(this.previousEnemyIndex !== this.index)) {
+      if (
+        !(
+          this.previousEnemyIndex !== undefined &&
+          this.previousEnemyIndex > -1 &&
+          this.previousEnemyIndex !== this.index
+        )
+      ) {
         done();
         return;
       }
@@ -419,7 +474,11 @@ export default {
 // .battle-board-cell-unit-border--1 {
 // }
 .battle-board-cell-enemy {
-  background: url("/images/battle/enemy.png") center/100% no-repeat;
+  // background: url("/images/battle/enemy.png") center/100% no-repeat;
+  width: 100%;
+  top: 1px;
+  left: 0;
+  height: 100%;
 }
 .unit-move-active,
 .enemy-move-active {

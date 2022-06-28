@@ -36,7 +36,12 @@ export default {
   data() {
     return {
       hasShowDailyRewards: false,
-      tabs: [
+      currentTab: SquadTab
+    };
+  },
+  computed: {
+    tabs() {
+      return [
         {
           title: this.$t("squad???"),
           value: SquadTab,
@@ -45,16 +50,15 @@ export default {
         {
           title: this.$t("warehouse???"),
           value: WarehouseTab,
-          to: { name: WarehouseTab }
+          to: { name: WarehouseTab, query: { from: this.$route.name } }
         },
         {
           title: this.$t("bonus???"),
           value: BonusTab,
           to: { name: BonusTab }
         }
-      ],
-      currentTab: SquadTab
-    };
+      ];
+    }
   },
   async mounted() {
     // this.$store.dispatch("battle/subscribe");

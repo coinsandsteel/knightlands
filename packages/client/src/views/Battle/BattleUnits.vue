@@ -127,7 +127,9 @@ export default {
     },
     handleBackButton() {
       // back button
-      if (this.shouldFillSlot) {
+      if (this.$route.query && this.$route.query.from) {
+        this.$router.replace({ name: this.$route.query.from });
+      } else if (this.shouldFillSlot) {
         this.$router.replace({ name: "battle-squad-home" });
       } else {
         this.$router.replace({ name: "battle-menu" });

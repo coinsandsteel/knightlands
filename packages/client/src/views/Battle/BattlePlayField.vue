@@ -370,15 +370,18 @@ export default {
     move1Handler() {
       const units = _.cloneDeep(this.units);
       if (units && units.length > 0) {
-        // if (units[0].index === 32) {
-        //   units[0].index = 17;
-        // } else {
-        //   units[0].index = 32;
-        // }
-        // this.$store.dispatch("battle/update", { userSquad: { units } });
         this.$store.dispatch("battle/move", {
           unitId: units[0].unitId,
-          index: units[0].index === 17 ? 32 : 17
+          index: units[0].index === 17 ? 30 : 17,
+          oldIndex: units[0].index === 17 ? 17 : 30
+        });
+      }
+      const enemyUnits = _.cloneDeep(this.enemyUnits);
+      if (enemyUnits && enemyUnits.length > 0) {
+        this.$store.dispatch("battle/move", {
+          unitId: enemyUnits[0].unitId,
+          index: enemyUnits[0].index === 0 ? 12 : 0,
+          oldIndex: enemyUnits[0].index === 0 ? 0 : 12
         });
       }
     }

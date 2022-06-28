@@ -22,76 +22,76 @@ if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
   );
 }
 
-const inventoryUnit = {
-  unitId: "2c8vny4t9",
-  unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes #meta
-  unitClass: battle.UNIT_CLASS_MELEE, // 5 classes #meta
-  tier: 1, // 3 tiers; modify via merger (3 => 1)
-  level: {
-    // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
-    current: 1, // Current level
-    next: 2, // If not null - upgrade is available
-    price: 999 // Upgrade price, ancient coins
-  },
-  power: 5,
-  experience: {
-    percentage: 17,
-    currentLevelExp: 170,
-    nextLevelExp: 1000
-  },
-  characteristics: {
-    hp: 10,
-    damage: 3,
-    defence: 7,
-    initiative: 1,
-    speed: 4
-  },
-  abilities: [
-    // #meta
-    // Here will be all the abilities
-    // flow: unit lvl opens ability lvl > pay crystal > lvl up
-    {
-      abilityClass: "axe_blow",
-      abilityGroup: battle.ABILITY_GROUP_ATTACK,
-      tier: 1,
-      // canLearn: true,
-      level: {
-        // unit lvl opens ability lvl > pay crystal > lvl up
-        current: 1, // 0 means "not learned"
-        next: 2, // not null means "can learn"
-        price: 99 // Learn price, crystals
-      },
-      value: -30
-    },
-    {
-      abilityClass: "axe_blow2",
-      abilityGroup: battle.ABILITY_GROUP_BUFF,
-      tier: 2,
-      // canLearn: false,
-      level: {
-        // unit lvl opens ability lvl > pay crystal > lvl up
-        current: 0, // 0 means "not learned"
-        next: 1, // not null means "can learn"
-        price: 100 // Learn price, crystals
-      },
-      value: -30
-    },
-    {
-      abilityClass: "axe_blow3",
-      abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
-      tier: 3,
-      // canLearn: false,
-      level: {
-        // unit lvl opens ability lvl > pay crystal > lvl up
-        current: 0, // 0 means "not learned"
-        next: null, // not null means "can learn"
-        price: null // Learn price, crystals
-      },
-      value: -30
-    }
-  ],
-  quantity: 3
-};
+// const inventoryUnit = {
+//   unitId: "2c8vny4t9",
+//   unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes #meta
+//   unitClass: battle.UNIT_CLASS_MELEE, // 5 classes #meta
+//   tier: 1, // 3 tiers; modify via merger (3 => 1)
+//   level: {
+//     // 15 levels; // exp > max limit > pay coins > lvl up > characteristics auto-upgrade
+//     current: 1, // Current level
+//     next: 2, // If not null - upgrade is available
+//     price: 999 // Upgrade price, ancient coins
+//   },
+//   power: 5,
+//   experience: {
+//     percentage: 17,
+//     currentLevelExp: 170,
+//     nextLevelExp: 1000
+//   },
+//   characteristics: {
+//     hp: 10,
+//     damage: 3,
+//     defence: 7,
+//     initiative: 1,
+//     speed: 4
+//   },
+//   abilities: [
+//     // #meta
+//     // Here will be all the abilities
+//     // flow: unit lvl opens ability lvl > pay crystal > lvl up
+//     {
+//       abilityClass: "axe_blow",
+//       abilityGroup: battle.ABILITY_GROUP_ATTACK,
+//       tier: 1,
+//       // canLearn: true,
+//       level: {
+//         // unit lvl opens ability lvl > pay crystal > lvl up
+//         current: 1, // 0 means "not learned"
+//         next: 2, // not null means "can learn"
+//         price: 99 // Learn price, crystals
+//       },
+//       value: -30
+//     },
+//     {
+//       abilityClass: "axe_blow2",
+//       abilityGroup: battle.ABILITY_GROUP_BUFF,
+//       tier: 2,
+//       // canLearn: false,
+//       level: {
+//         // unit lvl opens ability lvl > pay crystal > lvl up
+//         current: 0, // 0 means "not learned"
+//         next: 1, // not null means "can learn"
+//         price: 100 // Learn price, crystals
+//       },
+//       value: -30
+//     },
+//     {
+//       abilityClass: "axe_blow3",
+//       abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
+//       tier: 3,
+//       // canLearn: false,
+//       level: {
+//         // unit lvl opens ability lvl > pay crystal > lvl up
+//         current: 0, // 0 means "not learned"
+//         next: null, // not null means "can learn"
+//         price: null // Learn price, crystals
+//       },
+//       value: -30
+//     }
+//   ],
+//   quantity: 3
+// };
 
 export default {
   namespaced: true,
@@ -487,17 +487,17 @@ export default {
       );
     },
     enemyMoveCells(state, getters) {
-      if (getters.isMyTurn) {
-        return [];
-      }
+      // if (getters.isMyTurn) {
+      //   return [];
+      // }
       return state.game && state.game.combat && state.game.combat.runtime
         ? state.game.combat.runtime.moveCells || []
         : [];
     },
     enemyAttackCells(state, getters) {
-      if (getters.isMyTurn) {
-        return [];
-      }
+      // if (getters.isMyTurn) {
+      //   return [];
+      // }
       return state.game && state.game.combat && state.game.combat.runtime
         ? state.game.combat.runtime.attackCells || []
         : [];
@@ -857,10 +857,14 @@ export default {
       await this.$app.$game._wrapOperation(Operations.BattleExit);
     },
 
-    // update unit index
-    move(store, { unitId, index }) {
-      // @todo: check unit belongs to user or enemy
-      store.commit("updateState", { userSquadUnit: [{ unitId, index }] });
+    // update unit index { unitId, index, oldIndex }
+    move(store, data) {
+      console.log("store", store);
+      if (store.getters.units.find(({ unitId }) => unitId === data.unitId)) {
+        store.commit("updateState", { userSquadUnit: [data] });
+      } else {
+        store.commit("updateState", { enemySquadUnit: [data] });
+      }
     },
 
     // BattleTestAction
