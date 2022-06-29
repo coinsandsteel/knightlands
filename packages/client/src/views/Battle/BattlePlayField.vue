@@ -36,7 +36,7 @@
     <Transition name="fade" appear>
       <BattleAbilitySelect
         v-if="abilitySelectResolve"
-        :enemy="clickedEnemy"
+        :selectedFighterId="selectedFighterId"
         @close="abilitySelectCloseHandler"
       />
     </Transition>
@@ -67,7 +67,7 @@ export default {
   data() {
     return {
       abilitySelectResolve: null,
-      clickedEnemy: null
+      selectedFighterId: null
     };
   },
   computed: {
@@ -226,12 +226,16 @@ export default {
         // });
         // return;
 
-        const result = await this.showAbilitySelect();
-        console.log("result", result);
+        this.selectedFighterId = this.activeFighterId;
+        const ability = await this.showAbilitySelect();
+        console.log("ability", ability);
+        if (!(ability && ability.abilityClass)) {
+          return;
+        }
         this.$store.dispatch("battle/apply", {
           fighterId: this.activeFighterId,
           index,
-          ability: result
+          ability: ability.abilityClass
         });
       }
     },
@@ -263,7 +267,8 @@ export default {
     moveHandler(step) {
       this.$store.dispatch("battle/move", {
         fighterId: step.fighterId,
-        index: step.newIndex
+        index: step.newIndex,
+        ...step
       });
     },
     async effectHandler(step) {

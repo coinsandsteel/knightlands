@@ -456,11 +456,11 @@ export default {
 }
 .battle-board-cell__move-cell {
   background: blue;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .battle-board-cell__attack-cell {
   background: red;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .battle-board-cell-unit {
   width: 100%;
