@@ -3,8 +3,8 @@
     v-if="ability"
     class="battle-unit-ability inline-block"
     :class="
-      'battle-unit-ability-group--' +
-        ability.abilityGroup +
+      'battle-unit-ability-type--' +
+        ability.abilityType +
         ' battle-unit-ability--' +
         ability.abilityClass
     "
@@ -30,22 +30,22 @@ export default {
   background-repeat: none;
   position: relative;
 }
-.battle-unit-ability-group--attack {
+.battle-unit-ability-type--attack {
   background-image: url("/images/battle/abilities/attack.png");
 }
-.battle-unit-ability-group--support {
+.battle-unit-ability-type--support {
   background-image: url("/images/battle/abilities/support.png");
 }
-.battle-unit-ability-group--jump {
+.battle-unit-ability-type--jump {
   background-image: url("/images/battle/abilities/jump.png");
 }
-.battle-unit-ability-group--buff {
+.battle-unit-ability-type--buff {
   background-image: url("/images/battle/abilities/buff.png");
 }
-.battle-unit-ability-group--self_buff {
+.battle-unit-ability-type--self_buff {
   background-image: url("/images/battle/abilities/self_buff.png");
 }
-.battle-unit-ability-group--de_buff {
+.battle-unit-ability-type--de_buff {
   background-image: url("/images/battle/abilities/de_buff.png");
 }
 
@@ -115,8 +115,8 @@ export default {
 .battle-unit-ability--fury_claws {
   background-image: url("/images/battle/abilities/fury_claws.png");
 }
-.battle-unit-ability--group_heal {
-  background-image: url("/images/battle/abilities/group_heal.png");
+.battle-unit-ability--type_heal {
+  background-image: url("/images/battle/abilities/type_heal.png");
 }
 .battle-unit-ability--hamstring {
   background-image: url("/images/battle/abilities/hamstring.png");

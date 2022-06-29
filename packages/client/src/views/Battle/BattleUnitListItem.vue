@@ -10,7 +10,7 @@
       <div class="padding-left-2">
         <BattleUnitAbility
           v-for="(ability, index) in abilities"
-          :key="ability.abilityGroup + ability.abilityClass"
+          :key="ability.abilityType + ability.abilityClass"
           :ability="ability"
           :class="{
             'margin-left-1': index > 0,

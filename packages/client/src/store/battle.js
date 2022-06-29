@@ -52,7 +52,7 @@ if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
 //     // flow: unit lvl opens ability lvl > pay crystal > lvl up
 //     {
 //       abilityClass: "axe_blow",
-//       abilityGroup: battle.ABILITY_GROUP_ATTACK,
+//       abilityType: battle.ABILITY_TYPE_ATTACK,
 //       tier: 1,
 //       // canLearn: true,
 //       level: {
@@ -65,7 +65,7 @@ if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
 //     },
 //     {
 //       abilityClass: "axe_blow2",
-//       abilityGroup: battle.ABILITY_GROUP_BUFF,
+//       abilityType: battle.ABILITY_TYPE_BUFF,
 //       tier: 2,
 //       // canLearn: false,
 //       level: {
@@ -78,7 +78,7 @@ if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
 //     },
 //     {
 //       abilityClass: "axe_blow3",
-//       abilityGroup: battle.ABILITY_GROUP_DE_BUFF,
+//       abilityType: battle.ABILITY_TYPE_DE_BUFF,
 //       tier: 3,
 //       // canLearn: false,
 //       level: {
@@ -174,7 +174,7 @@ export default {
             abilities: [
               {
                 abilityClass: "axe_blow",
-                abilityGroup: battle.ABILITY_GROUP_ATTACK,
+                abilityType: battle.ABILITY_TYPE_ATTACK,
                 tier: 1,
                 cooldown: {
                   enabled: false,
@@ -195,7 +195,7 @@ export default {
             abilities: [
               {
                 abilityClass: "axe_blow",
-                abilityGroup: battle.ABILITY_GROUP_BUFF,
+                abilityType: battle.ABILITY_TYPE_BUFF,
                 tier: 1,
                 cooldown: {
                   enabled: false,
@@ -321,7 +321,7 @@ export default {
             },
             // Unit attack
             {
-              action: battle.ABILITY_GROUP_ATTACK,
+              action: battle.ABILITY_TYPE_ATTACK,
               source: {
                 unitId: "v4nv9",
                 index: 3
@@ -340,7 +340,7 @@ export default {
             },
             // Unit buff
             {
-              action: battle.ABILITY_GROUP_BUFF,
+              action: battle.ABILITY_TYPE_BUFF,
               source: {
                 unitId: "v4nasv9",
                 index: 3
@@ -356,7 +356,7 @@ export default {
             },
             // Unit debuff
             {
-              action: battle.ABILITY_GROUP_DE_BUFF,
+              action: battle.ABILITY_TYPE_DE_BUFF,
               source: {
                 unitId: "v4nv9",
                 index: 3
@@ -372,7 +372,7 @@ export default {
             },
             // Unit self buff
             {
-              action: battle.ABILITY_GROUP_SELF_BUFF,
+              action: battle.ABILITY_TYPE_SELF_BUFF,
               source: {
                 unitId: "v4nv9",
                 index: 3

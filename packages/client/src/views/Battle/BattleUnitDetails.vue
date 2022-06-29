@@ -71,7 +71,7 @@
               <div>Abilities</div>
               <BattleUnitAbilityDetails
                 v-for="(ability, index) in abilities"
-                :key="ability.abilityGroup + ability.abilityClass"
+                :key="ability.abilityType + ability.abilityClass"
                 :unit="unit"
                 :ability="ability"
                 :class="{ 'margin-top-2': index > 0 }"

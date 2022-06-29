@@ -256,11 +256,11 @@ export default {
 
       if (step.action === "move") {
         await this.moveHandler(step);
-      } else if (step.action === battle.ABILITY_GROUP_ATTACK) {
+      } else if (step.action === battle.ABILITY_TYPE_ATTACK) {
         await this.groupAttackHandler(step);
-      } else if (step.action === battle.ABILITY_GROUP_BUFF) {
+      } else if (step.action === battle.ABILITY_TYPE_BUFF) {
         await this.groupBuffHandler(step);
-      } else if (step.action === battle.ABILITY_GROUP_DE_BUFF) {
+      } else if (step.action === battle.ABILITY_TYPE_DE_BUFF) {
         await this.moveHandler(step);
       }
     },
@@ -350,7 +350,7 @@ export default {
     },
     animateHandler() {
       // this.groupAttackHandler({
-      //   action: battle.ABILITY_GROUP_ATTACK,
+      //   action: battle.ABILITY_TYPE_ATTACK,
       //   source: {
       //     unitId: "v4nv9",
       //     index: 3
