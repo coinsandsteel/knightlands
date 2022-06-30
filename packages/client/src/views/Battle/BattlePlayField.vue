@@ -257,11 +257,11 @@ export default {
       if (step.action === "move") {
         await this.moveHandler(step);
       } else if (step.action === battle.ABILITY_TYPE_ATTACK) {
-        await this.groupAttackHandler(step);
+        await this.attackHandler(step);
       } else if (step.action === battle.ABILITY_TYPE_BUFF) {
-        await this.groupBuffHandler(step);
+        await this.buffHandler(step);
       } else if (step.action === battle.ABILITY_TYPE_DE_BUFF) {
-        await this.moveHandler(step);
+        await this.deBuffHandler(step);
       }
     },
     moveHandler(step) {
@@ -280,28 +280,28 @@ export default {
       await this.animateSlideAndFade({ index: 34, el });
       el.parentElement.removeChild(el);
     },
-    async groupAttackHandler(step) {
+    async attackHandler(step) {
       const el = document.createElement("div");
       el.className = "absolute-stretch battle-effect--group-attack";
       el.style = "opacity: 0;";
       await this.animateSlideAndFade({ index: 30, el });
       el.parentElement.removeChild(el);
     },
-    async groupBuffHandler(step) {
+    async buffHandler(step) {
       const el = document.createElement("div");
       el.className = "absolute-stretch battle-effect--group-buff";
       el.style = "opacity: 0;";
       await this.animateSlideAndFade({ index: 31, el });
       el.parentElement.removeChild(el);
     },
-    async groupDeBuffHandler(step) {
+    async deBuffHandler(step) {
       const el = document.createElement("div");
       el.className = "absolute-stretch battle-effect--group-de-buff";
       el.style = "opacity: 0;";
       await this.animateSlideAndFade({ index: 32, el });
       el.parentElement.removeChild(el);
     },
-    async groupSelfBuffHandler(step) {
+    async selfBuffHandler(step) {
       const el = document.createElement("div");
       el.className = "absolute-stretch battle-effect--self-buff";
       el.style = "opacity: 0;";
@@ -366,10 +366,10 @@ export default {
       //     criticalHit: false
       //   }
       // });
-      this.groupAttackHandler({});
-      this.groupBuffHandler({});
-      this.groupDeBuffHandler({});
-      this.groupSelfBuffHandler({});
+      this.attackHandler({});
+      this.buffHandler({});
+      this.deBuffHandler({});
+      this.selfBuffHandler({});
       this.effectHandler({});
       this.damageHandler({});
     },

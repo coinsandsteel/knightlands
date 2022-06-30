@@ -33,9 +33,6 @@ export default {
 .battle-unit-ability-type--attack {
   background-image: url("/images/battle/abilities/attack.png");
 }
-.battle-unit-ability-type--support {
-  background-image: url("/images/battle/abilities/support.png");
-}
 .battle-unit-ability-type--jump {
   background-image: url("/images/battle/abilities/jump.png");
 }
@@ -47,6 +44,9 @@ export default {
 }
 .battle-unit-ability-type--de_buff {
   background-image: url("/images/battle/abilities/de_buff.png");
+}
+.battle-unit-ability-type--healing {
+  background-image: url("/images/battle/abilities/heal.png");
 }
 
 .battle-unit-ability--accurate_shot {
@@ -115,8 +115,8 @@ export default {
 .battle-unit-ability--fury_claws {
   background-image: url("/images/battle/abilities/fury_claws.png");
 }
-.battle-unit-ability--type_heal {
-  background-image: url("/images/battle/abilities/type_heal.png");
+.battle-unit-ability--heal {
+  background-image: url("/images/battle/abilities/heal.png");
 }
 .battle-unit-ability--hamstring {
   background-image: url("/images/battle/abilities/hamstring.png");
