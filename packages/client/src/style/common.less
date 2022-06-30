@@ -462,6 +462,10 @@ span {
     pointer-events: none;
 }
 
+.pointer-events-auto {
+    pointer-events: auto;
+}
+
 .white-space {
     margin-right: 0.3rem;
 }
@@ -1525,6 +1529,23 @@ img {
   opacity: 0;
 }
 
+.child-slide-left-enter-active,
+.child-slide-left-leave-active {
+  transition: opacity 0.5s;
+}
+.child-slide-left-enter-active > div > div,
+.child-slide-left-leave-active > div > div {
+  transition: transform 0.5s;
+}
+.child-slide-left-enter,
+.child-slide-left-leave-to {
+  opacity: 0;
+}
+.child-slide-left-enter > div > div,
+.child-slide-left-leave-to > div > div {
+  transform: translateX(100%);
+}
+
 .input {
     height: 8rem;
     appearance: none;
@@ -1581,6 +1602,9 @@ img {
 
 .opacity-50 {
     opacity: 0.5;
+}
+.opacity-70 {
+    opacity: 0.7;
 }
 .opacity-0 {
     opacity: 0;

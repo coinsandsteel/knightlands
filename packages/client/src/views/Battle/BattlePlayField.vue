@@ -40,11 +40,11 @@
         @close="abilitySelectCloseHandler"
       />
     </Transition>
-    <Transition name="fade" appear>
+    <Transition name="child-slide-left" appear>
       <BattleAbilitySelect2
-        v-if="abilitySelectResolve"
+        v-if="selectedFighterId"
         :selectedFighterId="selectedFighterId"
-        @close="abilitySelectCloseHandler"
+        @close="abilitySelectCloseHandler2"
       />
     </Transition>
   </div>
@@ -77,6 +77,7 @@ export default {
     return {
       abilitySelectResolve: null,
       selectedFighterId: null,
+      selectedIndex: null,
       localQueue: [],
       isProcessingQueue: false
     };
@@ -138,6 +139,27 @@ export default {
 
       this.abilitySelectResolve(event);
       this.abilitySelectResolve = null;
+    },
+    abilitySelectCloseHandler2(ability) {
+      this.selectedFighterId = null;
+
+      if (!(ability && ability.abilityClass)) {
+        return;
+      }
+      const payload = {
+        fighterId: this.activeFighterId,
+        index: this.selectedIndex,
+        ability: ability.abilityClass
+      };
+      if (
+        ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+        battle.ABILITY_TYPES[ability.abilityClass] ===
+          battle.ABILITY_TYPE_SELF_BUFF
+      ) {
+        delete payload.index;
+        delete payload.fighterId;
+      }
+      this.$store.dispatch("battle/apply", payload);
     },
     async cellClickHandler(cell, index, event) {
       console.log("cell", cell);
@@ -209,6 +231,7 @@ export default {
         //     index - 35
         //   ]
         // });
+        this.selectedIndex = index;
         this.$store.dispatch("battle/chooseFighter", {
           fighterId: event.unit.fighterId
           // index
@@ -229,6 +252,9 @@ export default {
         // this.$store.commit("battle/updateState", {
         //   isMyTurn: false
         // });
+        // @todo: remove
+        this.selectedIndex = index;
+        this.selectedFighterId = this.activeFighterId;
         this.$store.dispatch("battle/apply", {
           fighterId: this.activeFighterId,
           index
@@ -252,6 +278,7 @@ export default {
         // });
         // return;
 
+        this.selectedIndex = index;
         this.selectedFighterId = this.activeFighterId;
         const ability = await this.showAbilitySelect();
         console.log("ability", ability);

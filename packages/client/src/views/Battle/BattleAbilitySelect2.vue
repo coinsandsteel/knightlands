@@ -1,58 +1,61 @@
 <template>
-  <div class="battle-ability-select flex flex-center pointer" @click="close()">
+  <div class="battle-ability-select flex flex-center pointer-events-none">
     <div
-      class="battle-ability-select-wrapper font-size-22 relative"
+      class="battle-ability-select-wrapper font-size-22 relative  overflow-hidden"
       :style="{ '--base-size': `${appSize.width}px` }"
     >
-      <!-- center -->
-      <div class="center-ability absolute"></div>
-      <!-- top -->
-      <div
-        class="top-ability absolute flex flex-center"
-        @click.stop="close(topAbility)"
-      >
-        <div class="ability-border absolute pointer-events-none"></div>
-        <BattleUnitAbility
-          v-if="topAbility"
-          :ability="topAbility"
-          class="pointer-events-none"
-        />
-      </div>
-      <!-- right -->
-      <div
-        class="right-ability absolute flex flex-center"
-        @click.stop="close(rightAbility)"
-      >
-        <div class="ability-border absolute pointer-events-none"></div>
-        <BattleUnitAbility
+      <div class="absolute-stretch opacity-70">
+        <!-- center -->
+        <div class="center-ability absolute pointer-events-auto"></div>
+        <!-- top -->
+        <div
+          class="top-ability absolute flex flex-center pointer-events-auto"
+          @click.stop="close(topAbility)"
+        >
+          <div class="ability-border absolute pointer-events-none"></div>
+          <BattleUnitAbility
+            v-if="topAbility"
+            :ability="topAbility"
+            class="pointer-events-none"
+          />
+        </div>
+        <!-- right / close -->
+        <div
+          class="right-ability absolute flex flex-center pointer-events-auto"
+          @click.stop="close()"
+        >
+          <div class="ability-border absolute pointer-events-none"></div>
+          <CloseButton />
+          <!-- <BattleUnitAbility
           v-if="rightAbility"
           :ability="rightAbility"
           class="pointer-events-none"
-        />
-      </div>
-      <!-- bottom -->
-      <div
-        class="bottom-ability absolute flex flex-center"
-        @click.stop="close(bottomAbility)"
-      >
-        <div class="ability-border absolute pointer-events-none"></div>
-        <BattleUnitAbility
-          v-if="bottomAbility"
-          :ability="bottomAbility"
-          class="pointer-events-none"
-        />
-      </div>
-      <!-- left -->
-      <div
-        class="left-ability absolute flex flex-center"
-        @click.stop="close(leftAbility)"
-      >
-        <div class="ability-border absolute pointer-events-none"></div>
-        <BattleUnitAbility
-          v-if="leftAbility"
-          :ability="leftAbility"
-          class="pointer-events-none"
-        />
+        /> -->
+        </div>
+        <!-- bottom -->
+        <div
+          class="bottom-ability absolute flex flex-center pointer-events-auto"
+          @click.stop="close(bottomAbility)"
+        >
+          <div class="ability-border absolute pointer-events-none"></div>
+          <BattleUnitAbility
+            v-if="bottomAbility"
+            :ability="bottomAbility"
+            class="pointer-events-none"
+          />
+        </div>
+        <!-- left -->
+        <div
+          class="left-ability absolute flex flex-center pointer-events-auto"
+          @click.stop="close(leftAbility)"
+        >
+          <div class="ability-border absolute pointer-events-none"></div>
+          <BattleUnitAbility
+            v-if="leftAbility"
+            :ability="leftAbility"
+            class="pointer-events-none"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -60,9 +63,12 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
+import CloseButton from "@/components/CloseButton.vue";
+
 export default {
   components: {
-    BattleUnitAbility
+    BattleUnitAbility,
+    CloseButton
   },
   props: {
     selectedFighterId: String
@@ -106,6 +112,10 @@ export default {
 </script>
 <style scoped lang="scss">
 $width: 60px;
+.battle-unit-ability {
+  width: $width;
+  height: $width;
+}
 .battle-ability-select {
   position: fixed;
   top: 0;
@@ -119,7 +129,7 @@ $width: 60px;
 .battle-ability-select-wrapper {
   height: 100%;
   width: var(--base-size);
-  background: rgba(#f00, 0.2);
+  // background: rgba(#f00, 0.2);
 }
 .center-ability {
   width: 60px;
@@ -183,5 +193,9 @@ $width: 60px;
   border: 2px solid #fff;
   background: rgba(#fff, 0.2);
   // transform: rotate(45deg);
+}
+.close-btn {
+  right: unset;
+  top: unset;
 }
 </style>
