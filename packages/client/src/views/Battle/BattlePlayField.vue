@@ -291,6 +291,8 @@ export default {
       this.isProcessingQueue = true;
       await this.processQueueStep(step);
       this.isProcessingQueue = false;
+
+      this.processQueue();
     },
     async processQueueStep(step) {
       console.log("processQueueStep", step);
