@@ -640,7 +640,8 @@ export default {
         state.game.combat.runtime.attackCells = data.combatAttackCells;
       }
       if (data.effects !== undefined) {
-        state.game.combat.runtime.queue.push(...data.effects);
+        // state.game.combat.runtime.queue.push(...data.effects);
+        state.game.combat.runtime.queue = data.effects || [];
       }
     },
     setInitialState(state, data) {

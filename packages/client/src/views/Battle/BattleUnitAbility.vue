@@ -115,8 +115,8 @@ export default {
 .battle-unit-ability--fury_claws {
   background-image: url("/images/battle/abilities/fury_claws.png");
 }
-.battle-unit-ability--heal {
-  background-image: url("/images/battle/abilities/heal.png");
+.battle-unit-ability--group_heal {
+  background-image: url("/images/battle/abilities/group_heal.png");
 }
 .battle-unit-ability--hamstring {
   background-image: url("/images/battle/abilities/hamstring.png");

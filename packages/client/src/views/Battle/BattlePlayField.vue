@@ -35,6 +35,13 @@
     </div>
     <Transition name="fade" appear>
       <BattleAbilitySelect
+        v-if="false && abilitySelectResolve"
+        :selectedFighterId="selectedFighterId"
+        @close="abilitySelectCloseHandler"
+      />
+    </Transition>
+    <Transition name="fade" appear>
+      <BattleAbilitySelect2
         v-if="abilitySelectResolve"
         :selectedFighterId="selectedFighterId"
         @close="abilitySelectCloseHandler"
@@ -51,6 +58,7 @@ import anime from "animejs/lib/anime.es.js";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
 import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
+import BattleAbilitySelect2 from "@/views/Battle/BattleAbilitySelect2.vue";
 import BattleObstacleInformation from "@/views/Battle/BattleObstacleInformation.vue";
 
 const commonAnimationParams = {
@@ -62,17 +70,21 @@ const commonAnimationParams = {
 export default {
   components: {
     BattleBoardCell,
-    BattleAbilitySelect
+    BattleAbilitySelect,
+    BattleAbilitySelect2
   },
   data() {
     return {
       abilitySelectResolve: null,
-      selectedFighterId: null
+      selectedFighterId: null,
+      localQueue: [],
+      isProcessingQueue: false
     };
   },
   computed: {
     ...mapState(["appSize"]),
     // ...mapState("battle", ["units", "enemies"]),
+    ...mapState("battle", ["game"]),
     ...mapGetters("battle", [
       "units",
       "enemyUnits",
@@ -86,6 +98,20 @@ export default {
     },
     boardCells() {
       return new Array(5 * 7).fill(null);
+    },
+    queue() {
+      return this.game.combat.runtime.queue;
+    }
+  },
+  watch: {
+    queue(value) {
+      console.log("queue changed", value);
+      if (value && value.length > 0) {
+        for (let i = 0; i < value.length; i++) {
+          this.localQueue.push(value[i]);
+        }
+      }
+      this.processQueue();
     }
   },
   created() {
@@ -232,24 +258,42 @@ export default {
         if (!(ability && ability.abilityClass)) {
           return;
         }
-        this.$store.dispatch("battle/apply", {
+        const payload = {
           fighterId: this.activeFighterId,
           index,
           ability: ability.abilityClass
-        });
+        };
+        if (
+          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+          battle.ABILITY_TYPES[ability.abilityClass] ===
+            battle.ABILITY_TYPE_SELF_BUFF
+        ) {
+          delete payload.index;
+          delete payload.fighterId;
+        }
+        this.$store.dispatch("battle/apply", payload);
       }
     },
-    async processQueue(queue) {
-      if (!(queue && queue.length > 0)) {
+    async processQueue() {
+      // if (!(queue && queue.length > 0)) {
+      //   return;
+      // }
+
+      // for (let i = 0; i < queue.length; i++) {
+      //   const step = queue[i];
+      //   await this.processQueueStep(step);
+      // }
+
+      if (this.isProcessingQueue || !(this.localQueue.length > 0)) {
         return;
       }
-
-      for (let i = 0; i < queue.length; i++) {
-        const step = queue[i];
-        await this.processQueueStep(step);
-      }
+      const step = this.localQueue.shift();
+      this.isProcessingQueue = true;
+      await this.processQueueStep(step);
+      this.isProcessingQueue = false;
     },
     async processQueueStep(step) {
+      console.log("processQueueStep", step);
       if (!step) {
         return;
       }
