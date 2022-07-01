@@ -48,7 +48,7 @@
             ((isAttackCellSelected && targetAbilities.length > 0) ||
               (!isAttackCellSelected && nonTargetAbilities.length > 0))
         "
-        v-if="true"
+        v-if="myActiveFighter"
         :isAttackCellSelected="isAttackCellSelected"
         :activeFighterId="activeFighterId"
         @close="abilitySelectCloseHandler2"
@@ -335,9 +335,9 @@ export default {
         // });
         // return;
 
-        this.selectedIndex = index;
-        this.isAttackCellSelected = true;
-        this.isAbilitySelectVisible = true;
+        // this.selectedIndex = index;
+        // this.isAttackCellSelected = true;
+        // this.isAbilitySelectVisible = true;
 
         // this.selectedFighterId = this.activeFighterId;
         // const ability = await this.showAbilitySelect();
@@ -359,6 +359,11 @@ export default {
         //   delete payload.fighterId;
         // }
         // this.$store.dispatch("battle/apply", payload);
+
+        const payload = {
+          index
+        };
+        this.$store.dispatch("battle/apply", payload);
       }
     },
     async processQueue() {

@@ -26,10 +26,21 @@
       >
         {{ hp }}
       </div>
+      <div
+        v-if="
+          shouldShowExtraInfo &&
+            unit &&
+            activeFighterId &&
+            unit.fighterId === activeFighterId
+        "
+        class="absolute battle-active-fighter font-size-18"
+      />
     </div>
   </div>
 </template>
 <script>
+import { mapState, mapGetters } from "vuex";
+
 export default {
   props: {
     unit: Object,
@@ -43,6 +54,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("battle", ["activeFighterId"]),
     hp() {
       return this.unit ? this.unit.hp || 0 : null;
     }
@@ -56,6 +68,8 @@ export default {
 };
 </script>
 <style scoped lang="less">
+@import (reference) "../../style/ui.less";
+@import (reference) "../../style/common.less";
 .battle-unit-hp {
   right: 0;
   top: 0;
@@ -66,6 +80,14 @@ export default {
   font-weight: 600;
   border-radius: 12px;
   padding: 0 4px;
+}
+.battle-active-fighter {
+  bottom: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a3e635;
 }
 .battle-unit-wrapper {
   // background: url("/images/battle/units/unit.png") center/100% no-repeat;
