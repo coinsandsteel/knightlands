@@ -43,11 +43,12 @@
     </Transition>
     <Transition name="child-slide-left" appear>
       <BattleAbilitySelect2
-        v-if="
+        _v-if="
           isAbilitySelectVisible &&
             ((isAttackCellSelected && targetAbilities.length > 0) ||
               (!isAttackCellSelected && nonTargetAbilities.length > 0))
         "
+        v-if="true"
         :isAttackCellSelected="isAttackCellSelected"
         :activeFighterId="activeFighterId"
         @close="abilitySelectCloseHandler2"
@@ -192,22 +193,25 @@ export default {
     },
     abilitySelectCloseHandler2(ability) {
       // this.selectedFighterId = null;
-      this.isAbilitySelectVisible = false;
+      // this.isAbilitySelectVisible = false;
 
       if (!(ability && ability.abilityClass)) {
         return;
       }
-      let payload = {
-        index: null,
-        fighterId: this.activeFighterId,
-        ability: ability.abilityClass
-      };
-      if (this.isAttackCellSelected) {
-        payload.index = this.selectedIndex;
-      }
-      this.$store.dispatch("battle/apply", payload);
-      this.isAttackCellSelected = false;
-      this.selectedIndex = null;
+      // let payload = {
+      //   index: this.selectedIndex || null,
+      //   fighterId: this.activeFighterId,
+      //   ability: ability.abilityClass
+      // };
+      // if (this.isAttackCellSelected) {
+      //   payload.index = this.selectedIndex;
+      // }
+      // this.$store.dispatch("battle/apply", payload);
+      // this.isAttackCellSelected = false;
+      // this.selectedIndex = null;
+      this.$store.dispatch("battle/chooseAbility", {
+        abilityClass: ability.abilityClass
+      });
     },
     async cellClickHandler(cell, index, event) {
       console.log("cell", cell);

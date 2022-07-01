@@ -91,16 +91,17 @@ export default {
         this.unit && this.unit.abilities
           ? this.unit.abilities.filter(({ enabled }) => enabled)
           : [];
+      return abilities;
 
-      return abilities.filter(ability => {
-        const isNonTarget =
-          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-          ability.abilityClass === battle.ABILITY_AXE_BLOW ||
-          battle.ABILITY_TYPES[ability.abilityClass] ===
-            battle.ABILITY_TYPE_SELF_BUFF;
+      // return abilities.filter(ability => {
+      //   const isNonTarget =
+      //     ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+      //     ability.abilityClass === battle.ABILITY_AXE_BLOW ||
+      //     battle.ABILITY_TYPES[ability.abilityClass] ===
+      //       battle.ABILITY_TYPE_SELF_BUFF;
 
-        return this.isAttackCellSelected ? !isNonTarget : isNonTarget;
-      });
+      //   return this.isAttackCellSelected ? !isNonTarget : isNonTarget;
+      // });
     },
     topAbility() {
       return this.abilities.length > 0 ? this.abilities[0] : null;
