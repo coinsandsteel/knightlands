@@ -156,13 +156,20 @@ export default {
         }
       }
       this.processQueue();
+    },
+    myActiveFighter(value) {
+      if (!value) {
+        this.isAbilitySelectVisible = false;
+        return;
+      }
+      this.isAbilitySelectVisible = true;
     }
   },
   created() {
-    console.log("createddd");
+    console.log("created");
   },
   mounted() {
-    console.log("createddd");
+    console.log("mounted");
     this.showObstacleInformation();
   },
   methods: {
@@ -272,13 +279,14 @@ export default {
         //     index - 35
         //   ]
         // });
-        this.selectedIndex = index;
-        this.isAttackCellSelected = false;
-        this.isAbilitySelectVisible = true;
-        this.$store.dispatch("battle/chooseFighter", {
-          fighterId: event.unit.fighterId
-          // index
-        });
+        //
+        // this.selectedIndex = index;
+        // this.isAttackCellSelected = false;
+        // this.isAbilitySelectVisible = true;
+        // this.$store.dispatch("battle/chooseFighter", {
+        //   fighterId: event.unit.fighterId
+        //   // index
+        // });
       }
 
       if (event.isMoveCell) {
