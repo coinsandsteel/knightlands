@@ -684,12 +684,12 @@ export default {
 
     // BattleMergeUnits
 
-    // BattleChooseFighter - Choose unit
-    // - unitId: string
-    async chooseFighter(store, { fighterId }) {
+    // BattleChooseAbility - Choose ability
+    // - abilityClass: string
+    async chooseAbility(store, { abilityClass }) {
       //store.commit("setIsDisabled", true);
-      await this.$app.$game._wrapOperation(Operations.BattleChooseFighter, {
-        fighterId
+      await this.$app.$game._wrapOperation(Operations.BattleChooseAbility, {
+        abilityClass
       });
       /*store.commit("setSelectedCardId", null);
       setTimeout(() => {
