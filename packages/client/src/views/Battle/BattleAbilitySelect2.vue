@@ -62,6 +62,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 import CloseButton from "@/components/CloseButton.vue";
 
@@ -71,7 +72,8 @@ export default {
     CloseButton
   },
   props: {
-    selectedFighterId: String
+    activeFighterId: String,
+    isAttackCellSelected: Boolean
   },
   data() {
     return {};
@@ -81,13 +83,24 @@ export default {
     ...mapGetters("battle", ["units", "enemyUnits"]),
     unit() {
       return [...this.units, ...this.enemyUnits].find(
-        ({ fighterId }) => fighterId === this.selectedFighterId
+        ({ fighterId }) => fighterId === this.activeFighterId
       );
     },
     abilities() {
-      return this.unit && this.unit.abilities
-        ? this.unit.abilities.filter(({ enabled }) => enabled)
-        : [];
+      const abilities =
+        this.unit && this.unit.abilities
+          ? this.unit.abilities.filter(({ enabled }) => enabled)
+          : [];
+
+      return abilities.filter(ability => {
+        const isNonTarget =
+          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+          ability.abilityClass === battle.ABILITY_AXE_BLOW ||
+          battle.ABILITY_TYPES[ability.abilityClass] ===
+            battle.ABILITY_TYPE_SELF_BUFF;
+
+        return this.isAttackCellSelected ? !isNonTarget : isNonTarget;
+      });
     },
     topAbility() {
       return this.abilities.length > 0 ? this.abilities[0] : null;

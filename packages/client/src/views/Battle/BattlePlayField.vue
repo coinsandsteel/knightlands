@@ -17,6 +17,7 @@
         </div>
       </div>
     </div>
+    <BattleUnitListItem v-if="myActiveFighter" :unit="myActiveFighter" />
     <div class="text-align-center margin-top-2">
       <CustomButton
         type="green"
@@ -42,8 +43,13 @@
     </Transition>
     <Transition name="child-slide-left" appear>
       <BattleAbilitySelect2
-        v-if="selectedFighterId"
-        :selectedFighterId="selectedFighterId"
+        v-if="
+          isAbilitySelectVisible &&
+            ((isAttackCellSelected && targetAbilities.length > 0) ||
+              (!isAttackCellSelected && nonTargetAbilities.length > 0))
+        "
+        :isAttackCellSelected="isAttackCellSelected"
+        :activeFighterId="activeFighterId"
         @close="abilitySelectCloseHandler2"
       />
     </Transition>
@@ -60,6 +66,7 @@ import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
 import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
 import BattleAbilitySelect2 from "@/views/Battle/BattleAbilitySelect2.vue";
 import BattleObstacleInformation from "@/views/Battle/BattleObstacleInformation.vue";
+import BattleUnitListItem from "@/views/Battle/BattleUnitListItem.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -71,13 +78,16 @@ export default {
   components: {
     BattleBoardCell,
     BattleAbilitySelect,
-    BattleAbilitySelect2
+    BattleAbilitySelect2,
+    BattleUnitListItem
   },
   data() {
     return {
       abilitySelectResolve: null,
-      selectedFighterId: null,
+      // selectedFighterId: null,
+      isAttackCellSelected: null,
       selectedIndex: null,
+      isAbilitySelectVisible: false,
       localQueue: [],
       isProcessingQueue: false
     };
@@ -102,6 +112,39 @@ export default {
     },
     queue() {
       return this.game.combat.runtime.queue;
+    },
+    myActiveFighter() {
+      return this.units.find(
+        ({ fighterId }) => fighterId === this.activeFighterId
+      );
+    },
+    nonTargetAbilities() {
+      const abilities = this.myActiveFighter
+        ? this.myActiveFighter.abilities
+        : [];
+
+      return abilities.filter(ability => {
+        return (
+          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+          ability.abilityClass === battle.ABILITY_AXE_BLOW ||
+          battle.ABILITY_TYPES[ability.abilityClass] ===
+            battle.ABILITY_TYPE_SELF_BUFF
+        );
+      });
+    },
+    targetAbilities() {
+      const abilities = this.myActiveFighter
+        ? this.myActiveFighter.abilities
+        : [];
+
+      return abilities.filter(ability => {
+        return !(
+          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+          ability.abilityClass === battle.ABILITY_AXE_BLOW ||
+          battle.ABILITY_TYPES[ability.abilityClass] ===
+            battle.ABILITY_TYPE_SELF_BUFF
+        );
+      });
     }
   },
   watch: {
@@ -141,25 +184,23 @@ export default {
       this.abilitySelectResolve = null;
     },
     abilitySelectCloseHandler2(ability) {
-      this.selectedFighterId = null;
+      // this.selectedFighterId = null;
+      this.isAbilitySelectVisible = false;
 
       if (!(ability && ability.abilityClass)) {
         return;
       }
-      const payload = {
+      let payload = {
+        index: null,
         fighterId: this.activeFighterId,
-        index: this.selectedIndex,
         ability: ability.abilityClass
       };
-      if (
-        ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-        battle.ABILITY_TYPES[ability.abilityClass] ===
-          battle.ABILITY_TYPE_SELF_BUFF
-      ) {
-        delete payload.index;
-        delete payload.fighterId;
+      if (this.isAttackCellSelected) {
+        payload.index = this.selectedIndex;
       }
       this.$store.dispatch("battle/apply", payload);
+      this.isAttackCellSelected = false;
+      this.selectedIndex = null;
     },
     async cellClickHandler(cell, index, event) {
       console.log("cell", cell);
@@ -232,6 +273,8 @@ export default {
         //   ]
         // });
         this.selectedIndex = index;
+        this.isAttackCellSelected = false;
+        this.isAbilitySelectVisible = true;
         this.$store.dispatch("battle/chooseFighter", {
           fighterId: event.unit.fighterId
           // index
@@ -254,7 +297,9 @@ export default {
         // });
         // @todo: remove
         this.selectedIndex = index;
-        this.selectedFighterId = this.activeFighterId;
+        this.isAttackCellSelected = false;
+        this.isAbilitySelectVisible = false;
+        // this.selectedFighterId = this.activeFighterId;
         this.$store.dispatch("battle/apply", {
           fighterId: this.activeFighterId,
           index
@@ -279,26 +324,29 @@ export default {
         // return;
 
         this.selectedIndex = index;
-        this.selectedFighterId = this.activeFighterId;
-        const ability = await this.showAbilitySelect();
-        console.log("ability", ability);
-        if (!(ability && ability.abilityClass)) {
-          return;
-        }
-        const payload = {
-          fighterId: this.activeFighterId,
-          index,
-          ability: ability.abilityClass
-        };
-        if (
-          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-          battle.ABILITY_TYPES[ability.abilityClass] ===
-            battle.ABILITY_TYPE_SELF_BUFF
-        ) {
-          delete payload.index;
-          delete payload.fighterId;
-        }
-        this.$store.dispatch("battle/apply", payload);
+        this.isAttackCellSelected = true;
+        this.isAbilitySelectVisible = true;
+
+        // this.selectedFighterId = this.activeFighterId;
+        // const ability = await this.showAbilitySelect();
+        // console.log("ability", ability);
+        // if (!(ability && ability.abilityClass)) {
+        //   return;
+        // }
+        // const payload = {
+        //   fighterId: this.activeFighterId,
+        //   index,
+        //   ability: ability.abilityClass
+        // };
+        // if (
+        //   ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+        //   battle.ABILITY_TYPES[ability.abilityClass] ===
+        //     battle.ABILITY_TYPE_SELF_BUFF
+        // ) {
+        //   delete payload.index;
+        //   delete payload.fighterId;
+        // }
+        // this.$store.dispatch("battle/apply", payload);
       }
     },
     async processQueue() {
