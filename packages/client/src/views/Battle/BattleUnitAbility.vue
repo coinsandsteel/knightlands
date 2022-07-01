@@ -220,4 +220,7 @@ export default {
 .battle-unit-ability--zealot {
   background-image: url("/images/battle/abilities/zealot.png");
 }
+.battle-unit-ability--move {
+  background-image: url("/images/battle/abilities/move.png");
+}
 </style>

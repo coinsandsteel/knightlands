@@ -6,7 +6,12 @@
     >
       <div class="absolute-stretch opacity-70">
         <!-- center -->
-        <div class="center-ability absolute pointer-events-auto"></div>
+        <div
+          class="center-ability absolute pointer-events-auto flex flex-center"
+          @click.stop="close()"
+        >
+          <CloseButton />
+        </div>
         <!-- top -->
         <div
           class="top-ability absolute flex flex-center pointer-events-auto"
@@ -22,15 +27,14 @@
         <!-- right / close -->
         <div
           class="right-ability absolute flex flex-center pointer-events-auto"
-          @click.stop="close()"
+          @click.stop="close(rightAbility)"
         >
           <div class="ability-border absolute pointer-events-none"></div>
-          <CloseButton />
-          <!-- <BattleUnitAbility
-          v-if="rightAbility"
-          :ability="rightAbility"
-          class="pointer-events-none"
-        /> -->
+          <BattleUnitAbility
+            v-if="rightAbility"
+            :ability="rightAbility"
+            class="pointer-events-none"
+          />
         </div>
         <!-- bottom -->
         <div
@@ -106,14 +110,15 @@ export default {
     topAbility() {
       return this.abilities.length > 0 ? this.abilities[0] : null;
     },
-    rightAbility() {
-      return this.abilities.length > 1 ? this.abilities[1] : null;
+    leftAbility() {
+      return this.abilities.length > 3 ? this.abilities[1] : null;
     },
     bottomAbility() {
       return this.abilities.length > 2 ? this.abilities[2] : null;
     },
-    leftAbility() {
-      return this.abilities.length > 3 ? this.abilities[3] : null;
+    rightAbility() {
+      // return this.abilities.length > 1 ? this.abilities[1] : null;
+      return { abilityClass: battle.ABILITY_MOVE };
     }
   },
   methods: {
