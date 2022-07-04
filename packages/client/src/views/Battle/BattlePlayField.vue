@@ -68,6 +68,7 @@ import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
 import BattleAbilitySelect2 from "@/views/Battle/BattleAbilitySelect2.vue";
 import BattleObstacleInformation from "@/views/Battle/BattleObstacleInformation.vue";
 import BattleUnitListItem from "@/views/Battle/BattleUnitListItem.vue";
+import BattleFighterDetails from "@/views/Battle/BattleFighterDetails.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -80,7 +81,8 @@ export default {
     BattleBoardCell,
     BattleAbilitySelect,
     BattleAbilitySelect2,
-    BattleUnitListItem
+    BattleUnitListItem,
+    BattleFighterDetails
   },
   data() {
     return {
@@ -219,7 +221,7 @@ export default {
       console.log("event", event);
       // console.log("selectedUnitId", this.selectedUnitId);
       console.log("isMyTurn", this.isMyTurn);
-      console.log("isUnit", this.isUnit);
+      // console.log("isUnit", event.isUnit);
 
       // if (!this.isMyTurn) {
       //   if (event.isEnemy) {
@@ -261,37 +263,9 @@ export default {
       //   return;
       // }
 
-      if (event.isUnit) {
-        // if (this.selectedUnitId === event.unit.unitId) {
-        //   this.$store.commit("battle/updateState", {
-        //     selectedUnitId: null,
-        //     moveCells: []
-        //   });
-        //   return;
-        // }
-        // this.$store.commit("battle/updateState", {
-        //   selectedUnitId: event.unit.unitId,
-        //   moveCells: [
-        //     index - 5,
-        //     index - 4,
-        //     index - 6,
-        //     index - 10,
-        //     index - 15,
-        //     index - 20,
-        //     index - 25,
-        //     index - 30,
-        //     index - 35
-        //   ]
-        // });
-        //
-        // this.selectedIndex = index;
-        // this.isAttackCellSelected = false;
-        // this.isAbilitySelectVisible = true;
-        // this.$store.dispatch("battle/chooseFighter", {
-        //   fighterId: event.unit.fighterId
-        //   // index
-        // });
-      }
+      // if (!this.isMyTurn) {
+      //   return;
+      // }
 
       if (event.isMoveCell) {
         // if (event.isMoveCell && !event.isEnemy) {
@@ -316,6 +290,8 @@ export default {
           fighterId: this.activeFighterId,
           index
         });
+
+        return;
       }
 
       if (event.isAttackCell) {
@@ -364,7 +340,23 @@ export default {
           index
         };
         this.$store.dispatch("battle/apply", payload);
+
+        return;
       }
+
+      if (event.isUnit) {
+        this.showFighterDetails(event.unit.fighterId);
+        return;
+      }
+
+      if (event.isEnemy) {
+        this.showFighterDetails(event.enemy.fighterId);
+        return;
+      }
+    },
+    async showFighterDetails(fighterId) {
+      const show = create(BattleFighterDetails, "fighterId");
+      await show(fighterId);
     },
     async processQueue() {
       // if (!(queue && queue.length > 0)) {

@@ -210,15 +210,14 @@ export default {
       },
 
       // Terrain
-      terrain: [
-      ],
+      terrain: [],
 
       // Active combat's data
       combat: {
         started: false,
         result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
-        isMyTurn: true, // boolean|null
+        // isMyTurn: true, // boolean|null
         activeFighterId: null,
         runtime: {
           fighterId: null, // string|null
@@ -334,11 +333,6 @@ export default {
         ? state.game.combat.runtime.selectedIndex
         : null;
     },
-    isMyTurn(state) {
-      return state.game && state.game.combat
-        ? !!state.game.combat.isMyTurn
-        : false;
-    },
     units(state) {
       return (state.game && state.game.userSquad
         ? state.game.userSquad.units || []
@@ -366,6 +360,15 @@ export default {
     // },
     activeFighterId(state) {
       return state.game.combat.activeFighterId;
+    },
+    isMyTurn(state, getters) {
+      return !!(
+        getters.activeFighterId &&
+        getters.units &&
+        getters.units.find(
+          ({ fighterId }) => fighterId === getters.activeFighterId
+        )
+      );
     },
     moveCells(state, getters) {
       // if (!getters.isMyTurn) {
