@@ -35,6 +35,10 @@
         "
         class="absolute battle-active-fighter font-size-18"
       />
+      <div
+        v-if="shouldShowExtraInfo && isAttackTarget"
+        class="absolute battle-attack-target font-size-18"
+      />
     </div>
   </div>
 </template>
@@ -46,7 +50,8 @@ export default {
     unit: Object,
     isEnemy: Boolean,
     isSelected: Boolean,
-    shouldShowExtraInfo: Boolean
+    shouldShowExtraInfo: Boolean,
+    isAttackTarget: Boolean
   },
   data() {
     return {
@@ -88,6 +93,14 @@ export default {
   height: 6px;
   border-radius: 50%;
   background: #a3e635;
+}
+.battle-attack-target {
+  bottom: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: red;
 }
 .battle-unit-wrapper {
   // background: url("/images/battle/units/unit.png") center/100% no-repeat;

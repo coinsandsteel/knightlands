@@ -379,6 +379,22 @@ export default {
       const step = this.localQueue.shift();
       this.isProcessingQueue = true;
       await this.processQueueStep(step);
+
+      if (
+        step.target &&
+        step.target.fighterId &&
+        typeof step.target.newHp === "number"
+      ) {
+        const isEnemy = this.enemyUnits.find(
+          ({ fighterId }) => fighterId === step.target.fighterId
+        );
+        this.$store.dispatch("battle/update", {
+          [isEnemy ? "enemyFighter" : "userFighter"]: [
+            { fighterId: step.target.fighterId, hp: step.target.newHp }
+          ]
+        });
+      }
+
       this.isProcessingQueue = false;
 
       this.processQueue();
@@ -409,22 +425,26 @@ export default {
     async effectHandler(step) {
       const el = document.createElement("div");
       el.className =
-        "absolute-stretch battle-effect--other-effect font-size-22 flex flex-center text-center";
+        "absolute-stretch battle-effect--other-effect font-size-16 flex flex-center text-center";
       el.style = "opacity: 0;";
       el.innerText = "effect";
       await this.animateSlideAndFade({ index: 34, el });
       el.parentElement.removeChild(el);
     },
     async attackHandler(step) {
+      console.log("attackHandler", step);
       const el = document.createElement("div");
-      el.className = "absolute-stretch battle-effect--group-attack";
+      el.className =
+        "absolute-stretch battle-effect--attack flex flex-center text-center font-size-18 font-weight-700";
       el.style = "opacity: 0;";
-      await this.animateSlideAndFade({ index: 30, el });
+      el.innerHTML = "<div>" + step.ability.damage + "</div>";
+      // await this.animateSlideAndFade({ index: 30, el });
+      await this.animateSlideAndFade({ index: step.target.index, el });
       el.parentElement.removeChild(el);
     },
     async buffHandler(step) {
       const el = document.createElement("div");
-      el.className = "absolute-stretch battle-effect--group-buff";
+      el.className = "absolute-stretch battle-effect--buff";
       el.style = "opacity: 0;";
       await this.animateSlideAndFade({ index: 31, el });
       el.parentElement.removeChild(el);
@@ -460,7 +480,7 @@ export default {
       const gapSize = 10;
       const animation = anime({
         ...commonAnimationParams,
-        duration: 800,
+        duration: 1000,
         targets: el,
         translateY: [
           0,
@@ -535,13 +555,17 @@ export default {
   grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));
 }
 ::v-deep {
-  .battle-effect--group-attack {
-    background: url("/images/battle/effect/attack.png") center/70% no-repeat;
+  .battle-effect--attack {
+    background: url("/images/battle/effect/attack.png") 0% center / 50%
+      no-repeat;
+    & > div {
+      transform: translateX(60%);
+    }
   }
-  .battle-effect--group-buff {
+  .battle-effect--buff {
     background: url("/images/battle/effect/buff.png") center/70% no-repeat;
   }
-  .battle-effect--group-de-buff {
+  .battle-effect--de-buff {
     background: url("/images/battle/effect/de_buff.png") center/70% no-repeat;
   }
   .battle-effect--self-buff {

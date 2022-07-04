@@ -84,7 +84,8 @@
                 'enemy-move-active': isEnemyMoveActive
               }
             ]"
-            :is-enemy="true"
+            :isEnemy="true"
+            :isAttackTarget="isEnemy && isAttackCell"
             :unit="enemy"
             :shouldShowExtraInfo="true"
           />
