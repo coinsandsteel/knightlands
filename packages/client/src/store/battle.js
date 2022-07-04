@@ -708,7 +708,7 @@ export default {
       //store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.BattleApply, {
         fighterId,
-        index,
+        index: index === undefined ? null : index,
         ability
       });
       /*store.commit("setSelectedCardId", null);

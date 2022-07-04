@@ -92,7 +92,8 @@ export default {
       selectedIndex: null,
       isAbilitySelectVisible: false,
       localQueue: [],
-      isProcessingQueue: false
+      isProcessingQueue: false,
+      selectedAbility: null
     };
   },
   computed: {
@@ -211,6 +212,7 @@ export default {
       // this.$store.dispatch("battle/apply", payload);
       // this.isAttackCellSelected = false;
       // this.selectedIndex = null;
+      this.selectedAbility = ability;
       this.$store.dispatch("battle/chooseAbility", {
         abilityClass: ability.abilityClass
       });
@@ -267,33 +269,6 @@ export default {
       //   return;
       // }
 
-      if (event.isMoveCell) {
-        // if (event.isMoveCell && !event.isEnemy) {
-        // const units = cloneDeep(this.units) || [];
-        // const unit = units.find(({ unitId }) => unitId === this.selectedUnitId);
-        // unit.index = index;
-        // this.$store.commit("battle/updateState", {
-        //   selectedUnitId: null,
-        //   moveCells: [],
-        //   units
-        // });
-
-        // this.$store.commit("battle/updateState", {
-        //   isMyTurn: false
-        // });
-        // @todo: remove
-        this.selectedIndex = index;
-        this.isAttackCellSelected = false;
-        this.isAbilitySelectVisible = false;
-        // this.selectedFighterId = this.activeFighterId;
-        this.$store.dispatch("battle/apply", {
-          fighterId: this.activeFighterId,
-          index
-        });
-
-        return;
-      }
-
       if (event.isAttackCell) {
         // if (event.isAttackCell && event.isEnemy) {
         // this.clickedEnemy = cloneDeep(event.enemy);
@@ -337,9 +312,39 @@ export default {
         // this.$store.dispatch("battle/apply", payload);
 
         const payload = {
-          index
+          index,
+          ability: this.selectedAbility
+            ? this.selectedAbility.abilityClass
+            : null
         };
         this.$store.dispatch("battle/apply", payload);
+
+        return;
+      }
+
+      if (event.isMoveCell) {
+        // if (event.isMoveCell && !event.isEnemy) {
+        // const units = cloneDeep(this.units) || [];
+        // const unit = units.find(({ unitId }) => unitId === this.selectedUnitId);
+        // unit.index = index;
+        // this.$store.commit("battle/updateState", {
+        //   selectedUnitId: null,
+        //   moveCells: [],
+        //   units
+        // });
+
+        // this.$store.commit("battle/updateState", {
+        //   isMyTurn: false
+        // });
+        // @todo: remove
+        this.selectedIndex = index;
+        this.isAttackCellSelected = false;
+        this.isAbilitySelectVisible = false;
+        // this.selectedFighterId = this.activeFighterId;
+        this.$store.dispatch("battle/apply", {
+          index,
+          ability: null
+        });
 
         return;
       }
