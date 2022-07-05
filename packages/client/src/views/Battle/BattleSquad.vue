@@ -2,7 +2,7 @@
   <div class="padding-2">
     <div class="font-size-22">
       <p>Pwr: {{ power }}</p>
-      <p v-if="bonuses">Bonuses: <br/>{{ bonuses }}</p>
+      <p v-if="bonuses">Bonuses: <br />{{ bonuses }}</p>
     </div>
     <BattleUnitList
       :units="units"
@@ -85,7 +85,6 @@ export default {
         this.updateUnitHandler(index);
         return;
       }
-      console.log("clickHandler");
       const unitIndex = this.units.findIndex(
         ({ unitId }) => unit.unitId === unitId
       );
@@ -102,7 +101,6 @@ export default {
       });
     },
     async updateUnitHandler(index) {
-      console.log("addUnitHandler");
       this.$router.push({
         name: "battle-units",
         params: {

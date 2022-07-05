@@ -58,7 +58,6 @@ export default {
   },
   methods: {
     async unitClickHandler() {
-      console.log("unitClickHandler");
       const show = create(BattleUnitSelect);
       await show();
     },

@@ -783,7 +783,6 @@ export default {
 
     // move fighter { fighterId, index, oldIndex }
     move(store, data) {
-      console.log("store", store);
       if (
         store.getters.units.find(
           ({ fighterId }) => fighterId === data.fighterId

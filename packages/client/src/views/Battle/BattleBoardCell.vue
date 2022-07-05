@@ -283,7 +283,7 @@ export default {
         return;
       }
 
-      console.log(`unit move from ${this.previousUnitIndex} to ${this.index}`);
+      // console.log(`unit move from ${this.previousUnitIndex} to ${this.index}`);
       const xDiff = (this.index % 5) - (this.previousUnitIndex % 5);
       const yDiff =
         Math.floor(this.index / 5) - Math.floor(this.previousUnitIndex / 5);
@@ -301,7 +301,7 @@ export default {
       done();
     },
     unitLeaveHandler(el, done) {
-      console.log("unit leave", this.index);
+      // console.log("unit leave", this.index);
       done();
     },
     async enemyEnterHandler(el, done) {
@@ -316,7 +316,7 @@ export default {
         return;
       }
 
-      console.log(`move from ${this.previousEnemyIndex} to ${this.index}`);
+      // console.log(`move from ${this.previousEnemyIndex} to ${this.index}`);
       const xDiff = (this.index % 5) - (this.previousEnemyIndex % 5);
       const yDiff =
         Math.floor(this.index / 5) - Math.floor(this.previousEnemyIndex / 5);
@@ -334,7 +334,7 @@ export default {
       done();
     },
     enemyLeaveHandler(el, done) {
-      console.log("enemy leave", this.index);
+      // console.log("enemy leave", this.index);
       done();
     }
   }

@@ -123,7 +123,6 @@ export default {
   },
   methods: {
     close(result) {
-      console.log("close", result);
       this.$emit("close", result);
     }
   }

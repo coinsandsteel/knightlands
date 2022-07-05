@@ -85,8 +85,6 @@ export default {
       this.currentTab = newTab;
     },
     handleBackButton() {
-      console.log("handleBackButton");
-      // this.$router.back();
       this.$router.replace({ name: "battle-menu" });
 
       return true;

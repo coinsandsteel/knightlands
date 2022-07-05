@@ -79,7 +79,6 @@ export default {
   },
   methods: {
     async unitClickHandler() {
-      console.log("unitClickHandler");
       const showDailyRewardsDialog = create(BattleUnitSelect);
       await showDailyRewardsDialog();
     },

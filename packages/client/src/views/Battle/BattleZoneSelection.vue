@@ -117,16 +117,16 @@ export default {
         : "";
     },
     goToNext() {
-      console.log("goToNext");
+      // console.log("goToNext");
       this.sliderIndex = this.nextZone;
-      console.log("goToNext 2", this.sliderIndex, this.nextZone);
+      // console.log("goToNext 2", this.sliderIndex, this.nextZone);
     },
     goToPrev() {
-      console.log("goToPrev");
+      // console.log("goToPrev");
       this.sliderIndex = this.prevZone;
     },
     handleZoneChanged(event) {
-      console.log("handleZoneChanged", event);
+      // console.log("handleZoneChanged", event);
       // this.$emit("input", this.zones[event]._id);
       // this.$emit("zoneChanged", this.zones[event]._id);
       this.$emit("change", { adventure: this.zones[this.currentZone] });

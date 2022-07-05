@@ -48,7 +48,7 @@
             ((isAttackCellSelected && targetAbilities.length > 0) ||
               (!isAttackCellSelected && nonTargetAbilities.length > 0))
         "
-        v-if="myActiveFighter"
+        v-if="myActiveFighter && canSelectAbility"
         :isAttackCellSelected="isAttackCellSelected"
         :activeFighterId="activeFighterId"
         @close="abilitySelectCloseHandler2"
@@ -93,7 +93,8 @@ export default {
       isAbilitySelectVisible: false,
       localQueue: [],
       isProcessingQueue: false,
-      selectedAbility: null
+      selectedAbility: null,
+      canSelectAbility: true
     };
   },
   computed: {
@@ -153,7 +154,6 @@ export default {
   },
   watch: {
     queue(value) {
-      console.log("queue changed", value);
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
           this.localQueue.push(value[i]);
@@ -169,11 +169,8 @@ export default {
       this.isAbilitySelectVisible = true;
     }
   },
-  created() {
-    console.log("created");
-  },
+  created() {},
   mounted() {
-    console.log("mounted");
     this.showObstacleInformation();
   },
   methods: {
@@ -199,6 +196,10 @@ export default {
       // this.isAbilitySelectVisible = false;
 
       if (!(ability && ability.abilityClass)) {
+        this.canSelectAbility = false;
+        setTimeout(() => {
+          this.canSelectAbility = true;
+        }, 3000);
         return;
       }
       // let payload = {
@@ -218,99 +219,11 @@ export default {
       });
     },
     async cellClickHandler(cell, index, event) {
-      console.log("cell", cell);
-      console.log("index", index);
-      console.log("event", event);
-      // console.log("selectedUnitId", this.selectedUnitId);
-      console.log("isMyTurn", this.isMyTurn);
-      // console.log("isUnit", event.isUnit);
-
-      // if (!this.isMyTurn) {
-      //   if (event.isEnemy) {
-      //     this.$store.commit("battle/updateState", {
-      //       enemySelectedUnitId: event.enemy.unitId,
-      //       enemyMoveCells: [
-      //         index + 5,
-      //         index + 4,
-      //         index + 6,
-      //         index + 10,
-      //         index + 15,
-      //         index + 20,
-      //         index + 25,
-      //         index + 30,
-      //         index + 35
-      //       ]
-      //     });
-
-      //     return;
-      //   }
-
-      //   if (event.isEnemyAvailableMove) {
-      //     const enemyUnits = cloneDeep(this.enemyUnits) || [];
-      //     const enemy = enemyUnits.find(
-      //       ({ unitId }) => unitId === this.enemySelectedUnitId
-      //     );
-      //     enemy.index = index;
-      //     this.$store.commit("battle/updateState", {
-      //       enemySelectedUnitId: null,
-      //       enemyAvailableMoves: [],
-      //       enemyUnits
-      //     });
-
-      //     this.$store.commit("battle/updateState", {
-      //       isMyTurn: true
-      //     });
-      //   }
-
-      //   return;
-      // }
-
       // if (!this.isMyTurn) {
       //   return;
       // }
 
       if (event.isAttackCell) {
-        // if (event.isAttackCell && event.isEnemy) {
-        // this.clickedEnemy = cloneDeep(event.enemy);
-        // this.$store.commit("battle/updateState", {
-        //   moveCells: []
-        // });
-        // const result = await this.showAbilitySelect();
-        // console.log("result", result);
-        // this.clickedEnemy = null;
-        // this.$store.commit("battle/updateState", {
-        //   selectedUnitId: null
-        // });
-        // this.$store.commit("battle/updateState", {
-        //   isMyTurn: false
-        // });
-        // return;
-
-        // this.selectedIndex = index;
-        // this.isAttackCellSelected = true;
-        // this.isAbilitySelectVisible = true;
-
-        // this.selectedFighterId = this.activeFighterId;
-        // const ability = await this.showAbilitySelect();
-        // console.log("ability", ability);
-        // if (!(ability && ability.abilityClass)) {
-        //   return;
-        // }
-        // const payload = {
-        //   fighterId: this.activeFighterId,
-        //   index,
-        //   ability: ability.abilityClass
-        // };
-        // if (
-        //   ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-        //   battle.ABILITY_TYPES[ability.abilityClass] ===
-        //     battle.ABILITY_TYPE_SELF_BUFF
-        // ) {
-        //   delete payload.index;
-        //   delete payload.fighterId;
-        // }
-        // this.$store.dispatch("battle/apply", payload);
-
         const payload = {
           index,
           ability: this.selectedAbility
@@ -323,24 +236,9 @@ export default {
       }
 
       if (event.isMoveCell) {
-        // if (event.isMoveCell && !event.isEnemy) {
-        // const units = cloneDeep(this.units) || [];
-        // const unit = units.find(({ unitId }) => unitId === this.selectedUnitId);
-        // unit.index = index;
-        // this.$store.commit("battle/updateState", {
-        //   selectedUnitId: null,
-        //   moveCells: [],
-        //   units
-        // });
-
-        // this.$store.commit("battle/updateState", {
-        //   isMyTurn: false
-        // });
-        // @todo: remove
         this.selectedIndex = index;
         this.isAttackCellSelected = false;
         this.isAbilitySelectVisible = false;
-        // this.selectedFighterId = this.activeFighterId;
         this.$store.dispatch("battle/apply", {
           index,
           ability: null
@@ -400,7 +298,6 @@ export default {
       this.processQueue();
     },
     async processQueueStep(step) {
-      console.log("processQueueStep", step);
       if (!step) {
         return;
       }
@@ -432,7 +329,6 @@ export default {
       el.parentElement.removeChild(el);
     },
     async attackHandler(step) {
-      console.log("attackHandler", step);
       const el = document.createElement("div");
       el.className =
         "absolute-stretch battle-effect--attack flex flex-center text-center font-size-18 font-weight-700";

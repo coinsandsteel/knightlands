@@ -65,7 +65,6 @@ export default {
   },
   methods: {
     changeHandler({ adventure }) {
-      console.log("changeHandler", adventure);
       this.adventure = adventure;
     },
     async switchDifficultyHandler() {

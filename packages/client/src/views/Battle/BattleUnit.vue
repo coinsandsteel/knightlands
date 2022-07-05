@@ -87,7 +87,7 @@ export default {
   padding: 0 4px;
 }
 .battle-active-fighter {
-  bottom: 0;
+  bottom: 2px;
   left: 0;
   width: 6px;
   height: 6px;
@@ -95,7 +95,7 @@ export default {
   background: #a3e635;
 }
 .battle-attack-target {
-  bottom: 0;
+  bottom: 2px;
   left: 0;
   width: 6px;
   height: 6px;

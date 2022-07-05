@@ -240,7 +240,6 @@ export default {
   },
   methods: {
     handleBackButton() {
-      console.log("handleBackButton 123");
       this.$router.replace({ name: "battle-units" });
       return true;
     },
