@@ -1,22 +1,34 @@
 <template>
   <div
     v-if="ability"
-    class="battle-unit-ability inline-block"
+    class="battle-unit-ability inline-block relative"
     :class="
       'battle-unit-ability-type--' +
         ability.abilityType +
         ' battle-unit-ability--' +
         ability.abilityClass
     "
-  ></div>
+  >
+    <div v-if="isActive" class="active-indicator absolute"></div>
+    <div v-if="isValueVisible" class="ability-value absolute font-size-18">
+      {{ value }}
+    </div>
+  </div>
 </template>
 <script>
 export default {
   props: {
-    ability: Object
+    ability: Object,
+    isActive: Boolean,
+    value: Number
   },
   data() {
     return {};
+  },
+  computed: {
+    isValueVisible() {
+      return typeof this.value === "number";
+    }
   }
 };
 </script>
@@ -29,6 +41,25 @@ export default {
   background-size: 100%;
   background-repeat: none;
   position: relative;
+}
+.active-indicator {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border: 2px solid #10b981;
+  border-radius: 50%;
+}
+.ability-value {
+  right: 0px;
+  bottom: 0px;
+  background: #fff;
+  border: solid 2px #777;
+  color: #333;
+  // color: #10b981;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 0 3px;
 }
 .battle-unit-ability-type--attack {
   background-image: url("/images/battle/abilities/attack.png");
@@ -222,5 +253,8 @@ export default {
 }
 .battle-unit-ability--move {
   background-image: url("/images/battle/abilities/move.png");
+}
+.battle-unit-ability--attack {
+  background-image: url("/images/battle/abilities/attack.png");
 }
 </style>

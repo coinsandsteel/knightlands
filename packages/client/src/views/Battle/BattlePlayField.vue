@@ -35,8 +35,46 @@
         </div>
       </div>
     </div>
-    <BattleUnitListItem v-if="myActiveFighter" :unit="myActiveFighter" />
-    <div class="text-align-center margin-top-2">
+    <!-- active unit -->
+    <div v-if="activeFighter" class="margin-top-2 font-size-22">
+      <div class="flex flex-center">
+        <BattleUnit
+          :unit="activeFighter"
+          :is-enemy="!myActiveFighter"
+          class="battle-current-active-fighter"
+        />
+      </div>
+      <div class="text-align-center">
+        # {{ activeFighter.unitTribe }} {{ activeFighter.unitClass }}
+        {{ activeFighter.tier }} #
+      </div>
+      <div class="text-align-center">
+        Applied effect
+      </div>
+      <template v-if="myActiveFighter">
+        <div
+          v-if="abilities && abilities.length > 0"
+          class="flex flex-center margin-top-1 margin-bottom-1"
+        >
+          <BattleUnitAbility
+            v-for="ability in abilities"
+            :key="ability.abilityClass"
+            :ability="ability"
+            :isActive="ability.abilityClass === selectedAbilityClass"
+            :value="ability.value"
+            class="battle-current-active-fighter-ability pointer"
+            @click.native="abilitySelectHandler(ability)"
+          />
+        </div>
+        <div class="text-align-center">
+          Cooldown! 2 steps left
+        </div>
+        <div v-if="abilityDescription" class="text-align-center">
+          {{ abilityDescription }}
+        </div>
+      </template>
+    </div>
+    <!-- <div class="text-align-center margin-top-2">
       <CustomButton
         type="green"
         width="20rem"
@@ -51,8 +89,8 @@
         @click="animateHandler"
         >animate</CustomButton
       >
-    </div>
-    <Transition name="fade" appear>
+    </div> -->
+    <!-- <Transition name="fade" appear>
       <BattleAbilitySelect
         v-if="false && abilitySelectResolve"
         :selectedFighterId="selectedFighterId"
@@ -71,7 +109,7 @@
         :activeFighterId="activeFighterId"
         @close="abilitySelectCloseHandler2"
       />
-    </Transition>
+    </Transition> -->
   </div>
 </template>
 <script>
@@ -82,12 +120,14 @@ import cloneDeep from "lodash/cloneDeep";
 import anime from "animejs/lib/anime.es.js";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
-import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
-import BattleAbilitySelect2 from "@/views/Battle/BattleAbilitySelect2.vue";
+// import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
+// import BattleAbilitySelect2 from "@/views/Battle/BattleAbilitySelect2.vue";
 import BattleObstacleInformation from "@/views/Battle/BattleObstacleInformation.vue";
-import BattleUnitListItem from "@/views/Battle/BattleUnitListItem.vue";
+// import BattleUnitListItem from "@/views/Battle/BattleUnitListItem.vue";
 import BattleFighterDetails from "@/views/Battle/BattleFighterDetails.vue";
 import BattleSideCell from "@/views/Battle/BattleSideCell.vue";
+import BattleUnit from "@/views/Battle/BattleUnit.vue";
+import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -98,11 +138,13 @@ const commonAnimationParams = {
 export default {
   components: {
     BattleBoardCell,
-    BattleAbilitySelect,
-    BattleAbilitySelect2,
-    BattleUnitListItem,
-    BattleFighterDetails,
-    BattleSideCell
+    // BattleAbilitySelect,
+    // BattleAbilitySelect2,
+    // BattleUnitListItem,
+    // BattleFighterDetails,
+    BattleSideCell,
+    BattleUnit,
+    BattleUnitAbility
   },
   data() {
     return {
@@ -113,8 +155,8 @@ export default {
       isAbilitySelectVisible: false,
       localQueue: [],
       isProcessingQueue: false,
-      selectedAbility: null,
-      canSelectAbility: true
+      selectedAbilityClass: null
+      // canSelectAbility: true
     };
   },
   computed: {
@@ -138,39 +180,69 @@ export default {
     queue() {
       return this.game.combat.runtime.queue;
     },
+    activeFighter() {
+      return [...this.units, ...this.enemyUnits].find(
+        ({ fighterId }) => fighterId === this.activeFighterId
+      );
+    },
     myActiveFighter() {
       return this.units.find(
         ({ fighterId }) => fighterId === this.activeFighterId
       );
     },
-    nonTargetAbilities() {
-      const abilities = this.myActiveFighter
-        ? this.myActiveFighter.abilities
-        : [];
-
-      return abilities.filter(ability => {
-        return (
-          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-          ability.abilityClass === battle.ABILITY_AXE_BLOW ||
-          battle.ABILITY_TYPES[ability.abilityClass] ===
-            battle.ABILITY_TYPE_SELF_BUFF
-        );
-      });
+    myActiveFighterId() {
+      return this.myActiveFighter ? this.myActiveFighter.fighterId : null;
     },
-    targetAbilities() {
-      const abilities = this.myActiveFighter
-        ? this.myActiveFighter.abilities
-        : [];
+    abilities() {
+      if (!this.myActiveFighter) {
+        return [];
+      }
 
-      return abilities.filter(ability => {
-        return !(
-          ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-          ability.abilityClass === battle.ABILITY_AXE_BLOW ||
-          battle.ABILITY_TYPES[ability.abilityClass] ===
-            battle.ABILITY_TYPE_SELF_BUFF
-        );
-      });
+      const additionalAbilities = [
+        { abilityClass: battle.ABILITY_MOVE },
+        { abilityClass: battle.ABILITY_ATTACK }
+      ];
+      const abilities =
+        this.myActiveFighter.abilities.filter(({ enabled }) => enabled) || [];
+
+      return [...additionalAbilities, ...abilities];
+    },
+    selectedAbility() {
+      return this.abilities.find(
+        ({ abilityClass }) => abilityClass === this.selectedAbilityClass
+      );
+    },
+    abilityDescription() {
+      return null;
     }
+    // nonTargetAbilities() {
+    //   const abilities = this.myActiveFighter
+    //     ? this.myActiveFighter.abilities
+    //     : [];
+
+    //   return abilities.filter(ability => {
+    //     return (
+    //       ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+    //       ability.abilityClass === battle.ABILITY_AXE_BLOW ||
+    //       battle.ABILITY_TYPES[ability.abilityClass] ===
+    //         battle.ABILITY_TYPE_SELF_BUFF
+    //     );
+    //   });
+    // },
+    // targetAbilities() {
+    //   const abilities = this.myActiveFighter
+    //     ? this.myActiveFighter.abilities
+    //     : [];
+
+    //   return abilities.filter(ability => {
+    //     return !(
+    //       ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
+    //       ability.abilityClass === battle.ABILITY_AXE_BLOW ||
+    //       battle.ABILITY_TYPES[ability.abilityClass] ===
+    //         battle.ABILITY_TYPE_SELF_BUFF
+    //     );
+    //   });
+    // }
   },
   watch: {
     queue(value) {
@@ -187,6 +259,10 @@ export default {
         return;
       }
       this.isAbilitySelectVisible = true;
+    },
+    myActiveFighterId(value) {
+      // make attack default ability
+      this.selectedAbilityClass = value ? battle.ABILITY_ATTACK : null;
     }
   },
   created() {},
@@ -198,28 +274,25 @@ export default {
       const show = create(BattleObstacleInformation);
       await show();
     },
-    async showAbilitySelect() {
-      return new Promise(resolve => {
-        this.abilitySelectResolve = resolve;
-      });
-    },
-    abilitySelectCloseHandler(event) {
-      if (!this.abilitySelectResolve) {
-        return;
-      }
+    // async showAbilitySelect() {
+    //   return new Promise(resolve => {
+    //     this.abilitySelectResolve = resolve;
+    //   });
+    // },
+    // abilitySelectCloseHandler(event) {
+    //   if (!this.abilitySelectResolve) {
+    //     return;
+    //   }
 
-      this.abilitySelectResolve(event);
-      this.abilitySelectResolve = null;
-    },
-    abilitySelectCloseHandler2(ability) {
+    //   this.abilitySelectResolve(event);
+    //   this.abilitySelectResolve = null;
+    // },
+    abilitySelectHandler(ability) {
+      console.log("abilitySelectHandler", ability);
       // this.selectedFighterId = null;
       // this.isAbilitySelectVisible = false;
 
       if (!(ability && ability.abilityClass)) {
-        this.canSelectAbility = false;
-        setTimeout(() => {
-          this.canSelectAbility = true;
-        }, 3000);
         return;
       }
       // let payload = {
@@ -233,7 +306,7 @@ export default {
       // this.$store.dispatch("battle/apply", payload);
       // this.isAttackCellSelected = false;
       // this.selectedIndex = null;
-      this.selectedAbility = ability;
+      this.selectedAbilityClass = ability.abilityClass;
       this.$store.dispatch("battle/chooseAbility", {
         abilityClass: ability.abilityClass
       });
@@ -246,9 +319,7 @@ export default {
       if (event.isAttackCell) {
         const payload = {
           index,
-          ability: this.selectedAbility
-            ? this.selectedAbility.abilityClass
-            : null
+          ability: this.selectedAbilityClass || null
         };
         this.$store.dispatch("battle/apply", payload);
 
@@ -353,7 +424,8 @@ export default {
       el.className =
         "absolute-stretch battle-effect--attack flex flex-center text-center font-size-18 font-weight-700";
       el.style = "opacity: 0;";
-      el.innerHTML = "<div>" + step.ability.damage + "</div>";
+      el.innerHTML =
+        "<div>" + (step.ability.value || step.ability.damage) + "</div>";
       // await this.animateSlideAndFade({ index: 30, el });
       await this.animateSlideAndFade({ index: step.target.index, el });
       el.parentElement.removeChild(el);
@@ -470,6 +542,20 @@ export default {
   display: grid;
   grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));
 }
+.battle-unit.battle-current-active-fighter {
+  width: calc(var(--base-size) * 1);
+  height: calc(var(--base-size) * 1);
+}
+.battle-current-active-fighter-ability {
+  width: calc(var(--base-size) * 0.8);
+  height: calc(var(--base-size) * 0.8);
+  margin: 0 calc(var(--base-size) * 0.125);
+  border-radius: 50%;
+}
+// .battle-current-active-fighter-ability--active {
+//   border: 2px solid #10b981;
+//   background-clip: border-box;
+// }
 ::v-deep {
   .battle-effect--attack {
     background: url("/images/battle/effect/attack.png") 0% center / 50%
