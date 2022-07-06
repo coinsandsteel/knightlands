@@ -5,14 +5,32 @@
   >
     <!-- play board -->
     <div class="battle-play-board-border-outer flex flex-center flex-grow-1">
-      <div class="battle-play-board-border relative">
-        <div class="battle-play-board-background absolute-stretch"></div>
-        <div class="battle-play-board">
-          <BattleBoardCell
-            v-for="(cell, cellIndex) in boardCells"
-            :key="cellIndex"
-            :index="cellIndex"
-            @click="cellClickHandler(cell, cellIndex, $event)"
+      <div class="flex flex-space-between width-100">
+        <div class="flex flex-column">
+          <BattleSideCell
+            v-for="fighter in units"
+            :fighter="fighter"
+            :key="fighter.fighterId"
+            @click="showFighterDetails(fighter.fighterId)"
+          />
+        </div>
+        <div class="battle-play-board-border relative">
+          <div class="battle-play-board-background absolute-stretch"></div>
+          <div class="battle-play-board">
+            <BattleBoardCell
+              v-for="(cell, cellIndex) in boardCells"
+              :key="cellIndex"
+              :index="cellIndex"
+              @click="cellClickHandler(cell, cellIndex, $event)"
+            />
+          </div>
+        </div>
+        <div class="flex flex-column">
+          <BattleSideCell
+            v-for="fighter in enemyUnits"
+            :fighter="fighter"
+            :key="fighter.fighterId"
+            @click="showFighterDetails(fighter.fighterId)"
           />
         </div>
       </div>
@@ -69,6 +87,7 @@ import BattleAbilitySelect2 from "@/views/Battle/BattleAbilitySelect2.vue";
 import BattleObstacleInformation from "@/views/Battle/BattleObstacleInformation.vue";
 import BattleUnitListItem from "@/views/Battle/BattleUnitListItem.vue";
 import BattleFighterDetails from "@/views/Battle/BattleFighterDetails.vue";
+import BattleSideCell from "@/views/Battle/BattleSideCell.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -82,7 +101,8 @@ export default {
     BattleAbilitySelect,
     BattleAbilitySelect2,
     BattleUnitListItem,
-    BattleFighterDetails
+    BattleFighterDetails,
+    BattleSideCell
   },
   data() {
     return {
@@ -235,7 +255,7 @@ export default {
         return;
       }
 
-      if (event.isMoveCell) {
+      if (event.isMoveCell && !(event.isUnit || event.isEnemy)) {
         this.selectedIndex = index;
         this.isAttackCellSelected = false;
         this.isAbilitySelectVisible = false;
@@ -247,15 +267,15 @@ export default {
         return;
       }
 
-      if (event.isUnit) {
-        this.showFighterDetails(event.unit.fighterId);
-        return;
-      }
+      // if (event.isUnit) {
+      //   this.showFighterDetails(event.unit.fighterId);
+      //   return;
+      // }
 
-      if (event.isEnemy) {
-        this.showFighterDetails(event.enemy.fighterId);
-        return;
-      }
+      // if (event.isEnemy) {
+      //   this.showFighterDetails(event.enemy.fighterId);
+      //   return;
+      // }
     },
     async showFighterDetails(fighterId) {
       const show = create(BattleFighterDetails, "fighterId");

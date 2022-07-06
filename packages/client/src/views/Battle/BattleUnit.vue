@@ -39,6 +39,16 @@
         v-if="shouldShowExtraInfo && isAttackTarget"
         class="absolute battle-attack-target font-size-18"
       />
+      <div
+        v-if="shouldShowExtraInfo && isDead"
+        class="absolute battle-dead-indicator font-size-18"
+      />
+      <div
+        v-if="shouldShowExtraInfo && sequenceIndex"
+        class="absolute battle-sequence-index font-size-18"
+      >
+        {{ sequenceIndex }}
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +72,12 @@ export default {
     ...mapGetters("battle", ["activeFighterId"]),
     hp() {
       return this.unit ? this.unit.hp || 0 : null;
+    },
+    isDead() {
+      return !(typeof this.hp === "number" && this.hp > 0);
+    },
+    sequenceIndex() {
+      return null;
     }
   },
   methods: {
@@ -84,23 +100,41 @@ export default {
   color: #10b981;
   font-weight: 600;
   border-radius: 12px;
-  padding: 0 4px;
+  padding: 0 5px;
+}
+.battle-sequence-index {
+  left: 0px;
+  bottom: 0px;
+  background: #fff;
+  border: solid 1px #777;
+  color: #333;
+  // color: #10b981;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 0 5px;
 }
 .battle-active-fighter {
-  bottom: 2px;
-  left: 0;
+  top: 3px;
+  left: 3px;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: #a3e635;
 }
 .battle-attack-target {
-  bottom: 2px;
-  left: 0;
+  top: 3px;
+  left: 3px;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: red;
+}
+.battle-dead-indicator {
+  top: 1px;
+  left: 1px;
+  width: 20px;
+  height: 20px;
+  background: url("/images/battle/units/dead_unit.png") center/100% no-repeat;
 }
 .battle-unit-wrapper {
   // background: url("/images/battle/units/unit.png") center/100% no-repeat;
