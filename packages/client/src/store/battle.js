@@ -253,7 +253,7 @@ export default {
             },
             // Unit buff
             {
-              action: battle.ABILITY_TYPE_BUFF,
+              action: battle.ABILITY_TYPE_BUFF | battle.ABILITY_TYPE_DE_BUFF,
               source: {
                 unitId: "v4nasv9",
                 index: 3
@@ -262,25 +262,12 @@ export default {
                 unitId: "45v83tn",
                 index: 20
               },
-              ability: {
-                abilityClass: battle.ABILITY_WIND_WALK,
-                damage: 1
-              }
-            },
-            // Unit debuff
-            {
-              action: battle.ABILITY_TYPE_DE_BUFF,
-              source: {
-                unitId: "v4nv9",
-                index: 3
-              },
-              target: {
-                unitId: "b5n48",
-                index: 8
-              },
-              ability: {
-                abilityClass: battle.ABILITY_CURSE,
-                damage: 1
+              buff: {
+                abilityClass: battle.ABILITY_RAGE,
+                type: "damage_increase",
+                value: 1.25,
+                probability: 0.5,
+                duration: 1
               }
             },
             // Unit self buff
@@ -290,9 +277,12 @@ export default {
                 unitId: "v4nv9",
                 index: 3
               },
-              ability: {
-                abilityClass: battle.ABILITY_RAGE,
-                damage: 0
+              buff: {
+                abilityClass,
+                type: "speed_reduce",
+                value: 1.1,
+                probability: 0.5,
+                duration: 1
               }
             },
             // Lava damage (or other effects)
