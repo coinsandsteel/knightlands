@@ -348,6 +348,9 @@ export default {
     //     ({ unitId }) => unitId === getters.selectedUnitId
     //   );
     // },
+    isUnitsFullFilled(state, getters) {
+      return getters.units.length === 5;
+    },
     activeFighterId(state) {
       return state.game.combat.activeFighterId;
     },

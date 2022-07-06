@@ -14,6 +14,7 @@
           type="yellow"
           width="20rem"
           class="inline-block"
+          :disabled="!isUnitsFullFilled"
           @click="handleStart(index)"
           >{{ $t("fight???") }}</CustomButton
         >
@@ -22,6 +23,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {
@@ -32,6 +34,9 @@ export default {
     return {
       items: []
     };
+  },
+  computed: {
+    ...mapGetters("battle", ["isUnitsFullFilled"])
   },
   async activated() {
     this.items = await this.$store.dispatch("battle/fetchDuelOptions");
