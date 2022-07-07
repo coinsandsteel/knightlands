@@ -61,8 +61,9 @@
             :key="ability.abilityClass"
             :ability="ability"
             :isActive="ability.abilityClass === selectedAbilityClass"
-            :value="ability.value"
+            :value="ability.enabled ? ability.value : null"
             class="battle-current-active-fighter-ability pointer"
+            :class="{ 'opacity-30 pointer-events-none': !ability.enabled }"
             @click.native="abilitySelectHandler(ability)"
           />
         </div>
@@ -199,11 +200,12 @@ export default {
       }
 
       const additionalAbilities = [
-        { abilityClass: battle.ABILITY_MOVE },
-        { abilityClass: battle.ABILITY_ATTACK }
+        { abilityClass: battle.ABILITY_MOVE, enabled: true },
+        { abilityClass: battle.ABILITY_ATTACK, enabled: true }
       ];
-      const abilities =
-        this.myActiveFighter.abilities.filter(({ enabled }) => enabled) || [];
+      // const abilities =
+      //   this.myActiveFighter.abilities.filter(({ enabled }) => enabled) || [];
+      const abilities = this.myActiveFighter.abilities || [];
 
       return [...additionalAbilities, ...abilities];
     },
@@ -292,7 +294,7 @@ export default {
       // this.selectedFighterId = null;
       // this.isAbilitySelectVisible = false;
 
-      if (!(ability && ability.abilityClass)) {
+      if (!(ability && ability.abilityClass && ability.enabled)) {
         return;
       }
       // let payload = {
