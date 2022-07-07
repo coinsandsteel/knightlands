@@ -4,7 +4,9 @@
     :style="{ '--base-size': `${baseSize}px` }"
   >
     <!-- play board -->
-    <div class="battle-play-board-border-outer flex flex-center flex-grow-1">
+    <div
+      class="battle-play-board-border-outer flex flex-center flex-grow-1 margin-top-4"
+    >
       <div class="flex flex-space-between width-100">
         <div class="flex flex-column">
           <BattleSideCell
@@ -21,6 +23,7 @@
               v-for="(cell, cellIndex) in boardCells"
               :key="cellIndex"
               :index="cellIndex"
+              :selectedAbilityClass="selectedAbilityClass"
               @click="cellClickHandler(cell, cellIndex, $event)"
             />
           </div>
@@ -168,7 +171,8 @@ export default {
       "units",
       "enemyUnits",
       "isMyTurn",
-      "activeFighterId"
+      "activeFighterId",
+      "moveCells"
     ]),
     baseSize() {
       return this.appSize
@@ -215,7 +219,28 @@ export default {
       );
     },
     abilityDescription() {
-      return null;
+      if (!this.selectedAbility) {
+        return null;
+      }
+
+      const name = this.selectedAbility.abilityClass;
+      const level = this.selectedAbility.level
+        ? this.selectedAbility.level.current
+        : null;
+      const value = this.selectedAbility.value;
+      const items = [];
+
+      if (name) {
+        items.push(name);
+      }
+      if (level) {
+        items.push("level: " + level);
+      }
+      if (value) {
+        items.push("value: " + (value > 0 ? "+" : "") + value);
+      }
+
+      return items.join(", ");
     }
     // nonTargetAbilities() {
     //   const abilities = this.myActiveFighter
@@ -262,9 +287,18 @@ export default {
       }
       this.isAbilitySelectVisible = true;
     },
-    myActiveFighterId(value) {
-      // make attack default ability
-      this.selectedAbilityClass = value ? battle.ABILITY_ATTACK : null;
+    myActiveFighterId: {
+      immediate: true,
+      handler: function(value) {
+        // select default ability
+        this.$nextTick(() => {
+          this.selectedAbilityClass = value
+            ? this.moveCells.length > 0
+              ? battle.ABILITY_MOVE
+              : battle.ABILITY_ATTACK
+            : null;
+        });
+      }
     }
   },
   created() {},
@@ -470,13 +504,13 @@ export default {
       const gapSize = 10;
       const animation = anime({
         ...commonAnimationParams,
-        duration: 1000,
+        duration: 700,
         targets: el,
         translateY: [
           0,
           `calc(-5% - ${gapSize}px)`,
-          `calc(-80% - ${gapSize}px)`,
-          `calc(-100% - ${gapSize}px)`
+          `calc(-45% - ${gapSize}px)`,
+          `calc(-65% - ${gapSize}px)`
         ],
         opacity: [0, 0.8, 1, 0]
       });

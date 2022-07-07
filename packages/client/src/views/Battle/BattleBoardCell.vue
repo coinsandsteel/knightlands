@@ -111,6 +111,7 @@
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
+import * as battle from "@/../../knightlands-shared/battle";
 import { sleep } from "@/helpers/utils";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {
@@ -118,7 +119,8 @@ export default {
     BattleUnit
   },
   props: {
-    index: Number
+    index: Number,
+    selectedAbilityClass: String
     // card: Object
   },
   data() {
@@ -143,7 +145,13 @@ export default {
       // "enemyMoveCells"
     ]),
     isUnit() {
-      return this.units.map(({ index }) => index).includes(this.index);
+      const isIncluded = this.units
+        .map(({ index }) => index)
+        .includes(this.index);
+
+      const unit = this.units.find(({ index }) => index === this.index);
+
+      return isIncluded && unit && unit.hp > 0;
     },
     terrain() {
       return this.game.terrain.find(({ index }) => index === this.index);
@@ -159,14 +167,14 @@ export default {
       // return this.selectedUnit ? this.selectedUnit.index : -1;
       return this.unit ? this.unit.index : -1;
     },
-    isMoveCell() {
-      return this.moveCells.includes(this.index);
-    },
-    isAttackCell() {
-      return !this.isMoveCell && this.attackCells.includes(this.index);
-    },
     isEnemy() {
-      return this.enemyUnits.map(({ index }) => index).includes(this.index);
+      const isIncluded = this.enemyUnits
+        .map(({ index }) => index)
+        .includes(this.index);
+
+      const unit = this.enemyUnits.find(({ index }) => index === this.index);
+
+      return isIncluded && unit && unit.hp > 0;
     },
     enemy() {
       if (!this.isEnemy) {
@@ -183,14 +191,24 @@ export default {
       // return this.enemyMoveCells.includes(this.index);
       return false;
     },
-    isClickable() {
+    isAttackCell() {
+      const isAttackAbility =
+        this.selectedAbilityClass &&
+        [battle.ABILITY_TYPE_DE_BUFF, battle.ABILITY_TYPE_ATTACK].includes(
+          battle.ABILITY_TYPES[this.selectedAbilityClass]
+        );
       return (
-        this.isUnit ||
-        this.isEnemy ||
-        this.isMoveCell ||
-        this.isAttackCell ||
-        this.isEnemyAvailableMove
+        this.attackCells.includes(this.index) &&
+        !(this.isUnit && isAttackAbility)
       );
+    },
+    isMoveCell() {
+      return (
+        this.moveCells.includes(this.index) && !(this.isUnit || this.isEnemy)
+      );
+    },
+    isClickable() {
+      return this.isMoveCell || this.isAttackCell;
     }
   },
   watch: {
