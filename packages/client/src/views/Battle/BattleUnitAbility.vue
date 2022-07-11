@@ -79,7 +79,6 @@ export default {
 .battle-unit-ability-type--healing {
   background-image: url("/images/battle/abilities/heal.png");
 }
-
 .battle-unit-ability--accurate_shot {
   background-image: url("/images/battle/abilities/accurate_shot.png");
 }

@@ -78,7 +78,7 @@
         </div>
       </template>
     </div>
-    <!-- <div class="text-align-center margin-top-2">
+    <div class="text-align-center margin-top-2">
       <CustomButton
         type="green"
         width="20rem"
@@ -93,7 +93,7 @@
         @click="animateHandler"
         >animate</CustomButton
       >
-    </div> -->
+    </div>
     <!-- <Transition name="fade" appear>
       <BattleAbilitySelect
         v-if="false && abilitySelectResolve"
@@ -429,7 +429,9 @@ export default {
         return;
       }
 
-      if (step.action === "move") {
+      if (step.target && (step.ability || step.buff)) {
+        await this.abilityEffectHandler(step);
+      } else if (step.action === "move") {
         await this.moveHandler(step);
       } else if (step.action === battle.ABILITY_TYPE_ATTACK) {
         await this.attackHandler(step);
@@ -445,6 +447,22 @@ export default {
         index: step.newIndex,
         ...step
       });
+    },
+    async abilityEffectHandler(step) {
+      const el = document.createElement("div");
+      el.className =
+        "absolute-stretch flex flex-center text-center font-size-18 font-weight-700";
+      el.style = "opacity: 0;";
+      el.innerHTML =
+        '<div class="battle-ability-effect _battle-ability-effect--attack_ battle-ability-effect--' +
+        (step.ability || step.buff).abilityClass +
+        '"></div>' +
+        '<div class="margin-left-half">' +
+        ((step.ability || step.buff).value ||
+          (step.ability || step.buff).damage) +
+        "</div>";
+      await this.animateSlideAndFade({ index: step.target.index, el });
+      el.parentElement.removeChild(el);
     },
     async effectHandler(step) {
       const el = document.createElement("div");
@@ -509,8 +527,8 @@ export default {
         translateY: [
           0,
           `calc(-5% - ${gapSize}px)`,
-          `calc(-45% - ${gapSize}px)`,
-          `calc(-65% - ${gapSize}px)`
+          `calc(-35% - ${gapSize}px)`,
+          `calc(-50% - ${gapSize}px)`
         ],
         opacity: [0, 0.8, 1, 0]
       });
@@ -528,29 +546,29 @@ export default {
       }
     },
     animateHandler() {
-      // this.groupAttackHandler({
-      //   action: battle.ABILITY_TYPE_ATTACK,
-      //   source: {
-      //     unitId: "v4nv9",
-      //     index: 3
-      //   },
-      //   target: {
-      //     unitId: "v4nv9",
-      //     index: 8,
-      //     newHp: 5
-      //   },
-      //   ability: {
-      //     abilityClass: battle.ABILITY_DEATH_SHOT,
-      //     damage: 5,
-      //     criticalHit: false
-      //   }
-      // });
-      this.attackHandler({});
-      this.buffHandler({});
-      this.deBuffHandler({});
-      this.selfBuffHandler({});
-      this.effectHandler({});
-      this.damageHandler({});
+      this.abilityEffectHandler({
+        action: battle.ABILITY_TYPE_ATTACK,
+        source: {
+          unitId: "v4nv9",
+          index: 3
+        },
+        target: {
+          unitId: "v4nv9",
+          index: 8,
+          newHp: 5
+        },
+        ability: {
+          abilityClass: battle.ABILITY_ATTACK,
+          damage: 5,
+          criticalHit: false
+        }
+      });
+      // this.attackHandler({});
+      // this.buffHandler({});
+      // this.deBuffHandler({});
+      // this.selfBuffHandler({});
+      // this.effectHandler({});
+      // this.damageHandler({});
     },
     move1Handler() {
       const units = _.cloneDeep(this.units);
@@ -593,6 +611,192 @@ export default {
 //   background-clip: border-box;
 // }
 ::v-deep {
+  .battle-ability-effect {
+    width: calc(var(--base-size) * 0.4);
+    height: calc(var(--base-size) * 0.4);
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  //
+  .battle-ability-effect--accurate_shot {
+    background-image: url("/images/battle/abilities/accurate_shot.png");
+  }
+  .battle-ability-effect--agression {
+    background-image: url("/images/battle/abilities/agression.png");
+  }
+  .battle-ability-effect--arrow_crush {
+    background-image: url("/images/battle/abilities/arrow_crush.png");
+  }
+  .battle-ability-effect--axe_blow {
+    background-image: url("/images/battle/abilities/axe_blow.png");
+  }
+  .battle-ability-effect--axe_crush {
+    background-image: url("/images/battle/abilities/axe_crush.png");
+  }
+  .battle-ability-effect--blade_vortex {
+    background-image: url("/images/battle/abilities/blade_vortex.png");
+  }
+  .battle-ability-effect--crush_of_doom {
+    background-image: url("/images/battle/abilities/crush_of_doom.png");
+  }
+  .battle-ability-effect--curse {
+    background-image: url("/images/battle/abilities/curse.png");
+  }
+  .battle-ability-effect--dark_vortex {
+    background-image: url("/images/battle/abilities/dark_vortex.png");
+  }
+  .battle-ability-effect--dash {
+    background-image: url("/images/battle/abilities/dash.png");
+  }
+  .battle-ability-effect--death_shot {
+    background-image: url("/images/battle/abilities/death_shot.png");
+  }
+  .battle-ability-effect--double_shot {
+    background-image: url("/images/battle/abilities/double_shot.png");
+  }
+  .battle-ability-effect--dragon_bite {
+    background-image: url("/images/battle/abilities/dragon_bite.png");
+  }
+  .battle-ability-effect--dragon_fury {
+    background-image: url("/images/battle/abilities/dragon_fury.png");
+  }
+  .battle-ability-effect--energy_bolt {
+    background-image: url("/images/battle/abilities/energy_bolt.png");
+  }
+  .battle-ability-effect--fatal_strike {
+    background-image: url("/images/battle/abilities/fatal_strike.png");
+  }
+  .battle-ability-effect--fire_blade {
+    background-image: url("/images/battle/abilities/fire_blade.png");
+  }
+  .battle-ability-effect--flame_strike {
+    background-image: url("/images/battle/abilities/flame_strike.png");
+  }
+  .battle-ability-effect--flight {
+    background-image: url("/images/battle/abilities/flight.png");
+  }
+  .battle-ability-effect--frost_blade {
+    background-image: url("/images/battle/abilities/frost_blade.png");
+  }
+  .battle-ability-effect--frozen_abyss {
+    background-image: url("/images/battle/abilities/frozen_abyss.png");
+  }
+  .battle-ability-effect--fury_claws {
+    background-image: url("/images/battle/abilities/fury_claws.png");
+  }
+  .battle-ability-effect--group_heal {
+    background-image: url("/images/battle/abilities/group_heal.png");
+  }
+  .battle-ability-effect--hamstring {
+    background-image: url("/images/battle/abilities/hamstring.png");
+  }
+  .battle-ability-effect--heal {
+    background-image: url("/images/battle/abilities/heal.png");
+  }
+  .battle-ability-effect--initiative {
+    background-image: url("/images/battle/abilities/initiative.png");
+  }
+  .battle-ability-effect--heavy_arrow {
+    background-image: url("/images/battle/abilities/heavy_arrow.png");
+  }
+  .battle-ability-effect--heavy_strike {
+    background-image: url("/images/battle/abilities/heavy_strike.png");
+  }
+  .battle-ability-effect--holy_strike {
+    background-image: url("/images/battle/abilities/holy_strike.png");
+  }
+  .battle-ability-effect--hummer_blow {
+    background-image: url("/images/battle/abilities/hummer_blow.png");
+  }
+  .battle-ability-effect--hurricane {
+    background-image: url("/images/battle/abilities/hurricane.png");
+  }
+  .battle-ability-effect--javelin_throw {
+    background-image: url("/images/battle/abilities/javelin_throw.png");
+  }
+  .battle-ability-effect--kunai_strike {
+    background-image: url("/images/battle/abilities/kunai_strike.png");
+  }
+  .battle-ability-effect--laziness {
+    background-image: url("/images/battle/abilities/laziness.png");
+  }
+  .battle-ability-effect--lethal_shot {
+    background-image: url("/images/battle/abilities/lethal_shot.png");
+  }
+  .battle-ability-effect--lethal_strike {
+    background-image: url("/images/battle/abilities/lethal_strike.png");
+  }
+  .battle-ability-effect--might {
+    background-image: url("/images/battle/abilities/might.png");
+  }
+  .battle-ability-effect--mortal_blow {
+    background-image: url("/images/battle/abilities/mortal_blow.png");
+  }
+  .battle-ability-effect--power_shot {
+    background-image: url("/images/battle/abilities/power_shot.png");
+  }
+  .battle-ability-effect--power_strike {
+    background-image: url("/images/battle/abilities/power_strike.png");
+  }
+  .battle-ability-effect--rage {
+    background-image: url("/images/battle/abilities/rage.png");
+  }
+  .battle-ability-effect--retribution {
+    background-image: url("/images/battle/abilities/retribution.png");
+  }
+  .battle-ability-effect--rush {
+    background-image: url("/images/battle/abilities/rush.png");
+  }
+  .battle-ability-effect--shield {
+    background-image: url("/images/battle/abilities/shield.png");
+  }
+  .battle-ability-effect--shield_strike {
+    background-image: url("/images/battle/abilities/shield_strike.png");
+  }
+  .battle-ability-effect--shield_stun {
+    background-image: url("/images/battle/abilities/shield_stun.png");
+  }
+  .battle-ability-effect--shield_wall {
+    background-image: url("/images/battle/abilities/shield_wall.png");
+  }
+  .battle-ability-effect--spear_strike {
+    background-image: url("/images/battle/abilities/spear_strike.png");
+  }
+  .battle-ability-effect--strong_punch {
+    background-image: url("/images/battle/abilities/strong_punch.png");
+  }
+  .battle-ability-effect--stun {
+    background-image: url("/images/battle/abilities/stun.png");
+  }
+  .battle-ability-effect--stun_shot {
+    background-image: url("/images/battle/abilities/stun_shot.png");
+  }
+  .battle-ability-effect--sword_crush {
+    background-image: url("/images/battle/abilities/sword_crush.png");
+  }
+  .battle-ability-effect--teleportation {
+    background-image: url("/images/battle/abilities/teleportation.png");
+  }
+  .battle-ability-effect--weakness {
+    background-image: url("/images/battle/abilities/weakness.png");
+  }
+  .battle-ability-effect--wind_walk {
+    background-image: url("/images/battle/abilities/wind_walk.png");
+  }
+  .battle-ability-effect--wolf_bite {
+    background-image: url("/images/battle/abilities/wolf_bite.png");
+  }
+  .battle-ability-effect--zealot {
+    background-image: url("/images/battle/abilities/zealot.png");
+  }
+  .battle-ability-effect--move {
+    background-image: url("/images/battle/abilities/move.png");
+  }
+  .battle-ability-effect--attack {
+    background-image: url("/images/battle/abilities/attack.png");
+  }
+  //
   .battle-effect--attack {
     background: url("/images/battle/effect/attack.png") 0% center / 50%
       no-repeat;
