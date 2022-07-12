@@ -3,6 +3,22 @@
     class="battle-play-field width-100 height-100 dummy-height flex flex-column flex-no-wrap overflow-hidden"
     :style="{ '--base-size': `${baseSize}px` }"
   >
+    <portal v-if="isActive" to="sectionTop" :slim="true">
+      <div class="width-100 flex flex-center padding-top-1 padding-bottom-1">
+        <progress-bar
+          ref="energy"
+          :maxValue="BATTLE_MAX_ENERGY"
+          :value="energy"
+          iconClass="icon-energy"
+          :hideMaxValue="true"
+          :expand="false"
+          barType="blue"
+          class="pointer width-30"
+        ></progress-bar>
+        <BattleCoin class="margin-left-2" />
+        <BattleCrystal class="margin-left-2" />
+      </div>
+    </portal>
     <!-- play board -->
     <div
       class="battle-play-board-border-outer flex flex-center flex-grow-1 margin-top-4"
@@ -123,7 +139,9 @@ import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import anime from "animejs/lib/anime.es.js";
 import * as battle from "@/../../knightlands-shared/battle";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 // import BattleAbilitySelect from "@/views/Battle/BattleAbilitySelect.vue";
 // import BattleAbilitySelect2 from "@/views/Battle/BattleAbilitySelect2.vue";
 import BattleObstacleInformation from "@/views/Battle/BattleObstacleInformation.vue";
@@ -132,6 +150,8 @@ import BattleFighterDetails from "@/views/Battle/BattleFighterDetails.vue";
 import BattleSideCell from "@/views/Battle/BattleSideCell.vue";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
+import BattleCoin from "@/views/Battle/BattleCoin.vue";
+import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -140,6 +160,7 @@ const commonAnimationParams = {
 };
 
 export default {
+  mixins: [ActivityMixin],
   components: {
     BattleBoardCell,
     // BattleAbilitySelect,
@@ -148,7 +169,10 @@ export default {
     // BattleFighterDetails,
     BattleSideCell,
     BattleUnit,
-    BattleUnitAbility
+    BattleUnitAbility,
+    BattleCoin,
+    BattleCrystal,
+    ProgressBar
   },
   data() {
     return {
@@ -159,14 +183,15 @@ export default {
       isAbilitySelectVisible: false,
       localQueue: [],
       isProcessingQueue: false,
-      selectedAbilityClass: null
+      selectedAbilityClass: null,
       // canSelectAbility: true
+      BATTLE_MAX_ENERGY: battle.BATTLE_MAX_ENERGY
     };
   },
   computed: {
     ...mapState(["appSize"]),
     // ...mapState("battle", ["units", "enemies"]),
-    ...mapState("battle", ["game"]),
+    ...mapState("battle", ["game", "user"]),
     ...mapGetters("battle", [
       "units",
       "enemyUnits",
@@ -241,6 +266,9 @@ export default {
       }
 
       return items.join(", ");
+    },
+    energy() {
+      return this.user.balance.energy;
     }
     // nonTargetAbilities() {
     //   const abilities = this.myActiveFighter

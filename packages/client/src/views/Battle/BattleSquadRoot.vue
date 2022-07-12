@@ -22,20 +22,23 @@
 import Tabs from "@/components/Tabs.vue";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import BattleMixin from "@/views/Battle/BattleMixin.vue";
+// import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
 const SquadTab = "battle-squad-home";
 const WarehouseTab = "battle-units";
 const BonusTab = "battle-squad-bonus";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin, BattleMixin],
+  mixins: [
+    AppSection,
+    NetworkRequestErrorMixin
+    //BattleMixin
+  ],
   components: {
     Tabs
   },
   data() {
     return {
-      hasShowDailyRewards: false,
       currentTab: SquadTab
     };
   },

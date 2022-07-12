@@ -6,6 +6,7 @@
         v-show="!hideTopBar"
         ref="statusBar"
       ></status-bar>
+      <portal-target name="sectionTop"></portal-target>
       <div class="flex flex-center section-name flex-no-wrap" v-show="title">
         <div class="section-decor"></div>
         <div class="section-title font-size-20">{{ $t(title) }}</div>

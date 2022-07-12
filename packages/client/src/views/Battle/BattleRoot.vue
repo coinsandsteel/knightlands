@@ -5,6 +5,7 @@
       class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
     >
       <tabs
+        v-if="isTabsVisible"
         :tabs="tabs"
         :router="true"
         :currentTab="currentTab"
@@ -62,6 +63,19 @@ export default {
       ],
       currentTab: MenuTab
     };
+  },
+  computed: {
+    isTabsVisible() {
+      return ![
+        "battle-units",
+        "battle-squad-home",
+        "battle-squad-warehouse",
+        "battle-squad-bonus",
+        "battle-squad-unit",
+        "battle-duels-play",
+        "battle-adventure-play"
+      ].includes(this.$route.name);
+    }
   },
   created() {
     this.title = this.$t("battle-event");

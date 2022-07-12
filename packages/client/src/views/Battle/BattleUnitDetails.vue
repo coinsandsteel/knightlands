@@ -173,10 +173,15 @@ import ActivityMixin from "@/components/ActivityMixin.vue";
 // import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 // import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
-import BattleMixin from "@/views/Battle/BattleMixin.vue";
+// import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin, BattleMixin],
+  mixins: [
+    AppSection,
+    NetworkRequestErrorMixin,
+    ActivityMixin
+    //BattleMixin
+  ],
   components: {
     BattleUnit,
     // BattleUnitAbility,

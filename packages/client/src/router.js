@@ -577,54 +577,6 @@ const router = new Router({
       }
     },
     {
-      path: "/battle-units/:slot?/:index?",
-      name: "battle-units",
-      component: () => import("./views/Battle/BattleUnits.vue"),
-      meta: {
-        requiresAuth: true,
-        noBackButton: false
-      }
-    },
-    {
-      path: "/battle-unit/:id",
-      name: "battle-unit-details",
-      component: () => import("./views/Battle/BattleUnitDetails.vue"),
-      meta: {
-        requiresAuth: true,
-        noBackButton: false
-      }
-    },
-    {
-      path: "/battle-squad",
-      component: () => import("./views/Battle/BattleSquadRoot.vue"),
-      children: [
-        {
-          path: "",
-          name: "battle-squad-home",
-          component: () => import("./views/Battle/BattleSquad.vue")
-        },
-        {
-          path: "warehouse",
-          name: "battle-squad-warehouse",
-          component: () => import("./views/Battle/BattleSquadWarehouse.vue")
-        },
-        {
-          path: "bonus",
-          name: "battle-squad-bonus",
-          component: () => import("./views/Battle/BattleSquadBonus.vue")
-        },
-        {
-          path: "unit/:id",
-          name: "battle-squad-unit",
-          component: () => import("./views/Battle/BattleSquadUnit.vue")
-        }
-      ],
-      meta: {
-        requiresAuth: true,
-        noBackButton: false
-      }
-    },
-    {
       path: "/battle",
       component: BattleRoot,
       children: [
@@ -632,6 +584,55 @@ const router = new Router({
           path: "",
           name: "battle-menu",
           component: () => import("./views/Battle/BattleMenu.vue")
+        },
+        {
+          path: "battle-units/:slot?/:index?",
+          name: "battle-units",
+          component: () => import("./views/Battle/BattleUnits.vue"),
+          meta: {
+            requiresAuth: true,
+            noBackButton: false
+            // noTopBar: true
+          }
+        },
+        {
+          path: "battle-unit/:id",
+          name: "battle-unit-details",
+          component: () => import("./views/Battle/BattleUnitDetails.vue"),
+          meta: {
+            requiresAuth: true,
+            noBackButton: false
+          }
+        },
+        {
+          path: "battle-squad",
+          component: () => import("./views/Battle/BattleSquadRoot.vue"),
+          children: [
+            {
+              path: "",
+              name: "battle-squad-home",
+              component: () => import("./views/Battle/BattleSquad.vue")
+            },
+            {
+              path: "warehouse",
+              name: "battle-squad-warehouse",
+              component: () => import("./views/Battle/BattleSquadWarehouse.vue")
+            },
+            {
+              path: "bonus",
+              name: "battle-squad-bonus",
+              component: () => import("./views/Battle/BattleSquadBonus.vue")
+            },
+            {
+              path: "unit/:id",
+              name: "battle-squad-unit",
+              component: () => import("./views/Battle/BattleSquadUnit.vue")
+            }
+          ],
+          meta: {
+            requiresAuth: true,
+            noBackButton: false
+          }
         },
         {
           path: "adventure",
@@ -650,7 +651,10 @@ const router = new Router({
             {
               path: ":id/play",
               name: "battle-adventure-play",
-              component: () => import("./views/Battle/BattleAdventurePlay.vue")
+              component: () => import("./views/Battle/BattleAdventurePlay.vue"),
+              meta: {
+                noTopBar: true
+              }
             }
           ]
         },
@@ -666,7 +670,10 @@ const router = new Router({
             {
               path: ":id/play",
               name: "battle-duels-play",
-              component: () => import("./views/Battle/BattleDuelsPlay.vue")
+              component: () => import("./views/Battle/BattleDuelsPlay.vue"),
+              meta: {
+                noTopBar: true
+              }
             }
           ]
         },
