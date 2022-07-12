@@ -66,8 +66,8 @@
               <div>Hp - {{ unit.characteristics.hp }}</div>
               <div>Defense - {{ unit.characteristics.damage }}</div>
               <div>Damage - {{ unit.characteristics.defence }}</div>
-              <div>Speed - {{ unit.characteristics.initiative }}</div>
-              <div>Initiative - {{ unit.characteristics.speed }}</div>
+              <div>Speed - {{ unit.characteristics.speed }}</div>
+              <div>Initiative - {{ unit.characteristics.initiative }}</div>
             </div>
             <div class="margin-top-3">
               <div>Abilities</div>
