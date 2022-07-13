@@ -452,6 +452,14 @@ export default {
         this.showBackMenu = true;
         return;
       }
+      if (
+        ["battle-adventure-play", "battle-duels-play"].includes(
+          this.$route.name
+        )
+      ) {
+        this.showBackMenu = false;
+        return;
+      }
 
       this.showBackMenu = params ? params.length >= 2 : false;
 

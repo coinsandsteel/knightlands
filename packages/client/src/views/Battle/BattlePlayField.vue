@@ -4,7 +4,9 @@
     :style="{ '--base-size': `${baseSize}px` }"
   >
     <portal v-if="isActive" to="sectionTop" :slim="true">
-      <div class="width-100 flex flex-center padding-top-1 padding-bottom-1">
+      <div
+        class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
+      >
         <progress-bar
           ref="energy"
           :maxValue="BATTLE_MAX_ENERGY"
@@ -17,6 +19,10 @@
         ></progress-bar>
         <BattleCoin class="margin-left-2" />
         <BattleCrystal class="margin-left-2" />
+        <CloseButton
+          class="absolute-right top-unset margin-right-1"
+          @click="exitHandler"
+        />
       </div>
     </portal>
     <!-- play board -->
@@ -53,6 +59,17 @@
           />
         </div>
       </div>
+    </div>
+    <!-- skip button -->
+    <div v-if="myActiveFighter" class="text-align-center margin-top-2">
+      <CustomButton
+        type="blue"
+        width="20rem"
+        class="inline-block"
+        @click="skipHandler"
+      >
+        Skip Turn
+      </CustomButton>
     </div>
     <!-- active unit -->
     <div v-if="activeFighter" class="margin-top-2 font-size-22">
@@ -94,7 +111,7 @@
         </div>
       </template>
     </div>
-    <div class="text-align-center margin-top-2">
+    <div v-if="false" class="text-align-center margin-top-2">
       <CustomButton
         type="green"
         width="20rem"
@@ -152,6 +169,8 @@ import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
+import BattleExitGame from "@/views/Battle/BattleExitGame.vue";
+import CloseButton from "@/components/CloseButton.vue";
 
 const commonAnimationParams = {
   duration: 200,
@@ -172,7 +191,8 @@ export default {
     BattleUnitAbility,
     BattleCoin,
     BattleCrystal,
-    ProgressBar
+    ProgressBar,
+    CloseButton
   },
   data() {
     return {
@@ -415,6 +435,17 @@ export default {
     async showFighterDetails(fighterId) {
       const show = create(BattleFighterDetails, "fighterId");
       await show(fighterId);
+    },
+    async exitHandler() {
+      const showDialog = create(BattleExitGame);
+      const result = await showDialog();
+      if (result) {
+        this.$store.dispatch("battle/exit");
+        this.$router.replace({ name: "battle-menu" });
+      }
+    },
+    skipHandler() {
+      this.$store.dispatch("battle/skip");
     },
     async processQueue() {
       // if (!(queue && queue.length > 0)) {
