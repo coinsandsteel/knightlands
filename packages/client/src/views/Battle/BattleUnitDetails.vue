@@ -63,8 +63,8 @@
             </div>
             <div class="margin-top-2">
               <div>Hp - {{ unit.characteristics.hp }}</div>
-              <div>Defense - {{ unit.characteristics.defence }}</div>
               <div>Damage - {{ unit.characteristics.damage }}</div>
+              <div>Defense - {{ unit.characteristics.defence }}</div>
               <div>Speed - {{ unit.characteristics.speed }}</div>
               <div>Initiative - {{ unit.characteristics.initiative }}</div>
             </div>
