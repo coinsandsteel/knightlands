@@ -43,7 +43,6 @@
                 class="full-flex"
                 barType="green"
                 :maxValue="expMaxValue"
-                @refill="upgradeLevelHandler"
               ></ProgressBar>
             </div>
             <div>
