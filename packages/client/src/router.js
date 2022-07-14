@@ -713,6 +713,11 @@ const router = new Router({
           component: () => import("./views/Battle/BattleShop.vue")
         },
         {
+          path: "shop2",
+          name: "battle-shop2",
+          component: () => import("./views/Battle/BattleShop.vue")
+        },
+        {
           path: "chest-shop",
           name: "battle-chest-shop",
           component: () => import("./views/Battle/BattleChestShop.vue")

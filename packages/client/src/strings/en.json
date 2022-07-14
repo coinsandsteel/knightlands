@@ -2667,5 +2667,13 @@
   "resurrection-text": "Resurrect and step 1 action back",
   "april-boss-killed-text": "Rating will be updated after killing the boss",
 
-  "battle-event": "Battle Event"
+  "battle-event": "Battle Event",
+  "battle-shop-starter-pack": "Starter pack",
+  "battle-shop-daily-reward": "Daily chest",
+  "battle-shop-energy-chest": "Energy potion",
+  "battle-shop-coin-chest": "Coin chest",
+  "battle-shop-donation-chest": "Donate chest",
+  "battle-shop-squad1-chest": "Squad #1 chest",
+  "battle-shop-squad2-chest": "Squad #2 chest",
+  "battle-shop-squad3-chest": "Squad #3 chest"
 }

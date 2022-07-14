@@ -8,18 +8,7 @@
           Choose a pack:
         </div>
 
-        <div class="flex flex-center">
-          <div class="flex flex-center flex-column width-100">
-            <BattleChestElement
-              v-for="(chest, index) in chests"
-              :key="chest.name"
-              :chest="chest"
-              :index="index"
-            />
-          </div>
-        </div>
-
-        <!-- <div
+        <div
           class="option-items width-100 flex flex-center flex-space-evenly padding-1"
         >
           <div
@@ -63,10 +52,10 @@
               </CustomButton>
             </div>
           </div>
-        </div> -->
+        </div>
 
         <!-- purchase ticket -->
-        <!-- <div>
+        <div>
           <CustomButton
             :disabled="goldBalance < ticketPrice"
             type="grey"
@@ -75,7 +64,7 @@
           >
             Purchase ticket for <AprilGold :value="ticketPrice" />
           </CustomButton>
-        </div> -->
+        </div>
 
         <div
           class="april-shop-balance flex flex-center flex-column margin-top-3"
@@ -94,7 +83,7 @@
           </div>
           <div class="font-size-22 margin-bottom-3 flex flex-center">
             Gold balance:
-            <BattleCoin />
+            <AprilGold />
           </div>
         </div>
       </div>
@@ -110,26 +99,24 @@
 </template>
 <script>
 import { create } from "vue-modal-dialogs";
-import * as battle from "@/../../knightlands-shared/battle";
+import * as april from "@/../../knightlands-shared/april";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
-// import BackButton from "@/views/Common/BackButton.vue";
-import BattleCoin from "@/views/Battle/BattleCoin.vue";
-import BattleChestElement from "@/views/Battle/BattleChestElement.vue";
+import BackButton from "@/views/Common/BackButton.vue";
+import AprilGold from "@/views/April/AprilGold.vue";
 
 export default {
   components: {
-    BattleCoin,
-    BattleChestElement
-    // BackButton
+    AprilGold,
+    BackButton
   },
   mixins: [AppSection, ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
   data() {
     return {
-      chests: battle.SHOP,
+      options: april.SHOP,
       shopIndex: null
     };
   },
@@ -139,13 +126,13 @@ export default {
         hard: this.$game.hardCurrency,
         flesh: this.$game.dkt
       };
+    },
+    goldBalance() {
+      return this.$store.state.april.balance.gold || 0;
+    },
+    ticketPrice() {
+      return april.TICKET_SHOP[0].price;
     }
-    // goldBalance() {
-    //   return this.$store.state.april.balance.gold || 0;
-    // },
-    // ticketPrice() {
-    //   return april.TICKET_SHOP[0].price;
-    // }
   },
   filters: {
     shinesPrice(value) {

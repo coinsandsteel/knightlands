@@ -4,7 +4,7 @@
     <div v-bar>
       <div class="flex flex-center">
         <div class="flex flex-center flex-column">
-          <BattleChestElement
+          <BattleChestElement2
             v-for="(chest, index) in chests"
             :key="chest.name"
             :chest="chest"
@@ -32,7 +32,7 @@
 import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 // import ChestsMeta from "@/metadata/chests_meta";
-import BattleChestElement from "./BattleChestElement.vue";
+import BattleChestElement2 from "./BattleChestElement2.vue";
 import BattleChestShopDetails from "./BattleChestShopDetails.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
@@ -40,7 +40,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
-  components: { BattleChestElement },
+  components: { BattleChestElement2 },
   created() {
     this.title = "window-choose-chest";
   },

@@ -60,6 +60,15 @@
           <CustomButton
             type="green"
             class="inline-block margin-right-2 margin-top-1"
+            @click="goToShop2"
+          >
+            {{ $t("shop2") }}???
+          </CustomButton>
+        </div>
+        <div>
+          <CustomButton
+            type="green"
+            class="inline-block margin-right-2 margin-top-1"
             @click="goToChestShop"
           >
             {{ $t("chest-shop") }}???
@@ -92,6 +101,9 @@ export default {
     },
     goToShop() {
       this.$router.push({ name: "battle-shop" });
+    },
+    goToShop2() {
+      this.$router.push({ name: "battle-shop2" });
     },
     goToChestShop() {
       this.$router.push({ name: "battle-chest-shop" });
