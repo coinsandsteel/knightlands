@@ -208,7 +208,20 @@ export default {
       },
 
       // Terrain
-      terrain: [],
+      terrain: {
+        base: "grass",
+        tiles: [null, null, null, null, null, null, "grass_woods", null, "grass_woods", null, null, null, null, null, null, null, "grass_woods", null, "grass_woods", null, null, null, null, null, null],
+      },
+      /*
+      {
+        base: "sand",
+        tiles: ["sand_hill", "sand_thorns", null, "sand_thorns", "sand_hill", "sand_lava_a", "sand_lava_b", null, "sand_hill", "sand_hill", "sand_lava_d", "sand_lava_c", "sand_thorns", "sand_lava_a", "sand_lava_b", "sand_hill", "sand_hill", null, "sand_lava_d", "sand_lava_c", "sand_hill", "sand_thorns", null, "sand_thorns", "sand_hill"],
+      }, 
+      {
+        base: "snow",
+        tiles: ["snow_ice_a", "snow_ice_b", "snow_woods", "snow_ice_1", "snow_ice_1-1", "snow_ice_d", "snow_ice_c", "snow_woods", "snow_hill", "snow_woods", "snow_hill", "snow_hill", "snow_ice", "snow_woods", "snow_woods", "snow_hill", "snow_woods", "snow_hill", "snow_ice_a", "snow_ice_b", "snow_ice_1", "snow_ice_1-1", "snow_hill", "snow_ice_d", "snow_ice_c"],
+      }, 
+      */
 
       // Active combat's data
       combat: {
@@ -571,7 +584,7 @@ export default {
       state.game.adventureDifficulty = gameData.adventureDifficulty;
       state.game.userSquad = gameData.userSquad;
       state.game.enemySquad = gameData.enemySquad;
-      if (gameData.terrain && gameData.terrain.length > 0) {
+      if (gameData.terrain) {
         state.game.terrain = gameData.terrain;
       }
 
