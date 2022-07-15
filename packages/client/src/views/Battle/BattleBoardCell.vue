@@ -12,7 +12,7 @@
       <div
         v-if="terrain"
         class="battle-board-cell-terrain absolute-stretch"
-        :class="'battle-board-cell-terrain--' + terrain.terrainClass"
+        :class="'battle-board-cell-terrain--' + terrain.tile"
       />
       <!-- available move -->
       <Transition name="fade" appear>
@@ -136,6 +136,7 @@ export default {
   computed: {
     ...mapState("battle", ["game"]),
     ...mapGetters("battle", [
+      "battleTerrain",
       "units",
       "selectedUnit",
       "moveCells",
@@ -154,7 +155,7 @@ export default {
       return isIncluded && unit && unit.hp > 0;
     },
     terrain() {
-      return this.game.terrain.find(({ index }) => index === this.index);
+      return this.battleTerrain.find(({ index }) => index === this.index);
     },
     unit() {
       if (!this.isUnit) {

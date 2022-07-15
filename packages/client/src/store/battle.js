@@ -210,7 +210,33 @@ export default {
       // Terrain
       terrain: {
         base: "grass",
-        tiles: [null, null, null, null, null, null, "grass_woods", null, "grass_woods", null, null, null, null, null, null, null, "grass_woods", null, "grass_woods", null, null, null, null, null, null],
+        tiles: [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "grass_woods",
+          null,
+          "grass_woods",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "grass_woods",
+          null,
+          "grass_woods",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
       },
       /*
       {
@@ -333,6 +359,20 @@ export default {
       return state.game && state.game.combat && state.game.combat.runtime
         ? state.game.combat.runtime.selectedIndex
         : null;
+    },
+    battleTerrain(state) {
+      const terrain = state.game.terrain;
+      const result = [
+        ...[null, null, null, null, null],
+        ...(terrain && terrain.tiles && terrain.tiles.length === 25
+          ? terrain.tiles
+          : Array(25).fill(null)),
+        ...[null, null, null, null, null]
+      ];
+      return result.map((tile, index) => ({
+        index,
+        tile: tile || terrain.base || battle.TERRAIN_GRASS
+      }));
     },
     units(state) {
       return (state.game && state.game.userSquad
