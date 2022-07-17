@@ -171,7 +171,7 @@ export default {
                 tier: 1,
                 cooldown: {
                   enabled: false,
-                  stepsLeft: 0
+                  estimate: 0
                 }
               }
             ],
@@ -191,7 +191,7 @@ export default {
                 tier: 1,
                 cooldown: {
                   enabled: false,
-                  stepsLeft: 0
+                  estimate: 0
                 }
               }
             ],
