@@ -257,8 +257,6 @@ export default {
         // isMyTurn: true, // boolean|null
         activeFighterId: null,
         runtime: {
-          fighterId: null, // string|null
-          selectedIndex: null, // number|null
           selectedAbilityClass: null, // string|null
           moveCells: [], // number[]
           attackCells: [], // number[],
@@ -354,11 +352,6 @@ export default {
       return state.user && state.user.rewards
         ? state.user.rewards.rankingRewards || []
         : [];
-    },
-    selectedIndex(state) {
-      return state.game && state.game.combat && state.game.combat.runtime
-        ? state.game.combat.runtime.selectedIndex
-        : null;
     },
     battleTerrain(state) {
       const terrain = state.game.terrain;
@@ -649,7 +642,9 @@ export default {
       state.game.combat.result = combatData.result;
       state.game.combat.isMyTurn = combatData.isMyTurn;
       state.game.combat.activeFighterId = combatData.activeFighterId;
-      state.game.combat.runtime = combatData.runtime;
+      state.game.combat.runtime.selectedAbilityClass = combatData.runtime.selectedAbilityClass;
+      state.game.combat.runtime.moveCells = combatData.runtime.moveCells;
+      state.game.combat.runtime.attackCells = combatData.runtime.attackCells;
     }
   },
   actions: {
