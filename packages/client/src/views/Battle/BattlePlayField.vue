@@ -84,8 +84,13 @@
         # {{ activeFighter.unitTribe }} {{ activeFighter.unitClass }}
         {{ activeFighter.tier }} #
       </div>
-      <div class="text-align-center">
-        Applied effect
+      <div
+        v-if="buffDescriptions && buffDescriptions.length > 0"
+        class="text-align-center padding-left-2 padding-right-2"
+      >
+        <div v-for="(description, index) in buffDescriptions" :key="index">
+          {{ description }}
+        </div>
       </div>
       <template v-if="myActiveFighter">
         <div
@@ -298,6 +303,34 @@ export default {
         this.selectedAbility.cooldown.estimate
         ? this.selectedAbility.cooldown.estimate
         : null;
+    },
+    buffDescriptions() {
+      return (this.activeFighter
+        ? this.activeFighter.buffs || []
+        : // [
+          //   {
+          //     source: "squad_bonus",
+          //     type: "incoming_damage",
+          //     modifier: 1.2,
+          //     probability: 123,
+          //     max: 1,
+          //     estimate: 2
+          //   }
+          // ]
+          []
+      ).map(buff => {
+        let description = `${buff.source} added effect of ${buff.type} by ${buff.modifier}`;
+
+        if (buff.probability) {
+          description += `, probability ${buff.probability}`;
+        }
+
+        if (buff.estimate) {
+          description += `, ${buff.estimate} draws left`;
+        }
+
+        return description;
+      });
     },
     energy() {
       return this.user.balance.energy;
