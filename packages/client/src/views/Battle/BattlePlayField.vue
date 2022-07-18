@@ -103,8 +103,13 @@
             @click.native="abilitySelectHandler(ability)"
           />
         </div>
-        <div class="text-align-center">
-          Cooldown! 2 steps left
+        <div v-if="abilityCooldownEstimate" class="text-align-center">
+          Cooldown!
+          {{
+            abilityCooldownEstimate > 1
+              ? "Cooldown! " + abilityCooldownEstimate + " steps left"
+              : "Cooldown! " + abilityCooldownEstimate + " step left"
+          }}
         </div>
         <div v-if="abilityDescription" class="text-align-center">
           {{ abilityDescription }}
@@ -286,6 +291,13 @@ export default {
       }
 
       return items.join(", ");
+    },
+    abilityCooldownEstimate() {
+      return this.selectedAbility &&
+        this.selectedAbility.cooldown &&
+        this.selectedAbility.cooldown.estimate
+        ? this.selectedAbility.cooldown.estimate
+        : null;
     },
     energy() {
       return this.user.balance.energy;

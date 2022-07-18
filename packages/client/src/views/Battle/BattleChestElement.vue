@@ -183,18 +183,18 @@ export default {
 }
 
 .shop-squad1-chest {
-  background: url("/images/battle/chests/shop-squad1-chest.png") center /
-    contain no-repeat;
+  background: url("/images/battle/chests/shop-squad1-chest.png") center / 90%
+    no-repeat;
 }
 
 .shop-squad2-chest {
-  background: url("/images/battle/chests/shop-squad2-chest.png") center /
-    contain no-repeat;
+  background: url("/images/battle/chests/shop-squad2-chest.png") center / 90%
+    no-repeat;
 }
 
 .shop-squad3-chest {
-  background: url("/images/battle/chests/shop-squad3-chest.png") center /
-    contain no-repeat;
+  background: url("/images/battle/chests/shop-squad3-chest.png") center / 90%
+    no-repeat;
 }
 
 // .silver_chest {

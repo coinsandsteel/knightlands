@@ -78,7 +78,7 @@
         </div> -->
 
         <div
-          class="april-shop-balance flex flex-center flex-column margin-top-3"
+          class="april-shop-balance flex flex-center flex-column margin-top-2"
         >
           <div class="font-size-22 flex flex-center margin-bottom-1">
             FLESH balance:
