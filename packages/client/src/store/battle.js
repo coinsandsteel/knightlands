@@ -551,6 +551,22 @@ export default {
         state.game.terrain = data.terrain;
       }
 
+      if (data.buffs !== undefined) {
+        let index = state.game.userSquad.units.findIndex(
+          unit => unit.fighterId === data.buffs.fighterId
+        );
+        if (index !== -1) {
+          Vue.set(state.game.userSquad.units[index], "buffs", data.buffs.buffs);
+        }
+
+        index = state.game.enemySquad.units.findIndex(
+          unit => unit.fighterId === data.buffs.fighterId
+        );
+        if (index !== -1) {
+          Vue.set(state.game.enemySquad.units[index], "buffs", data.buffs.buffs);
+        }
+      }
+
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.userFighter !== undefined) {
@@ -633,6 +649,7 @@ export default {
       state.game.combat.result = combatData.result;
       state.game.combat.isMyTurn = combatData.isMyTurn;
       state.game.combat.activeFighterId = combatData.activeFighterId;
+      state.game.combat.runtime = combatData.runtime;
     }
   },
   actions: {
