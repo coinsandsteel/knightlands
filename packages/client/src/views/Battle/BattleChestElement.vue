@@ -64,6 +64,18 @@
             </div>
           </CustomButton>
         </div>
+        <div v-if="chest.ancientCoinsPrice">
+          <CustomButton
+            :disabled="balance.ancientCoins < chest.ancientCoinsPrice"
+            type="grey"
+            width="15rem"
+            @click="purchase(chest, COMMODITY_COINS)"
+          >
+            <div class="flex flex-center">
+              <BattleCoin :value="chest.ancientCoinsPrice" />
+            </div>
+          </CustomButton>
+        </div>
       </div>
     </div>
 
@@ -95,21 +107,31 @@
 // import CustomButton from "@/components/Button.vue";
 // import Timer from "@/timer";
 // import PurchaseButton from "@/components/PurchaseButton.vue";
+import * as battle from "@/../../knightlands-shared/battle";
+import { create } from "vue-modal-dialogs";
+import BattleCoin from "@/views/Battle/BattleCoin.vue";
+import ItemsReceived from "@/components/ItemsReceived.vue";
+import PromptMixin from "@/components/PromptMixin.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
+  mixins: [PromptMixin, NetworkRequestErrorMixin],
   props: ["chest", "index"],
   components: {
     // CustomButton,
     // PurchaseButton
+    BattleCoin
   },
   data: () => ({
     // timer: new Timer(true)
+    COMMODITY_COINS: battle.COMMODITY_COINS
   }),
   computed: {
     balance() {
       return {
         hard: this.$game.hardCurrency,
-        flesh: this.$game.dkt
+        flesh: this.$game.dkt,
+        ancientCoins: this.$store.state.battle.user.balance.coins || 0
       };
     }
   },
@@ -138,7 +160,51 @@ export default {
     //     this.timer.timeLeft = (resetCycle - timeUntilNextFreeOpening) / 1000;
     //   }
     // }
-    purchase() {}
+    async purchase(chest, currency) {
+      if (
+        [battle.REWARD_TYPE_DAILY, battle.COMMODITY_STARTER_PACK].includes(
+          chest.commodity
+        )
+      ) {
+        await this.performRequestNoCatch(
+          this.$store.dispatch("battle/claimReward", {
+            type: chest.commodity
+          })
+        );
+      } else {
+        const response = await this.showPrompt(
+          this.$t("buy-i-t"),
+          this.$t("buy-i-q"),
+          [
+            {
+              type: "red",
+              title: this.$t("buy-i-n"),
+              response: false
+            },
+            {
+              type: "green",
+              title: this.$t("buy-i-y"),
+              response: true
+            }
+          ]
+        );
+
+        if (!response) {
+          return;
+        }
+
+        await this.performRequestNoCatch(
+          this.$store.dispatch("battle/purchase", {
+            commodity: chest.commodity,
+            shopIndex: this.index,
+            currency
+          })
+        );
+      }
+
+      const ShowDialog = create(ItemsReceived, "items", "battleItems");
+      ShowDialog([], chest.quantity);
+    }
   }
 };
 </script>

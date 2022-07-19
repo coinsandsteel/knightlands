@@ -93,7 +93,7 @@
             }}</IconWithValue>
           </div>
           <div class="font-size-22 margin-bottom-3 flex flex-center">
-            Gold balance:
+            Ancient coins balance:
             <BattleCoin />
           </div>
         </div>
@@ -156,68 +156,68 @@ export default {
     }
   },
   methods: {
-    async purchase(shopIndex, currency, amount) {
-      const response = await this.showPrompt(
-        this.$t("buy-i-t"),
-        this.$t("buy-i-q"),
-        [
-          {
-            type: "red",
-            title: this.$t("buy-i-n"),
-            response: false
-          },
-          {
-            type: "green",
-            title: this.$t("buy-i-y"),
-            response: true
-          }
-        ]
-      );
+    // async purchase(shopIndex, currency, amount) {
+    //   const response = await this.showPrompt(
+    //     this.$t("buy-i-t"),
+    //     this.$t("buy-i-q"),
+    //     [
+    //       {
+    //         type: "red",
+    //         title: this.$t("buy-i-n"),
+    //         response: false
+    //       },
+    //       {
+    //         type: "green",
+    //         title: this.$t("buy-i-y"),
+    //         response: true
+    //       }
+    //     ]
+    //   );
 
-      if (!response) {
-        return;
-      }
+    //   if (!response) {
+    //     return;
+    //   }
 
-      await this.performRequestNoCatch(
-        this.$store.dispatch("april/purchaseGold", {
-          shopIndex,
-          currency,
-          amount
-        })
-      );
+    //   await this.performRequestNoCatch(
+    //     this.$store.dispatch("april/purchaseGold", {
+    //       shopIndex,
+    //       currency,
+    //       amount
+    //     })
+    //   );
 
-      const ShowDialog = create(ItemsReceived, "items", "aprilGold");
-      ShowDialog([], this.options[shopIndex].quantity);
-    },
-    async purchaseTicket() {
-      const response = await this.showPrompt(
-        this.$t("buy-i-t"),
-        this.$t("buy-i-q"),
-        [
-          {
-            type: "red",
-            title: this.$t("buy-i-n"),
-            response: false
-          },
-          {
-            type: "green",
-            title: this.$t("buy-i-y"),
-            response: true
-          }
-        ]
-      );
+    //   const ShowDialog = create(ItemsReceived, "items", "aprilGold");
+    //   ShowDialog([], this.options[shopIndex].quantity);
+    // },
+    // async purchaseTicket() {
+    //   const response = await this.showPrompt(
+    //     this.$t("buy-i-t"),
+    //     this.$t("buy-i-q"),
+    //     [
+    //       {
+    //         type: "red",
+    //         title: this.$t("buy-i-n"),
+    //         response: false
+    //       },
+    //       {
+    //         type: "green",
+    //         title: this.$t("buy-i-y"),
+    //         response: true
+    //       }
+    //     ]
+    //   );
 
-      if (!response) {
-        return;
-      }
+    //   if (!response) {
+    //     return;
+    //   }
 
-      await this.performRequestNoCatch(
-        this.$store.dispatch("april/purchaseTicket")
-      );
+    //   await this.performRequestNoCatch(
+    //     this.$store.dispatch("april/purchaseTicket")
+    //   );
 
-      const ShowDialog = create(ItemsReceived, "items", "aprilTicket");
-      ShowDialog([], april.TICKET_SHOP[0].quantity);
-    },
+    //   const ShowDialog = create(ItemsReceived, "items");
+    //   ShowDialog([]);
+    // },
     backHandler() {
       this.$router.push({ name: "battle-play" });
     }

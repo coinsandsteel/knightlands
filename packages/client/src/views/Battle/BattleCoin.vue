@@ -14,7 +14,7 @@ export default {
         return this.value;
       }
 
-      return this.$store.state.battle.user.balance.coins;
+      return this.$store.state.battle.user.balance.coins || 0;
     }
   }
 };
