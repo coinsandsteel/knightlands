@@ -396,7 +396,15 @@ export default {
   },
   created() {},
   mounted() {
+    if (!this.game.combat.started) {
+      return;
+    }
     this.showObstacleInformation();
+  },
+  activated() {
+    if (!this.game.combat.started) {
+      this.$router.replace({ name: "battle-menu" });
+    }
   },
   methods: {
     async showObstacleInformation() {
