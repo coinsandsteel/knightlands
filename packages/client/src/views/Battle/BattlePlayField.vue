@@ -334,6 +334,9 @@ export default {
     },
     energy() {
       return this.user.balance.energy;
+    },
+    isStarted() {
+      return this.game.combat.started;
     }
     // nonTargetAbilities() {
     //   const abilities = this.myActiveFighter
@@ -365,6 +368,11 @@ export default {
     // }
   },
   watch: {
+    isStarted(value, oldValue) {
+      if (this.isActive && oldValue === true && value === false) {
+        this.$router.replace({ name: "battle-menu" });
+      }
+    },
     queue(value) {
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
@@ -397,15 +405,16 @@ export default {
   created() {},
   mounted() {
     if (!this.game.combat.started) {
+      this.$router.replace({ name: "battle-menu" })
       return;
     }
     this.showObstacleInformation();
   },
-  activated() {
-    if (!this.game.combat.started) {
-      this.$router.replace({ name: "battle-menu" });
-    }
-  },
+  // activated() {
+  //   if (!this.game.combat.started) {
+  //     this.$router.replace({ name: "battle-menu" });
+  //   }
+  // },
   methods: {
     async showObstacleInformation() {
       const show = create(BattleObstacleInformation);

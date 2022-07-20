@@ -6,6 +6,7 @@ import Operations from "@/../../knightlands-shared/operations";
 import {
   GAME_DIFFICULTY_HIGH,
   GAME_DIFFICULTY_MEDIUM,
+  SHOP_STARTER_PACK,
   SHOP_DAILY_REWARD,
   SHOP_ENERGY_CHEST,
   SHOP_COIN_CHEST
@@ -71,6 +72,7 @@ export default {
         }
       },
       shop: {
+        [SHOP_STARTER_PACK]: { left: 1 },
         [SHOP_DAILY_REWARD]: { left: 2 },
         [SHOP_ENERGY_CHEST]: { left: 6 },
         [SHOP_COIN_CHEST]: { left: 2 }
@@ -454,7 +456,11 @@ export default {
           unit => unit.fighterId === data.buffs.fighterId
         );
         if (index !== -1) {
-          Vue.set(state.game.enemySquad.units[index], "buffs", data.buffs.buffs);
+          Vue.set(
+            state.game.enemySquad.units[index],
+            "buffs",
+            data.buffs.buffs
+          );
         }
       }
 
@@ -544,7 +550,8 @@ export default {
       state.game.combat.result = combatData.result;
       state.game.combat.isMyTurn = combatData.isMyTurn;
       state.game.combat.activeFighterId = combatData.activeFighterId;
-      state.game.combat.runtime.selectedAbilityClass = combatData.runtime.selectedAbilityClass;
+      state.game.combat.runtime.selectedAbilityClass =
+        combatData.runtime.selectedAbilityClass;
       state.game.combat.runtime.moveCells = combatData.runtime.moveCells;
       state.game.combat.runtime.attackCells = combatData.runtime.attackCells;
     }

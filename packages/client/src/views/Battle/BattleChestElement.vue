@@ -21,8 +21,14 @@
         </template>
       </div>
       <div class="flex flex-center flex-column">
+        <div v-if="chest.dailyMax && shop[chest.name]" class="font-size-15">
+          Items left: {{ shop[chest.name].left || 0 }}
+        </div>
         <div v-if="chest.claimable">
           <CustomButton
+            :disabled="
+              chest.dailyMax && !(shop[chest.name] && shop[chest.name].left > 0)
+            "
             type="green"
             width="15rem"
             @click="purchase(chest)"
@@ -33,7 +39,11 @@
         </div>
         <div v-if="chest.hardPrice">
           <CustomButton
-            :disabled="balance.hard < chest.hardPrice"
+            :disabled="
+              (chest.dailyMax &&
+                !(shop[chest.name] && shop[chest.name].left > 0)) ||
+                balance.hard < chest.hardPrice
+            "
             type="grey"
             width="15rem"
             @click="purchase(chest, 'hard')"
@@ -50,7 +60,11 @@
         </div>
         <div v-if="chest.fleshPrice">
           <CustomButton
-            :disabled="balance.flesh < chest.fleshPrice"
+            :disabled="
+              (chest.dailyMax &&
+                !(shop[chest.name] && shop[chest.name].left > 0)) ||
+                balance.flesh < chest.fleshPrice
+            "
             type="grey"
             width="15rem"
             @click="purchase(chest, 'dkt')"
@@ -66,7 +80,11 @@
         </div>
         <div v-if="chest.ancientCoinsPrice">
           <CustomButton
-            :disabled="balance.ancientCoins < chest.ancientCoinsPrice"
+            :disabled="
+              (chest.dailyMax &&
+                !(shop[chest.name] && shop[chest.name].left > 0)) ||
+                balance.ancientCoins < chest.ancientCoinsPrice
+            "
             type="grey"
             width="15rem"
             @click="purchase(chest, COMMODITY_COINS)"
@@ -107,6 +125,7 @@
 // import CustomButton from "@/components/Button.vue";
 // import Timer from "@/timer";
 // import PurchaseButton from "@/components/PurchaseButton.vue";
+import { mapState } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
 import { create } from "vue-modal-dialogs";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
@@ -127,6 +146,10 @@ export default {
     COMMODITY_COINS: battle.COMMODITY_COINS
   }),
   computed: {
+    ...mapState("battle", ["user"]),
+    shop() {
+      return this.user ? this.user.shop || {} : {};
+    },
     balance() {
       return {
         hard: this.$game.hardCurrency,
