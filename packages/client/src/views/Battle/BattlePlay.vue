@@ -1,7 +1,9 @@
 <template>
-  <div class="screen-content overflow-auto" v-if="true || loaded">
-    <BattlePlayResult v-if="isResultVisible" />
-    <BattlePlayField />
+  <div class="screen-content overflow-auto">
+    <template v-if="isStarted">
+      <BattlePlayResult v-if="isResultVisible" />
+      <BattlePlayField v-else />
+    </template>
 
     <portal v-if="isActive" to="footer" :slim="true">
       <div class="width-100 flex flex-items-start">
@@ -20,22 +22,36 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
+import ActivityMixin from "@/components/ActivityMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import AppSection from "@/AppSection.vue";
 import BattlePlayField from "@/views/Battle/BattlePlayField.vue";
 // import BattlePlayResult from "@/views/Battle/BattlePlayResult.vue";
 
 export default {
-  mixins: [AppSection, NetworkRequestErrorMixin],
+  mixins: [AppSection, NetworkRequestErrorMixin, ActivityMixin],
   components: {
     BattlePlayField
     // BattlePlayResult
   },
   data() {
     return {
-      loaded: true,
       isResultVisible: false
     };
+  },
+  computed: {
+    ...mapState("battle", ["game", "user"]),
+    isStarted() {
+      return this.game.combat.started;
+    }
+  },
+  watch: {
+    isStarted(value, oldValue) {
+      if (this.isActive && oldValue === true && value === false) {
+        this.$router.replace({ name: "battle-menu" });
+      }
+    }
   },
   methods: {
     goToShop() {
