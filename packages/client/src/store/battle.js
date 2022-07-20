@@ -93,56 +93,14 @@ export default {
       // User squad
       userSquad: {
         power: 0,
-        bonuses: [{ bonusClass: "squad-increase-hp", delta: 2 }],
-        units: [
-          {
-            fighterId: "2c8vny4t9",
-            unitId: "2c8vny4t9",
-            unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
-            unitClass: battle.UNIT_CLASS_TANK, // 5 classes
-            tier: 1, // 3 tiers; modify via merger (3 => 1)
-            index: 32, // cell index 0-34
-            hp: 10,
-            abilities: [
-              {
-                abilityClass: "axe_blow",
-                abilityType: battle.ABILITY_TYPE_ATTACK,
-                tier: 1,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              }
-            ],
-            buffs: [] // Will be defined later
-          },
-          {
-            unitId: "2c8vny4t1",
-            unitTribe: battle.UNIT_TRIBE_ORC, // 15 tribes
-            unitClass: battle.UNIT_CLASS_SUPPORT, // 5 classes
-            tier: 1, // 3 tiers; modify via merger (3 => 1)
-            index: 30, // cell index 0-34
-            hp: 10,
-            abilities: [
-              {
-                abilityClass: "axe_blow",
-                abilityType: battle.ABILITY_TYPE_BUFF,
-                tier: 1,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              }
-            ],
-            buffs: [] // Will be defined later
-          }
-        ]
+        bonuses: [],
+        units: []
       },
 
       // Enemy squad
       enemySquad: {
         power: 0,
-        bonuses: [], // Probably, will be always empty
+        bonuses: [],
         units: []
       },
 
@@ -273,25 +231,6 @@ export default {
         : []
       ).filter(Boolean);
     },
-    // TODO unit > fighter
-    // selectedUnitId(state, getters) {
-    //   if (!getters.isMyTurn) {
-    //     return null;
-    //   }
-    //   return state.game && state.game.combat && state.game.combat.runtime
-    //   ? state.game.combat.runtime.unitId
-    //   : null;
-    // },
-    // TODO unit > fighter
-    // selectedUnit(state, getters) {
-    //   if (!getters.selectedUnitId) {
-    //     return null;
-    //   }
-
-    //   return getters.units.find(
-    //     ({ unitId }) => unitId === getters.selectedUnitId
-    //   );
-    // },
     isUnitsFullFilled(state, getters) {
       return getters.units.length === 5;
     },
@@ -518,7 +457,6 @@ export default {
         state.game.combat.runtime.attackCells = data.combatAttackCells;
       }
       if (data.effects !== undefined) {
-        // state.game.combat.runtime.queue.push(...data.effects);
         state.game.combat.runtime.queue = data.effects || [];
       }
     },
