@@ -10,7 +10,13 @@
     "
   >
     <div v-if="isActive" class="active-indicator absolute"></div>
-    <div v-if="isValueVisible" class="ability-value absolute font-size-18">
+    <div
+      v-if="isValueVisible"
+      class="ability-value absolute"
+      :class="
+        isSmallValue ? 'ability-value--small font-size-12' : 'font-size-18'
+      "
+    >
       {{ value }}
     </div>
   </div>
@@ -20,7 +26,8 @@ export default {
   props: {
     ability: Object,
     isActive: Boolean,
-    value: Number
+    value: Number,
+    isSmallValue: Boolean
   },
   data() {
     return {};
@@ -51,7 +58,7 @@ export default {
   border-radius: 50%;
 }
 .ability-value {
-  right: 0px;
+  left: 0px;
   bottom: 0px;
   background: #fff;
   border: solid 2px #777;
@@ -60,6 +67,12 @@ export default {
   font-weight: 600;
   border-radius: 12px;
   padding: 0 3px;
+}
+.ability-value--small {
+  padding: 0 1px;
+  left: -3px;
+  bottom: -3px;
+  border-width: 1px;
 }
 .battle-unit-ability-type--attack {
   background-image: url("/images/battle/abilities/attack.png");

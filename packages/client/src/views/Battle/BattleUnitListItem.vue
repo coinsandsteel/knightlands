@@ -12,6 +12,8 @@
           v-for="(ability, index) in abilities"
           :key="ability.abilityType + ability.abilityClass"
           :ability="ability"
+          :value="ability.value"
+          :isSmallValue="true"
           :class="{
             'margin-left-1': index > 0,
             'opacity-50': !ability.enabled

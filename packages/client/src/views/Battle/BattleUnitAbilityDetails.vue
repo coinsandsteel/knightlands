@@ -4,7 +4,11 @@
       class="flex flex-item-center"
       :class="{ 'opacity-50': !(ability && ability.enabled) }"
     >
-      <BattleUnitAbility :ability="ability" />
+      <BattleUnitAbility
+        :ability="ability"
+        :value="ability.value"
+        :isSmallValue="true"
+      />
       <div class="margin-left-1">
         {{ description }}
       </div>

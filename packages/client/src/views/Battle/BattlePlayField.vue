@@ -102,7 +102,7 @@
             :key="ability.abilityClass"
             :ability="ability"
             :isActive="ability.abilityClass === selectedAbilityClass"
-            :value="ability.enabled ? ability.value : null"
+            :value="ability.value"
             class="battle-current-active-fighter-ability pointer"
             :class="{ 'opacity-30 pointer-events-none': !ability.enabled }"
             @click.native="abilitySelectHandler(ability)"
@@ -561,17 +561,49 @@ export default {
       });
     },
     async abilityEffectHandler(step) {
+      const ability = step.ability || step.buff;
+      const abilityClass = ability ? ability.abilityClass : null;
+      const damage = ability ? ability.value || ability.damage || 0 : 0;
+      const isCriticalHit = ability && ability.criticalHit;
+      const isTargetMyFighter =
+        step.target && step.target.fighterId
+          ? !!this.units.find(
+              ({ fighterId }) => fighterId === step.target.fighterId
+            )
+          : false;
+      let colorClass = "";
+      if (
+        abilityClass &&
+        battle.ABILITY_TYPES[abilityClass] === battle.ABILITY_TYPE_ATTACK
+      ) {
+        // attack
+        if (isTargetMyFighter) {
+          // target is my fighters
+          colorClass = "battle-ability-effect-value--red";
+        } else {
+          colorClass = "battle-ability-effect-value--green";
+        }
+      } else if (
+        abilityClass &&
+        battle.ABILITY_TYPES[abilityClass] !== battle.ABILITY_TYPE_JUMP
+      ) {
+        // buff, debuff, self buff, healing
+        colorClass = "battle-ability-effect-value--blue";
+      }
+
       const el = document.createElement("div");
       el.className =
         "absolute-stretch flex flex-center text-center font-size-18 font-weight-700";
       el.style = "opacity: 0;";
       el.innerHTML =
         '<div class="battle-ability-effect _battle-ability-effect--attack_ battle-ability-effect--' +
-        (step.ability || step.buff).abilityClass +
+        abilityClass +
         '"></div>' +
-        '<div class="margin-left-half">' +
-        ((step.ability || step.buff).value ||
-          (step.ability || step.buff).damage) +
+        '<div class="battle-ability-effect-value margin-left-half ' +
+        colorClass +
+        '">' +
+        damage +
+        (isCriticalHit ? " Crit!" : "") +
         "</div>";
       await this.animateSlideAndFade({ index: step.target.index, el });
       el.parentElement.removeChild(el);
@@ -729,6 +761,21 @@ export default {
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;
+  }
+  .battle-ability-effect-value {
+    border-radius: 6px;
+    color: #fff;
+    background: #555;
+    padding: 0 3px;
+  }
+  .battle-ability-effect-value--red {
+    background: #ef4444;
+  }
+  .battle-ability-effect-value--green {
+    background: #10b981;
+  }
+  .battle-ability-effect-value--blue {
+    color: #3b82f6;
   }
   //
   .battle-ability-effect--accurate_shot {

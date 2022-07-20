@@ -715,7 +715,7 @@ const router = new Router({
         {
           path: "shop2",
           name: "battle-shop2",
-          component: () => import("./views/Battle/BattleShop.vue")
+          component: () => import("./views/Battle/BattleShop2.vue")
         },
         {
           path: "chest-shop",

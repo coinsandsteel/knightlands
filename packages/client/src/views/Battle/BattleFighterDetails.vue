@@ -24,6 +24,7 @@
             :key="ability.abilityType + ability.abilityClass"
             :unit="unit"
             :ability="ability"
+            class="padding-left-1"
             :class="{ 'margin-top-2': index > 0 }"
           >
           </BattleUnitAbilityDetails>
