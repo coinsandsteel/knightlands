@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="flex-full padding-left-2">
-        <template v-if="chest.description">
+        <template v-if="chest.descriptions">
           <div
             v-for="description in chest.descriptions"
             :key="description"
