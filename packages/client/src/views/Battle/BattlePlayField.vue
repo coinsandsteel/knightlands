@@ -477,7 +477,7 @@ export default {
         this.isAbilitySelectVisible = false;
         this.$store.dispatch("battle/apply", {
           index,
-          ability: battle.ABILITY_MOVE
+          ability: this.selectedAbilityClass || battle.ABILITY_MOVE
         });
 
         return;
