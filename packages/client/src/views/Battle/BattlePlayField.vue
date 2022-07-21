@@ -434,7 +434,6 @@ export default {
     //   this.abilitySelectResolve = null;
     // },
     abilitySelectHandler(ability) {
-      console.log("abilitySelectHandler", ability);
       // this.selectedFighterId = null;
       // this.isAbilitySelectVisible = false;
 

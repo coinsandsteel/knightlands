@@ -67,6 +67,7 @@ export default {
   font-weight: 600;
   border-radius: 12px;
   padding: 0 3px;
+  min-width: 17px;
 }
 .ability-value--small {
   padding: 0 1px;

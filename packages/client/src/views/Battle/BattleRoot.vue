@@ -14,7 +14,7 @@
       >
       </tabs>
       <keep-alive>
-        <router-view></router-view>
+        <router-view v-if="loaded"></router-view>
       </keep-alive>
     </div>
   </div>
@@ -23,6 +23,7 @@
 // import { mapGetters } from "vuex";
 // import { create } from "vue-modal-dialogs";
 // import { create } from "vue-modal-dialogs";
+import { mapState } from "vuex";
 import Tabs from "@/components/Tabs.vue";
 // import AppSection from "@/AppSection.vue";
 // import BattleDailyRewards from "@/views/Battle/BattleDailyRewards.vue";
@@ -65,6 +66,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("battle", ["loaded"]),
     isTabsVisible() {
       return ![
         "battle-units",
