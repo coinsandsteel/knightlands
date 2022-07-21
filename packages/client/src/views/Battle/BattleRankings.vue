@@ -33,10 +33,6 @@
           The event will be finished in:<br />
           {{ eventTimer.value }}
         </div>
-        <div class="flex flex-center margin-bottom-2 font-size-20 ">
-          Reset'n'Reward will be in:<br />
-          {{ dailyTimer.value }}
-        </div>
         <div class="flex flex-center margin-bottom-3">
           <CustomButton
             type="green"
@@ -60,9 +56,9 @@
             :emitUpdate="records.length > 0 && !fetchedAll"
             @update="scrollUpdated"
           >
-            <Title v-if="item.isTitle" class="common-title"
-              >{{ $t("top-players") }} - {{ $t(item.heroClass) }}</Title
-            >
+            <Title v-if="item.isTitle" class="common-title">{{
+              $t("top-players")
+            }}</Title>
             <BattleRankingElement
               v-else
               :index="index"
@@ -106,8 +102,7 @@ export default {
     showInfoButton: false,
     places: ["1-st", "2-nd", "3-rd", "4-th", "5 - 10"],
     hasRewards: false,
-    eventTimer: new Timer(true, true),
-    dailyTimer: new Timer(true, true)
+    eventTimer: new Timer(true, true)
   }),
   async activated() {
     this.records = [];
@@ -121,47 +116,43 @@ export default {
       return this.currentRank.id == id;
     },
     async fetchRankings() {
+      const records = [];
       const result = await this.performRequest(
         this.$store.dispatch("battle/rankings")
       );
 
-      this.hasRewards = result.hasRewards;
-      this.eventTimer.timeLeft = result.timeLeft;
-      this.dailyTimer.timeLeft = result.resetTimeLeft;
+      if (result) {
+        this.hasRewards = result.hasRewards;
+        this.eventTimer.timeLeft = result.timeLeft;
+        if (result.rankings) {
+          for (let i = 0; i < result.rankings.length; i++) {
+            let newRecords = [];
 
-      const records = [];
-      for (let i = 0; i < result.rankings.length; i++) {
-        let newRecords = [];
-
-        for (let j = 0; j < result.rankings[i].length; j++) {
-          newRecords.push(result.rankings[i][j]);
-        }
-
-        newRecords = newRecords
-          .map((record, index) => {
-            if (record.score !== "0") {
-              const r = { ...record };
-              r.key = r.id + "-" + i + "-" + index;
-              r.rank = index + 1;
-              r.isTitle = false;
-              return r;
+            for (let j = 0; j < result.rankings[i].length; j++) {
+              newRecords.push(result.rankings[i][j]);
             }
-          })
-          .filter(record => record);
-        const titleRecord = {
-          id: "title-" + i,
-          key: "title-" + i,
-          isTitle: true,
-          // @todo
-          heroClass: [
-            battle.HERO_CLASS_KNIGHT,
-            battle.HERO_CLASS_PALADIN,
-            battle.HERO_CLASS_ROGUE
-          ][i % 3]
-        };
-        records.push(titleRecord);
-        if (!_.isEmpty(newRecords)) {
-          records.push(...newRecords);
+
+            newRecords = newRecords
+              .map((record, index) => {
+                if (record.score !== "0") {
+                  const r = { ...record };
+                  r.key = r.id + "-" + i + "-" + index;
+                  r.rank = index + 1;
+                  r.isTitle = false;
+                  return r;
+                }
+              })
+              .filter(record => record);
+            const titleRecord = {
+              id: "title-" + i,
+              key: "title-" + i,
+              isTitle: true
+            };
+            records.push(titleRecord);
+            if (!_.isEmpty(newRecords)) {
+              records.push(...newRecords);
+            }
+          }
         }
       }
       this.records = records;

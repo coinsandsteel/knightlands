@@ -152,7 +152,7 @@ export default {
 
       const unit = this.units.find(({ index }) => index === this.index);
 
-      return isIncluded && unit && unit.hp > 0;
+      return isIncluded && unit && unit.hp > 0 && !unit.isDead;
     },
     terrain() {
       return this.battleTerrain.find(({ index }) => index === this.index);
@@ -175,7 +175,7 @@ export default {
 
       const unit = this.enemyUnits.find(({ index }) => index === this.index);
 
-      return isIncluded && unit && unit.hp > 0;
+      return isIncluded && unit && unit.hp > 0 && !unit.isDead;
     },
     enemy() {
       if (!this.isEnemy) {

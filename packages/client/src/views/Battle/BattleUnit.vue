@@ -71,10 +71,13 @@ export default {
   computed: {
     ...mapGetters("battle", ["activeFighterId"]),
     hp() {
-      return this.unit ? this.unit.hp || 0 : null;
+      return this.unit ? Math.max(0, this.unit.hp || 0) : null;
     },
     isDead() {
-      return !(typeof this.hp === "number" && this.hp > 0);
+      return (
+        (this.unit && this.unit.isDead) ||
+        (typeof this.hp === "number" && this.hp <= 0)
+      );
     },
     sequenceIndex() {
       return null;
