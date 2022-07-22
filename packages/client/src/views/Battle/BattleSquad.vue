@@ -1,8 +1,18 @@
 <template>
   <div class="padding-2">
-    <div class="font-size-22">
-      <p>Pwr: {{ power }}</p>
-      <p v-if="bonuses">Bonuses: <br />{{ bonuses }}</p>
+    <div class="font-size-22 text-align-center">
+      <div>Power: {{ power }}</div>
+      <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
+        Bonuses: {{ bonuses }}
+      </div>
+      <!-- <div>
+        <div
+          v-for="(bonus, index) in bonuses"
+          :key="index"
+          class="font-size-20"
+          v-html="bonus"
+        ></div>
+      </div> -->
     </div>
     <BattleUnitList
       :units="units"
@@ -71,7 +81,11 @@ export default {
       if (!bonusItems.length > 0) {
         return null;
       }
-      return bonusItems;
+      return bonusItems
+        .map(bonus => {
+          return bonus.type + (bonus.modifier ? " +" + bonus.modifier : "");
+        })
+        .join(", ");
     }
   },
   methods: {

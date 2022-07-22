@@ -27,11 +27,6 @@
         </div>
       </div>
     </template>
-    <!-- <template v-slot:footer>
-      <CustomButton type="yellow" @click="handleClose">{{
-        $t("normal???")
-      }}</CustomButton>
-    </template> -->
   </UserDialog>
 </template>
 <script>

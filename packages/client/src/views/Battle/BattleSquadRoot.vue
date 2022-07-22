@@ -46,17 +46,17 @@ export default {
     tabs() {
       return [
         {
-          title: this.$t("squad???"),
+          title: "Squad",
           value: SquadTab,
           to: { name: SquadTab }
         },
         {
-          title: this.$t("warehouse???"),
+          title: "Warehouse",
           value: WarehouseTab,
           to: { name: WarehouseTab, query: { from: this.$route.name } }
         },
         {
-          title: this.$t("bonus???"),
+          title: "Bonus",
           value: BonusTab,
           to: { name: BonusTab }
         }

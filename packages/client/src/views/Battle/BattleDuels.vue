@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-for="(units, index) in items" :key="'option_' + index">
+    <div
+      v-for="(units, index) in items"
+      :key="'option_' + index"
+      :class="index > 0 ? 'margin-top-4' : 'margin-top-2'"
+    >
       <div class="battle-unit-list">
         <BattleUnit
           v-for="unit in units"
@@ -9,14 +13,14 @@
           @click="unitClickHandler"
         />
       </div>
-      <div>
+      <div class="margin-top-1">
         <CustomButton
           type="yellow"
           width="20rem"
           class="inline-block"
           :disabled="!isUnitsFullFilled"
           @click="handleStart(index)"
-          >{{ $t("fight???") }}</CustomButton
+          >Fight</CustomButton
         >
       </div>
     </div>
@@ -53,8 +57,7 @@ export default {
         difficulty: options[index]
       });
       this.$router.push({
-        name: "battle-duels-play",
-        params: { id: 123 }
+        name: "battle-duels-play"
       });
     }
   }

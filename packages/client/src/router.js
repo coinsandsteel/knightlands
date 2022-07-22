@@ -668,7 +668,7 @@ const router = new Router({
               component: () => import("./views/Battle/BattleDuels.vue")
             },
             {
-              path: ":id/play",
+              path: "play",
               name: "battle-duels-play",
               component: () => import("./views/Battle/BattleDuelsPlay.vue"),
               meta: {
@@ -712,21 +712,16 @@ const router = new Router({
           name: "battle-shop",
           component: () => import("./views/Battle/BattleShop.vue")
         },
-        {
-          path: "shop2",
-          name: "battle-shop2",
-          component: () => import("./views/Battle/BattleShop2.vue")
-        },
-        {
-          path: "chest-shop",
-          name: "battle-chest-shop",
-          component: () => import("./views/Battle/BattleChestShop.vue")
-        },
-        {
-          path: "chest-shop/:name",
-          name: "battle-chest-shop-units",
-          component: () => import("./views/Battle/BattleChestShopUnits.vue")
-        }
+        // {
+        //   path: "chest-shop",
+        //   name: "battle-chest-shop",
+        //   component: () => import("./views/Battle/BattleChestShop.vue")
+        // },
+        // {
+        //   path: "chest-shop/:name",
+        //   name: "battle-chest-shop-units",
+        //   component: () => import("./views/Battle/BattleChestShopUnits.vue")
+        // }
       ],
       meta: {
         requiresAuth: true,

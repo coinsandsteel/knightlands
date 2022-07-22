@@ -30,14 +30,14 @@
           class="inline-block margin-right-2 margin-top-1"
           @click="detailsClickHandler"
         >
-          {{ $t("details") }}???
+          Details
         </CustomButton>
 
         <CustomButton
           type="green"
           class="inline-block margin-right-2 margin-top-1"
         >
-          {{ $t("merger") }}???
+          Merge
         </CustomButton>
       </div>
     </div>

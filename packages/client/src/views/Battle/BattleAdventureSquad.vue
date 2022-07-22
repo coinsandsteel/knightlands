@@ -28,7 +28,7 @@
         width="20rem"
         class="inline-block"
         @click="handleStart"
-        >{{ $t("start???") }}</CustomButton
+        >Start</CustomButton
       >
     </div>
   </div>

@@ -17,7 +17,7 @@
             width="20rem"
             class="inline-block"
             @click="receiveHandler"
-            >{{ $t("receive???") }}</CustomButton
+            >Receive</CustomButton
           >
         </div>
       </div>

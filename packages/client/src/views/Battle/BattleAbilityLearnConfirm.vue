@@ -6,12 +6,8 @@
       </div>
     </template>
     <template v-slot:footer>
-      <CustomButton type="yellow" @click="handleClose()">{{
-        $t("cancel???")
-      }}</CustomButton>
-      <CustomButton type="yellow" @click="confirmHandler">{{
-        $t("ok???")
-      }}</CustomButton>
+      <CustomButton type="yellow" @click="handleClose()">Cancel</CustomButton>
+      <CustomButton type="yellow" @click="confirmHandler">Ok</CustomButton>
     </template>
   </UserDialog>
 </template>

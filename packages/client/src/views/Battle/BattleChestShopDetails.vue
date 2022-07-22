@@ -13,9 +13,7 @@
       </div>
     </template>
     <template v-slot:footer>
-      <CustomButton type="yellow" @click="handleClose()">{{
-        $t("close???")
-      }}</CustomButton>
+      <CustomButton type="yellow" @click="handleClose()">Close</CustomButton>
     </template>
   </UserDialog>
 </template>

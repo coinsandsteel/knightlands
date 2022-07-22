@@ -5,73 +5,55 @@
         <div>
           <CustomButton
             type="green"
-            class="inline-block margin-right-2 margin-top-1"
+            class="inline-block margin-right-2 margin-top-2"
             @click="goToAdventure"
           >
-            {{ $t("adventure") }}???
+            Adventure
           </CustomButton>
         </div>
         <div>
           <CustomButton
             type="green"
-            class="inline-block margin-right-2 margin-top-1"
+            class="inline-block margin-right-2 margin-top-2"
             @click="goToDuels"
           >
-            {{ $t("duels") }}???
+            Duels
           </CustomButton>
         </div>
         <div>
           <CustomButton
             type="green"
-            class="inline-block margin-right-2 margin-top-1"
+            class="inline-block margin-right-2 margin-top-2"
             @click="goToSquad"
           >
-            {{ $t("squad") }}???
+            Squad
           </CustomButton>
         </div>
         <div>
           <CustomButton
             type="green"
-            class="inline-block margin-right-2 margin-top-1"
+            class="inline-block margin-right-2 margin-top-2"
             @click="goToUnitsList"
           >
-            {{ $t("units list") }}???
+            Units
           </CustomButton>
         </div>
         <div>
           <CustomButton
             type="green"
-            class="inline-block margin-right-2 margin-top-1"
+            class="inline-block margin-right-2 margin-top-2"
             @click="goToMerger"
           >
-            {{ $t("merger") }}???
+            Merger
           </CustomButton>
         </div>
         <div>
           <CustomButton
             type="green"
-            class="inline-block margin-right-2 margin-top-1"
+            class="inline-block margin-right-2 margin-top-2"
             @click="goToShop"
           >
-            {{ $t("shop") }}???
-          </CustomButton>
-        </div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="goToShop2"
-          >
-            {{ $t("shop2") }}???
-          </CustomButton>
-        </div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="goToChestShop"
-          >
-            {{ $t("chest-shop") }}???
+            Shop
           </CustomButton>
         </div>
       </div>

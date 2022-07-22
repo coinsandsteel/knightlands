@@ -22,7 +22,7 @@
           class="inline-block margin-right-2 margin-top-1"
           @click="clickHandler"
         >
-          {{ $t("start") }}???
+          Start
         </CustomButton>
       </div>
     </div>
