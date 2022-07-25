@@ -1,13 +1,16 @@
 <template>
   <div class="battle-coin font-size-20 flex flex-nowrap flex-items-center">
-    <div class="battle-coin-icons"></div>
+    <div
+      class="battle-coin-icons"
+      :class="{ 'battle-coin-icons--with-margin': hasMargin }"
+    ></div>
     {{ coins }}
     <slot />
   </div>
 </template>
 <script>
 export default {
-  props: ["value"],
+  props: ["value", "hasMargin"],
   computed: {
     coins() {
       if (typeof this.value === "number") {
@@ -24,11 +27,13 @@ export default {
   display: inline-block;
   width: 20px;
   height: 20px;
-  margin-right: 4px;
   background-image: url("/images/battle/battle_coin.png");
   background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
+}
+.battle-coin-icons--with-margin {
+  margin-right: 2px;
 }
 .battle-coin--with-background {
   background: #214c6c;

@@ -29,14 +29,15 @@
           @click="upgradeHandler"
         >
           {{ $t("Upgrade lvl " + nextLevel) }}
-          <IconWithValue
+          <!-- <IconWithValue
             :flip="false"
             :iconMargin="true"
             iconClass="icon-gold"
             class="pointer"
           >
             {{ upgradePrice }}
-          </IconWithValue>
+          </IconWithValue> -->
+          <BattleCoin :value="upgradePrice" class="margin-left-1" />
         </CustomButton>
       </div>
     </div>
@@ -45,6 +46,7 @@
 <script>
 // import { create } from "vue-modal-dialogs";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
+import BattleCoin from "@/views/Battle/BattleCoin.vue";
 // import BattleAbilityLevelUpConfirm from "@/views/Battle/BattleAbilityLevelUpConfirm.vue";
 // import BattleAbilityLearnConfirm from "@/views/Battle/BattleAbilityLearnConfirm.vue";
 
@@ -54,7 +56,8 @@ export default {
     ability: Object
   },
   components: {
-    BattleUnitAbility
+    BattleUnitAbility,
+    BattleCoin
   },
   data() {
     return {};

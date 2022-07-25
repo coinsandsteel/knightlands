@@ -94,8 +94,9 @@ export default {
       return result;
     }
   },
-  created() {
-    this.title = this.$t("battle-units");
+  activated() {
+    console.log("shouldFillSlot", this.shouldFillSlot);
+    this.title = this.shouldFillSlot ? "select unit" : "battle units";
   },
   methods: {
     async clickHandler({ unit }) {

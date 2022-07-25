@@ -17,7 +17,7 @@
           barType="blue"
           class="pointer width-30"
         ></progress-bar>
-        <BattleCoin class="margin-left-2" />
+        <BattleCoin class="margin-left-2" :hasMargin="true" />
         <BattleCrystal class="margin-left-2" />
         <CloseButton
           class="absolute-right top-unset margin-right-1"

@@ -94,7 +94,7 @@
           </div>
           <div class="font-size-22 margin-bottom-3 flex flex-center">
             Ancient coins balance:
-            <BattleCoin />
+            <BattleCoin :hasMargin="true" />
           </div>
         </div>
       </div>

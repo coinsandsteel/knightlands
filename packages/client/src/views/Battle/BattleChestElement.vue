@@ -21,7 +21,10 @@
         </template>
       </div>
       <div class="flex flex-center flex-column">
-        <div v-if="chest.dailyMax && shop[chest.name]" class="font-size-15">
+        <div
+          v-if="chest.dailyMax && shop[chest.name] && !chest.claimable"
+          class="font-size-18"
+        >
           Items left: {{ shop[chest.name].left || 0 }}
         </div>
         <div v-if="chest.claimable">
@@ -90,7 +93,7 @@
             @click="purchase(chest, COMMODITY_COINS)"
           >
             <div class="flex flex-center">
-              <BattleCoin :value="chest.ancientCoinsPrice" />
+              <BattleCoin :value="chest.ancientCoinsPrice" :hasMargin="true" />
             </div>
           </CustomButton>
         </div>

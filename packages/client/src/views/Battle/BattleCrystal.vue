@@ -24,7 +24,7 @@ export default {
   display: inline-block;
   width: 20px;
   height: 20px;
-  margin-right: 4px;
+  margin-right: 2px;
   background-image: url("/images/battle/battle_crystal.png");
   background-size: 80%;
   background-position: center;

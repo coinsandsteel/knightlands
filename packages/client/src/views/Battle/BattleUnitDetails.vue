@@ -240,7 +240,7 @@ export default {
     }
   },
   created() {
-    this.title = this.$t("battle-unit");
+    this.title = "battle unit";
   },
   methods: {
     handleBackButton() {
