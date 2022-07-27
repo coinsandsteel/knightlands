@@ -41,6 +41,7 @@
         <MarchGold v-if="marchGold" :value="marchGold" />
         <AprilGold v-if="aprilGold" :value="aprilGold" />
         <AprilTickets v-if="aprilTicket" :value="aprilTicket" />
+        <BattleUnitList v-if="battleUnits" :units="battleUnits" />
 
         <div
           class="flex flex-center flex-column margin-top-3"
@@ -75,6 +76,7 @@ import HintHandler from "@/components/HintHandler.vue";
 import MarchGold from "@/views/March/MarchGold.vue";
 import AprilGold from "@/views/April/AprilGold.vue";
 import AprilTickets from "@/views/April/AprilTickets.vue";
+import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 
 export default {
   mixins: [HintHandler],
@@ -85,7 +87,8 @@ export default {
     Loot,
     MarchGold,
     AprilGold,
-    AprilTickets
+    AprilTickets,
+    BattleUnitList
   },
   props: [
     "items",
@@ -96,7 +99,8 @@ export default {
     "drown",
     "marchGold",
     "aprilGold",
-    "aprilTicket"
+    "aprilTicket",
+    "battleUnits"
   ]
 };
 </script>

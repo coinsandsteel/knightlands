@@ -222,7 +222,7 @@ export default {
       ];
       return result.map((tile, index) => ({
         index,
-        tile: tile || terrain.base || battle.TERRAIN_GRASS
+        tile: tile || (terrain && terrain.base) || battle.TERRAIN_GRASS
       }));
     },
     units(state) {

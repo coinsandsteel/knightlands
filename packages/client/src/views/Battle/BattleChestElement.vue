@@ -228,8 +228,112 @@ export default {
         );
       }
 
-      const ShowDialog = create(ItemsReceived, "items", "battleItems");
-      ShowDialog([], chest.quantity);
+      const ShowDialog = create(ItemsReceived, "items", "battleUnits");
+      ShowDialog(
+        [],
+        [
+          {
+            template: 17,
+            fighterId: "ae073deabd00",
+            isEnemy: null,
+            isDead: false,
+            unitId: "fb433557af8b",
+            unitTribe: "goblin",
+            unitClass: "melee",
+            tier: 1,
+            levelInt: 1,
+            power: 174,
+            index: null,
+            hp: 71,
+            abilities: [
+              {
+                abilityClass: "spear_strike",
+                abilityType: "attack",
+                tier: 1,
+                value: null,
+                enabled: true,
+                cooldown: {
+                  enabled: false,
+                  estimate: 0
+                }
+              },
+              {
+                abilityClass: "wolf_bite",
+                abilityType: "attack",
+                tier: 2,
+                value: null,
+                enabled: false,
+                cooldown: {
+                  enabled: false,
+                  estimate: 0
+                }
+              },
+              {
+                abilityClass: "fatal_strike",
+                abilityType: "attack",
+                tier: 3,
+                value: null,
+                enabled: false,
+                cooldown: {
+                  enabled: false,
+                  estimate: 0
+                }
+              }
+            ],
+            buffs: []
+          },
+          {
+            template: 15,
+            fighterId: "4d2e6774017d",
+            isEnemy: null,
+            isDead: false,
+            unitId: "a7a97928a15e",
+            unitTribe: "goblin",
+            unitClass: "range",
+            tier: 1,
+            levelInt: 1,
+            power: 138,
+            index: null,
+            hp: 49,
+            abilities: [
+              {
+                abilityClass: "power_shot",
+                abilityType: "attack",
+                tier: 1,
+                value: null,
+                enabled: true,
+                cooldown: {
+                  enabled: false,
+                  estimate: 0
+                }
+              },
+              {
+                abilityClass: "stun_shot",
+                abilityType: "de_buff",
+                tier: 2,
+                value: null,
+                enabled: false,
+                cooldown: {
+                  enabled: false,
+                  estimate: 0
+                }
+              },
+              {
+                abilityClass: "death_shot",
+                abilityType: "attack",
+                tier: 3,
+                value: null,
+                enabled: false,
+                cooldown: {
+                  enabled: false,
+                  estimate: 0
+                }
+              }
+            ],
+            buffs: []
+          }
+        ]
+      ); // @todo: update with real data
     }
   }
 };
