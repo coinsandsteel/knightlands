@@ -49,9 +49,23 @@
               <CustomButton
                 type="blue"
                 class="inline-block margin-right-2 margin-top-1"
-                @click="increaseHandler"
+                @click="increaseHandler(100)"
               >
-                {{ $t("exp+") }}
+                +100 exp
+              </CustomButton>
+              <CustomButton
+                type="blue"
+                class="inline-block margin-right-2 margin-top-1"
+                @click="increaseHandler(500)"
+              >
+                +500 exp
+              </CustomButton>
+              <CustomButton
+                type="blue"
+                class="inline-block margin-right-2 margin-top-1"
+                @click="increaseHandler(5000)"
+              >
+                +5000 exp
               </CustomButton>
               <!--CustomButton
                 type="blue"
@@ -254,10 +268,11 @@ export default {
         unitId: this.unit.unitId
       });
     },
-    increaseHandler() {
+    increaseHandler(exp) {
       this.$store.dispatch("battle/testAction", {
         action: "increaseUnitExp",
-        unitId: this.$route.params.id
+        unitId: this.$route.params.id,
+        exp
       });
     },
     decreaseHandler() {

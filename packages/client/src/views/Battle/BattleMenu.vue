@@ -56,6 +56,15 @@
             Shop
           </CustomButton>
         </div>
+        <!--div>
+          <CustomButton
+            type="blue"
+            class="inline-block margin-right-2 margin-top-1"
+            @click="testAbilities"
+          >
+            Test abilities
+          </CustomButton>
+        </div-->
       </div>
     </div>
   </div>
@@ -89,6 +98,11 @@ export default {
     },
     goToChestShop() {
       this.$router.push({ name: "battle-chest-shop" });
+    },
+    testAbilities() {
+      this.$store.dispatch("battle/testAction", {
+        action: "testAbilities"
+      });
     }
   }
 };
