@@ -277,7 +277,7 @@ export default {
   background: url("/images/battle/unit.png") center/60% no-repeat;
 }
 .battle-unit--orc_tank .battle-unit-image {
-  background: url("/images/battle/enemy.png") center/80% no-repeat;
+  background: url("/images/battle/unit.png") center/80% no-repeat;
 }
 .battle-unit--orc_support .battle-unit-image {
   background: url("/images/battle/unit.png") center/60% no-repeat;
