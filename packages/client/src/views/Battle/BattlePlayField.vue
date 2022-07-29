@@ -116,8 +116,21 @@
               : "Cooldown! " + abilityCooldownEstimate + " step left"
           }}
         </div>
-        <div v-if="abilityDescription" class="text-align-center">
+        <div
+          v-if="selectedAbility && abilityDescription"
+          class="text-align-center"
+        >
           {{ abilityDescription }}
+          <div
+            v-if="
+              $t('battle-ability-description-' + selectedAbility.abilityClass)
+            "
+            class="margin-top-half"
+          >
+            {{
+              $t("battle-ability-description-" + selectedAbility.abilityClass)
+            }}
+          </div>
         </div>
       </template>
     </div>

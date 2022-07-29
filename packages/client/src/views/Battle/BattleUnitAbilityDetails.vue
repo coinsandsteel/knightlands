@@ -9,8 +9,18 @@
         :value="ability.value"
         :isSmallValue="true"
       />
-      <div class="margin-left-1">
+      <div class="flex-full margin-left-1 text-align-left">
         {{ description }}
+        <div
+          v-if="
+            ability &&
+              ability.abilityClass &&
+              $t('battle-ability-description-' + ability.abilityClass)
+          "
+          class="margin-top-half"
+        >
+          {{ $t("battle-ability-description-" + ability.abilityClass) }}
+        </div>
       </div>
       <div class="margin-left-1">
         <!-- <CustomButton
