@@ -27,6 +27,7 @@
         >
           Items left: {{ shop[chest.name].left || 0 }}
         </div>
+        <!-- claim -->
         <div v-if="chest.claimable">
           <CustomButton
             :disabled="
@@ -40,6 +41,7 @@
             Claim
           </CustomButton>
         </div>
+        <!-- hard price -->
         <div v-if="chest.hardPrice">
           <CustomButton
             :disabled="
@@ -47,7 +49,7 @@
                 !(shop[chest.name] && shop[chest.name].left > 0)) ||
                 balance.hard < chest.hardPrice
             "
-            type="grey"
+            type="yellow"
             width="15rem"
             @click="purchase(chest, 'hard')"
             :class="'margin-bottom-1'"
@@ -61,6 +63,7 @@
             </div>
           </CustomButton>
         </div>
+        <!-- flesh price -->
         <div v-if="chest.fleshPrice">
           <CustomButton
             :disabled="
@@ -68,7 +71,7 @@
                 !(shop[chest.name] && shop[chest.name].left > 0)) ||
                 balance.flesh < chest.fleshPrice
             "
-            type="grey"
+            type="yellow"
             width="15rem"
             @click="purchase(chest, 'dkt')"
           >
@@ -81,6 +84,7 @@
             </div>
           </CustomButton>
         </div>
+        <!-- ancient coin price -->
         <div v-if="chest.ancientCoinsPrice">
           <CustomButton
             :disabled="
@@ -88,7 +92,7 @@
                 !(shop[chest.name] && shop[chest.name].left > 0)) ||
                 balance.ancientCoins < chest.ancientCoinsPrice
             "
-            type="grey"
+            type="yellow"
             width="15rem"
             @click="purchase(chest, COMMODITY_COINS)"
           >
@@ -99,35 +103,10 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="flex flex-space-between">
-      <div
-        class="flex flex-column flex-items-start font-size-22 font-weight-700"
-      >
-        <div class="chest-title text-align-center">{{ chest.title }}</div>
-      </div>
-      <div class="flex flex-column flex-items-center">
-        <CustomButton type="blue" width="18rem" @click="$emit('open', chest)">
-          Characters list
-        </CustomButton>
-      </div>
-      <div class="text-align-center">
-        <CustomButton
-          type="yellow"
-          width="18rem"
-          @click="$emit('purchase', chest)"
-        >
-          Buy
-        </CustomButton>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
-// import CustomButton from "@/components/Button.vue";
-// import Timer from "@/timer";
-// import PurchaseButton from "@/components/PurchaseButton.vue";
 import { mapState } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
 import { create } from "vue-modal-dialogs";
@@ -140,12 +119,9 @@ export default {
   mixins: [PromptMixin, NetworkRequestErrorMixin],
   props: ["chest", "index"],
   components: {
-    // CustomButton,
-    // PurchaseButton
     BattleCoin
   },
   data: () => ({
-    // timer: new Timer(true)
     COMMODITY_COINS: battle.COMMODITY_COINS
   }),
   computed: {
@@ -161,14 +137,6 @@ export default {
       };
     }
   },
-  mounted() {
-    // this.updateAll();
-  },
-  // watch: {
-  //   chest() {
-  //     this.updateAll();
-  //   }
-  // },
   filters: {
     shinesPrice(value) {
       return Math.round(value);
@@ -178,14 +146,6 @@ export default {
     }
   },
   methods: {
-    // updateAll() {
-    //   if (this.chest.meta.freeOpens > 0) {
-    //     let resetCycle = 86400000 / this.chest.meta.freeOpens;
-    //     let timeUntilNextFreeOpening =
-    //       this.$game.now - this.chest.lastFreeOpening;
-    //     this.timer.timeLeft = (resetCycle - timeUntilNextFreeOpening) / 1000;
-    //   }
-    // }
     async purchase(chest, currency) {
       if (
         [battle.REWARD_TYPE_DAILY, battle.COMMODITY_STARTER_PACK].includes(
@@ -228,7 +188,12 @@ export default {
         );
       }
 
-      const ShowDialog = create(ItemsReceived, "items", "battleUnits");
+      const ShowDialog = create(
+        ItemsReceived,
+        "items",
+        "battleUnits",
+        "battleEnergyPotion"
+      );
       ShowDialog(
         [],
         [
@@ -332,7 +297,8 @@ export default {
             ],
             buffs: []
           }
-        ]
+        ],
+        {}
       ); // @todo: update with real data
     }
   }
@@ -392,18 +358,6 @@ export default {
   background: url("/images/battle/chests/shop-squad3-chest.png") center / 90%
     no-repeat;
 }
-
-// .silver_chest {
-//   .chest-icon("chest_medium");
-// }
-
-// .velvet_chest {
-//   .chest-icon("chest_large");
-// }
-
-// .halloween_chest {
-//   .chest-icon("halloween_chest");
-// }
 .chest-title {
   width: 14rem;
 }
