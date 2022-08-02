@@ -28,9 +28,11 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {
+  mixins: [NetworkRequestErrorMixin],
   components: {
     BattleUnit
   },
@@ -47,17 +49,21 @@ export default {
   },
   methods: {
     unitClickHandler() {},
-    handleStart(index) {
+    async handleStart(index) {
       const options = [
         battle.GAME_DIFFICULTY_LOW,
         battle.GAME_DIFFICULTY_MEDIUM,
         battle.GAME_DIFFICULTY_HIGH
       ];
-      this.$store.dispatch("battle/enterDuel", {
-        difficulty: options[index]
-      });
-      this.$router.push({
-        name: "battle-duels-play"
+      await this.performRequestNoCatch(
+        this.$store.dispatch("battle/enterDuel", {
+          difficulty: options[index]
+        })
+      );
+      this.$nextTick(() => {
+        this.$router.push({
+          name: "battle-duels-play"
+        });
       });
     }
   }

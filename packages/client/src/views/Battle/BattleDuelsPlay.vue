@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isStarted">
+  <div v-if="isActive && isStarted">
     <BattlePlayResult v-if="isResultVisible" />
     <BattlePlayField v-else />
   </div>

@@ -9,6 +9,12 @@
         ability.abilityClass
     "
   >
+    <div
+      v-if="hasOverlayText"
+      class="battle-unit-ability-overlay width-100 height-100 flex flex-center"
+    >
+      <div>{{ overlayText }}</div>
+    </div>
     <div v-if="isActive" class="active-indicator absolute"></div>
     <div
       v-if="isValueVisible"
@@ -27,7 +33,8 @@ export default {
     ability: Object,
     isActive: Boolean,
     value: Number,
-    isSmallValue: Boolean
+    isSmallValue: Boolean,
+    overlayText: String
   },
   data() {
     return {};
@@ -35,6 +42,11 @@ export default {
   computed: {
     isValueVisible() {
       return typeof this.value === "number";
+    },
+    hasOverlayText() {
+      return (
+        typeof this.overlayText === "string" && this.overlayText.length > 0
+      );
     }
   }
 };
@@ -74,6 +86,28 @@ export default {
   left: -3px;
   bottom: -3px;
   border-width: 1px;
+}
+// .battle-unit-ability-overlay {
+//   background: rgba(#fff, 0.5);
+//   color: #fff;
+//   font-size: 42px;
+//   border-radius: 50%;
+//   font-weight: 900;
+//   div {
+//     text-shadow: 0px 0px 6px #000;
+//   }
+// }
+.battle-unit-ability-overlay {
+  background: #fff;
+  color: #000;
+  font-size: 42px;
+  border-radius: 50%;
+  font-weight: 900;
+  opacity: 0.5;
+  div {
+    opacity: 0.9;
+    text-shadow: 0px 0px 6px #fff;
+  }
 }
 .battle-unit-ability-type--attack {
   background-image: url("/images/battle/abilities/attack.png");

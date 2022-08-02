@@ -103,13 +103,18 @@
             :ability="ability"
             :isActive="ability.abilityClass === selectedAbilityClass"
             :value="ability.value"
+            :overlayText="
+              ability.cooldown && ability.cooldown.estimate
+                ? ability.cooldown.estimate + ''
+                : null
+            "
+            :_overlayText="'3'"
             class="battle-current-active-fighter-ability pointer"
             :class="{ 'opacity-30 pointer-events-none': !ability.enabled }"
             @click.native="abilitySelectHandler(ability)"
           />
         </div>
         <div v-if="abilityCooldownEstimate" class="text-align-center">
-          Cooldown!
           {{
             abilityCooldownEstimate > 1
               ? "Cooldown! " + abilityCooldownEstimate + " steps left"
@@ -272,8 +277,8 @@ export default {
       }
 
       const additionalAbilities = [
-        { abilityClass: battle.ABILITY_MOVE, enabled: true },
-        { abilityClass: battle.ABILITY_ATTACK, enabled: true }
+        { abilityClass: battle.ABILITY_MOVE, enabled: true }
+        // { abilityClass: battle.ABILITY_ATTACK, enabled: true }
       ];
       // const abilities =
       //   this.myActiveFighter.abilities.filter(({ enabled }) => enabled) || [];
@@ -409,7 +414,7 @@ export default {
           this.selectedAbilityClass = value
             ? this.moveCells.length > 0
               ? battle.ABILITY_MOVE
-              : battle.ABILITY_ATTACK
+              : null
             : null;
         });
       }
