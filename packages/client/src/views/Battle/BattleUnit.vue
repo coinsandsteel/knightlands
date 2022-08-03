@@ -44,10 +44,10 @@
         class="absolute battle-dead-indicator font-size-18"
       />
       <div
-        v-if="shouldShowExtraInfo && sequenceIndex"
-        class="absolute battle-sequence-index font-size-18"
+        v-if="shouldShowExtraInfo && isRatingIndexVisible"
+        class="absolute battle-rating-index font-size-18"
       >
-        {{ sequenceIndex }}
+        {{ ratingIndex }}
       </div>
     </div>
   </div>
@@ -58,6 +58,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   props: {
     unit: Object,
+    ratingIndex: Number,
     isEnemy: Boolean,
     isSelected: Boolean,
     shouldShowExtraInfo: Boolean,
@@ -79,8 +80,8 @@ export default {
         (typeof this.hp === "number" && this.hp <= 0)
       );
     },
-    sequenceIndex() {
-      return null;
+    isRatingIndexVisible() {
+      return typeof this.ratingIndex === "number";
     }
   },
   methods: {
@@ -105,12 +106,12 @@ export default {
   border-radius: 12px;
   padding: 0 5px;
 }
-.battle-sequence-index {
+.battle-rating-index {
   left: 0px;
-  bottom: 0px;
-  background: #fff;
-  border: solid 1px #777;
-  color: #333;
+  bottom: 2px;
+  background: #1e3a8a;
+  border: solid 1px #1e3a8a;
+  color: #fff;
   // color: #10b981;
   font-weight: 600;
   border-radius: 12px;

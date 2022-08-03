@@ -12,6 +12,7 @@
         :unit="fighter"
         :isEnemy="isEnemy"
         :shouldShowExtraInfo="true"
+        :ratingIndex="fighter ? fighter.ratingIndex : null"
       />
     </div>
   </div>
