@@ -1,30 +1,33 @@
 <template>
   <div v-if="isActive && isStarted">
-    <BattlePlayResult v-if="isResultVisible" />
-    <BattlePlayField v-else />
+    <!-- <BattlePlayResult v-if="isResultVisible" /> -->
+    <BattlePlayField />
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import BattlePlayField from "@/views/Battle/BattlePlayField.vue";
-import BattlePlayResult from "@/views/Battle/BattlePlayResult.vue";
+// import BattlePlayResult from "@/views/Battle/BattlePlayResult.vue";
 export default {
   mixins: [ActivityMixin],
   components: {
     BattlePlayField,
-    BattlePlayResult
+    // BattlePlayResult
   },
   data() {
     return {
-      isResultVisible: false
+      // isResultVisible: false
     };
   },
   computed: {
     ...mapState("battle", ["game", "user"]),
     isStarted() {
       return this.game.combat.started;
-    }
+    },
+    // isResultVisible() {
+    //   return !!this.game.combat.result;
+    // }
   },
   watch: {
     isStarted(value, oldValue) {

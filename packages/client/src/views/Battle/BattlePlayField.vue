@@ -117,7 +117,10 @@
             @click.native="abilitySelectHandler(ability)"
           />
         </div>
-        <div v-if="abilityCooldownEstimate" class="text-align-center">
+        <div
+          v-if="abilityCooldownEstimate"
+          class="battle-cooldown-estimate text-align-center"
+        >
           {{
             abilityCooldownEstimate > 1
               ? "Cooldown! " + abilityCooldownEstimate + " steps left"
@@ -213,6 +216,7 @@ import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import BattleExitGame from "@/views/Battle/BattleExitGame.vue";
+import BattlePlayResultDialog from "@/views/Battle/BattlePlayResultDialog.vue";
 import CloseButton from "@/components/CloseButton.vue";
 
 const commonAnimationParams = {
@@ -377,7 +381,7 @@ export default {
     },
     energy() {
       return this.user.balance.energy;
-    }
+    },
     // isStarted() {
     //   return this.game.combat.started;
     // }
@@ -409,6 +413,9 @@ export default {
     //     );
     //   });
     // }
+    battleResult() {
+      return !!this.game.combat.result;
+    }
   },
   watch: {
     // isStarted(value, oldValue) {
@@ -442,6 +449,16 @@ export default {
               : null
             : null;
         });
+      }
+    },
+    battleResult: {
+      immediate: true,
+      handler: function(value) {
+        if (!value) {
+          return;
+        }
+
+        this.showResult();
       }
     }
   },
@@ -788,6 +805,10 @@ export default {
           oldIndex: enemyUnits[0].index === 0 ? 0 : 12
         });
       }
+    },
+    async showResult() {
+      const show = create(BattlePlayResultDialog);
+      await show();
     }
   }
 };
@@ -833,6 +854,9 @@ export default {
   }
   .battle-ability-effect-value--blue {
     color: #3b82f6;
+  }
+  .battle-cooldown-estimate {
+    color: #fcd34d;
   }
   //
   .battle-ability-effect--accurate_shot {
