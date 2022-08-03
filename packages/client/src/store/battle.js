@@ -384,22 +384,62 @@ export default {
       }
 
       if (data.buffs !== undefined) {
-        let index = state.game.userSquad.units.findIndex(
-          unit => unit.fighterId === data.buffs.fighterId
-        );
-        if (index !== -1) {
-          Vue.set(state.game.userSquad.units[index], "buffs", data.buffs.buffs);
-        }
-
-        index = state.game.enemySquad.units.findIndex(
-          unit => unit.fighterId === data.buffs.fighterId
-        );
-        if (index !== -1) {
-          Vue.set(
-            state.game.enemySquad.units[index],
-            "buffs",
-            data.buffs.buffs
+        for (let fighterId in data.buffs) {
+          // User squad
+          let index = state.game.userSquad.units.findIndex(
+            unit => unit.fighterId === fighterId
           );
+
+          if (index !== -1) {
+            Vue.set(
+              state.game.userSquad.units[index],
+              "buffs",
+              data.buffs[fighterId]
+            );
+          }
+
+          // Enemy squad
+          index = state.game.enemySquad.units.findIndex(
+            unit => unit.fighterId === fighterId
+          );
+
+          if (index !== -1) {
+            Vue.set(
+              state.game.enemySquad.units[index],
+              "buffs",
+              data.buffs[fighterId]
+            );
+          }
+        }
+      }
+
+      if (data.abilities !== undefined) {
+        for (let fighterId in data.abilities) {
+          // User squad
+          let index = state.game.userSquad.units.findIndex(
+            unit => unit.fighterId === fighterId
+          );
+
+          if (index !== -1) {
+            Vue.set(
+              state.game.userSquad.units[index],
+              "abilities",
+              data.abilities[fighterId]
+            );
+          }
+
+          // Enemy squad
+          index = state.game.enemySquad.units.findIndex(
+            unit => unit.fighterId === fighterId
+          );
+
+          if (index !== -1) {
+            Vue.set(
+              state.game.enemySquad.units[index],
+              "abilities",
+              data.abilities[fighterId]
+            );
+          }
         }
       }
 
