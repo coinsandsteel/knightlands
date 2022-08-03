@@ -72,7 +72,10 @@
       </CustomButton>
     </div>
     <!-- active unit -->
-    <div v-if="activeFighter" class="margin-top-2 font-size-22">
+    <div
+      v-if="activeFighter"
+      class="margin-top-2 padding-bottom-4 font-size-22"
+    >
       <div class="flex flex-center">
         <BattleUnit
           :unit="activeFighter"
@@ -136,6 +139,18 @@
               $t("battle-ability-description-" + selectedAbility.abilityClass)
             }}
           </div>
+        </div>
+        <div
+          v-if="isBtnActivateAbilityVisible"
+          class="text-align-center margin-top-1"
+        >
+          <CustomButton
+            type="green"
+            @click="activateAbilityHandler(selectedAbility)"
+            class="inline-block"
+          >
+            Activate {{ selectedAbility.abilityClass }}
+          </CustomButton>
         </div>
       </template>
     </div>
@@ -315,6 +330,16 @@ export default {
 
       return items.join(", ");
     },
+    isBtnActivateAbilityVisible() {
+      if (!this.selectedAbility) {
+        return false;
+      }
+
+      return (
+        battle.ABILITY_TYPES[this.selectedAbility.abilityClass] ===
+        battle.ABILITY_TYPE_SELF_BUFF
+      );
+    },
     abilityCooldownEstimate() {
       return this.selectedAbility &&
         this.selectedAbility.cooldown &&
@@ -472,6 +497,12 @@ export default {
       this.selectedAbilityClass = ability.abilityClass;
       this.$store.dispatch("battle/chooseAbility", {
         abilityClass: ability.abilityClass
+      });
+    },
+    activateAbilityHandler(ability) {
+      this.$store.dispatch("battle/apply", {
+        index: null,
+        ability: ability.abilityClass
       });
     },
     async cellClickHandler(cell, index, event) {

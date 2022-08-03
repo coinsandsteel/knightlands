@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     isValueVisible() {
-      return typeof this.value === "number";
+      return typeof this.value === "number" && this.value > 0;
     },
     hasOverlayText() {
       return (
