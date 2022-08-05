@@ -60,6 +60,23 @@
         </div>
       </div>
     </div>
+    <!-- test buttons -->
+    <div v-if="false" class="text-align-center margin-top-2">
+      <CustomButton
+        type="green"
+        width="20rem"
+        class="inline-block"
+        @click="move1Handler"
+        >move</CustomButton
+      >
+      <CustomButton
+        type="green"
+        width="20rem"
+        class="inline-block"
+        @click="animateHandler"
+        >animate</CustomButton
+      >
+    </div>
     <!-- skip button -->
     <div v-if="myActiveFighter" class="text-align-center margin-top-2">
       <CustomButton
@@ -157,22 +174,6 @@
         </div>
       </template>
     </div>
-    <div v-if="false" class="text-align-center margin-top-2">
-      <CustomButton
-        type="green"
-        width="20rem"
-        class="inline-block"
-        @click="move1Handler"
-        >move</CustomButton
-      >
-      <CustomButton
-        type="green"
-        width="20rem"
-        class="inline-block"
-        @click="animateHandler"
-        >animate</CustomButton
-      >
-    </div>
     <!-- <Transition name="fade" appear>
       <BattleAbilitySelect
         v-if="false && abilitySelectResolve"
@@ -221,8 +222,8 @@ import CloseButton from "@/components/CloseButton.vue";
 
 const commonAnimationParams = {
   duration: 200,
-  easing: "linear",
-  delay: anime.stagger(30)
+  easing: "linear"
+  // delay: anime.stagger(30)
 };
 
 export default {
@@ -568,7 +569,7 @@ export default {
       const result = await showDialog();
       if (result) {
         this.$store.dispatch("battle/exit");
-        this.$router.replace({ name: "battle-menu" });
+        this.$router.replace({ name: "battle-menu" }).catch(() => {});
       }
     },
     skipHandler() {
@@ -615,10 +616,10 @@ export default {
         return;
       }
 
-      if (step.target && (step.ability || step.buff)) {
-        await this.abilityEffectHandler(step);
-      } else if (step.action === "move") {
+      if (step.action === "move") {
         await this.moveHandler(step);
+      } else if (step.target && (step.ability || step.buff)) {
+        await this.abilityEffectHandler(step);
       } else if (step.action === battle.ABILITY_TYPE_ATTACK) {
         await this.attackHandler(step);
       } else if (step.action === battle.ABILITY_TYPE_BUFF) {
@@ -634,11 +635,197 @@ export default {
         ...step
       });
     },
+    async abilityEffectFromSourceToTargetHandler(step) {
+      const ability = step.ability || step.buff;
+      const abilityClass = ability ? ability.abilityClass : null;
+      if (
+        step.source &&
+        step.source.fighterId &&
+        step.target &&
+        step.target.fighterId
+      ) {
+        const isSourceMyFighter =
+          step.source && step.source.fighterId
+            ? !!this.units.find(
+                ({ fighterId }) => fighterId === step.source.fighterId
+              )
+            : false;
+        const isTargetMyFighter =
+          step.target && step.target.fighterId
+            ? !!this.units.find(
+                ({ fighterId }) => fighterId === step.target.fighterId
+              )
+            : false;
+        const source =
+          this.units.find(
+            ({ fighterId }) => fighterId === step.source.fighterId
+          ) ||
+          this.enemyUnits.find(
+            ({ fighterId }) => fighterId === step.source.fighterId
+          );
+        const target =
+          this.units.find(
+            ({ fighterId }) => fighterId === step.target.fighterId
+          ) ||
+          this.enemyUnits.find(
+            ({ fighterId }) => fighterId === step.target.fighterId
+          );
+
+        if (
+          source &&
+          target &&
+          typeof source.index === "number" &&
+          source.index > -1 &&
+          typeof target.index === "number" &&
+          target.index > -1 &&
+          !(typeof target.hp === "number" && target.hp <= 0)
+        ) {
+          const sourceIndex = source.index;
+          const targetIndex = target.index;
+          const xDiff = (targetIndex % 5) - (sourceIndex % 5);
+          const yDiff =
+            Math.floor(targetIndex / 5) - Math.floor(sourceIndex / 5);
+          const diff = Math.max(Math.abs(xDiff), Math.abs(yDiff));
+
+          // const el = document.createElement("div");
+          // el.className =
+          //   "battle-ability-effect-source-target-indicator-wrapper z-index-1";
+          // el.innerHTML =
+          //   '<div class="battle-ability-effect-source-target-indicator"></div>';
+          // // el.style = "opacity: 0;";
+
+          const damage = ability ? ability.value || ability.damage || 0 : 0;
+          const isCriticalHit = ability && ability.criticalHit;
+          let colorClass = "";
+          if (
+            abilityClass &&
+            battle.ABILITY_TYPES[abilityClass] === battle.ABILITY_TYPE_ATTACK
+          ) {
+            // source and target the same side
+            if (
+              (isSourceMyFighter && isTargetMyFighter) ||
+              !(isSourceMyFighter || isTargetMyFighter)
+            ) {
+              colorClass = "battle-ability-effect-value--green";
+            } else {
+              colorClass = "battle-ability-effect-value--red";
+            }
+          } else if (
+            abilityClass &&
+            battle.ABILITY_TYPES[abilityClass] !== battle.ABILITY_TYPE_JUMP
+          ) {
+            // buff, debuff, self buff, healing
+            colorClass = "battle-ability-effect-value--blue";
+          }
+
+          const el = document.createElement("div");
+          el.className =
+            "absolute-stretch flex flex-center text-center font-size-18 font-weight-700 z-index-1";
+          if (diff === 0) {
+            el.style = "opacity: 0;";
+          }
+          el.innerHTML =
+            '<div class="battle-ability-effect _battle-ability-effect--attack_ battle-ability-effect--' +
+            abilityClass +
+            '"></div>' +
+            '<div class="battle-ability-effect-value margin-left-half ' +
+            colorClass +
+            '">' +
+            damage +
+            (isCriticalHit ? " Crit!" : "") +
+            "</div>";
+
+          const cells = document.querySelectorAll(
+            ".battle-board-cell-container"
+          );
+          const effectContainer = cells[sourceIndex].querySelector(
+            ".effect-wrapper"
+          );
+
+          effectContainer.appendChild(el);
+          // const now = Date.now();
+
+          // console.log(
+          //   "abilityEffectFromSourceToTargetHandler",
+          //   sourceIndex,
+          //   targetIndex,
+          //   xDiff,
+          //   `${xDiff * 100}%`,
+          //   yDiff,
+          //   `${yDiff * 100}%`
+          // );
+          if (diff > 0) {
+            const animation = anime({
+              ...commonAnimationParams,
+              duration: Math.min(400, diff * 160),
+              targets: el,
+              translateX: [
+                0,
+                // `-20%`,
+                // `-50%`,
+                // `-80%`,
+                // `-100%`
+                // `calc(${(xDiff * 100) / 4}%)`,
+                // `calc(${(xDiff * 200) / 4}%)`,
+                // `calc(${(xDiff * 300) / 4}%)`,
+                `${xDiff * 100}%`
+              ],
+              translateY: [
+                0,
+                // `-20%`,
+                // `-50%`,
+                // `-80%`,
+                // `-100%`
+                // `calc(${(yDiff * 100) / 4}%)`,
+                // `calc(${(yDiff * 200) / 4}%)`,
+                // `calc(${(yDiff * 300) / 4}%)`,
+                `${yDiff * 100}%`
+              ]
+              // opacity: [0, 0.8, 1, 0.8, 0]
+            });
+            await animation.finished;
+          } else {
+            // no distance, just fade in
+            const animation = anime({
+              ...commonAnimationParams,
+              duration: 400,
+              targets: el,
+              opacity: [0, 1]
+            });
+            await animation.finished;
+          }
+
+          const animation2 = anime({
+            ...commonAnimationParams,
+            duration: 600,
+            targets: el,
+            opacity: [1, 0]
+          });
+          await animation2.finished;
+
+          el.parentElement.removeChild(el);
+          // console.log("animation finished", Date.now() - now);
+        }
+      }
+    },
     async abilityEffectHandler(step) {
+      await this.abilityEffectFromSourceToTargetHandler(step);
+
+      // @todo: clean up
+      if (step) {
+        return;
+      }
+
       const ability = step.ability || step.buff;
       const abilityClass = ability ? ability.abilityClass : null;
       const damage = ability ? ability.value || ability.damage || 0 : 0;
       const isCriticalHit = ability && ability.criticalHit;
+      const isSourceMyFighter =
+        step.source && step.source.fighterId
+          ? !!this.units.find(
+              ({ fighterId }) => fighterId === step.source.fighterId
+            )
+          : false;
       const isTargetMyFighter =
         step.target && step.target.fighterId
           ? !!this.units.find(
@@ -650,12 +837,14 @@ export default {
         abilityClass &&
         battle.ABILITY_TYPES[abilityClass] === battle.ABILITY_TYPE_ATTACK
       ) {
-        // attack
-        if (isTargetMyFighter) {
-          // target is my fighters
-          colorClass = "battle-ability-effect-value--red";
-        } else {
+        // source and target the same side
+        if (
+          (isSourceMyFighter && isTargetMyFighter) ||
+          !(isSourceMyFighter || isTargetMyFighter)
+        ) {
           colorClass = "battle-ability-effect-value--green";
+        } else {
+          colorClass = "battle-ability-effect-value--red";
         }
       } else if (
         abilityClass &&
@@ -766,13 +955,18 @@ export default {
     animateHandler() {
       this.abilityEffectHandler({
         action: battle.ABILITY_TYPE_ATTACK,
-        source: {
-          unitId: "v4nv9",
-          index: 3
-        },
+        // source: {
+        //   unitId: "v4nv9",
+        //   index: 3
+        // },
+        source: this.units[1],
+        // target: {
+        //   unitId: "v4nv9",
+        //   index: 8,
+        //   newHp: 5
+        // },
         target: {
-          unitId: "v4nv9",
-          index: 8,
+          ...this.enemyUnits[3],
           newHp: 5
         },
         ability: {
@@ -857,6 +1051,22 @@ export default {
   }
   .battle-cooldown-estimate {
     color: #fcd34d;
+  }
+  .battle-ability-effect-source-target-indicator-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+  .battle-ability-effect-source-target-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #f00;
+    position: absolute;
+    top: calc(50% - 3px);
+    left: calc(50% - 3px);
   }
   //
   .battle-ability-effect--accurate_shot {
