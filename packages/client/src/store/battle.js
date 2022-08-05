@@ -118,6 +118,7 @@ export default {
           selectedAbilityClass: null, // string|null
           moveCells: [], // number[]
           attackCells: [], // number[],
+          targetCells: [], // number[],
           queue: [
             // Unit moved
             /*{
@@ -260,6 +261,11 @@ export default {
       // }
       return state.game && state.game.combat && state.game.combat.runtime
         ? state.game.combat.runtime.attackCells || []
+        : [];
+    },
+    targetCells(state, getters) {
+      return state.game && state.game.combat && state.game.combat.runtime
+        ? state.game.combat.runtime.targetCells || []
         : [];
     },
     enemyUnits(state) {

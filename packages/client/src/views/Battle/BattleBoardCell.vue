@@ -61,6 +61,8 @@
             ]"
             :unit="unit"
             :shouldShowExtraInfo="true"
+            :isAttackTarget="isAttackTarget"
+            :isHealTarget="isHealTarget"
           />
         </div>
       </Transition>
@@ -85,9 +87,10 @@
               }
             ]"
             :isEnemy="true"
-            :isAttackTarget="isEnemy && isAttackCell"
             :unit="enemy"
             :shouldShowExtraInfo="true"
+            :isAttackTarget="isAttackTarget"
+            :isHealTarget="isHealTarget"
           />
         </div>
       </Transition>
@@ -141,6 +144,7 @@ export default {
       "selectedUnit",
       "moveCells",
       "attackCells",
+      "targetCells",
       "enemyUnits",
       "enemySelectedUnit"
       // "enemyMoveCells"
@@ -193,14 +197,17 @@ export default {
       return false;
     },
     isAttackCell() {
-      const isAttackAbility =
-        this.selectedAbilityClass &&
-        [battle.ABILITY_TYPE_DE_BUFF, battle.ABILITY_TYPE_ATTACK].includes(
-          battle.ABILITY_TYPES[this.selectedAbilityClass]
-        );
+      // const isAttackAbility =
+      //   this.selectedAbilityClass &&
+      //   [battle.ABILITY_TYPE_DE_BUFF, battle.ABILITY_TYPE_ATTACK].includes(
+      //     battle.ABILITY_TYPES[this.selectedAbilityClass]
+      //   );
+      // return (
+      //   this.attackCells.includes(this.index) &&
+      //   !(this.isUnit && isAttackAbility)
+      // );
       return (
-        this.attackCells.includes(this.index) &&
-        !(this.isUnit && isAttackAbility)
+        this.attackCells.includes(this.index) && !(this.isUnit || this.isEnemy)
       );
     },
     isMoveCell() {
@@ -208,8 +215,22 @@ export default {
         this.moveCells.includes(this.index) && !(this.isUnit || this.isEnemy)
       );
     },
+    isTargetCell() {
+      return this.targetCells.includes(this.index);
+    },
+    isHealTarget() {
+      return (
+        this.isTargetCell &&
+        this.selectedAbilityClass &&
+        battle.ABILITY_TYPES[this.selectedAbilityClass] ===
+          battle.ABILITY_TYPE_HEALING
+      );
+    },
+    isAttackTarget() {
+      return this.isTargetCell && !this.isHealTarget;
+    },
     isClickable() {
-      return this.isMoveCell || this.isAttackCell;
+      return this.isMoveCell || this.isTargetCell;
     }
   },
   watch: {
@@ -285,6 +306,7 @@ export default {
         unit: this.unit,
         isMoveCell: this.isMoveCell,
         isAttackCell: this.isAttackCell,
+        isTargetCell: this.isTargetCell,
         isEnemy: this.isEnemy,
         enemy: this.enemy
         // isEnemyAvailableMove: this.isEnemyAvailableMove

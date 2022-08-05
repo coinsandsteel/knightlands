@@ -40,6 +40,10 @@
         class="absolute battle-attack-target font-size-18"
       />
       <div
+        v-if="shouldShowExtraInfo && isHealTarget"
+        class="absolute battle-heal-target font-size-18"
+      />
+      <div
         v-if="shouldShowExtraInfo && isDead"
         class="absolute battle-dead-indicator font-size-18"
       />
@@ -66,7 +70,8 @@ export default {
     isEnemy: Boolean,
     isSelected: Boolean,
     shouldShowExtraInfo: Boolean,
-    isAttackTarget: Boolean
+    isAttackTarget: Boolean,
+    isHealTarget: Boolean
   },
   data() {
     return {
@@ -127,18 +132,26 @@ export default {
 .battle-active-fighter {
   top: 3px;
   left: 3px;
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #a3e635;
 }
 .battle-attack-target {
   top: 3px;
   left: 3px;
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: red;
+  background: #ef4444;
+}
+.battle-heal-target {
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2563eb;
 }
 .battle-dead-indicator {
   top: 1px;

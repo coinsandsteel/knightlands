@@ -353,7 +353,7 @@ export default {
         : null;
     },
     buffDescriptions() {
-      return (this.activeFighter
+      return this.activeFighter
         ? this.activeFighter.buffs || []
         : // [
           //   {
@@ -365,8 +365,7 @@ export default {
           //     estimate: 2
           //   }
           // ]
-          []
-      );/*.map(buff => {
+          []; /*.map(buff => {
         let description = `Buff: ${buff.source} added effect of ${buff.type} by ${buff.modifier}`;
 
         if (buff.probability) {
@@ -528,7 +527,7 @@ export default {
       //   return;
       // }
 
-      if (event.isAttackCell) {
+      if (event.isTargetCell) {
         const payload = {
           index,
           ability: this.selectedAbilityClass || null
