@@ -44,6 +44,10 @@
         class="absolute battle-dead-indicator font-size-18"
       />
       <div
+        v-if="shouldShowExtraInfo && isStunned"
+        class="absolute battle-stunned-indicator font-size-18"
+      />
+      <div
         v-if="shouldShowExtraInfo && isRatingIndexVisible"
         class="absolute battle-rating-index font-size-18"
       >
@@ -79,6 +83,9 @@ export default {
         (this.unit && this.unit.isDead) ||
         (typeof this.hp === "number" && this.hp <= 0)
       );
+    },
+    isStunned() {
+      return this.unit && this.unit.isStunned;
     },
     isRatingIndexVisible() {
       return typeof this.ratingIndex === "number";
@@ -139,6 +146,13 @@ export default {
   width: 20px;
   height: 20px;
   background: url("/images/battle/units/dead_unit.png") center/100% no-repeat;
+}
+.battle-stunned-indicator {
+  bottom: 2px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: url("/images/battle/effect/stunned.png") center/100% no-repeat;
 }
 .battle-unit-wrapper {
   // background: url("/images/battle/units/unit.png") center/100% no-repeat;
