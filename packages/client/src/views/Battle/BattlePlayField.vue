@@ -366,8 +366,8 @@ export default {
           //   }
           // ]
           []
-      ).map(buff => {
-        let description = `${buff.source} added effect of ${buff.type} by ${buff.modifier}`;
+      );/*.map(buff => {
+        let description = `Buff: ${buff.source} added effect of ${buff.type} by ${buff.modifier}`;
 
         if (buff.probability) {
           description += `, probability ${buff.probability}`;
@@ -378,7 +378,7 @@ export default {
         }
 
         return description;
-      });
+      });*/
     },
     energy() {
       return this.user.balance.energy;
