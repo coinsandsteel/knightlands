@@ -496,6 +496,9 @@ export default {
       if (data.combatAttackCells !== undefined) {
         state.game.combat.runtime.attackCells = data.combatAttackCells;
       }
+      if (data.combatTargetCells !== undefined) {
+        state.game.combat.runtime.targetCells = data.combatTargetCells;
+      }
       if (data.effects !== undefined) {
         state.game.combat.runtime.queue = data.effects || [];
       }
@@ -532,6 +535,7 @@ export default {
         combatData.runtime.selectedAbilityClass;
       state.game.combat.runtime.moveCells = combatData.runtime.moveCells;
       state.game.combat.runtime.attackCells = combatData.runtime.attackCells;
+      state.game.combat.runtime.targetCells = combatData.runtime.targetCells;
     }
   },
   actions: {
