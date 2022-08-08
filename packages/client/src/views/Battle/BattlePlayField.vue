@@ -27,7 +27,7 @@
     </portal>
     <!-- play board -->
     <div
-      class="battle-play-board-border-outer flex flex-center flex-grow-1 margin-top-4"
+      class="battle-play-board-border-outer flex flex-center flex-grow-1 margin-top-2"
     >
       <div class="flex flex-space-between width-100">
         <div class="flex flex-column">
@@ -85,41 +85,42 @@
         >lava effect</CustomButton
       >
     </div>
-    <!-- skip button -->
-    <div v-if="myActiveFighter" class="text-align-center margin-top-2">
-      <CustomButton
-        type="blue"
-        width="20rem"
-        class="inline-block"
-        @click="skipHandler"
-      >
-        Skip Turn
-      </CustomButton>
-    </div>
     <!-- active unit -->
     <div
       v-if="activeFighter"
       class="margin-top-2 padding-bottom-4 font-size-22"
     >
-      <div class="flex flex-center">
+      <div class="grid-3-columns">
+        <div></div>
         <BattleUnit
           :unit="activeFighter"
           :is-enemy="!myActiveFighter"
           class="battle-current-active-fighter"
         />
+        <!-- skip button -->
+        <div v-if="myActiveFighter" class="text-align-center">
+          <CustomButton
+            type="blue"
+            width="10rem"
+            class="inline-block"
+            @click="skipHandler"
+          >
+            Skip
+          </CustomButton>
+        </div>
       </div>
       <div class="text-align-center">
         # {{ activeFighter.unitTribe }} {{ activeFighter.unitClass }}
         {{ activeFighter.tier }} #
       </div>
-      <div
+      <!-- <div
         v-if="buffDescriptions && buffDescriptions.length > 0"
         class="text-align-center padding-left-2 padding-right-2"
       >
         <div v-for="(description, index) in buffDescriptions" :key="index">
           {{ description }}
         </div>
-      </div>
+      </div> -->
       <template v-if="myActiveFighter">
         <div
           v-if="abilities && abilities.length > 0"
@@ -438,7 +439,9 @@ export default {
           this.localQueue.push(value[i]);
         }
       }
-      this.processQueue();
+      this.$nextTick(() => {
+        this.processQueue();
+      });
     },
     myActiveFighter(value) {
       if (!value) {
@@ -615,8 +618,8 @@ export default {
         });
       }
 
+      await sleep(100);
       this.isProcessingQueue = false;
-
       this.processQueue();
     },
     async processQueueStep(step) {
@@ -1102,6 +1105,11 @@ export default {
     position: absolute;
     top: calc(50% - 3px);
     left: calc(50% - 3px);
+  }
+  .grid-3-columns {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
   }
   //
   .battle-ability-effect--accurate_shot {
