@@ -6,16 +6,22 @@
           <BattleUnit :unit="unit" :is-enemy="isEnemy" />
         </div>
         <div class="margin-top-1 font-size-30">
-          # {{ unit.unitTribe }} {{ unit.unitClass }} #
+          {{ unit.unitTribe }} {{ unit.unitClass }}
         </div>
         <div class="margin-top-2">
-          <div>Tier: {{ unit.tier }}</div>
-          <!-- <div>HLevel: {{ level }}</div> -->
-          <div>Hp - {{ unit.hp }}</div>
-          <!-- <div>Defense - {{ unit.characteristics.damage }}</div> -->
-          <!-- <div>Damage - {{ unit.characteristics.defence }}</div> -->
-          <!-- <div>Speed - {{ unit.characteristics.initiative }}</div> -->
-          <!-- <div>Initiative - {{ unit.characteristics.speed }}</div> -->
+          <div class="flex flex-justify-center flex-evenly-spaced width-75 padding-1">
+            <div class="flex flex-column width-35 margin-bottom-1">
+              <div>Tier: {{ unit.tier }}</div>
+              <div>Level: {{ unit.levelInt }}</div>
+              <div>Hp: {{ unit.hp }}</div>
+              <div>Defense: {{ unit.characteristics.damage }}</div>
+            </div>
+            <div class="flex flex-column width-35 margin-bottom-1">
+              <div>Damage: {{ unit.characteristics.defence }}</div>
+              <div>Speed: {{ unit.characteristics.speed }}</div>
+              <div>Initiative: {{ unit.characteristics.initiative }}</div>
+            </div>
+          </div>
         </div>
         <div class="margin-top-3">
           <div>Abilities</div>
