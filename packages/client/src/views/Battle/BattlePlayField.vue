@@ -63,6 +63,7 @@
     <!-- test buttons -->
     <div v-if="false" class="text-align-center margin-top-2">
       <CustomButton
+        v-if="false"
         type="green"
         width="20rem"
         class="inline-block"
@@ -73,8 +74,15 @@
         type="green"
         width="20rem"
         class="inline-block"
-        @click="animateHandler"
-        >animate</CustomButton
+        @click="attack1Handler"
+        >attack</CustomButton
+      >
+      <CustomButton
+        type="green"
+        width="20rem"
+        class="inline-block"
+        @click="lavaEffect1Handler"
+        >lava effect</CustomButton
       >
     </div>
     <!-- skip button -->
@@ -202,6 +210,7 @@ import { create } from "vue-modal-dialogs";
 import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import anime from "animejs/lib/anime.es.js";
+import { sleep } from "@/helpers/utils";
 import * as battle from "@/../../knightlands-shared/battle";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import BattleBoardCell from "@/views/Battle/BattleBoardCell.vue";
@@ -617,15 +626,18 @@ export default {
 
       if (step.action === "move") {
         await this.moveHandler(step);
+      } else if (step.action === "terrain") {
+        await this.terrainEffectHandler(step);
       } else if (step.target && (step.ability || step.buff)) {
         await this.abilityEffectHandler(step);
-      } else if (step.action === battle.ABILITY_TYPE_ATTACK) {
-        await this.attackHandler(step);
-      } else if (step.action === battle.ABILITY_TYPE_BUFF) {
-        await this.buffHandler(step);
-      } else if (step.action === battle.ABILITY_TYPE_DE_BUFF) {
-        await this.deBuffHandler(step);
       }
+      // else if (step.action === battle.ABILITY_TYPE_ATTACK) {
+      //   await this.attackHandler(step);
+      // } else if (step.action === battle.ABILITY_TYPE_BUFF) {
+      //   await this.buffHandler(step);
+      // } else if (step.action === battle.ABILITY_TYPE_DE_BUFF) {
+      //   await this.deBuffHandler(step);
+      // }
     },
     moveHandler(step) {
       this.$store.dispatch("battle/move", {
@@ -633,6 +645,26 @@ export default {
         index: step.newIndex,
         ...step
       });
+    },
+    async animateSlideAndFade({ index, el }) {
+      const cells = document.querySelectorAll(".battle-board-cell-container");
+      const effectContainer = cells[index].querySelector(".effect-wrapper");
+      effectContainer.appendChild(el);
+
+      const gapSize = 10;
+      const animation = anime({
+        ...commonAnimationParams,
+        duration: 700,
+        targets: el,
+        translateY: [
+          0,
+          `calc(-5% - ${gapSize}px)`,
+          `calc(-35% - ${gapSize}px)`,
+          `calc(-50% - ${gapSize}px)`
+        ],
+        opacity: [0, 0.8, 1, 0]
+      });
+      await animation.finished;
     },
     async abilityEffectFromSourceToTargetHandler(step) {
       const ability = step.ability || step.buff;
@@ -870,76 +902,69 @@ export default {
       await this.animateSlideAndFade({ index: step.target.index, el });
       el.parentElement.removeChild(el);
     },
-    async effectHandler(step) {
+    async terrainEffectHandler(step) {
+      await sleep(400);
+      const damage =
+        step.damage ||
+        step.value ||
+        (step.oldHp ? Math.abs(step.newHp - step.oldHp) : 0);
       const el = document.createElement("div");
-      el.className =
-        "absolute-stretch battle-effect--other-effect font-size-16 flex flex-center text-center";
+      el.className = `absolute-stretch battle-terrain-effect--${step.type} flex flex-center text-center font-size-18 font-weight-700`;
       el.style = "opacity: 0;";
-      el.innerText = "effect";
-      await this.animateSlideAndFade({ index: 34, el });
-      el.parentElement.removeChild(el);
-    },
-    async attackHandler(step) {
-      const el = document.createElement("div");
-      el.className =
-        "absolute-stretch battle-effect--attack flex flex-center text-center font-size-18 font-weight-700";
-      el.style = "opacity: 0;";
-      el.innerHTML =
-        "<div>" + (step.ability.value || step.ability.damage) + "</div>";
-      // await this.animateSlideAndFade({ index: 30, el });
+      el.innerHTML = "<div>" + damage + "</div>";
       await this.animateSlideAndFade({ index: step.target.index, el });
       el.parentElement.removeChild(el);
     },
-    async buffHandler(step) {
-      const el = document.createElement("div");
-      el.className = "absolute-stretch battle-effect--buff";
-      el.style = "opacity: 0;";
-      await this.animateSlideAndFade({ index: 31, el });
-      el.parentElement.removeChild(el);
-    },
-    async deBuffHandler(step) {
-      const el = document.createElement("div");
-      el.className = "absolute-stretch battle-effect--group-de-buff";
-      el.style = "opacity: 0;";
-      await this.animateSlideAndFade({ index: 32, el });
-      el.parentElement.removeChild(el);
-    },
-    async selfBuffHandler(step) {
-      const el = document.createElement("div");
-      el.className = "absolute-stretch battle-effect--self-buff";
-      el.style = "opacity: 0;";
-      await this.animateSlideAndFade({ index: 33, el });
-      el.parentElement.removeChild(el);
-    },
-    async damageHandler(step) {
-      const el = document.createElement("div");
-      el.className =
-        "absolute-stretch battle-effect--damage font-size-22 flex flex-center text-center";
-      el.style = "opacity: 0;";
-      el.innerText = "-999";
-      await this.animateSlideAndFade({ index: 17, el });
-      el.parentElement.removeChild(el);
-    },
-    async animateSlideAndFade({ index, el }) {
-      const cells = document.querySelectorAll(".battle-board-cell-container");
-      const effectContainer = cells[index].querySelector(".effect-wrapper");
-      effectContainer.appendChild(el);
-
-      const gapSize = 10;
-      const animation = anime({
-        ...commonAnimationParams,
-        duration: 700,
-        targets: el,
-        translateY: [
-          0,
-          `calc(-5% - ${gapSize}px)`,
-          `calc(-35% - ${gapSize}px)`,
-          `calc(-50% - ${gapSize}px)`
-        ],
-        opacity: [0, 0.8, 1, 0]
-      });
-      await animation.finished;
-    },
+    // async effectHandler(step) {
+    //   const el = document.createElement("div");
+    //   el.className =
+    //     "absolute-stretch battle-effect--other-effect font-size-16 flex flex-center text-center";
+    //   el.style = "opacity: 0;";
+    //   el.innerText = "effect";
+    //   await this.animateSlideAndFade({ index: 34, el });
+    //   el.parentElement.removeChild(el);
+    // },
+    // async attackHandler(step) {
+    //   const el = document.createElement("div");
+    //   el.className =
+    //     "absolute-stretch battle-effect--attack flex flex-center text-center font-size-18 font-weight-700";
+    //   el.style = "opacity: 0;";
+    //   el.innerHTML =
+    //     "<div>" + (step.ability.value || step.ability.damage) + "</div>";
+    //   // await this.animateSlideAndFade({ index: 30, el });
+    //   await this.animateSlideAndFade({ index: step.target.index, el });
+    //   el.parentElement.removeChild(el);
+    // },
+    // async buffHandler(step) {
+    //   const el = document.createElement("div");
+    //   el.className = "absolute-stretch battle-effect--buff";
+    //   el.style = "opacity: 0;";
+    //   await this.animateSlideAndFade({ index: 31, el });
+    //   el.parentElement.removeChild(el);
+    // },
+    // async deBuffHandler(step) {
+    //   const el = document.createElement("div");
+    //   el.className = "absolute-stretch battle-effect--group-de-buff";
+    //   el.style = "opacity: 0;";
+    //   await this.animateSlideAndFade({ index: 32, el });
+    //   el.parentElement.removeChild(el);
+    // },
+    // async selfBuffHandler(step) {
+    //   const el = document.createElement("div");
+    //   el.className = "absolute-stretch battle-effect--self-buff";
+    //   el.style = "opacity: 0;";
+    //   await this.animateSlideAndFade({ index: 33, el });
+    //   el.parentElement.removeChild(el);
+    // },
+    // async damageHandler(step) {
+    //   const el = document.createElement("div");
+    //   el.className =
+    //     "absolute-stretch battle-effect--damage font-size-22 flex flex-center text-center";
+    //   el.style = "opacity: 0;";
+    //   el.innerText = "-999";
+    //   await this.animateSlideAndFade({ index: 17, el });
+    //   el.parentElement.removeChild(el);
+    // },
     resetStyle(el, resetStyle) {
       if (!resetStyle) {
         return;
@@ -951,7 +976,7 @@ export default {
         el.removeAttribute("style");
       }
     },
-    animateHandler() {
+    attack1Handler() {
       this.abilityEffectHandler({
         action: battle.ABILITY_TYPE_ATTACK,
         // source: {
@@ -980,6 +1005,17 @@ export default {
       // this.selfBuffHandler({});
       // this.effectHandler({});
       // this.damageHandler({});
+    },
+    lavaEffect1Handler() {
+      this.terrainEffectHandler({
+        action: "terrain",
+        type: "lava",
+        target: {
+          fighterId: this.enemyUnits[1].fighterId,
+          index: this.enemyUnits[1].index,
+          newHp: 1
+        }
+      });
     },
     move1Handler() {
       const units = _.cloneDeep(this.units);
@@ -1251,6 +1287,16 @@ export default {
       no-repeat;
     & > div {
       transform: translateX(60%);
+    }
+  }
+  .battle-terrain-effect--lava {
+    background: url("/images/battle/effect/lava.png") 10% center / 60% no-repeat;
+    & > div {
+      transform: translateX(80%);
+      border-radius: 6px;
+      color: #fff;
+      background: #ef4444;
+      padding: 0 3px;
     }
   }
   .battle-effect--buff {
