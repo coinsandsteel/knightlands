@@ -22,7 +22,9 @@
       </div> -->
     </template>
     <template v-slot:footer>
-      <CustomButton type="green" @click="closeHandler">close</CustomButton>
+      <CustomButton type="yellow" width="15rem" @click="closeHandler"
+        >Close</CustomButton
+      >
     </template>
   </UserDialog>
 </template>

@@ -88,14 +88,36 @@
     <!-- active unit -->
     <div
       v-if="activeFighter"
-      class="margin-top-2 padding-bottom-4 font-size-22"
+      class="margin-top-3 padding-bottom-4 font-size-22"
     >
       <div class="grid-3-columns">
-        <div></div>
+        <div class="flex flex-center">
+          <template v-if="buffItems && buffItems.length > 0">
+            <div
+              class="buff-circle buff-circle--bonus margin-left-2 margin-right-2 pointer"
+              @click="showBuffItems()"
+            >
+              <div class="buff-circle-counter absolute font-size-18">
+                {{ buffItems.length }}x
+              </div>
+            </div>
+          </template>
+          <template v-if="deBuffItems && deBuffItems.length > 0">
+            <div
+              class="buff-circle buff-circle--damage margin-left-2 margin-right-2 pointer"
+              @click="showDeBuffItems()"
+            >
+              <div class="buff-circle-counter absolute font-size-18">
+                {{ deBuffItems.length }}x
+              </div>
+            </div>
+          </template>
+        </div>
         <BattleUnit
           :unit="activeFighter"
           :is-enemy="!myActiveFighter"
-          class="battle-current-active-fighter"
+          class="battle-current-active-fighter pointer"
+          @click="showFighterDetails(activeFighter.fighterId)"
         />
         <!-- skip button -->
         <div v-if="myActiveFighter" class="text-align-center">
@@ -109,7 +131,7 @@
           </CustomButton>
         </div>
       </div>
-      <div class="text-align-center">
+      <div class="text-align-center margin-top-1">
         # {{ activeFighter.unitTribe }} {{ activeFighter.unitClass }}
         {{ activeFighter.tier }} #
       </div>
@@ -124,7 +146,7 @@
       <template v-if="myActiveFighter">
         <div
           v-if="abilities && abilities.length > 0"
-          class="flex flex-center margin-top-1 margin-bottom-1"
+          class="flex flex-center margin-top-2 margin-bottom-1"
         >
           <BattleUnitAbility
             v-for="ability in abilities"
@@ -228,6 +250,7 @@ import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import BattleExitGame from "@/views/Battle/BattleExitGame.vue";
 import BattlePlayResultDialog from "@/views/Battle/BattlePlayResultDialog.vue";
+import BattleBuffItemsDialog from "@/views/Battle/BattleBuffItemsDialog.vue";
 import CloseButton from "@/components/CloseButton.vue";
 
 const commonAnimationParams = {
@@ -425,6 +448,29 @@ export default {
     // }
     battleResult() {
       return !!this.game.combat.result;
+    },
+    buffItems() {
+      // return [
+      //   { source: "buff", mode: "constant", type: "initiative", modifier: 0.8 },
+      //   { source: "self-buff", mode: "constant", type: "power", modifier: 1.15 }
+      // ];
+      return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
+        ({ source }) => source !== "de-buff"
+      );
+    },
+    deBuffItems() {
+      // return [
+      //   {
+      //     source: "de-buff",
+      //     mode: "constant",
+      //     type: "stun",
+      //     probability: 1,
+      //     estimate: 1
+      //   }
+      // ];
+      return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
+        ({ source }) => source === "de-buff"
+      );
     }
   },
   watch: {
@@ -979,6 +1025,13 @@ export default {
         el.removeAttribute("style");
       }
     },
+    async showBuffItems(isDeBuff) {
+      const show = create(BattleBuffItemsDialog, "isDeBuff", "items");
+      await show(isDeBuff, isDeBuff ? this.deBuffItems : this.buffItems);
+    },
+    showDeBuffItems() {
+      this.showBuffItems(true);
+    },
     attack1Handler() {
       this.abilityEffectHandler({
         action: battle.ABILITY_TYPE_ATTACK,
@@ -1110,6 +1163,27 @@ export default {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
+  }
+  .buff-circle {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    position: relative;
+    background: #37571a;
+  }
+  .buff-circle--damage {
+    background: #f52603;
+  }
+  .buff-circle-counter {
+    min-width: 15px;
+    color: #333;
+    background: #fff;
+    font-weight: 600;
+    border-radius: 15px;
+    right: 0;
+    top: 0;
+    transform: translate(40%, 0);
   }
   //
   .battle-ability-effect--accurate_shot {
