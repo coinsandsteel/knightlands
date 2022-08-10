@@ -73,7 +73,7 @@ export default {
   left: 0px;
   bottom: 0px;
   background: #fff;
-  border: solid 2px #777;
+  border: solid 2px #fff;
   color: #333;
   // color: #10b981;
   font-weight: 600;

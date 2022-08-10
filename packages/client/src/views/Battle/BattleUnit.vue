@@ -111,7 +111,7 @@ export default {
   right: 0;
   top: 0;
   background: #fff;
-  border: solid 1px #777;
+  border: solid 1px #fff;
   // color: #333;
   color: #10b981;
   font-weight: 600;

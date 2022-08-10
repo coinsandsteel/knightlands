@@ -808,12 +808,14 @@ export default {
             '<div class="battle-ability-effect _battle-ability-effect--attack_ battle-ability-effect--' +
             abilityClass +
             '"></div>' +
-            '<div class="battle-ability-effect-value margin-left-half ' +
-            colorClass +
-            '">' +
-            damage +
-            (isCriticalHit ? " Crit!" : "") +
-            "</div>";
+            (damage > 0
+              ? '<div class="battle-ability-effect-value margin-left-half ' +
+                colorClass +
+                '">' +
+                damage +
+                (isCriticalHit ? " Crit!" : "") +
+                "</div>"
+              : "");
 
           const cells = document.querySelectorAll(
             ".battle-board-cell-container"

@@ -9,7 +9,9 @@
           {{ unit.unitTribe }} {{ unit.unitClass }}
         </div>
         <div class="margin-top-2">
-          <div class="flex flex-justify-center flex-evenly-spaced width-75 padding-1">
+          <div
+            class="flex flex-justify-center flex-evenly-spaced width-75 padding-1 margin-left-auto margin-right-auto"
+          >
             <div class="flex flex-column width-35 margin-bottom-1">
               <div>Tier: {{ unit.tier }}</div>
               <div>Level: {{ unit.levelInt }}</div>

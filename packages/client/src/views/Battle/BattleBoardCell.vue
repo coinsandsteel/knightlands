@@ -222,8 +222,9 @@ export default {
       return (
         this.isTargetCell &&
         this.selectedAbilityClass &&
-        battle.ABILITY_TYPES[this.selectedAbilityClass] ===
-          battle.ABILITY_TYPE_HEALING
+        (battle.ABILITY_TYPES[this.selectedAbilityClass] ===
+          battle.ABILITY_TYPE_HEALING ||
+          this.isUnit)
       );
     },
     isAttackTarget() {
