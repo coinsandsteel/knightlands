@@ -161,6 +161,8 @@ import MusicButton from "@/components/MusicButton.vue";
 import Events from "@/../../knightlands-shared/events";
 import PromptMixin from "@/components/PromptMixin.vue";
 import { create } from "vue-modal-dialogs";
+import * as Operations from "@/../../knightlands-shared/operations";
+import Config from "./config";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -397,7 +399,14 @@ export default {
       this.connectionErrorPrompt = false;
     });
 
-    this.$game.on(this.$game.Ready, () => {
+    this.$game.on(this.$game.Ready, async () => {
+      if (Config.devAuthEnabled) {
+        await this._request(Operations.Auth, {
+          token: null,
+          referral: null
+        });
+      }
+
       if (this.$route.matched.some(record => record.meta.requiresAuth)) {
         if (!this.$game.authenticated) {
           this.redirectToLogin();

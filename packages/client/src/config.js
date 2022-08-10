@@ -1,4 +1,5 @@
 const Config = {
+  devAuthEnabled: process.env.NODE_ENV === 'development' && process.env.DEV_EMAIL,
   gameServerEndpoint:
     process.env.NODE_ENV == "production"
       ? "play.knightlands.com"

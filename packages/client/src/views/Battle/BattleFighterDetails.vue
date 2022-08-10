@@ -16,10 +16,10 @@
               <div>Tier: {{ unit.tier }}</div>
               <div>Level: {{ unit.levelInt }}</div>
               <div>Hp: {{ unit.hp }}</div>
-              <div>Defense: {{ unit.characteristics.damage }}</div>
+              <div>Defense: {{ unit.characteristics.defence }}</div>
             </div>
             <div class="flex flex-column width-35 margin-bottom-1">
-              <div>Damage: {{ unit.characteristics.defence }}</div>
+              <div>Damage: {{ unit.characteristics.damage }}</div>
               <div>Speed: {{ unit.characteristics.speed }}</div>
               <div>Initiative: {{ unit.characteristics.initiative }}</div>
             </div>
