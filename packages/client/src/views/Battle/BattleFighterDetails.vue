@@ -6,7 +6,7 @@
           <BattleUnit :unit="unit" :is-enemy="isEnemy" />
         </div>
         <div class="margin-top-1 font-size-30">
-          {{ unit.unitTribe }} {{ unit.unitClass }}
+          # {{ unit.unitTribe }} {{ unit.unitClass }} #
         </div>
         <div class="margin-top-2">
           <div

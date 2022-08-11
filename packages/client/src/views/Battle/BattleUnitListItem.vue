@@ -5,20 +5,24 @@
   >
     <BattleUnit :unit="unit" />
     <template v-if="unit">
-      <div class="padding-left-2">{{ title }}</div>
-      <div class="padding-left-2">tier {{ tier }}, pwr: {{ power }}</div>
-      <div class="padding-left-2">
-        <BattleUnitAbility
-          v-for="(ability, index) in abilities"
-          :key="ability.abilityType + ability.abilityClass"
-          :ability="ability"
-          :value="ability.value"
-          :isSmallValue="true"
-          :class="{
-            'margin-left-1': index > 0,
-            'opacity-50': !ability.enabled
-          }"
-        />
+      <div class="flex flex-item-center">
+        <div class="text-align-left">
+          <div class="padding-left-2">{{ title }}</div>
+          <div class="padding-left-2">tier {{ tier }}, pwr: {{ power }}</div>
+        </div>
+        <div class="padding-left-2">
+          <BattleUnitAbility
+            v-for="(ability, index) in abilities"
+            :key="ability.abilityType + ability.abilityClass"
+            :ability="ability"
+            :value="ability.value"
+            :isSmallValue="true"
+            :class="{
+              'margin-left-1': index > 0,
+              'opacity-50': !ability.enabled
+            }"
+          />
+        </div>
       </div>
       <slot />
     </template>
