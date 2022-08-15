@@ -30,6 +30,7 @@
     >
     <portal to="footer" :slim="true" v-if="isActive">
       <CustomButton type="blue" @click="buildSquad">Build squad</CustomButton>
+      <CustomButton type="red" @click="maxSquad">Maximize</CustomButton>
     </portal>
   </div>
 </template>
@@ -92,6 +93,11 @@ export default {
     buildSquad() {
       this.$store.dispatch("battle/testAction", {
         action: "buildSquad"
+      });
+    },
+    maxSquad() {
+      this.$store.dispatch("battle/testAction", {
+        action: "maxSquad"
       });
     },
     async clickHandler({ unit, index }) {
