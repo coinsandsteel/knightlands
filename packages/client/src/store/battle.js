@@ -233,7 +233,7 @@ export default {
       ).filter(Boolean);
     },
     isUnitsFullFilled(state, getters) {
-      return getters.units.length === 5;
+      return getters.units.filter(u => u).length >= 2;
     },
     activeFighterId(state) {
       return state.game.combat.activeFighterId;
