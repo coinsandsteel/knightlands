@@ -393,7 +393,7 @@ export default {
         for (let fighterId in data.buffs) {
           // User squad
           let index = state.game.userSquad.units.findIndex(
-            unit => unit.fighterId === fighterId
+            unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -406,7 +406,7 @@ export default {
 
           // Enemy squad
           index = state.game.enemySquad.units.findIndex(
-            unit => unit.fighterId === fighterId
+            unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -423,7 +423,7 @@ export default {
         for (let fighterId in data.abilities) {
           // User squad
           let index = state.game.userSquad.units.findIndex(
-            unit => unit.fighterId === fighterId
+            unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -436,7 +436,7 @@ export default {
 
           // Enemy squad
           index = state.game.enemySquad.units.findIndex(
-            unit => unit.fighterId === fighterId
+            unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -454,7 +454,7 @@ export default {
       if (data.userFighter !== undefined) {
         data.userFighter.forEach(updateEntry => {
           const index = state.game.userSquad.units.findIndex(
-            unit => unit.fighterId === updateEntry.fighterId
+            unit => unit && unit.fighterId === updateEntry.fighterId
           );
 
           if (index !== -1) {
@@ -474,7 +474,7 @@ export default {
       if (data.enemyFighter !== undefined) {
         data.enemyFighter.forEach(updateEntry => {
           const index = state.game.enemySquad.units.findIndex(
-            unit => unit.fighterId === updateEntry.fighterId
+            unit => unit && unit.fighterId === updateEntry.fighterId
           );
           if (index !== -1) {
             const unit = state.game.enemySquad.units[index];
