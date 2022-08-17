@@ -46,6 +46,7 @@
               :key="cellIndex"
               :index="cellIndex"
               :selectedAbilityClass="selectedAbilityClass"
+              :isProcessingQueue="isProcessingQueue"
               @click="cellClickHandler(cell, cellIndex, $event)"
             />
           </div>
@@ -555,6 +556,10 @@ export default {
       // this.selectedFighterId = null;
       // this.isAbilitySelectVisible = false;
 
+      if (this.isProcessingQueue || !this.isMyTurn) {
+        return;
+      }
+
       if (!(ability && ability.abilityClass && ability.enabled)) {
         return;
       }
@@ -575,15 +580,19 @@ export default {
       });
     },
     activateAbilityHandler(ability) {
+      if (this.isProcessingQueue || !this.isMyTurn) {
+        return;
+      }
+
       this.$store.dispatch("battle/apply", {
         index: null,
         ability: ability.abilityClass
       });
     },
     async cellClickHandler(cell, index, event) {
-      // if (!this.isMyTurn) {
-      //   return;
-      // }
+      if (this.isProcessingQueue || !this.isMyTurn) {
+        return;
+      }
 
       if (event.isTargetCell) {
         const payload = {
@@ -618,6 +627,10 @@ export default {
       // }
     },
     async showFighterDetails(fighterId) {
+      if (this.isProcessingQueue || !this.isMyTurn) {
+        return;
+      }
+
       const show = create(BattleFighterDetails, "fighterId");
       await show(fighterId);
     },
@@ -630,6 +643,10 @@ export default {
       }
     },
     skipHandler() {
+      if (this.isProcessingQueue || !this.isMyTurn) {
+        return;
+      }
+
       this.$store.dispatch("battle/skip");
     },
     async processQueue() {

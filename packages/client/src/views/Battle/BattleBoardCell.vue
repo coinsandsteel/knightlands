@@ -63,6 +63,9 @@
             :shouldShowExtraInfo="true"
             :isAttackTarget="isAttackTarget"
             :isHealTarget="isHealTarget"
+            :isActiveFighterId="
+              isMyTurn && unit && unit.fighterId === activeFighterId
+            "
           />
         </div>
       </Transition>
@@ -91,6 +94,7 @@
             :shouldShowExtraInfo="true"
             :isAttackTarget="isAttackTarget"
             :isHealTarget="isHealTarget"
+            :isActiveFighterId="enemy && enemy.fighterId === activeFighterId"
           />
         </div>
       </Transition>
@@ -123,7 +127,8 @@ export default {
   },
   props: {
     index: Number,
-    selectedAbilityClass: String
+    selectedAbilityClass: String,
+    isProcessingQueue: Boolean
     // card: Object
   },
   data() {
@@ -139,6 +144,8 @@ export default {
   computed: {
     ...mapState("battle", ["game"]),
     ...mapGetters("battle", [
+      "isMyTurn",
+      "activeFighterId",
       "battleTerrain",
       "units",
       "selectedUnit",
@@ -207,12 +214,18 @@ export default {
       //   !(this.isUnit && isAttackAbility)
       // );
       return (
-        this.attackCells.includes(this.index) && !(this.isUnit || this.isEnemy)
+        this.attackCells.includes(this.index) &&
+        !(this.isUnit || this.isEnemy) &&
+        this.isMyTurn &&
+        !this.isProcessingQueue
       );
     },
     isMoveCell() {
       return (
-        this.moveCells.includes(this.index) && !(this.isUnit || this.isEnemy)
+        this.moveCells.includes(this.index) &&
+        !(this.isUnit || this.isEnemy) &&
+        this.isMyTurn &&
+        !this.isProcessingQueue
       );
     },
     isTargetCell() {

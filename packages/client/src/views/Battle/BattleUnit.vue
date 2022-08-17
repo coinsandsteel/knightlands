@@ -27,12 +27,7 @@
         {{ hp }}
       </div>
       <div
-        v-if="
-          shouldShowExtraInfo &&
-            unit &&
-            activeFighterId &&
-            unit.fighterId === activeFighterId
-        "
+        v-if="shouldShowExtraInfo && unit && isActiveFighterId"
         class="absolute battle-active-fighter font-size-18"
       />
       <div
@@ -71,7 +66,8 @@ export default {
     isSelected: Boolean,
     shouldShowExtraInfo: Boolean,
     isAttackTarget: Boolean,
-    isHealTarget: Boolean
+    isHealTarget: Boolean,
+    isActiveFighterId: Boolean
   },
   data() {
     return {
@@ -79,7 +75,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("battle", ["activeFighterId"]),
+    // ...mapGetters("battle", ["activeFighterId"]),
     hp() {
       return this.unit ? Math.max(0, this.unit.hp || 0) : null;
     },
