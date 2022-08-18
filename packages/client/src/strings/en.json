@@ -2735,5 +2735,35 @@
   "battle-ability-description-wolf_bite": "The ability deals damage to an enemy units",
   "battle-ability-description-zealot": "Increases the power of your unit",
   "battle-ability-description-move": "",
-  "battle-ability-description-attack": "The ability deals damage to an enemy units"
+  "battle-ability-description-attack": "The ability deals damage to an enemy units",
+
+  "battle-unit-tribe-kobold": "Kobold",
+  "battle-unit-tribe-dwarf": "Dwarfs",
+  "battle-unit-tribe-Egyptian": "Egyptians",
+  "battle-unit-tribe-goblin": "Goblins",
+  "battle-unit-tribe-insect": "Insects",
+  "battle-unit-tribe-orc": "Orcs",
+  "battle-unit-tribe-clockwork": "Clockworks",
+  "battle-unit-tribe-skeleton": "Skeletons",
+  "battle-unit-tribe-ice": "Ice",
+  "battle-unit-tribe-elf": "Elfs",
+  "battle-unit-tribe-eldritch": "Eldritch",
+  "battle-unit-tribe-assembling": "Assembling",
+  "battle-unit-tribe-fallen_knight": "Fallen kings",
+  "battle-unit-tribe-legendary": "Legendary",
+  "battle-unit-tribe-titan": "Titans",
+
+  "battle-unit-class-range": "Range",
+  "battle-unit-class-melee": "Melee",
+  "battle-unit-class-mage": "Mage",
+  "battle-unit-class-tank": "Tank",
+  "battle-unit-class-support": "Support",
+
+  "battle-ability-type-attack": "Attack",
+  "battle-ability-type-buff": "Buff",
+  "battle-ability-type-self_buff": "Self buff",
+  "battle-ability-type-de_buff": "De buff",
+  "battle-ability-type-jump": "Jump",
+  "battle-ability-type-flight": "Flight",
+  "battle-ability-type-healing": "Healing"
 }

@@ -133,8 +133,8 @@
         </div>
       </div>
       <div class="text-align-center margin-top-1">
-        # {{ activeFighter.unitTribe }} {{ activeFighter.unitClass }}
-        {{ activeFighter.tier }} #
+        # {{ $t("battle-unit-tribe-" + activeFighter.unitTribe) }}
+        {{ $t("battle-unit-class-" + activeFighter.unitClass) }} #
       </div>
       <!-- <div
         v-if="buffDescriptions && buffDescriptions.length > 0"

@@ -53,7 +53,11 @@ export default {
       return this.unit ? this.unit.power || 0 : 0;
     },
     title() {
-      return this.unit ? `${this.unit.unitTribe} ${this.unit.unitClass}` : "";
+      return this.unit
+        ? `${this.$t("battle-unit-tribe-" + this.unit.unitTribe)} ${this.$t(
+            "battle-unit-class-" + this.unit.unitClass
+          )}`
+        : "";
     },
     experience() {
       return this.unit && this.unit.expirience
