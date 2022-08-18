@@ -971,11 +971,13 @@ export default {
       el.parentElement.removeChild(el);
     },
     async terrainEffectHandler(step) {
-      await sleep(400);
+      await sleep(100);
       const damage =
         step.damage ||
         step.value ||
-        (step.oldHp ? Math.abs(step.newHp - step.oldHp) : 0);
+        (step.target && step.target.oldHp
+          ? Math.abs(step.target.newHp - step.target.oldHp)
+          : 0);
       const el = document.createElement("div");
       el.className = `absolute-stretch battle-terrain-effect--${step.type} flex flex-center text-center font-size-18 font-weight-700`;
       el.style = "opacity: 0;";
