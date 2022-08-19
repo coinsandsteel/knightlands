@@ -350,7 +350,9 @@ export default {
         return null;
       }
 
-      const name = this.selectedAbility.abilityClass;
+      const name = this.$t(
+        "battle-ability-" + this.selectedAbility.abilityClass
+      );
       const level = this.selectedAbility.level
         ? this.selectedAbility.level.current
         : null;

@@ -150,7 +150,7 @@ export default {
       const items = [];
 
       if (this.name) {
-        items.push(this.name);
+        items.push(this.$t("battle-ability-" + this.name));
       }
       if (this.level) {
         items.push(this.level);
