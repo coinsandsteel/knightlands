@@ -92,14 +92,16 @@
       class="margin-top-3 padding-bottom-4 font-size-22"
     >
       <div class="grid-3-columns">
-        <div class="flex flex-center">
-          <BattleUnitBuff
-            v-for="(buffItem, buffIndex) in buffItems"
-            :key="buffItem.source + '_' + buffItem.sourceId + '_' + buffIndex"
-            :buff="buffItem"
-            class="battle-current-active-fighter-buff pointer"
-            @click.native="showBuffItem(buffItem)"
-          />
+        <div class="flex flex-end battle-indicators">
+          <template v-if="buffItems.length">
+            <BattleUnitBuff
+              v-for="(buffItem, buffIndex) in buffItems"
+              :key="buffItem.source + '_' + buffItem.sourceId + '_' + buffIndex"
+              :buff="buffItem"
+              class="battle-current-active-fighter-buff pointer"
+              @click.native="showBuffItem(buffItem)"
+            />
+          </template>
           <!-- <template v-if="buffItems && buffItems.length > 0">
             <div
               class="buff-circle buff-circle--bonus margin-left-2 margin-right-2 pointer"
@@ -121,14 +123,16 @@
             </div>
           </template> -->
         </div>
-        <BattleUnit
-          :unit="activeFighter"
-          :is-enemy="!myActiveFighter"
-          class="battle-current-active-fighter pointer"
-          @click="showFighterDetails(activeFighter.fighterId)"
-        />
+        <div>
+          <BattleUnit
+            :unit="activeFighter"
+            :is-enemy="!myActiveFighter"
+            class="battle-current-active-fighter pointer"
+            @click="showFighterDetails(activeFighter.fighterId)"
+          />
+        </div>
         <!-- skip button -->
-        <div v-if="myActiveFighter" class="text-align-center">
+        <div v-if="myActiveFighter" class="text-align-left battle-indicators">
           <CustomButton
             type="blue"
             width="10rem"
@@ -463,115 +467,11 @@ export default {
       return !!this.game.combat.result;
     },
     buffItems() {
-      // return [
-      //   {
-      //     source: "terrain",
-      //     sourceId: "ice",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "terrain",
-      //     sourceId: "swamp",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "terrain",
-      //     sourceId: "woods",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "terrain",
-      //     sourceId: "hill",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "terrain",
-      //     sourceId: "lava",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "terrain",
-      //     sourceId: "thorns",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "self-buff",
-      //     sourceId: "frozen_abyss",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: false
-      //   },
-      //   {
-      //     source: "buff",
-      //     sourceId: "shield",
-      //     type: "defence",
-      //     mode: "constant",
-      //     modifier: 1.15,
-      //     activated: false,
-      //     positive: false
-      //   },
-      //   {
-      //     source: "de-buff",
-      //     sourceId: "stun",
-      //     type: "defence",
-      //     mode: "constant",
-      //     modifier: 1.15,
-      //     activated: false,
-      //     positive: false
-      //   },
-      //   {
-      //     source: "self-buff",
-      //     sourceId: "frozen_abyss",
-      //     mode: "constant",
-      //     type: "power",
-      //     modifier: 1.15,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "buff",
-      //     sourceId: "shield",
-      //     type: "defence",
-      //     mode: "constant",
-      //     modifier: 1.15,
-      //     activated: false,
-      //     positive: true
-      //   },
-      //   {
-      //     source: "de-buff",
-      //     sourceId: "stun",
-      //     type: "defence",
-      //     mode: "constant",
-      //     modifier: 1.15,
-      //     activated: false,
-      //     positive: true
-      //   }
-      // ];
-
-      // return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
-      //   ({ source }) => source !== "de-buff"
-      // );
-
-      return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
-        ({ source }) => source
+      if (!this.activeFighter) {
+        return [];
+      }
+      return this.activeFighter.buffs.filter(
+        buff => buff && buff.source !== "squad"
       );
     }
     // deBuffItems() {
@@ -1239,6 +1139,9 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.battle-indicators {
+  padding: 0 1em;
+}
 .battle-play-board {
   display: grid;
   grid-template-columns: repeat(5, calc(var(--base-size) * 0.8));

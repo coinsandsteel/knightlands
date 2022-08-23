@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="buff"
+    v-if="buff.sourceId"
     class="battle-unit-buff inline-block relative"
     :class="
       'battle-unit-buff-type--' +
@@ -23,6 +23,8 @@
   </div>
 </template>
 <script>
+import * as battle from "@/../../knightlands-shared/battle";
+
 export default {
   props: {
     buff: Object,
@@ -37,7 +39,11 @@ export default {
       return typeof this.value === "number" && this.value > 0;
     },
     isPositive() {
-      return this.buff && this.buff.positive;
+      return (
+        this.buff &&
+        battle.BUFFS[this.buff.sourceId] &&
+        battle.BUFFS[this.buff.sourceId].positive
+      );
     }
   }
 };
@@ -47,7 +53,6 @@ export default {
   width: 5rem;
   height: 5rem;
   background: #fff;
-  border-radius: 50%;
   background-size: 100%;
   background-repeat: none;
   position: relative;
@@ -57,11 +62,10 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
-  border: 2px solid #f52603;
-  border-radius: 50%;
+  border: 2px solid #f8781d;
 }
 .buff-state-indicator--positive {
-  border-color: #10b981;
+  border-color: #42e624;
 }
 .buff-value {
   left: 0px;
@@ -69,7 +73,6 @@ export default {
   background: #fff;
   border: solid 2px #fff;
   color: #333;
-  // color: #10b981;
   font-weight: 600;
   border-radius: 12px;
   padding: 0 3px;
