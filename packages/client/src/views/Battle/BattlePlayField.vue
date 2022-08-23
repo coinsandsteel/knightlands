@@ -93,7 +93,14 @@
     >
       <div class="grid-3-columns">
         <div class="flex flex-center">
-          <template v-if="buffItems && buffItems.length > 0">
+          <BattleUnitBuff
+            v-for="(buffItem, buffIndex) in buffItems"
+            :key="buffItem.source + '_' + buffItem.sourceId + '_' + buffIndex"
+            :buff="buffItem"
+            class="battle-current-active-fighter-buff pointer"
+            @click.native="showBuffItem(buffItem)"
+          />
+          <!-- <template v-if="buffItems && buffItems.length > 0">
             <div
               class="buff-circle buff-circle--bonus margin-left-2 margin-right-2 pointer"
               @click="showBuffItems()"
@@ -102,8 +109,8 @@
                 {{ buffItems.length }}x
               </div>
             </div>
-          </template>
-          <template v-if="deBuffItems && deBuffItems.length > 0">
+          </template> -->
+          <!-- <template v-if="deBuffItems && deBuffItems.length > 0">
             <div
               class="buff-circle buff-circle--damage margin-left-2 margin-right-2 pointer"
               @click="showDeBuffItems()"
@@ -112,7 +119,7 @@
                 {{ deBuffItems.length }}x
               </div>
             </div>
-          </template>
+          </template> -->
         </div>
         <BattleUnit
           :unit="activeFighter"
@@ -247,11 +254,13 @@ import BattleFighterDetails from "@/views/Battle/BattleFighterDetails.vue";
 import BattleSideCell from "@/views/Battle/BattleSideCell.vue";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
+import BattleUnitBuff from "@/views/Battle/BattleUnitBuff.vue";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import BattleExitGame from "@/views/Battle/BattleExitGame.vue";
 import BattlePlayResultDialog from "@/views/Battle/BattlePlayResultDialog.vue";
-import BattleBuffItemsDialog from "@/views/Battle/BattleBuffItemsDialog.vue";
+// import BattleBuffItemsDialog from "@/views/Battle/BattleBuffItemsDialog.vue";
+import BattleBuffItemDialog from "@/views/Battle/BattleBuffItemDialog.vue";
 import CloseButton from "@/components/CloseButton.vue";
 
 const commonAnimationParams = {
@@ -271,6 +280,7 @@ export default {
     BattleSideCell,
     BattleUnit,
     BattleUnitAbility,
+    BattleUnitBuff,
     BattleCoin,
     BattleCrystal,
     ProgressBar,
@@ -454,27 +464,130 @@ export default {
     },
     buffItems() {
       // return [
-      //   { source: "buff", mode: "constant", type: "initiative", modifier: 0.8 },
-      //   { source: "self-buff", mode: "constant", type: "power", modifier: 1.15 }
-      // ];
-      return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
-        ({ source }) => source !== "de-buff"
-      );
-    },
-    deBuffItems() {
-      // return [
+      //   {
+      //     source: "terrain",
+      //     sourceId: "ice",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "terrain",
+      //     sourceId: "swamp",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "terrain",
+      //     sourceId: "woods",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "terrain",
+      //     sourceId: "hill",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "terrain",
+      //     sourceId: "lava",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "terrain",
+      //     sourceId: "thorns",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "self-buff",
+      //     sourceId: "frozen_abyss",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: false
+      //   },
+      //   {
+      //     source: "buff",
+      //     sourceId: "shield",
+      //     type: "defence",
+      //     mode: "constant",
+      //     modifier: 1.15,
+      //     activated: false,
+      //     positive: false
+      //   },
       //   {
       //     source: "de-buff",
+      //     sourceId: "stun",
+      //     type: "defence",
       //     mode: "constant",
-      //     type: "stun",
-      //     probability: 1,
-      //     estimate: 1
+      //     modifier: 1.15,
+      //     activated: false,
+      //     positive: false
+      //   },
+      //   {
+      //     source: "self-buff",
+      //     sourceId: "frozen_abyss",
+      //     mode: "constant",
+      //     type: "power",
+      //     modifier: 1.15,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "buff",
+      //     sourceId: "shield",
+      //     type: "defence",
+      //     mode: "constant",
+      //     modifier: 1.15,
+      //     activated: false,
+      //     positive: true
+      //   },
+      //   {
+      //     source: "de-buff",
+      //     sourceId: "stun",
+      //     type: "defence",
+      //     mode: "constant",
+      //     modifier: 1.15,
+      //     activated: false,
+      //     positive: true
       //   }
       // ];
+
+      // return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
+      //   ({ source }) => source !== "de-buff"
+      // );
+
       return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
-        ({ source }) => source === "de-buff"
+        ({ source }) => source
       );
     }
+    // deBuffItems() {
+    //   return [
+    //     {
+    //       source: "de-buff",
+    //       mode: "constant",
+    //       type: "stun",
+    //       probability: 1,
+    //       estimate: 1
+    //     }
+    //   ];
+    //   // return (this.activeFighter ? this.activeFighter.buffs || [] : []).filter(
+    //   //   ({ source }) => source === "de-buff"
+    //   // );
+    // }
   },
   watch: {
     // isStarted(value, oldValue) {
@@ -1048,9 +1161,13 @@ export default {
         el.removeAttribute("style");
       }
     },
-    async showBuffItems(isDeBuff) {
-      const show = create(BattleBuffItemsDialog, "isDeBuff", "items");
-      await show(isDeBuff, isDeBuff ? this.deBuffItems : this.buffItems);
+    // async showBuffItems(isDeBuff) {
+    //   const show = create(BattleBuffItemsDialog, "isDeBuff", "items");
+    //   await show(isDeBuff, isDeBuff ? this.deBuffItems : this.buffItems);
+    // },
+    async showBuffItem(buffItem) {
+      const show = create(BattleBuffItemDialog, "buff");
+      await show(buffItem);
     },
     showDeBuffItems() {
       this.showBuffItems(true);
@@ -1140,6 +1257,10 @@ export default {
 //   border: 2px solid #10b981;
 //   background-clip: border-box;
 // }
+.battle-unit-buff {
+  margin: 2px;
+  cursor: pointer;
+}
 ::v-deep {
   .battle-ability-effect {
     width: calc(var(--base-size) * 0.4);
