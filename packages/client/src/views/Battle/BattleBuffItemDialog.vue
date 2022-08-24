@@ -5,13 +5,8 @@
         <div>
           <BattleUnitBuff :buff="buff" @click.native="showBuffItem(buffItem)" />
         </div>
-        <div class="flex-grow">
-          <div>
-            {{ value }}
-          </div>
-          <div>
+        <div class="flex-grow margin-left-2">
             {{ description }}
-          </div>
         </div>
       </div>
       <div class="text-align-center margin-top-4">
@@ -46,17 +41,22 @@ export default {
       if (!this.buff) {
         return "";
       }
-      return "????";
+
+      const titles = {
+        terrain: "Terrain",
+        buff: "Buff",
+        "self-buff": "Self buff",
+        "de-buff": "De-buff"
+      };
+
+      return titles[this.buff.source] || "";
     },
-    value() {
-      if (!this.buff) {
+    description() {
+      if (!(this.buff && "caseId" in this.buff)) {
         return "";
       }
 
-      return "???";
-    },
-    description() {
-      return "???? ????";
+      return battle.BUFFS[this.buff.sourceId].cases[this.buff.caseId];
     }
   },
   methods: {

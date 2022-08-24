@@ -136,7 +136,7 @@
           <CustomButton
             type="blue"
             width="10rem"
-            class="inline-block"
+            class="btn-skip inline-block"
             @click="skipHandler"
           >
             Skip
@@ -471,7 +471,7 @@ export default {
         return [];
       }
       return this.activeFighter.buffs.filter(
-        buff => buff && buff.source !== "squad"
+        buff => buff && buff.source && buff.sourceId && buff.source !== "squad"
       );
     }
     // deBuffItems() {
@@ -495,6 +495,12 @@ export default {
     //     this.$router.replace({ name: "battle-menu" });
     //   }
     // },
+    activeFighter(value) {
+      console.log("activeFighter: ", value);
+    },
+    buffItems(value) {
+      console.log("buffItems: ", value);
+    },
     queue(value) {
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
@@ -1163,6 +1169,9 @@ export default {
 .battle-unit-buff {
   margin: 2px;
   cursor: pointer;
+}
+.btn-skip {
+  margin-left: 0;
 }
 ::v-deep {
   .battle-ability-effect {

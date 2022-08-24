@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="buff.sourceId"
+    v-if="buff && buff.sourceId"
     class="battle-unit-buff inline-block relative"
     :class="
       'battle-unit-buff-type--' +
@@ -52,7 +52,6 @@ export default {
 .battle-unit-buff {
   width: 5rem;
   height: 5rem;
-  background: #fff;
   background-size: 100%;
   background-repeat: none;
   position: relative;
