@@ -212,7 +212,7 @@
             @click="activateAbilityHandler(selectedAbility)"
             class="inline-block"
           >
-            Activate {{ selectedAbility.abilityClass }}
+            Activate {{ $t("battle-ability-" + selectedAbility.abilityClass) }}
           </CustomButton>
         </div>
       </template>
