@@ -5,6 +5,8 @@
     :class="
       'battle-unit-buff-type--' +
         buff.source +
+        ' battle-unit-buff-terrain--' +
+        terrainBase +
         ' battle-unit-buff--' +
         buff.sourceId
     "
@@ -23,6 +25,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
 
 export default {
@@ -35,6 +38,14 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("battle", ["game"]),
+    terrainBase() {
+      if (!(this.game && this.game.terrain && this.game.terrain.base)) {
+        return "";
+      }
+
+      return this.game.terrain.base;
+    },
     isValueVisible() {
       return typeof this.value === "number" && this.value > 0;
     },
@@ -141,6 +152,17 @@ export default {
 .battle-unit-buff--hill {
   background-image: url("/images/battle/tiles/grass_hill.png");
 }
+
+.battle-unit-buff-terrain--sand.battle-unit-buff--hill {
+  background-image: url("/images/battle/tiles/sand_hill.png");
+}
+.battle-unit-buff-terrain--snow.battle-unit-buff--hill {
+  background-image: url("/images/battle/tiles/snow_hill.png");
+}
+.battle-unit-buff-terrain--snow.battle-unit-buff--woods {
+  background-image: url("/images/battle/tiles/snow_woods.png");
+}
+
 .battle-unit-buff--accurate_shot {
   background-image: url("/images/battle/abilities/accurate_shot.png");
 }

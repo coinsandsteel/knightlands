@@ -495,12 +495,6 @@ export default {
     //     this.$router.replace({ name: "battle-menu" });
     //   }
     // },
-    activeFighter(value) {
-      console.log("activeFighter: ", value);
-    },
-    buffItems(value) {
-      console.log("buffItems: ", value);
-    },
     queue(value) {
       if (value && value.length > 0) {
         for (let i = 0; i < value.length; i++) {
