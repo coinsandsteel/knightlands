@@ -355,8 +355,18 @@ export default {
 
       done();
     },
-    unitLeaveHandler(el, done) {
+    async unitLeaveHandler(el, done) {
       // console.log("unit leave", this.index);
+      const isIncluded = this.units
+        .map(({ index }) => index)
+        .includes(this.index);
+
+      const unit = this.units.find(({ index }) => index === this.index);
+
+      if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
+        await sleep(700);
+      }
+
       done();
     },
     async enemyEnterHandler(el, done) {
@@ -388,8 +398,18 @@ export default {
 
       done();
     },
-    enemyLeaveHandler(el, done) {
+    async enemyLeaveHandler(el, done) {
       // console.log("enemy leave", this.index);
+      const isIncluded = this.enemyUnits
+        .map(({ index }) => index)
+        .includes(this.index);
+
+      const unit = this.enemyUnits.find(({ index }) => index === this.index);
+
+      if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
+        await sleep(700);
+      }
+
       done();
     }
   }

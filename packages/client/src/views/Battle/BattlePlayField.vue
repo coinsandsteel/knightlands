@@ -789,8 +789,8 @@ export default {
           typeof source.index === "number" &&
           source.index > -1 &&
           typeof target.index === "number" &&
-          target.index > -1 &&
-          !(typeof target.hp === "number" && target.hp <= 0)
+          target.index > -1
+          // !(typeof target.hp === "number" && target.hp <= 0)
         ) {
           const sourceIndex = source.index;
           const targetIndex = target.index;
