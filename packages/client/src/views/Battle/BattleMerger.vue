@@ -3,20 +3,14 @@
     <div class="flex-full flex flex-column flex-center height-100">
       <div class="flex flex-center">
         <div>
-          <div class="material-cell">
+          <div
+            v-for="(unit, index) in selectedUnits"
+            :key="index"
+            class="material-cell pointer"
+          >
             <div class="horizontal-line" />
             <div class="vertical-line" />
-            <BattleUnit @click="unitClickHandler" />
-          </div>
-          <div class="material-cell">
-            <div class="horizontal-line" />
-            <div class="vertical-line" />
-            <BattleUnit @click="unitClickHandler" />
-          </div>
-          <div class="material-cell">
-            <div class="horizontal-line" />
-            <div class="vertical-line" />
-            <BattleUnit @click="unitClickHandler" />
+            <BattleUnit :unit="unit" @click="unitClickHandler(index)" />
           </div>
         </div>
         <div class="material-cell--right relative">
@@ -25,13 +19,13 @@
         </div>
       </div>
       <div class="">
-        <CustomButton
+        <!-- <CustomButton
           type="green"
           class="inline-block margin-right-2 margin-top-1"
           @click="detailsClickHandler"
         >
           Details
-        </CustomButton>
+        </CustomButton> -->
 
         <CustomButton
           type="green"
@@ -54,17 +48,26 @@ export default {
     BattleUnit
   },
   data() {
-    return {};
+    return {
+      selectedUnits: [null, null, null]
+    };
   },
   methods: {
-    async unitClickHandler() {
-      const show = create(BattleUnitSelect);
-      await show();
-    },
-    async detailsClickHandler() {
-      const show = create(BattleMergerDetailsInfo);
-      await show();
+    async unitClickHandler(index) {
+      // const show = create(BattleUnitSelect);
+      // await show();
+      this.$router.push({
+        name: "battle-units",
+        params: {
+          slot: "merger",
+          index
+        }
+      });
     }
+    // async detailsClickHandler() {
+    //   const show = create(BattleMergerDetailsInfo);
+    //   await show();
+    // }
   }
 };
 </script>

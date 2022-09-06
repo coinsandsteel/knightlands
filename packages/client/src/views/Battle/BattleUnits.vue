@@ -101,15 +101,28 @@ export default {
   methods: {
     async clickHandler({ unit }) {
       if (this.shouldFillSlot) {
-        this.$store.dispatch("battle/fillSquadSlot", {
-          unitId: unit.unitId,
-          index: this.$route.params.index
-        });
+        if (this.$route.params.slot === "squad") {
+          this.$store.dispatch("battle/fillSquadSlot", {
+            unitId: unit.unitId,
+            index: this.$route.params.index
+          });
 
-        this.$router.replace({
-          name: "battle-squad-home"
-        });
-        return;
+          this.$router.replace({
+            name: "battle-squad-home"
+          });
+          return;
+        } else if (this.$route.params.slot === "merger") {
+          // @todo
+          // this.$store.dispatch("battle/fillSquadSlot", {
+          //   unitId: unit.unitId,
+          //   index: this.$route.params.index
+          // });
+
+          this.$router.replace({
+            name: "battle-merger"
+          });
+          return;
+        }
       }
 
       this.$router.push({
@@ -136,7 +149,11 @@ export default {
       if (this.$route.query && this.$route.query.from) {
         this.$router.replace({ name: this.$route.query.from });
       } else if (this.shouldFillSlot) {
-        this.$router.replace({ name: "battle-squad-home" });
+        if (this.$route.params.slot === "squad") {
+          this.$router.replace({ name: "battle-squad-home" });
+        } else {
+          this.$router.replace({ name: "battle-merger" });
+        }
       } else {
         this.$router.replace({ name: "battle-menu" });
       }
