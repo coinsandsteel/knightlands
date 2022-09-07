@@ -1,4 +1,3 @@
-import _ from "lodash";
 import Vue from "vue";
 import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
@@ -35,6 +34,7 @@ export default {
     selectedClassesFilter,
     hasSubscribed: false,
     hasShownDailyRewards: false,
+    mergerIds: [null, null, null],
 
     // User data
     user: {
@@ -232,6 +232,35 @@ export default {
         : []
       ).filter(Boolean);
     },
+    mergerUnits(state) {
+      return state.mergerIds.map((id, index) => {
+        if (!id) {
+          return null;
+        }
+
+        const unit = state.inventory.find(
+          ({ unitId }) => unitId && unitId === id
+        );
+
+        if (!unit) {
+          return null;
+        }
+
+        let duplicatedCount = 0;
+
+        for (let i = 0; i < index; i++) {
+          if (state.mergerIds[i] === id) {
+            duplicatedCount++;
+          }
+        }
+
+        if (duplicatedCount >= unit.quantity) {
+          return null;
+        }
+
+        return unit;
+      });
+    },
     isUnitsFullFilled(state, getters) {
       return getters.units.filter(u => u).length >= 2;
     },
@@ -247,7 +276,7 @@ export default {
         )
       );
     },
-    moveCells(state, getters) {
+    moveCells(state) {
       // if (!getters.isMyTurn) {
       //   return [];
       // }
@@ -255,7 +284,7 @@ export default {
         ? state.game.combat.runtime.moveCells || []
         : [];
     },
-    attackCells(state, getters) {
+    attackCells(state) {
       // if (!getters.isMyTurn) {
       //   return [];
       // }
@@ -263,7 +292,7 @@ export default {
         ? state.game.combat.runtime.attackCells || []
         : [];
     },
-    targetCells(state, getters) {
+    targetCells(state) {
       return state.game && state.game.combat && state.game.combat.runtime
         ? state.game.combat.runtime.targetCells || []
         : [];
@@ -293,7 +322,7 @@ export default {
         ({ unitId }) => unitId === getters.enemySelectedUnitId
       );
     },
-    enemyMoveCells(state, getters) {
+    enemyMoveCells(state) {
       // if (getters.isMyTurn) {
       //   return [];
       // }
@@ -301,7 +330,7 @@ export default {
         ? state.game.combat.runtime.moveCells || []
         : [];
     },
-    enemyAttackCells(state, getters) {
+    enemyAttackCells(state) {
       // if (getters.isMyTurn) {
       //   return [];
       // }
@@ -645,6 +674,15 @@ export default {
     },
 
     // BattleMergeUnits
+    chooseMergerUnit(store, { unitId, index }) {
+      if (!(index >= 0 && index <= 2)) {
+        return;
+      }
+      const ids = [...(store.state.mergerIds || []), null, null, null];
+      ids[index] = unitId;
+
+      store.state.mergerIds = ids.slice(0, 3);
+    },
 
     // BattleChooseAbility - Choose ability
     // - abilityClass: string

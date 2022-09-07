@@ -4,7 +4,7 @@
       <div class="flex flex-center">
         <div>
           <div
-            v-for="(unit, index) in selectedUnits"
+            v-for="(unit, index) in mergerUnits"
             :key="index"
             class="material-cell pointer"
           >
@@ -38,10 +38,11 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
-import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
-import BattleMergerDetailsInfo from "@/views/Battle/BattleMergerDetailsInfo.vue";
-import { create } from "vue-modal-dialogs";
+// import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
+// import BattleMergerDetailsInfo from "@/views/Battle/BattleMergerDetailsInfo.vue";
+// import { create } from "vue-modal-dialogs";
 
 export default {
   components: {
@@ -49,8 +50,11 @@ export default {
   },
   data() {
     return {
-      selectedUnits: [null, null, null]
+      // selectedUnits: [null, null, null]
     };
+  },
+  computed: {
+    ...mapGetters("battle", ["mergerUnits"])
   },
   methods: {
     async unitClickHandler(index) {

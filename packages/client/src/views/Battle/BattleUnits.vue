@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
@@ -95,7 +95,6 @@ export default {
     }
   },
   activated() {
-    console.log("shouldFillSlot", this.shouldFillSlot);
     this.title = this.shouldFillSlot ? "select unit" : "battle units";
   },
   methods: {
@@ -112,11 +111,10 @@ export default {
           });
           return;
         } else if (this.$route.params.slot === "merger") {
-          // @todo
-          // this.$store.dispatch("battle/fillSquadSlot", {
-          //   unitId: unit.unitId,
-          //   index: this.$route.params.index
-          // });
+          this.$store.dispatch("battle/chooseMergerUnit", {
+            unitId: unit.unitId,
+            index: this.$route.params.index
+          });
 
           this.$router.replace({
             name: "battle-merger"
