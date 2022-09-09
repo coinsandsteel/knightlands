@@ -24,9 +24,15 @@
             >
           </transition>
         </div>
-        <PurchaseButton type="yellow" :soft="false" :price="price" @click="submit">{{
-          $t("sub-nick")
-        }}</PurchaseButton>
+        <PurchaseButton
+          :disabled="!isCorrect"
+          type="yellow"
+          :soft="false"
+          :price="price"
+          :skipConfirm="true"
+          @click="submit"
+          >{{ $t("sub-nick") }}</PurchaseButton
+        >
       </div>
     </template>
   </UserDialog>
