@@ -345,6 +345,10 @@ export default {
         state.hasShownDailyRewards = !!data.hasShownDailyRewards;
       }
 
+      if (data.mergerIds !== undefined) {
+        state.mergerIds = data.mergerIds;
+      }
+
       // Add an inventory unit
       if (data.addUnit !== undefined) {
         state.inventory.push(...data.addUnit);
@@ -681,7 +685,18 @@ export default {
       const ids = [...(store.state.mergerIds || []), null, null, null];
       ids[index] = unitId;
 
-      store.state.mergerIds = ids.slice(0, 3);
+      store.dispatch("update", { mergerIds: ids.slice(0, 3) });
+    },
+    clearMergeUnits(store) {
+      store.dispatch("update", { mergerIds: [null, null, null] });
+    },
+    async mergeUnits(store) {
+      await this.$app.$game._wrapOperation(
+        // Operations.BattleUpgradeUnitAbility,
+        "mergeUnits",
+        { units: store.getters.mergerUnits.map(({ unitId }) => unitId) }
+      );
+      store.dispatch("clearMergeUnits");
     },
 
     // BattleChooseAbility - Choose ability

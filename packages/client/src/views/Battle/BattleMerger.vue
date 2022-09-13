@@ -30,6 +30,15 @@
         <CustomButton
           type="green"
           class="inline-block margin-right-2 margin-top-1"
+          @click="clearHandler"
+        >
+          Clear
+        </CustomButton>
+        <CustomButton
+          type="green"
+          class="inline-block margin-right-2 margin-top-1"
+          :disabled="!canMerge"
+          @click="mergeHandler"
         >
           Merge
         </CustomButton>
@@ -54,7 +63,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("battle", ["mergerUnits"])
+    ...mapGetters("battle", ["mergerUnits"]),
+    canMerge() {
+      return this.mergerUnits.filter(Boolean).length === 3;
+    }
   },
   methods: {
     async unitClickHandler(index) {
@@ -67,6 +79,15 @@ export default {
           index
         }
       });
+    },
+    clearHandler() {
+      this.$store.dispatch("battle/clearMergeUnits");
+    },
+    mergeHandler() {
+      if (!this.canMerge) {
+        return;
+      }
+      this.$store.dispatch("battle/mergeUnits");
     }
     // async detailsClickHandler() {
     //   const show = create(BattleMergerDetailsInfo);
