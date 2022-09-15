@@ -51,6 +51,7 @@ export default {
     ...mapState("battle", [
       "game",
       "inventory",
+      "mergerIds",
       "selectedTiersFilter",
       "selectedClassesFilter"
     ]),
@@ -81,14 +82,24 @@ export default {
       }
 
       if (this.shouldFillSlot) {
-        const squadIds = (this.game &&
-        this.game.userSquad &&
-        this.game.userSquad.units
-          ? this.game.userSquad.units
-          : []
-        ).map(unit => unit && unit.unitId);
+        const ids = [];
 
-        result = result.filter(({ unitId }) => !squadIds.includes(unitId));
+        if (this.$route.params.slot === "squad") {
+          ids.push(
+            ...(this.game && this.game.userSquad && this.game.userSquad.units
+              ? this.game.userSquad.units
+              : []
+            ).map(unit => unit && unit.unitId)
+          );
+        } else if (this.$route.params.slot === "merger") {
+          ids.push(...this.mergerIds.filter(id => !!id));
+        }
+
+        // result = result.filter(({ unitId }) => !squadIds.includes(unitId));
+        result = result.filter(
+          ({ unitId, quantity }) =>
+            quantity > ids.filter(id => id === unitId).length
+        );
       }
 
       return result;
