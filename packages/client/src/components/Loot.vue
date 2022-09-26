@@ -123,7 +123,7 @@ export default {
       type: Boolean,
       default: true
     },
-    showElement: {
+    showEquipped: {
       type: Boolean,
       default: true
     },
