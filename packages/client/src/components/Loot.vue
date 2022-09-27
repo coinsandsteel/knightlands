@@ -70,7 +70,11 @@
 </template>
 
 <script>
-const { EquipmentSlots } = require("@/../../knightlands-shared/equipment_slot");
+const {
+  getSlot,
+  EquipmentSlots
+} = require("@/../../knightlands-shared/equipment_slot");
+const ItemType = require("@/../../knightlands-shared/item_type");
 
 let SlotPlaceholders = {};
 SlotPlaceholders[EquipmentSlots.MainHand] = "icon_slot_mainhand";
@@ -139,24 +143,46 @@ export default {
     iconClasses: [String, Array, Object]
   },
   data() {
-    return {
-      itemData: undefined
-    };
-  },
-  watch: {
-    item() {
-      this.updateItemData();
-    }
-  },
-  mounted() {
-    this.updateItemData();
+    return {};
   },
   computed: {
-    itemSlot() {
-      if (!(this.itemData && this.itemData.template)) {
+    templateData() {
+      if (!this.item) {
         return null;
       }
-      return this.$game.itemsDB.getSlot(this.itemData.template);
+
+      if (this.item && typeof this.item !== "object") {
+        return this.$game.itemsDB.getTemplate(+this.item);
+      } else {
+        return this.$game.itemsDB.getTemplate(this.item.template);
+      }
+    },
+    itemData() {
+      if (this.item && typeof this.item !== "object") {
+        if (this.templateData) {
+          return null;
+        }
+        return {
+          template: +this.item,
+          equipped: false,
+          level: 1,
+          count:
+            Math.floor(
+              this.quantity * (this.templateData.quantity || 1) * 100
+            ) / 100
+        };
+      } else {
+        return this.item;
+      }
+    },
+    itemSlot() {
+      if (!this.templateData) {
+        return null;
+      }
+      if (this.templateData.type != ItemType.Equipment) {
+        return null;
+      }
+      return getSlot(this.templateData.equipmentType);
     },
     isWeapon() {
       return ["mainHand", "offHand"].includes(this.itemSlot);
@@ -176,14 +202,24 @@ export default {
         return "";
       }
 
-      return `slot_${this.$game.itemsDB.getRarity(this.itemData)}`;
+      let rarity =
+        this.itemData.rarity || (this.templateData && this.templateData.rarity);
+
+      if (!rarity) {
+        return "";
+      }
+
+      return `slot_${rarity}`;
     },
     element() {
       if (this.itemData.isCustomElement) {
         return null;
       }
 
-      return this.$game.itemsDB.getElement(this.item);
+      return (
+        this.itemData.element ||
+        (this.templateData && this.templateData.element)
+      );
     },
     count() {
       let count = this.quantity;
@@ -225,10 +261,7 @@ export default {
         return SlotPlaceholders[this.equipmentSlot];
       }
       if (this.itemData && !this.itemData.isCustomElement) {
-        return this.$game.itemsDB.getIcon(
-          this.itemData.template,
-          this.$game.itemsDB.getRarity(this.itemData)
-        );
+        return (this.templateData && this.templateData.icon) || "";
       }
 
       return "";
@@ -237,23 +270,6 @@ export default {
   methods: {
     handleHint() {
       this.$emit("hint", this.itemData);
-    },
-    updateItemData() {
-      if (this.item && typeof this.item !== "object") {
-        // template
-        let template = this.$game.itemsDB.getTemplate(+this.item);
-        if (template) {
-          this.itemData = {
-            template: this.item * 1,
-            equipped: false,
-            level: 1,
-            count:
-              Math.floor(this.quantity * (template.quantity || 1) * 100) / 100
-          };
-        }
-      } else {
-        this.itemData = this.item;
-      }
     }
   }
 };
