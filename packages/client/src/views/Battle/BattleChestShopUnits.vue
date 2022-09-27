@@ -63,7 +63,7 @@ export default {
 
       // if (this.selectedClassesFilter && this.selectedClassesFilter.length > 0) {
       //   result = result.filter(item =>
-      //     this.selectedClassesFilter.includes(item.unitClass)
+      //     this.selectedClassesFilter.includes(item.class)
       //   );
       // }
       // // for (let i = 0; i < 42; i++) {

@@ -7,9 +7,9 @@
           unit.tier +
           ' battle-unit' +
           '--' +
-          unit.unitTribe +
+          unit.tribe +
           '_' +
-          unit.unitClass
+          unit.class
         : 'battle-unit--empty',
       isEnemy ? 'battle-unit--enemy' : ''
     ]"

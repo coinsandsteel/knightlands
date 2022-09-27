@@ -70,9 +70,16 @@
   </div>
 </template>
 <script>
+import AppSection from "@/AppSection.vue";
+import ActivityMixin from "@/components/ActivityMixin.vue";
+
 export default {
+  mixins: [AppSection, ActivityMixin],
   data() {
     return {};
+  },
+  activated() {
+    this.title = "battle event";
   },
   methods: {
     goToAdventure() {

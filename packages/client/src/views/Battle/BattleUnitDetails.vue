@@ -11,8 +11,8 @@
               <BattleUnit :unit="unit" />
             </div>
             <div class="margin-top-1 font-size-30">
-              # {{ $t("battle-unit-tribe-" + unit.unitTribe) }}
-              {{ $t("battle-unit-class-" + unit.unitClass) }} #
+              # {{ $t("battle-unit-tribe-" + unit.tribe) }}
+              {{ $t("battle-unit-class-" + unit.class) }} #
             </div>
             <div class="margin-top-2">Tier: {{ unit.tier }}</div>
             <div>

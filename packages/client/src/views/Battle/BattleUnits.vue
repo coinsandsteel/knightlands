@@ -77,7 +77,7 @@ export default {
 
       if (this.selectedClassesFilter && this.selectedClassesFilter.length > 0) {
         result = result.filter(item =>
-          this.selectedClassesFilter.includes(item.unitClass)
+          this.selectedClassesFilter.includes(item.class)
         );
       }
 

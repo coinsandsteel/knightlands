@@ -1,7 +1,7 @@
 <template>
   <div class="padding-2">
     <div class="font-size-22 text-align-center">
-      <div>Power: {{ power }}</div>
+      <div v-if="power">Power: {{ power }}</div>
       <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
         Bonuses: {{ bonuses }}
       </div>
@@ -74,10 +74,10 @@ export default {
       return this.game && this.game.userSquad ? this.game.userSquad.power : 0;
     },
     bonuses() {
-      const bonusItems =
-        this.game && this.game.userSquad
-          ? this.game.userSquad.bonuses || []
-          : [];
+      const bonusItems = (this.game && this.game.userSquad
+        ? this.game.userSquad.bonuses || []
+        : []
+      ).filter(({ type }) => type);
 
       if (!bonusItems.length > 0) {
         return null;

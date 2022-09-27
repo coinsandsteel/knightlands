@@ -144,8 +144,8 @@
         </div>
       </div>
       <div class="text-align-center margin-top-1">
-        # {{ $t("battle-unit-tribe-" + activeFighter.unitTribe) }}
-        {{ $t("battle-unit-class-" + activeFighter.unitClass) }} #
+        # {{ $t("battle-unit-tribe-" + activeFighter.tribe) }}
+        {{ $t("battle-unit-class-" + activeFighter.class) }} #
       </div>
       <!-- <div
         v-if="buffDescriptions && buffDescriptions.length > 0"

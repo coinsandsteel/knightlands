@@ -29,6 +29,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 export default {
@@ -43,29 +44,39 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("battle", ["inventory"]),
+    unitRecord() {
+      if (!this.unit) {
+        return null;
+      }
+
+      return this.inventory.find(({ unitId }) => unitId === this.unit.unitId);
+    },
     tier() {
-      return this.unit ? this.unit.tier || 0 : 0;
+      return this.unitRecord ? this.unitRecord.tier || 0 : 0;
     },
     level() {
-      return this.unit ? this.unit.level || 0 : 0;
+      return this.unitRecord ? this.unitRecord.level || 0 : 0;
     },
     power() {
-      return this.unit ? this.unit.power || 0 : 0;
+      return this.unitRecord ? this.unitRecord.power || 0 : 0;
     },
     title() {
-      return this.unit
-        ? `${this.$t("battle-unit-tribe-" + this.unit.unitTribe)} ${this.$t(
-            "battle-unit-class-" + this.unit.unitClass
+      return this.unitRecord
+        ? `${this.$t("battle-unit-tribe-" + this.unitRecord.tribe)} ${this.$t(
+            "battle-unit-class-" + this.unitRecord.class
           )}`
         : "";
     },
     experience() {
-      return this.unit && this.unit.expirience
-        ? this.unit.expirience.value || 0
+      return this.unitRecord && this.unitRecord.expirience
+        ? this.unitRecord.expirience.value || 0
         : 0;
     },
     abilities() {
-      return this.unit && this.unit.abilities ? this.unit.abilities : [];
+      return this.unit && this.unitRecord.abilities
+        ? this.unitRecord.abilities
+        : [];
     }
   },
   methods: {
