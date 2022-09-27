@@ -94,14 +94,14 @@ export default {
       userSquad: {
         power: 0,
         bonuses: [],
-        units: []
+        fighters: []
       },
 
       // Enemy squad
       enemySquad: {
         power: 0,
         bonuses: [],
-        units: []
+        fighters: []
       },
 
       // Terrain
@@ -226,9 +226,9 @@ export default {
         tile: tile || (terrain && terrain.base) || battle.TERRAIN_GRASS
       }));
     },
-    units(state) {
+    fighters(state) {
       return (state.game && state.game.userSquad
-        ? state.game.userSquad.units || []
+        ? state.game.userSquad.fighters || []
         : []
       ).filter(Boolean);
     },
@@ -261,8 +261,8 @@ export default {
         return unit;
       });
     },
-    isUnitsFullFilled(state, getters) {
-      return getters.units.filter(u => u).length >= 2;
+    isFightersFullFilled(state, getters) {
+      return getters.fighters.filter(u => u).length >= 2;
     },
     activeFighterId(state) {
       return state.game.combat.activeFighterId;
@@ -270,8 +270,8 @@ export default {
     isMyTurn(state, getters) {
       return !!(
         getters.activeFighterId &&
-        getters.units &&
-        getters.units.find(
+        getters.fighters &&
+        getters.fighters.find(
           ({ fighterId }) => fighterId === getters.activeFighterId
         )
       );
@@ -299,7 +299,7 @@ export default {
     },
     enemyUnits(state) {
       return (state.game && state.game.enemySquad
-        ? state.game.enemySquad.units || []
+        ? state.game.enemySquad.fighters || []
         : []
       ).filter(Boolean);
     },
@@ -406,12 +406,12 @@ export default {
       if (data.userSquad !== undefined) {
         state.game.userSquad.power = data.userSquad.power;
         state.game.userSquad.bonuses = data.userSquad.bonuses;
-        state.game.userSquad.units = data.userSquad.units;
+        state.game.userSquad.fighters = data.userSquad.fighters;
       }
       if (data.enemySquad !== undefined) {
         state.game.enemySquad.power = data.enemySquad.power;
         state.game.enemySquad.bonuses = data.enemySquad.bonuses;
-        state.game.enemySquad.units = data.enemySquad.units;
+        state.game.enemySquad.fighters = data.enemySquad.fighters;
       }
 
       // #############################################
@@ -425,26 +425,26 @@ export default {
       if (data.buffs !== undefined) {
         for (let fighterId in data.buffs) {
           // User squad
-          let index = state.game.userSquad.units.findIndex(
+          let index = state.game.userSquad.fighters.findIndex(
             unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
             Vue.set(
-              state.game.userSquad.units[index],
+              state.game.userSquad.fighters[index],
               "buffs",
               data.buffs[fighterId]
             );
           }
 
           // Enemy squad
-          index = state.game.enemySquad.units.findIndex(
+          index = state.game.enemySquad.fighters.findIndex(
             unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
             Vue.set(
-              state.game.enemySquad.units[index],
+              state.game.enemySquad.fighters[index],
               "buffs",
               data.buffs[fighterId]
             );
@@ -455,26 +455,26 @@ export default {
       if (data.abilities !== undefined) {
         for (let fighterId in data.abilities) {
           // User squad
-          let index = state.game.userSquad.units.findIndex(
+          let index = state.game.userSquad.fighters.findIndex(
             unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
             Vue.set(
-              state.game.userSquad.units[index],
+              state.game.userSquad.fighters[index],
               "abilities",
               data.abilities[fighterId]
             );
           }
 
           // Enemy squad
-          index = state.game.enemySquad.units.findIndex(
+          index = state.game.enemySquad.fighters.findIndex(
             unit => unit && unit.fighterId === fighterId
           );
 
           if (index !== -1) {
             Vue.set(
-              state.game.enemySquad.units[index],
+              state.game.enemySquad.fighters[index],
               "abilities",
               data.abilities[fighterId]
             );
@@ -486,14 +486,14 @@ export default {
       // Could be updated: index, hp, abilities, buffs
       if (data.userFighter !== undefined) {
         data.userFighter.forEach(updateEntry => {
-          const index = state.game.userSquad.units.findIndex(
+          const index = state.game.userSquad.fighters.findIndex(
             unit => unit && unit.fighterId === updateEntry.fighterId
           );
 
           if (index !== -1) {
-            const unit = state.game.userSquad.units[index];
+            const unit = state.game.userSquad.fighters[index];
             const oldIndex = unit.index;
-            Vue.set(state.game.userSquad.units, index, {
+            Vue.set(state.game.userSquad.fighters, index, {
               ...unit,
               ...updateEntry,
               ...(oldIndex !== updateEntry.index ? { oldIndex } : {})
@@ -506,13 +506,13 @@ export default {
       // Could be updated: index, hp, abilities, buffs
       if (data.enemyFighter !== undefined) {
         data.enemyFighter.forEach(updateEntry => {
-          const index = state.game.enemySquad.units.findIndex(
+          const index = state.game.enemySquad.fighters.findIndex(
             unit => unit && unit.fighterId === updateEntry.fighterId
           );
           if (index !== -1) {
-            const unit = state.game.enemySquad.units[index];
+            const unit = state.game.enemySquad.fighters[index];
             const oldIndex = unit.index;
-            Vue.set(state.game.enemySquad.units, index, {
+            Vue.set(state.game.enemySquad.fighters, index, {
               ...unit,
               ...updateEntry,
               ...(oldIndex !== updateEntry.index ? { oldIndex } : {})
@@ -796,7 +796,7 @@ export default {
     // move fighter { fighterId, index, oldIndex }
     move(store, data) {
       if (
-        store.getters.units.find(
+        store.getters.fighters.find(
           ({ fighterId }) => fighterId === data.fighterId
         )
       ) {
