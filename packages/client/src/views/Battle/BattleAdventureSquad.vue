@@ -5,12 +5,7 @@
         Your army
       </div>
       <div class="battle-unit-list">
-        <!-- <BattleUnit
-          v-for="unit in units"
-          :key="unit.unitId"
-          @click="unitClickHandler"
-        /> -->
-        <BattleUnitList :units="units" />
+        <BattleUnitList :units="fighters" />
       </div>
     </div>
     <div>
@@ -18,8 +13,7 @@
         Enemy 's army
       </div>
       <div class="battle-enemy-unit-list">
-        <!-- <BattleUnit v-for="unit in enemyUnits" :key="unit.unitId" /> -->
-        <BattleUnitList :units="enemyUnits" />
+        <BattleUnitList :units="enemyFighters" />
       </div>
     </div>
     <div class="text-align-center">
@@ -36,7 +30,6 @@
 <script>
 import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
-// import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
 export default {
@@ -48,10 +41,10 @@ export default {
   },
   computed: {
     ...mapState("battle", ["game"]),
-    units() {
+    fighters() {
       const result =
-        this.game && this.game.userSquad && this.game.userSquad.units
-          ? this.game.userSquad.units
+        this.game && this.game.userSquad && this.game.userSquad.fighters
+          ? this.game.userSquad.fighters
           : [];
 
       const length = result.length;
@@ -62,10 +55,10 @@ export default {
 
       return result;
     },
-    enemyUnits() {
+    enemyFighters() {
       const result =
-        this.game && this.game.userSquad && this.game.userSquad.units
-          ? this.game.userSquad.units
+        this.game && this.game.userSquad && this.game.userSquad.fighters
+          ? this.game.userSquad.fighters
           : [];
 
       const length = result.length;
@@ -95,22 +88,3 @@ export default {
   }
 };
 </script>
-<style scoped lang="less">
-// .battle-unit-list {
-//   display: grid;
-//   grid-template-columns: repeat(5, minmax(10rem, 1fr));
-//   justify-items: center;
-//   row-gap: 0.5rem;
-//   column-gap: 0.5rem;
-// }
-// .battle-enemy-unit-list {
-//   display: grid;
-//   grid-template-columns: repeat(5, minmax(10rem, 1fr));
-//   justify-items: center;
-//   row-gap: 0.5rem;
-//   column-gap: 0.5rem;
-// }
-// .battle-unit {
-//   width: 100%;
-// }
-</style>

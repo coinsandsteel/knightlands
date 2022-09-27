@@ -84,16 +84,16 @@ export default {
   },
   computed: {
     ...mapState(["appSize"]),
-    ...mapGetters("battle", ["units", "enemyUnits"]),
-    unit() {
-      return [...this.units, ...this.enemyUnits].find(
+    ...mapGetters("battle", ["fighters", "enemyFighters"]),
+    fighter() {
+      return [...this.fighters, ...this.enemyFighters].find(
         ({ fighterId }) => fighterId === this.activeFighterId
       );
     },
     abilities() {
       const abilities =
-        this.unit && this.unit.abilities
-          ? this.unit.abilities.filter(({ enabled }) => enabled)
+        this.fighter && this.fighter.abilities
+          ? this.fighter.abilities.filter(({ enabled }) => enabled)
           : [];
       return abilities;
 

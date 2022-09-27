@@ -32,7 +32,7 @@
       <div class="flex flex-space-between width-100">
         <div class="flex flex-column">
           <BattleSideCell
-            v-for="fighter in units"
+            v-for="fighter in fighters"
             :fighter="fighter"
             :key="fighter.fighterId"
             @click="showFighterDetails(fighter.fighterId)"
@@ -53,7 +53,7 @@
         </div>
         <div class="flex flex-column">
           <BattleSideCell
-            v-for="fighter in enemyUnits"
+            v-for="fighter in enemyFighters"
             :fighter="fighter"
             :key="fighter.fighterId"
             @click="showFighterDetails(fighter.fighterId)"
@@ -243,7 +243,6 @@
 import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import _ from "lodash";
-import cloneDeep from "lodash/cloneDeep";
 import anime from "animejs/lib/anime.es.js";
 import { sleep } from "@/helpers/utils";
 import * as battle from "@/../../knightlands-shared/battle";
@@ -306,11 +305,10 @@ export default {
   },
   computed: {
     ...mapState(["appSize"]),
-    // ...mapState("battle", ["units", "enemies"]),
     ...mapState("battle", ["game", "user"]),
     ...mapGetters("battle", [
-      "units",
-      "enemyUnits",
+      "fighters",
+      "enemyFighters",
       "isMyTurn",
       "activeFighterId",
       "moveCells"
@@ -327,12 +325,12 @@ export default {
       return this.game.combat.runtime.queue;
     },
     activeFighter() {
-      return [...this.units, ...this.enemyUnits].find(
+      return [...this.fighters, ...this.enemyFighters].find(
         ({ fighterId }) => fighterId === this.activeFighterId
       );
     },
     myActiveFighter() {
-      return this.units.find(
+      return this.fighters.find(
         ({ fighterId }) => fighterId === this.activeFighterId
       );
     },
@@ -686,7 +684,7 @@ export default {
         step.target.fighterId &&
         typeof step.target.newHp === "number"
       ) {
-        const isEnemy = this.enemyUnits.find(
+        const isEnemy = this.enemyFighters.find(
           ({ fighterId }) => fighterId === step.target.fighterId
         );
         this.$store.dispatch("battle/update", {
@@ -758,28 +756,28 @@ export default {
       ) {
         const isSourceMyFighter =
           step.source && step.source.fighterId
-            ? !!this.units.find(
+            ? !!this.fighters.find(
                 ({ fighterId }) => fighterId === step.source.fighterId
               )
             : false;
         const isTargetMyFighter =
           step.target && step.target.fighterId
-            ? !!this.units.find(
+            ? !!this.fighters.find(
                 ({ fighterId }) => fighterId === step.target.fighterId
               )
             : false;
         const source =
-          this.units.find(
+          this.fighters.find(
             ({ fighterId }) => fighterId === step.source.fighterId
           ) ||
-          this.enemyUnits.find(
+          this.enemyFighters.find(
             ({ fighterId }) => fighterId === step.source.fighterId
           );
         const target =
-          this.units.find(
+          this.fighters.find(
             ({ fighterId }) => fighterId === step.target.fighterId
           ) ||
-          this.enemyUnits.find(
+          this.enemyFighters.find(
             ({ fighterId }) => fighterId === step.target.fighterId
           );
 
@@ -936,13 +934,13 @@ export default {
       const isCriticalHit = ability && ability.criticalHit;
       const isSourceMyFighter =
         step.source && step.source.fighterId
-          ? !!this.units.find(
+          ? !!this.fighters.find(
               ({ fighterId }) => fighterId === step.source.fighterId
             )
           : false;
       const isTargetMyFighter =
         step.target && step.target.fighterId
-          ? !!this.units.find(
+          ? !!this.fighters.find(
               ({ fighterId }) => fighterId === step.target.fighterId
             )
           : false;
@@ -1079,14 +1077,14 @@ export default {
         //   unitId: "v4nv9",
         //   index: 3
         // },
-        source: this.units[1],
+        source: this.fighters[1],
         // target: {
         //   unitId: "v4nv9",
         //   index: 8,
         //   newHp: 5
         // },
         target: {
-          ...this.enemyUnits[3],
+          ...this.enemyFighters[3],
           newHp: 5
         },
         ability: {
@@ -1107,27 +1105,27 @@ export default {
         action: "terrain",
         type: "lava",
         target: {
-          fighterId: this.enemyUnits[1].fighterId,
-          index: this.enemyUnits[1].index,
+          fighterId: this.enemyFighters[1].fighterId,
+          index: this.enemyFighters[1].index,
           newHp: 1
         }
       });
     },
     move1Handler() {
-      const units = _.cloneDeep(this.units);
-      if (units && units.length > 0) {
+      const fighters = _.cloneDeep(this.fighters);
+      if (fighters && fighters.length > 0) {
         this.$store.dispatch("battle/move", {
-          fighterId: units[0].fighterId,
-          index: units[0].index === 17 ? 30 : 17,
-          oldIndex: units[0].index === 17 ? 17 : 30
+          fighterId: fighters[0].fighterId,
+          index: fighters[0].index === 17 ? 30 : 17,
+          oldIndex: fighters[0].index === 17 ? 17 : 30
         });
       }
-      const enemyUnits = _.cloneDeep(this.enemyUnits);
-      if (enemyUnits && enemyUnits.length > 0) {
+      const enemyFighters = _.cloneDeep(this.enemyFighters);
+      if (enemyFighters && enemyFighters.length > 0) {
         this.$store.dispatch("battle/move", {
-          fighterId: enemyUnits[0].fighterId,
-          index: enemyUnits[0].index === 0 ? 12 : 0,
-          oldIndex: enemyUnits[0].index === 0 ? 0 : 12
+          fighterId: enemyFighters[0].fighterId,
+          index: enemyFighters[0].index === 0 ? 12 : 0,
+          oldIndex: enemyFighters[0].index === 0 ? 0 : 12
         });
       }
     },

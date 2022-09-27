@@ -18,7 +18,7 @@
           type="yellow"
           width="20rem"
           class="inline-block"
-          :disabled="!isUnitsFullFilled"
+          :disabled="!isFightersFullFilled"
           @click="handleStart(index)"
           >Fight</CustomButton
         >
@@ -42,7 +42,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("battle", ["isUnitsFullFilled"])
+    ...mapGetters("battle", ["isFightersFullFilled"])
   },
   async activated() {
     this.items = await this.$store.dispatch("battle/fetchDuelOptions");

@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 export default {
   components: {
@@ -68,15 +68,15 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("battle", ["units", "enemyUnits"]),
-    unit() {
-      return [...this.units, ...this.enemyUnits].find(
+    ...mapGetters("battle", ["fighters", "enemyFighters"]),
+    fighter() {
+      return [...this.fighters, ...this.enemyFighters].find(
         ({ fighterId }) => fighterId === this.selectedFighterId
       );
     },
     abilities() {
-      return this.unit && this.unit.abilities
-        ? this.unit.abilities.filter(({ enabled }) => enabled)
+      return this.fighter && this.fighter.abilities
+        ? this.fighter.abilities.filter(({ enabled }) => enabled)
         : [];
     },
     topAbility() {

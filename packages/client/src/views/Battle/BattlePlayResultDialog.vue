@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="margin-top-2 text-align-center">
-          <div v-for="(unit, index) in units" :key="index">
+          <div v-for="(unit, index) in fighters" :key="index">
             <div class="flex-inline flex-item-center">
               <BattleUnit :unit="unit" />
               <div class="flex-grow-1 margin-left-2">
@@ -76,8 +76,8 @@ export default {
     hasWon() {
       return this.game.combat.result === battle.COMBAT_RESULT_WIN;
     },
-    units() {
-      return this.game.userSquad.units || [];
+    fighters() {
+      return this.game.userSquad.fighters || [];
     }
   },
   methods: {

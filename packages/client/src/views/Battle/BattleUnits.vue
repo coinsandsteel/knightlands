@@ -86,8 +86,8 @@ export default {
 
         if (this.$route.params.slot === "squad") {
           ids.push(
-            ...(this.game && this.game.userSquad && this.game.userSquad.units
-              ? this.game.userSquad.units
+            ...(this.game && this.game.userSquad && this.game.userSquad.fighters
+              ? this.game.userSquad.fighters
               : []
             ).map(unit => unit && unit.unitId)
           );

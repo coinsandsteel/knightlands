@@ -147,21 +147,21 @@ export default {
       "isMyTurn",
       "activeFighterId",
       "battleTerrain",
-      "units",
+      "fighters",
       "selectedUnit",
       "moveCells",
       "attackCells",
       "targetCells",
-      "enemyUnits",
+      "enemyFighters",
       "enemySelectedUnit"
       // "enemyMoveCells"
     ]),
     isUnit() {
-      const isIncluded = this.units
+      const isIncluded = this.fighters
         .map(({ index }) => index)
         .includes(this.index);
 
-      const unit = this.units.find(({ index }) => index === this.index);
+      const unit = this.fighters.find(({ index }) => index === this.index);
 
       return isIncluded && unit && unit.hp > 0 && !unit.isDead;
     },
@@ -173,18 +173,18 @@ export default {
         return null;
       }
 
-      return this.units.find(({ index }) => index === this.index);
+      return this.fighters.find(({ index }) => index === this.index);
     },
     unitIndex() {
       // return this.selectedUnit ? this.selectedUnit.index : -1;
       return this.unit ? this.unit.index : -1;
     },
     isEnemy() {
-      const isIncluded = this.enemyUnits
+      const isIncluded = this.enemyFighters
         .map(({ index }) => index)
         .includes(this.index);
 
-      const unit = this.enemyUnits.find(({ index }) => index === this.index);
+      const unit = this.enemyFighters.find(({ index }) => index === this.index);
 
       return isIncluded && unit && unit.hp > 0 && !unit.isDead;
     },
@@ -193,7 +193,7 @@ export default {
         return null;
       }
 
-      return this.enemyUnits.find(({ index }) => index === this.index);
+      return this.enemyFighters.find(({ index }) => index === this.index);
     },
     enemyIndex() {
       // return this.enemySelectedUnit ? this.enemySelectedUnit.index : -1;
@@ -357,11 +357,11 @@ export default {
     },
     async unitLeaveHandler(el, done) {
       // console.log("unit leave", this.index);
-      const isIncluded = this.units
+      const isIncluded = this.fighters
         .map(({ index }) => index)
         .includes(this.index);
 
-      const unit = this.units.find(({ index }) => index === this.index);
+      const unit = this.fighters.find(({ index }) => index === this.index);
 
       if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
         await sleep(700);
@@ -400,11 +400,11 @@ export default {
     },
     async enemyLeaveHandler(el, done) {
       // console.log("enemy leave", this.index);
-      const isIncluded = this.enemyUnits
+      const isIncluded = this.enemyFighters
         .map(({ index }) => index)
         .includes(this.index);
 
-      const unit = this.enemyUnits.find(({ index }) => index === this.index);
+      const unit = this.enemyFighters.find(({ index }) => index === this.index);
 
       if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
         await sleep(700);

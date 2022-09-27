@@ -56,14 +56,14 @@ export default {
   },
   props: { fighterId: String },
   computed: {
-    ...mapGetters("battle", ["units", "enemyUnits"]),
+    ...mapGetters("battle", ["fighters", "enemyFighters"]),
     isEnemy() {
-      return !!this.enemyUnits.find(
+      return !!this.enemyFighters.find(
         ({ fighterId }) => fighterId === this.fighterId
       );
     },
     unit() {
-      return [...this.units, ...this.enemyUnits].find(
+      return [...this.fighters, ...this.enemyFighters].find(
         ({ fighterId }) => fighterId === this.fighterId
       );
     },

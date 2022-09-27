@@ -15,17 +15,17 @@
       </div> -->
     </div>
     <BattleUnitList
-      :units="units"
+      :units="fighters"
       :isClearButtonVisible="true"
       @click="clickHandler"
       @clear="clearHandler"
     />
     <CustomButton
-      v-if="units.length < 5"
+      v-if="fighters.length < 5"
       type="green"
       class="inline-block"
       width="8rem"
-      @click="updateUnitHandler(units.length)"
+      @click="updateUnitHandler(fighters.length)"
       >{{ $t("add") }}</CustomButton
     >
     <portal to="footer" :slim="true" v-if="isActive">
@@ -55,11 +55,11 @@ export default {
   },
   computed: {
     ...mapState("battle", ["game"]),
-    units() {
+    fighters() {
       // return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
       const result =
-        this.game && this.game.userSquad && this.game.userSquad.units
-          ? this.game.userSquad.units
+        this.game && this.game.userSquad && this.game.userSquad.fighters
+          ? this.game.userSquad.fighters
           : [];
 
       const length = result.length;
@@ -105,7 +105,7 @@ export default {
         this.updateUnitHandler(index);
         return;
       }
-      const unitIndex = this.units.findIndex(
+      const unitIndex = this.fighters.findIndex(
         ({ unitId }) => unit.unitId === unitId
       );
       if (!(unitIndex > -1)) {

@@ -36,16 +36,16 @@ export default {
   computed: {
     ...mapState("battle", ["game"]),
     ...mapGetters("battle", [
-      "units",
+      "fighters",
       "selectedUnit",
       "moveCells",
       "attackCells",
-      "enemyUnits",
+      "enemyFighters",
       "enemySelectedUnit"
       // "enemyMoveCells"
     ]),
     isUnit() {
-      return this.units
+      return this.fighters
         .map(({ fighterId }) => fighterId)
         .includes(this.fighter.fighterId);
     },
@@ -54,14 +54,14 @@ export default {
         return null;
       }
 
-      return this.units.find(({ index }) => index === this.index);
+      return this.fighters.find(({ index }) => index === this.index);
     },
     // unitIndex() {
     //   // return this.selectedUnit ? this.selectedUnit.index : -1;
     //   return this.unit ? this.unit.index : -1;
     // },
     isEnemy() {
-      return this.enemyUnits
+      return this.enemyFighters
         .map(({ fighterId }) => fighterId)
         .includes(this.fighter.fighterId);
     },
@@ -70,7 +70,7 @@ export default {
         return null;
       }
 
-      return this.enemyUnits.find(({ index }) => index === this.index);
+      return this.enemyFighters.find(({ index }) => index === this.index);
     },
     // enemyIndex() {
     //   // return this.enemySelectedUnit ? this.enemySelectedUnit.index : -1;
