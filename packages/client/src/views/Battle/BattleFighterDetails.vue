@@ -1,5 +1,5 @@
 <template>
-  <UserDialog :title="$t('unit-details')" @close="close">
+  <UserDialog title="unit details" @close="close">
     <template v-slot:content>
       <div v-if="unit" class="font-size-22">
         <div class="margin-top-2">

@@ -6,7 +6,7 @@
           <BattleUnitBuff :buff="buff" @click.native="showBuffItem(buffItem)" />
         </div>
         <div class="flex-grow margin-left-2">
-            {{ description }}
+          {{ description }}
         </div>
       </div>
       <div class="text-align-center margin-top-4">

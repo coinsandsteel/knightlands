@@ -53,13 +53,21 @@ export default {
       return this.inventory.find(({ unitId }) => unitId === this.unit.unitId);
     },
     tier() {
-      return this.unitRecord ? this.unitRecord.tier || 0 : 0;
+      return this.unitRecord
+        ? this.unitRecord.tier || 0
+        : this.unit
+        ? this.unit.tier || 0
+        : 0;
     },
     level() {
       return this.unitRecord ? this.unitRecord.level || 0 : 0;
     },
     power() {
-      return this.unitRecord ? this.unitRecord.power || 0 : 0;
+      return this.unitRecord
+        ? this.unitRecord.power || 0
+        : this.unit
+        ? this.unit.power || 0
+        : 0;
     },
     title() {
       return this.unitRecord
@@ -74,7 +82,7 @@ export default {
         : 0;
     },
     abilities() {
-      return this.unit && this.unitRecord.abilities
+      return this.unitRecord && this.unitRecord.abilities
         ? this.unitRecord.abilities
         : [];
     }
