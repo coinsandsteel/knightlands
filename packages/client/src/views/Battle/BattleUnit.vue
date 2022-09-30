@@ -9,7 +9,9 @@
           '--' +
           unit.tribe +
           '_' +
-          unit.class
+          unit.class +
+          ' battle-unit--template-' +
+          (unit.template || unit.unitTemplate)
         : 'battle-unit--empty',
       isEnemy ? 'battle-unit--enemy' : ''
     ]"
@@ -168,13 +170,15 @@ export default {
   padding-bottom: 100%;
 }
 .battle-unit-background-color {
-  background: #00a3ee;
-  // background: red;
+  background: #14b8a6;
   width: 100%;
   height: calc(12400% / 130);
   left: 0;
   top: 1%;
   border-radius: 14%;
+}
+.battle-unit--enemy .battle-unit-background-color {
+  background: #818cf8;
 }
 .battle-unit-background {
   background: url("/images/battle/portrait_border.png") center/100% no-repeat;
@@ -199,257 +203,276 @@ export default {
   top: 1%;
   border-radius: 14%;
 }
-.battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-  width: 100%;
-  height: calc(12400% / 130);
-  left: 0;
-  top: 1%;
-  border-radius: 14%;
-}
-.battle-unit--enemy .battle-unit-image {
-  background: url("/images/battle/enemy.png") center/80% no-repeat !important;
-}
+// .battle-unit--enemy .battle-unit-image {
+//   background: url("/images/battle/enemy.png") center/80% no-repeat !important;
+// }
 // kobold
-.battle-unit--kobold_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--kobold_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--kobold_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--kobold_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--kobold_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// dwarf
-.battle-unit--dwarf_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--dwarf_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--dwarf_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--dwarf_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--dwarf_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// egyptian
-.battle-unit--egyptian_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--egyptian_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--egyptian_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--egyptian_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--egyptian_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// goblin
-.battle-unit--goblin_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--goblin_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--goblin_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--goblin_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--goblin_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// insect
-.battle-unit--insect_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--insect_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--insect_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--insect_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--insect_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// orc
-.battle-unit--orc_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--orc_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--orc_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--orc_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--orc_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// clockwork
-.battle-unit--clockwork_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--clockwork_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--clockwork_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--clockwork_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--clockwork_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// skeleton
-.battle-unit--skeleton_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--skeleton_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--skeleton_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--skeleton_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--skeleton_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// ice
-.battle-unit--ice_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--ice_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--ice_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--ice_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--ice_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// elf
-.battle-unit--elf_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--elf_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--elf_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--elf_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--elf_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// eldritch
-.battle-unit--eldritch_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--eldritch_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--eldritch_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--eldritch_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--eldritch_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// assembling
-.battle-unit--assembling_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--assembling_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--assembling_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--assembling_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--assembling_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// fallen_knight
-.battle-unit--fallen_knight_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// fallen_knight
-.battle-unit--fallen_knight_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--fallen_knight_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-// titan
-.battle-unit--titan_range .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--titan_melee .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--titan_mage .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--titan_tank .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
-.battle-unit--titan_support .battle-unit-image {
-  background: url("/images/battle/unit.png") center/60% no-repeat;
-}
+.battle-unit--template-4 .battle-unit-image,
+.battle-unit--template-9 .battle-unit-image,
+.battle-unit--template-10 .battle-unit-image {
+  background: url("/images/battle/units/kobold-1.png") center/85% no-repeat;
+}
+.battle-unit--template-11 .battle-unit-image,
+.battle-unit--template-12 .battle-unit-image,
+.battle-unit--template-13 .battle-unit-image {
+  background: url("/images/battle/units/kobold-2.png") center/85% no-repeat;
+}
+.battle-unit--template-14 .battle-unit-image,
+.battle-unit--template-15 .battle-unit-image,
+.battle-unit--template-16 .battle-unit-image {
+  background: url("/images/battle/units/kobold-3.png") center/85% no-repeat;
+}
+.battle-unit--template-17 .battle-unit-image,
+.battle-unit--template-18 .battle-unit-image,
+.battle-unit--template-19 .battle-unit-image {
+  background: url("/images/battle/units/kobold-4.png") center/85% no-repeat;
+}
+.battle-unit--template-20 .battle-unit-image,
+.battle-unit--template-21 .battle-unit-image,
+.battle-unit--template-22 .battle-unit-image {
+  background: url("/images/battle/units/kobold-5.png") center/85% no-repeat;
+}
+//
+// // kobold
+// .battle-unit--kobold_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--kobold_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--kobold_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--kobold_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--kobold_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // dwarf
+// .battle-unit--dwarf_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--dwarf_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--dwarf_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--dwarf_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--dwarf_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // egyptian
+// .battle-unit--egyptian_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--egyptian_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--egyptian_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--egyptian_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--egyptian_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // goblin
+// .battle-unit--goblin_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--goblin_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--goblin_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--goblin_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--goblin_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // insect
+// .battle-unit--insect_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--insect_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--insect_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--insect_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--insect_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // orc
+// .battle-unit--orc_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--orc_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--orc_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--orc_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--orc_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // clockwork
+// .battle-unit--clockwork_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--clockwork_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--clockwork_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--clockwork_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--clockwork_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // skeleton
+// .battle-unit--skeleton_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--skeleton_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--skeleton_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--skeleton_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--skeleton_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // ice
+// .battle-unit--ice_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--ice_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--ice_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--ice_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--ice_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // elf
+// .battle-unit--elf_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--elf_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--elf_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--elf_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--elf_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // eldritch
+// .battle-unit--eldritch_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--eldritch_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--eldritch_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--eldritch_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--eldritch_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // assembling
+// .battle-unit--assembling_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--assembling_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--assembling_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--assembling_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--assembling_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // fallen_knight
+// .battle-unit--fallen_knight_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // fallen_knight
+// .battle-unit--fallen_knight_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--fallen_knight_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// // titan
+// .battle-unit--titan_range .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--titan_melee .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--titan_mage .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--titan_tank .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
+// .battle-unit--titan_support .battle-unit-image {
+//   background: url("/images/battle/unit.png") center/60% no-repeat;
+// }
 // .battle-unit--empty .battle-unit-wrapper {
 //   background-image: url("/images/battle/units/unit-empty.png");
 // }

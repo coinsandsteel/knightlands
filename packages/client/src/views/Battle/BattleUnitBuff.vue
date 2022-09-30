@@ -63,8 +63,9 @@ export default {
 .battle-unit-buff {
   width: 5rem;
   height: 5rem;
-  background-size: 100%;
-  background-repeat: none;
+  background-size: calc(100% - 2px);
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
 }
 .buff-state-indicator {
