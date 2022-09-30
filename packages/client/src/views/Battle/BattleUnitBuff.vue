@@ -233,7 +233,8 @@ export default {
 .battle-unit-buff--group_heal {
   background-image: url("/images/battle/abilities/group_heal.png");
 }
-.battle-unit-buff--hamstring {
+.battle-unit-buff--hamstring,
+.battle-unit-buff--hamstring_shot {
   background-image: url("/images/battle/abilities/hamstring.png");
 }
 .battle-unit-buff--heal {

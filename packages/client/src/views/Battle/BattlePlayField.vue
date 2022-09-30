@@ -1303,7 +1303,8 @@ export default {
   .battle-ability-effect--group_heal {
     background-image: url("/images/battle/abilities/group_heal.png");
   }
-  .battle-ability-effect--hamstring {
+  .battle-ability-effect--hamstring,
+  .battle-ability-effect--hamstring_shot {
     background-image: url("/images/battle/abilities/hamstring.png");
   }
   .battle-ability-effect--heal {
