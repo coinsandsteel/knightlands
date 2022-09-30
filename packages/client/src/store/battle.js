@@ -64,19 +64,37 @@ export default {
           // Will be later
         ]
       },
-      // 6 rooms
-      adventures: {
-        1: {
-          1: { [GAME_DIFFICULTY_MEDIUM]: true, [GAME_DIFFICULTY_HIGH]: false }
-          //2: { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false },
-        }
-      },
       shop: {
         [SHOP_STARTER_PACK]: { left: 1 },
         [SHOP_DAILY_REWARD]: { left: 2 },
         [SHOP_ENERGY_CHEST]: { left: 6 },
         [SHOP_COIN_CHEST]: { left: 2 }
       }
+    },
+
+    // 6 rooms
+    adventures: {
+      difficulty: GAME_DIFFICULTY_MEDIUM, // string GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
+      locations: [
+        /*
+        [ // Location 1
+          { [GAME_DIFFICULTY_MEDIUM]: true,  [GAME_DIFFICULTY_HIGH]: false }, // Lvl 1
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 2
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 3
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 4
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 5
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 6
+        ],
+        [ // Location 2
+          { [GAME_DIFFICULTY_MEDIUM]: true,  [GAME_DIFFICULTY_HIGH]: false }, // Lvl 1
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 2
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 3
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 4
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 5
+          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 6
+        ]
+        */
+      ]
     },
 
     // Unit list data
@@ -88,7 +106,6 @@ export default {
       room: null, // number|null: 0-7
       level: null, // number|null: 0-5
       difficulty: null, // string: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
-      adventureDifficulty: GAME_DIFFICULTY_MEDIUM, // string GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
 
       // User squad
       userSquad: {
@@ -349,6 +366,12 @@ export default {
         state.mergerIds = data.mergerIds;
       }
 
+      // Adventures
+      if (data.adventures !== undefined) {
+        state.adventures.difficulty = data.adventures.difficulty;
+        state.adventures.locations = data.adventures.locations;
+      }
+
       // Add an inventory unit
       if (data.addUnit !== undefined) {
         state.inventory.push(...data.addUnit);
@@ -395,9 +418,6 @@ export default {
       }
       if (data.difficulty !== undefined) {
         state.game.difficulty = data.difficulty;
-      }
-      if (data.adventureDifficulty !== undefined) {
-        state.game.adventureDifficulty = data.adventureDifficulty;
       }
 
       // Set a whole user/enemy squad.
@@ -551,11 +571,12 @@ export default {
     setInitialState(state, data) {
       state.loaded = true;
 
+      state.adventures = data.adventures;
+
       const userData = data.user;
       state.user.balance = userData.balance;
       state.user.timers = userData.timers;
       state.user.rewards = userData.rewards;
-      state.user.adventures = userData.adventures;
 
       state.inventory = data.inventory;
 
@@ -564,7 +585,6 @@ export default {
       state.game.room = gameData.room;
       state.game.level = gameData.level;
       state.game.difficulty = gameData.difficulty;
-      state.game.adventureDifficulty = gameData.adventureDifficulty;
       state.game.userSquad = gameData.userSquad;
       state.game.enemySquad = gameData.enemySquad;
       if (gameData.terrain) {
