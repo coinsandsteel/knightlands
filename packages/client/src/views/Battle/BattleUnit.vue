@@ -177,6 +177,9 @@ export default {
   top: 1%;
   border-radius: 14%;
 }
+.battle-unit--empty .battle-unit-background-color {
+  background: #717171;
+}
 .battle-unit--enemy .battle-unit-background-color {
   background: #818cf8;
 }

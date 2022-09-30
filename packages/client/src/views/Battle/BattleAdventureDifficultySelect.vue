@@ -41,28 +41,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("battle", ["game", "user"]),
+    ...mapState("battle", ["adventures"]),
     isAdventureHardDifficultyAvailable() {
-      if (
-        !(
-          this.user &&
-          this.user.adventures &&
-          this.user.adventures.length === battle.LOCATIONS.length
-        )
-      ) {
-        return false;
-      }
-
-      const ids = Object.keys(this.user.adventures);
-      return ids.filter(id => {
-        const adventure = this.user.adventures[id];
-        const levelIds = Object.keys(adventure);
-        return (
-          levelIds.filter(levelId => {
-            return !!adventure[levelId][battle.GAME_DIFFICULTY_MEDIUM];
-          }).length === 5
-        );
-      });
+      return (
+        this.adventures &&
+        this.adventures.locations &&
+        this.adventures.locations.length >= 5 &&
+        this.adventures.locations[4][battle.GAME_DIFFICULTY_MEDIUM]
+      );
     }
   },
   methods: {
@@ -70,7 +56,9 @@ export default {
       this.$close(result);
       // @todo call operation
       this.$store.dispatch("battle/update", {
-        adventureDifficulty: result
+        adventures: {
+          difficulty: result
+        }
       });
     }
   }

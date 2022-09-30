@@ -649,7 +649,7 @@ const router = new Router({
               component: () => import("./views/Battle/BattleAdventureSquad.vue")
             },
             {
-              path: ":id/play",
+              path: "play",
               name: "battle-adventure-play",
               component: () => import("./views/Battle/BattleAdventurePlay.vue"),
               meta: {

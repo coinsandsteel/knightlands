@@ -53,10 +53,10 @@ export default {
     };
   },
   computed: {
-    ...mapState("battle", ["game"]),
+    ...mapState("battle", ["adventures"]),
     difficulty() {
-      return this.game && this.game.adventureDifficulty
-        ? this.game.adventureDifficulty
+      return this.adventures && this.adventures.difficulty
+        ? this.adventures.difficulty
         : battle.GAME_DIFFICULTY_MEDIUM;
     },
     battleItems() {

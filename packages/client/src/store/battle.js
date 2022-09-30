@@ -368,8 +368,12 @@ export default {
 
       // Adventures
       if (data.adventures !== undefined) {
-        state.adventures.difficulty = data.adventures.difficulty;
-        state.adventures.locations = data.adventures.locations;
+        if (data.adventures.difficulty) {
+          state.adventures.difficulty = data.adventures.difficulty;
+        }
+        if (data.adventures.locations) {
+          state.adventures.locations = data.adventures.locations;
+        }
       }
 
       // Add an inventory unit

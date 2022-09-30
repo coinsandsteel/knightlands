@@ -12,7 +12,10 @@
         <!-- info -->
         <div>
           <div>Exp: {{ exp }}</div>
-          <div>Reward: {{ reward }}</div>
+          <div class="flex flex-no-wrap">
+            <div>Reward:</div>
+            <BattleCoin class="margin-left-1" :value="reward" />
+          </div>
         </div>
       </div>
       <div class="flex-full flex flex-center">
@@ -20,6 +23,7 @@
           v-if="isLevelAvailable"
           type="red"
           class="inline-block margin-right-2 margin-top-1"
+          min-width="12rem"
           @click="clickHandler"
         >
           Start
@@ -43,8 +47,12 @@
 // import BattleAdventureDifficultySelect from "@/views/Battle/BattleAdventureDifficultySelect.vue";
 import { mapState } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
+import BattleCoin from "@/views/Battle/BattleCoin.vue";
 
 export default {
+  components: {
+    BattleCoin
+  },
   props: {
     adventure: Object,
     level: Object
@@ -53,11 +61,9 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("battle", ["game", "user"]),
+    ...mapState("battle", ["adventures"]),
     difficultyIndex() {
-      return this.game.adventureDifficulty === battle.GAME_DIFFICULTY_HIGH
-        ? 1
-        : 0;
+      return this.adventures.difficulty === battle.GAME_DIFFICULTY_HIGH ? 1 : 0;
     },
     exp() {
       return this.level.exp[this.difficultyIndex];
@@ -86,29 +92,50 @@ export default {
     //   });
     // },
     isAdventureAvailable() {
-      if (
-        !(this.adventure && this.level && this.user && this.user.adventures)
-      ) {
+      // if (
+      //   !(this.adventure && this.level && this.user && this.user.adventures)
+      // ) {
+      //   return false;
+      // }
+
+      // const ids = Object.keys(this.user.adventures);
+      // const id = this.adventure.id + "";
+
+      // if (!(ids && ids.includes(id))) {
+      //   return false;
+      // }
+
+      if (!this.adventure) {
         return false;
       }
 
-      const ids = Object.keys(this.user.adventures);
-      const id = this.adventure.id + "";
-
-      if (!(ids && ids.includes(id))) {
-        return false;
-      }
-
-      return true;
+      return (
+        this.adventures.locations[this.adventure.id - 1] &&
+        this.adventures.locations[this.adventure.id - 1][this.level.id - 1] &&
+        this.adventures.locations[this.adventure.id - 1].find(
+          level => !!level[this.adventures.difficulty]
+        )
+      );
     },
     isLevelAvailable() {
-      const id = this.adventure.id + "";
-      const levelId = this.level.id + "";
+      if (!this.level) {
+        return false;
+      }
       return (
         this.isAdventureAvailable &&
-        // !this.passedLevels.includes(this.level.id + "")
-        this.user.adventures[id][levelId]
+        this.adventures.locations[this.adventure.id - 1][this.level.id - 1] &&
+        this.adventures.locations[this.adventure.id - 1][this.level.id - 1][
+          this.adventures.difficulty
+        ]
       );
+      // return false;
+      // const id = this.adventure.id + "";
+      // const levelId = this.level.id + "";
+      // return (
+      //   this.isAdventureAvailable &&
+      //   // !this.passedLevels.includes(this.level.id + "")
+      //   this.user.adventures[id][levelId]
+      // );
     }
     // isLevelAvailable() {
     //   return this.isAdventureAvailable;
@@ -118,9 +145,18 @@ export default {
     async clickHandler() {
       // const show = create(BattleAdventureDifficultySelect);
       // await show();
-      this.$router.push({
-        name: "battle-adventure-squad",
-        params: { id: this.adventure.id }
+      // this.$router.push({
+      //   name: "battle-adventure-squad",
+      //   params: { id: this.adventure.id }
+      // });
+      this.$store.dispatch("battle/enterLevel", {
+        room: this.adventure.id,
+        level: this.level.id
+      });
+      this.$nextTick(() => {
+        this.$router.push({
+          name: "battle-adventure-play"
+        });
       });
     }
   }
