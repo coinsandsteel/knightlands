@@ -61,12 +61,13 @@ export default {
 </script>
 <style scoped lang="less">
 .battle-unit-buff {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   background-size: calc(100% - 2px);
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+  border-radius: 50%;
 }
 .buff-state-indicator {
   width: 100%;
@@ -74,6 +75,7 @@ export default {
   top: 0;
   left: 0;
   border: 2px solid #f8781d;
+  border-radius: 50%;
 }
 .buff-state-indicator--positive {
   border-color: #42e624;

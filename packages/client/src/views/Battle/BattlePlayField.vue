@@ -29,10 +29,12 @@
     <div
       class="battle-play-board-border-outer flex flex-center flex-grow-1 margin-top-2"
     >
-      <div class="flex flex-space-between width-100">
-        <div class="flex flex-column">
+      <div class="flex flex-space-between_ width-100">
+        <div
+          class="flex flex-column flex-items-center flex-space-between side-column"
+        >
           <BattleSideCell
-            v-for="fighter in fighters"
+            v-for="fighter in sideFighters"
             :fighter="fighter"
             :key="fighter.fighterId"
             @click="showFighterDetails(fighter.fighterId)"
@@ -51,13 +53,13 @@
             />
           </div>
         </div>
-        <div class="flex flex-column">
-          <BattleSideCell
+        <div class="flex flex-column side-column">
+          <!-- <BattleSideCell
             v-for="fighter in enemyFighters"
             :fighter="fighter"
             :key="fighter.fighterId"
             @click="showFighterDetails(fighter.fighterId)"
-          />
+          /> -->
         </div>
       </div>
     </div>
@@ -86,157 +88,69 @@
         >lava effect</CustomButton
       >
     </div>
-    <!-- active unit -->
-    <div
-      v-if="activeFighter"
-      class="margin-top-3 padding-bottom-4 font-size-22"
-    >
-      <div class="grid-3-columns">
-        <div class="flex flex-end battle-indicators">
-          <template v-if="buffItems.length">
-            <BattleUnitBuff
-              v-for="(buffItem, buffIndex) in buffItems"
-              :key="buffItem.source + '_' + buffItem.sourceId + '_' + buffIndex"
-              :buff="buffItem"
-              class="battle-current-active-fighter-buff pointer"
-              @click.native="showBuffItem(buffItem)"
-            />
-          </template>
-          <!-- <template v-if="buffItems && buffItems.length > 0">
-            <div
-              class="buff-circle buff-circle--bonus margin-left-2 margin-right-2 pointer"
-              @click="showBuffItems()"
-            >
-              <div class="buff-circle-counter absolute font-size-18">
-                {{ buffItems.length }}x
-              </div>
-            </div>
-          </template> -->
-          <!-- <template v-if="deBuffItems && deBuffItems.length > 0">
-            <div
-              class="buff-circle buff-circle--damage margin-left-2 margin-right-2 pointer"
-              @click="showDeBuffItems()"
-            >
-              <div class="buff-circle-counter absolute font-size-18">
-                {{ deBuffItems.length }}x
-              </div>
-            </div>
-          </template> -->
-        </div>
+    <div class="flex actions-container padding-left-2 margin-top-2">
+      <div>
         <div>
+          <!-- active fighter -->
           <BattleUnit
             :unit="activeFighter"
             :is-enemy="!myActiveFighter"
-            class="battle-current-active-fighter pointer"
+            class="battle-current-active-fighter pointer margin-x-auto"
             @click="showFighterDetails(activeFighter.fighterId)"
           />
         </div>
-        <!-- skip button -->
-        <div v-if="myActiveFighter" class="text-align-left battle-indicators">
-          <CustomButton
-            type="blue"
-            width="10rem"
-            class="btn-skip inline-block"
-            @click="skipHandler"
-          >
-            Skip
-          </CustomButton>
+        <div class="font-size-22 text-align-center white-space-">
+          # {{ $t("battle-unit-tribe-" + activeFighter.tribe) }}
+          {{ $t("battle-unit-class-" + activeFighter.class) }} #
         </div>
       </div>
-      <div class="text-align-center margin-top-1">
-        # {{ $t("battle-unit-tribe-" + activeFighter.tribe) }}
-        {{ $t("battle-unit-class-" + activeFighter.class) }} #
-      </div>
-      <!-- <div
-        v-if="buffDescriptions && buffDescriptions.length > 0"
-        class="text-align-center padding-left-2 padding-right-2"
+      <!-- buff -->
+      <div
+        class="flex-grow-1 flex -justify-start flex-items-center margin-top--3"
       >
-        <div v-for="(description, index) in buffDescriptions" :key="index">
-          {{ description }}
-        </div>
-      </div> -->
-      <template v-if="myActiveFighter">
-        <div
-          v-if="abilities && abilities.length > 0"
-          class="flex flex-center margin-top-2 margin-bottom-1"
-        >
-          <BattleUnitAbility
-            v-for="ability in abilities"
-            :key="ability.abilityClass"
-            :ability="ability"
-            :isActive="ability.abilityClass === selectedAbilityClass"
-            :value="ability.value"
-            :overlayText="
-              ability.cooldown && ability.cooldown.estimate
-                ? ability.cooldown.estimate + ''
-                : null
-            "
-            :_overlayText="'3'"
-            class="battle-current-active-fighter-ability pointer"
-            :class="{ 'opacity-30 pointer-events-none': !ability.enabled }"
-            @click.native="abilitySelectHandler(ability)"
+        <template v-if="buffItems.length">
+          <BattleUnitBuff
+            v-for="(buffItem, buffIndex) in buffItems"
+            :key="buffItem.source + '_' + buffItem.sourceId + '_' + buffIndex"
+            :buff="buffItem"
+            class="battle-current-active-fighter-buff pointer"
+            @click.native="showBuffItem(buffItem)"
           />
-        </div>
-        <div
-          v-if="abilityCooldownEstimate"
-          class="battle-cooldown-estimate text-align-center"
+        </template>
+      </div>
+      <!-- actions -->
+      <div class="relative">
+        <!-- skip -->
+        <CustomButton
+          type="blue"
+          width="9rem"
+          class="btn-skip inline-block"
+          @click="skipHandler"
         >
-          {{
-            abilityCooldownEstimate > 1
-              ? "Cooldown! " + abilityCooldownEstimate + " steps left"
-              : "Cooldown! " + abilityCooldownEstimate + " step left"
-          }}
+          Skip
+        </CustomButton>
+        <!-- abilities -->
+        <div class="relative battle-current-active-fighter-abilities">
+          <template v-if="myActiveFighter">
+            <BattleUnitAbility
+              v-for="ability in abilities"
+              :key="ability.abilityClass"
+              :ability="ability"
+              :isActive="ability.abilityClass === selectedAbilityClass"
+              :value="ability.value"
+              :overlayText="
+                ability.cooldown && ability.cooldown.estimate
+                  ? ability.cooldown.estimate + ''
+                  : null
+              "
+              class="battle-current-active-fighter-ability pointer"
+              :class="{ 'opacity-30 pointer-events-none': !ability.enabled }"
+              @click.native="abilitySelectHandler(ability)"
+            />
+          </template>
         </div>
-        <div
-          v-if="selectedAbility && abilityDescription"
-          class="text-align-center"
-        >
-          {{ abilityDescription }}
-          <div
-            v-if="
-              $t('battle-ability-description-' + selectedAbility.abilityClass)
-            "
-            class="margin-top-half"
-          >
-            {{
-              $t("battle-ability-description-" + selectedAbility.abilityClass)
-            }}
-          </div>
-        </div>
-        <div
-          v-if="isBtnActivateAbilityVisible"
-          class="text-align-center margin-top-1"
-        >
-          <CustomButton
-            type="green"
-            @click="activateAbilityHandler(selectedAbility)"
-            class="inline-block"
-          >
-            Activate {{ $t("battle-ability-" + selectedAbility.abilityClass) }}
-          </CustomButton>
-        </div>
-      </template>
+      </div>
     </div>
-    <!-- <Transition name="fade" appear>
-      <BattleAbilitySelect
-        v-if="false && abilitySelectResolve"
-        :selectedFighterId="selectedFighterId"
-        @close="abilitySelectCloseHandler"
-      />
-    </Transition>
-    <Transition name="child-slide-left" appear>
-      <BattleAbilitySelect2
-        _v-if="
-          isAbilitySelectVisible &&
-            ((isAttackCellSelected && targetAbilities.length > 0) ||
-              (!isAttackCellSelected && nonTargetAbilities.length > 0))
-        "
-        v-if="myActiveFighter && canSelectAbility"
-        :isAttackCellSelected="isAttackCellSelected"
-        :activeFighterId="activeFighterId"
-        @close="abilitySelectCloseHandler2"
-      />
-    </Transition> -->
   </div>
 </template>
 <script>
@@ -313,6 +227,19 @@ export default {
       "activeFighterId",
       "moveCells"
     ]),
+    sideFighters() {
+      return [...this.fighters, ...this.enemyFighters].sort((a, b) => {
+        if (a.ratingIndex < b.ratingIndex) {
+          return -1;
+        }
+
+        if (a.ratingIndex > b.ratingIndex) {
+          return 1;
+        }
+
+        return 0;
+      });
+    },
     baseSize() {
       return this.appSize
         ? Math.floor(this.appSize.width / 6)
@@ -1163,7 +1090,51 @@ export default {
   cursor: pointer;
 }
 .btn-skip {
-  margin-left: 0;
+  position: absolute;
+  right: 55%;
+  top: -95%;
+  margin: 0;
+  transform: translateX(50%);
+}
+.side-column {
+  width: calc(var(--base-size) * 1);
+}
+.actions-container {
+  padding-bottom: calc(var(--base-size) * 0.5);
+}
+.battle-current-active-fighter-abilities {
+  width: calc(var(--base-size) * 0.8);
+  height: calc(var(--base-size) * 0.8);
+}
+.battle-current-active-fighter-abilities
+  .battle-current-active-fighter-ability {
+  position: absolute;
+  margin: 0;
+}
+.battle-current-active-fighter-abilities
+  .battle-current-active-fighter-ability:nth-child(1) {
+  right: 205%;
+  top: 45%;
+}
+.battle-current-active-fighter-abilities
+  .battle-current-active-fighter-ability:nth-child(2) {
+  right: 105%;
+  top: -10%;
+}
+.battle-current-active-fighter-abilities
+  .battle-current-active-fighter-ability:nth-child(3) {
+  right: 5%;
+  top: -75%;
+}
+.battle-current-active-fighter-abilities
+  .battle-current-active-fighter-ability:nth-child(4) {
+  right: 105%;
+  top: 105%;
+}
+.battle-current-active-fighter-abilities
+  .battle-current-active-fighter-ability:nth-child(5) {
+  right: 5%;
+  top: 40%;
 }
 ::v-deep {
   .battle-ability-effect {

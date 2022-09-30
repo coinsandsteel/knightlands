@@ -12,6 +12,8 @@
         :unit="fighter"
         :isEnemy="isEnemy"
         :shouldShowExtraInfo="true"
+        :isSmallRatingIndex="true"
+        :isHpVisible="false"
         :ratingIndex="fighter ? fighter.ratingIndex : null"
       />
     </div>
@@ -98,8 +100,8 @@ export default {
 </script>
 <style scoped lang="less">
 .battle-side-cell-container {
-  width: calc(var(--base-size) * 0.8);
-  height: calc(var(--base-size) * 0.8);
+  width: calc(var(--base-size) * 0.5);
+  height: calc(var(--base-size) * 0.5);
   // background: #ccc;
   // border: 1px solid transparent;
   // background-size: 100% 100%;

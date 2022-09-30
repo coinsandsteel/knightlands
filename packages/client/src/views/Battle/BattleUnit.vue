@@ -23,7 +23,7 @@
       <div class="battle-unit-background absolute-stretch"></div>
       <div class="absolute-stretch"></div>
       <div
-        v-if="shouldShowExtraInfo"
+        v-if="shouldShowExtraInfo && isHpVisible !== false"
         class="absolute battle-unit-hp font-size-18"
       >
         {{ hp }}
@@ -51,6 +51,7 @@
       <div
         v-if="shouldShowExtraInfo && isRatingIndexVisible"
         class="absolute battle-rating-index font-size-18"
+        :class="isSmallRatingIndex ? 'battle-rating-index--small' : ''"
       >
         {{ ratingIndex }}
       </div>
@@ -67,7 +68,9 @@ export default {
     shouldShowExtraInfo: Boolean,
     isAttackTarget: Boolean,
     isHealTarget: Boolean,
-    isActiveFighterId: Boolean
+    isActiveFighterId: Boolean,
+    isHpVisible: Boolean,
+    isSmallRatingIndex: Boolean
   },
   data() {
     return {};
@@ -121,27 +124,31 @@ export default {
   border-radius: 12px;
   padding: 0 5px;
 }
+.battle-rating-index--small {
+  transform: scale(0.7);
+  transform-origin: bottom left;
+}
 .battle-active-fighter {
   top: 3px;
   left: 3px;
-  width: 10px;
-  height: 10px;
+  width: 12%;
+  height: 12%;
   border-radius: 50%;
   background: #a3e635;
 }
 .battle-attack-target {
   top: 3px;
   left: 3px;
-  width: 10px;
-  height: 10px;
+  width: 12%;
+  height: 12%;
   border-radius: 50%;
   background: #ef4444;
 }
 .battle-heal-target {
   top: 3px;
   left: 3px;
-  width: 10px;
-  height: 10px;
+  width: 12%;
+  height: 12%;
   border-radius: 50%;
   background: #2563eb;
 }
