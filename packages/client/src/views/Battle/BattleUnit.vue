@@ -13,7 +13,8 @@
           ' battle-unit--template-' +
           (unit.template || unit.unitTemplate)
         : 'battle-unit--empty',
-      isEnemy ? 'battle-unit--enemy' : ''
+      isEnemy ? 'battle-unit--enemy' : '',
+      isDead ? 'battle-unit--dead' : ''
     ]"
     @click="clickHandler"
   >
@@ -23,7 +24,7 @@
       <div class="battle-unit-background absolute-stretch"></div>
       <div class="absolute-stretch"></div>
       <div
-        v-if="shouldShowExtraInfo && isHpVisible !== false"
+        v-if="shouldShowExtraInfo && isHpVisible"
         class="absolute battle-unit-hp font-size-18"
       >
         {{ hp }}
@@ -40,10 +41,10 @@
         v-if="shouldShowExtraInfo && isHealTarget"
         class="absolute battle-heal-target font-size-18"
       />
-      <div
+      <!-- <div
         v-if="shouldShowExtraInfo && isDead"
         class="absolute battle-dead-indicator font-size-18"
-      />
+      /> -->
       <div
         v-if="shouldShowExtraInfo && isStunned"
         class="absolute battle-stunned-indicator font-size-18"
@@ -102,6 +103,9 @@ export default {
 <style scoped lang="less">
 @import (reference) "../../style/ui.less";
 @import (reference) "../../style/common.less";
+.battle-unit--dead {
+  opacity: 0.3;
+}
 .battle-unit-hp {
   right: 0;
   top: 0;

@@ -99,7 +99,7 @@
             @click="showFighterDetails(activeFighter.fighterId)"
           />
         </div>
-        <div class="font-size-22 text-align-center white-space-">
+        <div class="font-size-22 text-align-center white-space-no-wrap">
           # {{ $t("battle-unit-tribe-" + activeFighter.tribe) }}
           {{ $t("battle-unit-class-" + activeFighter.class) }} #
         </div>
@@ -144,7 +144,11 @@
                   : null
               "
               class="battle-current-active-fighter-ability pointer"
-              :class="{ 'opacity-30 pointer-events-none': !ability.enabled }"
+              :class="{
+                'opacity-30 pointer-events-none': !ability.enabled,
+                'pointer-events-none':
+                  ability.cooldown && ability.cooldown.estimate
+              }"
               @click.native="abilitySelectHandler(ability)"
             />
           </template>
@@ -497,6 +501,10 @@ export default {
       // this.isAbilitySelectVisible = false;
 
       if (this.isProcessingQueue || !this.isMyTurn) {
+        return;
+      }
+
+      if (ability.cooldown && ability.cooldown.estimate) {
         return;
       }
 

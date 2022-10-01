@@ -2,7 +2,64 @@
   <UserDialog title="unit details" @close="close">
     <template v-slot:content>
       <div v-if="unit" class="font-size-22">
-        <div class="margin-top-2">
+        <div
+          class="battle-fighter-details-wrapper margin-x-auto flex flex-wrap padding-left-2"
+        >
+          <div class="">
+            <BattleUnit
+              :unit="unit"
+              :is-enemy="isEnemy"
+              class="margin-x-auto"
+            />
+            <div class="font-size-22 text-align-center white-space-no-wrap">
+              # {{ $t("battle-unit-tribe-" + unit.tribe) }}
+              {{ $t("battle-unit-class-" + unit.class) }} #
+            </div>
+          </div>
+          <div class="flex-grow-1 text-align-left width-35 margin-left-2">
+            <!-- <div>Tier: {{ unit.tier }}</div>
+              <div>Level: {{ unit.levelInt }}</div> -->
+            <div>Hp: {{ unit.hp }}</div>
+            <div>Damage: {{ unit.characteristics.damage }}</div>
+            <div>Defense: {{ unit.characteristics.defence }}</div>
+            <div>Speed: {{ unit.characteristics.speed }}</div>
+            <div>Initiative: {{ unit.characteristics.initiative }}</div>
+          </div>
+        </div>
+        <div
+          v-if="buffItems.length"
+          class="battle-fighter-details-wrapper margin-x-auto text-align-left margin-top-2 font-size-22 padding-left-2"
+        >
+          <div
+            v-for="(buff, buffIndex) in buffItems"
+            :key="buff.source + '_' + buff.sourceId + '_' + buffIndex"
+            class="flex flex-center flex-nowrap margin-bottom-1"
+          >
+            <BattleUnitBuff :buff="buff" />
+            <div class="flex-grow-1 buff-description padding-left-1">
+              {{
+                buff && buff.sourceId && "caseId" in buff
+                  ? BUFFS[buff.sourceId].cases[buff.caseId]
+                  : ""
+              }}
+            </div>
+          </div>
+          <div
+            v-for="(buff, buffIndex) in buffItems"
+            :key="buff.source + '_' + buff.sourceId + '_' + buffIndex"
+            class="flex flex-center flex-nowrap"
+          >
+            <BattleUnitBuff :buff="buff" />
+            <div class="flex-grow-1 buff-description padding-left-1">
+              {{
+                buff && buff.sourceId && "caseId" in buff
+                  ? BUFFS[buff.sourceId].cases[buff.caseId]
+                  : ""
+              }}
+            </div>
+          </div>
+        </div>
+        <!-- <div class="margin-top-2">
           <BattleUnit :unit="unit" :is-enemy="isEnemy" />
         </div>
         <div class="margin-top-1 font-size-30">
@@ -37,7 +94,7 @@
             :class="{ 'margin-top-2': index > 0 }"
           >
           </BattleUnitAbilityDetails>
-        </div>
+        </div> -->
       </div>
     </template>
   </UserDialog>
@@ -46,17 +103,32 @@
 <script>
 import { mapGetters } from "vuex";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
-import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
+import BattleUnitBuff from "@/views/Battle/BattleUnitBuff.vue";
+
+// import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
 import * as battle from "@/../../knightlands-shared/battle";
 
 export default {
   components: {
     BattleUnit,
-    BattleUnitAbilityDetails
+    BattleUnitBuff
+    // BattleUnitAbilityDetails
   },
   props: { fighterId: String },
   computed: {
     ...mapGetters("battle", ["fighters", "enemyFighters"]),
+    BUFFS() {
+      return battle.BUFFS;
+    },
+    buffItems() {
+      if (!this.unit) {
+        return [];
+      }
+
+      return this.unit.buffs.filter(
+        buff => buff && buff.source && buff.sourceId && buff.source !== "squad"
+      );
+    },
     isEnemy() {
       return !!this.enemyFighters.find(
         ({ fighterId }) => fighterId === this.fighterId
@@ -98,6 +170,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.battle-fighter-details-wrapper {
+  width: 250px;
+}
+.buff-description {
+  max-width: 210px;
+}
 .battle-unit {
   width: 100px;
   margin: 0 auto;

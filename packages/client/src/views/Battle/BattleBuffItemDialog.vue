@@ -3,7 +3,7 @@
     <template v-slot:content>
       <div class="flex flex-center font-size-22 text-align-left">
         <div>
-          <BattleUnitBuff :buff="buff" @click.native="showBuffItem(buffItem)" />
+          <BattleUnitBuff :buff="buff" />
         </div>
         <div class="flex-grow margin-left-2">
           {{ description }}
