@@ -70,7 +70,23 @@
       </div>
     </div>
     <!-- test buttons -->
-    <div v-if="false" class="text-align-center margin-top-2">
+    <div v-if="true" class="text-align-center margin-top-2">
+      <CustomButton
+        v-if="true"
+        type="green"
+        width="20rem"
+        class="inline-block"
+        @click="winLoose1Handler('win')"
+        >win</CustomButton
+      >
+      <CustomButton
+        v-if="true"
+        type="green"
+        width="20rem"
+        class="inline-block"
+        @click="winLoose1Handler('loose')"
+        >loose</CustomButton
+      >
       <CustomButton
         v-if="false"
         type="green"
@@ -80,6 +96,7 @@
         >move</CustomButton
       >
       <CustomButton
+        v-if="false"
         type="green"
         width="20rem"
         class="inline-block"
@@ -87,6 +104,7 @@
         >attack</CustomButton
       >
       <CustomButton
+        v-if="false"
         type="green"
         width="20rem"
         class="inline-block"
@@ -1139,6 +1157,9 @@ export default {
           oldIndex: enemyFighters[0].index === 0 ? 0 : 12
         });
       }
+    },
+    winLoose1Handler(payload) {
+      this.$store.dispatch("battle/testAction", payload);
     },
     async showResult() {
       const show = create(BattlePlayResultDialog);
