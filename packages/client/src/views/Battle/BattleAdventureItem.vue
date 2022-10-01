@@ -34,7 +34,7 @@
 
     <!-- blocker -->
     <div
-      v-if="!isAdventureAvailable"
+      v-if="!isLevelAvailable"
       class="blocker center padding-top-2 font-size-30 font-weight-900"
     >
       <p v-if="level && level.id === 1" class="yellow-title">

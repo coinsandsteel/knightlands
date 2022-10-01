@@ -2,28 +2,37 @@
   <UserDialog
     :title="hasWon ? 'You win' : 'You loose'"
     :hideCloseBtn="true"
-    @close="nextHandler"
+    :emitClose="true"
+    @close="() => {}"
   >
     <template v-slot:content>
       <div class="text-align-center font-size-22">
-        <div class="">Rewards</div>
-        <div class="margin-top-2">
-          <div class="flex-inline">
-            Crystals:
-            <BattleCrystal class="margin-left-1 inline-block" :value="123" />
+        <div v-if="crystal || coins || exp">
+          <div class="">Rewards</div>
+          <div class="margin-top-2">
+            <div class="flex-inline">
+              Crystals:
+              <BattleCrystal
+                class="margin-left-1 inline-block"
+                :value="crystal"
+              />
+            </div>
+          </div>
+          <div class="margin-top-1">
+            <div class="flex-inline">
+              Coins:
+              <BattleCoin
+                class="margin-left-1 inline-block"
+                :hasMargin="true"
+                :value="coins"
+              />
+            </div>
+          </div>
+          <div class="margin-top-1">
+            <div class="flex-inline">Experience: {{ exp }}</div>
           </div>
         </div>
-        <div class="margin-top-1">
-          <div class="flex-inline">
-            Coins:
-            <BattleCoin
-              class="margin-left-1 inline-block"
-              :hasMargin="true"
-              :value="123"
-            />
-          </div>
-        </div>
-        <div class="margin-top-2 text-align-center">
+        <!-- <div class="margin-top-2 text-align-center">
           <div v-for="(unit, index) in fighters" :key="index">
             <div class="flex-inline flex-item-center">
               <BattleUnit :unit="unit" />
@@ -40,7 +49,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="text-align-center">
           <CustomButton
             type="yellow"
@@ -58,18 +67,18 @@
 
 <script>
 import { mapState } from "vuex";
-import BattleUnit from "@/views/Battle/BattleUnit.vue";
+// import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
-import ProgressBar from "@/components/ProgressBar.vue";
+// import ProgressBar from "@/components/ProgressBar.vue";
 import * as battle from "@/../../knightlands-shared/battle";
 
 export default {
   components: {
-    BattleUnit,
+    // BattleUnit,
     BattleCoin,
-    BattleCrystal,
-    ProgressBar
+    BattleCrystal
+    // ProgressBar
   },
   computed: {
     ...mapState("battle", ["game", "user"]),
@@ -78,12 +87,25 @@ export default {
     },
     fighters() {
       return this.game.userSquad.fighters || [];
+    },
+    crystal() {
+      return 123;
+    },
+    coins() {
+      return 123;
+    },
+    exp() {
+      return 123;
     }
   },
   methods: {
     nextHandler() {
       this.$store.dispatch("battle/exit");
-      this.$router.replace({ name: "battle-menu" });
+      if (this.$route.name === "battle-adventure-play") {
+        this.$router.replace({ name: "battle-adventure" });
+      } else {
+        this.$router.replace({ name: "battle-menu" });
+      }
 
       if (this.$close) {
         this.$close();

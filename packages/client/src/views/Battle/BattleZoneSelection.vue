@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
 
 export default {
@@ -62,7 +63,25 @@ export default {
     };
   },
   mounted() {
-    this.goTo(this.value);
+    // this.goTo(this.value);
+    let locationIndex = 0;
+    for (let i = 0; i < this.adventures.locations.length; i++) {
+      const location = this.adventures.locations[i];
+      for (let j = 0; j < location.length; j++) {
+        if (location[j][this.adventures.difficulty]) {
+          locationIndex = i;
+          if (
+            j === location.length - 1 &&
+            i < this.adventures.locations.length - 1
+          ) {
+            locationIndex = locationIndex + 1;
+          }
+        }
+      }
+    }
+
+    this.sliderIndex = locationIndex;
+
     this.$nextTick(this.handleZoneChanged);
   },
   activated() {
@@ -75,6 +94,7 @@ export default {
     }
   },
   computed: {
+    ...mapState("battle", ["adventures"]),
     zones() {
       return battle.LOCATIONS;
     },
