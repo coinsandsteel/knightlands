@@ -44,57 +44,7 @@
               }}
             </div>
           </div>
-          <div
-            v-for="(buff, buffIndex) in buffItems"
-            :key="buff.source + '_' + buff.sourceId + '_' + buffIndex"
-            class="flex flex-center flex-nowrap"
-          >
-            <BattleUnitBuff :buff="buff" />
-            <div class="flex-grow-1 buff-description padding-left-1">
-              {{
-                buff && buff.sourceId && "caseId" in buff
-                  ? BUFFS[buff.sourceId].cases[buff.caseId]
-                  : ""
-              }}
-            </div>
-          </div>
         </div>
-        <!-- <div class="margin-top-2">
-          <BattleUnit :unit="unit" :is-enemy="isEnemy" />
-        </div>
-        <div class="margin-top-1 font-size-30">
-          # {{ $t("battle-unit-tribe-" + unit.tribe) }}
-          {{ $t("battle-unit-class-" + unit.class) }} #
-        </div>
-        <div class="margin-top-2">
-          <div
-            class="flex flex-justify-center flex-evenly-spaced width-75 padding-1 margin-left-auto margin-right-auto"
-          >
-            <div class="flex flex-column width-35 margin-bottom-1">
-              <div>Tier: {{ unit.tier }}</div>
-              <div>Level: {{ unit.levelInt }}</div>
-              <div>Hp: {{ unit.hp }}</div>
-              <div>Defense: {{ unit.characteristics.defence }}</div>
-            </div>
-            <div class="flex flex-column width-35 margin-bottom-1">
-              <div>Damage: {{ unit.characteristics.damage }}</div>
-              <div>Speed: {{ unit.characteristics.speed }}</div>
-              <div>Initiative: {{ unit.characteristics.initiative }}</div>
-            </div>
-          </div>
-        </div>
-        <div class="margin-top-3">
-          <div>Abilities</div>
-          <BattleUnitAbilityDetails
-            v-for="(ability, index) in abilities"
-            :key="ability.abilityType + ability.abilityClass"
-            :unit="unit"
-            :ability="ability"
-            class="padding-left-1"
-            :class="{ 'margin-top-2': index > 0 }"
-          >
-          </BattleUnitAbilityDetails>
-        </div> -->
       </div>
     </template>
   </UserDialog>

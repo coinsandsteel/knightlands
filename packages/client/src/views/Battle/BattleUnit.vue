@@ -45,10 +45,10 @@
         v-if="shouldShowExtraInfo && isDead"
         class="absolute battle-dead-indicator font-size-18"
       /> -->
-      <div
+      <!-- <div
         v-if="shouldShowExtraInfo && isStunned"
         class="absolute battle-stunned-indicator font-size-18"
-      />
+      /> -->
       <div
         v-if="shouldShowExtraInfo && isRatingIndexVisible"
         class="absolute battle-rating-index font-size-18"
@@ -56,11 +56,38 @@
       >
         {{ ratingIndex }}
       </div>
+      <!-- isStunned isBuffIndicatorVisible -->
+      <div
+        v-if="shouldShowExtraInfo && (isStunned || isBuffIndicatorVisible)"
+        class="battle-buff-indicator"
+        :class="{
+          'battle-buff-indicator--small': isBuffIndicatorSmall
+        }"
+      >
+        <AsteriskIcon
+          v-if="isBuffPositive"
+          class="battle-buff-indicator-icon battle-buff-indicator-icon--green"
+        />
+        <AsteriskIcon
+          v-if="isBuffNegative"
+          class="battle-buff-indicator-icon battle-buff-indicator-icon--yellow"
+        />
+        <AsteriskIcon
+          v-if="isStunned"
+          class="battle-buff-indicator-icon battle-buff-indicator-icon--red"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script>
+import AsteriskIcon from "./AsteriskIcon.vue";
+import * as battle from "@/../../knightlands-shared/battle";
+
 export default {
+  components: {
+    AsteriskIcon
+  },
   props: {
     unit: Object,
     ratingIndex: Number,
@@ -71,7 +98,9 @@ export default {
     isHealTarget: Boolean,
     isActiveFighterId: Boolean,
     isHpVisible: Boolean,
-    isSmallRatingIndex: Boolean
+    isSmallRatingIndex: Boolean,
+    isBuffIndicatorVisible: Boolean,
+    isBuffIndicatorSmall: Boolean
   },
   data() {
     return {};
@@ -85,6 +114,26 @@ export default {
         (this.unit && this.unit.isDead) ||
         (typeof this.hp === "number" && this.hp <= 0)
       );
+    },
+    isBuffPositive() {
+      if (!(this.unit && this.unit.buffs)) {
+        return false;
+      }
+      return this.unit.buffs.find(buff => {
+        return (
+          battle.BUFFS[buff.sourceId] && battle.BUFFS[buff.sourceId].positive
+        );
+      });
+    },
+    isBuffNegative() {
+      if (!(this.unit && this.unit.buffs)) {
+        return false;
+      }
+      return this.unit.buffs.find(buff => {
+        return (
+          battle.BUFFS[buff.sourceId] && !battle.BUFFS[buff.sourceId].positive
+        );
+      });
     },
     isStunned() {
       return this.unit && this.unit.isStunned;
@@ -132,44 +181,74 @@ export default {
   transform: scale(0.7);
   transform-origin: bottom left;
 }
+.battle-buff-indicator {
+  position: absolute;
+  height: 1.4rem;
+  left: 10%;
+  bottom: 10%;
+  display: flex;
+}
+.battle-buff-indicator-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.battle-buff-indicator--small {
+  height: 1rem;
+  right: 8%;
+  bottom: 8%;
+  justify-content: end;
+}
+.battle-buff-indicator--small .battle-buff-indicator-icon {
+  width: 1rem;
+  height: 1rem;
+}
+.battle-buff-indicator-icon--green {
+  color: #a3e635;
+}
+.battle-buff-indicator-icon--yellow {
+  color: #f59e0b;
+}
+.battle-buff-indicator-icon--red {
+  color: #ef4444;
+}
 .battle-active-fighter {
-  top: 3px;
-  left: 3px;
+  top: 10%;
+  left: 10%;
   width: 12%;
   height: 12%;
   border-radius: 50%;
   background: #a3e635;
 }
 .battle-attack-target {
-  top: 3px;
-  left: 3px;
+  top: 10%;
+  left: 10%;
   width: 12%;
   height: 12%;
   border-radius: 50%;
   background: #ef4444;
 }
 .battle-heal-target {
-  top: 3px;
-  left: 3px;
+  top: 10%;
+  left: 10%;
   width: 12%;
   height: 12%;
   border-radius: 50%;
   background: #2563eb;
 }
-.battle-dead-indicator {
-  top: 1px;
-  left: 1px;
-  width: 20px;
-  height: 20px;
-  background: url("/images/battle/units/dead_unit.png") center/100% no-repeat;
-}
-.battle-stunned-indicator {
-  bottom: 2px;
-  right: 0;
-  width: 20px;
-  height: 20px;
-  background: url("/images/battle/effect/stunned.png") center/100% no-repeat;
-}
+// .battle-dead-indicator {
+//   top: 1px;
+//   left: 1px;
+//   width: 20px;
+//   height: 20px;
+//   background: url("/images/battle/units/dead_unit.png") center/100% no-repeat;
+// }
+// .battle-stunned-indicator {
+//   bottom: 2px;
+//   right: 0;
+//   width: 20px;
+//   height: 20px;
+//   background: url("/images/battle/effect/stunned.png") center/100% no-repeat;
+// }
 .battle-unit-wrapper {
   // background: url("/images/battle/units/unit.png") center/100% no-repeat;
   padding-bottom: 100%;

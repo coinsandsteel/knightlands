@@ -13,6 +13,8 @@
         :isEnemy="isEnemy"
         :shouldShowExtraInfo="true"
         :isSmallRatingIndex="true"
+        :isBuffIndicatorVisible="true"
+        :isBuffIndicatorSmall="true"
         :isHpVisible="false"
         :ratingIndex="fighter ? fighter.ratingIndex : null"
       />
