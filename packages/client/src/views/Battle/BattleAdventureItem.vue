@@ -152,7 +152,7 @@ export default {
       //   params: { id: this.adventure.id }
       // });
       this.$store.dispatch("battle/enterLevel", {
-        room: this.adventure.id,
+        location: this.adventure.id,
         level: this.level.id
       });
       this.$nextTick(() => {

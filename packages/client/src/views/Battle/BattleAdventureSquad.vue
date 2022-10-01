@@ -77,7 +77,7 @@ export default {
     },
     handleStart() {
       this.$store.dispatch("battle/enterLevel", {
-        room: this.$route.params.id,
+        location: this.$route.params.id,
         level: null
       });
       this.$router.push({
