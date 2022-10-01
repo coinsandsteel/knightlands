@@ -152,8 +152,8 @@ export default {
       //   params: { id: this.adventure.id }
       // });
       this.$store.dispatch("battle/enterLevel", {
-        location: this.adventure.id,
-        level: this.level.id
+        location: this.adventure.id - 1,
+        level: this.level.id - 1
       });
       this.$nextTick(() => {
         this.$router.push({
