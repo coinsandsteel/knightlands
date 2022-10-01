@@ -46,8 +46,10 @@ export default {
       return (
         this.adventures &&
         this.adventures.locations &&
-        this.adventures.locations.length >= 5 &&
-        this.adventures.locations[4][battle.GAME_DIFFICULTY_MEDIUM]
+        this.adventures.locations[this.adventures.locations.length - 1][
+          this.adventures.locations[this.adventures.locations.length - 1]
+            .length - 1
+        ][battle.GAME_DIFFICULTY_MEDIUM]
       );
     }
   },

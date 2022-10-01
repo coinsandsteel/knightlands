@@ -111,25 +111,55 @@ export default {
         return false;
       }
 
-      return (
-        this.adventures.locations[this.adventure.id - 1] &&
-        this.adventures.locations[this.adventure.id - 1][this.level.id - 1] &&
-        this.adventures.locations[this.adventure.id - 1].find(
-          level => !!level[this.adventures.difficulty]
-        )
-      );
+      if (
+        this.adventure.id === 1 &&
+        this.adventures.difficulty === battle.GAME_DIFFICULTY_MEDIUM
+      ) {
+        return true;
+      }
+
+      let previousLocationIndex = this.adventure.id - 2;
+      let difficulty = this.adventures.difficulty;
+
+      if (previousLocationIndex < 0) {
+        previousLocationIndex = this.adventures.locations.length - 1;
+        difficulty = battle.GAME_DIFFICULTY_MEDIUM;
+      }
+      const lastLevelIndex =
+        this.adventures.locations[previousLocationIndex].length - 1;
+
+      return !!this.adventures.locations[previousLocationIndex][lastLevelIndex][
+        difficulty
+      ];
+
+      // return (
+      //   this.adventures.locations[this.adventure.id - 1] &&
+      //   this.adventures.locations[this.adventure.id - 1][this.level.id - 1] &&
+      //   this.adventures.locations[this.adventure.id - 1].find(
+      //     level => !!level[this.adventures.difficulty]
+      //   )
+      // );
     },
     isLevelAvailable() {
-      if (!this.level) {
+      if (!(this.level && this.isAdventureAvailable)) {
         return false;
       }
-      return (
-        this.isAdventureAvailable &&
-        this.adventures.locations[this.adventure.id - 1][this.level.id - 1] &&
-        this.adventures.locations[this.adventure.id - 1][this.level.id - 1][
-          this.adventures.difficulty
-        ]
-      );
+      if (this.level.id === 1) {
+        return true;
+      }
+
+      const previousLevel = this.level.id - 2;
+      return this.adventures.locations[this.adventure.id - 1][previousLevel][
+        this.adventures.difficulty
+      ];
+
+      // return (
+      //   this.isAdventureAvailable &&
+      //   this.adventures.locations[this.adventure.id - 1][this.level.id - 1] &&
+      //   this.adventures.locations[this.adventure.id - 1][this.level.id - 1][
+      //     this.adventures.difficulty
+      //   ]
+      // );
       // return false;
       // const id = this.adventure.id + "";
       // const levelId = this.level.id + "";
