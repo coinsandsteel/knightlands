@@ -57,7 +57,12 @@
           class="flex flex-column flex-justify-end side-column side-column--right text-align-center"
         >
           <!-- skip -->
-          <CustomButton type="blue" class="btn-skip" @click="skipHandler">
+          <CustomButton
+            v-if="myActiveFighter"
+            type="blue"
+            class="btn-skip"
+            @click="skipHandler"
+          >
             Skip
           </CustomButton>
           <!-- <BattleSideCell
@@ -135,7 +140,7 @@
       </div>
       <!-- buff -->
       <div
-        class="flex-grow-1 flex -justify-start flex-items-center margin-top--3"
+        class="flex-grow-1 flex -justify-start flex-items-center margin-top--3 padding-left-1"
       >
         <template v-if="buffItems.length">
           <BattleUnitBuff
