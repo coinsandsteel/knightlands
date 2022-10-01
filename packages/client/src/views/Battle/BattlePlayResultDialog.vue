@@ -9,7 +9,7 @@
       <div class="text-align-center font-size-22">
         <div v-if="crystal || coins || exp">
           <div class="">Rewards</div>
-          <div class="margin-top-2">
+          <div v-if="crystal" class="margin-top-2">
             <div class="flex-inline">
               Crystals:
               <BattleCrystal
@@ -18,7 +18,7 @@
               />
             </div>
           </div>
-          <div class="margin-top-1">
+          <div v-if="coins" class="margin-top-1">
             <div class="flex-inline">
               Coins:
               <BattleCoin
@@ -28,7 +28,7 @@
               />
             </div>
           </div>
-          <div class="margin-top-1">
+          <div v-if="exp" class="margin-top-1">
             <div class="flex-inline">Experience: {{ exp }}</div>
           </div>
         </div>
@@ -89,13 +89,13 @@ export default {
       return this.game.userSquad.fighters || [];
     },
     crystal() {
-      return 123;
+      return this.game.combat.rewards.crystals || 0;
     },
     coins() {
-      return 123;
+      return this.game.combat.rewards.coins || 0;
     },
     exp() {
-      return 123;
+      return this.game.combat.rewards.xp || 0;
     }
   },
   methods: {

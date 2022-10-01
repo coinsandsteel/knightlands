@@ -127,6 +127,11 @@ export default {
       // Active combat's data
       combat: {
         started: false,
+        rewards: {
+          coins: 0,
+          crystals: 0,
+          xp: 0
+        },
         result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
         // isMyTurn: true, // boolean|null
@@ -568,6 +573,9 @@ export default {
       }
       if (data.combatResult !== undefined) {
         state.game.combat.result = data.combatResult;
+      }
+      if (data.combatRewards !== undefined) {
+        state.game.combat.rewards = data.combatRewards;
       }
       if (data.combatMoveCells !== undefined) {
         state.game.combat.runtime.moveCells = data.combatMoveCells;
