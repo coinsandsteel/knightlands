@@ -3,7 +3,6 @@ import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 import {
-  GAME_DIFFICULTY_HIGH,
   GAME_DIFFICULTY_MEDIUM,
   SHOP_STARTER_PACK,
   SHOP_DAILY_REWARD,
@@ -103,7 +102,7 @@ export default {
     // Game
     game: {
       mode: null, // string|null: GAME_MODE_DUEL | GAME_MODE_ADVENTURE
-      room: null, // number|null: 0-7
+      location: null, // number|null: 0-7
       level: null, // number|null: 0-5
       difficulty: null, // string: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
       usedActions: [],
@@ -415,8 +414,8 @@ export default {
       if (data.mode !== undefined) {
         state.game.mode = data.mode;
       }
-      if (data.room !== undefined) {
-        state.game.room = data.room;
+      if (data.location !== undefined) {
+        state.game.location = data.location;
       }
       if (data.level !== undefined) {
         state.game.level = data.level;
@@ -597,7 +596,7 @@ export default {
 
       const gameData = data.game;
       state.game.mode = gameData.mode;
-      state.game.room = gameData.room;
+      state.game.location = gameData.location;
       state.game.level = gameData.level;
       state.game.difficulty = gameData.difficulty;
       state.game.userSquad = gameData.userSquad;
@@ -776,15 +775,15 @@ export default {
     },
 
     // BattleEnterLevel - Start from level > 1
-    // - room: number
+    // - location: number
     // - level: number
-    async enterLevel(store, { room, level }) {
+    async enterLevel(store, { location, level }) {
       /*Vue.prototype.$app.logEvent("april-next-lvl", {
         level: store.state.level + 1,
         booster
       });*/
       await this.$app.$game._wrapOperation(Operations.BattleEnterLevel, {
-        room,
+        location,
         level
       });
       //store.commit("setIsDisabled", false);
