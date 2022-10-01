@@ -95,7 +95,7 @@
       >
     </div>
     <div class="flex actions-container padding-left-2 margin-top-2">
-      <div>
+      <div v-if="activeFighter">
         <div>
           <!-- active fighter -->
           <BattleUnit

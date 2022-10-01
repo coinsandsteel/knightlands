@@ -21,6 +21,7 @@
       <div class="flex-full flex flex-center">
         <CustomButton
           v-if="isLevelAvailable"
+          :disabled="!isFightersFullFilled"
           type="red"
           class="inline-block margin-right-2 margin-top-1"
           min-width="12rem"
@@ -45,7 +46,7 @@
 <script>
 // import { create } from "vue-modal-dialogs";
 // import BattleAdventureDifficultySelect from "@/views/Battle/BattleAdventureDifficultySelect.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
 
@@ -62,6 +63,7 @@ export default {
   },
   computed: {
     ...mapState("battle", ["adventures"]),
+    ...mapGetters("battle", ["isFightersFullFilled"]),
     difficultyIndex() {
       return this.adventures.difficulty === battle.GAME_DIFFICULTY_HIGH ? 1 : 0;
     },
