@@ -1,5 +1,11 @@
 <template>
   <div class="screen-content ">
+    <div
+      class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
+    >
+      <BattleCoin class="margin-left-2" :hasMargin="true" />
+      <BattleCrystal class="margin-left-2" />
+    </div>
     <div class="font-size-22 height-100 flex flex-center">
       <div>
         <div>
@@ -71,10 +77,16 @@
 </template>
 <script>
 import AppSection from "@/AppSection.vue";
+import BattleCoin from "@/views/Battle/BattleCoin.vue";
+import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
   mixins: [AppSection, ActivityMixin],
+  components: {
+    BattleCoin,
+    BattleCrystal
+  },
   data() {
     return {};
   },
