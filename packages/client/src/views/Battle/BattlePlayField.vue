@@ -53,7 +53,13 @@
             />
           </div>
         </div>
-        <div class="flex flex-column side-column">
+        <div
+          class="flex flex-column flex-justify-end side-column side-column--right text-align-center"
+        >
+          <!-- skip -->
+          <CustomButton type="blue" class="btn-skip" @click="skipHandler">
+            Skip
+          </CustomButton>
           <!-- <BattleSideCell
             v-for="fighter in enemyFighters"
             :fighter="fighter"
@@ -120,15 +126,6 @@
       </div>
       <!-- actions -->
       <div class="relative">
-        <!-- skip -->
-        <CustomButton
-          type="blue"
-          width="9rem"
-          class="btn-skip inline-block"
-          @click="skipHandler"
-        >
-          Skip
-        </CustomButton>
         <!-- abilities -->
         <div class="relative battle-current-active-fighter-abilities">
           <template v-if="myActiveFighter">
@@ -1098,14 +1095,21 @@ export default {
   cursor: pointer;
 }
 .btn-skip {
-  position: absolute;
-  right: 55%;
-  top: -95%;
-  margin: 0;
-  transform: translateX(50%);
+  // position: absolute;
+  // right: 55%;
+  // top: -95%;
+  // margin: 0;
+  // transform: translateX(50%);
+  width: 9rem;
+  max-width: 100%;
+  margin: 0 auto;
+  transform: translateX(2px);
 }
 .side-column {
   width: calc(var(--base-size) * 1);
+}
+.side-column--right {
+  padding-bottom: calc(var(--base-size) * 0.6);
 }
 .actions-container {
   padding-bottom: calc(var(--base-size) * 0.5);

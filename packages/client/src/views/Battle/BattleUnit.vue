@@ -167,7 +167,7 @@ export default {
   padding: 0 5px;
 }
 .battle-rating-index {
-  left: 0px;
+  right: 0px;
   bottom: 2px;
   background: #1e3a8a;
   border: solid 1px #1e3a8a;
@@ -179,14 +179,14 @@ export default {
 }
 .battle-rating-index--small {
   transform: scale(0.7);
-  transform-origin: bottom left;
+  transform-origin: bottom right;
 }
 .battle-buff-indicator {
   position: absolute;
   height: 1.4rem;
   left: 10%;
   bottom: 10%;
-  display: flex;
+  // display: flex;
 }
 .battle-buff-indicator-icon {
   width: 1.4rem;
@@ -194,9 +194,9 @@ export default {
 }
 .battle-buff-indicator--small {
   height: 1rem;
-  right: 8%;
-  bottom: 8%;
-  justify-content: end;
+  left: 8%;
+  // bottom: 8%;
+  // justify-content: end;
 }
 .battle-buff-indicator--small .battle-buff-indicator-icon {
   width: 1rem;
