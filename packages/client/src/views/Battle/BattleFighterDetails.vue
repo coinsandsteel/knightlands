@@ -12,8 +12,13 @@
               class="margin-x-auto"
             />
             <div class="font-size-22 text-align-center white-space-no-wrap">
-              # {{ $t("battle-unit-tribe-" + unit.tribe) }}
-              {{ $t("battle-unit-class-" + unit.class) }} #
+              <template v-if="unit.name">
+                {{ unit.name }}
+              </template>
+              <template v-else>
+                {{ $t("battle-unit-tribe-" + unit.tribe) }}
+                {{ $t("battle-unit-class-" + unit.class) }}
+              </template>
             </div>
           </div>
           <div class="flex-grow-1 text-align-left width-35 margin-left-2">

@@ -83,7 +83,7 @@
               <div>Speed - {{ unit.characteristics.speed }}</div>
               <div>Initiative - {{ unit.characteristics.initiative }}</div>
             </div>
-            <div class="margin-top-3">
+            <div class="margin-top-3 padding-bottom-2">
               <div>Abilities</div>
               <BattleUnitAbilityDetails
                 v-for="(ability, index) in abilities"

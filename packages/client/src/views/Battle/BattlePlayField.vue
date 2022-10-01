@@ -106,8 +106,13 @@
           />
         </div>
         <div class="font-size-22 text-align-center white-space-no-wrap">
-          # {{ $t("battle-unit-tribe-" + activeFighter.tribe) }}
-          {{ $t("battle-unit-class-" + activeFighter.class) }} #
+          <template v-if="activeFighter.name">
+            {{ activeFighter.name }}
+          </template>
+          <template v-else>
+            {{ $t("battle-unit-tribe-" + activeFighter.tribe) }}
+            {{ $t("battle-unit-class-" + activeFighter.class) }}
+          </template>
         </div>
       </div>
       <!-- buff -->
@@ -152,6 +157,30 @@
         </div>
       </div>
     </div>
+    <!-- actions used -->
+    <div
+      v-if="lastUsedAction"
+      class="actions-used flex flex-no-wrap flex-items-center"
+    >
+      <div class="font-size-22 padding-right-1 text-align-left">
+        {{ lastUsedAction.sourceName }} successfully used a
+        {{ $t("battle-ability-" + lastUsedAction.abilityClass) }}
+        {{
+          lastUsedAction.targetName ? ` on ${lastUsedAction.targetName}` : ""
+        }}
+        {{
+          lastUsedAction.damage
+            ? ` and dealt ${lastUsedAction.damage} damage`
+            : ""
+        }}
+      </div>
+      <div
+        class="show-actions-used-trigger flex flex-center flex-shrink-0 pointer"
+        @click="showUsedActions"
+      >
+        ?
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -177,8 +206,10 @@ import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import BattleExitGame from "@/views/Battle/BattleExitGame.vue";
 import BattlePlayResultDialog from "@/views/Battle/BattlePlayResultDialog.vue";
+import BattleAbilityActivate from "@/views/Battle/BattleAbilityActivate.vue";
 // import BattleBuffItemsDialog from "@/views/Battle/BattleBuffItemsDialog.vue";
 import BattleBuffItemDialog from "@/views/Battle/BattleBuffItemDialog.vue";
+import BattleUsedActions from "@/views/Battle/BattleUsedActions.vue";
 import CloseButton from "@/components/CloseButton.vue";
 
 const commonAnimationParams = {
@@ -399,6 +430,29 @@ export default {
       return this.activeFighter.buffs.filter(
         buff => buff && buff.source && buff.sourceId && buff.source !== "squad"
       );
+    },
+    usedActions() {
+      return this.game.usedActions;
+      // return [
+      //   {
+      //     abilityClass: "attack",
+      //     sourceName: "Abc",
+      //     targetName: "Abc Def",
+      //     damage: 10
+      //   },
+      //   {
+      //     abilityClass: "attack",
+      //     sourceName: "Abc",
+      //     targetName: "Abc Def",
+      //     damage: 20
+      //   }
+      // ];
+    },
+    lastUsedAction() {
+      if (this.usedActions.length > 0) {
+        return this.usedActions[this.usedActions.length - 1];
+      }
+      return null;
     }
     // deBuffItems() {
     //   return [
@@ -493,7 +547,7 @@ export default {
     //   this.abilitySelectResolve(event);
     //   this.abilitySelectResolve = null;
     // },
-    abilitySelectHandler(ability) {
+    async abilitySelectHandler(ability) {
       // this.selectedFighterId = null;
       // this.isAbilitySelectVisible = false;
 
@@ -508,6 +562,10 @@ export default {
       if (!(ability && ability.abilityClass && ability.enabled)) {
         return;
       }
+
+      if (this.selectedAbilityClass === ability.abilityClass) {
+        return;
+      }
       // let payload = {
       //   index: this.selectedIndex || null,
       //   fighterId: this.activeFighterId,
@@ -519,10 +577,31 @@ export default {
       // this.$store.dispatch("battle/apply", payload);
       // this.isAttackCellSelected = false;
       // this.selectedIndex = null;
-      this.selectedAbilityClass = ability.abilityClass;
-      this.$store.dispatch("battle/chooseAbility", {
-        abilityClass: ability.abilityClass
-      });
+
+      if (["move", "attack"].includes(ability.abilityClass)) {
+        this.selectedAbilityClass = ability.abilityClass;
+        this.$store.dispatch("battle/chooseAbility", {
+          abilityClass: ability.abilityClass
+        });
+        return;
+      }
+
+      // show ability activate dialog
+      const showDialog = create(BattleAbilityActivate, "ability");
+      const result = await showDialog(ability);
+      if (result) {
+        this.selectedAbilityClass = ability.abilityClass;
+        if (
+          battle.ABILITY_TYPES[ability.abilityClass] ===
+          battle.ABILITY_TYPE_SELF_BUFF
+        ) {
+          this.activateAbilityHandler(this.selectedAbility);
+        } else {
+          this.$store.dispatch("battle/chooseAbility", {
+            abilityClass: ability.abilityClass
+          });
+        }
+      }
     },
     activateAbilityHandler(ability) {
       if (this.isProcessingQueue || !this.isMyTurn) {
@@ -1064,6 +1143,13 @@ export default {
     async showResult() {
       const show = create(BattlePlayResultDialog);
       await show();
+    },
+    async showUsedActions() {
+      if (!(this.usedActions && this.usedActions.length > 0)) {
+        return;
+      }
+      const show = create(BattleUsedActions, "items");
+      await show(this.usedActions);
     }
   }
 };
@@ -1216,7 +1302,18 @@ export default {
     top: 0;
     transform: translate(40%, 0);
   }
-  //
+  .actions-used {
+    padding: 0 2rem;
+  }
+  .show-actions-used-trigger {
+    background: #fff;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    color: #222;
+    font-size: 3rem;
+    font-weight: 900;
+  }
   .battle-ability-effect--accurate_shot {
     background-image: url("/images/battle/abilities/accurate_shot.png");
   }

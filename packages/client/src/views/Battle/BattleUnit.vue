@@ -14,7 +14,7 @@
           (unit.template || unit.unitTemplate)
         : 'battle-unit--empty',
       isEnemy ? 'battle-unit--enemy' : '',
-      isDead ? 'battle-unit--dead' : ''
+      shouldShowExtraInfo && isDead ? 'battle-unit--dead' : ''
     ]"
     @click="clickHandler"
   >

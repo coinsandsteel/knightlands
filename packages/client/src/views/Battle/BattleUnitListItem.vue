@@ -1,11 +1,11 @@
 <template>
   <div
-    class="battle-unit-list-item flex flex-item-center pointer font-size-22"
+    class="battle-unit-list-item flex flex-no-wrap flex-item-center pointer font-size-22"
     @click="clickHandler"
   >
-    <BattleUnit :unit="unit" />
+    <BattleUnit :unit="unit" class="flex-shrink-0" />
     <template v-if="unit">
-      <div class="flex flex-item-center">
+      <div class="flex flex-wrap flex-item-center">
         <div class="text-align-left">
           <div class="padding-left-2">{{ title }}</div>
           <div class="padding-left-2">tier {{ tier }}, pwr: {{ power }}</div>
@@ -70,11 +70,16 @@ export default {
         : 0;
     },
     title() {
-      return this.unitRecord
-        ? `${this.$t("battle-unit-tribe-" + this.unitRecord.tribe)} ${this.$t(
-            "battle-unit-class-" + this.unitRecord.class
-          )}`
-        : "";
+      let title = "";
+      if (this.unitRecord) {
+        if (this.unitRecord.name) {
+          title += this.unitRecord.name + " - ";
+        }
+        title += `${this.$t(
+          "battle-unit-tribe-" + this.unitRecord.tribe
+        )} ${this.$t("battle-unit-class-" + this.unitRecord.class)}`;
+      }
+      return title;
     },
     experience() {
       return this.unitRecord && this.unitRecord.expirience

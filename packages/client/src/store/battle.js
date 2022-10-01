@@ -106,6 +106,7 @@ export default {
       room: null, // number|null: 0-7
       level: null, // number|null: 0-5
       difficulty: null, // string: GAME_DIFFICULTY_LOW | GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
+      usedActions: [],
 
       // User squad
       userSquad: {
@@ -422,6 +423,16 @@ export default {
       }
       if (data.difficulty !== undefined) {
         state.game.difficulty = data.difficulty;
+      }
+      if (data.usedActions !== undefined) {
+        if (data.usedActions.length > 0) {
+          state.game.usedActions = [
+            ...state.game.usedActions,
+            ...data.usedActions
+          ];
+        } else {
+          state.game.usedActions = [];
+        }
       }
 
       // Set a whole user/enemy squad.
