@@ -121,16 +121,20 @@ export default {
       let previousLocationIndex = this.adventure.id - 2;
       let difficulty = this.adventures.difficulty;
 
-      if (previousLocationIndex < 0) {
-        previousLocationIndex = this.adventures.locations.length - 1;
-        difficulty = battle.GAME_DIFFICULTY_MEDIUM;
-      }
-      const lastLevelIndex =
-        this.adventures.locations[previousLocationIndex].length - 1;
+      return this.adventures.locations[previousLocationIndex].every(
+        level => !!level[difficulty]
+      );
 
-      return !!this.adventures.locations[previousLocationIndex][lastLevelIndex][
-        difficulty
-      ];
+      // if (previousLocationIndex < 0) {
+      //   previousLocationIndex = this.adventures.locations.length - 1;
+      //   difficulty = battle.GAME_DIFFICULTY_MEDIUM;
+      // }
+      // const lastLevelIndex =
+      //   this.adventures.locations[previousLocationIndex].length - 1;
+
+      // return !!this.adventures.locations[previousLocationIndex][lastLevelIndex][
+      //   difficulty
+      // ];
 
       // return (
       //   this.adventures.locations[this.adventure.id - 1] &&
