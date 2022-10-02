@@ -94,6 +94,8 @@ export default {
     //   });
     // },
     isAdventureAvailable() {
+      return true;
+
       // if (
       //   !(this.adventure && this.level && this.user && this.user.adventures)
       // ) {
@@ -145,6 +147,7 @@ export default {
       // );
     },
     isLevelAvailable() {
+      return true;
       if (!(this.level && this.isAdventureAvailable)) {
         return false;
       }
@@ -178,7 +181,7 @@ export default {
     // }
   },
   methods: {
-    async clickHandler() {
+    async clickHandler(difficulty) {
       // const show = create(BattleAdventureDifficultySelect);
       // await show();
       // this.$router.push({
@@ -187,7 +190,8 @@ export default {
       // });
       this.$store.dispatch("battle/enterLevel", {
         location: this.adventure.id - 1,
-        level: this.level.id - 1
+        level: this.level.id - 1,
+        difficulty: 'medium'
       });
       this.$nextTick(() => {
         this.$router.push({
