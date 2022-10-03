@@ -70,20 +70,20 @@ const CraftingDisenchant = () =>
 const SummonRoot = () => import("./views/Summon/SummonRoot.vue");
 const SummonHome = () => import("./views/Summon/SummonHome.vue");
 
-const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
+// const XmasRoot = () => import("./views/Xmas/XmasRoot.vue");
 
-const LunarRoot = () => import("./views/Lunar/LunarRoot.vue");
-const MarchRoot = () => import("./views/March/MarchRoot.vue");
-const AprilRoot = () => import("./views/April/AprilRoot.vue");
+// const LunarRoot = () => import("./views/Lunar/LunarRoot.vue");
+// const MarchRoot = () => import("./views/March/MarchRoot.vue");
+// const AprilRoot = () => import("./views/April/AprilRoot.vue");
 const BattleRoot = () => import("./views/Battle/BattleRoot.vue");
 
-const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
-const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
-const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
-const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
-const DungeonRankings = () =>
-  import("./views/Dungeon/Rankings/DungeonRankings.vue");
-const DungeonUser = () => import("./views/Dungeon/DungeonUser.vue");
+// const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
+// const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
+// const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
+// const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
+// const DungeonRankings = () =>
+//   import("./views/Dungeon/Rankings/DungeonRankings.vue");
+// const DungeonUser = () => import("./views/Dungeon/DungeonUser.vue");
 
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
 const ChooseChest = () => import("./views/Summon/Chests/ChooseChest.vue");
@@ -401,50 +401,50 @@ const router = new Router({
       path: "/home/daily-rewards",
       component: DailyRewards
     },
-    {
-      path: "/halloween",
-      component: DungeonRoot,
-      children: [
-        {
-          path: "",
-          name: "dungeon-entrance",
-          component: () => import("./views/Dungeon/Entrance.vue"),
-          meta: { noTopBar: true }
-        },
-        {
-          path: "fight",
-          name: "dungeon-fight",
-          component: DungeonFight,
-          meta: { noTopBar: true, noBackButton: true }
-        },
-        {
-          path: "dungeon",
-          name: "dungeon-sections",
-          component: DungeonSections,
-          meta: { noTopBar: true },
-          children: [
-            {
-              path: "",
-              name: "dungeon",
-              component: Dungeon
-            },
-            {
-              path: "rankings",
-              name: "dungeon-rankings",
-              component: DungeonRankings
-            },
-            {
-              path: "user",
-              name: "dungeon-user",
-              component: DungeonUser
-            }
-          ]
-        }
-      ],
-      meta: {
-        requiresAuth: true
-      }
-    },
+    // {
+    //   path: "/halloween",
+    //   component: DungeonRoot,
+    //   children: [
+    //     {
+    //       path: "",
+    //       name: "dungeon-entrance",
+    //       component: () => import("./views/Dungeon/Entrance.vue"),
+    //       meta: { noTopBar: true }
+    //     },
+    //     {
+    //       path: "fight",
+    //       name: "dungeon-fight",
+    //       component: DungeonFight,
+    //       meta: { noTopBar: true, noBackButton: true }
+    //     },
+    //     {
+    //       path: "dungeon",
+    //       name: "dungeon-sections",
+    //       component: DungeonSections,
+    //       meta: { noTopBar: true },
+    //       children: [
+    //         {
+    //           path: "",
+    //           name: "dungeon",
+    //           component: Dungeon
+    //         },
+    //         {
+    //           path: "rankings",
+    //           name: "dungeon-rankings",
+    //           component: DungeonRankings
+    //         },
+    //         {
+    //           path: "user",
+    //           name: "dungeon-user",
+    //           component: DungeonUser
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   meta: {
+    //     requiresAuth: true
+    //   }
+    // },
     // {
     //   path: "/xmas",
     //   component: XmasRoot,
@@ -464,118 +464,118 @@ const router = new Router({
     //     requiresAuth: true
     //   }
     // },
-    {
-      path: "/lunar",
-      component: LunarRoot,
-      children: [
-        {
-          path: "",
-          redirect: { name: "lunar-craft" }
-        },
-        {
-          path: "craft",
-          name: "lunar-craft",
-          component: () => import("./views/Lunar/LunarCraft.vue")
-        },
-        {
-          path: "recipes",
-          name: "lunar-recipes",
-          component: () => import("./views/Lunar/LunarRecipes.vue")
-        },
-        {
-          path: "exchange",
-          name: "lunar-exchange",
-          component: () => import("./views/Lunar/LunarExchange.vue")
-        },
-        {
-          path: "nft",
-          name: "lunar-nft",
-          component: () => import("./views/Lunar/LunarNft.vue")
-        },
-        {
-          path: "shop",
-          name: "lunar-shop",
-          component: () => import("./views/Lunar/LunarShop.vue")
-        }
-      ],
-      meta: {
-        requiresAuth: true,
-        noBackButton: true
-      }
-    },
-    {
-      path: "/march",
-      component: MarchRoot,
-      children: [
-        {
-          path: "",
-          redirect: { name: "march-play" }
-        },
-        {
-          path: "play",
-          name: "march-play",
-          component: () => import("./views/March/MarchPlay.vue")
-        },
-        {
-          path: "pets",
-          name: "march-pets",
-          component: () => import("./views/March/MarchPets.vue")
-        },
-        {
-          path: "rankings",
-          name: "march-rankings",
-          component: () => import("./views/March/Rankings/MarchRankings.vue")
-        },
-        {
-          path: "shop",
-          name: "march-shop",
-          component: () => import("./views/March/MarchShop.vue")
-        },
-        {
-          path: "rewards",
-          name: "march-rewards",
-          component: () => import("./views/March/MarchRewards.vue")
-        }
-      ],
-      meta: {
-        requiresAuth: true,
-        noBackButton: true
-      }
-    },
-    {
-      path: "/april",
-      component: AprilRoot,
-      children: [
-        {
-          path: "",
-          redirect: { name: "april-play" }
-        },
-        {
-          path: "play",
-          name: "april-play",
-          component: () => import("./views/April/AprilPlay.vue")
-        },
-        {
-          path: "rankings",
-          name: "april-rankings",
-          component: () => import("./views/April/AprilRankings.vue")
-        },
-        {
-          path: "achievements",
-          name: "april-achievements",
-          component: () => import("./views/April/AprilAchievements.vue")
-        },
-        {
-          path: "shop",
-          name: "april-shop",
-          component: () => import("./views/April/AprilShop.vue")
-        }
-      ],
-      meta: {
-        requiresAuth: true,
-        noBackButton: false
-      }
-    },
+    // {
+    //   path: "/lunar",
+    //   component: LunarRoot,
+    //   children: [
+    //     {
+    //       path: "",
+    //       redirect: { name: "lunar-craft" }
+    //     },
+    //     {
+    //       path: "craft",
+    //       name: "lunar-craft",
+    //       component: () => import("./views/Lunar/LunarCraft.vue")
+    //     },
+    //     {
+    //       path: "recipes",
+    //       name: "lunar-recipes",
+    //       component: () => import("./views/Lunar/LunarRecipes.vue")
+    //     },
+    //     {
+    //       path: "exchange",
+    //       name: "lunar-exchange",
+    //       component: () => import("./views/Lunar/LunarExchange.vue")
+    //     },
+    //     {
+    //       path: "nft",
+    //       name: "lunar-nft",
+    //       component: () => import("./views/Lunar/LunarNft.vue")
+    //     },
+    //     {
+    //       path: "shop",
+    //       name: "lunar-shop",
+    //       component: () => import("./views/Lunar/LunarShop.vue")
+    //     }
+    //   ],
+    //   meta: {
+    //     requiresAuth: true,
+    //     noBackButton: true
+    //   }
+    // },
+    // {
+    //   path: "/march",
+    //   component: MarchRoot,
+    //   children: [
+    //     {
+    //       path: "",
+    //       redirect: { name: "march-play" }
+    //     },
+    //     {
+    //       path: "play",
+    //       name: "march-play",
+    //       component: () => import("./views/March/MarchPlay.vue")
+    //     },
+    //     {
+    //       path: "pets",
+    //       name: "march-pets",
+    //       component: () => import("./views/March/MarchPets.vue")
+    //     },
+    //     {
+    //       path: "rankings",
+    //       name: "march-rankings",
+    //       component: () => import("./views/March/Rankings/MarchRankings.vue")
+    //     },
+    //     {
+    //       path: "shop",
+    //       name: "march-shop",
+    //       component: () => import("./views/March/MarchShop.vue")
+    //     },
+    //     {
+    //       path: "rewards",
+    //       name: "march-rewards",
+    //       component: () => import("./views/March/MarchRewards.vue")
+    //     }
+    //   ],
+    //   meta: {
+    //     requiresAuth: true,
+    //     noBackButton: true
+    //   }
+    // },
+    // {
+    //   path: "/april",
+    //   component: AprilRoot,
+    //   children: [
+    //     {
+    //       path: "",
+    //       redirect: { name: "april-play" }
+    //     },
+    //     {
+    //       path: "play",
+    //       name: "april-play",
+    //       component: () => import("./views/April/AprilPlay.vue")
+    //     },
+    //     {
+    //       path: "rankings",
+    //       name: "april-rankings",
+    //       component: () => import("./views/April/AprilRankings.vue")
+    //     },
+    //     {
+    //       path: "achievements",
+    //       name: "april-achievements",
+    //       component: () => import("./views/April/AprilAchievements.vue")
+    //     },
+    //     {
+    //       path: "shop",
+    //       name: "april-shop",
+    //       component: () => import("./views/April/AprilShop.vue")
+    //     }
+    //   ],
+    //   meta: {
+    //     requiresAuth: true,
+    //     noBackButton: false
+    //   }
+    // },
     {
       path: "/battle",
       component: BattleRoot,

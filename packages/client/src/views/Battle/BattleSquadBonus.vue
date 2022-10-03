@@ -1,14 +1,20 @@
 <template>
   <div class="font-size-22">
     <div>
-      <div v-for="item in items" :key="item.user.id" class="margin-bottom-4">
+      <div
+        v-for="item in items"
+        :key="item.user.id"
+        class="margin-bottom-4 margin-top-2"
+      >
         <div>
           Name
         </div>
-        <div class="battle-unit-list">
+        <div
+          class="battle-unit-list margin-top-1 padding-left-2 padding-right-2"
+        >
           <BattleUnit v-for="unit in item.units" :key="unit.unitId" />
         </div>
-        <div>
+        <div class="margin-top-1">
           <CustomButton
             type="yellow"
             width="20rem"

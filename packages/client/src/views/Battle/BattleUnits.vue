@@ -4,6 +4,18 @@
     <div
       class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
     >
+      <tabs
+        v-if="
+          ['battle-squad-home', 'battle-squad-bonus'].includes(
+            $route.query && $route.query.from
+          )
+        "
+        :tabs="tabs"
+        :router="true"
+        :currentTab="currentTab"
+        :replace="true"
+      >
+      </tabs>
       <div class="screen-content ">
         <div class="font-size-22 height-100">
           <div>
@@ -32,9 +44,14 @@ import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
+import Tabs from "@/components/Tabs.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitsFilter from "@/views/Battle/BattleUnitsFilter.vue";
 // import BattleMixin from "@/views/Battle/BattleMixin.vue";
+
+const SquadTab = "battle-squad-home";
+const WarehouseTab = "battle-units";
+const BonusTab = "battle-squad-bonus";
 
 export default {
   mixins: [
@@ -43,9 +60,11 @@ export default {
     ActivityMixin
     // BattleMixin
   ],
-  components: { BattleUnitList },
+  components: { Tabs, BattleUnitList },
   data() {
-    return {};
+    return {
+      currentTab: SquadTab
+    };
   },
   computed: {
     ...mapState("battle", [
@@ -55,6 +74,34 @@ export default {
       "selectedTiersFilter",
       "selectedClassesFilter"
     ]),
+    tabs() {
+      return [
+        {
+          title: "Squad",
+          value: SquadTab,
+          to: { name: SquadTab }
+        },
+        this.$route.query && this.$route.query.from === "battle-squad-home"
+          ? {
+              title: "Warehouse",
+              value: WarehouseTab,
+              to: { name: WarehouseTab, query: { from: "battle-squad-home" } }
+            }
+          : {
+              title: "Warehouse",
+              value: WarehouseTab,
+              to: {
+                name: WarehouseTab,
+                query: { from: "battle-squad-bonus" }
+              }
+            },
+        {
+          title: "Bonus",
+          value: BonusTab,
+          to: { name: BonusTab }
+        }
+      ];
+    },
     shouldShowFilter() {
       return true;
     },

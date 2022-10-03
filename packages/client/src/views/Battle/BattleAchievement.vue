@@ -1,6 +1,6 @@
 <template>
   <div class="font-size-22">
-    <div class="margin-top-2">
+    <div class="margin-top-2 padding-left-2 padding-right-2">
       Collect Tier 3 squads and get access to achievements that unlock NFT
     </div>
     <div class="margin-top-2">
@@ -8,7 +8,9 @@
         <div>
           Name squad
         </div>
-        <div class="battle-unit-list margin-top-1">
+        <div
+          class="battle-unit-list margin-top-1 padding-left-2 padding-right-2"
+        >
           <BattleUnit v-for="unit in item.units" :key="unit.unitId" />
         </div>
         <div class="margin-top-1">

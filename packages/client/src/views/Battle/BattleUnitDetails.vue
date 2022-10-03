@@ -11,8 +11,13 @@
               <BattleUnit :unit="unit" />
             </div>
             <div class="margin-top-1 font-size-30">
-              # {{ $t("battle-unit-tribe-" + unit.tribe) }}
-              {{ $t("battle-unit-class-" + unit.class) }} #
+              <template v-if="unit.name">
+                {{ unit.name }}
+              </template>
+              <template v-else>
+                # {{ $t("battle-unit-tribe-" + unit.tribe) }}
+                {{ $t("battle-unit-class-" + unit.class) }} #
+              </template>
             </div>
             <div class="margin-top-2">Tier: {{ unit.tier }}</div>
             <div>
@@ -22,17 +27,18 @@
                 :disabled="!isEnoughCoinsToUpgradeLevel"
                 type="green"
                 class="inline-block margin-right-2 margin-top-1"
-                @click="upgradeLevelHandler"
+                @click="upgradeLevelHandler(upgradePrice)"
               >
                 {{ $t("Upgrade lvl " + nextLevel) }}
-                <IconWithValue
+                <!-- <IconWithValue
                   :flip="false"
                   :iconMargin="true"
                   iconClass="icon-gold"
                   class="pointer"
                 >
                   {{ upgradePrice }}
-                </IconWithValue>
+                </IconWithValue> -->
+                <BattleCoin class="margin-left-1" :value="upgradePrice" />
               </CustomButton>
             </div>
             <div class="flex margin-top-2">
@@ -187,6 +193,8 @@ import ActivityMixin from "@/components/ActivityMixin.vue";
 // import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 // import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
+import BattleCoin from "@/views/Battle/BattleCoin.vue";
+// import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 // import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
 export default {
@@ -199,7 +207,9 @@ export default {
   components: {
     BattleUnit,
     // BattleUnitAbility,
-    BattleUnitAbilityDetails
+    BattleUnitAbilityDetails,
+    BattleCoin
+    // BattleCrystal
   },
   data() {
     return {
@@ -262,9 +272,14 @@ export default {
       this.$router.replace({ name: "battle-units" });
       return true;
     },
-    async upgradeLevelHandler() {
-      // const show = create(BattleLevelUpConfirm);
-      // await show();
+    async upgradeLevelHandler(price) {
+      const show = create(BattleLevelUpConfirm, "type", "value");
+      const result = await show("", price);
+
+      if (!result) {
+        return;
+      }
+
       this.$store.dispatch("battle/upgradeUnitLevel", {
         unitId: this.unit.unitId
       });
