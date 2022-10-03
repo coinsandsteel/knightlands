@@ -52,7 +52,7 @@ import BattleCoin from "@/views/Battle/BattleCoin.vue";
 
 export default {
   components: {
-    BattleCoin,
+    BattleCoin
   },
   props: {
     locationIndex: Number,
@@ -71,7 +71,7 @@ export default {
       },
     }
     */
-    levelMeta: Object,
+    levelMeta: Object
   },
   data() {
     return {};
@@ -85,6 +85,9 @@ export default {
     exp() {
       return this.levelMeta.reward.xp;
     },
+    coins() {
+      return this.levelMeta.reward.coins;
+    },
     isLevelAvailable() {
       return this.levelData[this.difficulty];
     }
@@ -93,15 +96,15 @@ export default {
     async clickHandler() {
       this.$store.dispatch("battle/enterLevel", {
         location: this.locationIndex,
-        level: this.levelIndex,
+        level: this.levelIndex
       });
       this.$nextTick(() => {
         this.$router.push({
-          name: "battle-adventure-play",
+          name: "battle-adventure-play"
         });
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped lang="less">
