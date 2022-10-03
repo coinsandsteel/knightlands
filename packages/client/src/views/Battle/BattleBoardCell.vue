@@ -131,7 +131,7 @@ export default {
   },
   props: {
     index: Number,
-    selectedAbilityClass: String,
+    selectedAbility: Object,
     isProcessingQueue: Boolean
     // card: Object
   },
@@ -208,15 +208,6 @@ export default {
       return false;
     },
     isAttackCell() {
-      // const isAttackAbility =
-      //   this.selectedAbilityClass &&
-      //   [battle.ABILITY_TYPE_DE_BUFF, battle.ABILITY_TYPE_ATTACK].includes(
-      //     battle.ABILITY_TYPES[this.selectedAbilityClass]
-      //   );
-      // return (
-      //   this.attackCells.includes(this.index) &&
-      //   !(this.isUnit && isAttackAbility)
-      // );
       return (
         this.attackCells.includes(this.index) &&
         !(this.isUnit || this.isEnemy) &&
@@ -238,9 +229,8 @@ export default {
     isHealTarget() {
       return (
         this.isTargetCell &&
-        this.selectedAbilityClass &&
-        (battle.ABILITY_TYPES[this.selectedAbilityClass] ===
-          battle.ABILITY_TYPE_HEALING ||
+        this.selectedAbility &&
+        (this.selectedAbility.abilityType === battle.ABILITY_TYPE_HEALING ||
           this.isUnit)
       );
     },

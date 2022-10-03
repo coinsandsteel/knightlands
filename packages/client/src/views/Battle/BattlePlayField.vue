@@ -47,7 +47,7 @@
               v-for="(cell, cellIndex) in boardCells"
               :key="cellIndex"
               :index="cellIndex"
-              :selectedAbilityClass="selectedAbilityClass"
+              :selectedAbility="selectedAbility"
               :isProcessingQueue="isProcessingQueue"
               @click="cellClickHandler(cell, cellIndex, $event)"
             />
@@ -370,10 +370,7 @@ export default {
         return false;
       }
 
-      return (
-        battle.ABILITY_TYPES[this.selectedAbility.abilityClass] ===
-        battle.ABILITY_TYPE_SELF_BUFF
-      );
+      return this.selectedAbility.abilityType === battle.ABILITY_TYPE_SELF_BUFF;
     },
     abilityCooldownEstimate() {
       return this.selectedAbility &&
@@ -412,37 +409,6 @@ export default {
     energy() {
       return this.user.balance.energy;
     },
-    // isStarted() {
-    //   return this.game.combat.started;
-    // }
-    // nonTargetAbilities() {
-    //   const abilities = this.myActiveFighter
-    //     ? this.myActiveFighter.abilities
-    //     : [];
-
-    //   return abilities.filter(ability => {
-    //     return (
-    //       ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-    //       ability.abilityClass === battle.ABILITY_AXE_BLOW ||
-    //       battle.ABILITY_TYPES[ability.abilityClass] ===
-    //         battle.ABILITY_TYPE_SELF_BUFF
-    //     );
-    //   });
-    // },
-    // targetAbilities() {
-    //   const abilities = this.myActiveFighter
-    //     ? this.myActiveFighter.abilities
-    //     : [];
-
-    //   return abilities.filter(ability => {
-    //     return !(
-    //       ability.abilityClass === battle.ABILITY_GROUP_HEAL ||
-    //       ability.abilityClass === battle.ABILITY_AXE_BLOW ||
-    //       battle.ABILITY_TYPES[ability.abilityClass] ===
-    //         battle.ABILITY_TYPE_SELF_BUFF
-    //     );
-    //   });
-    // }
     battleResult() {
       return !!this.game.combat.result;
     },
@@ -614,10 +580,7 @@ export default {
       const result = await showDialog(ability);
       if (result) {
         this.selectedAbilityClass = ability.abilityClass;
-        if (
-          battle.ABILITY_TYPES[ability.abilityClass] ===
-          battle.ABILITY_TYPE_SELF_BUFF
-        ) {
+        if (ability.abilityType === battle.ABILITY_TYPE_SELF_BUFF) {
           this.activateAbilityHandler(this.selectedAbility);
         } else {
           this.$store.dispatch("battle/chooseAbility", {
@@ -782,6 +745,7 @@ export default {
     async abilityEffectFromSourceToTargetHandler(step) {
       const ability = step.ability || step.buff;
       const abilityClass = ability ? ability.abilityClass : null;
+      const abilityType = ability ? ability.abilityType : null;
       if (
         step.source &&
         step.source.fighterId &&
@@ -841,10 +805,7 @@ export default {
           const damage = ability ? ability.value || ability.damage || 0 : 0;
           const isCriticalHit = ability && ability.criticalHit;
           let colorClass = "";
-          if (
-            abilityClass &&
-            battle.ABILITY_TYPES[abilityClass] === battle.ABILITY_TYPE_ATTACK
-          ) {
+          if (abilityType && abilityType === battle.ABILITY_TYPE_ATTACK) {
             // source and target the same side
             if (
               (isSourceMyFighter && isTargetMyFighter) ||
@@ -854,10 +815,7 @@ export default {
             } else {
               colorClass = "battle-ability-effect-value--red";
             }
-          } else if (
-            abilityClass &&
-            battle.ABILITY_TYPES[abilityClass] !== battle.ABILITY_TYPE_JUMP
-          ) {
+          } else if (abilityType && abilityType !== battle.ABILITY_TYPE_JUMP) {
             // buff, debuff, self buff, healing
             colorClass = "battle-ability-effect-value--blue";
           }
@@ -964,6 +922,7 @@ export default {
 
       const ability = step.ability || step.buff;
       const abilityClass = ability ? ability.abilityClass : null;
+      const abilityType = ability ? ability.abilityType : null;
       const damage = ability ? ability.value || ability.damage || 0 : 0;
       const isCriticalHit = ability && ability.criticalHit;
       const isSourceMyFighter =
@@ -979,10 +938,7 @@ export default {
             )
           : false;
       let colorClass = "";
-      if (
-        abilityClass &&
-        battle.ABILITY_TYPES[abilityClass] === battle.ABILITY_TYPE_ATTACK
-      ) {
+      if (abilityType && abilityType === battle.ABILITY_TYPE_ATTACK) {
         // source and target the same side
         if (
           (isSourceMyFighter && isTargetMyFighter) ||
@@ -992,10 +948,7 @@ export default {
         } else {
           colorClass = "battle-ability-effect-value--red";
         }
-      } else if (
-        abilityClass &&
-        battle.ABILITY_TYPES[abilityClass] !== battle.ABILITY_TYPE_JUMP
-      ) {
+      } else if (abilityType && abilityType !== battle.ABILITY_TYPE_JUMP) {
         // buff, debuff, self buff, healing
         colorClass = "battle-ability-effect-value--blue";
       }
