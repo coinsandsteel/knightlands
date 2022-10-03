@@ -16,17 +16,22 @@
         @change="handleZoneChanged"
         v-model="sliderIndex"
       >
-        <slider-item v-for="zone in zones" :key="zone.id" class="zone-picture">
+        <slider-item v-for="(zone, zoneId) in zones" :key="'zone-'+zoneId" class="zone-picture">
           <div class="zone-picture">
             <div
               class="height-100 battle-zone-selection-image"
-              :class="'battle-location-image--' + zone.id"
-              :style="getZoneImage(zone.id)"
+              :class="'battle-location-image--' + zoneId"
+              :style="getZoneImage(zoneId)"
             />
             <div
-              class="font-size-30 uppercase overlay-title font-outline font-weight-900"
+              class="
+                font-size-30
+                uppercase
+                overlay-title
+                font-outline font-weight-900
+              "
             >
-              {{ $t(getZoneName(zone.id)) }}
+              {{ $t(getZoneName(zoneId)) }}
             </div>
           </div>
         </slider-item>
@@ -64,22 +69,10 @@ export default {
   },
   mounted() {
     // this.goTo(this.value);
-    let locationIndex = 0;
-    for (let i = 0; i < this.adventures.locations.length; i++) {
-      const location = this.adventures.locations[i];
-      for (let j = 0; j < location.length; j++) {
-        if (location[j][this.adventures.difficulty]) {
-          locationIndex = i;
-          if (
-            j === location.length - 1 &&
-            i < this.adventures.locations.length - 1
-          ) {
-            locationIndex = locationIndex + 1;
-          }
-        }
-      }
-    }
-
+    let locationIndex = this.adventures.locations.findIndex(
+      (location) =>
+        !location.levels.every((level) => level[battle.GAME_DIFFICULTY_MEDIUM])
+    );
     this.sliderIndex = locationIndex;
 
     this.$nextTick(this.handleZoneChanged);
@@ -91,12 +84,12 @@ export default {
   watch: {
     value(newZone) {
       this.goTo(newZone);
-    }
+    },
   },
   computed: {
     ...mapState("battle", ["adventures"]),
     zones() {
-      return battle.LOCATIONS;
+      return this.adventures.locations;
     },
     currentZone() {
       return this.sliderIndex;
@@ -114,44 +107,30 @@ export default {
       }
 
       return this.currentZone - 1;
-    }
+    },
   },
   methods: {
     goTo(zoneId) {
-      let index = this.zones.findIndex(zone => {
-        return zone.id == zoneId;
-      });
-      if (index >= 0) {
-        this.sliderIndex = index;
-      }
+      this.sliderIndex = zoneId;
     },
     getZoneImage(zoneId) {
-      // return `background-image:url(${Zones.getBackground(zoneId)})`;
       return "Image " + zoneId;
     },
     getZoneName(zoneId) {
-      // return Zones.getZoneName(zoneId);
-      // return this.$t("battle-location- " + zoneId);
       return this.zones[this.currentZone]
         ? this.zones[this.currentZone].name
         : "";
     },
     goToNext() {
-      // console.log("goToNext");
       this.sliderIndex = this.nextZone;
-      // console.log("goToNext 2", this.sliderIndex, this.nextZone);
     },
     goToPrev() {
-      // console.log("goToPrev");
       this.sliderIndex = this.prevZone;
     },
     handleZoneChanged(event) {
-      // console.log("handleZoneChanged", event);
-      // this.$emit("input", this.zones[event]._id);
-      // this.$emit("zoneChanged", this.zones[event]._id);
-      this.$emit("change", { adventure: this.zones[this.currentZone] });
-    }
-  }
+      this.$emit("change", { locationIndex: this.sliderIndex });
+    },
+  },
 };
 </script>
 
@@ -249,22 +228,22 @@ export default {
   background: green;
 }
 
-.battle-location-image--1 {
+.battle-location-image--0 {
   background: url("/images/battle/locations/location-1.jpg") 100% 100% no-repeat;
 }
-.battle-location-image--2 {
+.battle-location-image--1 {
   background: url("/images/battle/locations/location-2.jpg") 100% 100% no-repeat;
 }
-.battle-location-image--3 {
+.battle-location-image--2 {
   background: url("/images/battle/locations/location-3.jpg") 100% 100% no-repeat;
 }
-.battle-location-image--4 {
+.battle-location-image--3 {
   background: url("/images/battle/locations/location-4.jpg") 100% 100% no-repeat;
 }
-.battle-location-image--5 {
+.battle-location-image--4 {
   background: url("/images/battle/locations/location-5.jpg") 100% 100% no-repeat;
 }
-.battle-location-image--6 {
+.battle-location-image--5 {
   background: url("/images/battle/locations/location-6.jpg") 100% 100% no-repeat;
 }
 </style>

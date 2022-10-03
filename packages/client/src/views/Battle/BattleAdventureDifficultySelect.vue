@@ -43,23 +43,14 @@ export default {
   computed: {
     ...mapState("battle", ["adventures"]),
     isAdventureHardDifficultyAvailable() {
-      return (
-        this.adventures &&
-        this.adventures.locations &&
-        this.adventures.locations.every(location => {
-          return location.every(level => level[battle.GAME_DIFFICULTY_MEDIUM]);
-        })
-      );
+      return this.adventures.locations[this.locationIndex].levels[0][battle.GAME_DIFFICULTY_HIGH];
     }
   },
   methods: {
-    handleClose(result) {
-      this.$close(result);
-      // @todo call operation
-      this.$store.dispatch("battle/update", {
-        adventures: {
-          difficulty: result
-        }
+    handleClose(difficulty) {
+      this.$close(difficulty);
+      this.$store.dispatch("battle/setAdventuresDifficulty", {
+        difficulty
       });
     }
   }

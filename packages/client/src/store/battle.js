@@ -3,7 +3,6 @@ import * as battle from "@/../../knightlands-shared/battle";
 import Events from "@/../../knightlands-shared/events";
 import Operations from "@/../../knightlands-shared/operations";
 import {
-  GAME_DIFFICULTY_MEDIUM,
   SHOP_STARTER_PACK,
   SHOP_DAILY_REWARD,
   SHOP_ENERGY_CHEST,
@@ -73,25 +72,19 @@ export default {
 
     // 6 rooms
     adventures: {
-      difficulty: GAME_DIFFICULTY_MEDIUM, // string GAME_DIFFICULTY_MEDIUM | GAME_DIFFICULTY_HIGH
+      difficulty: battle.GAME_DIFFICULTY_MEDIUM,
+      location: null,
+      level: null,
       locations: [
         /*
-        [ // Location 1
-          { [GAME_DIFFICULTY_MEDIUM]: true,  [GAME_DIFFICULTY_HIGH]: false }, // Lvl 1
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 2
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 3
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 4
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 5
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 6
-        ],
-        [ // Location 2
-          { [GAME_DIFFICULTY_MEDIUM]: true,  [GAME_DIFFICULTY_HIGH]: false }, // Lvl 1
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 2
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 3
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 4
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 5
-          { [GAME_DIFFICULTY_MEDIUM]: false, [GAME_DIFFICULTY_HIGH]: false }, // Lvl 6
-        ]
+        {
+          levels: [
+            {
+              [GAME_DIFFICULTY_MEDIUM]: false,
+              [GAME_DIFFICULTY_HIGH]: false
+            }
+          ]
+        }
         */
       ]
     },
@@ -373,9 +366,10 @@ export default {
 
       // Adventures
       if (data.adventures !== undefined) {
-        if (data.adventures.difficulty) {
-          state.adventures.difficulty = data.adventures.difficulty;
-        }
+        state.adventures.difficulty = data.adventures.difficulty;
+        state.adventures.location = data.adventures.location;
+        state.adventures.level = data.adventures.level;
+
         if (data.adventures.locations) {
           state.adventures.locations = data.adventures.locations;
         }
@@ -685,6 +679,14 @@ export default {
 
     // TODO:
     // BattleOpenChest
+
+    // BattleSetAdventuresDifficulty
+    async setAdventuresDifficulty(store, { difficulty }) {
+      await this.$app.$game._wrapOperation(Operations.BattleSetAdventuresDifficulty, {
+        difficulty
+      });
+    },
+
 
     // BattleFillSquadSlot
     async fillSquadSlot(store, { unitId, index }) {

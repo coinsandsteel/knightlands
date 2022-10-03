@@ -2,14 +2,16 @@
   <div class="flex flex-column flex-full overflow-auto">
     <BattleZoneSelection @change="changeHandler" />
     <div
-      v-if="adventure"
+      v-if="locationMeta && locationData"
       class="flex-full overflow-auto margin-top-4 padding-bottom-2 relative"
     >
-      <BattleAdventureItem
-        v-for="item in adventure.levels"
-        :key="item.id"
-        :adventure="adventure"
-        :level="item"
+      <BattleAdventureLevel
+        v-for="(levelMeta, levelIndex) in locationMeta.levels"
+        :key="'adv-level-' + levelIndex"
+        :locationIndex="locationIndex"
+        :levelIndex="levelIndex"
+        :levelMeta="levelMeta[difficulty]"
+        :levelData="levelData(levelIndex)"
       />
     </div>
 
@@ -38,38 +40,44 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import BattleZoneSelection from "@/views/Battle/BattleZoneSelection.vue";
-import BattleAdventureItem from "@/views/Battle/BattleAdventureItem.vue";
+import BattleAdventureLevel from "@/views/Battle/BattleAdventureLevel.vue";
 import BattleAdventureDifficultySelect from "@/views/Battle/BattleAdventureDifficultySelect.vue";
 
 export default {
   components: {
     BattleZoneSelection,
-    BattleAdventureItem
+    BattleAdventureLevel
   },
   mixins: [AppSection, ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
   data() {
     return {
-      adventure: null
+      locationIndex: 0
     };
   },
   computed: {
     ...mapState("battle", ["adventures"]),
     difficulty() {
-      return this.adventures && this.adventures.difficulty
-        ? this.adventures.difficulty
-        : battle.GAME_DIFFICULTY_MEDIUM;
+      return this.adventures.difficulty ?? battle.GAME_DIFFICULTY_MEDIUM;
     },
-    battleItems() {
-      return battle.LOCATIONS;
+    locationMeta() {
+      return battle.ADVENTURES[this.locationIndex] ?? null;
+    },
+    locationData() {
+      return this.adventures.locations[this.locationIndex] ?? null;
+    },
+    levelData() {
+      return levelIndex => {
+        return this.adventures.locations[this.locationIndex].levels[levelIndex];
+      };
     }
   },
   methods: {
-    changeHandler({ adventure }) {
-      this.adventure = adventure;
+    changeHandler({ locationIndex }) {
+      this.locationIndex = locationIndex;
     },
     async switchDifficultyHandler() {
-      const show = create(BattleAdventureDifficultySelect);
-      await show();
+      const show = create(BattleAdventureDifficultySelect, "locationIndex");
+      await show(this.locationIndex);
     }
   }
 };
