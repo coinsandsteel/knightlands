@@ -38,10 +38,11 @@
           >{{ exp }}</IconWithValue
         >
 
-        <MarchGold v-if="marchGold" :value="marchGold" />
-        <AprilGold v-if="aprilGold" :value="aprilGold" />
-        <AprilTickets v-if="aprilTicket" :value="aprilTicket" />
+        <!-- <MarchGold v-if="marchGold" :value="marchGold" /> -->
+        <!-- <AprilGold v-if="aprilGold" :value="aprilGold" /> -->
+        <!-- <AprilTickets v-if="aprilTicket" :value="aprilTicket" /> -->
         <BattleUnitList v-if="battleUnits" :units="battleUnits" />
+        <BattleNft v-if="battleNft" :id="battleNft" />
 
         <div
           class="flex flex-center flex-column margin-top-3"
@@ -73,10 +74,11 @@ import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import HintHandler from "@/components/HintHandler.vue";
-import MarchGold from "@/views/March/MarchGold.vue";
-import AprilGold from "@/views/April/AprilGold.vue";
-import AprilTickets from "@/views/April/AprilTickets.vue";
+// import MarchGold from "@/views/March/MarchGold.vue";
+// import AprilGold from "@/views/April/AprilGold.vue";
+// import AprilTickets from "@/views/April/AprilTickets.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
+import BattleNft from "@/views/Battle/BattleNft.vue";
 
 export default {
   mixins: [HintHandler],
@@ -85,10 +87,11 @@ export default {
     IconWithValue,
     CustomButton,
     Loot,
-    MarchGold,
-    AprilGold,
-    AprilTickets,
-    BattleUnitList
+    // MarchGold,
+    // AprilGold,
+    // AprilTickets,
+    BattleUnitList,
+    BattleNft
   },
   props: [
     "items",
@@ -97,10 +100,11 @@ export default {
     "exp",
     "dkt",
     "drown",
-    "marchGold",
-    "aprilGold",
-    "aprilTicket",
-    "battleUnits"
+    // "marchGold",
+    // "aprilGold",
+    // "aprilTicket",
+    "battleUnits",
+    "battleNft"
   ]
 };
 </script>

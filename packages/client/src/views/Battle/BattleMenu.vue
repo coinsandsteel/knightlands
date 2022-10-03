@@ -76,10 +76,12 @@
   </div>
 </template>
 <script>
+// import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
+// import ItemsReceived from "@/components/ItemsReceived.vue";
 
 export default {
   mixins: [AppSection, ActivityMixin],
@@ -92,6 +94,8 @@ export default {
   },
   activated() {
     this.title = "battle event";
+    // const show = create(ItemsReceived, "items", "battleNft");
+    // show([], 3);
   },
   methods: {
     goToAdventure() {
