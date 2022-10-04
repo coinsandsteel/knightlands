@@ -80,7 +80,7 @@ export default {
     ...mapGetters("battle", ["isFightersFullFilled"]),
     ...mapState("battle", ["adventures"]),
     difficulty() {
-      return this.adventures.difficulty ?? battle.GAME_DIFFICULTY_MEDIUM;
+      return this.adventures.difficulty || battle.GAME_DIFFICULTY_MEDIUM;
     },
     exp() {
       return this.levelMeta.reward.xp;
