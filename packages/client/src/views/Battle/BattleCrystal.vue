@@ -1,5 +1,5 @@
 <template>
-  <div class="battle-crystal font-size-20 flex flex-nowrap flex-items-center">
+  <div class="battle-crystal font-size-20 flex flex-no-wrap flex-items-center">
     <div class="battle-crystal-icons"></div>
     {{ crystals }}
     <slot />
@@ -24,7 +24,6 @@ export default {
   display: inline-block;
   width: 20px;
   height: 20px;
-  margin-right: 2px;
   background-image: url("/images/battle/battle_crystal.png");
   background-size: 80%;
   background-position: center;

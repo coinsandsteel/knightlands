@@ -15,10 +15,10 @@
               <template v-if="unit.name">
                 {{ unit.name }}
               </template>
-              <template v-else>
-                {{ $t("battle-unit-tribe-" + unit.tribe) }}
-                {{ $t("battle-unit-class-" + unit.class) }}
-              </template>
+              <div>
+                # {{ $t("battle-unit-tribe-" + unit.tribe) }}
+                {{ $t("battle-unit-class-" + unit.class) }} #
+              </div>
             </div>
           </div>
           <div class="flex-grow-1 text-align-left width-35 margin-left-2">

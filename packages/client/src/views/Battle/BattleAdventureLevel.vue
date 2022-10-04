@@ -11,10 +11,29 @@
       <div class="battle-adventure-info flex flex-center font-size-22">
         <!-- info -->
         <div>
-          <div>Exp: {{ exp }}</div>
-          <div class="flex flex-no-wrap">
-            <div>Reward:</div>
-            <BattleCoin class="margin-left-1" :value="coins" />
+          <div v-if="exp">Exp: {{ exp }}</div>
+          <div v-if="coins" class="flex flex-center flex-no-wrap">
+            <div>Rewards:</div>
+            <BattleCoin
+              class="margin-left-half white-space-no-wrap"
+              :value="coins"
+            />
+          </div>
+          <div
+            v-if="bossCoins || bossCrystals"
+            class="flex flex-center flex-no-wrap"
+          >
+            <div class="white-space-no-wrap">Boss:</div>
+            <BattleCoin
+              v-if="bossCoins"
+              class="margin-left-half white-space-no-wrap"
+              :value="bossCoins"
+            />
+            <BattleCrystal
+              v-if="bossCrystals"
+              class="margin-left-half white-space-no-wrap"
+              :value="bossCrystals"
+            />
           </div>
         </div>
       </div>
@@ -49,10 +68,12 @@
 import { mapState, mapGetters } from "vuex";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
+import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 
 export default {
   components: {
-    BattleCoin
+    BattleCoin,
+    BattleCrystal
   },
   props: {
     locationIndex: Number,
@@ -87,6 +108,12 @@ export default {
     },
     coins() {
       return this.levelMeta.reward.coins;
+    },
+    bossCoins() {
+      return this.levelMeta.bossReward.coins;
+    },
+    bossCrystals() {
+      return this.levelMeta.bossReward.crystals;
     },
     isLevelAvailable() {
       return this.levelData[this.difficulty];

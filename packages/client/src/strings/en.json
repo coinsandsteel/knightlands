@@ -2749,7 +2749,9 @@
   "battle-unit-tribe-elf": "Elfs",
   "battle-unit-tribe-eldritch": "Eldritch",
   "battle-unit-tribe-assembling": "Assembling",
-  "battle-unit-tribe-fallen_knight": "Fallen kings",
+  "battle-unit-tribe-fallen_kings": "Fallen kings",
+  "battle-unit-tribe-fallenKing": "Fallen kings",
+  "battle-unit-tribe-fallenKings": "Fallen kings",
   "battle-unit-tribe-legendary": "Legendary",
   "battle-unit-tribe-titan": "Titans",
 
@@ -2825,5 +2827,12 @@
   "battle-ability-wolf_bite": "Wolf bite",
   "battle-ability-zealot": "Zealot",
   "battle-ability-move": "Move",
-  "battle-ability-attack": "Attack"
+  "battle-ability-attack": "Attack",
+
+  "battle-location-0": "Location 1",
+  "battle-location-1": "Location 2",
+  "battle-location-2": "Location 3",
+  "battle-location-3": "Location 4",
+  "battle-location-4": "Location 5",
+  "battle-location-5": "Location 6"
 }

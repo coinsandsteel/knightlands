@@ -1,5 +1,5 @@
 <template>
-  <div class="battle-coin font-size-20 flex flex-nowrap flex-items-center">
+  <div class="battle-coin font-size-20 flex flex-no-wrap flex-items-center">
     <div
       class="battle-coin-icons"
       :class="{ 'battle-coin-icons--with-margin': hasMargin }"

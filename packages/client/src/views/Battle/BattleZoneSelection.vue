@@ -16,7 +16,11 @@
         @change="handleZoneChanged"
         v-model="sliderIndex"
       >
-        <slider-item v-for="(zone, zoneId) in zones" :key="'zone-'+zoneId" class="zone-picture">
+        <slider-item
+          v-for="(zone, zoneId) in zones"
+          :key="'zone-' + zoneId"
+          class="zone-picture"
+        >
           <div class="zone-picture">
             <div
               class="height-100 battle-zone-selection-image"
@@ -58,7 +62,7 @@
 
 <script>
 import { mapState } from "vuex";
-import * as battle from "@/../../knightlands-shared/battle";
+// import * as battle from "@/../../knightlands-shared/battle";
 
 export default {
   props: ["value"],
@@ -68,13 +72,7 @@ export default {
     };
   },
   mounted() {
-    // this.goTo(this.value);
-    let locationIndex = this.adventures.locations.findIndex(
-      (location) =>
-        !location.levels.every((level) => level[battle.GAME_DIFFICULTY_MEDIUM])
-    );
-    this.sliderIndex = locationIndex;
-
+    this.sliderIndex = this.nextLocationIndex;
     this.$nextTick(this.handleZoneChanged);
   },
   activated() {
@@ -85,9 +83,25 @@ export default {
     value(newZone) {
       this.goTo(newZone);
     },
+    nextLocationIndex(value) {
+      this.sliderIndex = value;
+      this.$nextTick(this.handleZoneChanged);
+    }
   },
   computed: {
     ...mapState("battle", ["adventures"]),
+    nextLocationIndex() {
+      let locationIndex = this.adventures.locations.findIndex(
+        location =>
+          !location.levels.every(level => level[this.adventures.difficulty])
+      );
+
+      if (locationIndex < 0) {
+        locationIndex = this.adventures.locations.length - 1;
+      }
+
+      return locationIndex;
+    },
     zones() {
       return this.adventures.locations;
     },
@@ -107,7 +121,7 @@ export default {
       }
 
       return this.currentZone - 1;
-    },
+    }
   },
   methods: {
     goTo(zoneId) {
@@ -117,9 +131,7 @@ export default {
       return "Image " + zoneId;
     },
     getZoneName(zoneId) {
-      return this.zones[this.currentZone]
-        ? this.zones[this.currentZone].name
-        : "";
+      return this.$t("battle-location-" + zoneId);
     },
     goToNext() {
       this.sliderIndex = this.nextZone;
@@ -129,8 +141,8 @@ export default {
     },
     handleZoneChanged(event) {
       this.$emit("change", { locationIndex: this.sliderIndex });
-    },
-  },
+    }
+  }
 };
 </script>
 
