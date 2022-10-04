@@ -100,15 +100,16 @@ export default {
   },
   methods: {
     nextHandler() {
+      if (this.$close) {
+        this.$close();
+      }
+
       this.$store.dispatch("battle/exit");
+
       if (this.$route.name === "battle-adventure-play") {
         this.$router.replace({ name: "battle-adventure" });
       } else {
         this.$router.replace({ name: "battle-menu" });
-      }
-
-      if (this.$close) {
-        this.$close();
       }
     }
   }
