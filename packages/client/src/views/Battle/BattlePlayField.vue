@@ -552,7 +552,10 @@ export default {
         return;
       }
 
-      if (this.selectedAbilityClass === ability.abilityClass) {
+      if (
+        this.selectedAbilityClass === ability.abilityClass &&
+        ["move", "attack"].includes(ability.abilityClass)
+      ) {
         return;
       }
       // let payload = {
@@ -567,27 +570,25 @@ export default {
       // this.isAttackCellSelected = false;
       // this.selectedIndex = null;
 
-      if (["move", "attack"].includes(ability.abilityClass)) {
-        this.selectedAbilityClass = ability.abilityClass;
-        this.$store.dispatch("battle/chooseAbility", {
-          abilityClass: ability.abilityClass
-        });
+      if (
+        this.selectedAbilityClass === ability.abilityClass ||
+        ability.abilityType === battle.ABILITY_TYPE_SELF_BUFF
+      ) {
+        const showDialog = create(BattleAbilityActivate, "ability");
+        const result = await showDialog(ability);
+
+        if (result && ability.abilityType === battle.ABILITY_TYPE_SELF_BUFF) {
+          this.selectedAbilityClass = ability.abilityClass;
+          this.activateAbilityHandler(this.selectedAbility);
+        }
+
         return;
       }
 
-      // show ability activate dialog
-      const showDialog = create(BattleAbilityActivate, "ability");
-      const result = await showDialog(ability);
-      if (result) {
-        this.selectedAbilityClass = ability.abilityClass;
-        if (ability.abilityType === battle.ABILITY_TYPE_SELF_BUFF) {
-          this.activateAbilityHandler(this.selectedAbility);
-        } else {
-          this.$store.dispatch("battle/chooseAbility", {
-            abilityClass: ability.abilityClass
-          });
-        }
-      }
+      this.selectedAbilityClass = ability.abilityClass;
+      this.$store.dispatch("battle/chooseAbility", {
+        abilityClass: ability.abilityClass
+      });
     },
     activateAbilityHandler(ability) {
       if (this.isProcessingQueue || !this.isMyTurn) {

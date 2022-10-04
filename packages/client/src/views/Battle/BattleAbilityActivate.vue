@@ -27,7 +27,7 @@
             <div>Damage: {{ ability.value }}</div>
             <div>Effect: {{ effect }}</div>
             <div v-if="ability.cooldown && ability.cooldown.estimate">
-              Colldown:
+              Cooldown:
               {{
                 ability.cooldown.estimate +
                   (ability.cooldown.estimate > 1 ? " turns" : " turn")
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-      <div class="text-align-center margin-top-4">
+      <div v-if="canActivate" class="text-align-center margin-top-4">
         <CustomButton
           type="green"
           class="inline-block"
@@ -94,6 +94,12 @@ export default {
         }
       }
       return "No";
+    },
+    canActivate() {
+      return (
+        this.ability &&
+        this.ability.abilityType === battle.ABILITY_TYPE_SELF_BUFF
+      );
     }
   },
   methods: {
