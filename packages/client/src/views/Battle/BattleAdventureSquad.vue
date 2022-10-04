@@ -75,8 +75,8 @@ export default {
       const showDailyRewardsDialog = create(BattleUnitSelect);
       await showDailyRewardsDialog();
     },
-    handleStart() {
-      this.$store.dispatch("battle/enterLevel", {
+    async handleStart() {
+      await this.$store.dispatch("battle/enterLevel", {
         location: this.$route.params.id,
         level: null
       });

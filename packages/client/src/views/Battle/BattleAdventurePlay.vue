@@ -19,20 +19,23 @@ export default {
     ...mapState("battle", ["game", "user"]),
     isStarted() {
       return this.game.combat.started;
-    }
+    },
+    combatResult() {
+      return this.game.combat.result;
+    },
     // isResultVisible() {
     //   return !!this.game.combat.result;
     // }
   },
-  watch: {
+  /*watch: {
     isStarted(value, oldValue) {
       if (this.isActive && oldValue === true && value === false) {
         this.$router.replace({ name: "battle-menu" });
       }
     }
-  },
+  },*/
   mounted() {
-    if (!this.isStarted) {
+    if (!this.isStarted && !this.combatResult) {
       this.$router.replace({ name: "battle-menu" });
       return;
     }

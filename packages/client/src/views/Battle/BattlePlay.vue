@@ -42,17 +42,17 @@ export default {
   },
   computed: {
     ...mapState("battle", ["game", "user"]),
-    isStarted() {
+    /*isStarted() {
       return this.game.combat.started;
-    }
+    }*/
   },
-  watch: {
+  /*watch: {
     isStarted(value, oldValue) {
       if (this.isActive && oldValue === true && value === false) {
         this.$router.replace({ name: "battle-menu" });
       }
     }
-  },
+  },*/
   methods: {
     goToShop() {
       this.$router.push({ name: "battle-shop" });

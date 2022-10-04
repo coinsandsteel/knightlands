@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     async clickHandler() {
-      this.$store.dispatch("battle/enterLevel", {
+      await this.$store.dispatch("battle/enterLevel", {
         location: this.locationIndex,
         level: this.levelIndex
       });
