@@ -57,7 +57,7 @@ export default {
   computed: {
     ...mapState("battle", ["adventures"]),
     difficulty() {
-      return this.adventures.difficulty ?? battle.GAME_DIFFICULTY_MEDIUM;
+      return this.adventures.difficulty || battle.GAME_DIFFICULTY_MEDIUM;
     },
     locationMeta() {
       return battle.ADVENTURES[this.locationIndex] ?? null;
