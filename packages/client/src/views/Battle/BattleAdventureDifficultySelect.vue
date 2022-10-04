@@ -49,9 +49,11 @@ export default {
   methods: {
     handleClose(difficulty) {
       this.$close(difficulty);
-      this.$store.dispatch("battle/setAdventuresDifficulty", {
-        difficulty
-      });
+      if (difficulty) {
+        this.$store.dispatch("battle/setAdventuresDifficulty", {
+          difficulty
+        });
+      }
     }
   }
 };
