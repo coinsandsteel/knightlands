@@ -60,10 +60,10 @@ export default {
       return this.adventures.difficulty || battle.GAME_DIFFICULTY_MEDIUM;
     },
     locationMeta() {
-      return battle.ADVENTURES[this.locationIndex] ?? null;
+      return battle.ADVENTURES[this.locationIndex] || null;
     },
     locationData() {
-      return this.adventures.locations[this.locationIndex] ?? null;
+      return this.adventures.locations[this.locationIndex] || null;
     },
     levelData() {
       return levelIndex => {
