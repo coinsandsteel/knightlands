@@ -91,14 +91,10 @@ export default {
   computed: {
     ...mapState("battle", ["adventures"]),
     nextLocationIndex() {
-      let locationIndex = this.adventures.locations.findIndex(
+      let locationIndex = this.adventures.locations.findLastIndex(
         location =>
-          !location.levels.every(level => level[this.adventures.difficulty])
+          !!location.levels.find(level => level[this.adventures.difficulty])
       );
-
-      if (locationIndex < 0) {
-        locationIndex = this.adventures.locations.length - 1;
-      }
 
       return locationIndex;
     },
