@@ -248,7 +248,7 @@ export default {
       ).filter(Boolean);
     },
     mergerUnits(state) {
-      return state.mergerIds.map((id, index) => {
+      return state.mergerIds.map(id => {
         if (!id) {
           return null;
         }
@@ -257,21 +257,21 @@ export default {
           ({ unitId }) => unitId && unitId === id
         );
 
-        if (!unit) {
+        if (!(unit && unit.quantity >= 3)) {
           return null;
         }
 
-        let duplicatedCount = 0;
+        // let duplicatedCount = 0;
 
-        for (let i = 0; i < index; i++) {
-          if (state.mergerIds[i] === id) {
-            duplicatedCount++;
-          }
-        }
+        // for (let i = 0; i < index; i++) {
+        //   if (state.mergerIds[i] === id) {
+        //     duplicatedCount++;
+        //   }
+        // }
 
-        if (duplicatedCount >= unit.quantity) {
-          return null;
-        }
+        // if (duplicatedCount >= unit.quantity) {
+        //   return null;
+        // }
 
         return unit;
       });
@@ -682,11 +682,13 @@ export default {
 
     // BattleSetAdventuresDifficulty
     async setAdventuresDifficulty(store, { difficulty }) {
-      await this.$app.$game._wrapOperation(Operations.BattleSetAdventuresDifficulty, {
-        difficulty
-      });
+      await this.$app.$game._wrapOperation(
+        Operations.BattleSetAdventuresDifficulty,
+        {
+          difficulty
+        }
+      );
     },
-
 
     // BattleFillSquadSlot
     async fillSquadSlot(store, { unitId, index }) {
@@ -722,14 +724,8 @@ export default {
     },
 
     // BattleMergeUnits
-    chooseMergerUnit(store, { unitId, index }) {
-      if (!(index >= 0 && index <= 2)) {
-        return;
-      }
-      const ids = [...(store.state.mergerIds || []), null, null, null];
-      ids[index] = unitId;
-
-      store.dispatch("update", { mergerIds: ids.slice(0, 3) });
+    chooseMergerUnit(store, { unitId }) {
+      store.dispatch("update", { mergerIds: [unitId, unitId, unitId] });
     },
     clearMergeUnits(store) {
       store.dispatch("update", { mergerIds: [null, null, null] });

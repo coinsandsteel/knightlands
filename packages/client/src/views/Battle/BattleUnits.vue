@@ -106,12 +106,7 @@ export default {
       return true;
     },
     shouldFillSlot() {
-      return (
-        this.$route.params &&
-        this.$route.params.slot &&
-        this.$route.params.index !== null &&
-        this.$route.params.index !== undefined
-      );
+      return this.$route.params && this.$route.params.slot;
     },
     units() {
       let result = this.inventory.slice();
@@ -127,26 +122,24 @@ export default {
           this.selectedClassesFilter.includes(item.class)
         );
       }
+      console.log("result", result);
 
       if (this.shouldFillSlot) {
-        const ids = [];
-
         if (this.$route.params.slot === "squad") {
+          const ids = [];
           ids.push(
             ...(this.game && this.game.userSquad && this.game.userSquad.fighters
               ? this.game.userSquad.fighters
               : []
             ).map(unit => unit && unit.unitId)
           );
+          result = result.filter(
+            ({ unitId, quantity }) =>
+              quantity > ids.filter(id => id === unitId).length
+          );
         } else if (this.$route.params.slot === "merger") {
-          ids.push(...this.mergerIds.filter(id => !!id));
+          result = result.filter(unit => unit.tier < 3 && unit.quantity >= 3);
         }
-
-        // result = result.filter(({ unitId }) => !squadIds.includes(unitId));
-        result = result.filter(
-          ({ unitId, quantity }) =>
-            quantity > ids.filter(id => id === unitId).length
-        );
       }
 
       return result;
@@ -159,9 +152,10 @@ export default {
     async clickHandler({ unit }) {
       if (this.shouldFillSlot) {
         if (this.$route.params.slot === "squad") {
+          const index = +this.$route.params.index;
           this.$store.dispatch("battle/fillSquadSlot", {
             unitId: unit.unitId,
-            index: this.$route.params.index
+            index: index >= 0 && index < 5 ? index : 0
           });
 
           this.$router.replace({
@@ -170,8 +164,7 @@ export default {
           return;
         } else if (this.$route.params.slot === "merger") {
           this.$store.dispatch("battle/chooseMergerUnit", {
-            unitId: unit.unitId,
-            index: this.$route.params.index
+            unitId: unit.unitId
           });
 
           this.$router.replace({

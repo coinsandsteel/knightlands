@@ -69,14 +69,13 @@ export default {
     }
   },
   methods: {
-    async unitClickHandler(index) {
+    async unitClickHandler() {
       // const show = create(BattleUnitSelect);
       // await show();
       this.$router.push({
         name: "battle-units",
         params: {
-          slot: "merger",
-          index
+          slot: "merger"
         }
       });
     },
