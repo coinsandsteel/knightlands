@@ -287,7 +287,7 @@ export default {
     increaseHandler(exp) {
       this.$store.dispatch("battle/testAction", {
         action: "increaseUnitExp",
-        unitId: this.$route.params.id,
+        unitTemplate: this.unit.template,
         exp
       });
     },

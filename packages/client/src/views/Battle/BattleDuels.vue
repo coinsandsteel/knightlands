@@ -1,9 +1,9 @@
 <template>
   <div>
     <div
-      v-for="(units, index) in items"
-      :key="'option_' + index"
-      :class="index > 0 ? 'margin-top-4' : 'margin-top-2'"
+      v-for="(units, difficulty) in items"
+      :key="'option_' + difficulty"
+      :class="difficulty !== 'low' ? 'margin-top-4' : 'margin-top-2'"
     >
       <div class="battle-unit-list">
         <BattleUnit
@@ -19,7 +19,7 @@
           width="20rem"
           class="inline-block"
           :disabled="!isFightersFullFilled"
-          @click="handleStart(index)"
+          @click="handleStart(difficulty)"
           >Fight</CustomButton
         >
       </div>
@@ -49,16 +49,9 @@ export default {
   },
   methods: {
     unitClickHandler() {},
-    async handleStart(index) {
-      const options = [
-        battle.GAME_DIFFICULTY_LOW,
-        battle.GAME_DIFFICULTY_MEDIUM,
-        battle.GAME_DIFFICULTY_HIGH
-      ];
+    async handleStart(difficulty) {
       await this.performRequestNoCatch(
-        this.$store.dispatch("battle/enterDuel", {
-          difficulty: options[index]
-        })
+        this.$store.dispatch("battle/enterDuel", { difficulty })
       );
       this.$nextTick(() => {
         this.$router.push({
