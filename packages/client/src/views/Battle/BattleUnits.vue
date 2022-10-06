@@ -182,7 +182,7 @@ export default {
           });
 
           this.$router.replace({
-            name: "battle-squad-home"
+            name: "battle-squad"
           });
           return;
         } else if (this.$route.params.slot === "merger") {
@@ -222,7 +222,7 @@ export default {
         this.$router.replace({ name: this.$route.query.from });
       } else if (this.shouldFillSlot) {
         if (this.$route.params.slot === "squad") {
-          this.$router.replace({ name: "battle-squad-home" });
+          this.$router.replace({ name: "battle-squad" });
         } else {
           this.$router.replace({ name: "battle-merger" });
         }

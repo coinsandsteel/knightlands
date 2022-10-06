@@ -4,7 +4,7 @@
       <div class="flex flex-center">
         <div>
           <div
-            v-for="(unit, index) in mergerUnits"
+            v-for="(unit, index) in calculatedUnits"
             :key="index"
             class="material-cell pointer"
           >
@@ -15,7 +15,7 @@
         </div>
         <div class="material-cell--right relative">
           <div class="horizontal-line horizontal-line--right" />
-          <BattleUnit />
+          <BattleUnit :unit="newUnit" />
         </div>
       </div>
       <div class="margin-top-2">
@@ -50,6 +50,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import cloneDeep from "lodash/cloneDeep";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import AppSection from "@/AppSection.vue";
 // import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
@@ -64,10 +65,15 @@ export default {
   data() {
     return {
       // selectedUnits: [null, null, null]
+      units: [],
+      newUnit: null
     };
   },
   computed: {
     ...mapGetters("battle", ["mergerUnits"]),
+    calculatedUnits() {
+      return this.newUnit ? this.units : this.mergerUnits;
+    },
     canMerge() {
       return this.mergerUnits.filter(Boolean).length === 3;
     }
@@ -88,13 +94,17 @@ export default {
     },
     clearHandler() {
       this.$store.dispatch("battle/clearMergeUnits");
+      this.newUnit = null;
+      this.units = [];
     },
     async mergeHandler() {
       if (!this.canMerge) {
         return;
       }
+      this.units = cloneDeep(this.mergerUnits);
       const newUnit = await this.$store.dispatch("battle/mergeUnits");
-      console.log('New unit', newUnit);
+      this.newUnit = newUnit;
+      console.log("New unit", newUnit);
     }
     // async detailsClickHandler() {
     //   const show = create(BattleMergerDetailsInfo);

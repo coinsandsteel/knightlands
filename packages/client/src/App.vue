@@ -453,7 +453,7 @@ export default {
       if (
         [
           "battle-units",
-          "battle-squad-home",
+          "battle-squad",
           "battle-squad-warehouse",
           "battle-squad-bonus"
         ].includes(this.$route.name)

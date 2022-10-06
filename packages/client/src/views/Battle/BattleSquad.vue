@@ -10,11 +10,6 @@
           @clear="clearHandler"
         />
         <div class="font-size-22 text-align-center margin-top-2">
-          <div>Power: {{ power }}</div>
-          <div>
-            Current squad bonuses:
-            <div>{{ bonuses }}</div>
-          </div>
           <div v-if="power">Power: {{ power }}</div>
           <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
             Current squad bonuses:
