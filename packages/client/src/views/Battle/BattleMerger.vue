@@ -89,11 +89,12 @@ export default {
     clearHandler() {
       this.$store.dispatch("battle/clearMergeUnits");
     },
-    mergeHandler() {
+    async mergeHandler() {
       if (!this.canMerge) {
         return;
       }
-      this.$store.dispatch("battle/mergeUnits");
+      const newUnit = await this.$store.dispatch("battle/mergeUnits");
+      console.log('New unit', newUnit);
     }
     // async detailsClickHandler() {
     //   const show = create(BattleMergerDetailsInfo);
