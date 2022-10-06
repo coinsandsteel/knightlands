@@ -2834,5 +2834,9 @@
   "battle-location-2": "Location 3",
   "battle-location-3": "Location 4",
   "battle-location-4": "Location 5",
-  "battle-location-5": "Location 6"
+  "battle-location-5": "Location 6",
+
+  "battle-duels-high": "Hard",
+  "battle-duels-medium": "Normal",
+  "battle-duels-low": "Easy"
 }

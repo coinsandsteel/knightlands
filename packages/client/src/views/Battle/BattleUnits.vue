@@ -146,7 +146,7 @@ export default {
     }
   },
   activated() {
-    this.title = this.shouldFillSlot ? "select unit" : "battle units";
+    this.title = this.shouldFillSlot ? "select unit" : "warehouse";
   },
   methods: {
     async clickHandler({ unit }) {

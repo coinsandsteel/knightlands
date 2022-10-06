@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <div class="padding-left-2 padding-right-2">
+    <div class="text-align-center font-size-22 margin-top-2">
+      PVP Score: {{ score }}
+    </div>
     <div
       v-for="(units, difficulty) in items"
       :key="'option_' + difficulty"
       :class="difficulty !== 'low' ? 'margin-top-4' : 'margin-top-2'"
     >
-      <div class="battle-unit-list">
+      <div class=" font-size-22">
+        {{ $t("battle-duels-" + difficulty) }}
+      </div>
+      <div class="battle-unit-list margin-top-1">
         <BattleUnit
           v-for="unit in units"
           :key="unit.unitId"
@@ -43,7 +49,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("battle", ["isFightersFullFilled"])
+    ...mapGetters("battle", ["isFightersFullFilled"]),
+    score() {
+      return 0;
+    }
   },
   created() {
     this.title = this.$t("Duels");
