@@ -835,8 +835,8 @@ export default {
     },
 
     // BattleRankings
-    async rankings() {
-      return (await this.$app.$game._wrapOperation(Operations.BattleRankings))
+    async rankings(store, { mode }) {
+      return (await this.$app.$game._wrapOperation(Operations.BattleRankings, { mode }))
         .response;
     },
 
