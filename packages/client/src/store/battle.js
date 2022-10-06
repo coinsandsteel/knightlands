@@ -748,9 +748,8 @@ export default {
       store.dispatch("update", { mergerIds: [null, null, null] });
     },
     async mergeUnits(store) {
-      console.log('Merge', { template: store.getters.mergerUnits[0].template });
-      const response = await (
-        this.$app.$game._wrapOperation(Operations.BattleMerge, {
+      const response = (
+        await this.$app.$game._wrapOperation(Operations.BattleMerge, {
           template: store.getters.mergerUnits[0].template
         })
       ).response;
