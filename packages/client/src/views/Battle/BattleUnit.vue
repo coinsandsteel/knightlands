@@ -77,6 +77,12 @@
           class="battle-buff-indicator-icon battle-buff-indicator-icon--red"
         />
       </div>
+      <div
+        v-if="isQuantityVisible && quantity"
+        class="absolute battle-unit-quantity font-size-18 font-weight-700 font-outline-heavy"
+      >
+        {{ quantity }}
+      </div>
     </div>
   </div>
 </template>
@@ -100,7 +106,8 @@ export default {
     isHpVisible: Boolean,
     isSmallRatingIndex: Boolean,
     isBuffIndicatorVisible: Boolean,
-    isBuffIndicatorSmall: Boolean
+    isBuffIndicatorSmall: Boolean,
+    isQuantityVisible: Boolean
   },
   data() {
     return {};
@@ -140,6 +147,9 @@ export default {
     },
     isRatingIndexVisible() {
       return typeof this.ratingIndex === "number";
+    },
+    quantity() {
+      return this.unit && this.unit.quantity ? this.unit.quantity : 0;
     }
   },
   methods: {
@@ -252,6 +262,11 @@ export default {
 .battle-unit-wrapper {
   // background: url("/images/battle/units/unit.png") center/100% no-repeat;
   padding-bottom: 100%;
+}
+.battle-unit-quantity {
+  right: 12%;
+  bottom: 6%;
+  color: #fff;
 }
 .battle-unit-background-color {
   background: #14b8a6;

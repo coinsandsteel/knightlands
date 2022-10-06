@@ -4,6 +4,7 @@
       v-for="(unit, index) in units"
       :key="index + '_' + (unit ? unit.unitId : '')"
       :unit="unit"
+      :isQuantityVisible="isQuantityVisible"
       @click="clickHandler(unit, index)"
     >
       <div
@@ -29,6 +30,7 @@ export default {
     units: Array,
     selectedUnits: Array,
     isSelectable: Boolean,
+    isQuantityVisible: Boolean,
     isMultipleSelect: Boolean,
     isClearButtonVisible: Boolean
   },

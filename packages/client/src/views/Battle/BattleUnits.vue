@@ -21,7 +21,11 @@
           class="font-size-22 height-100 padding-left-2 padding-right-2 padding-top-1 padding-bottom-1"
         >
           <div>
-            <BattleUnitList :units="units" @click="clickHandler" />
+            <BattleUnitList
+              :units="units"
+              :isQuantityVisible="true"
+              @click="clickHandler"
+            />
           </div>
         </div>
       </div>

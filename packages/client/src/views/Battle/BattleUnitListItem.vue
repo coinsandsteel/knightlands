@@ -3,7 +3,11 @@
     class="battle-unit-list-item flex flex-no-wrap flex-item-center pointer font-size-22"
     @click="clickHandler"
   >
-    <BattleUnit :unit="unit" class="flex-shrink-0" />
+    <BattleUnit
+      :unit="unit"
+      :isQuantityVisible="isQuantityVisible"
+      class="flex-shrink-0"
+    />
     <template v-if="unit">
       <div class="flex flex-wrap flex-item-center">
         <div class="text-align-left">
@@ -38,7 +42,8 @@ export default {
     BattleUnitAbility
   },
   props: {
-    unit: Object
+    unit: Object,
+    isQuantityVisible: Boolean
   },
   data() {
     return {};
