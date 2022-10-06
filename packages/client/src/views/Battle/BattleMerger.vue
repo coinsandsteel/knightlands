@@ -78,13 +78,25 @@ export default {
       return this.mergerUnits.filter(Boolean).length === 3;
     }
   },
+  beforeRouteLeave(to, from, next) {
+    if (!(to && to.name === "battle-units")) {
+      this.reset();
+      this.$store.dispatch("battle/clearMergeUnits");
+    }
+    next();
+  },
   created() {
     this.title = this.$t("Merger");
   },
   methods: {
+    reset() {
+      this.newUnit = null;
+      this.units = [];
+    },
     async unitClickHandler() {
       // const show = create(BattleUnitSelect);
       // await show();
+      this.reset();
       this.$router.push({
         name: "battle-units",
         params: {
@@ -94,8 +106,7 @@ export default {
     },
     clearHandler() {
       this.$store.dispatch("battle/clearMergeUnits");
-      this.newUnit = null;
-      this.units = [];
+      this.reset();
     },
     async mergeHandler() {
       if (!this.canMerge) {
@@ -104,7 +115,6 @@ export default {
       this.units = cloneDeep(this.mergerUnits);
       const newUnit = await this.$store.dispatch("battle/mergeUnits");
       this.newUnit = newUnit;
-      console.log("New unit", newUnit);
     }
     // async detailsClickHandler() {
     //   const show = create(BattleMergerDetailsInfo);
