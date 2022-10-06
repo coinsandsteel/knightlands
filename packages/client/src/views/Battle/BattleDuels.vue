@@ -30,9 +30,10 @@
 import { mapGetters } from "vuex";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as battle from "@/../../knightlands-shared/battle";
+import AppSection from "@/AppSection.vue";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {
-  mixins: [NetworkRequestErrorMixin],
+  mixins: [AppSection, NetworkRequestErrorMixin],
   components: {
     BattleUnit
   },
@@ -43,6 +44,9 @@ export default {
   },
   computed: {
     ...mapGetters("battle", ["isFightersFullFilled"])
+  },
+  created() {
+    this.title = this.$t("Duels");
   },
   async activated() {
     this.items = await this.$store.dispatch("battle/fetchDuelOptions");

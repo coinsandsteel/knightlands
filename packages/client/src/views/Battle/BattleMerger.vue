@@ -49,11 +49,13 @@
 <script>
 import { mapGetters } from "vuex";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
+import AppSection from "@/AppSection.vue";
 // import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
 // import BattleMergerDetailsInfo from "@/views/Battle/BattleMergerDetailsInfo.vue";
 // import { create } from "vue-modal-dialogs";
 
 export default {
+  mixins: [AppSection],
   components: {
     BattleUnit
   },
@@ -67,6 +69,9 @@ export default {
     canMerge() {
       return this.mergerUnits.filter(Boolean).length === 3;
     }
+  },
+  created() {
+    this.title = this.$t("Merger");
   },
   methods: {
     async unitClickHandler() {

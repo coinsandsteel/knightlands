@@ -2,14 +2,14 @@
   <div class="flex flex-column flex-full overflow-auto">
     <div class="screen-background"></div>
     <div class="flex dummy-height flex-no-wrap full-flex flex-column">
-      <tabs
+      <!-- <tabs
         :tabs="tabs"
         :router="true"
         :currentTab="currentTab"
         @onClick="switchTab"
         :replace="true"
       >
-      </tabs>
+      </tabs> -->
       <keep-alive>
         <router-view></router-view>
       </keep-alive>

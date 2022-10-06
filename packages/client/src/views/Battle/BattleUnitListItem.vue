@@ -101,7 +101,7 @@ export default {
 </script>
 <style scoped lang="less">
 .battle-unit-list-item {
-  padding: 1rem;
+  padding: 1.5rem 1rem;
 }
 .battle-unit {
   width: 7rem;

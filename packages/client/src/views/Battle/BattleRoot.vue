@@ -68,15 +68,18 @@ export default {
   computed: {
     ...mapState("battle", ["loaded"]),
     isTabsVisible() {
-      return ![
-        "battle-units",
-        "battle-squad-home",
-        "battle-squad-warehouse",
-        "battle-squad-bonus",
-        "battle-squad-unit",
-        "battle-duels-play",
-        "battle-adventure-play"
-      ].includes(this.$route.name);
+      return ["battle-menu", "battle-achievement", "battle-rankings"].includes(
+        this.$route.name
+      );
+      // return ![
+      //   "battle-units",
+      //   "battle-squad-home",
+      //   "battle-squad-warehouse",
+      //   "battle-squad-bonus",
+      //   "battle-squad-unit",
+      //   "battle-duels-play",
+      //   "battle-adventure-play"
+      // ].includes(this.$route.name);
     }
   },
   created() {

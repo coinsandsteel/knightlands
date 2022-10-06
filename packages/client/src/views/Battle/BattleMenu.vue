@@ -5,6 +5,7 @@
     >
       <BattleCoin class="margin-left-2" :hasMargin="true" />
       <BattleCrystal class="margin-left-2" />
+      <img class="battle-of-heroes" src="/images/battle/battle-of-heroes.png" />
     </div>
     <div class="font-size-22 height-100 flex flex-center">
       <div>
@@ -41,7 +42,7 @@
             class="inline-block margin-right-2 margin-top-2"
             @click="goToUnitsList"
           >
-            Units
+            Warehouse
           </CustomButton>
         </div>
         <div>
@@ -105,7 +106,7 @@ export default {
       this.$router.push({ name: "battle-duels" });
     },
     goToSquad() {
-      this.$router.push({ name: "battle-squad-home" });
+      this.$router.push({ name: "battle-squad" });
     },
     goToUnitsList() {
       this.$router.push({ name: "battle-units" });
@@ -133,5 +134,13 @@ export default {
 <style scoped lang="less">
 .btn {
   width: 30rem;
+}
+.battle-of-heroes {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-height: unset;
 }
 </style>

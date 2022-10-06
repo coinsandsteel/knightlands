@@ -1,11 +1,26 @@
 <template>
-  <div class="padding-2">
-    <div class="font-size-22 text-align-center">
-      <div v-if="power">Power: {{ power }}</div>
-      <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
-        Bonuses: {{ bonuses }}
-      </div>
-      <!-- <div>
+  <div class="flex flex-column flex-full overflow-auto">
+    <div class="screen-background"></div>
+    <div class="flex dummy-height flex-no-wrap full-flex flex-column">
+      <div class="padding-2">
+        <BattleUnitList
+          :units="fighters"
+          :isClearButtonVisible="true"
+          @click="clickHandler"
+          @clear="clearHandler"
+        />
+        <div class="font-size-22 text-align-center margin-top-2">
+          <div>Power: {{ power }}</div>
+          <div>
+            Current squad bonuses:
+            <div>{{ bonuses }}</div>
+          </div>
+          <div v-if="power">Power: {{ power }}</div>
+          <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
+            Current squad bonuses:
+            <div>{{ bonuses }}</div>
+          </div>
+          <!-- <div>
         <div
           v-for="(bonus, index) in bonuses"
           :key="index"
@@ -13,25 +28,23 @@
           v-html="bonus"
         ></div>
       </div> -->
+        </div>
+        <CustomButton
+          v-if="fighters.length < 5"
+          type="green"
+          class="inline-block"
+          width="8rem"
+          @click="updateUnitHandler(fighters.length)"
+          >{{ $t("add") }}</CustomButton
+        >
+        <portal to="footer" :slim="true" v-if="isActive">
+          <CustomButton type="blue" @click="buildSquad"
+            >Build squad</CustomButton
+          >
+          <CustomButton type="red" @click="maxSquad">Maximize</CustomButton>
+        </portal>
+      </div>
     </div>
-    <BattleUnitList
-      :units="fighters"
-      :isClearButtonVisible="true"
-      @click="clickHandler"
-      @clear="clearHandler"
-    />
-    <CustomButton
-      v-if="fighters.length < 5"
-      type="green"
-      class="inline-block"
-      width="8rem"
-      @click="updateUnitHandler(fighters.length)"
-      >{{ $t("add") }}</CustomButton
-    >
-    <portal to="footer" :slim="true" v-if="isActive">
-      <CustomButton type="blue" @click="buildSquad">Build squad</CustomButton>
-      <CustomButton type="red" @click="maxSquad">Maximize</CustomButton>
-    </portal>
   </div>
 </template>
 <script>
@@ -40,12 +53,13 @@ import { mapState } from "vuex";
 // import BattleUnit from "@/views/Battle/BattleUnit.vue";
 // import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
+import AppSection from "@/AppSection.vue";
 // import AppSection from "@/AppSection.vue";
 // import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 
 export default {
-  mixins: [ActivityMixin],
+  mixins: [AppSection, ActivityMixin],
   components: {
     // BattleUnit,
     BattleUnitList
@@ -89,6 +103,9 @@ export default {
         .join(", ");
     }
   },
+  created() {
+    this.title = this.$t("Squad");
+  },
   methods: {
     buildSquad() {
       this.$store.dispatch("battle/testAction", {
@@ -128,6 +145,9 @@ export default {
           index
         }
       });
+    },
+    handleBackButton() {
+      this.$router.replace({ name: "battle-menu" });
     }
   }
 };
