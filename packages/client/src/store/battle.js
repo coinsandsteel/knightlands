@@ -11,6 +11,7 @@ import {
 
 const BATTLE_TIERS_FILTER = "BATTLE_TIERS_FILTER";
 const BATTLE_CLASSES_FILTER = "BATTLE_CLASSES_FILTER";
+const BATTLE_TRIBES_FILTER = "BATTLE_TRIBES_FILTER";
 
 let selectedTiersFilter = [];
 if (localStorage.getItem(BATTLE_TIERS_FILTER)) {
@@ -22,6 +23,10 @@ if (localStorage.getItem(BATTLE_CLASSES_FILTER)) {
     localStorage.getItem(BATTLE_CLASSES_FILTER)
   );
 }
+let selectedTribesFilter = [];
+if (localStorage.getItem(BATTLE_TRIBES_FILTER)) {
+  selectedTribesFilter = JSON.parse(localStorage.getItem(BATTLE_TRIBES_FILTER));
+}
 
 export default {
   namespaced: true,
@@ -30,6 +35,7 @@ export default {
     loaded: false,
     selectedTiersFilter,
     selectedClassesFilter,
+    selectedTribesFilter,
     hasSubscribed: false,
     hasShownDailyRewards: false,
     mergerIds: [null, null, null],
@@ -641,6 +647,10 @@ export default {
     setClassesFilter(store, data) {
       store.state.selectedClassesFilter = data;
       localStorage.setItem(BATTLE_CLASSES_FILTER, JSON.stringify(data));
+    },
+    setTribesFilter(store, data) {
+      store.state.selectedTribesFilter = data;
+      localStorage.setItem(BATTLE_TRIBES_FILTER, JSON.stringify(data));
     },
 
     // ###### OPERATIONS ######

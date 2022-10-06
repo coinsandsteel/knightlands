@@ -4,7 +4,7 @@
     <div
       class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
     >
-      <tabs
+      <!-- <tabs
         v-if="
           ['battle-squad-home', 'battle-squad-bonus'].includes(
             $route.query && $route.query.from
@@ -15,9 +15,11 @@
         :currentTab="currentTab"
         :replace="true"
       >
-      </tabs>
-      <div class="screen-content ">
-        <div class="font-size-22 height-100">
+      </tabs> -->
+      <div class="screen-content">
+        <div
+          class="font-size-22 height-100 padding-left-2 padding-right-2 padding-top-1 padding-bottom-1"
+        >
           <div>
             <BattleUnitList :units="units" @click="clickHandler" />
           </div>
@@ -44,7 +46,7 @@ import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
-import Tabs from "@/components/Tabs.vue";
+// import Tabs from "@/components/Tabs.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitsFilter from "@/views/Battle/BattleUnitsFilter.vue";
 // import BattleMixin from "@/views/Battle/BattleMixin.vue";
@@ -60,7 +62,10 @@ export default {
     ActivityMixin
     // BattleMixin
   ],
-  components: { Tabs, BattleUnitList },
+  components: {
+    // Tabs,
+    BattleUnitList
+  },
   data() {
     return {
       currentTab: SquadTab
@@ -74,34 +79,34 @@ export default {
       "selectedTiersFilter",
       "selectedClassesFilter"
     ]),
-    tabs() {
-      return [
-        {
-          title: "Squad",
-          value: SquadTab,
-          to: { name: SquadTab }
-        },
-        this.$route.query && this.$route.query.from === "battle-squad-home"
-          ? {
-              title: "Warehouse",
-              value: WarehouseTab,
-              to: { name: WarehouseTab, query: { from: "battle-squad-home" } }
-            }
-          : {
-              title: "Warehouse",
-              value: WarehouseTab,
-              to: {
-                name: WarehouseTab,
-                query: { from: "battle-squad-bonus" }
-              }
-            },
-        {
-          title: "Bonus",
-          value: BonusTab,
-          to: { name: BonusTab }
-        }
-      ];
-    },
+    // tabs() {
+    //   return [
+    //     {
+    //       title: "Squad",
+    //       value: SquadTab,
+    //       to: { name: SquadTab }
+    //     },
+    //     this.$route.query && this.$route.query.from === "battle-squad-home"
+    //       ? {
+    //           title: "Warehouse",
+    //           value: WarehouseTab,
+    //           to: { name: WarehouseTab, query: { from: "battle-squad-home" } }
+    //         }
+    //       : {
+    //           title: "Warehouse",
+    //           value: WarehouseTab,
+    //           to: {
+    //             name: WarehouseTab,
+    //             query: { from: "battle-squad-bonus" }
+    //           }
+    //         },
+    //     {
+    //       title: "Bonus",
+    //       value: BonusTab,
+    //       to: { name: BonusTab }
+    //     }
+    //   ];
+    // },
     shouldShowFilter() {
       return true;
     },
@@ -122,7 +127,6 @@ export default {
           this.selectedClassesFilter.includes(item.class)
         );
       }
-      console.log("result", result);
 
       if (this.shouldFillSlot) {
         if (this.$route.params.slot === "squad") {

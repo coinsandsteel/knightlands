@@ -1,5 +1,5 @@
 <template>
-  <UserDialog title="battle units filter" @close="closeHandler()" emitClose>
+  <UserDialog title="filter" @close="closeHandler()" emitClose>
     <template v-slot:content>
       <div class="font-size-25 capitalize flex width-100 flex-column padding-1">
         <div class="flex width-100 flex-space-evenly">
@@ -24,6 +24,28 @@
             >{{ $t(classOption.label) }}</p-check
           >
         </div>
+        <div class="flex width-100 flex-space-evenly margin-top-2">
+          <p-check
+            v-for="tribeOption in tribeOptions"
+            :key="tribeOption.value"
+            class="checkbox margin-bottom-1"
+            color="warning"
+            :checked="selectedTribesFilter.includes(tribeOption.value)"
+            @change="tribeCheckHandler(tribeOption)"
+            >{{ $t(tribeOption.label) }}</p-check
+          >
+        </div>
+
+        <div class="text-align-center margin-top-4">
+          <CustomButton
+            type="red"
+            class="inline-block"
+            width="15rem"
+            @click="clearFilterHandler"
+          >
+            Reset filter
+          </CustomButton>
+        </div>
       </div>
     </template>
   </UserDialog>
@@ -42,7 +64,11 @@ export default {
     };
   },
   computed: {
-    ...mapState("battle", ["selectedTiersFilter", "selectedClassesFilter"]),
+    ...mapState("battle", [
+      "selectedTiersFilter",
+      "selectedClassesFilter",
+      "selectedTribesFilter"
+    ]),
     tierOptions() {
       return [
         {
@@ -82,6 +108,78 @@ export default {
           label: "Support"
         }
       ];
+    },
+    tribeOptions() {
+      return [
+        {
+          value: battle.UNIT_TRIBE_KOBOLD,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_KOBOLD)
+        },
+        {
+          value: battle.UNIT_TRIBE_DWARF,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_DWARF)
+        },
+        {
+          value: battle.UNIT_TRIBE_EGYPTIAN,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_EGYPTIAN)
+        },
+        {
+          value: battle.UNIT_TRIBE_GOBLIN,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_GOBLIN)
+        },
+        {
+          value: battle.UNIT_TRIBE_INSECT,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_INSECT)
+        },
+        {
+          value: battle.UNIT_TRIBE_ORC,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_ORC)
+        },
+        {
+          value: battle.UNIT_TRIBE_CLOCKWORK,
+          label: this.$t(
+            "battle-unit-tribe-name-" + battle.UNIT_TRIBE_CLOCKWORK
+          )
+        },
+        {
+          value: battle.UNIT_TRIBE_SKELETON,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_SKELETON)
+        },
+        {
+          value: battle.UNIT_TRIBE_ICE,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_ICE)
+        },
+        {
+          value: battle.UNIT_TRIBE_ELF,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_ELF)
+        },
+        {
+          value: battle.UNIT_TRIBE_ELDRITCH,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_ELDRITCH)
+        },
+        {
+          value: battle.UNIT_TRIBE_ASSEMBLING,
+          label: this.$t(
+            "battle-unit-tribe-name-" + battle.UNIT_TRIBE_ASSEMBLING
+          )
+        },
+        {
+          value: battle.UNIT_TRIBE_FALLEN_KING,
+          label: this.$t(
+            "battle-unit-tribe-name-" + battle.UNIT_TRIBE_FALLEN_KING
+          )
+        },
+        {
+          value: battle.UNIT_TRIBE_LEGENDARY,
+          label: this.$t(
+            "battle-unit-tribe-name-" + battle.UNIT_TRIBE_LEGENDARY
+          )
+        },
+        {
+          value: battle.UNIT_TRIBE_TITAN,
+          label: this.$t("battle-unit-tribe-name-" + battle.UNIT_TRIBE_TITAN)
+        }
+      ];
     }
   },
   created() {},
@@ -115,6 +213,23 @@ export default {
       }
 
       this.$store.dispatch("battle/setClassesFilter", values);
+    },
+    tribeCheckHandler(option) {
+      const values = cloneDeep(this.selectedTribesFilter);
+      const index = values.findIndex(item => option.value === item);
+
+      if (index > -1) {
+        values.splice(index, 1);
+      } else {
+        values.push(option.value);
+      }
+
+      this.$store.dispatch("battle/setTribesFilter", values);
+    },
+    clearFilterHandler() {
+      this.$store.dispatch("battle/setTiersFilter", []);
+      this.$store.dispatch("battle/setClassesFilter", []);
+      this.$store.dispatch("battle/setTribesFilter", []);
     }
   }
 };
