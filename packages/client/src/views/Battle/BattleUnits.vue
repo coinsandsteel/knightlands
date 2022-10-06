@@ -38,9 +38,9 @@
       <CustomButton type="red" @click="clearUnitsHandler">
         Clear Units
       </CustomButton>
-      <CustomButton type="grey" @click="showUnitsFilter">{{
-        $t("btn-filter")
-      }}</CustomButton>
+      <CustomButton type="grey" @click="showUnitsFilter"
+        >{{ $t("btn-filter") }} {{ hasFilters ? "*" : "" }}</CustomButton
+      >
     </portal>
   </div>
 </template>
@@ -55,9 +55,9 @@ import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitsFilter from "@/views/Battle/BattleUnitsFilter.vue";
 // import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
-const SquadTab = "battle-squad-home";
-const WarehouseTab = "battle-units";
-const BonusTab = "battle-squad-bonus";
+// const SquadTab = "battle-squad-home";
+// const WarehouseTab = "battle-units";
+// const BonusTab = "battle-squad-bonus";
 
 export default {
   mixins: [
@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      currentTab: SquadTab
+      // currentTab: SquadTab
     };
   },
   computed: {
@@ -81,7 +81,8 @@ export default {
       "inventory",
       "mergerIds",
       "selectedTiersFilter",
-      "selectedClassesFilter"
+      "selectedClassesFilter",
+      "selectedTribesFilter"
     ]),
     // tabs() {
     //   return [
@@ -114,47 +115,61 @@ export default {
     shouldShowFilter() {
       return true;
     },
+    hasFilters() {
+      return (
+        this.selectedTiersFilter.length +
+          this.selectedClassesFilter.length +
+          this.selectedTribesFilter.length >
+        0
+      );
+    },
     shouldFillSlot() {
       return this.$route.params && this.$route.params.slot;
     },
     units() {
-      let result = this.inventory.slice();
+      return this.inventory.slice().filter(unit => {
+        let isIncluded = true;
 
-      if (this.selectedTiersFilter && this.selectedTiersFilter.length > 0) {
-        result = result.filter(item =>
-          this.selectedTiersFilter.includes(item.tier)
-        );
-      }
-
-      if (this.selectedClassesFilter && this.selectedClassesFilter.length > 0) {
-        result = result.filter(item =>
-          this.selectedClassesFilter.includes(item.class)
-        );
-      }
-
-      if (this.shouldFillSlot) {
-        if (this.$route.params.slot === "squad") {
-          const ids = [];
-          ids.push(
-            ...(this.game && this.game.userSquad && this.game.userSquad.fighters
-              ? this.game.userSquad.fighters
-              : []
-            ).map(unit => unit && unit.unitId)
-          );
-          result = result.filter(
-            ({ unitId, quantity }) =>
-              quantity > ids.filter(id => id === unitId).length
-          );
-        } else if (this.$route.params.slot === "merger") {
-          result = result.filter(unit => unit.tier < 3 && unit.quantity >= 3);
+        if (isIncluded && this.selectedTiersFilter.length > 0) {
+          isIncluded =
+            isIncluded && this.selectedTiersFilter.includes(unit.tier);
         }
-      }
 
-      return result;
+        if (isIncluded && this.selectedClassesFilter.length > 0) {
+          isIncluded =
+            isIncluded && this.selectedClassesFilter.includes(unit.class);
+        }
+
+        if (isIncluded && this.selectedTribesFilter.length > 0) {
+          isIncluded =
+            isIncluded && this.selectedTribesFilter.includes(unit.tribe);
+        }
+
+        if (isIncluded && this.shouldFillSlot) {
+          if (this.$route.params.slot === "squad") {
+            const ids = [];
+            ids.push(
+              ...(this.game &&
+              this.game.userSquad &&
+              this.game.userSquad.fighters
+                ? this.game.userSquad.fighters
+                : []
+              ).map(fighter => fighter && fighter.unitId)
+            );
+            isIncluded =
+              isIncluded &&
+              unit.quantity > ids.filter(id => id === unit.unitId).length;
+          } else if (this.$route.params.slot === "merger") {
+            isIncluded = isIncluded && unit.tier < 3 && unit.quantity >= 3;
+          }
+        }
+
+        return isIncluded;
+      });
     }
   },
   activated() {
-    this.title = this.shouldFillSlot ? "select unit" : "warehouse";
+    this.title = this.shouldFillSlot ? "select unit" : "inventory";
   },
   methods: {
     async clickHandler({ unit }) {

@@ -42,7 +42,7 @@
             class="inline-block margin-right-2 margin-top-2"
             @click="goToUnitsList"
           >
-            Warehouse
+            Inventory
           </CustomButton>
         </div>
         <div>
