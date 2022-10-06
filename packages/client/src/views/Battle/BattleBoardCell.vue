@@ -238,7 +238,9 @@ export default {
       return this.isTargetCell && !this.isHealTarget;
     },
     isClickable() {
-      return this.isMoveCell || this.isTargetCell;
+      return (
+        this.isMoveCell || this.isTargetCell || this.isUnit || this.isEnemy
+      );
     }
   },
   watch: {

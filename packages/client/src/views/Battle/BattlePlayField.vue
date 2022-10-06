@@ -627,15 +627,15 @@ export default {
         return;
       }
 
-      // if (event.isUnit) {
-      //   this.showFighterDetails(event.unit.fighterId);
-      //   return;
-      // }
+      if (event.isUnit) {
+        this.showFighterDetails(event.unit.fighterId);
+        return;
+      }
 
-      // if (event.isEnemy) {
-      //   this.showFighterDetails(event.enemy.fighterId);
-      //   return;
-      // }
+      if (event.isEnemy) {
+        this.showFighterDetails(event.enemy.fighterId);
+        return;
+      }
     },
     async showFighterDetails(fighterId) {
       if (this.isProcessingQueue || !this.isMyTurn) {

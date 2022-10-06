@@ -18,7 +18,7 @@
           <BattleUnit />
         </div>
       </div>
-      <div class="">
+      <div class="margin-top-2">
         <!-- <CustomButton
           type="green"
           class="inline-block margin-right-2 margin-top-1"
@@ -28,8 +28,9 @@
         </CustomButton> -->
 
         <CustomButton
-          type="green"
+          type="blue"
           class="inline-block margin-right-2 margin-top-1"
+          width="12rem"
           @click="clearHandler"
         >
           Clear
@@ -37,6 +38,7 @@
         <CustomButton
           type="green"
           class="inline-block margin-right-2 margin-top-1"
+          width="12rem"
           :disabled="!canMerge"
           @click="mergeHandler"
         >
