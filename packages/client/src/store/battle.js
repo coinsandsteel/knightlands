@@ -389,7 +389,7 @@ export default {
         const index = state.inventory.findIndex(
           (unit) => unit.template === data.removeUnit
         );
-        delete state.inventory[index];
+        Vue.delete(state.inventory, index);
       }
 
       // Update an inventory unit
