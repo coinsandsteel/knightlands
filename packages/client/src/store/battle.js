@@ -397,16 +397,16 @@ export default {
 
       // User data
       if (data.balance !== undefined) {
-        state.balance = { ...state.balance, ...data.balance };
+        state.user.balance = { ...state.balance, ...data.balance };
       }
       if (data.timers !== undefined) {
-        state.timers = { ...state.timers, ...data.timers };
+        state.user.timers = { ...state.timers, ...data.timers };
       }
       if (data.dailyRewards !== undefined) {
-        state.rewards.dailyRewards = data.dailyRewards;
+        state.user.rewards.dailyRewards = data.dailyRewards;
       }
       if (data.rankingRewards !== undefined) {
-        state.rewards.rankingRewards = data.rankingRewards;
+        state.user.rewards.rankingRewards = data.rankingRewards;
       }
 
       // Game data
@@ -593,6 +593,7 @@ export default {
       state.user.balance = userData.balance;
       state.user.timers = userData.timers;
       state.user.rewards = userData.rewards;
+      //state.user.shop = userData.shop;
 
       state.inventory = data.inventory;
 
