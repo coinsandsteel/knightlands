@@ -1,33 +1,53 @@
 <template>
   <div class="flex flex-column">
-    <div class="screen-background"></div>
-    <div
-      class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
-    >
-      <!-- <tabs
-        v-if="
-          ['battle-squad-home', 'battle-squad-bonus'].includes(
-            $route.query && $route.query.from
-          )
-        "
-        :tabs="tabs"
-        :router="true"
-        :currentTab="currentTab"
-        :replace="true"
+    <div class="screen-content">
+      <div
+        class="font-size-22 height-100 padding-left-2 padding-right-2 padding-top-1 padding-bottom-1"
       >
-      </tabs> -->
-      <div class="screen-content">
-        <div
-          class="font-size-22 height-100 padding-left-2 padding-right-2 padding-top-1 padding-bottom-1"
-        >
-          <div>
-            <BattleUnitList
+        <!-- <BattleUnitList
               :units="units"
               :isQuantityVisible="true"
               @click="clickHandler"
-            />
+            /> -->
+
+        <template v-for="(unitGroup, tribe) in unitGroups">
+          <div v-if="unitGroup.length > 0" class="margin-bottom-3" :key="tribe">
+            <div class="text-align-center font-size-25">
+              {{ $t("battle-unit-tribe-name-" + tribe) }}
+            </div>
+            <div class="battle-units-wrapper margin-top-2">
+              <BattleUnit
+                v-for="unit in unitGroup"
+                :key="unit.unitId"
+                :unit="unit"
+                :isQuantityVisible="true"
+                class="cursor-pointer"
+                @click="clickHandler(unit)"
+              />
+              <!-- <div
+                v-for="unit in unitGroup"
+                :key="unit.unitId"
+                class="battle-unit-wrap"
+              >
+                <BattleUnit
+                  :unit="unit"
+                  :isQuantityVisible="true"
+                  @click="clickUnitHandler"
+                />
+                <div class="padding-top-1 text-align-center">
+                  <CustomButton
+                    type="green"
+                    :mini="true"
+                    class="inline-block"
+                    @click="clickDescriptionHandler"
+                  >
+                    Description
+                  </CustomButton>
+                </div>
+              </div> -->
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
 
@@ -47,12 +67,14 @@
 <script>
 import { mapState } from "vuex";
 import { create } from "vue-modal-dialogs";
+import * as battle from "@/../../knightlands-shared/battle";
 import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 // import Tabs from "@/components/Tabs.vue";
-import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
+// import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitsFilter from "@/views/Battle/BattleUnitsFilter.vue";
+import BattleUnit from "@/views/Battle/BattleUnit.vue";
 // import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
 // const SquadTab = "battle-squad-home";
@@ -68,7 +90,8 @@ export default {
   ],
   components: {
     // Tabs,
-    BattleUnitList
+    // BattleUnitList,
+    BattleUnit
   },
   data() {
     return {
@@ -166,13 +189,41 @@ export default {
 
         return isIncluded;
       });
+    },
+    unitGroups() {
+      const groups = {
+        [battle.UNIT_TRIBE_KOBOLD]: [],
+        [battle.UNIT_TRIBE_DWARF]: [],
+        [battle.UNIT_TRIBE_EGYPTIAN]: [],
+        [battle.UNIT_TRIBE_GOBLIN]: [],
+        [battle.UNIT_TRIBE_INSECT]: [],
+        [battle.UNIT_TRIBE_ORC]: [],
+        [battle.UNIT_TRIBE_CLOCKWORK]: [],
+        [battle.UNIT_TRIBE_SKELETON]: [],
+        [battle.UNIT_TRIBE_ICE]: [],
+        [battle.UNIT_TRIBE_ELF]: [],
+        [battle.UNIT_TRIBE_ELDRITCH]: [],
+        [battle.UNIT_TRIBE_ASSEMBLING]: [],
+        [battle.UNIT_TRIBE_FALLEN_KING]: [],
+        [battle.UNIT_TRIBE_LEGENDARY]: [],
+        [battle.UNIT_TRIBE_TITAN]: []
+      };
+
+      for (let i = 0; i < this.units.length; i++) {
+        const unit = this.units[i];
+        if (groups[unit.tribe]) {
+          groups[unit.tribe].push(unit);
+        }
+      }
+
+      return groups;
     }
   },
   activated() {
     this.title = this.shouldFillSlot ? "select unit" : "inventory";
   },
   methods: {
-    async clickHandler({ unit }) {
+    async clickHandler(unit) {
       if (this.shouldFillSlot) {
         if (this.$route.params.slot === "squad") {
           const index = +this.$route.params.index;
@@ -234,4 +285,28 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.battle-units-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+}
+.battle-unit {
+  width: calc(20% - 1rem);
+  margin: 0 0.5rem 1rem;
+}
+// .battle-unit-wrap {
+//   width: 25%;
+//   margin-bottom: 2rem;
+// }
+// @media only screen and (min-width: 450px) {
+//   .battle-unit-wrap {
+//     width: 20%;
+//   }
+// }
+// .battle-unit {
+//   width: calc(100% - 1rem);
+//   margin: 0 auto;
+// }
+</style>

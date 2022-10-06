@@ -79,9 +79,9 @@
       </div>
       <div
         v-if="isQuantityVisible && quantity"
-        class="absolute battle-unit-quantity font-size-18 font-weight-700 font-outline-heavy"
+        class="absolute battle-unit-quantity font-size-20 font-outline-heavy"
       >
-        {{ quantity }}
+        x{{ quantity }}
       </div>
     </div>
   </div>
@@ -264,8 +264,8 @@ export default {
   padding-bottom: 100%;
 }
 .battle-unit-quantity {
-  right: 12%;
-  bottom: 6%;
+  right: 10%;
+  top: 6%;
   color: #fff;
 }
 .battle-unit-background-color {
