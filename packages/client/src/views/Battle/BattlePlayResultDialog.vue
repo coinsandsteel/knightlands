@@ -7,7 +7,7 @@
   >
     <template v-slot:content>
       <div class="text-align-center font-size-22">
-        <div v-if="crystal || coins || exp">
+        <div v-if="crystal || coins || exp || rank">
           <div class="">Rewards</div>
           <div v-if="crystal" class="margin-top-2">
             <div class="flex-inline">
@@ -30,6 +30,9 @@
           </div>
           <div v-if="exp" class="margin-top-1">
             <div class="flex-inline">Experience: {{ exp }}</div>
+          </div>
+          <div v-if="rank" class="margin-top-1">
+            <div class="flex-inline">Rank: {{ rank }}</div>
           </div>
         </div>
         <!-- <div class="margin-top-2 text-align-center">
@@ -96,6 +99,9 @@ export default {
     },
     exp() {
       return this.game.combat.rewards.xp || 0;
+    },
+    rank() {
+      return this.game.combat.rewards.rank || 0;
     }
   },
   methods: {

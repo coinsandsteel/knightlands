@@ -56,15 +56,15 @@
             :emitUpdate="records.length > 0 && !fetchedAll"
             @update="scrollUpdated"
           >
-            <Title v-if="item.isTitle" class="common-title">{{
-              $t("top-players")
-            }}</Title>
+            <Title v-if="item.isTitle" class="common-title">
+              {{ item.name }}
+            </Title>
             <BattleRankingElement
               v-else
               :index="index"
               :rank="item.rank"
-              :id="item.name"
-              :pId="item.id"
+              :id="item.id"
+              :name="item.name"
               :avatar="item.avatar"
               :score="item.score"
               :height="itemSize"
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import _ from "lodash";
+// import _ from "lodash";
 import BattleRankingElement from "@/views/Battle/BattleRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as battle from "@/../../knightlands-shared/battle";
@@ -118,42 +118,51 @@ export default {
     async fetchRankings() {
       const records = [];
       const result = await this.performRequest(
-        this.$store.dispatch("battle/rankings", { mode: 'pvp' })
+        this.$store.dispatch("battle/rankings", { mode: "pvp" })
       );
-
-      console.log('Rankings', result);
+      console.log("Rankings", result);
+      const result2 = await this.performRequest(
+        this.$store.dispatch("battle/rankings", { mode: "power" })
+      );
+      console.log("Rankings2", result2);
 
       if (result) {
         this.hasRewards = result.hasRewards;
         this.eventTimer.timeLeft = result.timeLeft;
         if (result.rankings) {
+          const titleRecord = {
+            id: "title-" + 1,
+            key: "key-" + records.length,
+            name: "PvP Score",
+            isTitle: true
+          };
+          records.push(titleRecord);
           for (let i = 0; i < result.rankings.length; i++) {
-            let newRecords = [];
-
-            for (let j = 0; j < result.rankings[i].length; j++) {
-              newRecords.push(result.rankings[i][j]);
-            }
-
-            newRecords = newRecords
-              .map((record, index) => {
-                if (record.score !== "0") {
-                  const r = { ...record };
-                  r.key = r.id + "-" + i + "-" + index;
-                  r.rank = index + 1;
-                  r.isTitle = false;
-                  return r;
-                }
-              })
-              .filter(record => record);
-            const titleRecord = {
-              id: "title-" + i,
-              key: "title-" + i,
-              isTitle: true
-            };
-            records.push(titleRecord);
-            if (!_.isEmpty(newRecords)) {
-              records.push(...newRecords);
-            }
+            records.push({
+              ...result.rankings[i],
+              rank: i + 1,
+              key: "key-" + records.length
+            });
+          }
+        }
+      }
+      if (result2) {
+        this.hasRewards = result.hasRewards;
+        this.eventTimer.timeLeft = result.timeLeft;
+        if (result2.rankings) {
+          const titleRecord = {
+            id: "title-" + 2,
+            key: "key-" + records.length,
+            name: "Total Power",
+            isTitle: true
+          };
+          records.push(titleRecord);
+          for (let i = 0; i < result2.rankings.length; i++) {
+            records.push({
+              ...result2.rankings[i],
+              rank: i + 1,
+              key: "key-" + records.length
+            });
           }
         }
       }
@@ -207,5 +216,9 @@ export default {
 }
 .icon-rank3-5 {
   filter: hue-rotate(90deg);
+}
+.common-title {
+  height: 40px;
+  margin-top: 0;
 }
 </style>

@@ -8,16 +8,17 @@
     <span :class="rankIcon" class="r"></span>
     <span class="flex-1">#{{ rank }}</span>
     <Avatar :preview="false" :avatar="avatar" :mini="true"></Avatar>
-    <span class="flex-2">{{ id }}</span>
+    <span class="flex-2">{{ name }}</span>
     <span class="flex-2">
-      <AprilGold :value="scoreComputed" />
+      <!-- <AprilGold :value="scoreComputed" /> -->
+      {{ scoreComputed }}
     </span>
   </div>
 </template>
 
 <script>
 import Avatar from "@/views/Character/Avatars/Avatar.vue";
-import AprilGold from "@/views/April/AprilGold.vue";
+// import AprilGold from "@/views/April/AprilGold.vue";
 import meta from "@/metadata/halloween/dungeon_meta";
 
 export default {
@@ -29,11 +30,14 @@ export default {
     "height",
     "you",
     "target",
-    "pId",
+    "name",
     "showRank",
     "avatar"
   ],
-  components: { Avatar, AprilGold },
+  components: {
+    Avatar
+    //  AprilGold
+  },
   computed: {
     reward() {
       if (this.index >= meta.rewards.length) {
@@ -62,7 +66,7 @@ export default {
     preview() {
       this.$router.push({
         name: "preview-char",
-        params: { id: this.pId }
+        params: { id: this.id }
       });
     }
   }
