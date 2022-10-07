@@ -11,7 +11,6 @@
             :key="'event-reward-rank-' + rewardEntryIndex"
           >
             <div class="flex flex-center margin-bottom-1">
-              <div :class="['r', rewardEntry.rankIcon]"></div>
               <div class="margin-left-1">
                 {{ rewardEntry.position }} place{{
                   rewardEntryIndex === 4 ? "s" : ""
@@ -86,7 +85,6 @@
 import BattleRankingElement from "@/views/Battle/BattleRankingElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import * as battle from "@/../../knightlands-shared/battle";
-import meta from "@/battle_meta.json";
 import CustomButton from "@/components/Button.vue";
 import Loot from "@/components/Loot.vue";
 import Timer from "@/timer.js";
@@ -136,7 +134,7 @@ export default {
           const titleRecord = {
             id: "title-" + 1,
             key: "key-" + records.length,
-            name: "PvP Score",
+            name: "PVP Score",
             isTitle: true,
             isFirstTitle
           };
@@ -190,16 +188,8 @@ export default {
   },
   computed: {
     allRewards() {
-      let rewards = meta.rankingRewards.map((rankEntry, rankIndex) => {
-        if (rankIndex === 0) {
-          rankEntry.rankIcon = "icon-rank-1";
-        } else if (rankIndex >= 1 && rankIndex <= 3) {
-          rankEntry.rankIcon = "icon-rank-2";
-        } else {
-          rankEntry.rankIcon = "icon-rank-3";
-        }
-        rankEntry.position = this.places[rankIndex];
-        return rankEntry;
+      let rewards = battle.RANKING_REWARDS.map((rankEntry, rankIndex) => {
+        return { ...rankEntry, position: this.places[rankIndex] };
       });
       return rewards;
     }
