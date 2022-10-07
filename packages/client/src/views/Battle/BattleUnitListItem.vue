@@ -12,7 +12,7 @@
       <div class="flex flex-wrap flex-item-center">
         <div class="text-align-left margin-bottom-half">
           <div class="padding-left-2">{{ title }}</div>
-          <div class="padding-left-2">tier {{ tier }}, pwr: {{ power }}</div>
+          <div class="padding-left-2">tier {{ tier }}, power: {{ power }}</div>
         </div>
         <div class="padding-left-2">
           <BattleUnitAbility

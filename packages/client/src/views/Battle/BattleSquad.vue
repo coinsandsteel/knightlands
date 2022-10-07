@@ -3,13 +3,7 @@
     <div class="screen-background"></div>
     <div class="flex dummy-height flex-no-wrap full-flex flex-column">
       <div class="padding-2">
-        <BattleUnitList
-          :units="fighters"
-          :isClearButtonVisible="true"
-          @click="clickHandler"
-          @clear="clearHandler"
-        />
-        <div class="font-size-22 text-align-center margin-top-2">
+        <div class="font-size-22 text-align-center margin-bottom-2">
           <div v-if="power">Power: {{ power }}</div>
           <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
             Current squad bonuses:
@@ -24,6 +18,12 @@
         ></div>
       </div> -->
         </div>
+        <BattleUnitList
+          :units="fighters"
+          :isClearButtonVisible="true"
+          @click="clickHandler"
+          @clear="clearHandler"
+        />
         <CustomButton
           v-if="fighters.length < 5"
           type="green"
@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import { create } from "vue-modal-dialogs";
+// import { create } from "vue-modal-dialogs";
 import { mapState } from "vuex";
 // import BattleUnit from "@/views/Battle/BattleUnit.vue";
 // import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
@@ -63,7 +63,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("battle", ["game"]),
+    ...mapState("battle", ["game", "inventory"]),
     fighters() {
       // return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
       const result =
@@ -80,7 +80,12 @@ export default {
       return result;
     },
     power() {
-      return this.game && this.game.userSquad ? this.game.userSquad.power : 0;
+      return this.fighters.reduce((prev, fighter) => {
+        const unit = this.inventory.find(
+          ({ unitId }) => fighter.unitId === unitId
+        );
+        return prev + (unit ? unit.power || 0 : 0);
+      }, 0);
     },
     bonuses() {
       const bonusItems = (this.game && this.game.userSquad

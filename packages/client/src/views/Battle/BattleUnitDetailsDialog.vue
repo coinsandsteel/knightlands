@@ -3,11 +3,11 @@
     <template v-slot:content>
       <div v-if="unit" class="font-size-22">
         <div
-          class="battle-unit-details-wrapper margin-x-auto flex flex-wrap padding-left-2"
+          class="battle-unit-details-wrapper margin-x-auto flex flex-no-wrap padding-left-2 flex-center"
         >
           <div class="">
             <BattleUnit :unit="unit" class="margin-x-auto" />
-            <div class="font-size-22 text-align-center white-space-no-wrap">
+            <!-- <div class="font-size-22 text-align-center white-space-no-wrap">
               <template v-if="unit.name">
                 {{ unit.name }}
               </template>
@@ -15,12 +15,28 @@
                 # {{ $t("battle-unit-tribe-" + unit.tribe) }}
                 {{ $t("battle-unit-class-" + unit.class) }} #
               </div>
-            </div>
+            </div> -->
           </div>
-          <div class="flex-grow-1 text-align-left width-35 margin-left-2">
-            <div class="margin-top-half">Tier: {{ unit.tier }}</div>
+          <div class="_flex-grow-1 text-align-left _width-35 margin-left-2">
+            <div class="margin-top-half">{{ unit.name }}</div>
+            <div>
+              {{ $t("battle-unit-tribe-" + unit.tribe) }}
+              {{ $t("battle-unit-class-" + unit.class) }}
+            </div>
+            <div class="">Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.levelInt }}</div>
-            <div class="margin-top-1">Hp: {{ unit.characteristics.hp }}</div>
+            <div>Power: {{ unit.power }}</div>
+            <!-- <div class="margin-top-1">Hp: {{ unit.characteristics.hp }}</div>
+            <div>Attack: {{ unit.characteristics.damage }}</div>
+            <div>Defense: {{ unit.characteristics.defence }}</div>
+            <div>Speed: {{ unit.characteristics.speed }}</div>
+            <div>Initiative: {{ unit.characteristics.initiative }}</div> -->
+          </div>
+          <div class="_flex-grow-1 text-align-left _width-35 margin-left-2">
+            <!-- <div class="margin-top-half">Tier: {{ unit.tier }}</div>
+            <div>Level: {{ unit.levelInt }}</div>
+            <div>Power: {{ unit.power }}</div> -->
+            <div class="margin-top-half">Hp: {{ unit.characteristics.hp }}</div>
             <div>Attack: {{ unit.characteristics.damage }}</div>
             <div>Defense: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
@@ -86,10 +102,7 @@ export default {
       return next;
     },
     abilities() {
-      return (this.unit && this.unit.abilities
-        ? this.unit.abilities
-        : []
-      ).filter(({ enabled }) => enabled);
+      return this.unit && this.unit.abilities ? this.unit.abilities : [];
     },
     level() {
       return this.unit && this.unit.level ? this.unit.level.current : "";
@@ -105,7 +118,7 @@ export default {
 
 <style lang="less" scoped>
 .battle-unit-details-wrapper {
-  width: 250px;
+  // width: 250px;
 }
 .battle-unit-abilities-wrapper {
   width: 280px;
@@ -122,5 +135,8 @@ export default {
 .battle-squad-unit-info {
   display: grid;
   grid-template-columns: repeat(2, 50%);
+}
+::v-deep .ability-value {
+  display: none;
 }
 </style>

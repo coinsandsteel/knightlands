@@ -41,6 +41,7 @@
                 <BattleCoin class="margin-left-1" :value="upgradePrice" />
               </CustomButton>
             </div>
+            <div>Power: {{ unit.power }}</div>
             <div class="flex margin-top-2">
               <div class="padding-right-1">Exp:</div>
               <ProgressBar
@@ -313,5 +314,8 @@ export default {
 }
 .col-span-2 {
   grid-column: span 2 / span 2;
+}
+::v-deep .ability-value {
+  display: none;
 }
 </style>
