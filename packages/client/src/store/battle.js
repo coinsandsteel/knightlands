@@ -6,7 +6,7 @@ import {
   SHOP_STARTER_PACK,
   SHOP_DAILY_REWARD,
   SHOP_ENERGY_CHEST,
-  SHOP_COIN_CHEST,
+  SHOP_COIN_CHEST
 } from "@/../../knightlands-shared/battle";
 
 const BATTLE_TIERS_FILTER = "BATTLE_TIERS_FILTER";
@@ -45,10 +45,10 @@ export default {
       balance: {
         energy: 0,
         coins: 0, // Source: PvE, Purpose: upgrade units level
-        crystals: 0, // Source: PvP, Purpose: upgrade abilities level
+        crystals: 0 // Source: PvP, Purpose: upgrade abilities level
       },
       timers: {
-        energy: 0,
+        energy: 0
       },
       rewards: {
         dailyRewards: [
@@ -66,14 +66,14 @@ export default {
         ],
         rankingRewards: [
           // Will be later
-        ],
+        ]
       },
       shop: {
         [SHOP_STARTER_PACK]: { left: 1 },
         [SHOP_DAILY_REWARD]: { left: 2 },
         [SHOP_ENERGY_CHEST]: { left: 6 },
-        [SHOP_COIN_CHEST]: { left: 2 },
-      },
+        [SHOP_COIN_CHEST]: { left: 2 }
+      }
     },
 
     // 6 rooms
@@ -92,7 +92,7 @@ export default {
           ]
         }
         */
-      ],
+      ]
     },
 
     // Unit list data
@@ -110,14 +110,14 @@ export default {
       userSquad: {
         power: 0,
         bonuses: [],
-        fighters: [],
+        fighters: []
       },
 
       // Enemy squad
       enemySquad: {
         power: 0,
         bonuses: [],
-        fighters: [],
+        fighters: []
       },
 
       // Terrain
@@ -130,7 +130,7 @@ export default {
           coins: 0,
           crystals: 0,
           xp: 0,
-          rank: 0,
+          rank: 0
         },
         result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
@@ -218,10 +218,10 @@ export default {
                 damage: 1
               }
             }*/
-          ],
-        },
-      },
-    },
+          ]
+        }
+      }
+    }
   },
   getters: {
     dailyRewards(state) {
@@ -241,11 +241,11 @@ export default {
         ...(terrain && terrain.tiles && terrain.tiles.length === 25
           ? terrain.tiles
           : Array(25).fill(null)),
-        ...[null, null, null, null, null],
+        ...[null, null, null, null, null]
       ];
       return result.map((tile, index) => ({
         index,
-        tile: tile || (terrain && terrain.base) || battle.TERRAIN_GRASS,
+        tile: tile || (terrain && terrain.base) || battle.TERRAIN_GRASS
       }));
     },
     fighters(state) {
@@ -255,7 +255,7 @@ export default {
       ).filter(Boolean);
     },
     mergerUnits(state) {
-      return state.mergerIds.map((id) => {
+      return state.mergerIds.map(id => {
         if (!id) {
           return null;
         }
@@ -284,7 +284,7 @@ export default {
       });
     },
     isFightersFullFilled(state, getters) {
-      return getters.fighters.filter((u) => u).length >= 2;
+      return getters.fighters.filter(u => u).length >= 2;
     },
     activeFighterId(state) {
       return state.game.combat.activeFighterId;
@@ -360,6 +360,9 @@ export default {
         ? state.game.combat.runtime.attackCells || []
         : [];
     },
+    totalPower(state) {
+      return state.inventory.reduce((prev, unit) => prev + unit.power, 0);
+    }
   },
   mutations: {
     updateState(state, data) {
@@ -388,7 +391,7 @@ export default {
       }
       if (data.removeUnit !== undefined) {
         const index = state.inventory.findIndex(
-          (unit) => unit.template === data.removeUnit
+          unit => unit.template === data.removeUnit
         );
         Vue.delete(state.inventory, index);
       }
@@ -396,7 +399,7 @@ export default {
       // Update an inventory unit
       if (data.updateUnit !== undefined) {
         const index = state.inventory.findIndex(
-          (unit) => unit.unitId === data.updateUnit.unitId
+          unit => unit.unitId === data.updateUnit.unitId
         );
         if (index !== -1) {
           Vue.set(state.inventory, index, data.updateUnit);
@@ -439,7 +442,7 @@ export default {
         if (data.usedActions.length > 0) {
           state.game.usedActions = [
             ...state.game.usedActions,
-            ...data.usedActions,
+            ...data.usedActions
           ];
         } else {
           state.game.usedActions = [];
@@ -472,7 +475,7 @@ export default {
         for (let fighterId in data.buffs) {
           // User squad
           let index = state.game.userSquad.fighters.findIndex(
-            (fighter) => fighter && fighter.fighterId === fighterId
+            fighter => fighter && fighter.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -485,7 +488,7 @@ export default {
 
           // Enemy squad
           index = state.game.enemySquad.fighters.findIndex(
-            (fighter) => fighter && fighter.fighterId === fighterId
+            fighter => fighter && fighter.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -502,7 +505,7 @@ export default {
         for (let fighterId in data.abilities) {
           // User squad
           let index = state.game.userSquad.fighters.findIndex(
-            (fighter) => fighter && fighter.fighterId === fighterId
+            fighter => fighter && fighter.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -515,7 +518,7 @@ export default {
 
           // Enemy squad
           index = state.game.enemySquad.fighters.findIndex(
-            (fighter) => fighter && fighter.fighterId === fighterId
+            fighter => fighter && fighter.fighterId === fighterId
           );
 
           if (index !== -1) {
@@ -531,9 +534,9 @@ export default {
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.userFighter !== undefined) {
-        data.userFighter.forEach((updateEntry) => {
+        data.userFighter.forEach(updateEntry => {
           const index = state.game.userSquad.fighters.findIndex(
-            (fighter) => fighter && fighter.fighterId === updateEntry.fighterId
+            fighter => fighter && fighter.fighterId === updateEntry.fighterId
           );
 
           if (index !== -1) {
@@ -542,7 +545,7 @@ export default {
             Vue.set(state.game.userSquad.fighters, index, {
               ...fighter,
               ...updateEntry,
-              ...(oldIndex !== updateEntry.index ? { oldIndex } : {}),
+              ...(oldIndex !== updateEntry.index ? { oldIndex } : {})
             });
           }
         });
@@ -551,9 +554,9 @@ export default {
       // Array of unit updates during the combat
       // Could be updated: index, hp, abilities, buffs
       if (data.enemyFighter !== undefined) {
-        data.enemyFighter.forEach((updateEntry) => {
+        data.enemyFighter.forEach(updateEntry => {
           const index = state.game.enemySquad.fighters.findIndex(
-            (fighter) => fighter && fighter.fighterId === updateEntry.fighterId
+            fighter => fighter && fighter.fighterId === updateEntry.fighterId
           );
           if (index !== -1) {
             const fighter = state.game.enemySquad.fighters[index];
@@ -561,7 +564,7 @@ export default {
             Vue.set(state.game.enemySquad.fighters, index, {
               ...fighter,
               ...updateEntry,
-              ...(oldIndex !== updateEntry.index ? { oldIndex } : {}),
+              ...(oldIndex !== updateEntry.index ? { oldIndex } : {})
             });
           }
         });
@@ -631,7 +634,7 @@ export default {
       state.game.combat.runtime.moveCells = combatData.runtime.moveCells;
       state.game.combat.runtime.attackCells = combatData.runtime.attackCells;
       state.game.combat.runtime.targetCells = combatData.runtime.targetCells;
-    },
+    }
   },
   actions: {
     update(store, data) {
@@ -639,7 +642,7 @@ export default {
     },
     subscribe(store) {
       store.state.hasSubscribed = true;
-      this.$app.$game.onNetwork(Events.BattleUpdate, (data) => {
+      this.$app.$game.onNetwork(Events.BattleUpdate, data => {
         store.dispatch("update", data);
       });
     },
@@ -675,7 +678,7 @@ export default {
       });*/
       return (
         await this.$app.$game._wrapOperation(Operations.BattleClaimReward, {
-          type,
+          type
         })
       ).response;
     },
@@ -691,7 +694,7 @@ export default {
       await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
         commodity,
         currency,
-        shopIndex,
+        shopIndex
       });
     },
 
@@ -703,7 +706,7 @@ export default {
       await this.$app.$game._wrapOperation(
         Operations.BattleSetAdventuresDifficulty,
         {
-          difficulty,
+          difficulty
         }
       );
     },
@@ -712,21 +715,21 @@ export default {
     async fillSquadSlot(store, { unitId, index }) {
       await this.$app.$game._wrapOperation(Operations.BattleFillSquadSlot, {
         unitId,
-        index,
+        index
       });
     },
 
     // BattleClearSquadSlot
     async clearSquadSlot(store, { index }) {
       await this.$app.$game._wrapOperation(Operations.BattleClearSquadSlot, {
-        index,
+        index
       });
     },
 
     // BattleUpgradeUnitLevel
     async upgradeUnitLevel(store, { unitId }) {
       await this.$app.$game._wrapOperation(Operations.BattleUpgradeUnitLevel, {
-        unitId,
+        unitId
       });
     },
 
@@ -736,7 +739,7 @@ export default {
         Operations.BattleUpgradeUnitAbility,
         {
           unitId,
-          ability,
+          ability
         }
       );
     },
@@ -751,7 +754,7 @@ export default {
     async mergeUnits(store) {
       const response = (
         await this.$app.$game._wrapOperation(Operations.BattleMerge, {
-          template: store.getters.mergerUnits[0].template,
+          template: store.getters.mergerUnits[0].template
         })
       ).response;
       store.dispatch("clearMergeUnits");
@@ -763,7 +766,7 @@ export default {
     async chooseAbility(store, { abilityClass }) {
       //store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.BattleChooseAbility, {
-        abilityClass,
+        abilityClass
       });
       /*store.commit("setSelectedCardId", null);
       setTimeout(() => {
@@ -778,7 +781,7 @@ export default {
       //store.commit("setIsDisabled", true);
       await this.$app.$game._wrapOperation(Operations.BattleApply, {
         index: index === undefined ? null : index, // NOT UNDEFINED!!!
-        ability: ability === undefined ? null : ability, // NOT UNDEFINED!!!
+        ability: ability === undefined ? null : ability // NOT UNDEFINED!!!
       });
       /*store.commit("setSelectedCardId", null);
       setTimeout(() => {
@@ -810,7 +813,7 @@ export default {
       await this.$app.$game._wrapOperation(Operations.BattleEnterLevel, {
         location,
         level,
-        difficulty,
+        difficulty
       });
       //store.commit("setIsDisabled", false);
     },
@@ -830,7 +833,7 @@ export default {
         booster
       });*/
       await this.$app.$game._wrapOperation(Operations.BattleEnterDuel, {
-        difficulty,
+        difficulty
       });
       //store.commit("setIsDisabled", false);
     },
@@ -839,7 +842,7 @@ export default {
     async rankings(store, { mode }) {
       return (
         await this.$app.$game._wrapOperation(Operations.BattleRankings, {
-          mode,
+          mode
         })
       ).response;
     },
@@ -872,6 +875,6 @@ export default {
     // BattleTestAction
     async testAction(store, data) {
       await this.$app.$game._wrapOperation(Operations.BattleTestAction, data); // { action: ... }
-    },
-  },
+    }
+  }
 };

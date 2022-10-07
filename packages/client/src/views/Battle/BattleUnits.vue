@@ -4,6 +4,11 @@
       <div
         class="font-size-22 height-100 padding-left-2 padding-right-2 padding-top-1 padding-bottom-1"
       >
+        <div class="font-size-22 text-align-center margin-bottom-2">
+          <div v-if="totalPower && !shouldFillSlot">
+            Total power: {{ totalPower }}
+          </div>
+        </div>
         <!-- <BattleUnitList
               :units="units"
               :isQuantityVisible="true"
@@ -65,7 +70,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import * as battle from "@/../../knightlands-shared/battle";
 import AppSection from "@/AppSection.vue";
@@ -108,6 +113,7 @@ export default {
       "selectedClassesFilter",
       "selectedTribesFilter"
     ]),
+    ...mapGetters("battle", ["totalPower"]),
     // tabs() {
     //   return [
     //     {
