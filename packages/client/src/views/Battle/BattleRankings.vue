@@ -118,8 +118,10 @@ export default {
     async fetchRankings() {
       const records = [];
       const result = await this.performRequest(
-        this.$store.dispatch("battle/rankings")
+        this.$store.dispatch("battle/rankings", { mode: 'pvp' })
       );
+
+      console.log('Rankings', result);
 
       if (result) {
         this.hasRewards = result.hasRewards;

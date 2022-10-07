@@ -130,6 +130,7 @@ export default {
           coins: 0,
           crystals: 0,
           xp: 0,
+          rank: 0,
         },
         result: null, // string|null: COMBAT_RESULT_WIN | COMBAT_RESULT_LOOSE
         // @todo: set to false
@@ -750,7 +751,7 @@ export default {
     async mergeUnits(store) {
       const response = (
         await this.$app.$game._wrapOperation(Operations.BattleMerge, {
-          template: store.getters.mergerUnits[0].template
+          template: store.getters.mergerUnits[0].template,
         })
       ).response;
       store.dispatch("clearMergeUnits");
@@ -835,9 +836,12 @@ export default {
     },
 
     // BattleRankings
-    async rankings() {
-      return (await this.$app.$game._wrapOperation(Operations.BattleRankings))
-        .response;
+    async rankings(store, { mode }) {
+      return (
+        await this.$app.$game._wrapOperation(Operations.BattleRankings, {
+          mode,
+        })
+      ).response;
     },
 
     // BattleRestart - Restart current fight
