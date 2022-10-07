@@ -83,14 +83,16 @@
               </CustomButton-->
             </div>
             <div class="margin-top-2">
-              <div>Hp - {{ unit.characteristics.hp }}</div>
-              <div>Damage - {{ unit.characteristics.damage }}</div>
+              <div v-if="unit.characteristics.hp">
+                Hp - {{ unit.characteristics.hp }}
+              </div>
+              <div>Attack - {{ unit.characteristics.damage }}</div>
               <div>Defense - {{ unit.characteristics.defence }}</div>
               <div>Speed - {{ unit.characteristics.speed }}</div>
               <div>Initiative - {{ unit.characteristics.initiative }}</div>
             </div>
             <div class="margin-top-3 padding-bottom-2">
-              <div>Abilities</div>
+              <div class="margin-bottom-1">Abilities</div>
               <BattleUnitAbilityDetails
                 v-for="(ability, index) in abilities"
                 :key="ability.abilityType + ability.abilityClass"

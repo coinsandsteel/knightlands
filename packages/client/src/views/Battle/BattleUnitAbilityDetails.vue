@@ -1,29 +1,31 @@
 <template>
   <div>
     <div
-      class="flex flex-item-center"
+      v-if="ability"
+      class="flex"
       :class="{ 'opacity-50': !(ability && ability.enabled) }"
     >
       <BattleUnitAbility
         :ability="ability"
         :value="ability.value"
         :isSmallValue="true"
+        class="margin-top-half"
       />
       <div class="flex-full margin-left-1 text-align-left">
-        {{ description }}
-        <div
-          v-if="
-            ability &&
-              ability.abilityClass &&
-              $t('battle-ability-description-' + ability.abilityClass)
-          "
-          class="margin-top-half"
-        >
-          {{ $t("battle-ability-description-" + ability.abilityClass) }}
-        </div>
-      </div>
-      <div class="margin-left-1">
-        <!-- <CustomButton
+        <div class="flex flex-center">
+          <div class="flex-full">
+            <div>
+              {{
+                name +
+                  (ability.tier ? ", tier: " + ability.tier : "") +
+                  (level ? ", level: " + level : "") +
+                  (!isUpgradeVisible && value ? ", damage/heal: " + value : "")
+              }}
+            </div>
+            <div v-if="isUpgradeVisible">Damage/Heal: {{ value }}</div>
+          </div>
+          <div v-if="isUpgradeVisible" class="margin-left-1">
+            <!-- <CustomButton
           v-if="ability && ability.level > 0 && ability.level < 4"
           type="green"
           class="inline-block margin-right-2 margin-top-1"
@@ -32,14 +34,14 @@
           {{ $t("upgrade") }}
         </CustomButton> -->
 
-        <CustomButton
-          v-if="ability && nextLevel && upgradePrice"
-          type="green"
-          class="inline-block margin-right-2 margin-top-1"
-          @click="upgradeHandler"
-        >
-          {{ $t("Upgrade lvl " + nextLevel) }}
-          <!-- <IconWithValue
+            <CustomButton
+              v-if="ability && nextLevel && upgradePrice"
+              type="green"
+              class="inline-block margin-right-2 margin-top-1"
+              @click="upgradeHandler"
+            >
+              {{ $t("Upgrade lvl " + nextLevel) }}
+              <!-- <IconWithValue
             :flip="false"
             :iconMargin="true"
             iconClass="icon-gold"
@@ -47,8 +49,20 @@
           >
             {{ upgradePrice }}
           </IconWithValue> -->
-          <BattleCoin :value="upgradePrice" class="margin-left-1" />
-        </CustomButton>
+              <BattleCoin :value="upgradePrice" class="margin-left-1" />
+            </CustomButton>
+          </div>
+        </div>
+        <div
+          v-if="
+            ability &&
+              ability.abilityClass &&
+              $t('battle-ability-description-' + ability.abilityClass)
+          "
+          class=""
+        >
+          {{ $t("battle-ability-description-" + ability.abilityClass) }}
+        </div>
       </div>
     </div>
   </div>
@@ -63,7 +77,11 @@ import BattleCoin from "@/views/Battle/BattleCoin.vue";
 export default {
   props: {
     unit: Object,
-    ability: Object
+    ability: Object,
+    isUpgradeVisible: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     BattleUnitAbility,
@@ -98,7 +116,7 @@ export default {
         return null;
       }
 
-      return value;
+      return this.$t("battle-ability-" + value);
     },
     level() {
       const value =
@@ -108,7 +126,7 @@ export default {
         return null;
       }
 
-      return "level: " + value;
+      return value;
     },
     value() {
       const value = this.ability ? this.ability.value : null;
@@ -117,7 +135,8 @@ export default {
         return null;
       }
 
-      return "value: " + (value > 0 ? "+" : "") + value;
+      // return (value > 0 ? "+" : "") + value;
+      return value;
     },
     // damage() {
     //   const value = this.ability ? this.ability.damage : null;

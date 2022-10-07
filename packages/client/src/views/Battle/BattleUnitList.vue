@@ -9,7 +9,7 @@
     >
       <div
         v-if="isClearButtonVisible"
-        class="flex-full flex flex-justify-end flex-items-center"
+        class="flex-full flex flex-justify-end flex-items-center padding-left-4"
       >
         <CloseButton @click="clearHandler($event, unit, index)"></CloseButton>
       </div>

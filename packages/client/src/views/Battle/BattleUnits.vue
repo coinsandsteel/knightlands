@@ -75,6 +75,7 @@ import ActivityMixin from "@/components/ActivityMixin.vue";
 // import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
 import BattleUnitsFilter from "@/views/Battle/BattleUnitsFilter.vue";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
+import BattleUnitDetailsDialog from "@/views/Battle/BattleUnitDetailsDialog.vue";
 // import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
 // const SquadTab = "battle-squad-home";
@@ -223,8 +224,16 @@ export default {
     this.title = this.shouldFillSlot ? "select unit" : "inventory";
   },
   methods: {
+    async showUnitDetails(unit) {
+      const show = create(BattleUnitDetailsDialog, "unit");
+      return show(unit);
+    },
     async clickHandler(unit) {
       if (this.shouldFillSlot) {
+        const result = await this.showUnitDetails(unit);
+        if (!result) {
+          return;
+        }
         if (this.$route.params.slot === "squad") {
           const index = +this.$route.params.index;
           this.$store.dispatch("battle/fillSquadSlot", {
