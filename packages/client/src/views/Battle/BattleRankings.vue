@@ -56,7 +56,11 @@
             :emitUpdate="records.length > 0 && !fetchedAll"
             @update="scrollUpdated"
           >
-            <Title v-if="item.isTitle" class="common-title">
+            <Title
+              v-if="item.isTitle"
+              class="common-title"
+              :class="{ 'common-title--first': item.isFirstTitle }"
+            >
               {{ item.name }}
             </Title>
             <BattleRankingElement
@@ -120,11 +124,10 @@ export default {
       const result = await this.performRequest(
         this.$store.dispatch("battle/rankings", { mode: "pvp" })
       );
-      console.log("Rankings", result);
+      let isFirstTitle = true;
       const result2 = await this.performRequest(
         this.$store.dispatch("battle/rankings", { mode: "power" })
       );
-      console.log("Rankings2", result2);
 
       if (result) {
         this.hasRewards = result.hasRewards;
@@ -134,8 +137,10 @@ export default {
             id: "title-" + 1,
             key: "key-" + records.length,
             name: "PvP Score",
-            isTitle: true
+            isTitle: true,
+            isFirstTitle
           };
+          isFirstTitle = false;
           records.push(titleRecord);
           for (let i = 0; i < result.rankings.length; i++) {
             records.push({
@@ -154,8 +159,10 @@ export default {
             id: "title-" + 2,
             key: "key-" + records.length,
             name: "Total Power",
-            isTitle: true
+            isTitle: true,
+            isFirstTitle
           };
+          isFirstTitle = false;
           records.push(titleRecord);
           for (let i = 0; i < result2.rankings.length; i++) {
             records.push({
@@ -208,9 +215,6 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-.common-title {
-  margin-top: 4px;
-}
 .icon-rank3-4 {
   filter: hue-rotate(240deg);
 }
@@ -219,6 +223,9 @@ export default {
 }
 .common-title {
   height: 40px;
-  margin-top: 0;
+}
+.common-title--first {
+  background: linear-gradient(to bottom, #2f7285 50%, #245178 50%);
+  // background: linear-gradient(to bottom, #2f7285 50%, #303048 50%);
 }
 </style>

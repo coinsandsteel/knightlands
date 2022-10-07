@@ -21,7 +21,7 @@
                 :key="unit.unitId"
                 :unit="unit"
                 :isQuantityVisible="true"
-                class="cursor-pointer"
+                class="pointer"
                 @click="clickHandler(unit)"
               />
               <!-- <div

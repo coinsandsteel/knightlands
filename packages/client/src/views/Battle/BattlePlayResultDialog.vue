@@ -32,7 +32,9 @@
             <div class="flex-inline">Experience: {{ exp }}</div>
           </div>
           <div v-if="rank" class="margin-top-1">
-            <div class="flex-inline">Rank: {{ rank }}</div>
+            <div class="flex-inline">
+              Rank: {{ (rank > 0 ? "+" : "") + rank }}
+            </div>
           </div>
         </div>
         <!-- <div class="margin-top-2 text-align-center">
