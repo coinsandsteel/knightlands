@@ -81,7 +81,7 @@ export default {
       return +(Math.round(value * 100) / 100).toFixed(2);
     }
   },
-  created() {
+  activated() {
     this.title = this.$t("Shop");
   },
   methods: {

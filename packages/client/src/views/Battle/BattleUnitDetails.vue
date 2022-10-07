@@ -266,8 +266,8 @@ export default {
       return this.unit && this.unit.level ? this.unit.level.current : "";
     }
   },
-  created() {
-    this.title = "battle unit";
+  activated() {
+    this.title = "unit";
   },
   methods: {
     handleBackButton() {

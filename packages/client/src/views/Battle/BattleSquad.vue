@@ -98,7 +98,7 @@ export default {
         .join(", ");
     }
   },
-  created() {
+  activated() {
     this.title = this.$t("Squad");
   },
   methods: {

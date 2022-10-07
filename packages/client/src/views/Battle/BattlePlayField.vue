@@ -8,7 +8,6 @@
         class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
       >
         <progress-bar
-          ref="energy"
           :maxValue="BATTLE_MAX_ENERGY"
           :value="energy"
           iconClass="icon-energy"

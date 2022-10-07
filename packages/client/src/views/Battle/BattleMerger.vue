@@ -85,7 +85,7 @@ export default {
     }
     next();
   },
-  created() {
+  activated() {
     this.title = this.$t("Merger");
   },
   methods: {

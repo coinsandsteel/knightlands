@@ -3,6 +3,15 @@
     <div
       class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
     >
+      <progress-bar
+        :maxValue="BATTLE_MAX_ENERGY"
+        :value="energy"
+        iconClass="icon-energy"
+        :hideMaxValue="true"
+        :expand="false"
+        barType="blue"
+        class="pointer width-30"
+      ></progress-bar>
       <BattleCoin class="margin-left-2" :hasMargin="true" />
       <BattleCrystal class="margin-left-2" />
       <img class="battle-of-heroes" src="/images/battle/battle-of-heroes.png" />
@@ -77,21 +86,33 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 // import { create } from "vue-modal-dialogs";
+import * as battle from "@/../../knightlands-shared/battle";
 import AppSection from "@/AppSection.vue";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
 import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 // import ItemsReceived from "@/components/ItemsReceived.vue";
 
 export default {
   mixins: [AppSection, ActivityMixin],
   components: {
     BattleCoin,
-    BattleCrystal
+    BattleCrystal,
+    ProgressBar
   },
   data() {
-    return {};
+    return {
+      BATTLE_MAX_ENERGY: battle.BATTLE_MAX_ENERGY
+    };
+  },
+  computed: {
+    ...mapState("battle", ["user"]),
+    energy() {
+      return this.user.balance.energy;
+    }
   },
   activated() {
     this.title = "battle event";

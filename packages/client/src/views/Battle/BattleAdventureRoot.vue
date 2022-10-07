@@ -48,7 +48,7 @@ export default {
     // this.$store.dispatch("battle/subscribe");
     // await this.$store.dispatch("battle/load");
   },
-  created() {
+  activated() {
     this.title = this.$t("Adventure");
   },
   methods: {

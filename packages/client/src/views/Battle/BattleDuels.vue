@@ -54,10 +54,8 @@ export default {
       return 0;
     }
   },
-  created() {
-    this.title = this.$t("Duels");
-  },
   async activated() {
+    this.title = this.$t("Duels");
     this.items = await this.$store.dispatch("battle/fetchDuelOptions");
   },
   methods: {
