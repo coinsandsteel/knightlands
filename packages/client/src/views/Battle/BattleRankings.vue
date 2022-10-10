@@ -32,6 +32,10 @@
           The event will be finished in:<br />
           {{ eventTimer.value }}
         </div>
+        <div class="flex flex-center margin-bottom-2 font-size-20 ">
+          Reset'n'Reward will be in:<br />
+          {{ weeklyTimer.value }}
+        </div>
         <div class="flex flex-center margin-bottom-3">
           <CustomButton
             type="green"
@@ -104,7 +108,8 @@ export default {
     showInfoButton: false,
     places: ["1-st", "2-nd", "3-rd", "4-th", "5 - 10"],
     hasRewards: false,
-    eventTimer: new Timer(true, true)
+    eventTimer: new Timer(true, true),
+    weeklyTimer: new Timer(true, true)
   }),
   async activated() {
     this.records = [];
@@ -130,6 +135,7 @@ export default {
       if (result) {
         this.hasRewards = result.hasRewards;
         this.eventTimer.timeLeft = result.timeLeft;
+        this.weeklyTimer.timeLeft = result.resetTimeLeft;
         if (result.rankings) {
           const titleRecord = {
             id: "title-" + 1,
@@ -152,6 +158,7 @@ export default {
       if (result2) {
         this.hasRewards = result.hasRewards;
         this.eventTimer.timeLeft = result.timeLeft;
+        this.weeklyTimer.timeLeft = result.resetTimeLeft;
         if (result2.rankings) {
           const titleRecord = {
             id: "title-" + 2,
