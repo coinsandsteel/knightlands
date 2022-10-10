@@ -7,7 +7,7 @@ const {
   getSlot,
   EquipmentSlots
 } = require("@/../../knightlands-shared/equipment_slot");
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 const Meta = require("./meta.json");
 const Properties = require("./item_properties.json");
 const UpgradeMeta = require("./upgrade_meta.json");

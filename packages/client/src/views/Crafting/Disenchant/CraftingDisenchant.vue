@@ -66,6 +66,7 @@ import Loot from "@/components/Loot.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import MultiSelectItemContainer from "@/components/Item/MultiSelectItemContainer.vue";
 import HintButton from "@/components/HintButton.vue";
+const { EventItemType } = require("@/../../knightlands-shared/item_type");
 
 export default {
   mixins: [AppSection, PromptMixin, ShowItemsMixin, NetworkRequestErrorMixin],
@@ -105,7 +106,7 @@ export default {
           continue;
         }
         const template = this.$game.itemsDB.getTemplate(item.template);
-        if (template.type === "lunarResource" || template.type === "marchResource" || template.type === "aprilResource") {
+        if (EventItemType.includes(template.type)) {
           continue;
         }
         filteredItems[insertedItems++] = item;

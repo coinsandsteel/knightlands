@@ -140,7 +140,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 import ProgressBar from "@/components/ProgressBar.vue";
 import NumericValue from "@/components/NumericValue.vue";
 
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 import ItemSelector from "./ItemSelector.vue";
 import HintHandler from "@/components/HintHandler.vue";

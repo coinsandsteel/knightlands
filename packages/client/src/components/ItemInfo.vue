@@ -39,7 +39,7 @@ import ItemStats from "@/components/Item/ItemStats.vue";
 import ItemHeader from "@/components/Item/ItemHeader.vue";
 import Title from "@/components/Title.vue";
 
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 
 const {
   EquipmentSlots,

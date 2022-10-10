@@ -36,7 +36,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import CraftingItemList from "../CraftingItemList.vue";
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 import ScrollableItemHint from "@/components/Item/ScrollableItemHint.vue";
 import HintButton from "@/components/HintButton.vue";
 

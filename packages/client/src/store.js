@@ -6,7 +6,7 @@ import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
 import { EquipmentSlots } from "@/../../knightlands-shared/equipment_slot";
 
-import ItemType from "@/../../knightlands-shared/item_type";
+import { ItemType } from "@/../../knightlands-shared/item_type";
 import Blockchains from "@/../../knightlands-shared/blockchains";
 const Rarity = require("@/../../knightlands-shared/rarity");
 import EquipmentType from "@/../../knightlands-shared/equipment_type";

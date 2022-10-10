@@ -51,7 +51,7 @@
 <script>
 import { Hooper, Slide } from "hooper";
 import "hooper/dist/hooper.css";
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 import LootHint from "@/components/LootHint.vue";
 import DoubleBuffer from "@/helpers/DoubleBuffer";
 import CompareItems from "./CompareItems.vue";
