@@ -64,8 +64,10 @@ export default {
             active: false
           }*/
         ],
-        rankingRewards: [
-          // Will be later
+        squadRewards: [
+          //{ tribe: UNIT_TRIBE_TITAN, activeTemplates: [], claimed: false },
+          //{ tribe: UNIT_TRIBE_LEGENDARY, activeTemplates: [], claimed: false },
+          //{ tribe: UNIT_TRIBE_FALLEN_KING, activeTemplates: [], claimed: false },
         ]
       },
       shop: {
@@ -229,9 +231,9 @@ export default {
         ? state.user.rewards.dailyRewards || []
         : [];
     },
-    rankingRewards(state) {
+    squadRewards(state) {
       return state.user && state.user.rewards
-        ? state.user.rewards.rankingRewards || []
+        ? state.user.rewards.squadRewards || []
         : [];
     },
     battleTerrain(state) {
@@ -421,8 +423,8 @@ export default {
       if (data.dailyRewards !== undefined) {
         state.user.rewards.dailyRewards = data.dailyRewards;
       }
-      if (data.rankingRewards !== undefined) {
-        state.user.rewards.rankingRewards = data.rankingRewards;
+      if (data.squadRewards !== undefined) {
+        state.user.rewards.squadRewards = data.squadRewards;
       }
 
       // Game data
