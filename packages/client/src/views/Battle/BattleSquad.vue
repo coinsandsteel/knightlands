@@ -81,6 +81,9 @@ export default {
     },
     power() {
       return this.fighters.reduce((prev, fighter) => {
+        if (!fighter) {
+          return prev + 0;
+        }
         const unit = this.inventory.find(
           ({ unitId }) => fighter.unitId === unitId
         );
