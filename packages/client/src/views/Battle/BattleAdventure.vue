@@ -24,7 +24,7 @@
             class="inline-block margin-right-2 margin-top-1"
             @click="switchDifficultyHandler"
           >
-            Difficulty: {{ this.difficulty }}
+            Difficulty: {{ $t("battle-duels-" + this.difficulty) }}
           </CustomButton>
         </div>
       </div>
