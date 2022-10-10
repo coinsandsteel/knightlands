@@ -4,17 +4,27 @@
       Collect Tier 3 squads and get access to achievements that unlock NFT
     </div>
     <div class="margin-top-2">
-      <div v-for="item in items" :key="item.user.id" class="margin-bottom-4">
+      <div
+        v-for="(item, itemIndex) in items"
+        :key="itemIndex"
+        class="margin-bottom-4"
+      >
         <div>
-          Name squad
+          {{ item.name }}
         </div>
         <div
           class="battle-unit-list margin-top-1 padding-left-2 padding-right-2"
         >
-          <BattleUnit v-for="unit in item.units" :key="unit.unitId" />
+          <BattleUnit
+            v-for="unit in item.units"
+            :unit="unit"
+            :key="unit.unitId"
+            :class="{ 'opacity-30': !unit.owned }"
+          />
         </div>
         <div class="margin-top-1">
           <CustomButton
+            :disabled="!item.canClaim"
             type="yellow"
             width="20rem"
             class="inline-block"
@@ -27,6 +37,7 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapState } from "vuex";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {
   components: {
@@ -36,21 +47,31 @@ export default {
     return {};
   },
   computed: {
+    ...mapState("battle", ["inventory"]),
+    ...mapGetters("battle", ["squadRewards"]),
     items() {
-      const result = [];
-      result.push({
-        user: { id: 1 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
+      if (!(this.squadRewards && this.squadRewards.length > 0)) {
+        return [];
+      }
+
+      return this.squadRewards.map((reward, index) => {
+        const units = reward.activeTemplates.map((template, templateIndex) => ({
+          template,
+          unitId: "unitId-" + (index * 5 + templateIndex),
+          tribe: reward.tribe,
+          owned: !!this.inventory.find(
+            inventoryItem => inventoryItem.template === template
+          )
+        }));
+
+        return {
+          name: this.$t("battle-unit-tribe-name-" + reward.tribe),
+          claimed: reward.claimed,
+          canClaim: reward.canClaim && units.every(({ owned }) => !!owned),
+          activeTemplates: reward.activeTemplates,
+          units
+        };
       });
-      result.push({
-        user: { id: 2 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
-      });
-      result.push({
-        user: { id: 3 },
-        units: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
-      });
-      return result;
     }
   },
   methods: {

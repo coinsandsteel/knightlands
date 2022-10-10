@@ -65,9 +65,24 @@ export default {
           }*/
         ],
         squadRewards: [
-          //{ tribe: UNIT_TRIBE_TITAN, activeTemplates: [], claimed: false },
-          //{ tribe: UNIT_TRIBE_LEGENDARY, activeTemplates: [], claimed: false },
-          //{ tribe: UNIT_TRIBE_FALLEN_KING, activeTemplates: [], claimed: false },
+          // {
+          //   tribe: battle.UNIT_TRIBE_TITAN,
+          //   activeTemplates: [224, 227, 230, 233, 236],
+          //   claimed: false,
+          //   canClaim: true
+          // },
+          // {
+          //   tribe: battle.UNIT_TRIBE_LEGENDARY,
+          //   activeTemplates: [209, 212, 215, 218, 221],
+          //   claimed: false,
+          //   canClaim: true
+          // },
+          // {
+          //   tribe: battle.UNIT_TRIBE_FALLEN_KING,
+          //   activeTemplates: [194, 197, 200, 203, 206],
+          //   claimed: false,
+          //   canClaim: false
+          // }
         ]
       },
       shop: {
