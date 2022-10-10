@@ -63,6 +63,7 @@ import {
   getSlot
 } from "@/../../knightlands-shared/equipment_slot";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
+const { EventItemType } = require("@/../../knightlands-shared/item_type");
 
 export default {
   props: ["unit"],
@@ -98,7 +99,7 @@ export default {
     items() {
       return this.$game.inventory.items.filter(item => {
         const template = this.$game.itemsDB.getTemplate(item.template);
-        return template.type !== "lunarResource" && template.type !== "marchResource" && template.type !== "aprilResource";
+        return !EventItemType.includes(template.type);
       });
     },
     hintItems() {

@@ -1,5 +1,5 @@
 <script>
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 const {
   EquipmentSlots,
   getSlot

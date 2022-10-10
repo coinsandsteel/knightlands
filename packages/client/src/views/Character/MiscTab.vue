@@ -44,8 +44,9 @@
 import Title from "@/components/Title.vue";
 import Inventory from "./Inventory.vue";
 const ItemActions = require("@/../../knightlands-shared/item_actions");
-const ItemType = require("@/../../knightlands-shared/item_type");
-import { ITEM_RARITY_NFT } from "@/../../knightlands-shared/lunar";
+const { ItemType } = require("@/../../knightlands-shared/item_type");
+import { ITEM_RARITY_NFT as LunarNFTRarity } from "@/../../knightlands-shared/lunar";
+import { ITEM_RARITY_NFT as BattleNFTRarity } from "@/../../knightlands-shared/battle";
 
 export default {
   components: {
@@ -64,11 +65,13 @@ export default {
         if (
           (template.type !== ItemType.Lunar && !item.rarity)
           ||
-          (template.type === ItemType.Lunar && template.rarity === ITEM_RARITY_NFT)
+          (template.type === ItemType.Lunar && template.rarity === LunarNFTRarity)
           ||
           (template.type === ItemType.March && template.id !== 3461)
           ||
           (template.type === ItemType.April && template.id !== 3475)
+          ||
+          (template.type === ItemType.Battle && template.rarity === BattleNFTRarity)
         ) {
           filteredItems.push(item);
         }

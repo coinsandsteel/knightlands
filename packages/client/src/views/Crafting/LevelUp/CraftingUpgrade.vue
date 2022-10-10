@@ -24,7 +24,7 @@
 <script>
 import CraftingItemList from "../CraftingItemList.vue";
 import AppSection from "@/AppSection.vue";
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 import HintButton from "@/components/HintButton.vue";
 
 export default {

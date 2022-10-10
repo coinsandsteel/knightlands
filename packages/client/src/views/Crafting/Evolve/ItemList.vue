@@ -84,6 +84,7 @@ import Toggle from "@/components/Toggle.vue";
 import CustomButton from "@/components/Button.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
 import HintButton from "@/components/HintButton.vue";
+const { EventItemType } = require("@/../../knightlands-shared/item_type");
 
 import { create as CreateDialog } from "vue-modal-dialogs";
 import EquipmentIngridientHint from "./../EquipmentIngridientHint.vue";
@@ -158,7 +159,7 @@ export default {
         }
 
         const template = this.$game.itemsDB.getTemplate(item.template);
-        if (template.rarity == Rarity.Mythical || template.type === "lunarResource" || template.type === "marchResource"|| template.type === "aprilResource") {
+        if (template.rarity == Rarity.Mythical || EventItemType.includes(template.type)) {
           continue;
         }
 

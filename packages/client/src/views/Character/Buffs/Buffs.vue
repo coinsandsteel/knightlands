@@ -25,7 +25,7 @@
 </template>
 
 <script>
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 const ItemActions = require("@/../../knightlands-shared/item_actions");
 
 import BuffSlot from "./BuffSlot.vue";

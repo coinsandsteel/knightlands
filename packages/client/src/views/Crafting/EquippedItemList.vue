@@ -63,7 +63,7 @@
 <script>
 import Title from "@/components/Title.vue";
 import LootContainer from "@/components/LootContainer.vue";
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 
 export default {
   components: { Title, LootContainer },

@@ -25,6 +25,7 @@
 import AppSection from "@/AppSection.vue";
 import CraftingItemList from "../CraftingItemList.vue";
 import HintButton from "@/components/HintButton.vue";
+const { EventItemType } = require("@/../../knightlands-shared/item_type");
 
 export default {
   mixins: [AppSection],
@@ -45,7 +46,7 @@ export default {
         const item = items[i];
         const template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (!template.unbindable || item.breakLimit == 2 || template.type === "lunarResource" || template.type === "marchResource" || template.type === "aprilResource") {
+        if (!template.unbindable || item.breakLimit == 2 || EventItemType.includes(template.type)) {
           continue;
         }
 
