@@ -52,14 +52,15 @@ export default {
   computed: {
     ...mapGetters("battle", ["squadRewards", "fighters"]),
     items() {
-      if (!(this.squadRewards && this.squadRewards.length > 0)) {
+      if (!(battle.SQUAD_REWARDS && battle.SQUAD_REWARDS.length > 0)) {
         return [];
       }
 
-      return this.squadRewards.map((reward, index) => {
-        const units = reward.activeTemplates.map((template, templateIndex) => ({
+      return battle.SQUAD_REWARDS.map((reward, index) => {
+        const units = reward.templates.map((template, templateIndex) => ({
           template,
           unitId: "unitId-" + (index * 5 + templateIndex),
+          tier: 3,
           tribe: reward.tribe,
           owned: !!this.fighters.find(
             fighter => fighter.unitTemplate === template
