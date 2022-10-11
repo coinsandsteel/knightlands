@@ -42,7 +42,6 @@
         <!-- <AprilGold v-if="aprilGold" :value="aprilGold" /> -->
         <!-- <AprilTickets v-if="aprilTicket" :value="aprilTicket" /> -->
         <BattleUnitList v-if="battleUnits" :units="battleUnits" />
-        <BattleNft v-if="battleNft" :id="battleNft" />
 
         <div
           class="flex flex-center flex-column margin-top-3"
@@ -78,7 +77,6 @@ import HintHandler from "@/components/HintHandler.vue";
 // import AprilGold from "@/views/April/AprilGold.vue";
 // import AprilTickets from "@/views/April/AprilTickets.vue";
 import BattleUnitList from "@/views/Battle/BattleUnitList.vue";
-import BattleNft from "@/views/Battle/BattleNft.vue";
 
 export default {
   mixins: [HintHandler],
@@ -90,8 +88,7 @@ export default {
     // MarchGold,
     // AprilGold,
     // AprilTickets,
-    BattleUnitList,
-    BattleNft
+    BattleUnitList
   },
   props: [
     "items",
@@ -103,8 +100,7 @@ export default {
     // "marchGold",
     // "aprilGold",
     // "aprilTicket",
-    "battleUnits",
-    "battleNft"
+    "battleUnits"
   ]
 };
 </script>

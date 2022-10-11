@@ -38,7 +38,10 @@
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
+import { create } from "vue-modal-dialogs";
+import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
+import ItemsReceived from "@/components/ItemsReceived.vue";
 export default {
   components: {
     BattleUnit
@@ -75,8 +78,17 @@ export default {
     }
   },
   methods: {
-    unitClickHandler() {},
-    receiveHandler() {}
+    async receiveHandler() {
+      let items = await this.performRequestNoCatch(
+        this.$store.dispatch("battle/claimReward", {
+          type: battle.REWARD_TYPE_SQUAD
+        })
+      );
+      const ShowItems = create(ItemsReceived, "items");
+      if (items.length) {
+        await ShowItems(items);
+      }
+    }
   }
 };
 </script>
