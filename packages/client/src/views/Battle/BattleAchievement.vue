@@ -19,16 +19,18 @@
             v-for="unit in item.units"
             :unit="unit"
             :key="unit.unitId"
-            :class="{ 'opacity-30': !unit.owned }"
+            :class="{ 'opacity-30': !unit.owned && !item.claimed }"
           />
         </div>
         <div class="margin-top-1">
+          <p v-if="item.claimed">Received. Good job!</p>
           <CustomButton
+            v-if="!item.claimed"
             :disabled="!item.canClaim"
             type="yellow"
             width="20rem"
             class="inline-block"
-            @click="receiveHandler"
+            @click="receiveHandler(item.tribe)"
             >Receive</CustomButton
           >
         </div>
@@ -42,7 +44,10 @@ import { create } from "vue-modal-dialogs";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
+import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
+
 export default {
+  mixins: [NetworkRequestErrorMixin],
   components: {
     BattleUnit,
   },
@@ -72,16 +77,18 @@ export default {
         return {
           name: this.$t("battle-unit-tribe-name-" + rewardMeta.tribe),
           canClaim: rewardData.canClaim,
+          tribe: rewardMeta.tribe,
           units
         };
       });
     },
   },
   methods: {
-    async receiveHandler() {
+    async receiveHandler(tribe) {
       let items = await this.performRequestNoCatch(
         this.$store.dispatch("battle/claimReward", {
           type: battle.REWARD_TYPE_SQUAD,
+          tribe
         })
       );
       const ShowItems = create(ItemsReceived, "items");

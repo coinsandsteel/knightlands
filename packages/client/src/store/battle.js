@@ -686,13 +686,14 @@ export default {
 
     // BattleClaimReward
     // - type: REWARD_TYPE_DAILY | REWARD_TYPE_RANKING
-    async claimReward(store, { type }) {
+    async claimReward(store, { type, tribe }) {
       /*Vue.prototype.$app.logEvent("april-claim-reward", {
         type
       });*/
       return (
         await this.$app.$game._wrapOperation(Operations.BattleClaimReward, {
-          type
+          type,
+          tribe
         })
       ).response;
     },
