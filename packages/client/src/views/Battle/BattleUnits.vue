@@ -57,6 +57,9 @@
     </div>
 
     <portal to="footer" :slim="true" v-if="shouldShowFilter && isActive">
+      <CustomButton type="green" @click="addTopUnitsHandler">
+        Add Top Units
+      </CustomButton>
       <CustomButton type="green" @click="addUnitHandler">
         Add Unit
       </CustomButton>
@@ -275,6 +278,11 @@ export default {
     addUnitHandler() {
       this.$store.dispatch("battle/testAction", {
         action: "addUnit"
+      });
+    },
+    addTopUnitsHandler() {
+      this.$store.dispatch("battle/testAction", {
+        action: "addTopUnits"
       });
     },
     clearUnitsHandler() {
