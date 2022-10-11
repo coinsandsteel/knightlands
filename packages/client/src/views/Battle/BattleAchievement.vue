@@ -44,7 +44,7 @@ import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 export default {
   components: {
-    BattleUnit
+    BattleUnit,
   },
   data() {
     return {};
@@ -56,39 +56,40 @@ export default {
         return [];
       }
 
-      return battle.SQUAD_REWARDS.map((reward, index) => {
-        const units = reward.templates.map((template, templateIndex) => ({
+      return battle.SQUAD_REWARDS.map((rewardMeta, index) => {
+        const rewardData = this.squadRewards.find(
+          (entry) => entry.tribe === rewardMeta.tribe
+        );
+
+        const units = rewardMeta.templates.map((template, templateIndex) => ({
           template,
           unitId: "unitId-" + (index * 5 + templateIndex),
           tier: 3,
-          tribe: reward.tribe,
-          owned: !!this.fighters.find(
-            fighter => fighter.unitTemplate === template
-          )
+          tribe: rewardMeta.tribe,
+          owned: rewardData.activeTemplates.includes(template)
         }));
 
         return {
-          name: this.$t("battle-unit-tribe-name-" + reward.tribe),
-          canClaim: reward.canClaim && units.every(({ owned }) => !!owned),
-          activeTemplates: reward.activeTemplates,
+          name: this.$t("battle-unit-tribe-name-" + rewardMeta.tribe),
+          canClaim: rewardData.canClaim,
           units
         };
       });
-    }
+    },
   },
   methods: {
     async receiveHandler() {
       let items = await this.performRequestNoCatch(
         this.$store.dispatch("battle/claimReward", {
-          type: battle.REWARD_TYPE_SQUAD
+          type: battle.REWARD_TYPE_SQUAD,
         })
       );
       const ShowItems = create(ItemsReceived, "items");
       if (items.length) {
         await ShowItems(items);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped lang="less">
