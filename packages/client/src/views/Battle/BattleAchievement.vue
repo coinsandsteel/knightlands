@@ -69,7 +69,6 @@ export default {
 
         return {
           name: this.$t("battle-unit-tribe-name-" + reward.tribe),
-          claimed: reward.claimed,
           canClaim: reward.canClaim && units.every(({ owned }) => !!owned),
           activeTemplates: reward.activeTemplates,
           units
