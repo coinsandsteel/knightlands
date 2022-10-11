@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 import { create } from "vue-modal-dialogs";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
@@ -50,8 +50,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("battle", ["inventory"]),
-    ...mapGetters("battle", ["squadRewards"]),
+    ...mapGetters("battle", ["squadRewards", "fighters"]),
     items() {
       if (!(this.squadRewards && this.squadRewards.length > 0)) {
         return [];
@@ -62,8 +61,8 @@ export default {
           template,
           unitId: "unitId-" + (index * 5 + templateIndex),
           tribe: reward.tribe,
-          owned: !!this.inventory.find(
-            inventoryItem => inventoryItem.template === template
+          owned: !!this.fighters.find(
+            fighter => fighter.unitTemplate === template
           )
         }));
 
