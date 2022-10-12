@@ -40,7 +40,7 @@
       <div class="flex-full flex flex-center">
         <CustomButton
           v-if="isLevelAvailable"
-          :disabled="!isFightersFullFilled"
+          :disabled="!canStart"
           type="red"
           class="inline-block margin-right-1 margin-top-1"
           min-width="12rem"
@@ -99,7 +99,7 @@ export default {
   },
   computed: {
     ...mapGetters("battle", ["isFightersFullFilled"]),
-    ...mapState("battle", ["adventures"]),
+    ...mapState("battle", ["user", "adventures"]),
     difficulty() {
       return this.adventures.difficulty || battle.GAME_DIFFICULTY_MEDIUM;
     },
@@ -117,6 +117,18 @@ export default {
     },
     isLevelAvailable() {
       return this.levelData[this.difficulty];
+    },
+    energyCost() {
+      if (this.adventures.difficulty === battle.GAME_DIFFICULTY_HIGH) {
+        return 12;
+      }
+
+      return 8;
+    },
+    canStart() {
+      return (
+        this.isFightersFullFilled && this.user.balance.energy > this.energyCost
+      );
     }
   },
   methods: {
