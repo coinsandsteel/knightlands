@@ -273,7 +273,7 @@ export default {
   },
   computed: {
     ...mapState(["appSize"]),
-    ...mapState("battle", ["game", "user"]),
+    ...mapState("battle", ["game", "user", "fighterOrders"]),
     ...mapGetters("battle", [
       "fighters",
       "enemyFighters",
@@ -283,11 +283,22 @@ export default {
     ]),
     sideFighters() {
       return [...this.fighters, ...this.enemyFighters].sort((a, b) => {
-        if (a.ratingIndex < b.ratingIndex) {
+        let aIndex = this.fighterOrders.indexOf(a.fighterId);
+
+        if (aIndex < -1) {
+          aIndex = 10;
+        }
+
+        let bIndex = this.fighterOrders.indexOf(b.fighterId);
+
+        if (bIndex < -1) {
+          bIndex = 10;
+        }
+        if (aIndex < bIndex) {
           return -1;
         }
 
-        if (a.ratingIndex > b.ratingIndex) {
+        if (aIndex > bIndex) {
           return 1;
         }
 

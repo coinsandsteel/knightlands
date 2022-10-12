@@ -39,6 +39,7 @@ export default {
     hasSubscribed: false,
     hasShownDailyRewards: false,
     mergerIds: [null, null, null],
+    fighterOrders: [],
 
     // User data
     user: {
@@ -591,9 +592,42 @@ export default {
       // Combat runtime
       if (data.combatStarted !== undefined) {
         state.game.combat.started = data.combatStarted;
+        if (data.combatStarted) {
+          state.fighterOrders = [];
+        }
       }
       if (data.activeFighterId !== undefined) {
         state.game.combat.activeFighterId = data.activeFighterId;
+        // Update fighters' order
+        let fighterOrders = [...state.fighterOrders];
+        if (!(fighterOrders.length > 0)) {
+          fighterOrders = [
+            ...(state.game && state.game.userSquad
+              ? state.game.userSquad.fighters || []
+              : []
+            ).filter(Boolean),
+            ...(state.game && state.game.enemySquad
+              ? state.game.enemySquad.fighters || []
+              : []
+            ).filter(Boolean)
+          ]
+            .sort((a, b) => {
+              if (a.ratingIndex < b.ratingIndex) {
+                return -1;
+              }
+
+              if (a.ratingIndex > b.ratingIndex) {
+                return 1;
+              }
+
+              return 0;
+            })
+            .map(({ fighterId }) => fighterId);
+        }
+        fighterOrders.unshift(data.activeFighterId);
+        state.fighterOrders = fighterOrders.filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
       }
       if (data.combatResult !== undefined) {
         state.game.combat.result = data.combatResult;
