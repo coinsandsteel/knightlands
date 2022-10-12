@@ -1,38 +1,40 @@
 <template>
-  <div class="font-size-22">
-    <div class="margin-top-2 padding-left-2 padding-right-2">
-      Collect Tier 3 squads and get access to achievements that unlock NFT
-    </div>
-    <div class="margin-top-2">
-      <div
-        v-for="(item, itemIndex) in items"
-        :key="itemIndex"
-        class="margin-bottom-4"
-      >
-        <div>
-          {{ item.name }}
-        </div>
+  <div class="font-size-22 screen-content" v-bar>
+    <div>
+      <div class="margin-top-1 padding-left-2 padding-right-2">
+        Collect Tier 3 squads and get access to achievements that unlock NFT
+      </div>
+      <div class="margin-top-2">
         <div
-          class="battle-unit-list margin-top-1 padding-left-2 padding-right-2"
+          v-for="(item, itemIndex) in items"
+          :key="itemIndex"
+          :class="{ 'margin-top-4': itemIndex > 0 }"
         >
-          <BattleUnit
-            v-for="unit in item.units"
-            :unit="unit"
-            :key="unit.unitId"
-            :class="{ 'opacity-30': !unit.owned && !item.claimed }"
-          />
-        </div>
-        <div class="margin-top-1">
-          <p v-if="item.claimed">Received. Good job!</p>
-          <CustomButton
-            v-if="!item.claimed"
-            :disabled="!item.canClaim"
-            type="yellow"
-            width="20rem"
-            class="inline-block"
-            @click="receiveHandler(item.tribe)"
-            >Receive</CustomButton
+          <div>
+            {{ item.name }}
+          </div>
+          <div
+            class="battle-unit-list margin-top-1 padding-left-2 padding-right-2"
           >
+            <BattleUnit
+              v-for="unit in item.units"
+              :unit="unit"
+              :key="unit.unitId"
+              :class="{ 'opacity-30': !unit.owned && !item.claimed }"
+            />
+          </div>
+          <div class="margin-top-1">
+            <p v-if="item.claimed">Received. Good job!</p>
+            <CustomButton
+              v-if="!item.claimed"
+              :disabled="!item.canClaim"
+              type="yellow"
+              width="20rem"
+              class="inline-block"
+              @click="receiveHandler(item.tribe)"
+              >Receive</CustomButton
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -49,7 +51,7 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 export default {
   mixins: [NetworkRequestErrorMixin],
   components: {
-    BattleUnit,
+    BattleUnit
   },
   data() {
     return {};
@@ -63,7 +65,7 @@ export default {
 
       return battle.SQUAD_REWARDS.map((rewardMeta, index) => {
         const rewardData = this.squadRewards.find(
-          (entry) => entry.tribe === rewardMeta.tribe
+          entry => entry.tribe === rewardMeta.tribe
         );
 
         const units = rewardMeta.templates.map((template, templateIndex) => ({
@@ -77,11 +79,12 @@ export default {
         return {
           name: this.$t("battle-unit-tribe-name-" + rewardMeta.tribe),
           canClaim: rewardData.canClaim,
+          claimed: rewardMeta.claimed,
           tribe: rewardMeta.tribe,
           units
         };
       });
-    },
+    }
   },
   methods: {
     async receiveHandler(tribe) {
@@ -95,8 +98,8 @@ export default {
       if (items.length) {
         await ShowItems(items);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped lang="less">

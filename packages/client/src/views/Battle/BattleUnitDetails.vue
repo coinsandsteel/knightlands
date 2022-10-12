@@ -268,7 +268,7 @@ export default {
     }
   },
   activated() {
-    this.title = "unit";
+    this.title = "unit details";
   },
   methods: {
     handleBackButton() {

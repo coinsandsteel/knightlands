@@ -1,78 +1,83 @@
 <template>
-  <div class="screen-content ">
-    <div
-      class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
-    >
-      <progress-bar
-        :maxValue="BATTLE_MAX_ENERGY"
-        :value="energy"
-        iconClass="icon-energy"
-        :hideMaxValue="true"
-        :expand="false"
-        barType="blue"
-        class="pointer width-30"
-      ></progress-bar>
-      <BattleCoin class="margin-left-2" :hasMargin="true" />
-      <BattleCrystal class="margin-left-2" />
-      <img class="battle-of-heroes" src="/images/battle/battle-of-heroes.png" />
-    </div>
-    <div class="font-size-22 height-100 flex flex-center">
-      <div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-2"
-            @click="goToAdventure"
-          >
-            Adventure
-          </CustomButton>
+  <div class="screen-content" v-bar>
+    <div>
+      <div class="height-100 flex flex-column flex-no-wrap">
+        <div
+          class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
+        >
+          <progress-bar
+            :maxValue="BATTLE_MAX_ENERGY"
+            :value="energy"
+            iconClass="icon-energy"
+            :hideMaxValue="true"
+            :expand="false"
+            barType="blue"
+            class="pointer width-30"
+          ></progress-bar>
+          <BattleCoin class="margin-left-2" :hasMargin="true" />
+          <BattleCrystal class="margin-left-2" />
+          <img
+            class="battle-of-heroes"
+            src="/images/battle/battle-of-heroes.png"
+          />
         </div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-2"
-            @click="goToDuels"
-          >
-            Duels
-          </CustomButton>
-        </div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-2"
-            @click="goToSquad"
-          >
-            Squad
-          </CustomButton>
-        </div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-2"
-            @click="goToUnitsList"
-          >
-            Inventory
-          </CustomButton>
-        </div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-2"
-            @click="goToMerger"
-          >
-            Merger
-          </CustomButton>
-        </div>
-        <div>
-          <CustomButton
-            type="green"
-            class="inline-block margin-right-2 margin-top-2"
-            @click="goToShop"
-          >
-            Shop
-          </CustomButton>
-        </div>
-        <!--div>
+        <div class="font-size-22 height-100_ flex-full flex flex-center">
+          <div>
+            <div>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-2"
+                @click="goToAdventure"
+              >
+                Adventure
+              </CustomButton>
+            </div>
+            <div>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-2"
+                @click="goToDuels"
+              >
+                Duels
+              </CustomButton>
+            </div>
+            <div>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-2"
+                @click="goToSquad"
+              >
+                Squad
+              </CustomButton>
+            </div>
+            <div>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-2"
+                @click="goToUnitsList"
+              >
+                Inventory
+              </CustomButton>
+            </div>
+            <div>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-2"
+                @click="goToMerger"
+              >
+                Merger
+              </CustomButton>
+            </div>
+            <div>
+              <CustomButton
+                type="green"
+                class="inline-block margin-right-2 margin-top-2"
+                @click="goToShop"
+              >
+                Shop
+              </CustomButton>
+            </div>
+            <!--div>
           <CustomButton
             type="blue"
             class="inline-block margin-right-2 margin-top-1"
@@ -81,6 +86,8 @@
             Test abilities
           </CustomButton>
         </div-->
+          </div>
+        </div>
       </div>
     </div>
   </div>

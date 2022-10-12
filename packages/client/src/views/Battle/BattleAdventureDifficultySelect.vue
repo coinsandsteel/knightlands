@@ -23,7 +23,7 @@
           v-if="!isAdventureHardDifficultyAvailable"
           class="font-size-18 font-shadow rarity-mythical"
         >
-          Finish medium difficulty to unlock.
+          Finish normal difficulty to unlock.
         </div>
       </div>
     </template>
