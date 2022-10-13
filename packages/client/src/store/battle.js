@@ -733,17 +733,13 @@ export default {
     },
 
     // BattlePurchase
-    // - commodity: COMMODITY_ENERGY | COMMODITY_COINS | COMMODITY_CRYSTALS | COMMODITY_CHEST
-    // - currency: flesh | shinees | COMMODITY_COINS
-    // - shopIndex: number
-    async purchase(store, { commodity, currency, shopIndex }) {
+    // - id: number
+    async purchase(store, { id }) {
       /*Vue.prototype.$app.logEvent("april-buy-hero", {
         hero: heroClass
       });*/
       await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
-        commodity,
-        currency,
-        shopIndex
+        id
       });
     },
 
