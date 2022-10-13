@@ -28,12 +28,12 @@
               balance.flesh
             }}</IconWithValue>
           </div>
-          <div class="font-size-22 margin-bottom-1 flex flex-center">
+          <!-- <div class="font-size-22 margin-bottom-1 flex flex-center">
             Shinies balance:
             <IconWithValue iconClass="icon-premium" class="margin-left-1">{{
               balance.hard
             }}</IconWithValue>
-          </div>
+          </div> -->
           <div class="font-size-22 margin-bottom-3 flex flex-center">
             Ancient coins balance:
             <BattleCoin :hasMargin="true" class="margin-left-1" />

@@ -1,8 +1,8 @@
 <script>
 import { mapGetters, mapState } from "vuex";
-import { create } from "vue-modal-dialogs";
+// import { create } from "vue-modal-dialogs";
 import AppSection from "@/AppSection.vue";
-import BattleDailyRewards from "@/views/Battle/BattleDailyRewards.vue";
+// import BattleDailyRewards from "@/views/Battle/BattleDailyRewards.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
@@ -12,10 +12,10 @@ export default {
     ...mapGetters("battle", ["dailyRewards"])
   },
   created() {
-    this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
+    // this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
   },
   destroyed() {
-    this.$store.$app.$off("battle-show-daily-reward");
+    // this.$store.$app.$off("battle-show-daily-reward");
   },
   async mounted() {
     if (!this.hasSubscribed) {
@@ -26,26 +26,26 @@ export default {
     }
   },
   activated() {
-    this.tryToShowRewards();
+    // this.tryToShowRewards();
   },
   methods: {
-    tryToShowRewards() {
-      if (
-        this.dailyRewards &&
-        this.dailyRewards.find(({ active, collected }) => active && !collected)
-      ) {
-        this.showDailyRewards();
-      }
-    },
-    async showDailyRewards() {
-      if (this.hasShownDailyRewards) {
-        return;
-      }
-      this.$store.dispatch("battle/update", { hasShownDailyRewards: true });
-      const showDailyRewardsDialog = create(BattleDailyRewards);
-      await showDailyRewardsDialog();
-      this.$store.dispatch("battle/update", { hasShownDailyRewards: false });
-    }
+    // tryToShowRewards() {
+    //   if (
+    //     this.dailyRewards &&
+    //     this.dailyRewards.find(({ active, collected }) => active && !collected)
+    //   ) {
+    //     this.showDailyRewards();
+    //   }
+    // },
+    // async showDailyRewards() {
+    //   if (this.hasShownDailyRewards) {
+    //     return;
+    //   }
+    //   this.$store.dispatch("battle/update", { hasShownDailyRewards: true });
+    //   const showDailyRewardsDialog = create(BattleDailyRewards);
+    //   await showDailyRewardsDialog();
+    //   this.$store.dispatch("battle/update", { hasShownDailyRewards: false });
+    // }
   }
 };
 </script>

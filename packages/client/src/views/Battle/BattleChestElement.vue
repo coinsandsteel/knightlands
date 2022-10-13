@@ -7,13 +7,13 @@
       <div class="column1 flex flex-center flex-column">
         <div class="chest-icon" :class="chest.name"></div>
         <div class="font-size-22 font-weight-700">
-          {{ $t("battle-" + chest.name) }}
+          {{ $t("battle-shop-" + chest.name) }}
         </div>
       </div>
-      <div class="flex-full padding-left-2">
-        <template v-if="chest.descriptions">
+      <div class="flex-full padding-left-1 padding-right-1">
+        <template v-if="chest.content.description">
           <div
-            v-for="description in chest.descriptions"
+            v-for="description in chest.content.description"
             :key="description"
             class="font-size-20 text-align-left"
             v-html="description"
@@ -42,7 +42,7 @@
           </CustomButton>
         </div>
         <!-- hard price -->
-        <div v-if="chest.hardPrice">
+        <!-- <div v-if="chest.price && chest.price.currency === 'hard'">
           <CustomButton
             :disabled="
               (chest.dailyMax &&
@@ -62,42 +62,42 @@
               </IconWithValue>
             </div>
           </CustomButton>
-        </div>
+        </div> -->
         <!-- flesh price -->
-        <div v-if="chest.fleshPrice">
+        <div v-if="chest.price && chest.price.currency === 'flesh'">
           <CustomButton
             :disabled="
               (chest.dailyMax &&
                 !(shop[chest.name] && shop[chest.name].left > 0)) ||
-                balance.flesh < chest.fleshPrice
+                balance.flesh < chest.price.amount
             "
             type="yellow"
             width="15rem"
-            @click="purchase(chest, 'dkt')"
+            @click="purchase(chest)"
           >
             <div class="flex flex-center">
               <IconWithValue iconClass="icon-dkt">
                 <div class="inline-block margin-left-half">
-                  {{ chest.fleshPrice | fleshPrice }}
+                  {{ chest.price.amount | fleshPrice }}
                 </div>
               </IconWithValue>
             </div>
           </CustomButton>
         </div>
         <!-- ancient coin price -->
-        <div v-if="chest.ancientCoinsPrice">
+        <div v-if="chest.price && chest.price.currency === 'coins'">
           <CustomButton
             :disabled="
               (chest.dailyMax &&
                 !(shop[chest.name] && shop[chest.name].left > 0)) ||
-                balance.ancientCoins < chest.ancientCoinsPrice
+                balance.ancientCoins < chest.price.amount
             "
             type="yellow"
             width="15rem"
-            @click="purchase(chest, COMMODITY_COINS)"
+            @click="purchase(chest)"
           >
             <div class="flex flex-center">
-              <BattleCoin :value="chest.ancientCoinsPrice" :hasMargin="true" />
+              <BattleCoin :value="chest.price.amount" :hasMargin="true" />
             </div>
           </CustomButton>
         </div>
@@ -122,7 +122,7 @@ export default {
     BattleCoin
   },
   data: () => ({
-    COMMODITY_COINS: battle.COMMODITY_COINS
+    CURRENCY_COINS: battle.CURRENCY_COINS
   }),
   computed: {
     ...mapState("battle", ["user"]),
@@ -146,7 +146,7 @@ export default {
     }
   },
   methods: {
-    async purchase(chest, currency) {
+    async purchase(chest) {
       if (
         [battle.REWARD_TYPE_DAILY, battle.COMMODITY_STARTER_PACK].includes(
           chest.commodity
@@ -181,9 +181,7 @@ export default {
 
         await this.performRequestNoCatch(
           this.$store.dispatch("battle/purchase", {
-            commodity: chest.commodity,
-            shopIndex: this.index,
-            currency
+            id: chest.id
           })
         );
       }
@@ -307,7 +305,7 @@ export default {
 
 <style lang="less" scoped>
 .column1 {
-  width: 20rem;
+  width: 18rem;
 }
 .chest-icon {
   // background: no-repeat url("../../assets/ui/@{chest}.png");
@@ -319,42 +317,42 @@ export default {
   // cursor: pointer;
 }
 
-.shop-starter-pack {
+.starter-pack {
   background: url("/images/battle/chests/shop-starter-pack.png") center /
     contain no-repeat;
 }
 
-.shop-daily-reward {
+.daily-chest {
   background: url("/images/battle/chests/shop-daily-reward.png") center /
     contain no-repeat;
 }
 
-.shop-energy-chest {
+.energy-potion {
   background: url("/images/battle/chests/shop-energy-chest.png") center /
     contain no-repeat;
 }
 
-.shop-coin-chest {
+.coin-chest {
   background: url("/images/battle/chests/shop-coin-chest.png") center / contain
     no-repeat;
 }
 
-.shop-donation-chest {
+.donation-chest {
   background: url("/images/battle/chests/shop-donation-chest.png") center /
     contain no-repeat;
 }
 
-.shop-squad1-chest {
+.squad1-chest {
   background: url("/images/battle/chests/shop-squad1-chest.png") center / 90%
     no-repeat;
 }
 
-.shop-squad2-chest {
+.squad2-chest {
   background: url("/images/battle/chests/shop-squad2-chest.png") center / 90%
     no-repeat;
 }
 
-.shop-squad3-chest {
+.squad3-chest {
   background: url("/images/battle/chests/shop-squad3-chest.png") center / 90%
     no-repeat;
 }

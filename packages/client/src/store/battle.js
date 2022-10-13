@@ -37,7 +37,7 @@ export default {
     selectedClassesFilter,
     selectedTribesFilter,
     hasSubscribed: false,
-    hasShownDailyRewards: false,
+    // hasShownDailyRewards: false,
     mergerIds: [null, null, null],
     fighterOrders: [],
 
@@ -239,11 +239,11 @@ export default {
     }
   },
   getters: {
-    dailyRewards(state) {
-      return state.user && state.user.rewards
-        ? state.user.rewards.dailyRewards || []
-        : [];
-    },
+    // dailyRewards(state) {
+    //   return state.user && state.user.rewards
+    //     ? state.user.rewards.dailyRewards || []
+    //     : [];
+    // },
     squadRewards(state) {
       return state.user && state.user.rewards
         ? state.user.rewards.squadRewards || []
@@ -381,9 +381,9 @@ export default {
   },
   mutations: {
     updateState(state, data) {
-      if (data.hasShownDailyRewards !== undefined) {
-        state.hasShownDailyRewards = !!data.hasShownDailyRewards;
-      }
+      // if (data.hasShownDailyRewards !== undefined) {
+      //   state.hasShownDailyRewards = !!data.hasShownDailyRewards;
+      // }
 
       if (data.mergerIds !== undefined) {
         state.mergerIds = data.mergerIds;
@@ -433,9 +433,9 @@ export default {
       if (data.timers !== undefined) {
         state.user.timers = { ...state.timers, ...data.timers };
       }
-      if (data.dailyRewards !== undefined) {
-        state.user.rewards.dailyRewards = data.dailyRewards;
-      }
+      // if (data.dailyRewards !== undefined) {
+      //   state.user.rewards.dailyRewards = data.dailyRewards;
+      // }
       if (data.squadRewards !== undefined) {
         state.user.rewards.squadRewards = data.squadRewards;
       }
