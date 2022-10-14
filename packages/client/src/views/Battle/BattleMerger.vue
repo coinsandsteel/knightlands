@@ -128,7 +128,7 @@ export default {
       setTimeout(async () => {
         await this.showUnitDetails(newUnit);
         this.clearHandler();
-      }, 750);
+      }, 500);
     }
     // async detailsClickHandler() {
     //   const show = create(BattleMergerDetailsInfo);
