@@ -147,6 +147,14 @@ export default {
   },
   methods: {
     async purchase(chest) {
+      const items = await this.performRequestNoCatch(
+        this.$store.dispatch("battle/purchase", {
+          id: chest.id
+        })
+      );
+      console.log(items);
+      return;
+
       if (
         [battle.REWARD_TYPE_DAILY, battle.COMMODITY_STARTER_PACK].includes(
           chest.commodity

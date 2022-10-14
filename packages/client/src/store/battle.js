@@ -739,9 +739,9 @@ export default {
       /*Vue.prototype.$app.logEvent("april-buy-hero", {
         hero: heroClass
       });*/
-      await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
+      return (await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
         id
-      });
+      })).response;
     },
 
     // TODO:
