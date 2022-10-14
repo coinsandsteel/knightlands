@@ -21,18 +21,13 @@
         </template>
       </div>
       <div class="flex flex-center flex-column">
-        <div
-          v-if="chest.dailyMax && shop[chest.name] && !chest.claimable"
-          class="font-size-18"
-        >
-          Items left: {{ shop[chest.name].left || 0 }}
+        <div v-if="chest.dailyMax && !chest.claimable" class="font-size-18">
+          Items left: {{ purchaseLeftCount }}
         </div>
         <!-- claim -->
         <div v-if="chest.claimable">
           <CustomButton
-            :disabled="
-              chest.dailyMax && !(shop[chest.name] && shop[chest.name].left > 0)
-            "
+            :disabled="!canPurchase"
             type="green"
             width="15rem"
             @click="purchase(chest)"
@@ -66,11 +61,7 @@
         <!-- flesh price -->
         <div v-if="chest.price && chest.price.currency === 'flesh'">
           <CustomButton
-            :disabled="
-              (chest.dailyMax &&
-                !(shop[chest.name] && shop[chest.name].left > 0)) ||
-                balance.flesh < chest.price.amount
-            "
+            :disabled="!canPurchase || balance.flesh < chest.price.amount"
             type="yellow"
             width="15rem"
             @click="purchase(chest)"
@@ -88,9 +79,7 @@
         <div v-if="chest.price && chest.price.currency === 'coins'">
           <CustomButton
             :disabled="
-              (chest.dailyMax &&
-                !(shop[chest.name] && shop[chest.name].left > 0)) ||
-                balance.ancientCoins < chest.price.amount
+              !canPurchase || balance.ancientCoins < chest.price.amount
             "
             type="yellow"
             width="15rem"
@@ -126,8 +115,39 @@ export default {
   }),
   computed: {
     ...mapState("battle", ["user"]),
-    shop() {
-      return this.user ? this.user.shop || {} : {};
+    items() {
+      return this.user ? this.user.items || [] : [];
+    },
+    timers() {
+      return this.user ? this.user.timers : null;
+    },
+    purchasedCount() {
+      const date = new Date().toLocaleDateString("en-US");
+
+      return this.timers &&
+        this.timers.purchase &&
+        this.timers.purchase[date] &&
+        this.timers.purchase[date][this.chest.id]
+        ? this.timers.purchase[date][this.chest.id] || 0
+        : 0;
+    },
+    purchaseLeftCount() {
+      return this.chest.dailyMax
+        ? this.chest.dailyMax - this.purchasedCount
+        : Infinity;
+    },
+    canPurchase() {
+      if (this.chest.claimable) {
+        return this.items.find(
+          ({ id, quantity }) => id === this.chest.id && quantity > 0
+        );
+      }
+
+      if (this.dailyMax) {
+        return this.purchasedCount > 0;
+      }
+
+      return true;
     },
     balance() {
       return {
@@ -147,26 +167,18 @@ export default {
   },
   methods: {
     async purchase(chest) {
-      const items = await this.performRequestNoCatch(
-        this.$store.dispatch("battle/purchase", {
-          id: chest.id
-        })
-      );
-      console.log(items);
-      return;
+      // const items = await this.performRequestNoCatch(
+      //   this.$store.dispatch("battle/purchase", {
+      //     id: chest.id
+      //   })
+      // );
+      // console.log(items);
+      // return;
 
-      if (
-        [battle.REWARD_TYPE_DAILY, battle.COMMODITY_STARTER_PACK].includes(
-          chest.commodity
-        )
-      ) {
-        await this.performRequestNoCatch(
-          this.$store.dispatch("battle/claimReward", {
-            type: chest.commodity
-          })
-        );
-      } else {
-        const response = await this.showPrompt(
+      let shouldPurchase = true;
+
+      if (!chest.claimable) {
+        shouldPurchase = !!(await this.showPrompt(
           this.$t("buy-i-t"),
           this.$t("buy-i-q"),
           [
@@ -181,131 +193,130 @@ export default {
               response: true
             }
           ]
-        );
-
-        if (!response) {
-          return;
-        }
-
-        await this.performRequestNoCatch(
-          this.$store.dispatch("battle/purchase", {
-            id: chest.id
-          })
-        );
+        ));
       }
 
-      const ShowDialog = create(
-        ItemsReceived,
-        "items",
-        "battleUnits",
-        "battleEnergyPotion"
+      if (!shouldPurchase) {
+        return;
+      }
+
+      const battleUnits = await this.performRequestNoCatch(
+        this.$store.dispatch("battle/purchase", {
+          id: chest.id
+        })
       );
+
+      if (!(battleUnits && battleUnits.length > 0 && battleUnits[0].unitId)) {
+        return;
+      }
+
+      const ShowDialog = create(ItemsReceived, "items", "battleUnits");
       ShowDialog(
         [],
-        [
-          {
-            template: 17,
-            fighterId: "ae073deabd00",
-            isEnemy: null,
-            isDead: false,
-            unitId: "fb433557af8b",
-            tribe: "goblin",
-            class: "melee",
-            tier: 1,
-            levelInt: 1,
-            power: 174,
-            index: null,
-            hp: 71,
-            abilities: [
-              {
-                abilityClass: "spear_strike",
-                abilityType: "attack",
-                tier: 1,
-                value: null,
-                enabled: true,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              },
-              {
-                abilityClass: "wolf_bite",
-                abilityType: "attack",
-                tier: 2,
-                value: null,
-                enabled: false,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              },
-              {
-                abilityClass: "fatal_strike",
-                abilityType: "attack",
-                tier: 3,
-                value: null,
-                enabled: false,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              }
-            ],
-            buffs: []
-          },
-          {
-            template: 15,
-            fighterId: "4d2e6774017d",
-            isEnemy: null,
-            isDead: false,
-            unitId: "a7a97928a15e",
-            tribe: "goblin",
-            class: "range",
-            tier: 1,
-            levelInt: 1,
-            power: 138,
-            index: null,
-            hp: 49,
-            abilities: [
-              {
-                abilityClass: "power_shot",
-                abilityType: "attack",
-                tier: 1,
-                value: null,
-                enabled: true,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              },
-              {
-                abilityClass: "stun_shot",
-                abilityType: "de_buff",
-                tier: 2,
-                value: null,
-                enabled: false,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              },
-              {
-                abilityClass: "death_shot",
-                abilityType: "attack",
-                tier: 3,
-                value: null,
-                enabled: false,
-                cooldown: {
-                  enabled: false,
-                  estimate: 0
-                }
-              }
-            ],
-            buffs: []
-          }
-        ],
-        {}
-      ); // @todo: update with real data
+        battleUnits
+        // [
+        //   {
+        //     template: 17,
+        //     fighterId: "ae073deabd00",
+        //     isEnemy: null,
+        //     isDead: false,
+        //     unitId: "fb433557af8b",
+        //     tribe: "goblin",
+        //     class: "melee",
+        //     tier: 1,
+        //     levelInt: 1,
+        //     power: 174,
+        //     index: null,
+        //     hp: 71,
+        //     abilities: [
+        //       {
+        //         abilityClass: "spear_strike",
+        //         abilityType: "attack",
+        //         tier: 1,
+        //         value: null,
+        //         enabled: true,
+        //         cooldown: {
+        //           enabled: false,
+        //           estimate: 0
+        //         }
+        //       },
+        //       {
+        //         abilityClass: "wolf_bite",
+        //         abilityType: "attack",
+        //         tier: 2,
+        //         value: null,
+        //         enabled: false,
+        //         cooldown: {
+        //           enabled: false,
+        //           estimate: 0
+        //         }
+        //       },
+        //       {
+        //         abilityClass: "fatal_strike",
+        //         abilityType: "attack",
+        //         tier: 3,
+        //         value: null,
+        //         enabled: false,
+        //         cooldown: {
+        //           enabled: false,
+        //           estimate: 0
+        //         }
+        //       }
+        //     ],
+        //     buffs: []
+        //   },
+        //   {
+        //     template: 15,
+        //     fighterId: "4d2e6774017d",
+        //     isEnemy: null,
+        //     isDead: false,
+        //     unitId: "a7a97928a15e",
+        //     tribe: "goblin",
+        //     class: "range",
+        //     tier: 1,
+        //     levelInt: 1,
+        //     power: 138,
+        //     index: null,
+        //     hp: 49,
+        //     abilities: [
+        //       {
+        //         abilityClass: "power_shot",
+        //         abilityType: "attack",
+        //         tier: 1,
+        //         value: null,
+        //         enabled: true,
+        //         cooldown: {
+        //           enabled: false,
+        //           estimate: 0
+        //         }
+        //       },
+        //       {
+        //         abilityClass: "stun_shot",
+        //         abilityType: "de_buff",
+        //         tier: 2,
+        //         value: null,
+        //         enabled: false,
+        //         cooldown: {
+        //           enabled: false,
+        //           estimate: 0
+        //         }
+        //       },
+        //       {
+        //         abilityClass: "death_shot",
+        //         abilityType: "attack",
+        //         tier: 3,
+        //         value: null,
+        //         enabled: false,
+        //         cooldown: {
+        //           enabled: false,
+        //           estimate: 0
+        //         }
+        //       }
+        //     ],
+        //     buffs: []
+        //   }
+        // ],
+      );
     }
   }
 };

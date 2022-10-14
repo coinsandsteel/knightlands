@@ -4,23 +4,12 @@
       <div
         class="width-100 height-100 dummy-height flex flex-column flex-no-wrap"
       >
-        <div class="option-name font-size-25 text-align-center padding-1">
+        <!-- <div class="option-name font-size-25 text-align-center padding-1">
           Choose a pack:
-        </div>
-
-        <div class="flex flex-center">
-          <div class="flex flex-center flex-column width-100">
-            <BattleChestElement
-              v-for="(chest, index) in chests"
-              :key="chest.name"
-              :chest="chest"
-              :index="index"
-            />
-          </div>
-        </div>
+        </div> -->
 
         <div
-          class="battle-shop-balance flex flex-center flex-column margin-top-2"
+          class="battle-shop-balance flex flex-center flex-column padding-top-2"
         >
           <div class="font-size-22 flex flex-center margin-bottom-1">
             FLESH balance:
@@ -34,9 +23,20 @@
               balance.hard
             }}</IconWithValue>
           </div> -->
-          <div class="font-size-22 margin-bottom-3 flex flex-center">
+          <div class="font-size-22 flex flex-center">
             Ancient coins balance:
             <BattleCoin :hasMargin="true" class="margin-left-1" />
+          </div>
+        </div>
+
+        <div class="flex flex-center  margin-top-2">
+          <div class="flex flex-center flex-column width-100">
+            <BattleChestElement
+              v-for="(chest, index) in chests"
+              :key="chest.name"
+              :chest="chest"
+              :index="index"
+            />
           </div>
         </div>
       </div>

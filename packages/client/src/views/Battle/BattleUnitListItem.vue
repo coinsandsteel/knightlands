@@ -55,7 +55,10 @@ export default {
         return null;
       }
 
-      return this.inventory.find(({ unitId }) => unitId === this.unit.unitId);
+      return (
+        this.inventory.find(({ unitId }) => unitId === this.unit.unitId) ||
+        this.unit
+      );
     },
     tier() {
       return this.unitRecord
