@@ -25,7 +25,11 @@
       <div class="absolute-stretch"></div>
       <div
         v-if="shouldShowExtraInfo && isHpVisible"
-        class="absolute battle-unit-hp font-size-18"
+        class="absolute battle-unit-hp font-size-18 flex flex-center"
+        :class="{
+          'battle-unit-hp--warning': isHpWarning,
+          'battle-unit-hp--danger': isHpDanger
+        }"
       >
         {{ hp }}
       </div>
@@ -116,6 +120,19 @@ export default {
     hp() {
       return this.unit ? Math.max(0, this.unit.hp || 0) : null;
     },
+    maxHp() {
+      return this.unit &&
+        this.unit.characteristics &&
+        this.unit.characteristics.hp
+        ? this.unit.characteristics.hp
+        : 0;
+    },
+    isHpWarning() {
+      return this.maxHp && this.hp / this.maxHp < 0.5;
+    },
+    isHpDanger() {
+      return this.maxHp && this.hp / this.maxHp < 0.25;
+    },
     isDead() {
       return (
         (this.unit && this.unit.isDead) ||
@@ -175,6 +192,14 @@ export default {
   font-weight: 600;
   border-radius: 12px;
   padding: 0 5px;
+  width: 17px;
+  height: 16px;
+}
+.battle-unit-hp--warning {
+  color: #f59e0b;
+}
+.battle-unit-hp--danger {
+  color: #ef4444;
 }
 .battle-rating-index {
   right: 0px;

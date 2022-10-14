@@ -17,8 +17,14 @@
     </div>
     <div v-if="isActive" class="active-indicator absolute"></div>
     <div
+      v-if="isInfoIconVisible"
+      class="ability-info-icon absolute flex flex-center font-size-18"
+    >
+      &ifr;
+    </div>
+    <div
       v-if="isValueVisible"
-      class="ability-value absolute"
+      class="ability-value absolute flex flex-center"
       :class="
         isSmallValue ? 'ability-value--small font-size-12' : 'font-size-18'
       "
@@ -40,6 +46,11 @@ export default {
     return {};
   },
   computed: {
+    isInfoIconVisible() {
+      return (
+        this.isActive && !["move", "attack"].includes(this.ability.abilityClass)
+      );
+    },
     isValueVisible() {
       return typeof this.value === "number" && this.value > 0;
     },
@@ -78,14 +89,32 @@ export default {
   // color: #10b981;
   font-weight: 600;
   border-radius: 12px;
-  padding: 0 3px;
-  min-width: 17px;
+  // padding: 0 3px;
+  // min-width: 17px;
+  width: 17px;
+  height: 17px;
 }
 .ability-value--small {
   padding: 0 1px;
   left: -3px;
   bottom: -3px;
   border-width: 1px;
+  width: 12px;
+  height: 12px;
+}
+.ability-info-icon {
+  left: -8px;
+  bottom: 20px;
+  background: #fff;
+  border: solid 2px #fff;
+  color: #333;
+  // color: #10b981;
+  font-weight: 600;
+  border-radius: 12px;
+  // padding: 0 3px;
+  // min-width: 17px;
+  width: 17px;
+  height: 17px;
 }
 // .battle-unit-ability-overlay {
 //   background: rgba(#fff, 0.5);
