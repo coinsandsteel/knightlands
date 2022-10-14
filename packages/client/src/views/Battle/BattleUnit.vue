@@ -497,19 +497,19 @@ export default {
   background: url("/images/battle/units/orc-5.png") center/75% no-repeat;
 }
 // assembling
+.battle-unit--template-105 .battle-unit-image,
+.battle-unit--template-106 .battle-unit-image,
+.battle-unit--template-107 .battle-unit-image {
+  background: url("/images/battle/units/assembling-1.png") center/85% no-repeat;
+}
 .battle-unit--template-99 .battle-unit-image,
 .battle-unit--template-100 .battle-unit-image,
 .battle-unit--template-101 .battle-unit-image {
-  background: url("/images/battle/units/assembling-1.png") center/80% no-repeat;
+  background: url("/images/battle/units/assembling-2.png") center/80% no-repeat;
 }
 .battle-unit--template-102 .battle-unit-image,
 .battle-unit--template-103 .battle-unit-image,
 .battle-unit--template-104 .battle-unit-image {
-  background: url("/images/battle/units/assembling-2.png") center/85% no-repeat;
-}
-.battle-unit--template-105 .battle-unit-image,
-.battle-unit--template-106 .battle-unit-image,
-.battle-unit--template-107 .battle-unit-image {
   background: url("/images/battle/units/assembling-3.png") center/85% no-repeat;
 }
 .battle-unit--template-108 .battle-unit-image,
