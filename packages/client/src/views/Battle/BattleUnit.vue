@@ -241,7 +241,9 @@ export default {
   color: #a3e635;
 }
 .battle-buff-indicator-icon--yellow {
-  color: #f59e0b;
+  // color: #f59e0b;
+  // color: #ef4444;
+  color: #fed7aa;
 }
 .battle-buff-indicator-icon--red {
   color: #ef4444;
@@ -294,7 +296,9 @@ export default {
   color: #fff;
 }
 .battle-unit-background-color {
-  background: #14b8a6;
+  // background: #14b8a6;
+  background: #38bdf8;
+  // background: #f472b6;
   width: 100%;
   height: calc(12400% / 130);
   left: 0;
@@ -305,7 +309,10 @@ export default {
   background: #717171;
 }
 .battle-unit--enemy .battle-unit-background-color {
-  background: #818cf8;
+  // background: #818cf8;
+  // background: #fda4af;
+  // background: #fbcfe8;
+  background: #f472b6;
 }
 .battle-unit-background {
   background: url("/images/battle/portrait_border.png") center/100% no-repeat;
