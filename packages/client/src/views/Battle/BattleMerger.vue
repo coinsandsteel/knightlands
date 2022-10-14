@@ -4,7 +4,7 @@
       <div class="flex flex-center">
         <div>
           <div
-            v-for="(unit, index) in calculatedUnits"
+            v-for="(unit, index) in units"
             :key="index"
             class="material-cell pointer"
           >
@@ -50,9 +50,11 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import cloneDeep from "lodash/cloneDeep";
+import { create } from "vue-modal-dialogs";
+// import cloneDeep from "lodash/cloneDeep";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import AppSection from "@/AppSection.vue";
+import BattleUnitDetailsDialog from "@/views/Battle/BattleUnitDetailsDialog.vue";
 // import BattleUnitSelect from "@/views/Battle/BattleUnitSelect.vue";
 // import BattleMergerDetailsInfo from "@/views/Battle/BattleMergerDetailsInfo.vue";
 // import { create } from "vue-modal-dialogs";
@@ -65,14 +67,14 @@ export default {
   data() {
     return {
       // selectedUnits: [null, null, null]
-      units: [],
+      // units: [],
       newUnit: null
     };
   },
   computed: {
     ...mapGetters("battle", ["mergerUnits"]),
-    calculatedUnits() {
-      return this.newUnit ? this.units : this.mergerUnits;
+    units() {
+      return this.mergerUnits;
     },
     canMerge() {
       return this.mergerUnits.filter(Boolean).length === 3;
@@ -91,7 +93,7 @@ export default {
   methods: {
     reset() {
       this.newUnit = null;
-      this.units = [];
+      // this.units = [];
     },
     async unitClickHandler() {
       // const show = create(BattleUnitSelect);
@@ -108,13 +110,25 @@ export default {
       this.$store.dispatch("battle/clearMergeUnits");
       this.reset();
     },
+    async showUnitDetails(unit) {
+      const show = create(
+        BattleUnitDetailsDialog,
+        "unit",
+        "isSelectButtonVisible"
+      );
+      return show(unit, false);
+    },
     async mergeHandler() {
       if (!this.canMerge) {
         return;
       }
-      this.units = cloneDeep(this.mergerUnits);
+      // this.units = cloneDeep(this.mergerUnits);
       const newUnit = await this.$store.dispatch("battle/mergeUnits");
       this.newUnit = newUnit;
+      setTimeout(async () => {
+        await this.showUnitDetails(newUnit);
+        this.clearHandler();
+      }, 750);
     }
     // async detailsClickHandler() {
     //   const show = create(BattleMergerDetailsInfo);

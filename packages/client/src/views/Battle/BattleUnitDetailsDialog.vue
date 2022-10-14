@@ -58,7 +58,10 @@
           </BattleUnitAbilityDetails>
         </div>
 
-        <div class="text-align-center margin-top-4">
+        <div
+          v-if="isSelectButtonVisible"
+          class="text-align-center margin-top-4"
+        >
           <CustomButton
             type="green"
             class="inline-block"
@@ -87,7 +90,10 @@ export default {
     // BattleUnitBuff
     BattleUnitAbilityDetails
   },
-  props: { unit: Object },
+  props: {
+    unit: Object,
+    isSelectButtonVisible: { type: Boolean, default: true }
+  },
   computed: {
     expValue() {
       return this.unit && this.unit.expirience
