@@ -432,7 +432,7 @@ export default {
         state.user.balance = { ...state.balance, ...data.balance };
       }
       if (data.timers !== undefined) {
-        state.user.timers = { ...state.timers, ...data.timers };
+        state.user.timers = { ...state.user.timers, ...data.timers };
       }
       if (data.items !== undefined) {
         state.user.items = data.items;
@@ -739,9 +739,11 @@ export default {
       /*Vue.prototype.$app.logEvent("april-buy-hero", {
         hero: heroClass
       });*/
-      return (await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
-        id
-      })).response;
+      return (
+        await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
+          id
+        })
+      ).response;
     },
 
     // TODO:

@@ -42,6 +42,10 @@
         <!-- <AprilGold v-if="aprilGold" :value="aprilGold" /> -->
         <!-- <AprilTickets v-if="aprilTicket" :value="aprilTicket" /> -->
         <BattleUnitList v-if="battleUnits" :units="battleUnits" />
+        <div v-if="battleEnergyPotion" class="font-size-22 flex flex-center">
+          <div class="icon-energy" />
+          {{ battleEnergyPotion }}
+        </div>
 
         <div
           class="flex flex-center flex-column margin-top-3"
@@ -100,7 +104,8 @@ export default {
     // "marchGold",
     // "aprilGold",
     // "aprilTicket",
-    "battleUnits"
+    "battleUnits",
+    "battleEnergyPotion"
   ]
 };
 </script>
@@ -108,5 +113,9 @@ export default {
 <style lang="less" scoped>
 .over-top {
   z-index: 200;
+}
+.battle-unit-list {
+  max-height: 62vh;
+  overflow: auto;
 }
 </style>

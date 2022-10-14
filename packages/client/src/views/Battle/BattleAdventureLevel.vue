@@ -41,12 +41,14 @@
         <CustomButton
           v-if="isLevelAvailable"
           :disabled="!canStart"
-          type="red"
+          :type="difficulty === 'high' ? 'red' : 'green'"
           class="inline-block margin-right-1 margin-top-1"
-          min-width="12rem"
+          min-width="14rem"
           @click="clickHandler"
         >
           Start
+          <div class="icon-energy margin-left-1" />
+          {{ energyCost }}
         </CustomButton>
       </div>
     </div>
@@ -55,6 +57,7 @@
     <div
       v-if="!isLevelAvailable"
       class="blocker center padding-top-1 font-size-30 font-weight-900"
+      :class="{ 'blocker--last': levelIndex === 4 }"
     >
       <p v-if="!levelIndex" class="yellow-title">
         {{ $t("prev-q-f") }}
@@ -159,9 +162,13 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% + 2rem);
+  // height: calc(100% + 2rem);
+  height: 100%;
   background-color: #353440cc;
   z-index: 5;
+}
+.blocker--last {
+  height: calc(100% + 2rem);
 }
 .battle-adventure-level-image--0-0 {
   background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;

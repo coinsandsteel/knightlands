@@ -123,7 +123,6 @@ export default {
     },
     purchasedCount() {
       const date = new Date().toLocaleDateString("en-US");
-
       return this.timers &&
         this.timers.purchase &&
         this.timers.purchase[date] &&
@@ -143,8 +142,8 @@ export default {
         );
       }
 
-      if (this.dailyMax) {
-        return this.purchasedCount > 0;
+      if (this.chest.dailyMax) {
+        return this.purchaseLeftCount > 0;
       }
 
       return true;
@@ -200,20 +199,32 @@ export default {
         return;
       }
 
-      const battleUnits = await this.performRequestNoCatch(
+      const result = await this.performRequestNoCatch(
         this.$store.dispatch("battle/purchase", {
           id: chest.id
         })
       );
 
-      if (!(battleUnits && battleUnits.length > 0 && battleUnits[0].unitId)) {
-        return;
+      let units = [];
+      let energy = null;
+      if (result && result.length > 0 && result[0].unitId) {
+        units = result;
       }
 
-      const ShowDialog = create(ItemsReceived, "items", "battleUnits");
+      if (chest.commodity === battle.COMMODITY_ENERGY_POTION) {
+        energy = chest.content.energy;
+      }
+
+      const ShowDialog = create(
+        ItemsReceived,
+        "items",
+        "battleUnits",
+        "battleEnergyPotion"
+      );
       ShowDialog(
         [],
-        battleUnits
+        units,
+        energy
         // [
         //   {
         //     template: 17,
