@@ -401,14 +401,14 @@ export default {
 .battle-unit--template-47 .battle-unit-image {
   background: url("/images/battle/units/egypt-3.png") center/85% no-repeat;
 }
-.battle-unit--template-47 .battle-unit-image,
 .battle-unit--template-48 .battle-unit-image,
-.battle-unit--template-49 .battle-unit-image {
+.battle-unit--template-49 .battle-unit-image,
+.battle-unit--template-50 .battle-unit-image {
   background: url("/images/battle/units/egypt-4.png") center/72% no-repeat;
 }
-.battle-unit--template-50 .battle-unit-image,
 .battle-unit--template-51 .battle-unit-image,
-.battle-unit--template-52 .battle-unit-image {
+.battle-unit--template-52 .battle-unit-image,
+.battle-unit--template-53 .battle-unit-image {
   background: url("/images/battle/units/egypt-5.png") center/60% no-repeat;
 }
 // goblin
@@ -443,7 +443,7 @@ export default {
 .battle-unit--template-71 .battle-unit-image {
   background: url("/images/battle/units/insect-1.png") center/55% no-repeat;
 }
-.battle-unit--template-72.battle-unit-image,
+.battle-unit--template-72 .battle-unit-image,
 .battle-unit--template-73 .battle-unit-image,
 .battle-unit--template-74 .battle-unit-image {
   background: url("/images/battle/units/insect-2.png") center/53% no-repeat;
