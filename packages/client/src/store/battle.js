@@ -48,6 +48,7 @@ export default {
         coins: 0, // Source: PvE, Purpose: upgrade units level
         crystals: 0 // Source: PvP, Purpose: upgrade abilities level
       },
+      items: [], // Example: [{ id: 8, quantity: 1 }] - starter pack
       timers: {
         energy: 0
       },
@@ -433,9 +434,9 @@ export default {
       if (data.timers !== undefined) {
         state.user.timers = { ...state.timers, ...data.timers };
       }
-      // if (data.dailyRewards !== undefined) {
-      //   state.user.rewards.dailyRewards = data.dailyRewards;
-      // }
+      if (data.items !== undefined) {
+        state.user.items = data.items;
+      }
       if (data.squadRewards !== undefined) {
         state.user.rewards.squadRewards = data.squadRewards;
       }
@@ -657,7 +658,7 @@ export default {
       state.user.balance = userData.balance;
       state.user.timers = userData.timers;
       state.user.rewards = userData.rewards;
-      //state.user.shop = userData.shop;
+      state.user.items = userData.items;
 
       state.inventory = data.inventory;
 
