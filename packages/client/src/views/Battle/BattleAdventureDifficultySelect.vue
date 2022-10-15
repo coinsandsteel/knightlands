@@ -43,7 +43,7 @@ export default {
   computed: {
     ...mapState("battle", ["adventures"]),
     isAdventureHardDifficultyAvailable() {
-      return this.adventures.locations[this.locationIndex].levels[0][
+      return this.adventures.locations[0].levels[0][
         battle.GAME_DIFFICULTY_HIGH
       ];
     }

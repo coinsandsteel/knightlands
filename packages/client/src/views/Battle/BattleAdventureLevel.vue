@@ -112,10 +112,38 @@ export default {
     coins() {
       return this.levelMeta.reward.coins;
     },
+    isNextLocationAvailable() {
+      if (!(this.adventures && this.adventures.locations)) {
+        return false;
+      }
+
+      let nextLocationIndex = this.locationIndex + 1;
+      let nextLocationDifficulty = this.difficulty;
+
+      if (nextLocationIndex > battle.ADVENTURES.length - 1) {
+        if (this.difficulty === battle.GAME_DIFFICULTY_HIGH) {
+          return false;
+        }
+        nextLocationIndex = 0;
+        nextLocationDifficulty = battle.GAME_DIFFICULTY_HIGH;
+      }
+
+      return !!this.adventures.locations[nextLocationIndex].levels[0][
+        nextLocationDifficulty
+      ];
+    },
     bossCoins() {
+      if (!this.levelMeta.bossReward || this.isNextLocationAvailable) {
+        return 0;
+      }
+
       return this.levelMeta.bossReward.coins;
     },
     bossCrystals() {
+      if (!this.levelMeta.bossReward || this.isNextLocationAvailable) {
+        return 0;
+      }
+
       return this.levelMeta.bossReward.crystals;
     },
     isLevelAvailable() {
