@@ -171,98 +171,109 @@ export default {
   height: calc(100% + 2rem);
 }
 .battle-adventure-level-image--0-0 {
-  background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;
+  background: url("/images/battle/units/kobold-1.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--0-1 {
-  background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;
+  background: url("/images/battle/units/goblin-2.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--0-2 {
-  background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;
+  background: url("/images/battle/units/eldritch-2.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--0-3 {
-  background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;
+  background: url("/images/battle/units/fallen-king-4.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--0-4 {
-  background: url("/images/enemies/Forest Fangrot.png") center/contain no-repeat;
+  background: url("/images/battle/units/kobold-5.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--1-0 {
-  background: url("/images/enemies/Forest Grasshopper.png") center/contain
+  background: url("/images/battle/units/legendary-1.png") center/contain
     no-repeat;
 }
 .battle-adventure-level-image--1-1 {
-  background: url("/images/enemies/Forest Grasshopper.png") center/contain
+  background: url("/images/battle/units/eldritch-3.png") center/contain
     no-repeat;
 }
 .battle-adventure-level-image--1-2 {
-  background: url("/images/enemies/Forest Grasshopper.png") center/contain
+  background: url("/images/battle/units/clockwork-1.png") center/contain
     no-repeat;
 }
 .battle-adventure-level-image--1-3 {
-  background: url("/images/enemies/Forest Grasshopper.png") center/contain
-    no-repeat;
+  background: url("/images/battle/units/insect-5.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--1-4 {
-  background: url("/images/enemies/Forest Grasshopper.png") center/contain
+  background: url("/images/battle/units/assembling-2.png") center/contain
     no-repeat;
 }
 .battle-adventure-level-image--2-0 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/clockwork-2.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--2-1 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/legendary-3.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--2-2 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/assembling-4.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--2-3 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/dwarf-3.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--2-4 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/clockwork-3.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--3-0 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/egypt-2.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--3-1 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/ice-1.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--3-2 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/skeleton-2.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--3-3 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/fallen-king-2.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--3-4 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/eldritch-4.png") center/80% no-repeat;
 }
 .battle-adventure-level-image--4-0 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/kobold-2.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--4-1 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/dwarf-4.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--4-2 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/orc-1.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--4-3 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/fallen-king-1.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--4-4 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/ice-2.png") center/75% no-repeat;
 }
 .battle-adventure-level-image--5-0 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/legendary-5.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--5-1 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/skeleton-3.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--5-2 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/assembling-1.png") center/contain
+    no-repeat;
 }
 .battle-adventure-level-image--5-3 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/elf-1.png") center/contain no-repeat;
 }
 .battle-adventure-level-image--5-4 {
-  background: url("/images/enemies/Forest Spora.png") center/contain no-repeat;
+  background: url("/images/battle/units/legendary-4.png") center/65% no-repeat;
 }
 </style>
