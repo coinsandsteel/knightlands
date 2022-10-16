@@ -94,7 +94,7 @@ export default {
       let bonusItems = (this.game && this.game.userSquad
         ? this.game.userSquad.bonuses || []
         : []
-      ).filter(({ type }) => type);
+      ).filter(({ mode }) => mode);
 
       // bonusItems = [
       //   {
