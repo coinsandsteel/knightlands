@@ -26,6 +26,7 @@
                 :key="unit.unitId"
                 :unit="unit"
                 :isQuantityVisible="true"
+                :shouldExcludeSquadQuantity="shouldExcludeSquadQuantity"
                 class="pointer"
                 @click="clickHandler(unit)"
               />
@@ -158,6 +159,9 @@ export default {
     },
     shouldFillSlot() {
       return this.$route.params && this.$route.params.slot;
+    },
+    shouldExcludeSquadQuantity() {
+      return this.shouldFillSlot && this.$route.params.slot === "squad";
     },
     units() {
       return this.inventory.slice().filter(unit => {

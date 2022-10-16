@@ -24,14 +24,14 @@
           @click="clickHandler"
           @clear="clearHandler"
         />
-        <CustomButton
+        <!-- <CustomButton
           v-if="fighters.length < 5"
           type="green"
           class="inline-block"
           width="8rem"
           @click="updateUnitHandler(fighters.length)"
           >{{ $t("add") }}</CustomButton
-        >
+        > -->
         <portal to="footer" :slim="true" v-if="isActive">
           <CustomButton type="blue" @click="buildSquad"
             >Build squad</CustomButton
@@ -299,18 +299,19 @@ export default {
       });
     },
     async clickHandler({ unit, index }) {
-      if (!unit) {
-        this.updateUnitHandler(index);
-        return;
-      }
-      const unitIndex = this.fighters.findIndex(
-        ({ unitId }) => unit.unitId === unitId
-      );
-      if (!(unitIndex > -1)) {
-        return;
-      }
+      // if (!unit) {
+      //   this.updateUnitHandler(index);
+      //   return;
+      // }
+      // const unitIndex = this.fighters.findIndex(
+      //   fighter => fighter && unit.unitId === fighter.unitId
+      // );
+      // if (!(unitIndex > -1)) {
+      //   return;
+      // }
 
-      this.updateUnitHandler(unitIndex);
+      // this.updateUnitHandler(unitIndex);
+      this.updateUnitHandler(index);
     },
     async clearHandler({ unit, index }) {
       this.$store.dispatch("battle/clearSquadSlot", {

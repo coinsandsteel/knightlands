@@ -91,6 +91,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import AsteriskIcon from "./AsteriskIcon.vue";
 import * as battle from "@/../../knightlands-shared/battle";
 
@@ -111,12 +112,14 @@ export default {
     isSmallRatingIndex: Boolean,
     isBuffIndicatorVisible: Boolean,
     isBuffIndicatorSmall: Boolean,
-    isQuantityVisible: Boolean
+    isQuantityVisible: Boolean,
+    shouldExcludeSquadQuantity: Boolean
   },
   data() {
     return {};
   },
   computed: {
+    ...mapGetters("battle", ["fighters"]),
     hp() {
       return this.unit ? Math.max(0, this.unit.hp || 0) : null;
     },
@@ -166,7 +169,17 @@ export default {
       return typeof this.ratingIndex === "number";
     },
     quantity() {
-      return this.unit && this.unit.quantity ? this.unit.quantity : 0;
+      let quantity = this.unit && this.unit.quantity ? this.unit.quantity : 0;
+
+      if (this.unit && this.shouldExcludeSquadQuantity && quantity) {
+        quantity =
+          quantity -
+          this.fighters.filter(
+            fighter => fighter && fighter.unitId === this.unit.unitId
+          ).length;
+      }
+
+      return Math.max(0, quantity);
     }
   },
   methods: {
