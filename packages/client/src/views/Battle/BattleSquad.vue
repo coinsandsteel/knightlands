@@ -248,7 +248,7 @@ export default {
         bonus.trigger === "damage" &&
         bonus.operation === "add" &&
         bonus.value &&
-        bonus.max === "add"
+        bonus.max
       ) {
         result = `When a squad member takes damage the squad's defense is increased by +${bonus.value} (max. ${bonus.max})`;
       } else if (
