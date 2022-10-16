@@ -150,14 +150,14 @@ export default {
         bonus.operation === "multiply"
       ) {
         const value = Math.floor((bonus.value - 1) * 100);
-        result = `Attack ${value > 0 ? "+" : ""}${value}%`;
+        result = `Attack power ${value > 0 ? "+" : ""}${value}%`;
       } else if (
         bonus.target === "hp" &&
         bonus.mode === "constant" &&
         bonus.operation === "multiply"
       ) {
         const value = Math.floor((bonus.value - 1) * 100);
-        result = `HP ${value > 0 ? "+" : ""}${value}%`;
+        result = `Max. HP ${value > 0 ? "+" : ""}${value}%`;
       } else if (
         bonus.target === "defence" &&
         bonus.mode === "constant" &&
@@ -178,13 +178,13 @@ export default {
         bonus.terrain === "swamp"
       ) {
         if (bonus.scheme === "swamp-1") {
-          result = "Swamp 1 (-25%)";
+          result = "Swamp effect is 25% weaker";
         } else if (bonus.scheme === "swamp-2") {
-          result = "Swamp 2 (-50%)";
+          result = "Swamp effect is 50% weaker";
         } else if (bonus.scheme === "swamp-3") {
-          result = "Swamp 3 (-75%)";
+          result = "Swamp effect is 75% weaker";
         } else if (bonus.scheme === "swamp-4") {
-          result = "Swamp 4 (-100%)";
+          result = "Swamp effect is 100% weaker";
         }
       } else if (
         bonus.target === "power" &&
@@ -192,13 +192,13 @@ export default {
         bonus.terrain === "hill"
       ) {
         if (bonus.scheme === "hill-1") {
-          result = "Hills 1 (+25%)";
+          result = "Hills effect is 25% stronger";
         } else if (bonus.scheme === "hill-2") {
-          result = "Hills 2 (+50%)";
+          result = "Hills effect is 50% stronger";
         } else if (bonus.scheme === "hill-3") {
-          result = "Hills 3 (+75%)";
+          result = "Hills effect is 75% stronger";
         } else if (bonus.scheme === "hill-4") {
-          result = "Hills 4 (+100%)";
+          result = "Hills effect is 100% stronger";
         }
       } else if (
         bonus.target === "defence" &&
@@ -206,13 +206,13 @@ export default {
         bonus.terrain === "woods"
       ) {
         if (bonus.scheme === "woods-1") {
-          result = "Woods 1 (+25%)";
+          result = "Woods effect is 25% stronger";
         } else if (bonus.scheme === "woods-2") {
-          result = "Woods 2 (+50%)";
+          result = "Woods effect is 50% stronger";
         } else if (bonus.scheme === "woods-3") {
-          result = "Woods 3 (+75%)";
+          result = "Woods effect is 75% stronger";
         } else if (bonus.scheme === "woods-4") {
-          result = "Woods 4 (+100%)";
+          result = "Woods effect is 100% stronger";
         }
       } else if (
         bonus.target === "defence" &&
@@ -220,13 +220,13 @@ export default {
         bonus.terrain === "ice"
       ) {
         if (bonus.scheme === "ice-1") {
-          result = "Ice 1 (-25%)";
+          result = "Ice effect is 25% weaker";
         } else if (bonus.scheme === "ice-2") {
-          result = "Ice 2 (-50%)";
+          result = "Ice effect is 50% weaker";
         } else if (bonus.scheme === "ice-3") {
-          result = "Ice 3 (-75%)";
+          result = "Ice effect is 75% weaker";
         } else if (bonus.scheme === "ice-4") {
-          result = "Ice 4 (-100%)";
+          result = "Ice effect is 100% weaker";
         }
       } else if (
         bonus.subEffect === "lava_damage" &&
@@ -234,13 +234,13 @@ export default {
         bonus.terrain === "lava"
       ) {
         if (bonus.scheme === "lava-1") {
-          result = "Lava 1 (-25%)";
+          result = "Lava effect is 25% weaker";
         } else if (bonus.scheme === "lava-2") {
-          result = "Lava 2 (-50%)";
+          result = "Lava effect is 50% weaker";
         } else if (bonus.scheme === "lava-3") {
-          result = "Lava 3 (-75%)";
+          result = "Lava effect is 75% weaker";
         } else if (bonus.scheme === "lava-4") {
-          result = "Lava 4 (-100%)";
+          result = "Lava effect is 100% weaker";
         }
       } else if (
         bonus.target === "defence" &&
