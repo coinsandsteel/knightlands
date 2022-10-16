@@ -201,19 +201,21 @@ export default {
   background: #fff;
   border: solid 1px #fff;
   // color: #333;
-  color: #10b981;
+  // color: #10b981;
+  // color: #ef4444;
+  color: #f87171;
   font-weight: 600;
   border-radius: 12px;
   padding: 0 5px;
   width: 17px;
   height: 16px;
 }
-.battle-unit-hp--warning {
-  color: #f59e0b;
-}
-.battle-unit-hp--danger {
-  color: #ef4444;
-}
+// .battle-unit-hp--warning {
+//   color: #f59e0b;
+// }
+// .battle-unit-hp--danger {
+//   color: #ef4444;
+// }
 .battle-rating-index {
   right: 0px;
   bottom: 2px;
