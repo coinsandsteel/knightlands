@@ -193,9 +193,10 @@ export default {
                 : []
               ).map(fighter => fighter && fighter.unitId)
             );
-            isIncluded =
-              isIncluded &&
-              unit.quantity > ids.filter(id => id === unit.unitId).length;
+            // isIncluded =
+            //   isIncluded &&
+            //   unit.quantity > ids.filter(id => id === unit.unitId).length;
+            isIncluded = isIncluded && !ids.includes(unit.unitId);
           } else if (this.$route.params.slot === "merger") {
             isIncluded = isIncluded && unit.tier < 3 && unit.quantity >= 3;
           }
