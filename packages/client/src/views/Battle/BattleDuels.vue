@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 // import * as battle from "@/../../knightlands-shared/battle";
 import AppSection from "@/AppSection.vue";
@@ -56,8 +56,9 @@ export default {
   },
   computed: {
     ...mapGetters("battle", ["isFightersFullFilled"]),
+    ...mapState("battle", ["user"]),
     score() {
-      return 0;
+      return this.user.balance.pvpScore || 0;
     }
   },
   async activated() {

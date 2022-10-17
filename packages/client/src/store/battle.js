@@ -46,7 +46,8 @@ export default {
       balance: {
         energy: 0,
         coins: 0, // Source: PvE, Purpose: upgrade units level
-        crystals: 0 // Source: PvP, Purpose: upgrade abilities level
+        crystals: 0, // Source: PvP, Purpose: upgrade abilities level
+        pvpScore: 0
       },
       items: [], // Example: [{ id: 8, quantity: 1 }] - starter pack
       timers: {
