@@ -184,19 +184,28 @@ export default {
 
         if (isIncluded && this.shouldFillSlot) {
           if (this.$route.params.slot === "squad") {
-            const ids = [];
-            ids.push(
+            // const ids = [];
+            // ids.push(
+            //   ...(this.game &&
+            //   this.game.userSquad &&
+            //   this.game.userSquad.fighters
+            //     ? this.game.userSquad.fighters
+            //     : []
+            //   ).map(fighter => fighter && fighter.unitId)
+            // );
+            // isIncluded =
+            //   isIncluded &&
+            //   unit.quantity > ids.filter(id => id === unit.unitId).length;
+            const templateIds = [];
+            templateIds.push(
               ...(this.game &&
               this.game.userSquad &&
               this.game.userSquad.fighters
                 ? this.game.userSquad.fighters
                 : []
-              ).map(fighter => fighter && fighter.unitId)
+              ).map(fighter => fighter && fighter.unitTemplate)
             );
-            // isIncluded =
-            //   isIncluded &&
-            //   unit.quantity > ids.filter(id => id === unit.unitId).length;
-            isIncluded = isIncluded && !ids.includes(unit.unitId);
+            isIncluded = isIncluded && !templateIds.includes(unit.template);
           } else if (this.$route.params.slot === "merger") {
             isIncluded = isIncluded && unit.tier < 3 && unit.quantity >= 3;
           }
