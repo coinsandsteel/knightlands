@@ -65,9 +65,7 @@
             :isBuffIndicatorVisible="true"
             :isAttackTarget="isAttackTarget"
             :isHealTarget="isHealTarget"
-            :isActiveFighterId="
-              isMyTurn && unit && unit.fighterId === activeFighterId
-            "
+            :isActiveFighterId="isMyActiveFighter"
           />
         </div>
       </Transition>
@@ -223,7 +221,22 @@ export default {
         !this.isProcessingQueue
       );
     },
+    isMyActiveFighter() {
+      return (
+        this.isMyTurn &&
+        this.unit &&
+        this.unit.fighterId === this.activeFighterId
+      );
+    },
     isTargetCell() {
+      if (
+        this.selectedAbility &&
+        this.selectedAbility.targets &&
+        this.selectedAbility.targets.targetSelf &&
+        this.isMyActiveFighter
+      ) {
+        return true;
+      }
       return this.targetCells.includes(this.index);
     },
     isHealTarget() {
