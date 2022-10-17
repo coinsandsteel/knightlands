@@ -45,6 +45,7 @@
                   nextLevel &&
                   upgradePrice
               "
+              :disabled="canUpgrade"
               type="green"
               class="inline-block margin-right-2 margin-top-1"
               @click="upgradeHandler"
@@ -58,7 +59,8 @@
           >
             {{ upgradePrice }}
           </IconWithValue> -->
-              <BattleCoin :value="upgradePrice" class="margin-left-1" />
+              <!-- <BattleCoin :value="upgradePrice" class="margin-left-1" /> -->
+              <BattleCrystal :value="upgradePrice" class="margin-left-1" />
             </CustomButton>
           </div>
         </div>
@@ -77,11 +79,13 @@
   </div>
 </template>
 <script>
-// import { create } from "vue-modal-dialogs";
+import { create } from "vue-modal-dialogs";
+import { mapState } from "vuex";
 import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
-import BattleCoin from "@/views/Battle/BattleCoin.vue";
+// import BattleCoin from "@/views/Battle/BattleCoin.vue";
+import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 // import BattleAbilityLevelUpConfirm from "@/views/Battle/BattleAbilityLevelUpConfirm.vue";
-// import BattleAbilityLearnConfirm from "@/views/Battle/BattleAbilityLearnConfirm.vue";
+import BattleLevelUpConfirm from "@/views/Battle/BattleLevelUpConfirm.vue";
 
 export default {
   props: {
@@ -94,12 +98,14 @@ export default {
   },
   components: {
     BattleUnitAbility,
-    BattleCoin
+    // BattleCoin,
+    BattleCrystal
   },
   data() {
     return {};
   },
   computed: {
+    ...mapState("battle", ["user"]),
     currentLevel() {
       return this.ability && this.ability.level
         ? this.ability.level.current
@@ -114,6 +120,11 @@ export default {
       return this.ability && this.ability.level
         ? this.ability.level.price
         : null;
+    },
+    canUpgrade() {
+      return (
+        this.upgradePrice && this.upgradePrice > this.user.balance.crystals
+      );
     },
     isLocked() {
       return this.ability && !this.currentLevel;
@@ -205,8 +216,13 @@ export default {
     //   await show();
     // },
     async upgradeHandler() {
-      // const show = create(BattleAbilityLearnConfirm);
-      // await show();
+      const show = create(BattleLevelUpConfirm, "type", "value");
+      const result = await show("crystal", this.upgradePrice);
+
+      if (!result) {
+        return;
+      }
+
       this.$store.dispatch("battle/upgradeUnitAbility", {
         unitId: this.unit.unitId,
         ability: this.ability.abilityClass
