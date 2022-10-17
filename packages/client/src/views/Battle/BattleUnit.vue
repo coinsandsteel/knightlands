@@ -249,6 +249,7 @@ export default {
 .battle-buff-indicator-icon {
   width: 1.4rem;
   height: 1.4rem;
+  filter: drop-shadow(0px 0px 1px rgba(#000, 0.5));
 }
 .battle-buff-indicator--small {
   height: 1rem;
@@ -371,6 +372,7 @@ export default {
   width: 20%;
   height: 20%;
   color: #dc2626;
+  filter: drop-shadow(0px 0px 1px rgba(#fff, 0.5));
 }
 // .battle-unit--enemy .battle-unit-image {
 //   background: url("/images/battle/enemy.png") center/80% no-repeat !important;
