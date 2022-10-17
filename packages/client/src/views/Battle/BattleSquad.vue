@@ -277,8 +277,8 @@ export default {
         bonus.delta &&
         bonus.max
       ) {
-        const delta = (bonus.delta * 100).toFixed(1);
-        const max = bonus.max * 100;
+        const delta = Math.round(bonus.delta * 10000) / 100;
+        const max = Math.round(bonus.max * 10000) / 100;
         result = `When a squad member takes damage the squad's attack is increased by ${delta}% (max. ${max}%)`;
       } else if (
         bonus.target === "power" &&
@@ -287,7 +287,7 @@ export default {
         bonus.value &&
         bonus.probability
       ) {
-        const probability = bonus.probability * 100;
+        const probability = Math.round(bonus.probability * 10000) / 100;
         result = `Chance to deal a critical hit ${probability}% (damage x${bonus.value})`;
       }
 
