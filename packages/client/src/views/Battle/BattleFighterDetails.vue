@@ -1,7 +1,7 @@
 <template>
   <UserDialog title="unit details" @close="close">
     <template v-slot:content>
-      <div v-if="unit" class="font-size-22">
+      <div v-if="unit" class="battle-fighter-details-container font-size-22">
         <div
           class="battle-fighter-details-wrapper margin-x-auto flex flex-wrap padding-left-2"
         >
@@ -32,16 +32,34 @@
           </div>
         </div>
         <div
-          v-if="buffItems.length"
-          class="battle-fighter-details-wrapper margin-x-auto text-align-left margin-top-2 font-size-22 padding-left-2"
+          v-if="abilities && abilities.length > 0"
+          class="battle-unit-abilities-wrapper margin-top-3 padding-bottom-2"
         >
+          <div class="margin-bottom-1">Abilities</div>
+          <BattleUnitAbilityDetails
+            v-for="(ability, index) in abilities"
+            :key="ability.abilityType + ability.abilityClass"
+            :unit="unit"
+            :ability="ability"
+            :isUpgradeVisible="false"
+            :class="{ 'margin-top-2': index > 0 }"
+          >
+          </BattleUnitAbilityDetails>
+        </div>
+        <div
+          v-if="buffItems.length"
+          class="battle-fighter-buff-wrapper margin-x-auto _text-align-left margin-top-2 font-size-22 _padding-left-2"
+        >
+          <div>Buff / Debuff</div>
           <div
             v-for="(buff, buffIndex) in buffItems"
             :key="buff.source + '_' + buff.sourceId + '_' + buffIndex"
-            class="flex flex-center flex-nowrap margin-bottom-1"
+            class="flex flex-center flex-no-wrap margin-bottom-1"
           >
             <BattleUnitBuff :buff="buff" />
-            <div class="flex-grow-1 buff-description padding-left-1">
+            <div
+              class="flex-grow-1 text-align-left buff-description padding-left-1"
+            >
               {{
                 buff && buff.sourceId && "caseId" in buff
                   ? BUFFS[buff.sourceId].cases[buff.caseId]
@@ -59,6 +77,7 @@
 import { mapGetters } from "vuex";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitBuff from "@/views/Battle/BattleUnitBuff.vue";
+import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
 
 // import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
 import * as battle from "@/../../knightlands-shared/battle";
@@ -66,8 +85,8 @@ import * as battle from "@/../../knightlands-shared/battle";
 export default {
   components: {
     BattleUnit,
-    BattleUnitBuff
-    // BattleUnitAbilityDetails
+    BattleUnitBuff,
+    BattleUnitAbilityDetails
   },
   props: { fighterId: String },
   computed: {
@@ -94,6 +113,12 @@ export default {
         fighter => fighter && fighter.fighterId === this.fighterId
       );
     },
+    abilities() {
+      return (this.unit && this.unit.abilities
+        ? this.unit.abilities
+        : []
+      ).filter(({ enabled }) => enabled);
+    },
     expValue() {
       return this.unit && this.unit.expirience
         ? this.unit.expirience.currentLevelExp || 0
@@ -105,12 +130,6 @@ export default {
           ? this.unit.expirience.nextLevelExp || 0
           : 0;
       return next;
-    },
-    abilities() {
-      return (this.unit && this.unit.abilities
-        ? this.unit.abilities
-        : []
-      ).filter(({ enabled }) => enabled);
     },
     level() {
       return this.unit && this.unit.level ? this.unit.level.current : "";
@@ -125,12 +144,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.battle-fighter-details-container {
+  max-height: 62vh;
+  overflow: auto;
+}
 .battle-fighter-details-wrapper {
   width: 250px;
 }
-.buff-description {
-  max-width: 210px;
+.battle-fighter-buff-wrapper {
+  width: 280px;
 }
+// .buff-description {
+//   max-width: 250px;
+// }
 .battle-unit {
   width: 100px;
   margin: 0 auto;
@@ -138,5 +164,10 @@ export default {
 .battle-squad-unit-info {
   display: grid;
   grid-template-columns: repeat(2, 50%);
+}
+.battle-unit-abilities-wrapper {
+  width: 280px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
