@@ -6,8 +6,14 @@
         <div class="font-size-22 text-align-center margin-bottom-2">
           <div v-if="power">Power: {{ power }}</div>
           <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
-            Current squad bonuses:
-            <div>{{ bonuses }}</div>
+            Squad bonuses:
+            <div
+              class="rarity-rare"
+              v-for="(bonus, index) in bonuses"
+              :key="index"
+            >
+              {{ bonus }}
+            </div>
           </div>
           <!-- <div>
         <div
@@ -133,8 +139,7 @@ export default {
         .map(bonus => {
           return this.renderBonus(bonus);
         })
-        .filter(str => !!str)
-        .join(" / ");
+        .filter(str => !!str);
     }
   },
   activated() {
