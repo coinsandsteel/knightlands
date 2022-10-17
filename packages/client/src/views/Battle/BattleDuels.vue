@@ -41,7 +41,7 @@
 <script>
 import { mapGetters } from "vuex";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import * as battle from "@/../../knightlands-shared/battle";
+// import * as battle from "@/../../knightlands-shared/battle";
 import AppSection from "@/AppSection.vue";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 export default {

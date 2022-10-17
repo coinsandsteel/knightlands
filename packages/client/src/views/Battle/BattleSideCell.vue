@@ -17,6 +17,7 @@
         :isBuffIndicatorSmall="true"
         :isHpVisible="false"
         :ratingIndex="fighter ? fighter.ratingIndex : null"
+        :isBossIconVisible="isEnemy"
       />
     </div>
   </div>

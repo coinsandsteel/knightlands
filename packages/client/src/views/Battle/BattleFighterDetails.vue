@@ -13,7 +13,7 @@
             />
             <div class="font-size-22 text-align-center white-space-no-wrap">
               <template v-if="unit.name">
-                {{ unit.name }}
+                {{ unit.name }} {{ unit.isBoss ? "- Boss" : "" }}
               </template>
               <div>
                 # {{ $t("battle-unit-tribe-" + unit.tribe) }}

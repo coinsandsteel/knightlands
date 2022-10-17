@@ -87,17 +87,23 @@
       >
         x{{ quantity }}
       </div>
+      <CrownIcon
+        v-if="shouldShowExtraInfo && isBossIconVisible && unit && unit.isBoss"
+        class="battle-unit-boss"
+      />
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import AsteriskIcon from "./AsteriskIcon.vue";
+import CrownIcon from "./CrownIcon.vue";
 import * as battle from "@/../../knightlands-shared/battle";
 
 export default {
   components: {
-    AsteriskIcon
+    AsteriskIcon,
+    CrownIcon
   },
   props: {
     unit: Object,
@@ -113,7 +119,8 @@ export default {
     isBuffIndicatorVisible: Boolean,
     isBuffIndicatorSmall: Boolean,
     isQuantityVisible: Boolean,
-    shouldExcludeSquadQuantity: Boolean
+    shouldExcludeSquadQuantity: Boolean,
+    isBossIconVisible: Boolean
   },
   data() {
     return {};
@@ -352,6 +359,15 @@ export default {
   left: 0;
   top: 1%;
   border-radius: 14%;
+}
+.battle-unit-boss {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -13%);
+  width: 20%;
+  height: 20%;
+  color: #dc2626;
 }
 // .battle-unit--enemy .battle-unit-image {
 //   background: url("/images/battle/enemy.png") center/80% no-repeat !important;

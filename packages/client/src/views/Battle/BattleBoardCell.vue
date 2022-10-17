@@ -97,6 +97,7 @@
             :isAttackTarget="isAttackTarget"
             :isHealTarget="isHealTarget"
             :isActiveFighterId="enemy && enemy.fighterId === activeFighterId"
+            :isBossIconVisible="true"
           />
         </div>
       </Transition>
