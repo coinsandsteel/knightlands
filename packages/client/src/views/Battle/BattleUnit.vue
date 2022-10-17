@@ -278,6 +278,7 @@ export default {
   height: 12%;
   border-radius: 50%;
   background: #a3e635;
+  border: 0.5px solid rgba(#fff, 0.8);
 }
 .battle-attack-target {
   top: 10%;
@@ -286,6 +287,7 @@ export default {
   height: 12%;
   border-radius: 50%;
   background: #ef4444;
+  border: 0.5px solid rgba(#fff, 0.8);
 }
 .battle-heal-target {
   top: 10%;
@@ -294,6 +296,7 @@ export default {
   height: 12%;
   border-radius: 50%;
   background: #2563eb;
+  border: 0.5px solid rgba(#fff, 0.8);
 }
 // .battle-dead-indicator {
 //   top: 1px;

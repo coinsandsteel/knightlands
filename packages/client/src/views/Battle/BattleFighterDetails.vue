@@ -24,7 +24,7 @@
           <div class="flex-grow-1 text-align-left width-35 margin-left-2">
             <!-- <div>Tier: {{ unit.tier }}</div>
               <div>Level: {{ unit.levelInt }}</div> -->
-            <div>Hp: {{ unit.hp }}</div>
+            <div>Hp: {{ unit.characteristics.hp }}</div>
             <div>Damage: {{ unit.characteristics.damage }}</div>
             <div>Defense: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
