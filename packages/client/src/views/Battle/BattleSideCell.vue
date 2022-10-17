@@ -45,12 +45,13 @@ export default {
       "selectedUnit",
       "moveCells",
       "attackCells",
-      "enemyFighters",
-      "enemySelectedUnit"
+      "enemyFighters"
+      // "enemySelectedUnit"
       // "enemyMoveCells"
     ]),
     isUnit() {
       return this.fighters
+        .filter(Boolean)
         .map(({ fighterId }) => fighterId)
         .includes(this.fighter.fighterId);
     },
@@ -59,7 +60,9 @@ export default {
         return null;
       }
 
-      return this.fighters.find(({ index }) => index === this.index);
+      return this.fighters.find(
+        fighter => fighter && fighter.index === this.index
+      );
     },
     // unitIndex() {
     //   // return this.selectedUnit ? this.selectedUnit.index : -1;
@@ -67,7 +70,7 @@ export default {
     // },
     isEnemy() {
       return this.enemyFighters
-        .map(({ fighterId }) => fighterId)
+        .map(fighter => (fighter ? fighter.fighterId : null))
         .includes(this.fighter.fighterId);
     },
     enemy() {
@@ -75,7 +78,9 @@ export default {
         return null;
       }
 
-      return this.enemyFighters.find(({ index }) => index === this.index);
+      return this.enemyFighters.find(
+        fighter => fighter && fighter.index === this.index
+      );
     },
     // enemyIndex() {
     //   // return this.enemySelectedUnit ? this.enemySelectedUnit.index : -1;

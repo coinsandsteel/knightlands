@@ -282,28 +282,30 @@ export default {
       "moveCells"
     ]),
     sideFighters() {
-      return [...this.fighters, ...this.enemyFighters].sort((a, b) => {
-        let aIndex = this.fighterOrders.indexOf(a.fighterId);
+      return [...this.fighters, ...this.enemyFighters]
+        .filter(Boolean)
+        .sort((a, b) => {
+          let aIndex = this.fighterOrders.indexOf(a.fighterId);
 
-        if (aIndex < -1) {
-          aIndex = 10;
-        }
+          if (aIndex < -1) {
+            aIndex = 10;
+          }
 
-        let bIndex = this.fighterOrders.indexOf(b.fighterId);
+          let bIndex = this.fighterOrders.indexOf(b.fighterId);
 
-        if (bIndex < -1) {
-          bIndex = 10;
-        }
-        if (aIndex < bIndex) {
-          return -1;
-        }
+          if (bIndex < -1) {
+            bIndex = 10;
+          }
+          if (aIndex < bIndex) {
+            return -1;
+          }
 
-        if (aIndex > bIndex) {
-          return 1;
-        }
+          if (aIndex > bIndex) {
+            return 1;
+          }
 
-        return 0;
-      });
+          return 0;
+        });
     },
     baseSize() {
       return this.appSize
@@ -318,12 +320,12 @@ export default {
     },
     activeFighter() {
       return [...this.fighters, ...this.enemyFighters].find(
-        ({ fighterId }) => fighterId === this.activeFighterId
+        fighter => fighter && fighter.fighterId === this.activeFighterId
       );
     },
     myActiveFighter() {
       return this.fighters.find(
-        ({ fighterId }) => fighterId === this.activeFighterId
+        fighter => fighter && fighter.fighterId === this.activeFighterId
       );
     },
     myActiveFighterId() {
@@ -693,7 +695,7 @@ export default {
         typeof step.target.newHp === "number"
       ) {
         const isEnemy = this.enemyFighters.find(
-          ({ fighterId }) => fighterId === step.target.fighterId
+          fighter => fighter && fighter.fighterId === step.target.fighterId
         );
         this.$store.dispatch("battle/update", {
           [isEnemy ? "enemyFighter" : "userFighter"]: [
@@ -754,6 +756,7 @@ export default {
       await animation.finished;
     },
     async abilityEffectFromSourceToTargetHandler(step) {
+      // console.log("step", step);
       const ability = step.ability || step.buff;
       const abilityClass = ability ? ability.abilityClass : null;
       const abilityType = ability ? ability.abilityType : null;
@@ -766,41 +769,49 @@ export default {
         const isSourceMyFighter =
           step.source && step.source.fighterId
             ? !!this.fighters.find(
-                ({ fighterId }) => fighterId === step.source.fighterId
+                fighter =>
+                  fighter && fighter.fighterId === step.source.fighterId
               )
             : false;
         const isTargetMyFighter =
           step.target && step.target.fighterId
             ? !!this.fighters.find(
-                ({ fighterId }) => fighterId === step.target.fighterId
+                fighter =>
+                  fighter && fighter.fighterId === step.target.fighterId
               )
             : false;
-        const source =
-          this.fighters.find(
-            ({ fighterId }) => fighterId === step.source.fighterId
-          ) ||
-          this.enemyFighters.find(
-            ({ fighterId }) => fighterId === step.source.fighterId
-          );
-        const target =
-          this.fighters.find(
-            ({ fighterId }) => fighterId === step.target.fighterId
-          ) ||
-          this.enemyFighters.find(
-            ({ fighterId }) => fighterId === step.target.fighterId
-          );
+        // const source =
+        //   this.fighters.find(
+        //     fighter => fighter && fighter.fighterId === step.source.fighterId
+        //   ) ||
+        //   this.enemyFighters.find(
+        //     fighter => fighter && fighter.fighterId === step.source.fighterId
+        //   );
+        // const target =
+        //   this.fighters.find(
+        //     fighter => fighter && fighter.fighterId === step.target.fighterId
+        //   ) ||
+        //   this.enemyFighters.find(
+        //     fighter => fighter && fighter.fighterId === step.target.fighterId
+        //   );
 
+        // console.log("step.source.index", step.source.index);
+        // console.log("step.target.index", step.target.index);
         if (
-          source &&
-          target &&
-          typeof source.index === "number" &&
-          source.index > -1 &&
-          typeof target.index === "number" &&
-          target.index > -1
+          // source &&
+          // target &&
+          // typeof source.index === "number" &&
+          // source.index > -1 &&
+          // typeof target.index === "number" &&
+          // target.index > -1
           // !(typeof target.hp === "number" && target.hp <= 0)
+          typeof step.source.index === "number" &&
+          step.source.index > -1 &&
+          typeof step.target.index === "number" &&
+          step.target.index > -1
         ) {
-          const sourceIndex = source.index;
-          const targetIndex = target.index;
+          const sourceIndex = step.source.index;
+          const targetIndex = step.target.index;
           const xDiff = (targetIndex % 5) - (sourceIndex % 5);
           const yDiff =
             Math.floor(targetIndex / 5) - Math.floor(sourceIndex / 5);
@@ -870,6 +881,7 @@ export default {
           //   `${yDiff * 100}%`
           // );
           if (diff > 0) {
+            // console.log("diff", diff, step);
             const animation = anime({
               ...commonAnimationParams,
               duration: Math.min(400, diff * 160),
@@ -939,13 +951,13 @@ export default {
       const isSourceMyFighter =
         step.source && step.source.fighterId
           ? !!this.fighters.find(
-              ({ fighterId }) => fighterId === step.source.fighterId
+              fighter => fighter && fighter.fighterId === step.source.fighterId
             )
           : false;
       const isTargetMyFighter =
         step.target && step.target.fighterId
           ? !!this.fighters.find(
-              ({ fighterId }) => fighterId === step.target.fighterId
+              fighter => fighter && fighter.fighterId === step.target.fighterId
             )
           : false;
       let colorClass = "";

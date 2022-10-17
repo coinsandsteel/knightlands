@@ -141,7 +141,8 @@ export default {
       unitMoveLength: 0,
       previousEnemyIndex: -1,
       isEnemyMoveActive: false,
-      enemyMoveLength: 0
+      enemyMoveLength: 0,
+      lastFighterId: null
     };
   },
   computed: {
@@ -155,18 +156,24 @@ export default {
       "moveCells",
       "attackCells",
       "targetCells",
-      "enemyFighters",
-      "enemySelectedUnit"
+      "enemyFighters"
+      // "enemySelectedUnit"
       // "enemyMoveCells"
     ]),
     isUnit() {
       const isIncluded = this.fighters
-        .map(({ index }) => index)
+        .map(fighter => (fighter ? fighter.index : null))
         .includes(this.index);
 
-      const unit = this.fighters.find(({ index }) => index === this.index);
+      const unit = this.fighters.find(
+        fighter =>
+          fighter &&
+          fighter.index === this.index &&
+          fighter.hp &&
+          !fighter.isDead
+      );
 
-      return isIncluded && unit && unit.hp > 0 && !unit.isDead;
+      return !!(isIncluded && unit);
     },
     terrain() {
       return this.battleTerrain.find(({ index }) => index === this.index);
@@ -176,7 +183,13 @@ export default {
         return null;
       }
 
-      return this.fighters.find(({ index }) => index === this.index);
+      return this.fighters.find(
+        fighter =>
+          fighter &&
+          fighter.index === this.index &&
+          fighter.hp &&
+          !fighter.isDead
+      );
     },
     unitIndex() {
       // return this.selectedUnit ? this.selectedUnit.index : -1;
@@ -184,23 +197,41 @@ export default {
     },
     isEnemy() {
       const isIncluded = this.enemyFighters
-        .map(({ index }) => index)
+        .map(fighter => (fighter ? fighter.index : null))
         .includes(this.index);
 
-      const unit = this.enemyFighters.find(({ index }) => index === this.index);
+      const unit = this.enemyFighters.find(
+        fighter =>
+          fighter &&
+          fighter.index === this.index &&
+          fighter.hp &&
+          !fighter.isDead
+      );
 
-      return isIncluded && unit && unit.hp > 0 && !unit.isDead;
+      return !!(isIncluded && unit);
     },
     enemy() {
       if (!this.isEnemy) {
         return null;
       }
 
-      return this.enemyFighters.find(({ index }) => index === this.index);
+      return this.enemyFighters.find(
+        fighter =>
+          fighter &&
+          fighter.index === this.index &&
+          fighter.hp &&
+          !fighter.isDead
+      );
     },
     enemyIndex() {
-      // return this.enemySelectedUnit ? this.enemySelectedUnit.index : -1;
       return this.enemy ? this.enemy.index : -1;
+    },
+    fighterId() {
+      return this.unit
+        ? this.unit.fighterId
+        : this.enemy
+        ? this.enemy.fighterId
+        : null;
     },
     isEnemyAvailableMove() {
       // return this.enemyMoveCells.includes(this.index);
@@ -320,6 +351,17 @@ export default {
       }
 
       this.previousEnemyIndex = this.enemy.oldIndex;
+    },
+    fighterId: {
+      immediate: true,
+      handler(value) {
+        if (!value) {
+          return;
+        }
+
+        this.lastFighterId = value;
+        // console.log("fighterId", value, this.index);
+      }
     }
   },
   methods: {
@@ -366,15 +408,27 @@ export default {
       done();
     },
     async unitLeaveHandler(el, done) {
-      // console.log("unit leave", this.index);
-      const isIncluded = this.fighters
-        .map(({ index }) => index)
-        .includes(this.index);
+      // console.log("unit leave", this.index, this.lastFighterId);
+      // const isIncluded = this.fighters
+      //   .map(fighter => (fighter ? fighter.index : null))
+      //   .includes(this.index);
 
-      const unit = this.fighters.find(({ index }) => index === this.index);
+      // const unit = this.fighters.find(
+      //   fighter => fighter && fighter.index === this.index
+      // );
 
-      if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
-        await sleep(700);
+      // if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
+      //   await sleep(700);
+      // }
+
+      if (this.lastFighterId) {
+        const unit = this.fighters.find(
+          fighter => fighter && fighter.fighterId === this.lastFighterId
+        );
+
+        if (!(unit && unit.hp > 0 && !unit.isDead)) {
+          await sleep(800);
+        }
       }
 
       done();
@@ -409,15 +463,27 @@ export default {
       done();
     },
     async enemyLeaveHandler(el, done) {
-      // console.log("enemy leave", this.index);
-      const isIncluded = this.enemyFighters
-        .map(({ index }) => index)
-        .includes(this.index);
+      // console.log("enemy leave", this.index, this.lastFighterId);
+      // const isIncluded = this.enemyFighters
+      //   .map(fighter => (fighter ? fighter.index : null))
+      //   .includes(this.index);
 
-      const unit = this.enemyFighters.find(({ index }) => index === this.index);
+      // const unit = this.enemyFighters.find(
+      //   fighter => fighter && fighter.index === this.index
+      // );
 
-      if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
-        await sleep(700);
+      // if (isIncluded && !(unit && unit.hp > 0 && !unit.isDead)) {
+      //   await sleep(700);
+      // }
+
+      if (this.lastFighterId) {
+        const unit = this.enemyFighters.find(
+          fighter => fighter && fighter.fighterId === this.lastFighterId
+        );
+
+        if (!(unit && unit.hp > 0 && !unit.isDead)) {
+          await sleep(800);
+        }
       }
 
       done();

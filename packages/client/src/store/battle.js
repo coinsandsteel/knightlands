@@ -311,7 +311,7 @@ export default {
         getters.activeFighterId &&
         getters.fighters &&
         getters.fighters.find(
-          ({ fighterId }) => fighterId === getters.activeFighterId
+          fighter => fighter && fighter.fighterId === getters.activeFighterId
         )
       );
     },
@@ -343,24 +343,24 @@ export default {
       ).filter(Boolean);
     },
     // TODO unit > fighter
-    enemySelectedUnitId(state, getters) {
-      if (getters.isMyTurn) {
-        return null;
-      }
-      return state.game && state.game.combat && state.game.combat.runtime
-        ? state.game.combat.runtime.unitId
-        : null;
-    },
+    // enemySelectedUnitId(state, getters) {
+    //   if (getters.isMyTurn) {
+    //     return null;
+    //   }
+    //   return state.game && state.game.combat && state.game.combat.runtime
+    //     ? state.game.combat.runtime.unitId
+    //     : null;
+    // },
     // TODO unit > fighter
-    enemySelectedUnit(state, getters) {
-      if (!getters.enemySelectedUnitId) {
-        return null;
-      }
+    // enemySelectedUnit(state, getters) {
+    //   if (!getters.enemySelectedUnitId) {
+    //     return null;
+    //   }
 
-      return getters.enemyFighters.find(
-        ({ unitId }) => unitId === getters.enemySelectedUnitId
-      );
-    },
+    //   return getters.enemyFighters.find(
+    //     ({ unitId }) => unitId === getters.enemySelectedUnitId
+    //   );
+    // },
     enemyMoveCells(state) {
       // if (getters.isMyTurn) {
       //   return [];
@@ -912,7 +912,7 @@ export default {
     move(store, data) {
       if (
         store.getters.fighters.find(
-          ({ fighterId }) => fighterId === data.fighterId
+          fighter => fighter && fighter.fighterId === data.fighterId
         )
       ) {
         store.commit("updateState", { userFighter: [data] });

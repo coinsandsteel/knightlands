@@ -86,12 +86,12 @@ export default {
     },
     isEnemy() {
       return !!this.enemyFighters.find(
-        ({ fighterId }) => fighterId === this.fighterId
+        fighter => fighter && fighter.fighterId === this.fighterId
       );
     },
     unit() {
       return [...this.fighters, ...this.enemyFighters].find(
-        ({ fighterId }) => fighterId === this.fighterId
+        fighter => fighter && fighter.fighterId === this.fighterId
       );
     },
     expValue() {
