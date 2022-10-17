@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-      <div class="flex-full flex flex-center">
+      <div class="flex-full flex flex-column flex-no-wrap flex-center">
         <CustomButton
           v-if="isLevelAvailable"
           :disabled="!canStart"
@@ -50,6 +50,12 @@
           <div class="icon-energy margin-left-1" />
           {{ energyCost }}
         </CustomButton>
+        <div
+          v-if="isLevelAvailable && !isFightersFullFilled"
+          class="font-size-18 font-shadow rarity-mythical"
+        >
+          You need to build a squad
+        </div>
       </div>
     </div>
 

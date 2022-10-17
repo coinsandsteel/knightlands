@@ -19,7 +19,7 @@
           @click="unitClickHandler"
         />
       </div>
-      <div class="margin-top-1">
+      <div class="margin-top-1 flex flex-column flex-no-wrap flex-center">
         <CustomButton
           type="yellow"
           width="20rem"
@@ -28,6 +28,12 @@
           @click="handleStart(difficulty)"
           >Fight</CustomButton
         >
+        <div
+          v-if="!isFightersFullFilled"
+          class="font-size-18 font-shadow rarity-mythical"
+        >
+          You need to build a squad
+        </div>
       </div>
     </div>
   </div>
