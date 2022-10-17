@@ -17,8 +17,12 @@
             <div>
               {{
                 name +
-                  (ability.tier ? ", tier: " + ability.tier : "") +
-                  (level ? ", level: " + level : "") +
+                  (ability.abilityClass !== "attack" && ability.tier
+                    ? ", tier: " + ability.tier
+                    : "") +
+                  (ability.abilityClass !== "attack" && level
+                    ? ", level: " + level
+                    : "") +
                   (!isUpgradeVisible && value ? ", damage/heal: " + value : "")
               }}
             </div>
@@ -35,7 +39,12 @@
         </CustomButton> -->
 
             <CustomButton
-              v-if="ability && nextLevel && upgradePrice"
+              v-if="
+                ability &&
+                  ability.abilityClass !== 'attack' &&
+                  nextLevel &&
+                  upgradePrice
+              "
               type="green"
               class="inline-block margin-right-2 margin-top-1"
               @click="upgradeHandler"

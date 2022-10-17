@@ -203,8 +203,9 @@ export default {
   // color: #333;
   // color: #10b981;
   // color: #ef4444;
-  color: #f87171;
-  font-weight: 600;
+  // color: #b91c1c;
+  color: #7f1d1d;
+  font-weight: 700;
   border-radius: 12px;
   padding: 0 5px;
   width: 17px;
