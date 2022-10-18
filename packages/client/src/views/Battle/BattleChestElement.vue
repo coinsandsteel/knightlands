@@ -101,6 +101,7 @@ import { getCurrentDateString } from "@/helpers/utils";
 import * as battle from "@/../../knightlands-shared/battle";
 import { create } from "vue-modal-dialogs";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
+import BattleTribeSelect from "@/views/Battle/BattleTribeSelect.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
@@ -176,6 +177,16 @@ export default {
       // return;
 
       let shouldPurchase = true;
+      let tribe = null;
+
+      if (chest && chest.content && chest.content.units && !chest.claimable) {
+        const show = create(BattleTribeSelect);
+        tribe = await show();
+
+        if (!tribe) {
+          return;
+        }
+      }
 
       if (!chest.claimable) {
         shouldPurchase = !!(await this.showPrompt(
@@ -202,7 +213,8 @@ export default {
 
       const result = await this.performRequestNoCatch(
         this.$store.dispatch("battle/purchase", {
-          id: chest.id
+          id: chest.id,
+          tribe
         })
       );
 

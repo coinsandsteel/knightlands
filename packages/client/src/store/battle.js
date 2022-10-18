@@ -743,13 +743,14 @@ export default {
 
     // BattlePurchase
     // - id: number
-    async purchase(store, { id }) {
+    async purchase(store, { id, tribe }) {
       /*Vue.prototype.$app.logEvent("april-buy-hero", {
         hero: heroClass
       });*/
       return (
         await this.$app.$game._wrapOperation(Operations.BattlePurchase, {
-          id
+          id,
+          tribe
         })
       ).response;
     },
