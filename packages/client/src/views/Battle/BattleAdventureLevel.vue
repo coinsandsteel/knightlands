@@ -66,7 +66,11 @@
       :class="{ 'blocker--last': levelIndex === 4 }"
     >
       <p v-if="!levelIndex" class="yellow-title">
-        {{ $t("prev-q-f") }}
+        {{
+          difficulty === GAME_DIFFICULTY_MEDIUM
+            ? $t("prev-q-f")
+            : "Finish all normal levels"
+        }}
       </p>
     </div>
   </div>
@@ -104,7 +108,9 @@ export default {
     levelMeta: Object
   },
   data() {
-    return {};
+    return {
+      GAME_DIFFICULTY_MEDIUM: battle.GAME_DIFFICULTY_MEDIUM
+    };
   },
   computed: {
     ...mapGetters("battle", ["isFightersFullFilled"]),
@@ -118,35 +124,41 @@ export default {
     coins() {
       return this.levelMeta.reward.coins;
     },
-    isNextLocationAvailable() {
-      if (!(this.adventures && this.adventures.locations)) {
-        return false;
-      }
+    // isNextLocationAvailable() {
+    //   if (!(this.adventures && this.adventures.locations)) {
+    //     return false;
+    //   }
 
-      let nextLocationIndex = this.locationIndex + 1;
-      let nextLocationDifficulty = this.difficulty;
+    //   let nextLocationIndex = this.locationIndex + 1;
+    //   let nextLocationDifficulty = this.difficulty;
 
-      if (nextLocationIndex > battle.ADVENTURES.length - 1) {
-        if (this.difficulty === battle.GAME_DIFFICULTY_HIGH) {
-          return false;
-        }
-        nextLocationIndex = 0;
-        nextLocationDifficulty = battle.GAME_DIFFICULTY_HIGH;
-      }
+    //   if (nextLocationIndex > battle.ADVENTURES.length - 1) {
+    //     if (this.difficulty === battle.GAME_DIFFICULTY_HIGH) {
+    //       return false;
+    //     }
+    //     nextLocationIndex = 0;
+    //     nextLocationDifficulty = battle.GAME_DIFFICULTY_HIGH;
+    //   }
 
-      return !!this.adventures.locations[nextLocationIndex].levels[0][
-        nextLocationDifficulty
-      ];
-    },
+    //   return !!this.adventures.locations[nextLocationIndex].levels[0][
+    //     nextLocationDifficulty
+    //   ];
+    // },
     bossCoins() {
-      if (!this.levelMeta.bossReward || this.isNextLocationAvailable) {
+      if (
+        !this.levelMeta.bossReward ||
+        (this.levelData && this.levelData.bossRewardClaimed)
+      ) {
         return 0;
       }
 
       return this.levelMeta.bossReward.coins;
     },
     bossCrystals() {
-      if (!this.levelMeta.bossReward || this.isNextLocationAvailable) {
+      if (
+        !this.levelMeta.bossReward ||
+        (this.levelData && this.levelData.bossRewardClaimed)
+      ) {
         return 0;
       }
 
