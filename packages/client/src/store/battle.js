@@ -51,8 +51,10 @@ export default {
         pvpScore: 0
       },
       items: [], // Example: [{ id: 8, quantity: 1 }] - starter pack
-      timers: {
-        energy: 0
+      counters: {
+        energy: 0,
+        purchase: {},
+        duels: {}
       },
       rewards: {
         dailyRewards: [
@@ -436,8 +438,8 @@ export default {
       if (data.balance !== undefined) {
         state.user.balance = { ...state.balance, ...data.balance };
       }
-      if (data.timers !== undefined) {
-        state.user.timers = { ...state.user.timers, ...data.timers };
+      if (data.counters !== undefined) {
+        state.user.counters = { ...state.user.counters, ...data.counters };
       }
       if (data.items !== undefined) {
         state.user.items = data.items;
@@ -661,7 +663,7 @@ export default {
 
       const userData = data.user;
       state.user.balance = userData.balance;
-      state.user.timers = userData.timers;
+      state.user.counters = userData.counters;
       state.user.rewards = userData.rewards;
       state.user.items = userData.items;
 

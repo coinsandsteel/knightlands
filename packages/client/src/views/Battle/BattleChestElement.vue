@@ -118,16 +118,16 @@ export default {
     items() {
       return this.user ? this.user.items || [] : [];
     },
-    timers() {
-      return this.user ? this.user.timers : null;
+    counters() {
+      return this.user ? this.user.counters : null;
     },
     purchasedCount() {
       const date = new Date().toLocaleDateString("en-US");
-      return this.timers &&
-        this.timers.purchase &&
-        this.timers.purchase[date] &&
-        this.timers.purchase[date][this.chest.id]
-        ? this.timers.purchase[date][this.chest.id] || 0
+      return this.counters &&
+        this.counters.purchase &&
+        this.counters.purchase[date] &&
+        this.counters.purchase[date][this.chest.id]
+        ? this.counters.purchase[date][this.chest.id] || 0
         : 0;
     },
     purchaseLeftCount() {
