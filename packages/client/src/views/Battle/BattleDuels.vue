@@ -1,7 +1,7 @@
 <template>
   <div class="padding-left-2 padding-right-2">
     <div class="text-align-center font-size-22 margin-top-2">
-      PVP Score: {{ score }}
+      PVP Score: {{ pvpScore }}
     </div>
     <div
       v-for="(units, difficulty) in items"
@@ -57,8 +57,8 @@ export default {
   computed: {
     ...mapGetters("battle", ["isFightersFullFilled"]),
     ...mapState("battle", ["user"]),
-    score() {
-      return this.user.balance.pvpScore || 0;
+    pvpScore() {
+      return this.user.pvpScore || 0;
     }
   },
   async activated() {
