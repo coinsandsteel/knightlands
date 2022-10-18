@@ -55,6 +55,13 @@
         <div
           class="flex flex-column flex-justify-end side-column side-column--right text-align-center"
         >
+          <div
+            class="obstacle-hint flex flex-center"
+            @click="showObstacleInformation"
+          >
+            ?
+          </div>
+          <div class="flex-full"></div>
           <!-- skip -->
           <CustomButton
             v-if="myActiveFighter"
@@ -523,10 +530,10 @@ export default {
     //   this.$router.replace({ name: "battle-menu" });
     //   return;
     // }
-    if (!localStorage.getItem('obstacleInfoShowed')) {
-      this.showObstacleInformation();
-      localStorage.setItem('obstacleInfoShowed', true)
-    }
+    // if (!localStorage.getItem("obstacleInfoShowed")) {
+    //   this.showObstacleInformation();
+    //   localStorage.setItem("obstacleInfoShowed", true);
+    // }
   },
   // activated() {
   //   if (!this.isStarted) {
@@ -1160,6 +1167,17 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.obstacle-hint {
+  width: calc(var(--base-size) * 0.5);
+  height: calc(var(--base-size) * 0.5);
+  background: #fff;
+  border-radius: 50%;
+  margin: 0.5rem auto;
+  color: #333;
+  font-size: 4rem;
+  font-weight: 700;
+  cursor: pointer;
+}
 .battle-indicators {
   padding: 0 1em;
 }
