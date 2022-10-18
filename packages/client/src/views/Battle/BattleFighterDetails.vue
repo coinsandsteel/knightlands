@@ -24,11 +24,38 @@
           <div class="flex-grow-1 text-align-left width-35 margin-left-2">
             <!-- <div>Tier: {{ unit.tier }}</div>
               <div>Level: {{ unit.levelInt }}</div> -->
-            <div>Hp: {{ unit.characteristics.hp }}</div>
-            <div>Damage: {{ unit.characteristics.damage }}</div>
-            <div>Defence: {{ unit.characteristics.defence }}</div>
-            <div>Speed: {{ unit.characteristics.speed }}</div>
-            <div>Initiative: {{ unit.characteristics.initiative }}</div>
+            <div>
+              Hp:
+              <BattleCharacteristicValue :value="hp" :baseValue="baseHp" />
+            </div>
+            <div>
+              Damage:
+              <BattleCharacteristicValue
+                :value="damage"
+                :baseValue="baseDamage"
+              />
+            </div>
+            <div>
+              Defence:
+              <BattleCharacteristicValue
+                :value="defence"
+                :baseValue="baseDefence"
+              />
+            </div>
+            <div>
+              Speed:
+              <BattleCharacteristicValue
+                :value="speed"
+                :baseValue="baseSpeed"
+              />
+            </div>
+            <div>
+              Initiative:
+              <BattleCharacteristicValue
+                :value="initiative"
+                :baseValue="baseInitiative"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -78,6 +105,7 @@ import { mapGetters } from "vuex";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import BattleUnitBuff from "@/views/Battle/BattleUnitBuff.vue";
 import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
+import BattleCharacteristicValue from "@/views/Battle/BattleCharacteristicValue.vue";
 
 // import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
 import * as battle from "@/../../knightlands-shared/battle";
@@ -86,7 +114,8 @@ export default {
   components: {
     BattleUnit,
     BattleUnitBuff,
-    BattleUnitAbilityDetails
+    BattleUnitAbilityDetails,
+    BattleCharacteristicValue
   },
   props: { fighterId: String },
   computed: {
@@ -133,6 +162,66 @@ export default {
     },
     level() {
       return this.unit && this.unit.level ? this.unit.level.current : "";
+    },
+    hp() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.hp;
+    },
+    damage() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.damage;
+    },
+    defence() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.defence;
+    },
+    speed() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.speed;
+    },
+    initiative() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.initiative;
+    },
+    baseHp() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.hp;
+    },
+    baseDamage() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.damage;
+    },
+    baseDefence() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.defence;
+    },
+    baseSpeed() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.speed;
+    },
+    baseInitiative() {
+      if (!this.unit) {
+        return 0;
+      }
+      return this.unit.characteristics.initiative;
     }
   },
   methods: {
