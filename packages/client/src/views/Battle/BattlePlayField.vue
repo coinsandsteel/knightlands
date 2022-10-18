@@ -523,7 +523,10 @@ export default {
     //   this.$router.replace({ name: "battle-menu" });
     //   return;
     // }
-    this.showObstacleInformation();
+    if (!localStorage.getItem('obstacleInfoShowed')) {
+      this.showObstacleInformation();
+      localStorage.setItem('obstacleInfoShowed', true)
+    }
   },
   // activated() {
   //   if (!this.isStarted) {

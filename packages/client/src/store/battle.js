@@ -43,6 +43,7 @@ export default {
 
     // User data
     user: {
+      pvpScore: 0,
       balance: {
         energy: 0,
         coins: 0, // Source: PvE, Purpose: upgrade units level
@@ -429,6 +430,9 @@ export default {
       }
 
       // User data
+      if (data.pvpScore !== undefined) {
+        state.user.pvpScore = data.pvpScore;
+      }
       if (data.balance !== undefined) {
         state.user.balance = { ...state.balance, ...data.balance };
       }
