@@ -1,12 +1,13 @@
 <template>
   <div class="padding-left-2 padding-right-2">
     <div class="text-align-center font-size-22 margin-top-2">
-      PVP Score: {{ pvpScore }}
+      <div>PVP Score: {{ pvpScore }}</div>
+      <div>Duels Left: {{ duelsLeft }}</div>
     </div>
     <div
       v-for="(units, difficulty) in items"
       :key="'option_' + difficulty"
-      :class="difficulty !== 'low' ? 'margin-top-4' : 'margin-top-2'"
+      class="margin-top-2"
     >
       <div class=" font-size-22">
         {{ $t("battle-duels-" + difficulty) }}
@@ -24,7 +25,7 @@
           type="yellow"
           width="20rem"
           class="inline-block"
-          :disabled="!isFightersFullFilled"
+          :disabled="!isFightersFullFilled || !(duelsLeft > 0)"
           @click="handleStart(difficulty)"
           >Fight</CustomButton
         >
@@ -40,6 +41,8 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import * as battle from "@/../../knightlands-shared/battle";
+import { getCurrentDateString } from "@/helpers/utils";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 // import * as battle from "@/../../knightlands-shared/battle";
 import AppSection from "@/AppSection.vue";
@@ -59,6 +62,18 @@ export default {
     ...mapState("battle", ["user"]),
     pvpScore() {
       return this.user.pvpScore || 0;
+    },
+    duelsLeft() {
+      const dateString = getCurrentDateString();
+
+      const doneDuelsCount =
+        this.user.counters &&
+        this.user.counters.duels &&
+        this.user.counters.duels[dateString]
+          ? this.user.counters.duels[dateString] || 0
+          : 0;
+
+      return battle.BATTLE_MAX_DUELS_DAILY - doneDuelsCount;
     }
   },
   async activated() {

@@ -28,7 +28,7 @@
             <div>Power: {{ unit.power }}</div>
             <!-- <div class="margin-top-1">Hp: {{ unit.characteristics.hp }}</div>
             <div>Attack: {{ unit.characteristics.damage }}</div>
-            <div>Defense: {{ unit.characteristics.defence }}</div>
+            <div>Defence: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
             <div>Initiative: {{ unit.characteristics.initiative }}</div> -->
           </div>
@@ -38,7 +38,7 @@
             <div>Power: {{ unit.power }}</div> -->
             <div class="margin-top-half">Hp: {{ unit.characteristics.hp }}</div>
             <div>Attack: {{ unit.characteristics.damage }}</div>
-            <div>Defense: {{ unit.characteristics.defence }}</div>
+            <div>Defence: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
             <div>Initiative: {{ unit.characteristics.initiative }}</div>
           </div>

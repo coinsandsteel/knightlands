@@ -26,7 +26,7 @@
               <div>Level: {{ unit.levelInt }}</div> -->
             <div>Hp: {{ unit.characteristics.hp }}</div>
             <div>Damage: {{ unit.characteristics.damage }}</div>
-            <div>Defense: {{ unit.characteristics.defence }}</div>
+            <div>Defence: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
             <div>Initiative: {{ unit.characteristics.initiative }}</div>
           </div>

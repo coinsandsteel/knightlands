@@ -169,7 +169,7 @@ export default {
         bonus.operation === "multiply"
       ) {
         const value = Math.floor((bonus.value - 1) * 100);
-        result = `Defense ${value > 0 ? "+" : ""}${value}%`;
+        result = `Defence ${value > 0 ? "+" : ""}${value}%`;
       } else if (
         bonus.target === "abilities" &&
         bonus.mode === "constant" &&
@@ -255,7 +255,7 @@ export default {
         bonus.value &&
         bonus.max
       ) {
-        result = `When a squad member takes damage the squad's defense is increased by +${bonus.value} (max. ${bonus.max})`;
+        result = `When a squad member takes damage the squad's defence is increased by +${bonus.value} (max. ${bonus.max})`;
       } else if (
         bonus.subEffect === "counter_attack" &&
         bonus.mode === "burst" &&

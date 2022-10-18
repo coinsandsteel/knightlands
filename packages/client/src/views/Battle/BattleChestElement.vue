@@ -97,6 +97,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { getCurrentDateString } from "@/helpers/utils";
 import * as battle from "@/../../knightlands-shared/battle";
 import { create } from "vue-modal-dialogs";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
@@ -122,12 +123,12 @@ export default {
       return this.user ? this.user.counters : null;
     },
     purchasedCount() {
-      const date = new Date().toLocaleDateString("en-US");
+      const dateString = getCurrentDateString();
       return this.counters &&
         this.counters.purchase &&
-        this.counters.purchase[date] &&
-        this.counters.purchase[date][this.chest.id]
-        ? this.counters.purchase[date][this.chest.id] || 0
+        this.counters.purchase[dateString] &&
+        this.counters.purchase[dateString][this.chest.id]
+        ? this.counters.purchase[dateString][this.chest.id] || 0
         : 0;
     },
     purchaseLeftCount() {

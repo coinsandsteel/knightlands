@@ -44,3 +44,7 @@ export function removeClass(el, className) {
     );
   }
 }
+
+export function getCurrentDateString () {
+  return new Date().toLocaleDateString("en-US");
+}

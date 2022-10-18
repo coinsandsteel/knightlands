@@ -4,7 +4,7 @@
       <!-- tips -->
       <div class="font-size-20 text-align-left padding-left-4">
         <div>• Hills, highlands: increase damage to enemies by 25%</div>
-        <div>• Forest: increases unit's defense by 25%.</div>
+        <div>• Forest: increases unit's defence by 25%.</div>
         <div>
           • Swamp: stops the unit and reduces the speed by 50% in the next turn
         </div>

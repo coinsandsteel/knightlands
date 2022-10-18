@@ -666,6 +666,7 @@ export default {
       state.user.counters = userData.counters;
       state.user.rewards = userData.rewards;
       state.user.items = userData.items;
+      state.user.pvpScore = userData.pvpScore;
 
       state.inventory = data.inventory;
 
