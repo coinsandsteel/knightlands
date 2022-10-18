@@ -1,5 +1,8 @@
 <template>
   <div class="flex flex-column flex-full overflow-auto">
+    <BattleUserBalance
+      class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
+    />
     <BattleZoneSelection @change="changeHandler" />
     <div
       v-if="locationMeta && locationData"
@@ -42,11 +45,13 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import BattleZoneSelection from "@/views/Battle/BattleZoneSelection.vue";
 import BattleAdventureLevel from "@/views/Battle/BattleAdventureLevel.vue";
 import BattleAdventureDifficultySelect from "@/views/Battle/BattleAdventureDifficultySelect.vue";
+import BattleUserBalance from "@/views/Battle/BattleUserBalance.vue";
 
 export default {
   components: {
     BattleZoneSelection,
-    BattleAdventureLevel
+    BattleAdventureLevel,
+    BattleUserBalance
   },
   mixins: [AppSection, ActivityMixin, NetworkRequestErrorMixin, PromptMixin],
   data() {

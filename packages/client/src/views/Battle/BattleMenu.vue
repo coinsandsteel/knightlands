@@ -2,25 +2,14 @@
   <div class="screen-content" v-bar>
     <div>
       <div class="height-100 flex flex-column flex-no-wrap">
-        <div
+        <BattleUserBalance
           class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
         >
-          <progress-bar
-            :maxValue="BATTLE_MAX_ENERGY"
-            :value="energy"
-            iconClass="icon-energy"
-            :hideMaxValue="true"
-            :expand="false"
-            barType="blue"
-            class="pointer width-30"
-          ></progress-bar>
-          <BattleCoin class="margin-left-2" :hasMargin="true" />
-          <BattleCrystal class="margin-left-2" />
           <img
             class="battle-of-heroes"
             src="/images/battle/battle-of-heroes.png"
           />
-        </div>
+        </BattleUserBalance>
         <div class="font-size-22 height-100_ flex-full flex flex-center">
           <div>
             <div>
@@ -97,18 +86,14 @@ import { mapState } from "vuex";
 // import { create } from "vue-modal-dialogs";
 import * as battle from "@/../../knightlands-shared/battle";
 import AppSection from "@/AppSection.vue";
-import BattleCoin from "@/views/Battle/BattleCoin.vue";
-import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
-import ProgressBar from "@/components/ProgressBar.vue";
+import BattleUserBalance from "@/views/Battle/BattleUserBalance.vue";
 // import ItemsReceived from "@/components/ItemsReceived.vue";
 
 export default {
   mixins: [AppSection, ActivityMixin],
   components: {
-    BattleCoin,
-    BattleCrystal,
-    ProgressBar
+    BattleUserBalance
   },
   data() {
     return {

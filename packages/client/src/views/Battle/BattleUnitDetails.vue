@@ -7,6 +7,9 @@
       <div class="screen-content ">
         <div class="font-size-22 height-100 padding-left-2 padding-right-2">
           <div>
+            <BattleUserBalance
+              class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
+            />
             <div class="margin-top-2">
               <BattleUnit :unit="unit" />
             </div>
@@ -101,80 +104,8 @@
                 :ability="ability"
                 :class="{ 'margin-top-2': index > 0 }"
               >
-                <!-- <div class="padding-right-1">
-                  <BattleUnitAbility :ability="ability" />
-                </div>
-                <ProgressBar
-                  :value="ability.level || 0"
-                  :expand="false"
-                  height="2rem"
-                  class="full-flex"
-                  barType="green"
-                  :maxValue="4"
-                  :plusButton="'green'"
-                  @refill="refillHandler"
-                ></ProgressBar> -->
               </BattleUnitAbilityDetails>
             </div>
-            <!-- <div class="battle-squad-unit-info font-size-22 text-align-left">
-              <div>
-                Ability 1
-                <ProgressBar
-                  v-model="expValue"
-                  :expand="false"
-                  height="2rem"
-                  class="full-flex"
-                  barType="green"
-                  :maxValue="10"
-                  :plusButton="'green'"
-                  @refill="refillHandler"
-                ></ProgressBar>
-              </div>
-              <div>
-                Ability 2
-                <ProgressBar
-                  v-model="expValue"
-                  :expand="false"
-                  height="2rem"
-                  class="full-flex"
-                  barType="green"
-                  :maxValue="10"
-                  :plusButton="'green'"
-                  @refill="refillHandler"
-                ></ProgressBar>
-              </div>
-              <div>Defense - 3</div>
-              <div>
-                Ability 3
-                <ProgressBar
-                  v-model="expValue"
-                  :expand="false"
-                  height="2rem"
-                  class="full-flex"
-                  barType="green"
-                  :maxValue="10"
-                  :plusButton="'green'"
-                  @refill="refillHandler"
-                ></ProgressBar>
-              </div>
-              <div>Speed - 14</div>
-              <div></div>
-              <div>Initiative - 14</div>
-              <div></div>
-              <div class="col-span-2">
-                Exp:
-                <ProgressBar
-                  v-model="expValue"
-                  :expand="false"
-                  height="2rem"
-                  class="full-flex"
-                  barType="green"
-                  :maxValue="10"
-                  :plusButton="'green'"
-                  @refill="refillHandler"
-                ></ProgressBar>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -197,6 +128,7 @@ import ActivityMixin from "@/components/ActivityMixin.vue";
 // import BattleUnitAbility from "@/views/Battle/BattleUnitAbility.vue";
 import BattleUnitAbilityDetails from "@/views/Battle/BattleUnitAbilityDetails.vue";
 import BattleCoin from "@/views/Battle/BattleCoin.vue";
+import BattleUserBalance from "@/views/Battle/BattleUserBalance.vue";
 // import BattleCrystal from "@/views/Battle/BattleCrystal.vue";
 // import BattleMixin from "@/views/Battle/BattleMixin.vue";
 
@@ -211,7 +143,8 @@ export default {
     BattleUnit,
     // BattleUnitAbility,
     BattleUnitAbilityDetails,
-    BattleCoin
+    BattleCoin,
+    BattleUserBalance
     // BattleCrystal
   },
   data() {
