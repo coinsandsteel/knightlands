@@ -32,10 +32,10 @@
               {{ $t("battle-unit-tribe-" + unit.tribe) }}
               {{ $t("battle-unit-class-" + unit.class) }}
             </div> -->
-            <div class="">Tier: {{ unit.tier }}</div>
+            <div>Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.levelInt }}</div>
             <div>Power: {{ unit.power }}</div>
-            <div class="margin-top-half">Hp: {{ unit.characteristics.hp }}</div>
+            <div>Hp: {{ unit.characteristics.hp }}</div>
             <!-- <div class="margin-top-1">Hp: {{ unit.characteristics.hp }}</div>
             <div>Attack: {{ unit.characteristics.damage }}</div>
             <div>Defence: {{ unit.characteristics.defence }}</div>
