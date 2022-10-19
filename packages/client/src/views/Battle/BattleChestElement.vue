@@ -179,7 +179,11 @@ export default {
       let shouldPurchase = true;
       let tribe = null;
 
-      if (chest && chest.content && chest.content.units && !chest.claimable) {
+      if (
+        chest &&
+        chest.commodity === battle.COMMODITY_CHEST &&
+        chest.name.includes("squad")
+      ) {
         const show = create(BattleTribeSelect);
         tribe = await show();
 
