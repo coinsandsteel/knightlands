@@ -46,54 +46,64 @@
             </div>
             <div>Power: {{ unit.power }}</div>
             <div class="flex margin-top-2">
-              <div class="padding-right-1">Exp:</div>
-              <ProgressBar
-                :value="expValue"
-                :expand="false"
-                height="2rem"
-                class="full-flex"
-                barType="green"
-                :maxValue="expMaxValue"
-              ></ProgressBar>
+              <div v-if="maxLevelReached" class="width-100 text-align-center">
+                <div>Max level reached!</div>
+                <div v-if="unit.tier === 1">Tier 1: 15 lvl Max</div>
+                <div v-if="unit.tier === 2">Tier 2: 30 lvl Max</div>
+                <div v-if="unit.tier === 3">Tier 3: 45 lvl Max</div>
+              </div>
+              <template v-else>
+                <div class="padding-right-1">Exp:</div>
+                <ProgressBar
+                  :value="expValue"
+                  :expand="false"
+                  height="2rem"
+                  class="full-flex"
+                  barType="green"
+                  :maxValue="expMaxValue"
+                ></ProgressBar>
+              </template>
             </div>
-            <div>
-              <CustomButton
-                type="blue"
-                class="inline-block margin-right-2 margin-top-1"
-                @click="increaseHandler(100)"
-              >
-                +100 exp
-              </CustomButton>
-              <CustomButton
-                type="blue"
-                class="inline-block margin-right-2 margin-top-1"
-                @click="increaseHandler(500)"
-              >
-                +500 exp
-              </CustomButton>
-              <CustomButton
-                type="blue"
-                class="inline-block margin-right-2 margin-top-1"
-                @click="increaseHandler(5000)"
-              >
-                +5000 exp
-              </CustomButton>
-              <!--CustomButton
+            <div v-if="true">
+              <template v-if="!maxLevelReached">
+                <CustomButton
+                  type="blue"
+                  class="inline-block margin-right-2 margin-top-1"
+                  @click="increaseHandler(100)"
+                >
+                  +100 exp
+                </CustomButton>
+                <CustomButton
+                  type="blue"
+                  class="inline-block margin-right-2 margin-top-1"
+                  @click="increaseHandler(500)"
+                >
+                  +500 exp
+                </CustomButton>
+                <CustomButton
+                  type="blue"
+                  class="inline-block margin-right-2 margin-top-1"
+                  @click="increaseHandler(5000)"
+                >
+                  +5000 exp
+                </CustomButton>
+                <!--CustomButton
                 type="blue"
                 class="inline-block margin-right-2 margin-top-1"
                 @click="decreaseHandler"
               >
                 {{ $t("exp-") }}
               </CustomButton-->
+              </template>
             </div>
             <div class="margin-top-2">
               <div v-if="unit.characteristics.hp">
-                Hp - {{ unit.characteristics.hp }}
+                Hp: {{ unit.characteristics.hp }}
               </div>
-              <div>Attack - {{ unit.characteristics.damage }}</div>
-              <div>Defence - {{ unit.characteristics.defence }}</div>
-              <div>Speed - {{ unit.characteristics.speed }}</div>
-              <div>Initiative - {{ unit.characteristics.initiative }}</div>
+              <div>Attack: {{ unit.characteristics.damage }}</div>
+              <div>Defence: {{ unit.characteristics.defence }}</div>
+              <div>Speed: {{ unit.characteristics.speed }}</div>
+              <div>Initiative: {{ unit.characteristics.initiative }}</div>
             </div>
             <div class="margin-top-3 padding-bottom-2">
               <div class="margin-bottom-1">Abilities</div>
@@ -185,6 +195,9 @@ export default {
       return this.unit && this.unit.expirience
         ? this.unit.expirience.currentLevelExp || 0
         : 0;
+    },
+    maxLevelReached() {
+      return this.unit && this.unit.expirience.maxLevelReached;
     },
     expMaxValue() {
       const next =
