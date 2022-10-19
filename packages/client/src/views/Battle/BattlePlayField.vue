@@ -676,8 +676,10 @@ export default {
       const showDialog = create(BattleExitGame);
       const result = await showDialog();
       if (result) {
-        this.$store.dispatch("battle/exit");
-        this.$router.replace({ name: "battle-menu" }).catch(() => {});
+        await this.$store.dispatch("battle/exit");
+        this.$nextTick(() => {
+          this.$router.replace({ name: "battle-menu" }).catch(() => {});
+        });
       }
     },
     skipHandler() {

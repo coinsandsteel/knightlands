@@ -40,9 +40,6 @@ export default {
   components: {
     Tabs
   },
-  // computed: {
-  //   ...mapGetters("battle", ["dailyRewards"])
-  // },
   data() {
     return {
       tabs: [

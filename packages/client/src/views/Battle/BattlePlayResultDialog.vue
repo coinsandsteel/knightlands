@@ -107,18 +107,20 @@ export default {
     }
   },
   methods: {
-    nextHandler() {
+    async nextHandler() {
       if (this.$close) {
         this.$close();
       }
 
-      this.$store.dispatch("battle/exit");
+      await this.$store.dispatch("battle/exit");
 
-      if (this.$route.name === "battle-adventure-play") {
-        this.$router.replace({ name: "battle-adventure" });
-      } else {
-        this.$router.replace({ name: "battle-menu" });
-      }
+      this.$nextTick(() => {
+        if (this.$route.name === "battle-adventure-play") {
+          this.$router.replace({ name: "battle-adventure" });
+        } else {
+          this.$router.replace({ name: "battle-menu" });
+        }
+      });
     }
   }
 };

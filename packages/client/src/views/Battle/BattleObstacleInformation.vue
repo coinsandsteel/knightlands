@@ -30,15 +30,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import * as battle from "@/../../knightlands-shared/battle";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
   mixins: [NetworkRequestErrorMixin],
-  computed: {
-    ...mapGetters("battle", ["dailyRewards"])
-  },
   methods: {
     async closeHandler() {
       this.$close();

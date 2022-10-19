@@ -13,8 +13,7 @@ export default {
       "game",
       "hasSubscribed",
       "hasShownDailyRewards"
-    ]),
-    ...mapGetters("battle", ["dailyRewards"])
+    ])
   },
   // created() {
   //   // this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
@@ -62,7 +61,10 @@ export default {
         this.game.mode === "adventure"
           ? "battle-adventure-play"
           : "battle-duels-play";
-      console.log("routeName", routeName);
+
+      if (this.$route.name === routeName) {
+        return;
+      }
       this.$router.replace({
         name: routeName
       });

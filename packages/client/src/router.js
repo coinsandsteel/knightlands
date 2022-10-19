@@ -2,6 +2,7 @@
 /*jshint esversion: 9 */
 
 import Router from "vue-router";
+import store from "./store";
 
 const Character = () =>
   import(/* webpackChunkName: "Character" */ "./views/Character/Character.vue");
@@ -1402,6 +1403,27 @@ const router = new Router({
       component: Admin
     }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  // navigation guard for battle event
+  if (
+    from.name &&
+    ["battle-adventure-play", "battle-duels-play"].includes(from.name) &&
+    to.name &&
+    to.name.startsWith("battle-") &&
+    to.name !== from.name &&
+    store.state.battle &&
+    store.state.battle.game.combat &&
+    store.state.battle.game.combat &&
+    store.state.battle.game.combat.started
+  ) {
+    // next({ name: from.name, replace: true });
+    next(false);
+    return;
+  }
+  // end navigation guard for battle event
+  next();
 });
 
 export default router;
