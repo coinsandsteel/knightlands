@@ -52,6 +52,7 @@
             :key="ability.abilityType + ability.abilityClass"
             :unit="unit"
             :ability="ability"
+            :shouldUseCombatValue="true"
             :isUpgradeVisible="false"
             :class="{ 'margin-top-2': index > 0 }"
           >

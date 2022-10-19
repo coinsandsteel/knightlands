@@ -29,7 +29,7 @@
               <BattleCharacteristicValue :value="hp" :baseValue="baseHp" />
             </div>
             <div>
-              Damage:
+              Attack:
               <BattleCharacteristicValue
                 :value="damage"
                 :baseValue="baseDamage"
@@ -69,6 +69,7 @@
             :unit="unit"
             :ability="ability"
             :isUpgradeVisible="false"
+            :shouldUseCombatValue="true"
             :class="{ 'margin-top-2': index > 0 }"
           >
           </BattleUnitAbilityDetails>
@@ -167,11 +168,17 @@ export default {
       if (!this.unit) {
         return 0;
       }
-      return this.unit.characteristics.hp;
+      return this.unit.hp;
     },
     damage() {
       if (!this.unit) {
         return 0;
+      }
+      const attackAbility = this.unit.abilities.find(
+        ({ abilityClass }) => abilityClass === "attack"
+      );
+      if (attackAbility) {
+        return Math.round(attackAbility.combatValue * 100) / 100;
       }
       return this.unit.characteristics.damage;
     },
@@ -197,11 +204,17 @@ export default {
       if (!this.unit) {
         return 0;
       }
-      return this.unit.characteristics.hp;
+      return this.unit.hp;
     },
     baseDamage() {
       if (!this.unit) {
         return 0;
+      }
+      const attackAbility = this.unit.abilities.find(
+        ({ abilityClass }) => abilityClass === "attack"
+      );
+      if (attackAbility) {
+        return Math.round(attackAbility.combatValue * 100) / 100;
       }
       return this.unit.characteristics.damage;
     },

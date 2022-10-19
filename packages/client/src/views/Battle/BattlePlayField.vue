@@ -168,7 +168,7 @@
               :key="ability.abilityClass"
               :ability="ability"
               :isActive="ability.abilityClass === selectedAbilityClass"
-              :value="ability.value"
+              :value="ability.combatValue | rounded2Decimal"
               :overlayText="
                 ability.cooldown && ability.cooldown.estimate
                   ? ability.cooldown.estimate + ''
@@ -358,32 +358,32 @@ export default {
         ({ abilityClass }) => abilityClass === this.selectedAbilityClass
       );
     },
-    abilityDescription() {
-      if (!this.selectedAbility) {
-        return null;
-      }
+    // abilityDescription() {
+    //   if (!this.selectedAbility) {
+    //     return null;
+    //   }
 
-      const name = this.$t(
-        "battle-ability-" + this.selectedAbility.abilityClass
-      );
-      const level = this.selectedAbility.level
-        ? this.selectedAbility.level.current
-        : null;
-      const value = this.selectedAbility.value;
-      const items = [];
+    //   const name = this.$t(
+    //     "battle-ability-" + this.selectedAbility.abilityClass
+    //   );
+    //   const level = this.selectedAbility.level
+    //     ? this.selectedAbility.level.current
+    //     : null;
+    //   const value = this.selectedAbility.combatValue;
+    //   const items = [];
 
-      if (name) {
-        items.push(name);
-      }
-      if (level) {
-        items.push("level: " + level);
-      }
-      if (value) {
-        items.push("value: " + (value > 0 ? "+" : "") + value);
-      }
+    //   if (name) {
+    //     items.push(name);
+    //   }
+    //   if (level) {
+    //     items.push("level: " + level);
+    //   }
+    //   if (value) {
+    //     items.push("value: " + (value > 0 ? "+" : "") + value);
+    //   }
 
-      return items.join(", ");
-    },
+    //   return items.join(", ");
+    // },
     isBtnActivateAbilityVisible() {
       if (!this.selectedAbility) {
         return false;
@@ -476,6 +476,11 @@ export default {
     //   //   ({ source }) => source === "de-buff"
     //   // );
     // }
+  },
+  filters: {
+    rounded2Decimal(value) {
+      return Math.round(value * 100) / 100;
+    }
   },
   watch: {
     // isStarted(value, oldValue) {
@@ -834,7 +839,9 @@ export default {
           //   '<div class="battle-ability-effect-source-target-indicator"></div>';
           // // el.style = "opacity: 0;";
 
-          const damage = ability ? ability.value || ability.damage || 0 : 0;
+          const damage = ability
+            ? Math.round(ability.combatValue * 100) / 100 || 0
+            : 0;
           const isCriticalHit = ability && ability.criticalHit;
           let colorClass = "";
           if (abilityType && abilityType === battle.ABILITY_TYPE_ATTACK) {
@@ -956,7 +963,9 @@ export default {
       const ability = step.ability || step.buff;
       const abilityClass = ability ? ability.abilityClass : null;
       const abilityType = ability ? ability.abilityType : null;
-      const damage = ability ? ability.value || ability.damage || 0 : 0;
+      const damage = ability
+        ? Math.round(ability.combatValue * 100) / 100 || 0
+        : 0;
       const isCriticalHit = ability && ability.criticalHit;
       const isSourceMyFighter =
         step.source && step.source.fighterId
@@ -1033,7 +1042,7 @@ export default {
     //     "absolute-stretch battle-effect--attack flex flex-center text-center font-size-18 font-weight-700";
     //   el.style = "opacity: 0;";
     //   el.innerHTML =
-    //     "<div>" + (step.ability.value || step.ability.damage) + "</div>";
+    //     "<div>" + (step.ability.combatValue || step.ability.damage) + "</div>";
     //   // await this.animateSlideAndFade({ index: 30, el });
     //   await this.animateSlideAndFade({ index: step.target.index, el });
     //   el.parentElement.removeChild(el);

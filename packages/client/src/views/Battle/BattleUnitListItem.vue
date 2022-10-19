@@ -19,7 +19,7 @@
             v-for="(ability, index) in abilities"
             :key="ability.abilityType + ability.abilityClass"
             :ability="ability"
-            :value="ability.value"
+            :value="ability.combatValue | rounded2Decimal"
             :isSmallValue="true"
             :class="{
               'margin-left-1': index > 0,
@@ -98,6 +98,11 @@ export default {
       return this.unitRecord && this.unitRecord.abilities
         ? this.unitRecord.abilities
         : [];
+    }
+  },
+  filters: {
+    rounded2Decimal(value) {
+      return Math.round(value * 100) / 100;
     }
   },
   methods: {

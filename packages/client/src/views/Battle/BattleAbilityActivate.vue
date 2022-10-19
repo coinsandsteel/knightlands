@@ -24,7 +24,7 @@
             <!-- <div>Tier: {{ unit.tier }}</div>
               <div>Level: {{ unit.levelInt }}</div> -->
             <!-- <div>Hp: {{ "" }}</div> -->
-            <div>Damage: {{ ability.value }}</div>
+            <div>Damage: {{ ability.combatValue | rounded2Decimal }}</div>
             <div>Effect: {{ effect }}</div>
             <div v-if="ability.cooldown && ability.cooldown.estimate">
               Cooldown:
@@ -100,6 +100,11 @@ export default {
         this.ability &&
         this.ability.abilityType === battle.ABILITY_TYPE_SELF_BUFF
       );
+    }
+  },
+  filters: {
+    rounded2Decimal(value) {
+      return Math.round(value * 100) / 100;
     }
   },
   methods: {

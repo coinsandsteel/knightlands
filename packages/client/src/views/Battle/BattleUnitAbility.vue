@@ -84,23 +84,23 @@ export default {
   left: 0px;
   bottom: 0px;
   background: #fff;
-  border: solid 2px #fff;
+  // border: solid 2px #fff;
   color: #333;
   // color: #10b981;
   font-weight: 600;
   border-radius: 12px;
   // padding: 0 3px;
   // min-width: 17px;
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
 }
 .ability-value--small {
   padding: 0 1px;
-  left: -3px;
-  bottom: -3px;
-  border-width: 1px;
-  width: 12px;
-  height: 12px;
+  left: -4px;
+  bottom: -4px;
+  border-width: 0;
+  width: 14px;
+  height: 14px;
 }
 .ability-info-icon {
   left: -8px;

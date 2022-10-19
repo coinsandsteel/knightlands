@@ -7,7 +7,7 @@
     >
       <BattleUnitAbility
         :ability="ability"
-        :value="ability.value"
+        :value="value"
         :isSmallValue="true"
         class="margin-top-half"
       />
@@ -26,7 +26,7 @@
                   (!isUpgradeVisible && value ? ", damage/heal: " + value : "")
               }}
             </div>
-            <div v-if="isUpgradeVisible">Damage/Heal: {{ value }}</div>
+            <div v-if="isUpgradeVisible && value">Damage/Heal: {{ value }}</div>
           </div>
           <div v-if="isUpgradeVisible" class="margin-left-1">
             <!-- <CustomButton
@@ -94,7 +94,8 @@ export default {
     isUpgradeVisible: {
       type: Boolean,
       default: true
-    }
+    },
+    shouldUseCombatValue: Boolean
   },
   components: {
     BattleUnitAbility,
@@ -149,7 +150,11 @@ export default {
       return value;
     },
     value() {
-      const value = this.ability ? this.ability.value : null;
+      const value = this.ability
+        ? this.shouldUseCombatValue
+          ? Math.round(this.ability.combatValue * 100) / 100
+          : this.ability.value
+        : null;
 
       if (!value) {
         return null;

@@ -112,6 +112,7 @@
                 :key="ability.abilityType + ability.abilityClass"
                 :unit="unit"
                 :ability="ability"
+                :shouldUseCombatValue="true"
                 :class="{ 'margin-top-2': index > 0 }"
               >
               </BattleUnitAbilityDetails>
