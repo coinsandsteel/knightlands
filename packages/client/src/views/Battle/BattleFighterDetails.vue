@@ -1,7 +1,19 @@
 <template>
-  <UserDialog title="unit details" @close="close">
+  <UserDialog
+    :title="unit ? unit.name + (unit.isBoss ? ' - Boss' : '') : ''"
+    @close="close"
+  >
     <template v-slot:content>
       <div v-if="unit" class="battle-fighter-details-container font-size-22">
+        <div
+          class="battle-fighter-details-wrapper margin-x-auto flex flex-center flex-wrap padding-left-2 margin-bottom-2 font-weight-700"
+          :class="'battle-unit-tribe--' + unit.tier"
+        >
+          <div>
+            {{ $t("battle-unit-tribe-" + unit.tribe) }}
+            {{ $t("battle-unit-class-" + unit.class) }}
+          </div>
+        </div>
         <div
           class="battle-fighter-details-wrapper margin-x-auto flex flex-wrap padding-left-2"
         >
@@ -11,7 +23,7 @@
               :is-enemy="isEnemy"
               class="margin-x-auto"
             />
-            <div class="font-size-22 text-align-center white-space-no-wrap">
+            <!-- <div class="font-size-22 text-align-center white-space-no-wrap">
               <template v-if="unit.name">
                 {{ unit.name }} {{ unit.isBoss ? "- Boss" : "" }}
               </template>
@@ -19,7 +31,7 @@
                 # {{ $t("battle-unit-tribe-" + unit.tribe) }}
                 {{ $t("battle-unit-class-" + unit.class) }} #
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="flex-grow-1 text-align-left width-35 margin-left-2">
             <!-- <div>Tier: {{ unit.tier }}</div>
@@ -271,5 +283,14 @@ export default {
   width: 280px;
   margin-left: auto;
   margin-right: auto;
+}
+.battle-unit-tribe--1 {
+  color: #70ee70;
+}
+.battle-unit-tribe--2 {
+  color: #38bdf8;
+}
+.battle-unit-tribe--3 {
+  color: #c965ee;
 }
 </style>

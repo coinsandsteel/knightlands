@@ -1,7 +1,16 @@
 <template>
-  <UserDialog title="unit details" :emitClose="true" @close="close()">
+  <UserDialog :title="unit ? unit.name : ''" :emitClose="true" @close="close()">
     <template v-slot:content>
       <div v-if="unit" class="font-size-22">
+        <div
+          class="battle-unit-details-wrapper margin-x-auto flex flex-no-wrap padding-left-2 flex-center margin-bottom-2 font-shadow font-weight-700"
+          :class="'battle-unit-tribe--' + unit.tier"
+        >
+          <div>
+            {{ $t("battle-unit-tribe-" + unit.tribe) }}
+            {{ $t("battle-unit-class-" + unit.class) }}
+          </div>
+        </div>
         <div
           class="battle-unit-details-wrapper margin-x-auto flex flex-no-wrap padding-left-2 flex-center"
         >
@@ -18,14 +27,15 @@
             </div> -->
           </div>
           <div class="_flex-grow-1 text-align-left _width-35 margin-left-2">
-            <div class="margin-top-half">{{ unit.name }}</div>
+            <!-- <div class="margin-top-half">{{ unit.name }}</div>
             <div>
               {{ $t("battle-unit-tribe-" + unit.tribe) }}
               {{ $t("battle-unit-class-" + unit.class) }}
-            </div>
+            </div> -->
             <div class="">Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.levelInt }}</div>
             <div>Power: {{ unit.power }}</div>
+            <div class="margin-top-half">Hp: {{ unit.characteristics.hp }}</div>
             <!-- <div class="margin-top-1">Hp: {{ unit.characteristics.hp }}</div>
             <div>Attack: {{ unit.characteristics.damage }}</div>
             <div>Defence: {{ unit.characteristics.defence }}</div>
@@ -36,7 +46,6 @@
             <!-- <div class="margin-top-half">Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.levelInt }}</div>
             <div>Power: {{ unit.power }}</div> -->
-            <div class="margin-top-half">Hp: {{ unit.characteristics.hp }}</div>
             <div>Attack: {{ unit.characteristics.damage }}</div>
             <div>Defence: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
@@ -145,5 +154,14 @@ export default {
 }
 ::v-deep .ability-value {
   display: none;
+}
+.battle-unit-tribe--1 {
+  color: #70ee70;
+}
+.battle-unit-tribe--2 {
+  color: #38bdf8;
+}
+.battle-unit-tribe--3 {
+  color: #c965ee;
 }
 </style>
