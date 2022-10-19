@@ -694,11 +694,11 @@ const router = new Router({
           name: "battle-merger",
           component: () => import("./views/Battle/BattleMerger.vue")
         },
-        {
-          path: "play",
-          name: "battle-play",
-          component: () => import("./views/Battle/BattlePlay.vue")
-        },
+        // {
+        //   path: "play",
+        //   name: "battle-play",
+        //   component: () => import("./views/Battle/BattlePlay.vue")
+        // },
         {
           path: "achievement",
           name: "battle-achievement",

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column">
+  <div v-if="loaded" class="flex flex-column">
     <div class="screen-background"></div>
     <div
       class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
@@ -14,7 +14,7 @@
       >
       </tabs>
       <keep-alive>
-        <router-view v-if="loaded"></router-view>
+        <router-view></router-view>
       </keep-alive>
     </div>
   </div>
@@ -85,6 +85,9 @@ export default {
   created() {
     this.title = this.$t("battle-event");
     // this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
+  },
+  activated() {
+    this.checkAndRedirectToBattle();
   },
   // destroyed() {
   //   this.$store.$app.$off("battle-show-daily-reward");

@@ -22,7 +22,7 @@ export default {
     },
     combatResult() {
       return this.game.combat.result;
-    },
+    }
     // isResultVisible() {
     //   return !!this.game.combat.result;
     // }

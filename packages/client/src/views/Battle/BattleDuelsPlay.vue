@@ -12,7 +12,7 @@ import BattlePlayField from "@/views/Battle/BattlePlayField.vue";
 export default {
   mixins: [ActivityMixin],
   components: {
-    BattlePlayField,
+    BattlePlayField
     // BattlePlayResult
   },
   data() {
@@ -27,7 +27,7 @@ export default {
     },
     combatResult() {
       return this.game.combat.result;
-    },
+    }
     // isResultVisible() {
     //   return !!this.game.combat.result;
     // }

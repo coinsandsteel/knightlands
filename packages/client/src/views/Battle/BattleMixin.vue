@@ -8,26 +8,34 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 export default {
   mixins: [AppSection, NetworkRequestErrorMixin],
   computed: {
-    ...mapState("battle", ["loaded", "hasSubscribed", "hasShownDailyRewards"]),
+    ...mapState("battle", [
+      "loaded",
+      "game",
+      "hasSubscribed",
+      "hasShownDailyRewards"
+    ]),
     ...mapGetters("battle", ["dailyRewards"])
   },
-  created() {
-    // this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
-  },
-  destroyed() {
-    // this.$store.$app.$off("battle-show-daily-reward");
-  },
+  // created() {
+  //   // this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
+  // },
+  // destroyed() {
+  //   // this.$store.$app.$off("battle-show-daily-reward");
+  // },
   async mounted() {
     if (!this.hasSubscribed) {
       this.$store.dispatch("battle/subscribe");
     }
     if (!this.loaded) {
       await this.$store.dispatch("battle/load");
+      this.$nextTick(() => {
+        this.checkAndRedirectToBattle();
+      });
     }
   },
-  activated() {
-    // this.tryToShowRewards();
-  },
+  // activated() {
+  //   // this.tryToShowRewards();
+  // },
   methods: {
     // tryToShowRewards() {
     //   if (
@@ -46,6 +54,19 @@ export default {
     //   await showDailyRewardsDialog();
     //   this.$store.dispatch("battle/update", { hasShownDailyRewards: false });
     // }
+    checkAndRedirectToBattle() {
+      if (!(this.game && this.game.combat && this.game.combat.started)) {
+        return;
+      }
+      const routeName =
+        this.game.mode === "adventure"
+          ? "battle-adventure-play"
+          : "battle-duels-play";
+      console.log("routeName", routeName);
+      this.$router.replace({
+        name: routeName
+      });
+    }
   }
 };
 </script>
