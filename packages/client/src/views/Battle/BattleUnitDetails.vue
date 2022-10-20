@@ -10,41 +10,39 @@
             <BattleUserBalance
               class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
             />
-            <div class="margin-top-2">
-              <BattleUnit :unit="unit" />
-            </div>
-            <div class="margin-top-1 font-size-30">
-              <template v-if="unit.name">
-                {{ unit.name }}
-              </template>
+            <div class="flex flex-no-wrap flex-center margin-top-1">
               <div>
-                # {{ $t("battle-unit-tribe-" + unit.tribe) }}
-                {{ $t("battle-unit-class-" + unit.class) }} #
+                <BattleUnit :unit="unit" />
+              </div>
+              <div class="margin-left-2">
+                <div
+                  class="text-align-left font-weight-700 font-shadow"
+                  :class="'battle-unit-tribe--' + unit.tier"
+                >
+                  <div>
+                    {{ $t("battle-unit-tribe-" + unit.tribe) }}
+                    {{ $t("battle-unit-class-" + unit.class) }}
+                  </div>
+                </div>
+                <div class="flex flex-no-wrap">
+                  <div class="text-align-left">
+                    <div>Tier: {{ unit.tier }}</div>
+                    <div>Level: {{ level }}</div>
+                    <div v-if="unit.characteristics.hp">
+                      Hp: {{ unit.characteristics.hp }}
+                    </div>
+                    <div>Power: {{ unit.power }}</div>
+                  </div>
+                  <div class="text-align-left margin-left-2">
+                    <div>Attack: {{ unit.characteristics.damage }}</div>
+                    <div>Defence: {{ unit.characteristics.defence }}</div>
+                    <div>Speed: {{ unit.characteristics.speed }}</div>
+                    <div>Initiative: {{ unit.characteristics.initiative }}</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="margin-top-2">Tier: {{ unit.tier }}</div>
-            <div>
-              Level: {{ level }}
-              <CustomButton
-                v-if="canUpgrade"
-                :disabled="!isEnoughCoinsToUpgradeLevel"
-                type="green"
-                class="inline-block margin-right-2 margin-top-1"
-                @click="upgradeLevelHandler(upgradePrice)"
-              >
-                {{ $t("Upgrade lvl " + nextLevel) }}
-                <!-- <IconWithValue
-                  :flip="false"
-                  :iconMargin="true"
-                  iconClass="icon-gold"
-                  class="pointer"
-                >
-                  {{ upgradePrice }}
-                </IconWithValue> -->
-                <BattleCoin class="margin-left-1" :value="upgradePrice" />
-              </CustomButton>
-            </div>
-            <div>Power: {{ unit.power }}</div>
+            <!--  -->
             <div class="flex margin-top-2">
               <div v-if="maxLevelReached" class="width-100 text-align-center">
                 <div>Max level reached!</div>
@@ -96,14 +94,25 @@
               </CustomButton-->
               </template>
             </div>
-            <div class="margin-top-2">
-              <div v-if="unit.characteristics.hp">
-                Hp: {{ unit.characteristics.hp }}
-              </div>
-              <div>Attack: {{ unit.characteristics.damage }}</div>
-              <div>Defence: {{ unit.characteristics.defence }}</div>
-              <div>Speed: {{ unit.characteristics.speed }}</div>
-              <div>Initiative: {{ unit.characteristics.initiative }}</div>
+            <div class="text-align-center">
+              <CustomButton
+                v-if="canUpgrade"
+                :disabled="!isEnoughCoinsToUpgradeLevel"
+                type="green"
+                class="inline-block margin-right-2 margin-top-1"
+                @click="upgradeLevelHandler(upgradePrice)"
+              >
+                {{ $t("Upgrade lvl " + nextLevel) }}
+                <!-- <IconWithValue
+                  :flip="false"
+                  :iconMargin="true"
+                  iconClass="icon-gold"
+                  class="pointer"
+                >
+                  {{ upgradePrice }}
+                </IconWithValue> -->
+                <BattleCoin class="margin-left-1" :value="upgradePrice" />
+              </CustomButton>
             </div>
             <div class="margin-top-3 padding-bottom-2">
               <div class="margin-bottom-1">Abilities</div>
@@ -215,7 +224,7 @@ export default {
     }
   },
   activated() {
-    this.title = "unit details";
+    this.title = this.unit ? this.unit.name : "unit details";
   },
   methods: {
     handleBackButton() {
@@ -264,5 +273,14 @@ export default {
 }
 ::v-deep .ability-value {
   display: none;
+}
+.battle-unit-tribe--1 {
+  color: #70ee70;
+}
+.battle-unit-tribe--2 {
+  color: #38bdf8;
+}
+.battle-unit-tribe--3 {
+  color: #c965ee;
 }
 </style>

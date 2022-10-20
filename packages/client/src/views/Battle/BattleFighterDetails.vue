@@ -11,7 +11,7 @@
         class="battle-fighter-details-container font-size-22"
       >
         <div
-          class="battle-fighter-details-wrapper margin-x-auto flex flex-center flex-wrap padding-left-2 margin-bottom-2 font-weight-700"
+          class="battle-fighter-details-wrapper margin-x-auto flex flex-center flex-wrap padding-left-2 margin-bottom-2 font-weight-700 font-shadow"
           :class="'battle-unit-tribe--' + unitRecord.tier"
         >
           <div>

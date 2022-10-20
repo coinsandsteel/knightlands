@@ -94,10 +94,11 @@ import Loot from "@/components/Loot.vue";
 import Timer from "@/timer.js";
 import { create } from "vue-modal-dialogs";
 import ItemsReceived from "@/components/ItemsReceived.vue";
+import AppSection from "@/AppSection.vue";
 const ShowItems = create(ItemsReceived, "items");
 
 export default {
-  mixins: [NetworkRequestErrorMixin],
+  mixins: [NetworkRequestErrorMixin, AppSection],
   components: { BattleRankingElement, CustomButton, Loot },
   data: () => ({
     records: [],
@@ -112,6 +113,8 @@ export default {
     weeklyTimer: new Timer(true, true)
   }),
   async activated() {
+    this.title = this.$t("battle-event");
+
     this.records = [];
     this.currentPage = 0;
     this.fetchedAll = false;

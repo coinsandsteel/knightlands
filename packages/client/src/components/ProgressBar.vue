@@ -4,7 +4,7 @@
     @click="$emit('refill')"
     :class="{ 'width-100': expand }"
   >
-    <div class="icon">
+    <div class="icon flex flex-center">
       <div :class="iconClass"></div>
     </div>
 

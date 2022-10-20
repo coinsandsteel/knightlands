@@ -46,10 +46,11 @@ import { create } from "vue-modal-dialogs";
 import * as battle from "@/../../knightlands-shared/battle";
 import BattleUnit from "@/views/Battle/BattleUnit.vue";
 import ItemsReceived from "@/components/ItemsReceived.vue";
+import AppSection from "@/AppSection.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {
-  mixins: [NetworkRequestErrorMixin],
+  mixins: [NetworkRequestErrorMixin, AppSection],
   components: {
     BattleUnit
   },
@@ -85,6 +86,9 @@ export default {
         };
       });
     }
+  },
+  activated() {
+    this.title = this.$t("battle-event");
   },
   methods: {
     async receiveHandler(tribe) {
