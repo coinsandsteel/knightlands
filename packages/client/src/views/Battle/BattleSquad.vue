@@ -39,10 +39,12 @@
           >{{ $t("add") }}</CustomButton
         > -->
         <portal to="footer" :slim="true" v-if="isActive">
-          <CustomButton type="blue" @click="buildSquad"
-            >Build squad</CustomButton
-          >
-          <CustomButton type="red" @click="maxSquad">Maximize</CustomButton>
+          <template v-if="true">
+            <CustomButton type="blue" @click="buildSquad"
+              >Build squad</CustomButton
+            >
+            <CustomButton type="red" @click="maxSquad">Maximize</CustomButton>
+          </template>
         </portal>
       </div>
     </div>

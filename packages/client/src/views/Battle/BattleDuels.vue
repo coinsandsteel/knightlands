@@ -37,6 +37,14 @@
         </div>
       </div>
     </div>
+
+    <portal to="footer" :slim="true" v-if="isActive">
+      <template v-if="true">
+        <CustomButton type="blue" @click="resetDuelsCounterHandler"
+          >Reset Duels Counter</CustomButton
+        >
+      </template>
+    </portal>
   </div>
 </template>
 <script>
@@ -90,6 +98,11 @@ export default {
         this.$router.push({
           name: "battle-duels-play"
         });
+      });
+    },
+    resetDuelsCounterHandler() {
+      this.$store.dispatch("battle/testAction", {
+        action: "resetDuelsCounter"
       });
     }
   }
