@@ -25,6 +25,11 @@
         <div
           v-if="isAttackCell"
           class="battle-board-cell__attack-cell absolute-stretch"
+          :class="{
+            'battle-board-cell__attack-cell--buff': isAttackBuffCell,
+            'battle-board-cell__attack-cell--jump': isAttackJumpCell,
+            'battle-board-cell__attack-cell--healing': isAttackHealingCell
+          }"
         />
       </Transition>
       <!-- enemy available move -->
@@ -243,6 +248,27 @@ export default {
         !(this.isUnit || this.isEnemy) &&
         this.isMyTurn &&
         !this.isProcessingQueue
+      );
+    },
+    isAttackBuffCell() {
+      return (
+        this.isAttackCell &&
+        this.selectedAbility &&
+        this.selectedAbility.abilityType === battle.ABILITY_TYPE_BUFF
+      );
+    },
+    isAttackHealingCell() {
+      return (
+        this.isAttackCell &&
+        this.selectedAbility &&
+        this.selectedAbility.abilityType === battle.ABILITY_TYPE_HEALING
+      );
+    },
+    isAttackJumpCell() {
+      return (
+        this.isAttackCell &&
+        this.selectedAbility &&
+        this.selectedAbility.abilityType === battle.ABILITY_TYPE_JUMP
       );
     },
     isMoveCell() {
@@ -613,6 +639,14 @@ export default {
 .battle-board-cell__attack-cell {
   background: red;
   opacity: 0.3;
+}
+.battle-board-cell__attack-cell--jump {
+  background: blue;
+}
+.battle-board-cell__attack-cell--buff,
+.battle-board-cell__attack-cell--healing {
+  background: green;
+  opacity: 0.5;
 }
 .battle-board-cell-unit {
   width: 100%;

@@ -164,7 +164,7 @@ export default {
       return this.shouldFillSlot && this.$route.params.slot === "squad";
     },
     units() {
-      return this.inventory.slice().filter(unit => {
+      return this.inventory.filter(unit => {
         let isIncluded = true;
 
         if (isIncluded && this.selectedTiersFilter.length > 0) {
