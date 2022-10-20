@@ -101,7 +101,7 @@
             :key="buff.source + '_' + buff.sourceId + '_' + buffIndex"
             class="flex flex-center flex-no-wrap margin-bottom-1"
           >
-            <BattleUnitBuff :buff="buff" />
+            <BattleUnitBuff class="flex-shrink-0" :buff="buff" />
             <div
               class="flex-grow-1 text-align-left buff-description padding-left-1"
             >
