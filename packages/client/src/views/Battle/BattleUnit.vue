@@ -224,6 +224,7 @@ export default {
   // color: #b91c1c;
   color: #7f1d1d;
   font-weight: 700;
+  line-height: 0;
   border-radius: 50%;
   // padding: 0 5px;
   // width: 17px;

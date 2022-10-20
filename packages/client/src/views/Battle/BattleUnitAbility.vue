@@ -119,7 +119,7 @@ export default {
   color: #333;
   // color: #10b981;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 50%;
   // padding: 0 3px;
   // min-width: 17px;
   // width: 17px;
