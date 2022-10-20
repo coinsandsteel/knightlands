@@ -85,8 +85,35 @@ export default {
   border-radius: 50%;
 }
 .ability-value {
-  left: -2px;
-  bottom: -2px;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  // border: solid 2px #fff;
+  color: #333;
+  // color: #10b981;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 50%;
+  // padding: 0 3px;
+  // min-width: 17px;
+  width: 3rem;
+  height: 3rem;
+  width: calc(var(--base-size) * 0.25);
+  height: calc(var(--base-size) * 0.25);
+  font-size: calc(var(--base-size) * 0.14);
+}
+.ability-value--small {
+  padding: 0 1px;
+  left: -4px;
+  bottom: -4px;
+  border-width: 0;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.25rem;
+}
+.ability-info-icon {
+  left: -15%;
+  bottom: 35%;
   background: #fff;
   // border: solid 2px #fff;
   color: #333;
@@ -95,30 +122,11 @@ export default {
   border-radius: 12px;
   // padding: 0 3px;
   // min-width: 17px;
-  width: 20px;
-  height: 20px;
-}
-.ability-value--small {
-  padding: 0 1px;
-  left: -4px;
-  bottom: -4px;
-  border-width: 0;
-  width: 14px;
-  height: 14px;
-}
-.ability-info-icon {
-  left: -8px;
-  bottom: 20px;
-  background: #fff;
-  border: solid 2px #fff;
-  color: #333;
-  // color: #10b981;
-  font-weight: 600;
-  border-radius: 12px;
-  // padding: 0 3px;
-  // min-width: 17px;
-  width: 17px;
-  height: 17px;
+  // width: 17px;
+  // height: 17px;
+  width: calc(var(--base-size) * 0.25);
+  height: calc(var(--base-size) * 0.25);
+  font-size: calc(var(--base-size) * 0.14);
 }
 // .battle-unit-ability-overlay {
 //   background: rgba(#fff, 0.5);

@@ -25,7 +25,7 @@
       <div class="absolute-stretch"></div>
       <div
         v-if="shouldShowExtraInfo && isHpVisible"
-        class="absolute battle-unit-hp font-size-18 flex flex-center"
+        class="absolute battle-unit-hp flex flex-center"
         :class="{
           'battle-unit-hp--warning': isHpWarning,
           'battle-unit-hp--danger': isHpDanger
@@ -35,15 +35,15 @@
       </div>
       <div
         v-if="shouldShowExtraInfo && unitRecord && isActiveFighterId"
-        class="absolute battle-active-fighter font-size-18"
+        class="absolute battle-active-fighter"
       />
       <div
         v-if="shouldShowExtraInfo && isAttackTarget"
-        class="absolute battle-attack-target font-size-18"
+        class="absolute battle-attack-target"
       />
       <div
         v-if="shouldShowExtraInfo && isHealTarget"
-        class="absolute battle-heal-target font-size-18"
+        class="absolute battle-heal-target"
       />
       <!-- <div
         v-if="shouldShowExtraInfo && isDead"
@@ -55,7 +55,7 @@
       /> -->
       <div
         v-if="shouldShowExtraInfo && isRatingIndexVisible"
-        class="absolute battle-rating-index font-size-18"
+        class="absolute battle-rating-index flex flex-center"
         :class="isSmallRatingIndex ? 'battle-rating-index--small' : ''"
       >
         {{ ratingIndex }}
@@ -217,17 +217,20 @@ export default {
   right: 0;
   top: 0;
   background: #fff;
-  border: solid 1px #fff;
+  // border: solid 1px #fff;
   // color: #333;
   // color: #10b981;
   // color: #ef4444;
   // color: #b91c1c;
   color: #7f1d1d;
   font-weight: 700;
-  border-radius: 12px;
-  padding: 0 5px;
-  width: 17px;
-  height: 16px;
+  border-radius: 50%;
+  // padding: 0 5px;
+  // width: 17px;
+  // height: 16px;
+  width: calc(var(--base-size) * 0.25);
+  height: calc(var(--base-size) * 0.25);
+  font-size: calc(var(--base-size) * 0.14);
 }
 // .battle-unit-hp--warning {
 //   color: #f59e0b;
@@ -236,20 +239,23 @@ export default {
 //   color: #ef4444;
 // }
 .battle-rating-index {
-  right: 0px;
-  bottom: 2px;
+  right: 0;
+  bottom: 0;
   background: #1e3a8a;
-  border: solid 1px #1e3a8a;
+  // border: solid 1px #1e3a8a;
   color: #fff;
   // color: #10b981;
   font-weight: 600;
-  border-radius: 12px;
-  padding: 0 5px;
+  border-radius: 50%;
+  // padding: 0 5px;
+  width: calc(var(--base-size) * 0.18);
+  height: calc(var(--base-size) * 0.18);
+  font-size: calc(var(--base-size) * 0.1);
 }
-.battle-rating-index--small {
-  transform: scale(0.7);
-  transform-origin: bottom right;
-}
+// .battle-rating-index--small {
+//   transform: scale(0.7);
+//   transform-origin: bottom right;
+// }
 .battle-buff-indicator {
   position: absolute;
   height: 1.4rem;
