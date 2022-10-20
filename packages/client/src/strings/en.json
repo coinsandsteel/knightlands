@@ -2849,12 +2849,12 @@
   "battle-ability-move": "Move",
   "battle-ability-attack": "Attack",
 
-  "battle-location-0": "Location 1",
-  "battle-location-1": "Location 2",
-  "battle-location-2": "Location 3",
-  "battle-location-3": "Location 4",
-  "battle-location-4": "Location 5",
-  "battle-location-5": "Location 6",
+  "battle-location-0": "Dark Forest",
+  "battle-location-1": "Swampy Trail",
+  "battle-location-2": "Death path",
+  "battle-location-3": "Hot Sands",
+  "battle-location-4": "Snow Valley",
+  "battle-location-5": "Ice Canyon",
 
   "battle-duels-high": "Hard",
   "battle-duels-medium": "Normal",
