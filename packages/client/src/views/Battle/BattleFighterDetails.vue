@@ -190,7 +190,7 @@ export default {
       if (!this.unit) {
         return 0;
       }
-      return this.unit.hp;
+      return Math.max(0, this.unit.hp);
     },
     damage() {
       if (!this.unitRecord) {
@@ -226,7 +226,7 @@ export default {
       if (!this.unit) {
         return 0;
       }
-      return this.unit.hp;
+      return Math.max(0, this.unit.hp);
     },
     baseDamage() {
       if (!this.unitRecord) {
