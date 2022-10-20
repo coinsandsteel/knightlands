@@ -203,7 +203,7 @@ export default {
               this.game.userSquad.fighters
                 ? this.game.userSquad.fighters
                 : []
-              ).map(fighter => fighter && fighter.unitTemplate)
+              ).map(fighter => fighter && fighter.unit && fighter.unit.template)
             );
             isIncluded = isIncluded && !templateIds.includes(unit.template);
           } else if (this.$route.params.slot === "merger") {

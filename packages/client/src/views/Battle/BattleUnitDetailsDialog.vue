@@ -3,7 +3,7 @@
     <template v-slot:content>
       <div v-if="unit" class="font-size-22">
         <div
-          class="battle-unit-details-wrapper margin-x-auto flex flex-no-wrap padding-left-2 flex-center margin-bottom-2 font-shadow font-weight-700"
+          class="battle-unit-details-wrapper margin-x-auto flex flex-no-wrap flex-center margin-bottom-2 font-shadow font-weight-700"
           :class="'battle-unit-tribe--' + unit.tier"
         >
           <div>
