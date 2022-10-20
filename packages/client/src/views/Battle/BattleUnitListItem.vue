@@ -55,6 +55,10 @@ export default {
         return null;
       }
 
+      if (this.unit.unit) {
+        return this.unit.unit;
+      }
+
       return (
         this.inventory.find(({ unitId }) => unitId === this.unit.unitId) ||
         this.unit

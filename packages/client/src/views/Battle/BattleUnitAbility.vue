@@ -52,7 +52,11 @@ export default {
       );
     },
     isValueVisible() {
-      return typeof this.value === "number" && this.value > 0;
+      return (
+        ["attack", "healing"].includes(this.ability.abilityType) &&
+        typeof this.value === "number" &&
+        this.value > 0
+      );
     },
     hasOverlayText() {
       return (
@@ -81,8 +85,8 @@ export default {
   border-radius: 50%;
 }
 .ability-value {
-  left: 0px;
-  bottom: 0px;
+  left: -2px;
+  bottom: -2px;
   background: #fff;
   // border: solid 2px #fff;
   color: #333;

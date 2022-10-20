@@ -2,16 +2,16 @@
   <div
     class="battle-unit"
     :class="[
-      unit
+      unitRecord
         ? 'battle-unit--tier-' +
-          unit.tier +
+          unitRecord.tier +
           ' battle-unit' +
           '--' +
-          unit.tribe +
+          unitRecord.tribe +
           '_' +
-          unit.class +
+          unitRecord.class +
           ' battle-unit--template-' +
-          (unit.template || unit.unitTemplate)
+          unitRecord.template
         : 'battle-unit--empty',
       isEnemy ? 'battle-unit--enemy' : '',
       shouldShowExtraInfo && isDead ? 'battle-unit--dead' : ''
@@ -20,7 +20,7 @@
   >
     <div class="battle-unit-wrapper relative">
       <div class="battle-unit-background-color absolute"></div>
-      <div v-if="unit" class="battle-unit-image absolute"></div>
+      <div v-if="unitRecord" class="battle-unit-image absolute"></div>
       <div class="battle-unit-background absolute-stretch"></div>
       <div class="absolute-stretch"></div>
       <div
@@ -34,7 +34,7 @@
         {{ hp }}
       </div>
       <div
-        v-if="shouldShowExtraInfo && unit && isActiveFighterId"
+        v-if="shouldShowExtraInfo && unitRecord && isActiveFighterId"
         class="absolute battle-active-fighter font-size-18"
       />
       <div
@@ -88,7 +88,12 @@
         x{{ quantity }}
       </div>
       <CrownIcon
-        v-if="shouldShowExtraInfo && isBossIconVisible && unit && unit.isBoss"
+        v-if="
+          shouldShowExtraInfo &&
+            isBossIconVisible &&
+            unitRecord &&
+            unitRecord.isBoss
+        "
         class="battle-unit-boss"
       />
     </div>
@@ -127,14 +132,17 @@ export default {
   },
   computed: {
     ...mapGetters("battle", ["fighters"]),
+    unitRecord() {
+      return this.unit && this.unit.unit ? this.unit.unit : this.unit;
+    },
     hp() {
       return this.unit ? Math.max(0, this.unit.hp || 0) : null;
     },
     maxHp() {
-      return this.unit &&
-        this.unit.characteristics &&
-        this.unit.characteristics.hp
-        ? this.unit.characteristics.hp
+      return this.unitRecord &&
+        this.unitRecord.characteristics &&
+        this.unitRecord.characteristics.hp
+        ? this.unitRecord.characteristics.hp
         : 0;
     },
     isHpWarning() {
@@ -176,13 +184,16 @@ export default {
       return typeof this.ratingIndex === "number";
     },
     quantity() {
-      let quantity = this.unit && this.unit.quantity ? this.unit.quantity : 0;
+      let quantity =
+        this.unitRecord && this.unitRecord.quantity
+          ? this.unitRecord.quantity
+          : 0;
 
-      if (this.unit && this.shouldExcludeSquadQuantity && quantity) {
+      if (this.unitRecord && this.shouldExcludeSquadQuantity && quantity) {
         quantity =
           quantity -
           this.fighters.filter(
-            fighter => fighter && fighter.unitId === this.unit.unitId
+            fighter => fighter && fighter.unitId === this.unitRecord.unitId
           ).length;
       }
 

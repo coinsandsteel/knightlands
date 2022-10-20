@@ -156,13 +156,15 @@ export default {
           : this.ability.value
         : null;
 
-      if (!value) {
+      if (
+        !(["attack", "healing"].includes(this.ability.abilityType) && value)
+      ) {
         return null;
       }
 
       // return (value > 0 ? "+" : "") + value;
       return value;
-    },
+    }
     // damage() {
     //   const value = this.ability ? this.ability.damage : null;
 
@@ -190,30 +192,6 @@ export default {
 
     //   return "speed: " + (value > 0 ? "+" : "-") + value;
     // },
-    description() {
-      const items = [];
-
-      if (this.name) {
-        items.push(this.$t("battle-ability-" + this.name));
-      }
-      if (this.level) {
-        items.push(this.level);
-      }
-      if (this.value) {
-        items.push(this.value);
-      }
-      // if (this.damage) {
-      //   items.push(this.damage);
-      // }
-      // if (this.defence) {
-      //   items.push(this.defence);
-      // }
-      // if (this.speed) {
-      //   items.push(this.speed);
-      // }
-
-      return items.join(", ");
-    }
   },
   methods: {
     // async upgradeHandler() {
@@ -229,21 +207,30 @@ export default {
       }
 
       this.$store.dispatch("battle/upgradeUnitAbility", {
-        unitId: this.unit.unitId,
+        unitId:
+          this.unit && this.unit.unit
+            ? this.unit.unit.unitId
+            : this.unit.unitId,
         ability: this.ability.abilityClass
       });
     },
     increaseHandler() {
       this.$store.dispatch("battle/testAction", {
         action: "increaseAbilityLevel",
-        unitId: this.unit.unitId,
+        unitId:
+          this.unit && this.unit.unit
+            ? this.unit.unit.unitId
+            : this.unit.unitId,
         abilityClass: this.ability.abilityClass
       });
     },
     decreaseHandler() {
       this.$store.dispatch("battle/testAction", {
         action: "decreaseAbilityLevel",
-        unitId: this.unit.unitId,
+        unitId:
+          this.unit && this.unit.unit
+            ? this.unit.unit.unitId
+            : this.unit.unitId,
         abilityClass: this.ability.abilityClass
       });
     }

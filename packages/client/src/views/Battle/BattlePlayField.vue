@@ -134,13 +134,16 @@
             @click="showFighterDetails(activeFighter.fighterId)"
           />
         </div>
-        <div class="font-size-22 text-align-center white-space-no-wrap">
-          <template v-if="activeFighter.name">
-            {{ activeFighter.name }}
+        <div
+          v-if="activeFighter.unit"
+          class="font-size-22 text-align-center white-space-no-wrap"
+        >
+          <template v-if="activeFighter.unit.name">
+            {{ activeFighter.unit.name }}
           </template>
           <template v-else>
-            {{ $t("battle-unit-tribe-" + activeFighter.tribe) }}
-            {{ $t("battle-unit-class-" + activeFighter.class) }}
+            {{ $t("battle-unit-tribe-" + activeFighter.unit.tribe) }}
+            {{ $t("battle-unit-class-" + activeFighter.unit.class) }}
           </template>
         </div>
       </div>
@@ -339,7 +342,7 @@ export default {
       return this.myActiveFighter ? this.myActiveFighter.fighterId : null;
     },
     abilities() {
-      if (!this.myActiveFighter) {
+      if (!(this.myActiveFighter && this.myActiveFighter.unit)) {
         return [];
       }
 
@@ -349,7 +352,7 @@ export default {
       ];
       // const abilities =
       //   this.myActiveFighter.abilities.filter(({ enabled }) => enabled) || [];
-      const abilities = this.myActiveFighter.abilities || [];
+      const abilities = this.myActiveFighter.unit.abilities || [];
 
       return [...additionalAbilities, ...abilities];
     },
@@ -776,7 +779,7 @@ export default {
       // console.log("step", step);
       const ability = step.ability || step.buff;
       const abilityClass = ability ? ability.abilityClass : null;
-      const abilityType = ability ? ability.abilityType : null;
+      // const abilityType = ability ? ability.abilityType : null;
       if (
         step.source &&
         step.source.fighterId &&
@@ -842,11 +845,12 @@ export default {
           // // el.style = "opacity: 0;";
 
           const damage = ability
-            ? Math.round(ability.combatValue * 100) / 100 || 0
+            ? Math.round((ability.damage || 0) * 100) / 100
             : 0;
           const isCriticalHit = ability && ability.criticalHit;
           let colorClass = "";
-          if (abilityType && abilityType === battle.ABILITY_TYPE_ATTACK) {
+          // if (abilityType && abilityType === battle.ABILITY_TYPE_ATTACK) {
+          if (ability.damage) {
             // source and target the same side
             if (
               (isSourceMyFighter && isTargetMyFighter) ||
@@ -856,7 +860,8 @@ export default {
             } else {
               colorClass = "battle-ability-effect-value--red";
             }
-          } else if (abilityType && abilityType !== battle.ABILITY_TYPE_JUMP) {
+            // } else if (abilityType && abilityType !== battle.ABILITY_TYPE_JUMP) {
+          } else {
             // buff, debuff, self buff, healing
             colorClass = "battle-ability-effect-value--blue";
           }
@@ -899,6 +904,7 @@ export default {
           //   yDiff,
           //   `${yDiff * 100}%`
           // );
+          // console.log("diff", diff);
           if (diff > 0) {
             // console.log("diff", diff, step);
             const animation = anime({
@@ -957,62 +963,62 @@ export default {
     async abilityEffectHandler(step) {
       await this.abilityEffectFromSourceToTargetHandler(step);
 
-      // @todo: clean up
-      if (step) {
-        return;
-      }
+      // // @todo: clean up
+      // if (step) {
+      //   return;
+      // }
 
-      const ability = step.ability || step.buff;
-      const abilityClass = ability ? ability.abilityClass : null;
-      const abilityType = ability ? ability.abilityType : null;
-      const damage = ability
-        ? Math.round(ability.combatValue * 100) / 100 || 0
-        : 0;
-      const isCriticalHit = ability && ability.criticalHit;
-      const isSourceMyFighter =
-        step.source && step.source.fighterId
-          ? !!this.fighters.find(
-              fighter => fighter && fighter.fighterId === step.source.fighterId
-            )
-          : false;
-      const isTargetMyFighter =
-        step.target && step.target.fighterId
-          ? !!this.fighters.find(
-              fighter => fighter && fighter.fighterId === step.target.fighterId
-            )
-          : false;
-      let colorClass = "";
-      if (abilityType && abilityType === battle.ABILITY_TYPE_ATTACK) {
-        // source and target the same side
-        if (
-          (isSourceMyFighter && isTargetMyFighter) ||
-          !(isSourceMyFighter || isTargetMyFighter)
-        ) {
-          colorClass = "battle-ability-effect-value--green";
-        } else {
-          colorClass = "battle-ability-effect-value--red";
-        }
-      } else if (abilityType && abilityType !== battle.ABILITY_TYPE_JUMP) {
-        // buff, debuff, self buff, healing
-        colorClass = "battle-ability-effect-value--blue";
-      }
+      // const ability = step.ability || step.buff;
+      // const abilityClass = ability ? ability.abilityClass : null;
+      // // const abilityType = ability ? ability.abilityType : null;
+      // const damage = ability ? Math.round(ability.damage * 100) / 100 || 0 : 0;
+      // const isCriticalHit = ability && ability.criticalHit;
+      // const isSourceMyFighter =
+      //   step.source && step.source.fighterId
+      //     ? !!this.fighters.find(
+      //         fighter => fighter && fighter.fighterId === step.source.fighterId
+      //       )
+      //     : false;
+      // const isTargetMyFighter =
+      //   step.target && step.target.fighterId
+      //     ? !!this.fighters.find(
+      //         fighter => fighter && fighter.fighterId === step.target.fighterId
+      //       )
+      //     : false;
+      // let colorClass = "";
+      // // if (abilityType && abilityType === battle.ABILITY_TYPE_ATTACK) {
+      // if (ability.damage) {
+      //   // source and target the same side
+      //   if (
+      //     (isSourceMyFighter && isTargetMyFighter) ||
+      //     !(isSourceMyFighter || isTargetMyFighter)
+      //   ) {
+      //     colorClass = "battle-ability-effect-value--green";
+      //   } else {
+      //     colorClass = "battle-ability-effect-value--red";
+      //   }
+      //   // } else if (abilityType && abilityType !== battle.ABILITY_TYPE_JUMP) {
+      // } else {
+      //   // buff, debuff, self buff, healing
+      //   colorClass = "battle-ability-effect-value--blue";
+      // }
 
-      const el = document.createElement("div");
-      el.className =
-        "absolute-stretch flex flex-center text-center font-size-18 font-weight-700";
-      el.style = "opacity: 0;";
-      el.innerHTML =
-        '<div class="battle-ability-effect _battle-ability-effect--attack_ battle-ability-effect--' +
-        abilityClass +
-        '"></div>' +
-        '<div class="battle-ability-effect-value margin-left-half ' +
-        colorClass +
-        '">' +
-        damage +
-        (isCriticalHit ? " Crit!" : "") +
-        "</div>";
-      await this.animateSlideAndFade({ index: step.target.index, el });
-      el.parentElement.removeChild(el);
+      // const el = document.createElement("div");
+      // el.className =
+      //   "absolute-stretch flex flex-center text-center font-size-18 font-weight-700";
+      // el.style = "opacity: 0;";
+      // el.innerHTML =
+      //   '<div class="battle-ability-effect _battle-ability-effect--attack_ battle-ability-effect--' +
+      //   abilityClass +
+      //   '"></div>' +
+      //   '<div class="battle-ability-effect-value margin-left-half ' +
+      //   colorClass +
+      //   '">' +
+      //   damage +
+      //   (isCriticalHit ? " Crit!" : "") +
+      //   "</div>";
+      // await this.animateSlideAndFade({ index: step.target.index, el });
+      // el.parentElement.removeChild(el);
     },
     async terrainEffectHandler(step) {
       await sleep(100);
@@ -1251,7 +1257,7 @@ export default {
 .battle-current-active-fighter-abilities
   .battle-current-active-fighter-ability:nth-child(2) {
   right: 105%;
-  top: -10%;
+  top: -15%;
 }
 .battle-current-active-fighter-abilities
   .battle-current-active-fighter-ability:nth-child(3) {

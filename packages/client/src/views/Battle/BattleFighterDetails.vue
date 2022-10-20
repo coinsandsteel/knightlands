@@ -1,17 +1,22 @@
 <template>
   <UserDialog
-    :title="unit ? unit.name + (unit.isBoss ? ' - Boss' : '') : ''"
+    :title="
+      unitRecord ? unitRecord.name + (unitRecord.isBoss ? ' - Boss' : '') : ''
+    "
     @close="close"
   >
     <template v-slot:content>
-      <div v-if="unit" class="battle-fighter-details-container font-size-22">
+      <div
+        v-if="unitRecord"
+        class="battle-fighter-details-container font-size-22"
+      >
         <div
           class="battle-fighter-details-wrapper margin-x-auto flex flex-center flex-wrap padding-left-2 margin-bottom-2 font-weight-700"
-          :class="'battle-unit-tribe--' + unit.tier"
+          :class="'battle-unit-tribe--' + unitRecord.tier"
         >
           <div>
-            {{ $t("battle-unit-tribe-" + unit.tribe) }}
-            {{ $t("battle-unit-class-" + unit.class) }}
+            {{ $t("battle-unit-tribe-" + unitRecord.tribe) }}
+            {{ $t("battle-unit-class-" + unitRecord.class) }}
           </div>
         </div>
         <div
@@ -155,26 +160,31 @@ export default {
         fighter => fighter && fighter.fighterId === this.fighterId
       );
     },
+    unitRecord() {
+      return this.unit && this.unit.unit ? this.unit.unit : this.unit;
+    },
     abilities() {
-      return (this.unit && this.unit.abilities
-        ? this.unit.abilities
+      return (this.unitRecord && this.unitRecord.abilities
+        ? this.unitRecord.abilities
         : []
       ).filter(({ enabled }) => enabled);
     },
     expValue() {
-      return this.unit && this.unit.expirience
-        ? this.unit.expirience.currentLevelExp || 0
+      return this.unitRecord && this.unitRecord.expirience
+        ? this.unitRecord.expirience.currentLevelExp || 0
         : 0;
     },
     expMaxValue() {
       const next =
-        this.unit && this.unit.expirience
-          ? this.unit.expirience.nextLevelExp || 0
+        this.unitRecord && this.unitRecord.expirience
+          ? this.unitRecord.expirience.nextLevelExp || 0
           : 0;
       return next;
     },
     level() {
-      return this.unit && this.unit.level ? this.unit.level.current : "";
+      return this.unitRecord && this.unitRecord.level
+        ? this.unitRecord.level.current
+        : "";
     },
     hp() {
       if (!this.unit) {
@@ -183,16 +193,16 @@ export default {
       return this.unit.hp;
     },
     damage() {
-      if (!this.unit) {
+      if (!this.unitRecord) {
         return 0;
       }
-      const attackAbility = this.unit.abilities.find(
+      const attackAbility = this.unitRecord.abilities.find(
         ({ abilityClass }) => abilityClass === "attack"
       );
       if (attackAbility) {
         return Math.round(attackAbility.combatValue * 100) / 100;
       }
-      return this.unit.characteristics.damage;
+      return this.unitRecord.characteristics.damage;
     },
     defence() {
       if (!this.unit) {
@@ -219,16 +229,16 @@ export default {
       return this.unit.hp;
     },
     baseDamage() {
-      if (!this.unit) {
+      if (!this.unitRecord) {
         return 0;
       }
-      const attackAbility = this.unit.abilities.find(
+      const attackAbility = this.unitRecord.abilities.find(
         ({ abilityClass }) => abilityClass === "attack"
       );
       if (attackAbility) {
         return Math.round(attackAbility.combatValue * 100) / 100;
       }
-      return this.unit.characteristics.damage;
+      return this.unitRecord.characteristics.damage;
     },
     baseDefence() {
       if (!this.unit) {

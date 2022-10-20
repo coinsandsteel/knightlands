@@ -1,30 +1,39 @@
 <template>
-  <UserDialog title="ability details" @close="close()">
+  <UserDialog
+    :title="ability ? $t('battle-ability-' + ability.abilityClass) : ''"
+    @close="close()"
+  >
     <template v-slot:content>
       <div v-if="ability" class="font-size-22">
         <div
-          class="battle-ability-details-wrapper margin-x-auto flex flex-wrap padding-left-2"
+          class="battle-ability-details-wrapper margin-x-auto flex flex-wrap flex-center padding-left-2"
         >
-          <div class="">
+          <div>
             <BattleUnitAbility
               :ability="ability"
               class="battle-ability-icon pointer"
             />
-            <div class="font-size-22 text-align-center white-space-no-wrap">
+            <!-- <div class="font-size-22 text-align-center white-space-no-wrap">
               {{ $t("battle-ability-" + ability.abilityClass) }}
-            </div>
-            <div class="font-size-22 text-align-center white-space-no-wrap">
+            </div> -->
+            <!-- <div class="font-size-22 text-align-center white-space-no-wrap">
               Level:
               {{ ability.levelInt || (ability.level && ability.level.current) }}
-            </div>
+            </div> -->
           </div>
           <div
-            class="flex-grow-1 flex flex-column flex-justify-center text-align-left width-35 margin-left-2 margin-top--5"
+            class="flex-grow-1 flex flex-column flex-justify-center text-align-left width-35 margin-left-2 _margin-top--5"
           >
             <!-- <div>Tier: {{ unit.tier }}</div>
               <div>Level: {{ unit.levelInt }}</div> -->
             <!-- <div>Hp: {{ "" }}</div> -->
-            <div>Damage: {{ ability.combatValue | rounded2Decimal }}</div>
+            <div>
+              Level:
+              {{ ability.levelInt || (ability.level && ability.level.current) }}
+            </div>
+            <div v-if="['attack', 'healing'].includes(ability.abilityType)">
+              Damage/Heal: {{ ability.combatValue | rounded2Decimal }}
+            </div>
             <div>Effect: {{ effect }}</div>
             <div v-if="ability.cooldown && ability.cooldown.estimate">
               Cooldown:

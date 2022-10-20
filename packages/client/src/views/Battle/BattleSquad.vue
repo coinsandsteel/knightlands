@@ -90,9 +90,10 @@ export default {
         if (!fighter) {
           return prev + 0;
         }
-        const unit = this.inventory.find(
-          ({ unitId }) => fighter.unitId === unitId
-        );
+        // const unit = this.inventory.find(
+        //   ({ unitId }) => fighter.unitId === unitId
+        // );
+        const unit = fighter.unit;
         return prev + (unit ? unit.power || 0 : 0);
       }, 0);
     },
