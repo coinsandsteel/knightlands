@@ -40,7 +40,7 @@
 
     <portal to="footer" :slim="true" v-if="isActive">
       <template v-if="true">
-        <CustomButton type="blue" @click="resetDuelsCounterHandler"
+        <CustomButton v-if="false" type="blue" @click="resetDuelsCounterHandler"
           >Reset Duels Counter</CustomButton
         >
       </template>

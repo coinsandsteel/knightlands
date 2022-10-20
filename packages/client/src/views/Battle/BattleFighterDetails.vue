@@ -16,7 +16,7 @@
         >
           <div>
             {{ $t("battle-unit-tribe-" + unitRecord.tribe) }}
-            {{ $t("battle-unit-class-" + unitRecord.class) }}
+            {{ $t("battle-unit-class-" + unitRecord.class) }}, level {{ level }}
           </div>
         </div>
         <div

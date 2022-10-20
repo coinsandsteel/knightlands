@@ -65,6 +65,7 @@
             <div v-if="true">
               <template v-if="!maxLevelReached">
                 <CustomButton
+                  v-if="false"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(100)"
@@ -72,6 +73,7 @@
                   +100 exp
                 </CustomButton>
                 <CustomButton
+                  v-if="false"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(500)"
@@ -79,6 +81,7 @@
                   +500 exp
                 </CustomButton>
                 <CustomButton
+                  v-if="false"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(5000)"

@@ -40,10 +40,12 @@
         > -->
         <portal to="footer" :slim="true" v-if="isActive">
           <template v-if="true">
-            <CustomButton type="blue" @click="buildSquad"
+            <CustomButton v-if="false" type="blue" @click="buildSquad"
               >Build squad</CustomButton
             >
-            <CustomButton type="red" @click="maxSquad">Maximize</CustomButton>
+            <CustomButton v-if="false" type="yellow" @click="makeTier2">Set tier 2</CustomButton>
+            <CustomButton v-if="false" type="yellow" @click="makeTier3">Set tier 3</CustomButton>
+            <CustomButton v-if="false" type="red" @click="maxSquad">Maximize</CustomButton>
           </template>
         </portal>
       </div>
@@ -304,6 +306,16 @@ export default {
     maxSquad() {
       this.$store.dispatch("battle/testAction", {
         action: "maxSquad"
+      });
+    },
+    makeTier2() {
+      this.$store.dispatch("battle/testAction", {
+        action: "makeSquadTier2"
+      });
+    },
+    makeTier3() {
+      this.$store.dispatch("battle/testAction", {
+        action: "makeSquadTier3"
       });
     },
     async clickHandler({ unit, index }) {
