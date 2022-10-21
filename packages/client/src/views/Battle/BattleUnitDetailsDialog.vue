@@ -46,7 +46,7 @@
             <!-- <div class="margin-top-half">Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.levelInt }}</div>
             <div>Power: {{ unit.power }}</div> -->
-            <div>Attack: {{ unit.characteristics.damage }}</div>
+            <div>Attack: {{ damage }}</div>
             <div>Defence: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
             <div>Initiative: {{ unit.characteristics.initiative }}</div>
@@ -105,6 +105,18 @@ export default {
     isSelectButtonVisible: { type: Boolean, default: true }
   },
   computed: {
+    damage() {
+      if (!this.unit) {
+        return 0;
+      }
+      const attackAbility = this.unit.abilities.find(
+        ({ abilityClass }) => abilityClass === "attack"
+      );
+      if (attackAbility) {
+        return Math.round(attackAbility.combatValue * 100) / 100;
+      }
+      return this.unit.characteristics.damage;
+    },
     expValue() {
       return this.unit && this.unit.expirience
         ? this.unit.expirience.currentLevelExp || 0

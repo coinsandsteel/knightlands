@@ -34,7 +34,7 @@
                     <div>Power: {{ unit.power }}</div>
                   </div>
                   <div class="text-align-left margin-left-2">
-                    <div>Attack: {{ unit.characteristics.damage }}</div>
+                    <div>Attack: {{ damage }}</div>
                     <div>Defence: {{ unit.characteristics.defence }}</div>
                     <div>Speed: {{ unit.characteristics.speed }}</div>
                     <div>Initiative: {{ unit.characteristics.initiative }}</div>
@@ -186,6 +186,18 @@ export default {
       }
 
       return null;
+    },
+    damage() {
+      if (!this.unit) {
+        return 0;
+      }
+      const attackAbility = this.unit.abilities.find(
+        ({ abilityClass }) => abilityClass === "attack"
+      );
+      if (attackAbility) {
+        return Math.round(attackAbility.combatValue * 100) / 100;
+      }
+      return this.unit.characteristics.damage;
     },
     nextLevel() {
       return this.unit && this.unit.level ? this.unit.level.next : null;
