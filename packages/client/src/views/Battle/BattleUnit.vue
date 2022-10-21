@@ -14,7 +14,10 @@
           unitRecord.template
         : 'battle-unit--empty',
       isEnemy ? 'battle-unit--enemy' : '',
-      shouldShowExtraInfo && isDead ? 'battle-unit--dead' : ''
+      shouldShowExtraInfo && isDead ? 'battle-unit--dead' : '',
+      shouldShowExtraInfo && unitRecord && isActiveFighterId
+        ? 'battle-unit--active'
+        : ''
     ]"
     @click="clickHandler"
   >
@@ -33,10 +36,10 @@
       >
         {{ hp }}
       </div>
-      <div
+      <!-- <div
         v-if="shouldShowExtraInfo && unitRecord && isActiveFighterId"
         class="absolute battle-active-fighter"
-      />
+      /> -->
       <div
         v-if="shouldShowExtraInfo && isAttackTarget"
         class="absolute battle-attack-target"
@@ -290,15 +293,15 @@ export default {
 .battle-buff-indicator-icon--red {
   color: #ef4444;
 }
-.battle-active-fighter {
-  top: 10%;
-  left: 10%;
-  width: 12%;
-  height: 12%;
-  border-radius: 50%;
-  background: #333;
-  border: 0.5px solid rgba(#fff, 0.8);
-}
+// .battle-active-fighter {
+//   top: 10%;
+//   left: 10%;
+//   width: 12%;
+//   height: 12%;
+//   border-radius: 50%;
+//   background: #333;
+//   border: 0.5px solid rgba(#fff, 0.8);
+// }
 .battle-attack-target {
   top: 10%;
   left: 10%;
@@ -372,6 +375,10 @@ export default {
 }
 .battle-unit--tier-3 .battle-unit-background {
   background: url("/images/battle/portrait_border_purple.png") center/100%
+    no-repeat;
+}
+.battle-unit--active .battle-unit-background {
+  background: url("/images/battle/portrait_border_gold.png") center/100%
     no-repeat;
 }
 .battle-unit-image {
