@@ -64,6 +64,7 @@
                 @click="goToShop"
               >
                 Shop
+                <div v-if="canClaim" class="marker marker-pos"></div>
               </CustomButton>
             </div>
             <!--div>
@@ -104,6 +105,13 @@ export default {
     ...mapState("battle", ["user"]),
     energy() {
       return this.user.balance.energy;
+    },
+    canClaim() {
+      return (
+        this.user &&
+        this.user.items &&
+        this.user.items.find(item => item && item.quantity > 0)
+      );
     }
   },
   activated() {
@@ -155,5 +163,14 @@ export default {
   transform: translateX(-50%);
   width: 80%;
   max-height: unset;
+}
+.marker-pos {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  z-index: 10;
+  width: 2rem;
+  height: 2rem;
+  transform: translateX(75%);
 }
 </style>
