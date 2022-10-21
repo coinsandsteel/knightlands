@@ -21,7 +21,7 @@
                 <template v-slot:marker> <DailyTasksMarker /> </template
               ></MenuIcon>
               <MenuIcon
-                icon="skewed_icon_april"
+                icon="skewed_icon_battle"
                 :to="{ path: '/battle' }"
                 :append="true"
                 id="battle"
