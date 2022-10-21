@@ -73,7 +73,6 @@ export default {
     },
     duelsLeft() {
       const dateString = getCurrentDateString();
-
       const doneDuelsCount =
         this.user.counters &&
         this.user.counters.duels &&

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function capitalize(str) {
   if (typeof string === "string" && str.length > 0) {
     return str[0].toUpperCase() + str.slice(1);
@@ -46,5 +48,7 @@ export function removeClass(el, className) {
 }
 
 export function getCurrentDateString () {
-  return new Date().toLocaleDateString("en-US");
+  const date = moment.utc().format('dddd, MMMM Do YYYY, h:mm:ss a');
+  console.log(date);
+  return date;
 }

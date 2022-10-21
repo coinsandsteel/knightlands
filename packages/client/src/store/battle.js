@@ -416,13 +416,14 @@ export default {
         Vue.delete(state.inventory, index);
       }
 
-      // Update an inventory unit
       if (data.updateUnit !== undefined) {
-        const index = state.inventory.findIndex(
-          unit => unit.unitId === data.updateUnit.unitId
-        );
-        if (index !== -1) {
-          Vue.set(state.inventory, index, data.updateUnit);
+        for (let unitId in data.updateUnit) {
+          const index = state.inventory.findIndex(
+            unit => unit.unitId === unitId
+          );
+          if (index !== -1) {
+            Vue.set(state.inventory, index, data.updateUnit[unitId]);
+          }
         }
       }
 
