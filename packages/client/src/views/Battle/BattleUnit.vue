@@ -296,7 +296,7 @@ export default {
   width: 12%;
   height: 12%;
   border-radius: 50%;
-  background: #a3e635;
+  background: #333;
   border: 0.5px solid rgba(#fff, 0.8);
 }
 .battle-attack-target {
@@ -314,7 +314,7 @@ export default {
   width: 12%;
   height: 12%;
   border-radius: 50%;
-  background: #2563eb;
+  background: #a3e635;
   border: 0.5px solid rgba(#fff, 0.8);
 }
 // .battle-dead-indicator {
