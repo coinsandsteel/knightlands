@@ -863,15 +863,14 @@ export default {
     // BattleEnterLevel - Start from level > 1
     // - location: number
     // - level: number
-    async enterLevel(store, { location, level, difficulty }) {
+    async enterLevel(store, { location, level }) {
       /*Vue.prototype.$app.logEvent("april-next-lvl", {
         level: store.state.level + 1,
         booster
       });*/
       await this.$app.$game._wrapOperation(Operations.BattleEnterLevel, {
         location,
-        level,
-        difficulty
+        level
       });
       //store.commit("setIsDisabled", false);
     },
