@@ -62,7 +62,7 @@
                 ></ProgressBar>
               </template>
             </div>
-            <div v-if="true">
+            <div v-if="false">
               <template v-if="!maxLevelReached">
                 <CustomButton
                   v-if="false"
