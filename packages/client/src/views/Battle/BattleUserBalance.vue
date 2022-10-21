@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tint">
     <progress-bar
       :maxValue="BATTLE_MAX_ENERGY"
       :value="energy"
@@ -41,3 +41,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.tint {
+  background-color: rgba(0, 0, 0, 0.555);
+}
+</style>

@@ -129,7 +129,7 @@
     <RaceFinishedNotification />
     <SectionLockedNotification />
 
-    <Tutorial ref="tutorial" v-if="$game.authenticated" />
+    <Tutorial ref="tutorial" v-if="$game.authenticated" :scenario="tutorialScenario" :state="$store.state.tutorial" />
 
     <dialogs-wrapper transition-name="fade" />
     <AudioPlayer ref="audio" :volume="0.3" />
@@ -163,6 +163,7 @@ import PromptMixin from "@/components/PromptMixin.vue";
 import { create } from "vue-modal-dialogs";
 import * as Operations from "@/../../knightlands-shared/operations";
 import Config from "./config";
+import Scenario from "@/store/scenario";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -209,6 +210,7 @@ export default {
   mixins: [PromptMixin],
   data() {
     return {
+      tutorialScenario: Scenario,
       showBackMenu: false,
       title: null,
       loading: true,

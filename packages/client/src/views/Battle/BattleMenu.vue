@@ -1,20 +1,25 @@
 <template>
-  <div class="screen-content" v-bar>
+  <div class="screen-content">
+    <div class="screen-background art"></div>
+
+    <div class="flex flex-column flex-full overflow-auto" v-bar>
     <div>
       <div class="height-100 flex flex-column flex-no-wrap">
         <BattleUserBalance
           class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
         >
-          <img
-            class="battle-of-heroes"
-            src="/images/battle/battle-of-heroes.png"
-          />
         </BattleUserBalance>
+
+        <img
+            class="battle-of-heroes"
+            src="/images/battle/battle-of-heroes2.png"
+          />
+          
         <div class="font-size-22 height-100_ flex-full flex flex-center">
           <div>
             <div>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-2"
                 @click="goToAdventure"
               >
@@ -23,7 +28,7 @@
             </div>
             <div>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-2"
                 @click="goToDuels"
               >
@@ -32,7 +37,7 @@
             </div>
             <div>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-2"
                 @click="goToSquad"
               >
@@ -41,7 +46,7 @@
             </div>
             <div>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-2"
                 @click="goToUnitsList"
               >
@@ -50,7 +55,7 @@
             </div>
             <div>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-2"
                 @click="goToMerger"
               >
@@ -59,7 +64,7 @@
             </div>
             <div>
               <CustomButton
-                type="green"
+                type="blue"
                 class="inline-block margin-right-2 margin-top-2"
                 @click="goToShop"
               >
@@ -80,6 +85,8 @@
       </div>
     </div>
   </div>
+  </div>
+  
 </template>
 <script>
 import { mapState } from "vuex";
@@ -149,11 +156,19 @@ export default {
   width: 30rem;
 }
 .battle-of-heroes {
-  position: absolute;
-  top: 70px;
+  position: relative;
+  padding-top: 2rem;
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
   max-height: unset;
 }
+
+.art {
+  background-image: url("../../assets/backgrounds/heroes-bg1.jpg");
+  background-size: contain;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
 </style>

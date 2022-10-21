@@ -23,14 +23,13 @@
 <script>
 import TutorialForcedElement from "./TutorialForcedElement.vue";
 import TutorialDialog from "./TutorialDialog.vue";
-import { mapState } from "vuex";
-import Scenario from "@/store/scenario";
 import MusicButton from "@/components/MusicButton.vue";
 import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 
 export default {
   mixins: [InventoryListenerMixin],
   components: { MusicButton, TutorialForcedElement, TutorialDialog },
+  props: ["scenario", "state"],
   data: () => ({
     inited: false
   }),
@@ -72,13 +71,17 @@ export default {
     await this.trySkipAction();
   },
   computed: {
-    ...mapState({
-      step: state => state.tutorial.step,
-      conditionPassed: state => state.tutorial.conditionPassed,
-      actionIndex: state => state.tutorial.actionIndex
-    }),
+    step() {
+      return this.state.step;
+    },
+    conditionPassed() {
+      return this.state.conditionPassed;
+    },
+    actionIndex() {
+      return this.state.actionIndex;
+    },
     isFinished() {
-      return this.step + 1 > Scenario.length || !this.conditionPassed;
+      return this.step + 1 > this.scenario.length || !this.conditionPassed;
     },
     pointerData() {
       if (!this.actionData) {
@@ -118,7 +121,7 @@ export default {
         return null;
       }
 
-      return Scenario[this.step];
+      return this.scenario[this.step];
     }
   },
   methods: {

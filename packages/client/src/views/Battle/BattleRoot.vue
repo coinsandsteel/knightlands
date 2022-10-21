@@ -17,6 +17,8 @@
         <router-view></router-view>
       </keep-alive>
     </div>
+
+    <!-- <Tutorial ref="tutorial" :scenario="tutorialScenario" :state="{'step':0, 'conditionPassed': true, 'actionIndex': 0}" /> -->
   </div>
 </template>
 <script>
@@ -80,6 +82,7 @@ export default {
     }
   },
   created() {
+    this.$options.useRouterBack = true;
     // this.title = this.$t("battle-event");
     // this.$store.$app.$on("battle-show-daily-reward", this.tryToShowRewards);
   },
@@ -111,4 +114,4 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>
+
