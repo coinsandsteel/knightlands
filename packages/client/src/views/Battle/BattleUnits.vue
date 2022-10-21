@@ -61,10 +61,10 @@
       <CustomButton v-if="false" type="green" @click="addTopUnitsHandler">
         Add Top Units
       </CustomButton>
-      <CustomButton v-if="true" type="green" @click="addUnitHandler">
+      <CustomButton v-if="false" type="green" @click="addUnitHandler">
         Add Unit
       </CustomButton>
-      <CustomButton v-if="true" type="red" @click="clearUnitsHandler">
+      <CustomButton v-if="false" type="red" @click="clearUnitsHandler">
         Clear Units
       </CustomButton>
       <CustomButton type="grey" @click="showUnitsFilter"
