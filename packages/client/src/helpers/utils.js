@@ -47,8 +47,7 @@ export function removeClass(el, className) {
   }
 }
 
-export function getCurrentDateString () {
-  const date = moment.utc().format('dddd, MMMM Do YYYY, h:mm:ss a');
-  console.log(date);
+export function getCurrentDateString() {
+  const date = moment.utc().format('DD/MM/YYYY');
   return date;
 }
