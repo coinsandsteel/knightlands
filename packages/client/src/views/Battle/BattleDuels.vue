@@ -39,7 +39,7 @@
     </div>
 
     <portal to="footer" :slim="true" v-if="isActive">
-      <template v-if="true">
+      <template v-if="false">
         <CustomButton v-if="false" type="blue" @click="resetDuelsCounterHandler"
           >Reset Duels Counter</CustomButton
         >

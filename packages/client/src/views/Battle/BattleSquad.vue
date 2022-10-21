@@ -39,13 +39,19 @@
           >{{ $t("add") }}</CustomButton
         > -->
         <portal to="footer" :slim="true" v-if="isActive">
-          <template v-if="true">
+          <template v-if="false">
             <CustomButton v-if="false" type="blue" @click="buildSquad"
               >Build squad</CustomButton
             >
-            <CustomButton v-if="false" type="yellow" @click="makeTier2">Set tier 2</CustomButton>
-            <CustomButton v-if="false" type="yellow" @click="makeTier3">Set tier 3</CustomButton>
-            <CustomButton v-if="false" type="red" @click="maxSquad">Maximize</CustomButton>
+            <CustomButton v-if="false" type="yellow" @click="makeTier2"
+              >Set tier 2</CustomButton
+            >
+            <CustomButton v-if="false" type="yellow" @click="makeTier3"
+              >Set tier 3</CustomButton
+            >
+            <CustomButton v-if="false" type="red" @click="maxSquad"
+              >Maximize</CustomButton
+            >
           </template>
         </portal>
       </div>
