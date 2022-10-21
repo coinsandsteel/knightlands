@@ -173,7 +173,7 @@ export default {
 }
 .art {
   background-image: url("../../assets/backgrounds/heroes-bg1.jpg");
-  background-size: contain;
+  background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
 }
