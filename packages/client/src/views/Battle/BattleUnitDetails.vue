@@ -4,12 +4,13 @@
     <div
       class="flex dummy-height flex-no-wrap full-flex flex-column overflow-auto"
     >
-      <div class="screen-content ">
-        <div class="font-size-22 height-100 padding-left-2 padding-right-2">
+      <div class="screen-content">
+        <BattleUserBalance
+          class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
+        />
+        <div class="font-size-22 height-100 padding-2">
           <div>
-            <BattleUserBalance
-              class="width-100 flex flex-center padding-top-1 padding-bottom-1 relative"
-            />
+            
             <div class="flex flex-no-wrap flex-center margin-top-1">
               <div>
                 <BattleUnit :unit="unit" />
