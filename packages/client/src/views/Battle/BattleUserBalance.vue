@@ -45,5 +45,7 @@ export default {
 <style scoped>
 .tint {
   background-color: rgba(0, 0, 0, 0.555);
+  width: 120%;
+  left: -10%;
 }
 </style>
