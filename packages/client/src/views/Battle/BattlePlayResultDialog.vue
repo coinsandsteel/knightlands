@@ -1,6 +1,6 @@
 <template>
   <UserDialog
-    :title="hasWon ? 'You win' : 'You loose'"
+    :title="hasWon ? 'You win' : 'You lose'"
     :hideCloseBtn="true"
     :emitClose="true"
     @close="() => {}"
