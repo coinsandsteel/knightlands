@@ -176,7 +176,7 @@ export default {
     },
     canStart() {
       return (
-        this.isFightersFullFilled && this.user.balance.energy > this.energyCost
+        this.isFightersFullFilled && this.user.balance.energy >= this.energyCost
       );
     }
   },
