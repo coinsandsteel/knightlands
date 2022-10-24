@@ -10,7 +10,7 @@
         />
         <div class="font-size-22 height-100 padding-2">
           <div>
-            
+
             <div class="flex flex-no-wrap flex-center margin-top-1">
               <div>
                 <BattleUnit :unit="unit" />
@@ -63,10 +63,10 @@
                 ></ProgressBar>
               </template>
             </div>
-            <div v-if="false">
+            <div v-if="true">
               <template v-if="!maxLevelReached">
                 <CustomButton
-                  v-if="false"
+                  v-if="true"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(100)"
@@ -74,7 +74,7 @@
                   +100 exp
                 </CustomButton>
                 <CustomButton
-                  v-if="false"
+                  v-if="true"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(500)"
@@ -82,7 +82,7 @@
                   +500 exp
                 </CustomButton>
                 <CustomButton
-                  v-if="false"
+                  v-if="true"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(5000)"
