@@ -2,7 +2,7 @@ import Vue from "vue";
 import UpgradableCharacterStats from "@/../../knightlands-shared/upgradable_character_stats";
 import TrainingCamp from "@/../../knightlands-shared/training_camp";
 import { StatConversions } from "@/../../knightlands-shared/character_stat";
-import TrainingCampMeta from "@/training_camp";
+import TrainingCampMeta from "@/metadata/training_camp";
 
 function getMaxStatValue(stat) {
   return (

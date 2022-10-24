@@ -32,7 +32,7 @@
 <script>
 import UserDialog from "@/components/UserDialog.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
-import TowerMeta from "@/tower_meta";
+import TowerMeta from "@/metadata/tower_meta";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 export default {

@@ -23,9 +23,9 @@ import AttemptPurchaseElement from "./AttemptPurchaseElement.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 const iapsByType = {};
-iapsByType[TrialType.Armour] = require("@/trials_of_honor").iaps;
-iapsByType[TrialType.Weapon] = require("@/conjured_trials").iaps;
-iapsByType[TrialType.Accessory] = require("@/trials_of_decay").iaps;
+iapsByType[TrialType.Armour] = require("@/metadata/trials_of_honor").iaps;
+iapsByType[TrialType.Weapon] = require("@/metadata/conjured_trials").iaps;
+iapsByType[TrialType.Accessory] = require("@/metadata/trials_of_decay").iaps;
 
 export default {
   mixins: [NetworkRequestErrorMixin],

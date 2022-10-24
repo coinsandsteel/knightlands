@@ -25,7 +25,10 @@
         class="equipped"
         :class="{ 'on-unit': isEquippedOnUnit }"
       ></span>
-      <span v-else-if="itemData" :class="`icon-${element} element`"></span>
+      <span
+        v-else-if="itemData"
+        :class="[`icon-${element} element`, { 'icon-weapon': isWeapon }]"
+      ></span>
 
       <div class="icon-locked" v-if="showLocked && itemData && itemData.locked">
         <span class="icon-locked-corner" />
@@ -149,6 +152,15 @@ export default {
     this.updateItemData();
   },
   computed: {
+    itemSlot() {
+      if (!(this.itemData && this.itemData.template)) {
+        return null;
+      }
+      return this.$game.itemsDB.getSlot(this.itemData.template);
+    },
+    isWeapon() {
+      return ["mainHand", "offHand"].includes(this.itemSlot);
+    },
     isEquippedOnUnit() {
       if (!this.itemData) {
         return false;
@@ -436,7 +448,7 @@ export default {
 
 .element {
   position: absolute;
-  top: 0.4rem;
+  bottom: 0.4rem;
   left: 0rem;
 }
 

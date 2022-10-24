@@ -71,7 +71,14 @@ import CustomButton from "@/components/Button.vue";
 import Toggle from "@/components/Toggle.vue";
 
 export default {
-  props: ["leftItem", "rightItem", "hideMask", "equippedItems", "index"],
+  props: [
+    "leftItem",
+    "rightItem",
+    "hideMask",
+    "equippedItems",
+    "index",
+    "target"
+  ],
   components: {
     UserDialog,
     ItemProperties,

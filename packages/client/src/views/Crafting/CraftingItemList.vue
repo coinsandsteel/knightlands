@@ -1,33 +1,37 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
-    <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-    <LootContainer
-      class="height-100"
-      ref="allItems"
-      :items="filteredItems"
-      @hint="handleHint"
-      :filtersStore="filtersStore"
-      :commitCmd="commitCmd"
-      :lootProps="{
-        showLevel: true,
-        hideQuantity: true,
-        showUnbindLevels: true
-      }"
-      v-show="!onlyEquippedItems"
+    <div
+      class="height-100 width-100 dummy-height flex flex-column flex-no-wrap overflow-hidden"
     >
-      <slot></slot>
-    </LootContainer>
-
-    <keep-alive>
-      <EquippedItemList
-        v-if="onlyEquippedItems"
-        :filter="equippedItemsFilter"
-        :hintHandler="handleHint"
-        :commitCmd="commitCmd"
+      <tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+      <LootContainer
+        class="flex-full overflow-auto height-100"
+        ref="allItems"
+        :items="filteredItems"
+        @hint="handleHint"
         :filtersStore="filtersStore"
-      />
-    </keep-alive>
+        :commitCmd="commitCmd"
+        :lootProps="{
+          showLevel: true,
+          hideQuantity: true,
+          showUnbindLevels: true
+        }"
+        v-show="!onlyEquippedItems"
+      >
+        <slot></slot>
+      </LootContainer>
+
+      <keep-alive>
+        <EquippedItemList
+          v-if="onlyEquippedItems"
+          :filter="equippedItemsFilter"
+          :hintHandler="handleHint"
+          :commitCmd="commitCmd"
+          :filtersStore="filtersStore"
+        />
+      </keep-alive>
+    </div>
 
     <slot name="footer"></slot>
   </div>

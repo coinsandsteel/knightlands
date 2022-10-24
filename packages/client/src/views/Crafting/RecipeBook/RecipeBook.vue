@@ -13,7 +13,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import RecipeCategory from "./RecipeCategory.vue";
-import RecipeBookPages from "@/crafting_book";
+import RecipeBookPages from "@/metadata/crafting_book";
 import Tabs from "@/components/Tabs.vue";
 
 const MainHands = "main_hands";

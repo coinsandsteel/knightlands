@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Meta from "@/subscriptions";
+import Meta from "@/metadata/subscriptions";
 import PaymentHandler from "@/components/PaymentHandler.vue";
 import PaymentStatus from "@/components/PaymentStatus.vue";
 import CardShopElement from "./CardShopElement.vue";

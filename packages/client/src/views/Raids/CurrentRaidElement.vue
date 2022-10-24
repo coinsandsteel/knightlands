@@ -13,9 +13,15 @@
           <IconWithValue :iconClass="`icon-${weakness.element}`">{{
             $t(`el-${weakness.element}`)
           }}</IconWithValue>
-          <IconWithValue class="margin-top-1" iconClass="icon-attack">{{
+          <!-- <IconWithValue class="margin-top-1" iconClass="icon-attack">{{
             $t(weakness.weapon)
-          }}</IconWithValue>
+          }}</IconWithValue> -->
+          <IconWithValue
+            class="margin-top-1 current-raid-weapon"
+            :iconClass="`unit_weapon_${weakness.weapon}`"
+          >
+            <span class="margin-left-half">{{ $t(weakness.weapon) }}</span>
+          </IconWithValue>
         </div>
 
         <progress-bar
@@ -46,6 +52,7 @@
         <custom-button
           class="margin-top-half"
           type="grey"
+          :disabled="join && !canSummonCurrentRaid"
           @click="viewRaid"
           minWidth="20rem"
           >{{ join ? $t("join") : $t("continue") }}</custom-button
@@ -65,6 +72,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import UiConstants from "@/ui_constants";
 import CustomButton from "@/components/Button.vue";
 import Title from "@/components/Title.vue";
@@ -98,6 +106,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("raids", ["canSummonCurrentRaid"]),
     weakness() {
       return this.raidState.weakness.current;
     },
@@ -157,6 +166,10 @@ export default {
   position: absolute;
   top: 0;
   left: 1rem;
+}
+.current-raid-weapon::v-deep .value-icon {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 // .raid-progress {

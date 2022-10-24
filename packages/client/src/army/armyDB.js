@@ -1,7 +1,7 @@
-import armyAbilities from "@/army_abilities";
-import armyUnits from "@/army_units";
-import troopsMeta from "@/troops_meta";
-import generalsMeta from "@/generals_meta";
+import armyAbilities from "@/metadata/army_abilities";
+import armyUnits from "@/metadata/army_units";
+import troopsMeta from "@/metadata/troops_meta";
+import generalsMeta from "@/metadata/generals_meta";
 
 export default class ArmyDB {
   constructor(itemsDB) {

@@ -27,7 +27,7 @@ import Settings from "@/store/settings";
 // import April from "@/store/april";
 import Battle from "@/store/battle";
 import Elements from "@/../../knightlands-shared/elements";
-import ArmyUnitTypes from "@/army_unit_types";
+import ArmyUnitTypes from "@/metadata/army_unit_types";
 
 Vue.use(Vuex);
 

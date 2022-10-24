@@ -1,5 +1,5 @@
 <script>
-import CraftAccessories from "@/craft_accessories";
+import CraftAccessories from "@/metadata/craft_accessories";
 import AccessoryOption from "@/../../knightlands-shared/accessory_option";
 const { EquipmentSlots } = require("@/../../knightlands-shared/equipment_slot");
 

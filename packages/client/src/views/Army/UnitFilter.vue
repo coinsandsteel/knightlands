@@ -72,7 +72,7 @@ import UserDialog from "@/components/UserDialog.vue";
 import IconCheckbox from "@/components/IconCheckbox.vue";
 import CustomButton from "@/components/Button.vue";
 import Elements from "@/../../knightlands-shared/elements";
-import ArmyUnitTypes from "@/army_unit_types";
+import ArmyUnitTypes from "@/metadata/army_unit_types";
 import EquipmentType from "@/../../knightlands-shared/equipment_type";
 
 export default {

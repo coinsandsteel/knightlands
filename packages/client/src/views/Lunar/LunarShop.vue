@@ -133,7 +133,7 @@ import _ from "lodash";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 import ActivityMixin from "@/components/ActivityMixin.vue";
 import Loot from "@/components/Loot.vue";
-import meta from "@/lunar_meta.json";
+import meta from "@/metadata/lunar_meta.json";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CustomButton from "@/components/Button.vue";
 import NumericValue from "@/components/NumericValue.vue";

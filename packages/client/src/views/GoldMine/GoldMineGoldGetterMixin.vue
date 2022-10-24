@@ -1,5 +1,5 @@
 <script>
-import MinesMeta from "@/mines_meta";
+import MinesMeta from "@/metadata/mines_meta";
 
 export default {
   computed: {

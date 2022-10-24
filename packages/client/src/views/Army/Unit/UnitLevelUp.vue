@@ -49,8 +49,8 @@ import SoundEffect from "@/components/SoundEffect.vue";
 import UnitGetterMixin from "../UnitGetterMixin.vue";
 import PromptMixin from "@/components/PromptMixin.vue";
 import PurchaseButton from "@/components/PurchaseButton.vue";
-import TroopsMeta from "@/troops_meta";
-import GeneralsMeta from "@/generals_meta";
+import TroopsMeta from "@/metadata/troops_meta";
+import GeneralsMeta from "@/metadata/generals_meta";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 

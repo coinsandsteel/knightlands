@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import PresaleCardsMeta from "@/presale_cards";
+import PresaleCardsMeta from "@/metadata/presale_cards";
 
 import UserDialog from "@/components/UserDialog.vue";
 import IconWithValue from "@/components/IconWithValue.vue";

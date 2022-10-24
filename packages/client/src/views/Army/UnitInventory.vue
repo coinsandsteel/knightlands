@@ -46,7 +46,7 @@ import CustomButton from "@/components/Button.vue";
 import UnitItem from "./UnitItem.vue";
 import DoubleBuffer from "@/helpers/DoubleBuffer";
 import ActivityMixin from "@/components/ActivityMixin.vue";
-import ArmyMeta from "@/army_meta.json";
+import ArmyMeta from "@/metadata/army_meta.json";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import { create as CreateDialog } from "vue-modal-dialogs";

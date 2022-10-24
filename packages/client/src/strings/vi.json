@@ -1263,7 +1263,7 @@
   "increasedDamageWhenEnoughElements": "tăng sát thương khi đủ yếu tố",
   "increasedDamageWhenEnoughUnitTypes": "tăng sát thương khi đủ loại đơn vị",
   "increasedDamageWhenGeneralsUsed": "+<span class = 'rarity-mythical'> {value}% </span> thiệt hại khi ít nhất {unitCount} <span class = 'unit_type_ {unitType} iconf'> </span> tướng trong quân đoàn.",
-  "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% sát thương khi ít nhất <span class='rarity-epic'>{unitCount} {unitType}</span> quân trong quân đoàn.",
+  "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% sát thương khi ít nhất {unitCount} <span class='unit_type_{unitType} iconf'></span> quân trong quân đoàn.",
   "increasedDamageWhenTroopUsed": "+<span class='rarity-mythical'>{value}</span>% sát thương khi <span class='rarity-epic capitalize'>{name}</span> là trong quân đoàn.",
   "increasedDamageWhenTypeMatch": "+<span class = 'rarity-mythical'> {value}% </span> <span class = 'unit_type_ {unitType} iconf'> </span> quân thiệt hại",
   "increasedDamageWhenWeaponMatch": "+<span class = 'rarity-mythical'> {value}% </span> <span class = 'icon-unit- {vũ khí} big'> </span> sát thương quân",
@@ -2626,5 +2626,7 @@
   "your-reward": "Giải thưởng:",
   "your-score": "Điểm:",
   "zalaras": "zalaras",
-  "zombie_lord": "chúa tể thây ma"
+  "zombie_lord": "chúa tể thây ma",
+  "music": "Nhạc",
+  "sound": "Âm thanh"
 }

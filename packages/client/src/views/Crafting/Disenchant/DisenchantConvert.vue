@@ -56,7 +56,7 @@ import AppSection from "@/AppSection.vue";
 import { Promised } from "vue-promised";
 import PromptMixin from "@/components/PromptMixin.vue";
 import LoadingScreen from "@/components/LoadingScreen.vue";
-import DisenchantingMeta from "@/disenchanting_meta";
+import DisenchantingMeta from "@/metadata/disenchanting_meta";
 import CustomButton from "@/components/Button.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
 import ShowItemsMixin from "@/components/ShowItemsMixin.vue";

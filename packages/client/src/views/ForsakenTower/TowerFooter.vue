@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import TowerMeta from "@/tower_meta";
+import TowerMeta from "@/metadata/tower_meta";
 import InventoryListenerMixin from "@/components/InventoryListenerMixin.vue";
 
 export default {

@@ -16,7 +16,7 @@
 <script>
 import TrialsList from "../TrialsList.vue";
 import TrialListElement from "./../TrialListElement.vue";
-import ConjuredTrialsMeta from "@/conjured_trials";
+import ConjuredTrialsMeta from "@/metadata/conjured_trials";
 
 export default {
   components: { TrialsList, TrialListElement },
