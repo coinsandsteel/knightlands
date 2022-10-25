@@ -83,7 +83,7 @@
     <!-- test buttons -->
     <div v-if="true" class="text-align-center margin-top-2">
       <CustomButton
-        v-if="false"
+        v-if="true"
         type="green"
         width="20rem"
         class="inline-block"
