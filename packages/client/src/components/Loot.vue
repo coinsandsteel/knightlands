@@ -159,7 +159,7 @@ export default {
     },
     itemData() {
       if (this.item && typeof this.item !== "object") {
-        if (this.templateData) {
+        if (!this.templateData) {
           return null;
         }
         return {
