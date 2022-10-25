@@ -81,7 +81,7 @@
       </div>
     </div>
     <!-- test buttons -->
-    <div v-if="false" class="text-align-center margin-top-2">
+    <div v-if="true" class="text-align-center margin-top-2">
       <CustomButton
         v-if="false"
         type="green"
@@ -91,12 +91,12 @@
         >win</CustomButton
       >
       <CustomButton
-        v-if="false"
+        v-if="true"
         type="green"
         width="20rem"
         class="inline-block"
         @click="winLoose1Handler('loose')"
-        >loose</CustomButton
+        >lose</CustomButton
       >
       <CustomButton
         v-if="false"
