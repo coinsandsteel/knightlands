@@ -203,7 +203,8 @@ export default {
       }
 
       let rarity =
-        this.itemData.rarity || (this.templateData && this.templateData.rarity);
+        (this.itemData && this.itemData.rarity) ||
+        (this.templateData && this.templateData.rarity);
 
       if (!rarity) {
         return "";
@@ -212,12 +213,12 @@ export default {
       return `slot_${rarity}`;
     },
     element() {
-      if (this.itemData.isCustomElement) {
+      if (this.itemData && this.itemData.isCustomElement) {
         return null;
       }
 
       return (
-        this.itemData.element ||
+        (this.itemData && this.itemData.element) ||
         (this.templateData && this.templateData.element)
       );
     },
