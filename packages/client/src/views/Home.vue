@@ -27,6 +27,13 @@
                 id="battle"
                 >{{ $t("battle-event") }}
               </MenuIcon>
+              <MenuIcon
+                icon="skewed_icon_halloween"
+                :to="{ name: 'dungeon-entrance' }"
+                :append="true"
+                id="halloween"
+                >{{ $t("btn-evt-hal") }}
+              </MenuIcon>
             </MenuIconRow>
 
             <MenuIconRow>
