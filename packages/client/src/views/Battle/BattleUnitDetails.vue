@@ -35,7 +35,7 @@
                     <div>Power: {{ unit.power }}</div>
                   </div>
                   <div class="text-align-left margin-left-2">
-                    <div>Attack: {{ damage }}</div>
+                    <div>Attack: {{ unit.characteristics.damage }}</div>
                     <div>Defence: {{ unit.characteristics.defence }}</div>
                     <div>Speed: {{ unit.characteristics.speed }}</div>
                     <div>Initiative: {{ unit.characteristics.initiative }}</div>
