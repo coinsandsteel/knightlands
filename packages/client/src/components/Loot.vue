@@ -74,7 +74,7 @@ const {
   getSlot,
   EquipmentSlots
 } = require("@/../../knightlands-shared/equipment_slot");
-const ItemType = require("@/../../knightlands-shared/item_type");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 
 let SlotPlaceholders = {};
 SlotPlaceholders[EquipmentSlots.MainHand] = "icon_slot_mainhand";
