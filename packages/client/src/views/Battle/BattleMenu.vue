@@ -14,7 +14,7 @@
             class="battle-of-heroes"
             src="/images/battle/battle-of-heroes2.png"
           />
-          
+
         <div class="font-size-22 height-100_ flex-full flex flex-center">
           <div>
             <div>
@@ -72,22 +72,13 @@
                 <div v-if="canClaim" class="marker marker-pos"></div>
               </CustomButton>
             </div>
-            <!--div>
-          <CustomButton
-            type="blue"
-            class="inline-block margin-right-2 margin-top-1"
-            @click="testAbilities"
-          >
-            Test abilities
-          </CustomButton>
-        </div-->
           </div>
         </div>
       </div>
     </div>
   </div>
   </div>
-  
+
 </template>
 <script>
 import { mapState } from "vuex";
@@ -151,11 +142,6 @@ export default {
     goToChestShop() {
       this.$router.push({ name: "battle-chest-shop" });
     },
-    testAbilities() {
-      this.$store.dispatch("battle/testAction", {
-        action: "testAbilities"
-      });
-    }
   }
 };
 </script>
