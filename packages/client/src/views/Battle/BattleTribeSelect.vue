@@ -9,7 +9,7 @@
             class="checkbox margin-bottom-1"
             color="warning"
             :checked="selectedTribe === tribeOption.value"
-            @change="tribeCheckHandler(tribeOption)"
+            @change="tribeCheckHandler($event, tribeOption)"
             >{{ $t(tribeOption.label) }}</p-check
           >
         </div>
@@ -118,8 +118,8 @@ export default {
     closeHandler(result) {
       this.$close(result);
     },
-    tribeCheckHandler(option) {
-      this.selectedTribe = option.value;
+    tribeCheckHandler(event, option) {
+      this.selectedTribe = event ? option.value : null;
     }
   }
 };

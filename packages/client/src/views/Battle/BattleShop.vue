@@ -31,12 +31,19 @@
 
         <div class="flex flex-center  margin-top-2">
           <div class="flex flex-center flex-column width-100">
-            <BattleChestElement
+            <div
               v-for="(chest, index) in chests"
               :key="chest.name"
-              :chest="chest"
-              :index="index"
-            />
+              class="width-100"
+            >
+              <Title
+                class="common-title"
+                :class="{ 'common-title--first': index === 0 }"
+              >
+                {{ $t("battle-shop-" + chest.name) }}
+              </Title>
+              <BattleChestElement :chest="chest" :index="index" />
+            </div>
           </div>
         </div>
       </div>
