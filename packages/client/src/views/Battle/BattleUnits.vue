@@ -58,7 +58,7 @@
     </div>
 
     <portal to="footer" :slim="true" v-if="shouldShowFilter && isActive">
-      <CustomButton v-if="false" type="green" @click="addTopUnitsHandler">
+      <CustomButton v-if="true" type="green" @click="addTopUnitsHandler">
         Add Top Units
       </CustomButton>
       <CustomButton v-if="false" type="green" @click="addUnitHandler">
