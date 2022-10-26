@@ -81,9 +81,9 @@
       </div>
     </div>
     <!-- test buttons -->
-    <div v-if="true" class="text-align-center margin-top-2">
+    <div v-if="false" class="text-align-center margin-top-2">
       <CustomButton
-        v-if="true"
+        v-if="false"
         type="green"
         width="20rem"
         class="inline-block"
@@ -91,7 +91,7 @@
         >win</CustomButton
       >
       <CustomButton
-        v-if="true"
+        v-if="false"
         type="green"
         width="20rem"
         class="inline-block"

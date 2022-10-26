@@ -402,7 +402,7 @@ const router = new Router({
       path: "/home/daily-rewards",
       component: DailyRewards
     },
-    {
+    /*{
       path: "/halloween",
       component: DungeonRoot,
       children: [
@@ -445,7 +445,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
-    },
+    },*/
     // {
     //   path: "/xmas",
     //   component: XmasRoot,

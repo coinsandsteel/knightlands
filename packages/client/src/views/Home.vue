@@ -28,6 +28,7 @@
                 >{{ $t("battle-event") }}
               </MenuIcon>
               <MenuIcon
+                v-if="false"
                 icon="skewed_icon_halloween"
                 :to="{ name: 'dungeon-entrance' }"
                 :append="true"
