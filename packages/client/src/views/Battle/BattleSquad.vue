@@ -266,7 +266,7 @@ export default {
         bonus.value &&
         bonus.max
       ) {
-        result = `When a squad member takes damage the squad's defence is increased by +${bonus.value} (max. ${bonus.max})`;
+        result = `Defense is increased by +${bonus.value} after fighter takes damage (max. ${bonus.max})`;
       } else if (
         bonus.subEffect === "counter_attack" &&
         bonus.mode === "burst" &&
@@ -279,19 +279,19 @@ export default {
         bonus.mode === "constant" &&
         bonus.trigger === "debuff"
       ) {
-        const value = bonus.value || bonus.delta;
-        result = `When a unit is debuffed, their speed is increased by +${value}`;
+        const value = bonus.value;
+        result = `When a unit is debuffed, speed is increased by +${value}`;
       } else if (
         bonus.target === "attack" &&
         bonus.mode === "stack" &&
         bonus.trigger === "damage" &&
-        bonus.multiply &&
-        bonus.delta &&
+        bonus.operation === "multiply" &&
+        bonus.value &&
         bonus.max
       ) {
-        const delta = Math.round(bonus.delta * 10000) / 100;
+        const value = Math.round(bonus.value * 10000) / 100;
         const max = Math.round(bonus.max * 10000) / 100;
-        result = `When a squad member takes damage the squad's attack is increased by ${delta}% (max. ${max}%)`;
+        result = `Attack is increased by ${value}% after fighter takes damage (max. ${max}%)`;
       } else if (
         bonus.target === "power" &&
         bonus.mode === "burst" &&
