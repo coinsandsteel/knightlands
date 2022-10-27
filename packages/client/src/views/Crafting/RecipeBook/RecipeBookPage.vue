@@ -19,7 +19,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import CraftingIngridientHintHandler from "@/components/CraftingIngridientHintHandler.vue";
-import ItemToRecipe from "@/item_to_recipe";
+import ItemToRecipe from "@/metadata/item_to_recipe";
 
 export default {
   mixins: [AppSection, CraftingIngridientHintHandler],

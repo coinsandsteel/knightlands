@@ -45,7 +45,9 @@ export default {
       }
 
       this.convertedPrice = this.price / this.rate / 100;
-
+      const precision = 6; // Take 6 digits after the dot
+      const precc = Math.pow(10, precision);
+      this.convertedPrice = Math.floor((this.convertedPrice || 0) * precc) / precc;
       this.$emit("input", this.convertedPrice);
     }
   }

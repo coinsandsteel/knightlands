@@ -46,7 +46,13 @@ export default {
         const item = items[i];
         const template = this.$game.itemsDB.getTemplate(item.template);
 
-        if (!template.unbindable || item.breakLimit == 2 || EventItemType.includes(template.type)) {
+        if (
+          !template.unbindable ||
+          item.breakLimit == 2 ||
+          template.type === "lunarResource" ||
+          template.type === "marchResource" ||
+          template.type === "aprilResource"
+        ) {
           continue;
         }
 

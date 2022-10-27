@@ -1,5 +1,5 @@
 <script>
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import UiConstants from "@/ui_constants";
 import Campaign from "@/campaign_database";
 import CharacterStats from "@/../../knightlands-shared/character_stat";

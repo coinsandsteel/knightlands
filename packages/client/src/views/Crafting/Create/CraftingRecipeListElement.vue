@@ -2,7 +2,9 @@
   <div class="width-100 flex relative recipe color-panel-2">
     <Title :stackTop="true" :class="`rarity-${rarity}`">{{ $t(name) }}</Title>
 
-    <div class="full-flex flex flex-center padding-left-2 padding-right-2">
+    <div
+      class="full-flex flex flex-no-wrap flex-center padding-left-2 padding-right-2"
+    >
       <Loot :item="item" class="hintFix" @hint="handleHint"></Loot>
 
       <div
@@ -18,9 +20,12 @@
           class="margin-right-half"
         />
       </div>
-      <CustomButton type="yellow" @click="$emit('craft', recipe)">{{
-        $t("btn-preview-craft")
-      }}</CustomButton>
+      <CustomButton type="yellow" @click="$emit('craft', recipe)">
+        <span class="opacity-0">{{ $t("btn-preview-craft") }}</span>
+        <div class="absolute-center btn-craft-content">
+          {{ $t("btn-preview-craft") }}
+        </div>
+      </CustomButton>
     </div>
   </div>
 </template>
@@ -56,5 +61,14 @@ export default {
 <style lang="less" scoped>
 .recipe {
   height: 112px;
+}
+.btn-craft-content {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.loot-slot::v-deep .inner-border {
+  width: 8rem;
 }
 </style>

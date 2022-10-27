@@ -46,7 +46,7 @@
             <!-- <div class="margin-top-half">Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.levelInt }}</div>
             <div>Power: {{ unit.power }}</div> -->
-            <div>Attack: {{ damage }}</div>
+            <div>Attack: {{ unit.characteristics.damage }}</div>
             <div>Defence: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
             <div>Initiative: {{ unit.characteristics.initiative }}</div>

@@ -2,18 +2,18 @@
 
 "use strict";
 
-const ItemTemplates = require("./items.json");
+const ItemTemplates = require("./metadata/items.json");
 const {
   getSlot,
   EquipmentSlots
 } = require("@/../../knightlands-shared/equipment_slot");
 const { ItemType } = require("@/../../knightlands-shared/item_type");
-const Meta = require("./meta.json");
-const Properties = require("./item_properties.json");
-const UpgradeMeta = require("./upgrade_meta.json");
-const EnchantingMeta = require("./enchanting_meta.json");
+const Meta = require("./metadata/meta.json");
+const Properties = require("./metadata/item_properties.json");
+const UpgradeMeta = require("./metadata/upgrade_meta.json");
+const EnchantingMeta = require("./metadata/enchanting_meta.json");
 import ItemStatResolver from "@/../../knightlands-shared/item_stat_resolver";
-import EvolveData from "@/evolve";
+import EvolveData from "@/metadata/evolve";
 
 class ItemDatabase {
   constructor() {

@@ -12,7 +12,7 @@
 
 <script>
 import GoldShopElement from "./GoldShopElement.vue";
-import Meta from "@/top_up_shop";
+import Meta from "@/metadata/top_up_shop";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
 
 import ItemsReceived from "@/components/ItemsReceived.vue";

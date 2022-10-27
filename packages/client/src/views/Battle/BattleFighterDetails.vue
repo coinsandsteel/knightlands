@@ -1,15 +1,15 @@
 <template>
-  <UserDialog
-    :title="
-      unitRecord ? unitRecord.name + (unitRecord.isBoss ? ' - Boss' : '') : ''
-    "
-    @close="close"
-  >
+  <UserDialog @close="close">
     <template v-slot:content>
       <div
         v-if="unitRecord"
         class="battle-fighter-details-container font-size-22"
       >
+        <Title
+          v-if="unitRecord"
+          class="abilities-title common-title margin-top-2 margin-bottom-2"
+          >{{ unitRecord.name + (unitRecord.isBoss ? " - Boss" : "") }}</Title
+        >
         <div
           class="battle-fighter-details-wrapper margin-x-auto flex flex-center flex-wrap margin-bottom-2 font-weight-700 font-shadow"
           :class="'battle-unit-tribe--' + unitRecord.tier"
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div
-          class="battle-fighter-details-wrapper margin-x-auto flex flex-wrap padding-left-2"
+          class="battle-fighter-details-wrapper margin-x-auto flex flex-center flex-no-wrap"
         >
           <div class="">
             <BattleUnit
@@ -38,48 +38,88 @@
               </div>
             </div> -->
           </div>
-          <div class="flex-grow-1 text-align-left width-35 margin-left-2">
+          <div class="text-align-left width-35 margin-left-2">
             <!-- <div>Tier: {{ unit.tier }}</div>
               <div>Level: {{ unit.levelInt }}</div> -->
-            <div>
-              Hp:
-              <BattleCharacteristicValue :value="hp" :baseValue="baseHp" />
+            <!-- hp -->
+            <div class="flex flex-no-wrap">
+              <div class="_uppercase _font-size-20 font-shadow">
+                Hp
+              </div>
+              <div
+                class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+              >
+                <BattleCharacteristicValue :value="hp" :baseValue="baseHp" />
+              </div>
             </div>
-            <div>
-              Attack:
-              <BattleCharacteristicValue
-                :value="damage"
-                :baseValue="baseDamage"
-              />
+            <!-- attack -->
+            <div class="flex flex-no-wrap">
+              <div class="_uppercase _font-size-20 font-shadow">
+                Attack
+              </div>
+              <div
+                class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+              >
+                <BattleCharacteristicValue
+                  :value="damage"
+                  :baseValue="baseDamage"
+                />
+              </div>
             </div>
-            <div>
-              Defence:
-              <BattleCharacteristicValue
-                :value="defence"
-                :baseValue="baseDefence"
-              />
+            <!-- defence -->
+            <div class="flex flex-no-wrap">
+              <div class="_uppercase _font-size-20 font-shadow">
+                Defence
+              </div>
+              <div
+                class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+              >
+                <BattleCharacteristicValue
+                  :value="defence"
+                  :baseValue="baseDefence"
+                />
+              </div>
             </div>
-            <div>
-              Speed:
-              <BattleCharacteristicValue
-                :value="speed"
-                :baseValue="baseSpeed"
-              />
+            <!-- speed -->
+            <div class="flex flex-no-wrap">
+              <div class="_uppercase _font-size-20 font-shadow">
+                Speed
+              </div>
+              <div
+                class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+              >
+                <BattleCharacteristicValue
+                  :value="speed"
+                  :baseValue="baseSpeed"
+                />
+              </div>
             </div>
-            <div>
-              Initiative:
-              <BattleCharacteristicValue
-                :value="initiative"
-                :baseValue="baseInitiative"
-              />
+            <!-- speed -->
+            <div class="flex flex-no-wrap">
+              <div class="_uppercase _font-size-20 font-shadow">
+                Initiative
+              </div>
+              <div
+                class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+              >
+                <BattleCharacteristicValue
+                  :value="initiative"
+                  :baseValue="baseInitiative"
+                />
+              </div>
             </div>
           </div>
         </div>
+
+        <Title
+          v-if="abilities && abilities.length > 0"
+          class="abilities-title common-title margin-top-3 margin-bottom-2"
+          >Abilities</Title
+        >
         <div
           v-if="abilities && abilities.length > 0"
-          class="battle-unit-abilities-wrapper margin-top-3 padding-bottom-2"
+          class="battle-unit-abilities-wrapper padding-bottom-2"
         >
-          <div class="margin-bottom-1">Abilities</div>
           <BattleUnitAbilityDetails
             v-for="(ability, index) in abilities"
             :key="ability.abilityType + ability.abilityClass"
@@ -91,11 +131,15 @@
           >
           </BattleUnitAbilityDetails>
         </div>
+        <Title
+          v-if="buffItems.length"
+          class="abilities-title common-title margin-top-2 margin-bottom-2"
+          >Buff / Debuff</Title
+        >
         <div
           v-if="buffItems.length"
-          class="battle-fighter-buff-wrapper margin-x-auto _text-align-left margin-top-2 font-size-22 _padding-left-2"
+          class="battle-fighter-buff-wrapper margin-x-auto _text-align-left font-size-22"
         >
-          <div>Buff / Debuff</div>
           <div
             v-for="(buff, buffIndex) in buffItems"
             :key="buff.source + '_' + buff.sourceId + '_' + buffIndex"
@@ -302,5 +346,8 @@ export default {
 }
 .battle-unit-tribe--3 {
   color: #c965ee;
+}
+.characteristic-value {
+  color: #f4eb02;
 }
 </style>

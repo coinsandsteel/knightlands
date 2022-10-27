@@ -96,7 +96,7 @@
         width="20rem"
         class="inline-block"
         @click="winLoose1Handler('loose')"
-        >loose</CustomButton
+        >lose</CustomButton
       >
       <CustomButton
         v-if="false"

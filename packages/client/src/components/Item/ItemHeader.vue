@@ -23,6 +23,11 @@
           :class="[{ 'margin-left-half': !hasElement }, elementIcon]"
           class="big"
         ></div>
+        <div
+          v-if="isWeapon"
+          :class="{ 'icon-weapon': isWeapon }"
+          class="big"
+        ></div>
       </div>
 
       <div
@@ -92,6 +97,17 @@ export default {
     },
     isItemLocked() {
       return this.item.locked;
+    },
+    itemSlot() {
+      if (!(this.item && this.item.template)) {
+        return null;
+      }
+      return this.$game.itemsDB.getSlot(this.item.template);
+    },
+    isWeapon() {
+      return (
+        !this.hasElement && ["mainHand", "offHand"].includes(this.itemSlot)
+      );
     }
   },
   methods: {

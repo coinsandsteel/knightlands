@@ -196,7 +196,7 @@
 <script>
 import SoundEffect from "@/components/SoundEffect.vue";
 import AppSection from "@/AppSection.vue";
-import Beasts from "@/beasts";
+import Beasts from "@/metadata/beasts";
 import BeastMarker from "@/components/Markers/Castle/BeastMarker.vue";
 import CharacterStats from "@/../../knightlands-shared/character_stat.js";
 import CustomButton from "@/components/Button.vue";

@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import meta from "@/march_meta.json";
+import meta from "@/metadata/march_meta.json";
 
 export default {
   props: ["value"],

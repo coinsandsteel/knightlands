@@ -1,61 +1,64 @@
 <template>
   <div class="screen-content">
     <div class="screen-background"></div>
+    <div
+      class="height-100 width-100 dummy-height flex flex-column flex-no-wrap overflow-hidden"
+    >
+      <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
+      <keep-alive>
+        <EquippedItemList
+          v-if="onlyElemental && onlyEquipped"
+          class="flex-full overflow-auto height-100"
+          :filter="filter"
+          :hintHandler="hintHandler"
+          :filtersStore="$store.getters.getEvolveWeaponFilters"
+          commitCmd="setEvolveWeaponFilters"
+          :lootProps="{
+            hideQuantity: true
+          }"
+        />
+        <EquippedItemList
+          v-else-if="!onlyElemental && onlyEquipped"
+          class="flex-full overflow-auto height-100"
+          :filter="filter"
+          :hintHandler="hintHandler"
+          :filtersStore="$store.getters.getEvolveOtherFilters"
+          commitCmd="setEvolveOtherFilters"
+          :lootProps="{
+            hideQuantity: true
+          }"
+        />
+      </keep-alive>
 
-    <Tabs :tabs="tabs" :currentTab="currentTab" @onClick="switchTab" />
-    <keep-alive>
-      <EquippedItemList
-        v-if="onlyElemental && onlyEquipped"
-        class="height-100"
+      <LootContainer
+        v-show="onlyElemental && !onlyEquipped"
+        ref="weaponsContainer"
+        class="flex-full overflow-auto height-100"
         :filter="filter"
-        :hintHandler="hintHandler"
+        :items="items"
+        :hideFilters="true"
+        @hint="hintHandler"
         :filtersStore="$store.getters.getEvolveWeaponFilters"
         commitCmd="setEvolveWeaponFilters"
         :lootProps="{
           hideQuantity: true
         }"
       />
-      <EquippedItemList
-        v-else-if="!onlyElemental && onlyEquipped"
-        class="height-100"
+      <LootContainer
+        v-show="!onlyElemental && !onlyEquipped"
+        ref="othersContainer"
+        class="flex-full overflow-auto height-100"
+        :items="items"
         :filter="filter"
-        :hintHandler="hintHandler"
+        :hideFilters="true"
+        @hint="hintHandler"
         :filtersStore="$store.getters.getEvolveOtherFilters"
         commitCmd="setEvolveOtherFilters"
         :lootProps="{
           hideQuantity: true
         }"
       />
-    </keep-alive>
-
-    <LootContainer
-      v-show="onlyElemental && !onlyEquipped"
-      ref="weaponsContainer"
-      class="height-100"
-      :filter="filter"
-      :items="items"
-      :hideFilters="true"
-      @hint="hintHandler"
-      :filtersStore="$store.getters.getEvolveWeaponFilters"
-      commitCmd="setEvolveWeaponFilters"
-      :lootProps="{
-        hideQuantity: true
-      }"
-    />
-    <LootContainer
-      v-show="!onlyElemental && !onlyEquipped"
-      ref="othersContainer"
-      class="height-100"
-      :items="items"
-      :filter="filter"
-      :hideFilters="true"
-      @hint="hintHandler"
-      :filtersStore="$store.getters.getEvolveOtherFilters"
-      commitCmd="setEvolveOtherFilters"
-      :lootProps="{
-        hideQuantity: true
-      }"
-    />
+    </div>
 
     <portal to="footer" v-if="isActive">
       <Toggle
@@ -159,7 +162,12 @@ export default {
         }
 
         const template = this.$game.itemsDB.getTemplate(item.template);
-        if (template.rarity == Rarity.Mythical || EventItemType.includes(template.type)) {
+        if (
+          template.rarity == Rarity.Mythical ||
+          template.type === "lunarResource" ||
+          template.type === "marchResource" ||
+          template.type === "aprilResource"
+        ) {
           continue;
         }
 

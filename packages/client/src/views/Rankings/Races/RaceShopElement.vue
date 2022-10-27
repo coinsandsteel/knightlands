@@ -7,7 +7,7 @@
     <CustomButton
       type="grey"
       @click="$emit('purchase', item, price)"
-      :disabled="locked"
+      :disabled="locked || !(left > 0)"
     >
       <IconWithValue iconClass="icon-race-token">{{ price }}</IconWithValue>
     </CustomButton>

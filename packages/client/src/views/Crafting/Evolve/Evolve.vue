@@ -102,7 +102,7 @@ import HintHandler from "@/components/HintHandler.vue";
 import ItemPicker from "../ItemPicker.vue";
 import Rarity from "@/../../knightlands-shared/rarity";
 import Elements from "@/../../knightlands-shared/elements";
-import EvolveMeta from "@/evolve";
+import EvolveMeta from "@/metadata/evolve";
 import AshTag from "@/components/AshTag.vue";
 
 import ItemCreatedPopup from "../Create/ItemCreatedPopup.vue";

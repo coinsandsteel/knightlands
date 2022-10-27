@@ -209,10 +209,10 @@
 
             <div class="flex flex-center">
               <CustomButton
-                width="20rem"
+                width="28rem"
                 type="yellow"
                 @click="join"
-                :disabled="!canJoin"
+                :disabled="!(canJoin && canSummonCurrentRaid)"
               >
                 <span class="margin-right-half">{{ $t("join") }}</span>
 
@@ -276,6 +276,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import IconWithValue from "@/components/IconWithValue.vue";
 import CopyButton from "@/components/CopyButton.vue";
 import AppSection from "@/AppSection.vue";
@@ -297,7 +298,7 @@ import Vue from "vue";
 import SpriteAnimator from "@/components/SpriteAnimator.vue";
 import Timer from "@/timer.js";
 import Title from "@/components/Title.vue";
-import RaidsMeta from "@/raids_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 import CraftingIngridient from "@/components/CraftingIngridient.vue";
 import SoundEffect from "@/components/SoundEffect.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
@@ -422,6 +423,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("raids", ["canSummonCurrentRaid"]),
     bossName() {
       return RaidsMeta[this.raidState.raidTemplateId].name;
     },
@@ -491,6 +493,7 @@ export default {
         this.raidState && this.raidState.finished && this.raidState.defeat;
     },
     async init() {
+      this.$store.dispatch("raids/fetchCurrentRaids");
       this.rewards = null;
       await this.getRaid();
       this.bossViewCenter = this.$refs.bossView.center;

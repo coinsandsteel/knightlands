@@ -1263,7 +1263,7 @@
   "increasedDamageWhenEnoughElements": "increasedDamageWhenEnoughElements",
   "increasedDamageWhenEnoughUnitTypes": "increasedDamageWhenEnoughUnitTypes",
   "increasedDamageWhenGeneralsUsed": "+<span class='rarity-mythical'>{value}%</span> damage when at least {unitCount} <span class='unit_type_{unitType} iconf'></span> general(s) in legion.",
-  "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% damage when at least <span class='rarity-epic'>{unitCount} {unitType}</span> troops in legion",
+  "increasedDamageWhenTroopsUsed": "+<span class='rarity-mythical'>{value}</span>% damage when at least {unitCount} <span class='unit_type_{unitType} iconf'></span> troops in legion",
   "increasedDamageWhenTroopUsed": "+<span class='rarity-mythical'>{value}</span>% damage when <span class='rarity-epic capitalize'>{name}</span> is in legion",
   "increasedDamageWhenTypeMatch": "+<span class='rarity-mythical'>{value}%</span> <span class='unit_type_{unitType} iconf'></span> troops damage",
   "increasedDamageWhenWeaponMatch": "+<span class='rarity-mythical'>{value}%</span> <span class='icon-unit-{weapon} big'></span> troops damage",
@@ -2666,6 +2666,9 @@
   "enemies-killed": "Enemies killed",
   "resurrection-text": "Resurrect and step 1 action back",
   "april-boss-killed-text": "Rating will be updated after killing the boss",
+  "el-physical": "Physical",
+  "music": "Music",
+  "sound": "Sound",
 
   "battle-event": "Battle Event",
   "battle-shop-starter-pack": "Starter pack",

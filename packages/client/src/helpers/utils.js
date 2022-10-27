@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 export function capitalize(str) {
   if (typeof string === "string" && str.length > 0) {
@@ -48,6 +48,6 @@ export function removeClass(el, className) {
 }
 
 export function getCurrentDateString() {
-  const date = moment.utc().format('DD/MM/YYYY');
+  const date = moment.utc().format("DD/MM/YYYY");
   return date;
 }

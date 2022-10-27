@@ -63,7 +63,7 @@ import AppSection from "@/AppSection.vue";
 import CustomButton from "@/components/Button.vue";
 import IconWithValue from "@/components/IconWithValue.vue";
 import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue";
-import CraftAccessoriesMeta from "@/craft_accessories";
+import CraftAccessoriesMeta from "@/metadata/craft_accessories";
 import ItemProperties from "@/components/Item/ItemProperties.vue";
 import ItemHeader from "@/components/Item/ItemHeader.vue";
 import Title from "@/components/Title.vue";

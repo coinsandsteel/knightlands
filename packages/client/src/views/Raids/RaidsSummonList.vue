@@ -16,7 +16,7 @@
 
 <script>
 import AppSection from "@/AppSection.vue";
-import RaidsMeta from "@/raids_meta.json";
+import RaidsMeta from "@/metadata/raids_meta.json";
 import RaidsSummonListElement from "./RaidsSummonListElement.vue";
 
 const RaidListData = { ...RaidsMeta };

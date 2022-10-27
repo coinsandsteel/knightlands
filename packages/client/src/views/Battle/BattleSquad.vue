@@ -6,7 +6,7 @@
         <div class="font-size-22 text-align-center margin-bottom-2">
           <div v-if="power">Power: {{ power }}</div>
           <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
-            Squad bonuses:
+            {{ bonusLabel }}
             <div
               class="rarity-rare"
               v-for="(bonus, index) in bonuses"
@@ -107,11 +107,19 @@ export default {
         return prev + (unit ? unit.power || 0 : 0);
       }, 0);
     },
-    bonuses() {
+    bonusItems() {
       let bonusItems = (this.game && this.game.userSquad
         ? this.game.userSquad.bonuses || []
         : []
       ).filter(({ mode }) => mode);
+
+      return bonusItems;
+    },
+    bonuses() {
+      // let bonusItems = (this.game && this.game.userSquad
+      //   ? this.game.userSquad.bonuses || []
+      //   : []
+      // ).filter(({ mode }) => mode);
 
       // bonusItems = [
       //   {
@@ -143,14 +151,35 @@ export default {
       //   }
       // ];
 
-      if (!bonusItems.length > 0) {
+      if (!this.bonusItems.length > 0) {
         return null;
       }
-      return bonusItems
+      return this.bonusItems
         .map(bonus => {
           return this.renderBonus(bonus);
         })
         .filter(str => !!str);
+    },
+    bonusLabel() {
+      if (!(this.bonusItems.length > 0)) {
+        return null;
+      }
+
+      const bonus = this.bonusItems[0];
+      if (
+        !(
+          bonus &&
+          bonus.source === "squad" &&
+          bonus.sourceId &&
+          typeof bonus.caseId === "number"
+        )
+      ) {
+        return null;
+      }
+
+      return `${bonus.caseId + 2}x ${this.$t(
+        "battle-unit-tribe-" + bonus.sourceId
+      )} role bonus:`;
     }
   },
   activated() {
@@ -266,31 +295,32 @@ export default {
         bonus.value &&
         bonus.max
       ) {
-        result = `When a squad member takes damage the squad's defence is increased by +${bonus.value} (max. ${bonus.max})`;
+        result = `Defense is increased by +${bonus.value} after fighter takes damage (max. ${bonus.max})`;
       } else if (
         bonus.subEffect === "counter_attack" &&
         bonus.mode === "burst" &&
         bonus.probability
       ) {
-        result = `Chance of a counter attack ${bonus.probability}%`;
+        const value = Math.floor(bonus.probability * 100);
+        result = `Chance of a counter attack ${value}%`;
       } else if (
         bonus.target === "speed" &&
         bonus.mode === "constant" &&
         bonus.trigger === "debuff"
       ) {
-        const value = bonus.value || bonus.delta;
-        result = `When a unit is debuffed, their speed is increased by +${value}`;
+        const value = bonus.value;
+        result = `When a unit is debuffed, speed is increased by +${value}`;
       } else if (
         bonus.target === "attack" &&
         bonus.mode === "stack" &&
         bonus.trigger === "damage" &&
-        bonus.multiply &&
-        bonus.delta &&
+        bonus.operation === "multiply" &&
+        bonus.value &&
         bonus.max
       ) {
-        const delta = Math.round(bonus.delta * 10000) / 100;
+        const value = Math.round(bonus.value * 10000) / 100;
         const max = Math.round(bonus.max * 10000) / 100;
-        result = `When a squad member takes damage the squad's attack is increased by ${delta}% (max. ${max}%)`;
+        result = `Attack is increased by ${value}% after fighter takes damage (max. ${max}%)`;
       } else if (
         bonus.target === "power" &&
         bonus.mode === "burst" &&

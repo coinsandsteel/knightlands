@@ -1,5 +1,5 @@
 <script>
-import Beasts from "@/beasts";
+import Beasts from "@/metadata/beasts";
 
 export default {
   data: () => ({

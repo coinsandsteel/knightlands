@@ -10,7 +10,7 @@
         />
         <div class="font-size-22 height-100 padding-2">
           <div>
-            
+
             <div class="flex flex-no-wrap flex-center margin-top-1">
               <div>
                 <BattleUnit :unit="unit" />
@@ -35,7 +35,7 @@
                     <div>Power: {{ unit.power }}</div>
                   </div>
                   <div class="text-align-left margin-left-2">
-                    <div>Attack: {{ damage }}</div>
+                    <div>Attack: {{ unit.characteristics.damage }}</div>
                     <div>Defence: {{ unit.characteristics.defence }}</div>
                     <div>Speed: {{ unit.characteristics.speed }}</div>
                     <div>Initiative: {{ unit.characteristics.initiative }}</div>
@@ -63,7 +63,7 @@
                 ></ProgressBar>
               </template>
             </div>
-            <div v-if="false">
+            <div v-if="true">
               <template v-if="!maxLevelReached">
                 <CustomButton
                   v-if="false"

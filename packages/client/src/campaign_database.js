@@ -1,5 +1,5 @@
-import ZonesMeta from "@/zones_meta";
-import RaidsMeta from "@/raids_meta";
+import ZonesMeta from "@/metadata/zones_meta";
+import RaidsMeta from "@/metadata/raids_meta";
 
 export default {
   getZoneName(zoneId) {

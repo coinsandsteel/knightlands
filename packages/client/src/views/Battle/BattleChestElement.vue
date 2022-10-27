@@ -1,14 +1,14 @@
 <template>
   <div
-    class="margin-bottom-1 padding-1 color-panel-1"
+    class="margin-bottom-1 padding-1 _color-panel-1"
     :class="{ 'margin-top-1': index > 0 }"
   >
     <div class="flex flex-items-center flex-space-between flex-no-wrap">
       <div class="column1 flex flex-center flex-column">
         <div class="chest-icon" :class="chest.name"></div>
-        <div class="font-size-22 font-weight-700">
+        <!-- <div class="font-size-22 font-weight-700">
           {{ $t("battle-shop-" + chest.name) }}
-        </div>
+        </div> -->
       </div>
       <div class="flex-full padding-left-1 padding-right-1">
         <template v-if="chest.content.description">
@@ -16,7 +16,7 @@
             v-for="description in chest.content.description"
             :key="description"
             class="font-size-20 text-align-left"
-            v-html="description"
+            v-html="'• ' + description"
           ></div>
         </template>
       </div>
@@ -348,7 +348,7 @@ export default {
 
 <style lang="less" scoped>
 .column1 {
-  width: 18rem;
+  width: 12rem;
 }
 .chest-icon {
   // background: no-repeat url("../../assets/ui/@{chest}.png");

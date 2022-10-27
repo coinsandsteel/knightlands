@@ -1,4 +1,4 @@
-import Meta from "./subscriptions.json";
+import Meta from "./metadata/subscriptions.json";
 
 export default class Subscription {
   constructor(game, data) {

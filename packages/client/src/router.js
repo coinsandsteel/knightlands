@@ -78,13 +78,13 @@ const SummonHome = () => import("./views/Summon/SummonHome.vue");
 // const AprilRoot = () => import("./views/April/AprilRoot.vue");
 const BattleRoot = () => import("./views/Battle/BattleRoot.vue");
 
-// const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
-// const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
-// const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
-// const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
-// const DungeonRankings = () =>
-//   import("./views/Dungeon/Rankings/DungeonRankings.vue");
-// const DungeonUser = () => import("./views/Dungeon/DungeonUser.vue");
+const DungeonRoot = () => import("./views/Dungeon/DungeonRoot.vue");
+const DungeonSections = () => import("./views/Dungeon/DungeonSections.vue");
+const Dungeon = () => import("./views/Dungeon/Dungeon.vue");
+const DungeonFight = () => import("./views/Dungeon/DungeonFight.vue");
+const DungeonRankings = () =>
+  import("./views/Dungeon/Rankings/DungeonRankings.vue");
+const DungeonUser = () => import("./views/Dungeon/DungeonUser.vue");
 
 const ChestsRoot = () => import("./views/Summon/Chests/ChestsRoot.vue");
 const ChooseChest = () => import("./views/Summon/Chests/ChooseChest.vue");
@@ -402,50 +402,50 @@ const router = new Router({
       path: "/home/daily-rewards",
       component: DailyRewards
     },
-    // {
-    //   path: "/halloween",
-    //   component: DungeonRoot,
-    //   children: [
-    //     {
-    //       path: "",
-    //       name: "dungeon-entrance",
-    //       component: () => import("./views/Dungeon/Entrance.vue"),
-    //       meta: { noTopBar: true }
-    //     },
-    //     {
-    //       path: "fight",
-    //       name: "dungeon-fight",
-    //       component: DungeonFight,
-    //       meta: { noTopBar: true, noBackButton: true }
-    //     },
-    //     {
-    //       path: "dungeon",
-    //       name: "dungeon-sections",
-    //       component: DungeonSections,
-    //       meta: { noTopBar: true },
-    //       children: [
-    //         {
-    //           path: "",
-    //           name: "dungeon",
-    //           component: Dungeon
-    //         },
-    //         {
-    //           path: "rankings",
-    //           name: "dungeon-rankings",
-    //           component: DungeonRankings
-    //         },
-    //         {
-    //           path: "user",
-    //           name: "dungeon-user",
-    //           component: DungeonUser
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
+    /*{
+      path: "/halloween",
+      component: DungeonRoot,
+      children: [
+        {
+          path: "",
+          name: "dungeon-entrance",
+          component: () => import("./views/Dungeon/Entrance.vue"),
+          meta: { noTopBar: true }
+        },
+        {
+          path: "fight",
+          name: "dungeon-fight",
+          component: DungeonFight,
+          meta: { noTopBar: true, noBackButton: true }
+        },
+        {
+          path: "dungeon",
+          name: "dungeon-sections",
+          component: DungeonSections,
+          meta: { noTopBar: true },
+          children: [
+            {
+              path: "",
+              name: "dungeon",
+              component: Dungeon
+            },
+            {
+              path: "rankings",
+              name: "dungeon-rankings",
+              component: DungeonRankings
+            },
+            {
+              path: "user",
+              name: "dungeon-user",
+              component: DungeonUser
+            }
+          ]
+        }
+      ],
+      meta: {
+        requiresAuth: true
+      }
+    },*/
     // {
     //   path: "/xmas",
     //   component: XmasRoot,

@@ -27,7 +27,7 @@
 <script>
 import AppSection from "@/AppSection.vue";
 import Title from "@/components/Title.vue";
-import LuckDropsMeta from "@/quest_luck_loot";
+import LuckDropsMeta from "@/metadata/quest_luck_loot";
 import CharacterStat from "@/../../knightlands-shared/character_stat";
 import Loot from "@/components/Loot.vue";
 import HintHandler from "@/components/HintHandler.vue";

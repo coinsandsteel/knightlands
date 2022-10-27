@@ -21,11 +21,14 @@
       ></span>
 
       <span
-        v-if="showEquipped && itemData && itemData.equipped"
+        v-if="itemData && showEquipped && itemData.equipped"
         class="equipped"
         :class="{ 'on-unit': isEquippedOnUnit }"
       ></span>
-      <span v-else-if="itemData" :class="`icon-${element} element`"></span>
+      <span
+        v-if="itemData && !equipment && !hideQuantity && (element || isWeapon)"
+        :class="[`icon-${element} element`, { 'icon-weapon': isWeapon }]"
+      ></span>
 
       <div class="icon-locked" v-if="showLocked && itemData && itemData.locked">
         <span class="icon-locked-corner" />
@@ -67,7 +70,11 @@
 </template>
 
 <script>
-const { EquipmentSlots } = require("@/../../knightlands-shared/equipment_slot");
+const {
+  getSlot,
+  EquipmentSlots
+} = require("@/../../knightlands-shared/equipment_slot");
+const { ItemType } = require("@/../../knightlands-shared/item_type");
 
 let SlotPlaceholders = {};
 SlotPlaceholders[EquipmentSlots.MainHand] = "icon_slot_mainhand";
@@ -136,19 +143,50 @@ export default {
     iconClasses: [String, Array, Object]
   },
   data() {
-    return {
-      itemData: undefined
-    };
-  },
-  watch: {
-    item() {
-      this.updateItemData();
-    }
-  },
-  mounted() {
-    this.updateItemData();
+    return {};
   },
   computed: {
+    templateData() {
+      if (!this.item) {
+        return null;
+      }
+
+      if (this.item && typeof this.item !== "object") {
+        return this.$game.itemsDB.getTemplate(+this.item);
+      } else {
+        return this.$game.itemsDB.getTemplate(this.item.template);
+      }
+    },
+    itemData() {
+      if (this.item && typeof this.item !== "object") {
+        if (!this.templateData) {
+          return null;
+        }
+        return {
+          template: +this.item,
+          equipped: false,
+          level: 1,
+          count:
+            Math.floor(
+              this.quantity * (this.templateData.quantity || 1) * 100
+            ) / 100
+        };
+      } else {
+        return this.item;
+      }
+    },
+    itemSlot() {
+      if (!this.templateData) {
+        return null;
+      }
+      if (this.templateData.type != ItemType.Equipment) {
+        return null;
+      }
+      return getSlot(this.templateData.equipmentType);
+    },
+    isWeapon() {
+      return ["mainHand", "offHand"].includes(this.itemSlot);
+    },
     isEquippedOnUnit() {
       if (!this.itemData) {
         return false;
@@ -164,14 +202,25 @@ export default {
         return "";
       }
 
-      return `slot_${this.$game.itemsDB.getRarity(this.itemData)}`;
+      let rarity =
+        (this.itemData && this.itemData.rarity) ||
+        (this.templateData && this.templateData.rarity);
+
+      if (!rarity) {
+        return "";
+      }
+
+      return `slot_${rarity}`;
     },
     element() {
-      if (this.itemData.isCustomElement) {
+      if (this.itemData && this.itemData.isCustomElement) {
         return null;
       }
 
-      return this.$game.itemsDB.getElement(this.item);
+      return (
+        (this.itemData && this.itemData.element) ||
+        (this.templateData && this.templateData.element)
+      );
     },
     count() {
       let count = this.quantity;
@@ -213,10 +262,7 @@ export default {
         return SlotPlaceholders[this.equipmentSlot];
       }
       if (this.itemData && !this.itemData.isCustomElement) {
-        return this.$game.itemsDB.getIcon(
-          this.itemData.template,
-          this.$game.itemsDB.getRarity(this.itemData)
-        );
+        return (this.templateData && this.templateData.icon) || "";
       }
 
       return "";
@@ -225,23 +271,6 @@ export default {
   methods: {
     handleHint() {
       this.$emit("hint", this.itemData);
-    },
-    updateItemData() {
-      if (this.item && typeof this.item !== "object") {
-        // template
-        let template = this.$game.itemsDB.getTemplate(+this.item);
-        if (template) {
-          this.itemData = {
-            template: this.item * 1,
-            equipped: false,
-            level: 1,
-            count:
-              Math.floor(this.quantity * (template.quantity || 1) * 100) / 100
-          };
-        }
-      } else {
-        this.itemData = this.item;
-      }
     }
   }
 };
@@ -436,7 +465,7 @@ export default {
 
 .element {
   position: absolute;
-  top: 0.4rem;
+  bottom: 0.4rem;
   left: 0rem;
 }
 

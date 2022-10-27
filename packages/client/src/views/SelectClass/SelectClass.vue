@@ -16,6 +16,7 @@
       <div class="flex flex-center flex-column">
         <div class="flex">
           <PurchaseButton
+            :skipConfirm="true"
             :promise="request"
             :disabled="!selectedClass || !canConfirm"
             :price="price"
@@ -37,9 +38,9 @@
 import PurchaseButton from "@/components/PurchaseButton.vue";
 import UserDialog from "@/components/UserDialog.vue";
 import ClassSelector from "./ClassSelector.vue";
-import Classes from "@/classes";
+import Classes from "@/metadata/classes";
 import PromptMixin from "@/components/PromptMixin.vue";
-import Meta from "@/meta";
+import Meta from "@/metadata/meta";
 
 export default {
   mixins: [PromptMixin],

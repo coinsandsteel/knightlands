@@ -85,7 +85,7 @@ import {
   ITEM_RARITY_NFT,
   RARITY_CLASS_MAP
 } from "@/../../knightlands-shared/lunar";
-import recipes from "@/crafting_recipes.json";
+import recipes from "@/metadata/crafting_recipes.json";
 
 const nftRecipes = Object.values(recipes).filter(
   ({ category, ingridients }) =>
