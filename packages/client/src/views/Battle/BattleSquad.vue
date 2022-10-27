@@ -272,7 +272,8 @@ export default {
         bonus.mode === "burst" &&
         bonus.probability
       ) {
-        result = `Chance of a counter attack ${bonus.probability}%`;
+        const value = Math.floor(bonus.probability * 100);
+        result = `Chance of a counter attack ${value}%`;
       } else if (
         bonus.target === "speed" &&
         bonus.mode === "constant" &&
