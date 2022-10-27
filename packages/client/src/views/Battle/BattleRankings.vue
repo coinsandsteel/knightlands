@@ -143,7 +143,7 @@ export default {
           const titleRecord = {
             id: "title-" + 1,
             key: "key-" + records.length,
-            name: "PVP Score",
+            name: "Duel Score",
             isTitle: true,
             isFirstTitle
           };

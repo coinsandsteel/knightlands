@@ -1,7 +1,7 @@
 <template>
   <div class="padding-left-2 padding-right-2">
     <div class="text-align-center font-size-22 margin-top-2">
-      <div>PVP Score: {{ pvpScore }}</div>
+      <div>Duel Score: {{ pvpScore }}</div>
       <div>Duels Left: {{ duelsLeft }}</div>
     </div>
     <div
