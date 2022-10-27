@@ -17,6 +17,7 @@
           v-for="unit in units"
           :key="unit.unitId"
           :unit="unit"
+          :isEnemy="true"
           @click="unitClickHandler"
         />
       </div>
