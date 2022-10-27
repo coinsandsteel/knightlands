@@ -6,7 +6,7 @@
         <div class="font-size-22 text-align-center margin-bottom-2">
           <div v-if="power">Power: {{ power }}</div>
           <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
-            Squad bonuses:
+            {{ bonusLabel }}
             <div
               class="rarity-rare"
               v-for="(bonus, index) in bonuses"
@@ -107,11 +107,19 @@ export default {
         return prev + (unit ? unit.power || 0 : 0);
       }, 0);
     },
-    bonuses() {
+    bonusItems() {
       let bonusItems = (this.game && this.game.userSquad
         ? this.game.userSquad.bonuses || []
         : []
       ).filter(({ mode }) => mode);
+
+      return bonusItems;
+    },
+    bonuses() {
+      // let bonusItems = (this.game && this.game.userSquad
+      //   ? this.game.userSquad.bonuses || []
+      //   : []
+      // ).filter(({ mode }) => mode);
 
       // bonusItems = [
       //   {
@@ -143,14 +151,35 @@ export default {
       //   }
       // ];
 
-      if (!bonusItems.length > 0) {
+      if (!this.bonusItems.length > 0) {
         return null;
       }
-      return bonusItems
+      return this.bonusItems
         .map(bonus => {
           return this.renderBonus(bonus);
         })
         .filter(str => !!str);
+    },
+    bonusLabel() {
+      if (!(this.bonusItems.length > 0)) {
+        return null;
+      }
+
+      const bonus = this.bonusItems[0];
+      if (
+        !(
+          bonus &&
+          bonus.source === "squad" &&
+          bonus.sourceId &&
+          typeof bonus.caseId === "number"
+        )
+      ) {
+        return null;
+      }
+
+      return `${bonus.caseId + 2}x ${this.$t(
+        "battle-unit-tribe-" + bonus.sourceId
+      )} role bonus:`;
     }
   },
   activated() {
