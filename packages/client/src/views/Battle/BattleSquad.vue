@@ -5,14 +5,19 @@
       <div class="padding-2">
         <div class="font-size-22 text-align-center margin-bottom-2">
           <div v-if="power">Power: {{ power }}</div>
-          <div v-if="bonuses && bonuses.length > 0" class="margin-top-1">
-            {{ bonusLabel }}
-            <div
-              class="rarity-rare"
-              v-for="(bonus, index) in bonuses"
-              :key="index"
-            >
-              {{ bonus }}
+          <div
+            v-if="bonusGroups && bonusGroups.length > 0"
+            class="margin-top-1"
+          >
+            <div v-for="bonusGroup in bonusGroups" :key="bonusGroup.id">
+              <div>{{ bonusGroup.title }}</div>
+              <div
+                v-for="(bonus, index) in bonusGroup.bonuses"
+                :key="index"
+                class="rarity-rare"
+              >
+                {{ bonus }}
+              </div>
             </div>
           </div>
           <!-- <div>
@@ -115,72 +120,94 @@ export default {
 
       return bonusItems;
     },
-    bonuses() {
-      // let bonusItems = (this.game && this.game.userSquad
-      //   ? this.game.userSquad.bonuses || []
-      //   : []
-      // ).filter(({ mode }) => mode);
-
-      // bonusItems = [
-      //   {
-      //     target: "attack",
-      //     mode: "constant",
-      //     operation: "multiply",
-      //     value: 1.5
-      //   },
-      //   {
-      //     target: "speed",
-      //     mode: "constant",
-      //     trigger: "debuff",
-      //     operation: "multiply",
-      //     value: 4
-      //   },
-      //   {
-      //     target: "attack",
-      //     mode: "constant",
-      //     operation: "multiply",
-      //     value: 1.1
-      //   },
-      //   {
-      //     target: "attack",
-      //     mode: "stack",
-      //     delta: 0.025,
-      //     trigger: "damage",
-      //     multiply: true,
-      //     max: 0.15
-      //   }
-      // ];
-
-      if (!this.bonusItems.length > 0) {
-        return null;
-      }
-      return this.bonusItems
-        .map(bonus => {
-          return this.renderBonus(bonus);
-        })
-        .filter(str => !!str);
-    },
-    bonusLabel() {
-      if (!(this.bonusItems.length > 0)) {
-        return null;
+    bonusGroups() {
+      const groups = [];
+      for (let i = 0; i < this.bonusItems.length; i++) {
+        const bonus = this.bonusItems[i];
+        if (bonus && bonus.source === "squad" && bonus.sourceId) {
+          let group = groups.find(({ id }) => id === bonus.sourceId);
+          if (!group) {
+            group = {
+              id: bonus.sourceId,
+              title: `${
+                typeof bonus.caseId === "number" ? bonus.caseId + 2 + "x " : ""
+              }${this.$t("battle-unit-tribe-" + bonus.sourceId)} role bonus:`,
+              bonuses: []
+            };
+            groups.push(group);
+          }
+          group.bonuses.push(this.renderBonus(bonus));
+        }
       }
 
-      const bonus = this.bonusItems[0];
-      if (
-        !(
-          bonus &&
-          bonus.source === "squad" &&
-          bonus.sourceId &&
-          typeof bonus.caseId === "number"
-        )
-      ) {
-        return null;
-      }
-
-      return `${bonus.caseId + 2}x ${this.$t(
-        "battle-unit-tribe-" + bonus.sourceId
-      )} role bonus:`;
+      return groups;
     }
+    // bonuses() {
+    //   // let bonusItems = (this.game && this.game.userSquad
+    //   //   ? this.game.userSquad.bonuses || []
+    //   //   : []
+    //   // ).filter(({ mode }) => mode);
+
+    //   // bonusItems = [
+    //   //   {
+    //   //     target: "attack",
+    //   //     mode: "constant",
+    //   //     operation: "multiply",
+    //   //     value: 1.5
+    //   //   },
+    //   //   {
+    //   //     target: "speed",
+    //   //     mode: "constant",
+    //   //     trigger: "debuff",
+    //   //     operation: "multiply",
+    //   //     value: 4
+    //   //   },
+    //   //   {
+    //   //     target: "attack",
+    //   //     mode: "constant",
+    //   //     operation: "multiply",
+    //   //     value: 1.1
+    //   //   },
+    //   //   {
+    //   //     target: "attack",
+    //   //     mode: "stack",
+    //   //     delta: 0.025,
+    //   //     trigger: "damage",
+    //   //     multiply: true,
+    //   //     max: 0.15
+    //   //   }
+    //   // ];
+
+    //   if (!this.bonusItems.length > 0) {
+    //     return null;
+    //   }
+    //   return this.bonusItems
+    //     .map(bonus => {
+    //       return this.renderBonus(bonus);
+    //     })
+    //     .filter(str => !!str);
+    // },
+    // bonusLabel() {
+    //   if (!(this.bonusItems.length > 0)) {
+    //     return null;
+    //   }
+
+    //   const bonus = this.bonusItems[0];
+    //   if (
+    //     !(
+    //       bonus &&
+    //       bonus.source === "squad" &&
+    //       bonus.sourceId &&
+    //       typeof bonus.caseId === "number"
+    //     )
+    //   ) {
+    //     return null;
+    //   }
+
+    //   return `${bonus.caseId + 2}x ${this.$t(
+    //     "battle-unit-tribe-" + bonus.sourceId
+    //   )} role bonus:`;
+    // }
   },
   activated() {
     this.title = this.$t("Squad");
