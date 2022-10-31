@@ -79,17 +79,15 @@ export default {
   mixins: [AppSection, NetworkRequestErrorMixin, PaymentHandler],
   components: { PaymentStatus, CustomButton, PriceTag },
   data: () => ({
-    status: null
+    status: null,
   }),
   created() {
     this.title = "btn-evt-hal";
     this.$options.useRouterBack = true;
   },
   activated() {
-    if (!this.notEntered && !this.isFree) {
-      this.$router.replace({ name: "dungeon" });
-    } else {
-      this.fetchPaymentStatus();
+    if (!this.notEntered) {
+      this.enterFullyFree();
     }
   },
   watch: {
@@ -98,16 +96,16 @@ export default {
     },
     isFree() {
       this.$router.replace({ name: "dungeon" });
-    }
+    },
   },
   computed: {
     ...mapState({
-      user: state => state.dungeon.user,
-      isFree: state => state.dungeon.maze.isFree
+      user: (state) => state.dungeon.user,
+      isFree: (state) => state.dungeon.maze.isFree,
     }),
     notEntered() {
       return this.user.level == 0;
-    }
+    },
   },
   methods: {
     continueForFree() {
@@ -130,8 +128,11 @@ export default {
       await this.performRequest(
         this.$store.dispatch("dungeon/enter", { free: true })
       );
-    }
-  }
+    },
+    async enterFullyFree() {
+      await this.performRequest(this.$store.dispatch("dungeon/enter"));
+    },
+  },
 };
 </script>
 
