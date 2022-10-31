@@ -394,7 +394,7 @@ export default {
         }
       } catch (e) {
         if (e === Erorrs.NoEnergy) {
-          await ShowBuyEnergyPopup();
+          ShowBuyEnergyPopup();
           this.$app.$emit("shake-energy");
         }
       }

@@ -98,13 +98,13 @@ export default {
       // Do stuff
       this.$close(true);
     },
-    buyHandler() {
-      this.performRequestNoCatch(
+    async buyHandler() {
+      const response = await this.performRequestNoCatch(
         this.$store.dispatch("dungeon/purchase", {
           type: "dungeon"
         })
       );
-      this.$close();
+      this.$close(response);
     }
   }
 };

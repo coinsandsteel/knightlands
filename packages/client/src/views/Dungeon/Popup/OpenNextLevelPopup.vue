@@ -75,13 +75,13 @@ export default {
       const diff = this.$game.nowSec - this.$game.nowSec + 1200 * 60;
       this.timer.timeLeft = 86400 - (diff % 86400);
     },
-    buyHandler() {
-      this.performRequestNoCatch(
+    async buyHandler() {
+      const response = await this.performRequestNoCatch(
         this.$store.dispatch("dungeon/purchase", {
           type: "dungeon"
         })
       );
-      this.$close();
+      this.$close(response);
     }
   }
 };
