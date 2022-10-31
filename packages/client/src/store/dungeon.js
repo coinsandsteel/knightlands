@@ -269,6 +269,11 @@ export default {
       if (data.free !== undefined) {
         state.maze.isFree = data.free;
       }
+
+      if (data.finance !== undefined) {
+        state.user.balance = { ...state.user.balance, ...data.finance.balance };
+        state.user.prices = { ...state.user.prices, ...data.finance.prices };
+      }
     },
     resetCombat(state) {
       state.combat = _.clone(combatInitialState);
