@@ -66,8 +66,8 @@ export default {
   },
   getters: {
     maxFloor: state => {
-      const eventTimePassed = this.$game.nowSec - this.maze.startTime;
-      return Math.max(Math.ceil(eventTimePassed / 86400), 0) + state.user.balance.dungeons;
+      const eventTimePassed = Vue.prototype.$game.nowSec - state.maze.startTime;
+      return Math.max(Math.ceil(eventTimePassed / 86400), 0) + state.user.balance.levels;
     },
     playerStats: state => nextStats => {
       const stats = nextStats || state.user.stats;
@@ -493,6 +493,14 @@ export default {
       return (
         await this.$app.$game._wrapOperation(Operations.SDungeonWithdraw, {
           to
+        })
+      ).response;
+    },
+    async purchase(store, { type }) {
+      // "energy" | "dungeon"
+      return (
+        await this.$app.$game._wrapOperation(Operations.SDungeonPurchase, {
+          type
         })
       ).response;
     }
