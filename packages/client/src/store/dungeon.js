@@ -40,7 +40,8 @@ export default {
       startTime: 0
     },
     user: {
-      balance: { levels: 0 },
+      balance: { dungeons: 0, energy: 0 },
+      prices: { dungeon: 0, energy: 0 },
       level: 0,
       cell: null,
       energy: null,
@@ -66,7 +67,7 @@ export default {
   getters: {
     maxFloor: state => {
       const eventTimePassed = this.$game.nowSec - this.maze.startTime;
-      return Math.max(Math.ceil(eventTimePassed / 86400), 0) + state.user.balance.levels;
+      return Math.max(Math.ceil(eventTimePassed / 86400), 0) + state.user.balance.dungeons;
     },
     playerStats: state => nextStats => {
       const stats = nextStats || state.user.stats;
