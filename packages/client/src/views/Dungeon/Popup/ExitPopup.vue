@@ -1,10 +1,7 @@
 <template>
   <UserDialog :title="$t('d-exit-t')" class="font-size-22" @close="$close">
     <template v-slot:content>
-      <div v-if="maze.enemiesLeft">
-        <span>{{ $t('defeat-to-leave') }}</span>
-      </div>
-      <div v-else-if="canLeave">
+      <div v-if="canLeave">
         <span>{{ $t('go-deeper') }}</span>
       </div>
       <div v-else>
@@ -27,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import UserDialog from "@/components/UserDialog.vue";
 import CustomButton from "@/components/Button.vue";
 import timer from "@/timer";
@@ -39,6 +36,9 @@ export default {
     canLeave: false
   }),
   computed: {
+    ...mapGetters({
+      maxFloor: "dungeon/maxFloor"
+    }),
     ...mapState({
       maze: state => state.dungeon.maze
     })
@@ -50,9 +50,7 @@ export default {
     updateNextFloorTimer() {
       const diff = this.$game.nowSec - this.maze.startTime;
       this.timer.timeLeft = 86400 - (diff % 86400);
-
-      const maxFloor = Math.max(Math.ceil(diff / 86400), 0);
-      this.canLeave = maxFloor > this.maze.floor && this.maze.enemiesLeft <= 0;
+      this.canLeave = this.maxFloor > this.maze.floor;
     },
     handle() {
       // Do stuff

@@ -40,6 +40,7 @@ export default {
       startTime: 0
     },
     user: {
+      balance: { levels: 0 },
       level: 0,
       cell: null,
       energy: null,
@@ -63,6 +64,10 @@ export default {
     combat: _.clone(combatInitialState)
   },
   getters: {
+    maxFloor: state => {
+      const eventTimePassed = this.$game.nowSec - this.maze.startTime;
+      return Math.max(Math.ceil(eventTimePassed / 86400), 0) + state.user.balance.levels;
+    },
     playerStats: state => nextStats => {
       const stats = nextStats || state.user.stats;
 

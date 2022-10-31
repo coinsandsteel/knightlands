@@ -13,7 +13,7 @@
       <CustomButton @click="sendTestAction('energy')"
         >Add 10 energy</CustomButton
       >
-      <CustomButton @click="nextFloor" v-if="!maze.enemiesLeft" type="yellow"
+      <CustomButton @click="nextFloor" type="yellow"
         >Next floor</CustomButton
       >
     </div>
