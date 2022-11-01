@@ -10,12 +10,12 @@
         />
         <div class="font-size-22 height-100 padding-2">
           <div>
-
             <div class="flex flex-no-wrap flex-center margin-top-1">
               <div>
                 <BattleUnit :unit="unit" />
               </div>
               <div class="margin-left-2">
+                <!-- tribe -->
                 <div
                   class="text-align-left font-weight-700 font-shadow"
                   :class="'battle-unit-tribe--' + unit.tier"
@@ -27,18 +27,97 @@
                 </div>
                 <div class="flex flex-no-wrap">
                   <div class="text-align-left">
-                    <div>Tier: {{ unit.tier }}</div>
-                    <div>Level: {{ level }}</div>
-                    <div v-if="unit.characteristics.hp">
-                      Hp: {{ unit.characteristics.hp }}
+                    <!-- tier -->
+                    <div class="flex flex-no-wrap">
+                      <div class="font-shadow">
+                        Tier
+                      </div>
+                      <div
+                        class="flex-grow-1 _font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                      >
+                        {{ unit.tier }}
+                      </div>
                     </div>
-                    <div>Power: {{ unit.power }}</div>
+                    <!-- level -->
+                    <div class="flex flex-no-wrap">
+                      <div class="font-shadow">
+                        Level
+                      </div>
+                      <div
+                        class="flex-grow-1 padding-left-2 text-align-right characteristic-value"
+                      >
+                        {{ level }}
+                      </div>
+                    </div>
+                    <!-- hp -->
+                    <div
+                      v-if="unit.characteristics.hp"
+                      class="flex flex-no-wrap"
+                    >
+                      <div class="font-shadow">Hp</div>
+                      <div
+                        class="flex-grow-1 padding-left-2 text-align-right characteristic-value"
+                      >
+                        {{ unit.characteristics.hp }}
+                      </div>
+                    </div>
+                    <!-- power -->
+                    <div class="flex flex-no-wrap">
+                      <div class="font-shadow">
+                        Power
+                      </div>
+                      <div
+                        class="flex-grow-1 padding-left-2 text-align-right characteristic-value"
+                      >
+                        {{ unit.power }}
+                      </div>
+                    </div>
                   </div>
                   <div class="text-align-left margin-left-2">
-                    <div>Attack: {{ unit.characteristics.damage }}</div>
-                    <div>Defence: {{ unit.characteristics.defence }}</div>
-                    <div>Speed: {{ unit.characteristics.speed }}</div>
-                    <div>Initiative: {{ unit.characteristics.initiative }}</div>
+                    <!-- attack -->
+                    <div class="flex flex-no-wrap">
+                      <div class="font-shadow">
+                        Attack
+                      </div>
+                      <div
+                        class="flex-grow-1 padding-left-2 text-align-right characteristic-value"
+                      >
+                        {{ unit.characteristics.damage }}
+                      </div>
+                    </div>
+                    <!-- defence -->
+                    <div class="flex flex-no-wrap">
+                      <div class="font-shadow">
+                        Defence
+                      </div>
+                      <div
+                        class="flex-grow-1 padding-left-2 text-align-right characteristic-value"
+                      >
+                        {{ unit.characteristics.defence }}
+                      </div>
+                    </div>
+                    <!-- speed -->
+                    <div class="flex flex-no-wrap">
+                      <div class="font-shadow">
+                        Speed
+                      </div>
+                      <div
+                        class="flex-grow-1 padding-left-2 text-align-right characteristic-value"
+                      >
+                        {{ unit.characteristics.speed }}
+                      </div>
+                    </div>
+                    <!-- initiative -->
+                    <div class="flex flex-no-wrap">
+                      <div class="font-shadow">
+                        Initiative
+                      </div>
+                      <div
+                        class="flex-grow-1 padding-left-2 text-align-right characteristic-value"
+                      >
+                        {{ unit.characteristics.initiative }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -66,7 +145,7 @@
             <div v-if="true">
               <template v-if="!maxLevelReached">
                 <CustomButton
-                  v-if="false"
+                  v-if="true"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(100)"
@@ -74,7 +153,7 @@
                   +100 exp
                 </CustomButton>
                 <CustomButton
-                  v-if="false"
+                  v-if="true"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(500)"
@@ -82,7 +161,7 @@
                   +500 exp
                 </CustomButton>
                 <CustomButton
-                  v-if="false"
+                  v-if="true"
                   type="blue"
                   class="inline-block margin-right-2 margin-top-1"
                   @click="increaseHandler(5000)"
@@ -119,7 +198,10 @@
               </CustomButton>
             </div>
             <div class="margin-top-3 padding-bottom-2">
-              <div class="margin-bottom-1">Abilities</div>
+              <!-- <div class="margin-bottom-1">Abilities</div> -->
+              <Title class="abilities-title common-title  margin-bottom-2"
+                >Abilities</Title
+              >
               <BattleUnitAbilityDetails
                 v-for="(ability, index) in abilities"
                 :key="ability.abilityType + ability.abilityClass"
@@ -287,6 +369,10 @@ export default {
 .col-span-2 {
   grid-column: span 2 / span 2;
 }
+.abilities-title {
+  margin-left: -2rem;
+  width: calc(100% + 4rem);
+}
 ::v-deep .ability-value {
   display: none;
 }
@@ -298,5 +384,8 @@ export default {
 }
 .battle-unit-tribe--3 {
   color: #c965ee;
+}
+.characteristic-value {
+  color: #f4eb02;
 }
 </style>

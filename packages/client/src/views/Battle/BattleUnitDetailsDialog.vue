@@ -2,7 +2,7 @@
   <UserDialog :title="unit ? unit.name : ''" :emitClose="true" @close="close()">
     <template v-slot:content>
       <div v-if="unit" class="font-size-22">
-        <div
+        <!-- <div
           class="battle-unit-details-wrapper margin-x-auto flex flex-no-wrap flex-center margin-bottom-2 font-shadow font-weight-700"
           :class="'battle-unit-tribe--' + unit.tier"
         >
@@ -10,7 +10,7 @@
             {{ $t("battle-unit-tribe-" + unit.tribe) }}
             {{ $t("battle-unit-class-" + unit.class) }}
           </div>
-        </div>
+        </div> -->
         <div
           class="battle-unit-details-wrapper margin-x-auto flex flex-no-wrap padding-left-2 flex-center"
         >
@@ -26,36 +26,140 @@
               </div>
             </div> -->
           </div>
-          <div class="_flex-grow-1 text-align-left _width-35 margin-left-2">
-            <!-- <div class="margin-top-half">{{ unit.name }}</div>
+          <div class="_flex-grow-1 text-align-left _width-35 margin-left-3">
+            <!-- tribe -->
+            <div
+              class="text-align-left font-weight-700 font-shadow"
+              :class="'battle-unit-tribe--' + unit.tier"
+            >
+              <div>
+                {{ $t("battle-unit-tribe-" + unit.tribe) }}
+                {{ $t("battle-unit-class-" + unit.class) }}
+              </div>
+            </div>
+            <div class="flex flex-no-wrap">
+              <div>
+                <!-- <div class="margin-top-half">{{ unit.name }}</div>
             <div>
               {{ $t("battle-unit-tribe-" + unit.tribe) }}
               {{ $t("battle-unit-class-" + unit.class) }}
             </div> -->
-            <div>Tier: {{ unit.tier }}</div>
-            <div>Level: {{ unit.levelInt }}</div>
-            <div>Power: {{ unit.power }}</div>
-            <div>Hp: {{ unit.characteristics.hp }}</div>
-            <!-- <div class="margin-top-1">Hp: {{ unit.characteristics.hp }}</div>
+                <!-- tier -->
+                <!-- <div>Tier: {{ unit.tier }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Tier
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.tier }}
+                  </div>
+                </div>
+                <!-- level -->
+                <!-- <div>Level: {{ unit.levelInt }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Level
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.levelInt }}
+                  </div>
+                </div>
+                <!-- power -->
+                <!-- <div>Power: {{ unit.power }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Power
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.power }}
+                  </div>
+                </div>
+                <!-- hp -->
+                <!-- <div>Hp: {{ unit.characteristics.hp }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Hp
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.characteristics.hp }}
+                  </div>
+                </div>
+                <!-- <div class="margin-top-1">Hp: {{ unit.characteristics.hp }}</div>
             <div>Attack: {{ unit.characteristics.damage }}</div>
             <div>Defence: {{ unit.characteristics.defence }}</div>
             <div>Speed: {{ unit.characteristics.speed }}</div>
             <div>Initiative: {{ unit.characteristics.initiative }}</div> -->
-          </div>
-          <div class="_flex-grow-1 text-align-left _width-35 margin-left-2">
-            <!-- <div class="margin-top-half">Tier: {{ unit.tier }}</div>
+              </div>
+              <div class="_flex-grow-1 text-align-left _width-35 margin-left-3">
+                <!-- <div class="margin-top-half">Tier: {{ unit.tier }}</div>
             <div>Level: {{ unit.levelInt }}</div>
             <div>Power: {{ unit.power }}</div> -->
-            <div>Attack: {{ unit.characteristics.damage }}</div>
-            <div>Defence: {{ unit.characteristics.defence }}</div>
-            <div>Speed: {{ unit.characteristics.speed }}</div>
-            <div>Initiative: {{ unit.characteristics.initiative }}</div>
+                <!-- attack -->
+                <!-- <div>Attack: {{ unit.characteristics.damage }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Attack
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.characteristics.damage }}
+                  </div>
+                </div>
+                <!-- defense -->
+                <!-- <div>Defence: {{ unit.characteristics.defence }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Defence
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.characteristics.defence }}
+                  </div>
+                </div>
+                <!-- speed -->
+                <!-- <div>Speed: {{ unit.characteristics.speed }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Speed
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.characteristics.speed }}
+                  </div>
+                </div>
+                <!-- initiative -->
+                <!-- <div>Initiative: {{ unit.characteristics.initiative }}</div> -->
+                <div class="flex flex-no-wrap">
+                  <div class="font-shadow">
+                    Initiative
+                  </div>
+                  <div
+                    class="flex-grow-1 font-size-20 padding-left-2 text-align-right characteristic-value font-shadow"
+                  >
+                    {{ unit.characteristics.initiative }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div
-          class="battle-unit-abilities-wrapper margin-top-3 padding-bottom-2"
+        <Title
+          class="abilities-title common-title  margin-top-4 margin-bottom-2"
+          >Abilities</Title
         >
-          <div class="margin-bottom-1">Abilities</div>
+        <div class="battle-unit-abilities-wrapper padding-bottom-2">
+          <!-- <div class="margin-bottom-1">Abilities</div> -->
           <BattleUnitAbilityDetails
             v-for="(ability, index) in abilities"
             :key="ability.abilityType + ability.abilityClass"
@@ -70,7 +174,7 @@
 
         <div
           v-if="isSelectButtonVisible"
-          class="text-align-center margin-top-4"
+          class="text-align-center margin-top-3"
         >
           <CustomButton
             type="green"
@@ -175,5 +279,8 @@ export default {
 }
 .battle-unit-tribe--3 {
   color: #c965ee;
+}
+.characteristic-value {
+  color: #f4eb02;
 }
 </style>
