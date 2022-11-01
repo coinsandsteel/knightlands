@@ -49,10 +49,12 @@ export default {
     canLeave: false
   }),
   computed: {
-    ...mapState("dungeon", ["user"]),
+    ...mapState({
+      prices: state => state.dungeon.user.prices
+    }),
     price() {
-      return this.user && this.user.prices && this.user.prices.dungeon
-        ? Math.floor(this.user.prices.dungeon * 100) / 100
+      return this.prices && this.prices.dungeon
+        ? Math.floor(this.prices.dungeon * 100) / 100
         : 0;
     },
     balance() {

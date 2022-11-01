@@ -45,10 +45,12 @@ import NetworkRequestErrorMixin from "@/components/NetworkRequestErrorMixin.vue"
 export default {
   mixins: [NetworkRequestErrorMixin],
   computed: {
-    ...mapState("dungeon", ["user"]),
+    ...mapState({
+      prices: state => state.dungeon.user.prices
+    }),
     price() {
-      return this.user && this.user.prices && this.user.prices.energy
-        ? Math.floor(this.user.prices.energy * 100) / 100
+      return this.prices && this.prices.energy
+        ? Math.floor(this.prices.energy * 100) / 100
         : 0;
     },
     balance() {

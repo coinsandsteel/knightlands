@@ -270,9 +270,12 @@ export default {
         state.maze.isFree = data.free;
       }
 
-      if (data.finance !== undefined) {
-        state.user.balance = { ...state.user.balance, ...data.finance.balance };
-        state.user.prices = { ...state.user.prices, ...data.finance.prices };
+      if (data.balance !== undefined) {
+        state.user.balance = { ...state.user.balance, ...data.balance };
+      }
+
+      if (data.prices !== undefined) {
+        state.user.prices = { ...state.user.prices, ...data.prices };
       }
     },
     resetCombat(state) {

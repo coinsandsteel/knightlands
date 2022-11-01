@@ -35,7 +35,6 @@ import AltarPopup from "./Popup/AltarPopup.vue";
 import TrapPopup from "./Popup/TrapPopup.vue";
 import TrapJammedPopup from "./Popup/TrapJammedPopup.vue";
 import LootReceivedPopup from "./Popup/LootReceivedPopup.vue";
-import ExitPopup from "./Popup/ExitPopup.vue";
 import BuyEnergyPopup from "./Popup/BuyEnergyPopup.vue";
 import OpenNextLevelPopup from "./Popup/OpenNextLevelPopup.vue";
 import { create } from "vue-modal-dialogs";
@@ -44,7 +43,6 @@ const ShowEnemyPopup = create(EnemyPopup, "enemyId", "enemyCurrentHealth");
 const ShowAltarPopup = create(AltarPopup, "altarId");
 const ShowTrapPopup = create(TrapPopup, "trapId");
 const ShowLootReceivedPopup = create(LootReceivedPopup, "loot");
-const ShowExitPopup = create(ExitPopup);
 const ShowTrapJammed = create(TrapJammedPopup);
 const ShowBuyEnergyPopup = create(BuyEnergyPopup);
 const ShowOpenNextLevelPopup = create(OpenNextLevelPopup);
@@ -113,9 +111,6 @@ export default {
       this.handleAggressiveEnemy
     );
     this.$store.$app.$on("trap_jammed", this.handleJammedTrap);
-    // ShowBuyEnergyPopup();
-    // ShowOpenNextLevelPopup();
-    // ShowExitPopup();
   },
   activated() {
     this.scrollToPlayer();
@@ -247,7 +242,7 @@ export default {
         }
       } catch (e) {
         if (e === Erorrs.NoEnergy) {
-          this.$app.$emit("shake-energy");
+          await ShowBuyEnergyPopup();
         }
       }
     },
@@ -315,7 +310,7 @@ export default {
             );
             responseType = "loot";
           } else if (cell.exit) {
-            response = await ShowExitPopup();
+            response = await ShowOpenNextLevelPopup();
             responseType = "exit";
           }
 
@@ -399,6 +394,7 @@ export default {
         }
       } catch (e) {
         if (e === Erorrs.NoEnergy) {
+          await ShowBuyEnergyPopup();
           this.$app.$emit("shake-energy");
         }
       }
