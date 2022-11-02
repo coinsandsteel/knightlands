@@ -150,7 +150,10 @@
               class="flex-grow-1 text-align-left buff-description padding-left-1"
             >
               {{
-                buff && buff.sourceId && "caseId" in buff
+                buff &&
+                buff.sourceId &&
+                "caseId" in buff &&
+                BUFFS[buff.sourceId]
                   ? BUFFS[buff.sourceId].cases[buff.caseId]
                   : ""
               }}

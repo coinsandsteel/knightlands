@@ -52,7 +52,14 @@ export default {
       return titles[this.buff.source] || "";
     },
     description() {
-      if (!(this.buff && "caseId" in this.buff)) {
+      if (
+        !(
+          this.buff &&
+          this.buff.sourceId &&
+          "caseId" in this.buff &&
+          battle.BUFFS[this.buff.sourceId]
+        )
+      ) {
         return "";
       }
 
