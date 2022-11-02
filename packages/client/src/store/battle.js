@@ -43,6 +43,7 @@ export default {
 
     // User data
     user: {
+      powerScore: 0,
       pvpScore: 0,
       balance: {
         energy: 0,
@@ -433,6 +434,9 @@ export default {
       }
 
       // User data
+      if (data.powerScore !== undefined) {
+        state.user.powerScore = data.powerScore;
+      }
       if (data.pvpScore !== undefined) {
         state.user.pvpScore = data.pvpScore;
       }
