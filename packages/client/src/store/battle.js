@@ -539,7 +539,7 @@ export default {
 
           if (index !== -1) {
             Vue.set(
-              state.game.userSquad.fighters[index],
+              state.game.userSquad.fighters[index].unit,
               "abilities",
               data.abilities[fighterId]
             );
@@ -552,7 +552,7 @@ export default {
 
           if (index !== -1) {
             Vue.set(
-              state.game.enemySquad.fighters[index],
+              state.game.enemySquad.fighters[index].unit,
               "abilities",
               data.abilities[fighterId]
             );
