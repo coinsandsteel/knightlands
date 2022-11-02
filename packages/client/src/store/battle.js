@@ -45,6 +45,7 @@ export default {
     user: {
       powerScore: 0,
       pvpScore: 0,
+      powerScore: 0,
       balance: {
         energy: 0,
         coins: 0, // Source: PvE, Purpose: upgrade units level
@@ -382,7 +383,8 @@ export default {
         : [];
     },
     totalPower(state) {
-      return state.inventory.reduce((prev, unit) => prev + unit.power, 0);
+      // return state.inventory.reduce((prev, unit) => prev + unit.power, 0);
+      return state.user.powerScore || 0;
     }
   },
   mutations: {
@@ -439,6 +441,9 @@ export default {
       }
       if (data.pvpScore !== undefined) {
         state.user.pvpScore = data.pvpScore;
+      }
+      if (data.powerScore !== undefined) {
+        state.user.powerScore = data.powerScore;
       }
       if (data.balance !== undefined) {
         state.user.balance = { ...state.balance, ...data.balance };
