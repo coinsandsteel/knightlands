@@ -55,11 +55,17 @@
         <div
           class="flex flex-column flex-justify-end side-column side-column--right text-align-center"
         >
-          <div
+          <!-- <div
             class="obstacle-hint flex flex-center"
             @click="showObstacleInformation"
           >
             ?
+          </div> -->
+          <div class="flex flex-center">
+            <span
+              class="value-icon icon-info square big m"
+              @click="showObstacleInformation"
+            ></span>
           </div>
           <div class="flex-full"></div>
           <!-- skip -->
