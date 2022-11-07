@@ -55,7 +55,8 @@ export default {
       counters: {
         energy: 0,
         purchase: {},
-        duels: {}
+        duels: {},
+        progressivePrices: {}
       },
       rewards: {
         dailyRewards: [

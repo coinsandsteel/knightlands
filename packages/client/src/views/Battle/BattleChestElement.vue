@@ -79,14 +79,14 @@
         <div v-if="chest.price && chest.price.currency === 'coins'">
           <CustomButton
             :disabled="
-              !canPurchase || balance.ancientCoins < chest.price.amount
+              !canPurchase || balance.ancientCoins < price
             "
             type="yellow"
             width="15rem"
             @click="purchase(chest)"
           >
             <div class="flex flex-center">
-              <BattleCoin :value="chest.price.amount" :hasMargin="true" />
+              <BattleCoin :value="price" :hasMargin="true" />
             </div>
           </CustomButton>
         </div>
@@ -117,6 +117,9 @@ export default {
   }),
   computed: {
     ...mapState("battle", ["user"]),
+    price() {
+      return this.chest.price.amount || this.user.counters.progressivePrices[this.chest.id];
+    },
     items() {
       return this.user ? this.user.items || [] : [];
     },
