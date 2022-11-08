@@ -14,10 +14,10 @@ export default {
   computed: {
     coins() {
       if (typeof this.value === "number") {
-        return this.value;
+        return Math.floor(this.value);
       }
 
-      return this.$store.state.battle.user.balance.coins || 0;
+      return Math.floor(this.$store.state.battle.user.balance.coins || 0);
     }
   }
 };
